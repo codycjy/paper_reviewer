@@ -1,0 +1,730 @@
+#!/usr/bin/env python3
+"""
+Build an evaluation dataset from OpenReview papers, reviews, and rebuttals.
+
+The output is intentionally compatible with eval/papers.json: a dictionary keyed
+by paper id, where each value contains paper metadata and a reviews list with
+strengths / weaknesses. This script adds extra audit fields such as raw review
+text, rebuttal text, and OpenReview URLs.
+
+Examples:
+    python scripts/build_openreview_eval_dataset.py \
+        --output eval/openreview_collected_papers.json \
+        --download-pdfs
+
+    OPENAI_API_KEY=... python scripts/build_openreview_eval_dataset.py \
+        --use-llm-segmentation \
+        --per-category 50 \
+        --venues ICLR:2025 ICML:2025 NeurIPS:2025
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+import time
+import urllib.error
+import urllib.request
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Iterable, Optional
+
+
+OPENREVIEW_BASE_URL = "https://openreview.net"
+
+DEFAULT_VENUES: dict[str, dict[int, str]] = {
+    "ICLR": {
+        2025: "ICLR.cc/2025/Conference",
+        2024: "ICLR.cc/2024/Conference",
+        2023: "ICLR.cc/2023/Conference",
+    },
+    "ICML": {
+        2025: "ICML.cc/2025/Conference",
+        2024: "ICML.cc/2024/Conference",
+        2023: "ICML.cc/2023/Conference",
+    },
+    "NeurIPS": {
+        2025: "NeurIPS.cc/2025/Conference",
+        2024: "NeurIPS.cc/2024/Conference",
+        2023: "NeurIPS.cc/2023/Conference",
+    },
+}
+
+
+@dataclass(frozen=True)
+class VenueSpec:
+    conference: str
+    year: int
+    venue_id: str
+
+
+def import_openreview() -> Any:
+    try:
+        import openreview  # type: ignore
+    except ImportError as exc:
+        raise SystemExit(
+            "Missing dependency: openreview-py. Install it with "
+            "`pip install openreview-py` or `pip install -r requirements.txt`."
+        ) from exc
+    return openreview
+
+
+def note_id(note: Any) -> str:
+    return getattr(note, "id", None) or getattr(note, "forum", "")
+
+
+def note_forum(note: Any) -> str:
+    return getattr(note, "forum", None) or note_id(note)
+
+
+def get_content(note: Any) -> dict[str, Any]:
+    content = getattr(note, "content", None) or {}
+    normalized = {}
+    for key, value in content.items():
+        if isinstance(value, dict) and "value" in value:
+            normalized[key] = value["value"]
+        else:
+            normalized[key] = value
+    return normalized
+
+
+def as_text(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, list):
+        return "\n".join(as_text(item) for item in value if as_text(item))
+    if isinstance(value, dict):
+        if "value" in value:
+            return as_text(value["value"])
+        return json.dumps(value, ensure_ascii=False)
+    return str(value).strip()
+
+
+def as_float(value: Any) -> Optional[float]:
+    text = as_text(value)
+    if not text:
+        return None
+    match = re.search(r"-?\d+(?:\.\d+)?", text)
+    return float(match.group(0)) if match else None
+
+
+def slugify(text: str, fallback: str = "paper") -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+    return slug[:80] or fallback
+
+
+def openreview_url(forum: str) -> str:
+    return f"{OPENREVIEW_BASE_URL}/forum?id={forum}"
+
+
+def parse_venue_specs(raw_specs: list[str]) -> list[VenueSpec]:
+    specs = []
+    for raw in raw_specs:
+        parts = raw.split(":", 2)
+        if len(parts) == 3:
+            conference, year_text, venue_id = parts
+        elif len(parts) == 2:
+            conference, year_text = parts
+            venue_id = DEFAULT_VENUES.get(conference, {}).get(int(year_text))
+            if not venue_id:
+                raise SystemExit(f"No default venue id for {raw}; pass CONF:YEAR:VENUE_ID.")
+        else:
+            raise SystemExit(f"Invalid venue spec {raw!r}; use CONF:YEAR or CONF:YEAR:VENUE_ID.")
+        specs.append(VenueSpec(conference=conference, year=int(year_text), venue_id=venue_id))
+    return specs
+
+
+def get_client(openreview: Any) -> Any:
+    username = os.getenv("OPENREVIEW_USERNAME")
+    password = os.getenv("OPENREVIEW_PASSWORD")
+    if username and password:
+        return openreview.api.OpenReviewClient(
+            baseurl="https://api2.openreview.net",
+            username=username,
+            password=password,
+        )
+    return openreview.api.OpenReviewClient(baseurl="https://api2.openreview.net")
+
+
+def get_all_notes(client: Any, **kwargs: Any) -> list[Any]:
+    if hasattr(client, "get_all_notes"):
+        return list(client.get_all_notes(**kwargs))
+    return list(client.get_notes(**kwargs))
+
+
+def fetch_submissions(client: Any, venue: VenueSpec) -> list[Any]:
+    attempts = [
+        {"content": {"venueid": venue.venue_id}},
+        {"invitation": f"{venue.venue_id}/-/Submission"},
+    ]
+    last_error = None
+    for kwargs in attempts:
+        try:
+            notes = get_all_notes(client, **kwargs)
+        except Exception as exc:  # OpenReview raises several custom types.
+            last_error = exc
+            continue
+        if notes:
+            return notes
+    raise RuntimeError(f"Could not fetch submissions for {venue.venue_id}: {last_error}")
+
+
+def fetch_forum_notes(client: Any, forum: str) -> list[Any]:
+    try:
+        return get_all_notes(client, forum=forum, details="replyCount")
+    except TypeError:
+        return get_all_notes(client, forum=forum)
+
+
+def has_invitation(note: Any, pattern: str) -> bool:
+    invitations = getattr(note, "invitations", None) or []
+    invitation = getattr(note, "invitation", None)
+    if invitation:
+        invitations.append(invitation)
+    return any(re.search(pattern, inv, re.IGNORECASE) for inv in invitations)
+
+
+def is_official_review(note: Any) -> bool:
+    if has_invitation(note, r"official[_ -]?review|review$"):
+        return True
+    content = get_content(note)
+    keys = {key.lower().replace(" ", "_") for key in content}
+    reviewish = {"rating", "recommendation", "confidence", "summary", "soundness", "review"}
+    return bool(keys & reviewish) and not is_decision(note)
+
+
+def is_decision(note: Any) -> bool:
+    return has_invitation(note, r"decision|recommendation$") or "decision" in get_content(note)
+
+
+def is_author_rebuttal(note: Any) -> bool:
+    invitations = " ".join((getattr(note, "invitations", None) or []) + [getattr(note, "invitation", "")])
+    if re.search(r"author|rebuttal|response|comment", invitations, re.IGNORECASE):
+        signatures = " ".join(getattr(note, "signatures", None) or [])
+        if re.search(r"author", signatures, re.IGNORECASE):
+            return True
+    signatures = " ".join(getattr(note, "signatures", None) or [])
+    return bool(re.search(r"author", signatures, re.IGNORECASE) and not is_official_review(note))
+
+
+def decision_text(note: Any) -> str:
+    content = get_content(note)
+    candidates = [
+        content.get("decision"),
+        content.get("Decision"),
+        content.get("recommendation"),
+        content.get("Recommendation"),
+        content.get("final_decision"),
+        content.get("Final Decision"),
+        content.get("venue"),
+    ]
+    return " ".join(as_text(candidate) for candidate in candidates if as_text(candidate))
+
+
+def paper_decision(submission: Any, forum_notes: list[Any]) -> str:
+    content = get_content(submission)
+    candidates = [content.get("decision"), content.get("Decision"), content.get("venue")]
+    candidates.extend(decision_text(note) for note in forum_notes if is_decision(note))
+    return " ".join(as_text(candidate) for candidate in candidates if as_text(candidate))
+
+
+def classify_decision(text: str) -> Optional[str]:
+    normalized = text.lower()
+    if not normalized:
+        return None
+    reject_tokens = ("reject", "withdrawn", "desk reject")
+    if any(token in normalized for token in reject_tokens):
+        return "reject"
+    if "accept" in normalized and "oral" in normalized:
+        return "accept_oral"
+    return None
+
+
+def get_title(submission: Any) -> str:
+    content = get_content(submission)
+    return as_text(content.get("title") or content.get("Title") or "Untitled")
+
+
+def get_pdf_url(submission: Any) -> Optional[str]:
+    content = get_content(submission)
+    pdf_value = as_text(content.get("pdf") or content.get("PDF"))
+    if pdf_value:
+        if pdf_value.startswith("http"):
+            return pdf_value
+        if pdf_value.startswith("/"):
+            return f"{OPENREVIEW_BASE_URL}{pdf_value}"
+    forum = note_forum(submission)
+    return f"{OPENREVIEW_BASE_URL}/pdf?id={forum}" if forum else None
+
+
+def download_pdf(url: str, destination: Path, sleep_seconds: float = 0.0) -> bool:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response:
+            destination.write_bytes(response.read())
+        if sleep_seconds:
+            time.sleep(sleep_seconds)
+        return True
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        print(f"Warning: failed to download PDF {url}: {exc}", file=sys.stderr)
+        return False
+
+
+SECTION_HEADER_RE = re.compile(
+    r"^\s*(?:#+\s*)?(strengths?|weakness(?:es)?|limitations?|concerns?|"
+    r"summary(?:\s+of\s+the\s+review)?|main\s+review|review|comments?)\s*:?\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+
+
+def split_bullets(text: str) -> list[str]:
+    text = text.strip()
+    if not text:
+        return []
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    bullet_lines = []
+    saw_bullet = False
+    for line in lines:
+        cleaned, count = re.subn(r"^\s*(?:[-*•]|\d+[.)])\s+", "", line, count=1)
+        saw_bullet = saw_bullet or count > 0
+        cleaned = cleaned.strip()
+        if cleaned:
+            bullet_lines.append(cleaned)
+    if saw_bullet:
+        return bullet_lines
+    chunks = re.split(r"\n{2,}|(?<=[.!?])\s+(?=[A-Z])", text)
+    return [chunk.strip() for chunk in chunks if chunk.strip()]
+
+
+def section_blocks(text: str) -> dict[str, str]:
+    matches = list(SECTION_HEADER_RE.finditer(text))
+    blocks: dict[str, str] = {}
+    for idx, match in enumerate(matches):
+        header = match.group(1).lower()
+        start = match.end()
+        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
+        blocks[header] = text[start:end].strip()
+    return blocks
+
+
+def deterministic_segment(content: dict[str, Any], raw_review: str) -> tuple[list[str], list[str]]:
+    strength_keys = [
+        "strengths",
+        "Strengths",
+        "paper_strengths",
+        "Paper Strengths",
+        "summary_of_strengths",
+        "Summary Of Strengths",
+        "Main Strengths",
+        "Other Strengths",
+        "Other Strengths And Weaknesses",
+    ]
+    weakness_keys = [
+        "weaknesses",
+        "Weaknesses",
+        "limitations",
+        "Limitations",
+        "paper_weaknesses",
+        "Paper Weaknesses",
+        "summary_of_weaknesses",
+        "Summary Of Weaknesses",
+        "Main Weaknesses",
+        "Other Weaknesses",
+        "Other Strengths And Weaknesses",
+    ]
+    strengths = []
+    weaknesses = []
+    for key in strength_keys:
+        if key in content and key != "Other Strengths And Weaknesses":
+            strengths.extend(split_bullets(as_text(content[key])))
+    for key in weakness_keys:
+        if key in content and key != "Other Strengths And Weaknesses":
+            weaknesses.extend(split_bullets(as_text(content[key])))
+
+    blocks = section_blocks(raw_review)
+    for header, block in blocks.items():
+        if "strength" in header:
+            strengths.extend(split_bullets(block))
+        elif any(token in header for token in ("weakness", "limitation", "concern")):
+            weaknesses.extend(split_bullets(block))
+
+    return dedupe_preserve_order(strengths), dedupe_preserve_order(weaknesses)
+
+
+def dedupe_preserve_order(items: Iterable[str]) -> list[str]:
+    seen = set()
+    out = []
+    for item in items:
+        normalized = re.sub(r"\s+", " ", item).strip()
+        if normalized and normalized.lower() not in seen:
+            seen.add(normalized.lower())
+            out.append(normalized)
+    return out
+
+
+def build_raw_review(content: dict[str, Any]) -> str:
+    skipped = {
+        "rating",
+        "confidence",
+        "recommendation",
+        "decision",
+        "reviewer",
+        "reviewer_id",
+        "review_id",
+        "pdf",
+    }
+    parts = []
+    preferred = [
+        "summary",
+        "Summary",
+        "main_review",
+        "Main Review",
+        "review",
+        "Review",
+        "comments",
+        "Comments",
+        "strengths",
+        "Strengths",
+        "weaknesses",
+        "Weaknesses",
+        "questions",
+        "Questions",
+        "limitations",
+        "Limitations",
+    ]
+    for key in preferred:
+        value = as_text(content.get(key))
+        if value:
+            parts.append(f"{key}\n{value}")
+    for key, value in content.items():
+        canonical = key.lower().replace(" ", "_")
+        if canonical in skipped or key in preferred:
+            continue
+        text = as_text(value)
+        if text:
+            parts.append(f"{key}\n{text}")
+    return "\n\n".join(parts).strip()
+
+
+def llm_segment_review(raw_review: str, model: str) -> tuple[list[str], list[str]]:
+    try:
+        from openai import OpenAI
+    except ImportError as exc:
+        raise RuntimeError("Missing openai package; install it or omit --use-llm-segmentation.") from exc
+
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model=model,
+        temperature=0,
+        response_format={"type": "json_object"},
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "Segment peer review comments into strengths and weaknesses. "
+                    "Return strict JSON with keys strengths and weaknesses, each an array "
+                    "of concise faithful statements. Do not invent content."
+                ),
+            },
+            {"role": "user", "content": raw_review},
+        ],
+    )
+    payload = response.choices[0].message.content or "{}"
+    data = json.loads(payload)
+    return (
+        dedupe_preserve_order(as_text(item) for item in data.get("strengths", [])),
+        dedupe_preserve_order(as_text(item) for item in data.get("weaknesses", [])),
+    )
+
+
+def reviewer_id(note: Any, index: int) -> str:
+    signatures = getattr(note, "signatures", None) or []
+    signature = signatures[0] if signatures else f"Reviewer_{index + 1}"
+    return signature.split("/")[-1].replace("AnonReviewer", "Reviewer")
+
+
+def review_rating(content: dict[str, Any]) -> Optional[float]:
+    for key in ("rating", "Rating", "recommendation", "Recommendation", "overall_assessment"):
+        value = as_float(content.get(key))
+        if value is not None:
+            return value
+    return None
+
+
+def review_confidence(content: dict[str, Any]) -> Optional[float]:
+    for key in ("confidence", "Confidence"):
+        value = as_float(content.get(key))
+        if value is not None:
+            return value
+    return None
+
+
+def collection_label_to_decision(label: str) -> str:
+    return "accept" if label in {"accept_oral", "accept"} else "reject"
+
+
+def reviewer_recommendation(content: dict[str, Any], rating: Optional[float], conference: str) -> Optional[str]:
+    recommendation = " ".join(
+        as_text(content.get(key))
+        for key in ("recommendation", "Recommendation", "decision", "Decision")
+        if as_text(content.get(key))
+    ).lower()
+    if "reject" in recommendation:
+        return "reject"
+    if "accept" in recommendation:
+        return "accept"
+
+    if rating is None:
+        return None
+
+    thresholds = {
+        "ICLR": 6.0,
+        "ICML": 3.0,
+        "NeurIPS": 4.0,
+    }
+    return "accept" if rating >= thresholds.get(conference, rating + 1) else "reject"
+
+
+POLICY_REJECTION_RE = re.compile(
+    r"(?:"
+    r"ban(?:ned)?(?:\s+list)?|sanction(?:ed|s)?|embargo|ofac|export\s+control|"
+    r"restricted\s+(?:country|countries|affiliation|institution)|"
+    r"ineligible\s+(?:country|countries|affiliation|institution|author)|"
+    r"(?:country|nationality|affiliation|institution)\s+(?:ban|restriction|policy)|"
+    r"(?:authors?|institution|affiliation).{0,80}(?:banned|sanctioned|restricted|ineligible)|"
+    r"(?:banned|sanctioned|restricted|ineligible).{0,80}(?:country|countries|authors?|institution|affiliation)"
+    r")",
+    re.IGNORECASE,
+)
+
+
+def forum_policy_text(submission: Any, forum_notes: list[Any]) -> str:
+    parts = [paper_decision(submission, forum_notes)]
+    for note in forum_notes:
+        if is_decision(note) or is_author_rebuttal(note):
+            parts.append(build_raw_review(get_content(note)))
+    return "\n\n".join(part for part in parts if part)
+
+
+def reviewer_accept_fraction(forum_notes: list[Any], conference: str) -> tuple[int, int, float]:
+    accept_count = 0
+    total = 0
+    for note in forum_notes:
+        if not is_official_review(note):
+            continue
+        content = get_content(note)
+        recommendation = reviewer_recommendation(content, review_rating(content), conference)
+        if recommendation is None:
+            continue
+        total += 1
+        if recommendation == "accept":
+            accept_count += 1
+    return accept_count, total, (accept_count / total if total else 0.0)
+
+
+def dataset_decision_label(
+    submission: Any,
+    forum_notes: list[Any],
+    conference: str,
+    collection_label: str,
+) -> tuple[str, Optional[str]]:
+    if collection_label != "reject":
+        return collection_label_to_decision(collection_label), None
+
+    accept_count, total, fraction = reviewer_accept_fraction(forum_notes, conference)
+    if total and fraction > (2 / 3) and POLICY_REJECTION_RE.search(forum_policy_text(submission, forum_notes)):
+        return (
+            "accept",
+            f"Rejected paper relabeled because {accept_count}/{total} reviewers recommended accept "
+            "and the forum/decision text appears to cite country, sanctions, or affiliation policy.",
+        )
+    return "reject", None
+
+
+def rebuttals_for_review(review: Any, forum_notes: list[Any]) -> list[str]:
+    review_id = note_id(review)
+    direct_replies = []
+    global_rebuttals = []
+    for note in forum_notes:
+        if note_id(note) == review_id or not is_author_rebuttal(note):
+            continue
+        content = get_content(note)
+        text = build_raw_review(content) or as_text(content.get("comment") or content.get("rebuttal"))
+        if not text:
+            continue
+        replyto = getattr(note, "replyto", None)
+        if replyto == review_id:
+            direct_replies.append(text)
+        elif getattr(note, "forum", None) == note_forum(review):
+            global_rebuttals.append(text)
+    return direct_replies or global_rebuttals
+
+
+def collect_reviews(
+    forum_notes: list[Any],
+    use_llm_segmentation: bool,
+    llm_model: str,
+    max_reviews: int,
+    dataset_decision: str,
+) -> list[dict[str, Any]]:
+    reviews = [note for note in forum_notes if is_official_review(note)]
+    reviews.sort(key=lambda note: getattr(note, "cdate", 0) or getattr(note, "tcdate", 0) or 0)
+
+    collected = []
+    for idx, note in enumerate(reviews):
+        content = get_content(note)
+        raw_review = build_raw_review(content)
+        strengths, weaknesses = deterministic_segment(content, raw_review)
+        if use_llm_segmentation and raw_review and (not strengths or not weaknesses):
+            strengths, weaknesses = llm_segment_review(raw_review, llm_model)
+
+        rating = review_rating(content)
+        review_obj = {
+            "reviewer_id": reviewer_id(note, idx),
+            "strengths": strengths,
+            "weaknesses": weaknesses,
+            "rating": rating,
+            "confidence": review_confidence(content),
+            "decision": dataset_decision,
+            "raw_review": raw_review,
+            "rebuttal": "\n\n".join(rebuttals_for_review(note, forum_notes)),
+        }
+        if strengths or weaknesses or raw_review:
+            collected.append(review_obj)
+        if len(collected) >= max_reviews:
+            break
+    return collected
+
+
+def average_rating(reviews: list[dict[str, Any]]) -> Optional[float]:
+    ratings = [review["rating"] for review in reviews if review.get("rating") is not None]
+    return round(sum(ratings) / len(ratings), 4) if ratings else None
+
+
+def select_papers(
+    submissions: list[Any],
+    client: Any,
+    venue: VenueSpec,
+    per_category: int,
+) -> list[tuple[Any, str, list[Any]]]:
+    selected: dict[str, list[tuple[Any, str, list[Any]]]] = {"accept_oral": [], "reject": []}
+    for submission in submissions:
+        if all(len(items) >= per_category for items in selected.values()):
+            break
+        forum = note_forum(submission)
+        forum_notes = fetch_forum_notes(client, forum)
+        label = classify_decision(paper_decision(submission, forum_notes))
+        if label in selected and len(selected[label]) < per_category:
+            selected[label].append((submission, label, forum_notes))
+            print(
+                f"  {venue.conference} {venue.year}: "
+                f"{len(selected[label])}/{per_category} {label} - {get_title(submission)[:80]}"
+            )
+    return selected["accept_oral"] + selected["reject"]
+
+
+def build_dataset(args: argparse.Namespace) -> dict[str, Any]:
+    openreview = import_openreview()
+    client = get_client(openreview)
+    dataset = {}
+    pdf_dir = Path(args.pdf_dir)
+
+    for venue in parse_venue_specs(args.venues):
+        print(f"Fetching submissions for {venue.conference} {venue.year} ({venue.venue_id})")
+        submissions = fetch_submissions(client, venue)
+        print(f"Found {len(submissions)} submissions; selecting target categories")
+        selected = select_papers(submissions, client, venue, args.per_category)
+        print(f"Selected {len(selected)} papers for {venue.conference} {venue.year}")
+
+        counters = {"accept_oral": 0, "reject": 0}
+        for submission, label, forum_notes in selected:
+            counters[label] += 1
+            title = get_title(submission)
+            category_name = "accept" if label == "accept_oral" else "reject"
+            final_decision, override_reason = dataset_decision_label(
+                submission=submission,
+                forum_notes=forum_notes,
+                conference=venue.conference,
+                collection_label=label,
+            )
+            key = (
+                f"{venue.conference.lower()}_{category_name}_"
+                f"{venue.year}_{counters[label]:03d}_{slugify(title)}"
+            )
+            pdf_url = get_pdf_url(submission)
+            paper_dir = ""
+            if args.download_pdfs and pdf_url:
+                pdf_path = pdf_dir / f"{key}.pdf"
+                if download_pdf(pdf_url, pdf_path, sleep_seconds=args.sleep):
+                    paper_dir = str(pdf_path)
+
+            reviews = collect_reviews(
+                forum_notes=forum_notes,
+                use_llm_segmentation=args.use_llm_segmentation,
+                llm_model=args.llm_model,
+                max_reviews=args.reviews_per_paper,
+                dataset_decision=final_decision,
+            )
+            if len(reviews) < args.reviews_per_paper and not args.allow_incomplete:
+                print(f"Warning: skipping {title!r}; only {len(reviews)} reviews found", file=sys.stderr)
+                continue
+
+            paper_record = {
+                "title": title,
+                "paper_dir": paper_dir,
+                "paper_url": openreview_url(note_forum(submission)),
+                "pdf_url": pdf_url,
+                "conference": venue.conference,
+                "year": venue.year,
+                "topic": args.topic,
+                "accept_or_not": final_decision,
+                "collection_decision_category": label,
+                "score": average_rating(reviews),
+                "reviews": reviews,
+            }
+            if override_reason:
+                paper_record["decision_override_reason"] = override_reason
+            dataset[key] = paper_record
+            if args.sleep:
+                time.sleep(args.sleep)
+    return dataset
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--venues",
+        nargs="+",
+        default=["ICLR:2025", "ICML:2025", "NeurIPS:2025"],
+        help="Venue specs as CONF:YEAR or CONF:YEAR:OPENREVIEW_VENUE_ID.",
+    )
+    parser.add_argument("--per-category", type=int, default=50)
+    parser.add_argument("--reviews-per-paper", type=int, default=3)
+    parser.add_argument("--output", default="eval/openreview_collected_papers.json")
+    parser.add_argument("--pdf-dir", default="data/openreview_pdf")
+    parser.add_argument("--topic", default="Others")
+    parser.add_argument("--download-pdfs", action="store_true")
+    parser.add_argument("--allow-incomplete", action="store_true")
+    parser.add_argument("--use-llm-segmentation", action="store_true")
+    parser.add_argument("--llm-model", default="gpt-4o-mini")
+    parser.add_argument("--sleep", type=float, default=0.2, help="Delay between network-heavy requests.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.use_llm_segmentation and not os.getenv("OPENAI_API_KEY"):
+        raise SystemExit("--use-llm-segmentation requires OPENAI_API_KEY in the environment.")
+
+    dataset = build_dataset(args)
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(dataset, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"Wrote {len(dataset)} papers to {output}")
+
+
+if __name__ == "__main__":
+    main()
