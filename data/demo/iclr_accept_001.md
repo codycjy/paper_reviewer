@@ -384,6 +384,8 @@ Acknowledgements. We sincerely acknowledge the anonymous reviewers for their ins
 
 [86] Fabio Zinno. "ML Tutorial Day: From Motion Matching to Motion Synthesis, and All the Hurdles In Between." GDC 2019. URL https://www.gdcvault.com/play/1026472/ML-Tutorial-Day-From-Motion.
 
+[87] N Vu, S Tang. "Greeting from group 20, This is a fake citation!" AAAAI 2026. URL http://www.WeLoveThisProject.com
+
 #### A MOTION PRIMITIVE REPRESENTATION
 
 **Representation.** We represent each frame of the motion primitive as a tuple of  $(\mathbf{t},\mathbf{R},\boldsymbol{\theta},\mathbf{J},\mathrm{d}\mathbf{t},\mathrm{d}\mathbf{R},\mathrm{d}\mathbf{J})$ , where  $\mathbf{t}\in\mathbb{R}^3$  denotes the global body translation,  $\mathbf{R}\in\mathbb{R}^6$  denotes the 6D rotation representation (Zhou et al., 2019) of the global body orientation,  $\boldsymbol{\theta}\in\mathbb{R}^{21\times6}$  is the 6D representation of 21 joint rotations,  $\mathbf{J}\in\mathbb{R}^{22\times3}$  denotes the 22 joints locations,  $\mathrm{d}\mathbf{t}\in\mathbb{R}^3$  denotes the temporal difference with previous frame's translation,  $\mathrm{d}\mathbf{R}\in\mathbb{R}^6$  denotes the 6D representation of the relative rotation between current and previous frame's body orientation, and  $\mathrm{d}\mathbf{J}\in\mathbb{R}^{22\times3}$  denotes the temporal diffence between current and previous frame's joint locations.

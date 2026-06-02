@@ -66,16 +66,29 @@
     <h1>Review Configuration</h1>
   </div>
 
+  <!-- API Provider -->
+  <div class="config-section">
+    <div class="config-label">API Provider <span class="required">*</span></div>
+    <div class="provider-grid" id="provider-grid"></div>
+  </div>
+
   <!-- API Key -->
   <div class="config-section">
-    <div class="config-label">API Key <span class="required">* required to run</span></div>
+    <div class="config-label"><span id="api-key-label">CMU API Key</span> <span class="required">* required to run</span></div>
     <div class="apikey-row">
       <input id="api-key" type="password" class="apikey-input"
-             placeholder="Paste your CMU AI Gateway key here…" autocomplete="off" />
+             placeholder="Paste your CMU AI Gateway key here..." autocomplete="off" />
       <button type="button" class="btn-eye" id="btn-eye"
               onclick="toggleApiKey()" title="Show / hide key">&#128065;</button>
     </div>
     <div class="apikey-hint">The key is used only for this session and is never stored.</div>
+  </div>
+
+  <div class="config-section">
+    <div class="config-label">Model <span class="required">optional</span></div>
+    <input id="model-name" type="text" class="model-input"
+           placeholder="Leave blank to use the provider default" autocomplete="off" />
+    <div class="apikey-hint" id="model-hint"></div>
   </div>
 
   <!-- Topic -->
@@ -196,6 +209,16 @@
     <div id="agent-status-cards" class="agent-status-grid"></div>
   </div>
 
+  <!-- Citation checker status -->
+  <div id="citation-checker-panel" style="display:none; margin-bottom: 20px;">
+    <div class="config-label">Citation Check</div>
+    <div id="citation-checker-card" class="agent-status-card status-waiting">
+      <span class="status-dot"></span>
+      <span class="agent-card-name">Citation Checker</span>
+      <span id="citation-checker-label" class="agent-card-label">&middot; Waiting</span>
+    </div>
+  </div>
+
   <!-- Chat feed -->
   <div id="chat-container">
     <div class="config-label">Conversation</div>
@@ -250,6 +273,8 @@
 <script>
   const textareas = {};
   let selectedTopic = null;
+  let selectedProvider = "cmu";
+  let providerDefaults = {};
   let finishedJobId = null;
 
   // ── Render topic pills from server ───────────────────────────────────────
@@ -266,6 +291,24 @@
         btn.onclick = () => selectTopic(btn);
         container.appendChild(btn);
       });
+    });
+
+  fetch("/api/providers")
+    .then(r => r.json())
+    .then(({ providers }) => {
+      providerDefaults = Object.fromEntries(providers.map(p => [p.id, p]));
+      const container = document.getElementById("provider-grid");
+      providers.forEach(p => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "provider-card" + (p.id === selectedProvider ? " active" : "");
+        btn.dataset.provider = p.id;
+        btn.innerHTML = `<span class="provider-name">${escHtml(p.label)}</span>
+          <span class="provider-model">${escHtml(p.default_model)}</span>`;
+        btn.onclick = () => selectProvider(btn);
+        container.appendChild(btn);
+      });
+      updateProviderFields();
     });
 
   // ── Page navigation ──────────────────────────────────────────────────────
@@ -286,6 +329,37 @@
   function toggleApiKey() {
     const inp = document.getElementById("api-key");
     inp.type = inp.type === "password" ? "text" : "password";
+  }
+
+  function selectProvider(btn) {
+    document.querySelectorAll(".provider-card").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    selectedProvider = btn.dataset.provider;
+    updateProviderFields();
+  }
+
+  function updateProviderFields() {
+    const labels = {
+      cmu: "CMU API Key",
+      openai: "OpenAI API Key",
+      gemini: "Gemini API Key",
+      claude: "Anthropic API Key",
+    };
+    const placeholders = {
+      cmu: "Paste your CMU AI Gateway key here...",
+      openai: "Paste your OpenAI API key here...",
+      gemini: "Paste your Gemini API key here...",
+      claude: "Paste your Anthropic API key here...",
+    };
+    const provider = providerDefaults[selectedProvider] || {};
+    document.getElementById("api-key-label").textContent = labels[selectedProvider] || "API Key";
+    document.getElementById("api-key").placeholder = placeholders[selectedProvider] || "Paste your API key here...";
+    document.getElementById("model-name").placeholder = provider.default_model
+      ? `Default: ${provider.default_model}`
+      : "Leave blank to use the provider default";
+    document.getElementById("model-hint").textContent = provider.default_model
+      ? `Leave blank to use ${provider.default_model}.`
+      : "";
   }
 
   // ── Topic pills ──────────────────────────────────────────────────────────
@@ -446,6 +520,20 @@
     cards.appendChild(card);
   }
 
+  function updateCitationStatus(ev) {
+    const panel = document.getElementById("citation-checker-panel");
+    const card  = document.getElementById("citation-checker-card");
+    const label = document.getElementById("citation-checker-label");
+    panel.style.display = "block";
+    if (ev.status === "running") {
+      card.className = "agent-status-card status-running";
+      label.textContent = "\u00b7 " + ev.message;
+    } else {
+      card.className = "agent-status-card status-done";
+      label.textContent = "\u00b7 " + (ev.status === "done" ? ev.message : "Complete");
+    }
+  }
+
   function updateAgentStatus(agentName, status) {
     createAgentCard(agentName);
     const id = "agent-card-" + agentName.replace(/\s+/g, "-");
@@ -462,6 +550,7 @@
     runError.textContent = "";
 
     const apiKey = document.getElementById("api-key").value.trim();
+    const modelName = document.getElementById("model-name").value.trim();
     if (!apiKey) { runError.textContent = "Please enter your API key."; return; }
     if (!selectedTopic) { runError.textContent = "Please select a paper topic."; return; }
 
@@ -481,13 +570,16 @@
     // Navigate to running page and reset state
     document.getElementById("log").innerHTML  = "";
     document.getElementById("chat-box").innerHTML = "";
-document.getElementById("results-row").style.display = "none";
+    document.getElementById("results-row").style.display = "none";
+    document.getElementById("citation-checker-panel").style.display = "none";
+    document.getElementById("citation-checker-card").className = "agent-status-card status-waiting";
+    document.getElementById("citation-checker-label").textContent = "\u00b7 Waiting";
     document.getElementById("btn-run").disabled = true;
     document.getElementById("btn-run").textContent = "Running…";
     initAgentStatusPanel(reviewerDisplayNames);
     goToPage3();
 
-    appendLog("info", `Topic: ${selectedTopic} | Reviewers: ${checkedReviewers.join(", ")} | Iterations: ${nIter}`);
+    appendLog("info", `Provider: ${selectedProvider} | Topic: ${selectedTopic} | Reviewers: ${checkedReviewers.join(", ")} | Iterations: ${nIter}`);
 
     const res  = await fetch("/api/run", {
       method: "POST",
@@ -495,6 +587,7 @@ document.getElementById("results-row").style.display = "none";
       body: JSON.stringify({
         topic: selectedTopic, reviewers: checkedReviewers,
         n_iter: nIter, api_key: apiKey,
+        provider: selectedProvider, model: modelName,
       }),
     });
     const data = await res.json();
@@ -517,7 +610,9 @@ document.getElementById("results-row").style.display = "none";
       const msg = JSON.parse(e.data);
       const { type, message } = msg;
       if (type === "heartbeat") return;
-      if (type === "agent_status") {
+      if (type === "citation_status") {
+        updateCitationStatus(msg);
+      } else if (type === "agent_status") {
         updateAgentStatus(msg.agent, msg.status);
         if (msg.status === "running") showTypingIndicator(msg.agent);
       } else if (type === "message") {

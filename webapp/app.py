@@ -21,6 +21,7 @@ current_sections = {}
 current_topic = None
 
 from config import VALID_TOPICS
+from agents import DEFAULT_MODELS, VALID_PROVIDERS
 VALID_REVIEWERS = {"reviewer_a", "reviewer_b", "reviewer_c", "reviewer_nopersona"}
 
 # job_id -> queue.Queue  (progress events)
@@ -150,6 +151,8 @@ def run_review():
     reviewer_types = data.get("reviewers", ["reviewer_a", "reviewer_b"])
     n_iter         = max(1, int(data.get("n_iter", 3)))
     api_key        = data.get("api_key", "").strip()
+    provider       = data.get("provider", "cmu").strip().lower()
+    model          = data.get("model", "").strip()
 
     if topic not in VALID_TOPICS:
         return jsonify({"error": f"Invalid topic. Choose from: {sorted(VALID_TOPICS)}"}), 400
@@ -160,6 +163,8 @@ def run_review():
         return jsonify({"error": "Select at least one reviewer."}), 400
     if not current_md_name:
         return jsonify({"error": "No paper loaded. Go back and load a paper first."}), 400
+    if provider not in VALID_PROVIDERS:
+        return jsonify({"error": f"Invalid API provider. Choose from: {sorted(VALID_PROVIDERS)}"}), 400
     if not api_key:
         return jsonify({"error": "API key is required."}), 400
 
@@ -177,9 +182,11 @@ def run_review():
             result = mas_main(
                 paper=paper, topic=topic, n_iter=n_iter,
                 reviewer_types=reviewer_types, api_key=api_key,
+                provider=provider, model=model,
                 on_event=lambda msg: q.put(("status", msg)),
                 on_agent_status=lambda name, status: q.put(("agent_status", {"agent": name, "status": status})),
                 on_message=lambda name, content: q.put(("message", {"agent": name, "content": content})),
+                on_citation_event=lambda ev: q.put(("citation_status", ev)),
             )
             _results[job_id] = result
 
@@ -212,7 +219,7 @@ def stream(job_id):
         while True:
             try:
                 event_type, payload = q.get(timeout=120)
-                if event_type in ("agent_status", "message"):
+                if event_type in ("agent_status", "message", "citation_status"):
                     data = {"type": event_type, **payload}
                 else:
                     data = {"type": event_type, "message": payload}
@@ -248,6 +255,22 @@ def get_topic():
 @app.route("/api/topics", methods=["GET"])
 def get_topics():
     return jsonify({"topics": VALID_TOPICS})
+
+
+@app.route("/api/providers", methods=["GET"])
+def get_providers():
+    labels = {
+        "cmu": "CMU AI Gateway",
+        "openai": "ChatGPT / OpenAI API",
+        "gemini": "Gemini API",
+        "claude": "Claude API",
+    }
+    return jsonify({
+        "providers": [
+            {"id": provider, "label": labels[provider], "default_model": DEFAULT_MODELS[provider]}
+            for provider in ("cmu", "openai", "gemini", "claude")
+        ]
+    })
 
 
 if __name__ == "__main__":

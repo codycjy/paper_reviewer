@@ -30,7 +30,7 @@ def _extract_refs_section(text: str) -> str:
     return text.strip()
 
 
-def _run_citation_check(paper_text: str) -> dict:
+def _run_citation_check(paper_text: str, on_citation_event=None) -> dict:
     """
     Run the citation checker on a paper's references section.
 
@@ -38,15 +38,22 @@ def _run_citation_check(paper_text: str) -> dict:
         stats   : {total, verified, url_only, not_found, suspicious, skipped}
         failed  : [{index, title, link, fail_reason}, ...]
     """
+    def _emit(status, message, **extra):
+        if on_citation_event:
+            on_citation_event({"status": status, "message": message, **extra})
+
     try:
         from citation_checker import parse_references, check_references, failed_references
         from citation_checker.models import VerificationStatus
 
         refs_text = _extract_refs_section(paper_text)
+        _emit("running", "Parsing references...")
         refs = parse_references(refs_text)
         if not refs:
+            _emit("done", "No references found.")
             return {"stats": {}, "failed": [], "error": "No references found in paper."}
 
+        _emit("running", f"Checking {len(refs)} references...")
         results = check_references(refs)
         failed  = failed_references(results)
 
@@ -62,9 +69,12 @@ def _run_citation_check(paper_text: str) -> dict:
             {"index": f.index, "title": f.title, "link": f.link, "fail_reason": f.fail_reason}
             for f in failed
         ]
+        flagged = stats["not_found"] + stats["suspicious"]
+        _emit("done", f"{stats['verified']}/{stats['total']} verified · {flagged} flagged", stats=stats)
         return {"stats": stats, "failed": failed_list}
 
     except Exception as exc:
+        _emit("error", str(exc))
         return {"stats": {}, "failed": [], "error": str(exc)}
 
 
@@ -99,7 +109,9 @@ def get_review(reviewer: Reviewer, reviewer_prompt: str, iteration: int,
 
 def main(paper: str, topic: str = "", n_iter: int = 10,
          reviewer_types: list = None, api_key: str = "",
+         provider: str = "cmu", model: str = "",
          on_event=None, on_agent_status=None, on_message=None,
+         on_citation_event=None,
          run_citation_check: bool = True) -> dict:
     """
     Run the multi-agent review loop.
@@ -129,7 +141,7 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
             on_message(agent_name, content)
 
     # ── Init agents ──────────────────────────────────────────────────────────
-    emit("Initializing agents...")
+    emit(f"Initializing agents with {provider} provider...")
     _type_label = {
         "reviewer_a":        "Novelty",
         "reviewer_b":        "Rigor",
@@ -138,12 +150,15 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
     }
     reviewers = []
     for i, rt in enumerate(reviewer_types, 1):
-        r = Reviewer(paper=paper, reviewer_type=rt, topic=topic, api_key=api_key)
+        r = Reviewer(
+            paper=paper, reviewer_type=rt, topic=topic, api_key=api_key,
+            provider=provider, model=model,
+        )
         r.name = f"Reviewer {i} ({_type_label.get(rt, rt)})"
         reviewers.append(r)
-    author     = Author(paper=paper, topic=topic, api_key=api_key)
-    ai_detect  = AIDetector(paper=paper, topic=topic, api_key=api_key)
-    conf_rec   = ConferenceRecommender(paper=paper, topic=topic, api_key=api_key)
+    author     = Author(paper=paper, topic=topic, api_key=api_key, provider=provider, model=model)
+    ai_detect  = AIDetector(paper=paper, topic=topic, api_key=api_key, provider=provider, model=model)
+    conf_rec   = ConferenceRecommender(paper=paper, topic=topic, api_key=api_key, provider=provider, model=model)
     emit(f"Initialized {len(reviewers)} reviewer(s), AI Author, AI Detector, "
          f"Conference Recommender.")
 
@@ -151,6 +166,17 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
     reviews       = [[None] * len(reviewers) for _ in range(n_iter)]
     author_resps  = [[None] * len(reviewers) for _ in range(n_iter)]
     aicheck_resps = [[None] * len(reviewers) for _ in range(n_iter)]
+
+    # ── Citation check (background, concurrent with reviews) ─────────────────
+    citation_future = None
+    if run_citation_check:
+        if on_citation_event:
+            on_citation_event({"status": "running", "message": "Starting..."})
+        _citation_executor = ThreadPoolExecutor(max_workers=1)
+        citation_future = _citation_executor.submit(
+            _run_citation_check, paper, on_citation_event)
+        _citation_executor.shutdown(wait=False)
+        emit("Citation check started in background...")
 
     # ── Iteration 0: initial reviews (parallel) ──────────────────────────────
     emit(f"--- Iteration 1 / {n_iter}: Initial Reviews ---")
@@ -221,8 +247,8 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
 
     # ── Citation check ────────────────────────────────────────────────────────
     if run_citation_check:
-        emit("Running citation check...")
-        citation_results = _run_citation_check(paper)
+        emit("Waiting for citation check to complete...")
+        citation_results = citation_future.result()
         n_fail = len(citation_results.get("failed", []))
         emit(f"Citation check complete. {n_fail} reference(s) flagged.")
     else:
@@ -264,13 +290,20 @@ if __name__ == "__main__":
     parser.add_argument("--paper",  default="data/md/example_paper.md")
     parser.add_argument("--topic",  default="")
     parser.add_argument("--n_iter", type=int, default=10)
+    parser.add_argument("--provider", default="cmu",
+                        choices=["cmu", "openai", "gemini", "claude"])
+    parser.add_argument("--model", default="")
+    parser.add_argument("--api_key", default="")
     parser.add_argument("--output", default=None)
     args = parser.parse_args()
 
     with open(args.paper, "r", encoding="utf-8") as f:
         paper = f.read()
 
-    result = main(paper=paper, topic=args.topic, n_iter=args.n_iter)
+    result = main(
+        paper=paper, topic=args.topic, n_iter=args.n_iter,
+        provider=args.provider, model=args.model, api_key=args.api_key,
+    )
 
     lines = []
     for i, rev in enumerate(result["reviewers"]):

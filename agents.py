@@ -1,14 +1,151 @@
 import importlib
-import openai
+import os
 
 
-def _get_api_key() -> str:
+VALID_PROVIDERS = {"cmu", "openai", "gemini", "claude"}
+DEFAULT_MODELS = {
+    "cmu": "gpt-5",
+    "openai": "gpt-4o-mini",
+    "gemini": "gemini-1.5-flash",
+    "claude": "claude-3-5-sonnet-20240620",
+}
+
+
+def _get_api_key(provider: str = "cmu") -> str:
+    env_keys = {
+        "cmu": "API_KEY",
+        "openai": "OPENAI_API_KEY",
+        "gemini": "GEMINI_API_KEY",
+        "claude": "ANTHROPIC_API_KEY",
+    }
     try:
         from google.colab import userdata
-        return userdata.get("API_KEY")
+        key = userdata.get(env_keys.get(provider, "API_KEY"))
+        if key:
+            return key
     except Exception:
-        import os
-        return os.environ["API_KEY"]
+        pass
+    return os.environ[env_keys.get(provider, "API_KEY")]
+
+
+def _as_alternating_chat(messages: list[dict]) -> list[dict]:
+    chat = []
+    for msg in messages:
+        role = "assistant" if msg["role"] == "assistant" else "user"
+        content = msg["content"]
+        if chat and chat[-1]["role"] == role:
+            chat[-1]["content"] += "\n\n" + content
+        else:
+            chat.append({"role": role, "content": content})
+    return chat
+
+
+class CMUGatewayClient:
+    def __init__(self, api_key: str, model: str):
+        try:
+            import openai
+        except ImportError as exc:
+            raise RuntimeError(
+                "CMU support requires the openai package. "
+                "Install requirements.txt and try again."
+            ) from exc
+        self.model = model or DEFAULT_MODELS["cmu"]
+        self.client = openai.OpenAI(
+            api_key=api_key or _get_api_key("cmu"),
+            base_url="https://ai-gateway.andrew.cmu.edu",
+        )
+
+    def complete(self, system_prompt: str, messages: list[dict]) -> str:
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "system", "content": system_prompt}, *messages],
+        )
+        return response.choices[0].message.content.strip()
+
+
+class OpenAIChatGPTClient:
+    def __init__(self, api_key: str, model: str):
+        try:
+            import openai
+        except ImportError as exc:
+            raise RuntimeError(
+                "OpenAI support requires the openai package. "
+                "Install requirements.txt and try again."
+            ) from exc
+        self.model = model or DEFAULT_MODELS["openai"]
+        self.client = openai.OpenAI(api_key=api_key or _get_api_key("openai"))
+
+    def complete(self, system_prompt: str, messages: list[dict]) -> str:
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "system", "content": system_prompt}, *messages],
+        )
+        return response.choices[0].message.content.strip()
+
+
+class GeminiClient:
+    def __init__(self, api_key: str, model: str):
+        try:
+            from google import genai
+        except ImportError as exc:
+            raise RuntimeError(
+                "Gemini support requires the google-genai package. "
+                "Install requirements.txt and try again."
+            ) from exc
+        self.model = model or DEFAULT_MODELS["gemini"]
+        self.client = genai.Client(api_key=api_key or _get_api_key("gemini"))
+
+    def complete(self, system_prompt: str, messages: list[dict]) -> str:
+        contents = [
+            {
+                "role": "model" if msg["role"] == "assistant" else "user",
+                "parts": [{"text": msg["content"]}],
+            }
+            for msg in _as_alternating_chat(messages)
+        ]
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=contents,
+            config={"system_instruction": system_prompt},
+        )
+        return (getattr(response, "text", "") or "").strip()
+
+
+class ClaudeClient:
+    def __init__(self, api_key: str, model: str):
+        try:
+            import anthropic
+        except ImportError as exc:
+            raise RuntimeError(
+                "Claude support requires the anthropic package. "
+                "Install requirements.txt and try again."
+            ) from exc
+        self.model = model or DEFAULT_MODELS["claude"]
+        self.client = anthropic.Anthropic(api_key=api_key or _get_api_key("claude"))
+
+    def complete(self, system_prompt: str, messages: list[dict]) -> str:
+        response = self.client.messages.create(
+            model=self.model,
+            max_tokens=4096,
+            system=system_prompt,
+            messages=_as_alternating_chat(messages),
+        )
+        return "".join(
+            block.text for block in response.content
+            if getattr(block, "type", None) == "text"
+        ).strip()
+
+
+def create_llm_client(provider: str, api_key: str, model: str):
+    if provider == "cmu":
+        return CMUGatewayClient(api_key=api_key, model=model)
+    if provider == "openai":
+        return OpenAIChatGPTClient(api_key=api_key, model=model)
+    if provider == "gemini":
+        return GeminiClient(api_key=api_key, model=model)
+    if provider == "claude":
+        return ClaudeClient(api_key=api_key, model=model)
+    raise ValueError(f"Unsupported LLM provider: {provider}")
 
 
 _PROMPT_MAP = {
@@ -52,18 +189,19 @@ class Agent:
 
     name = "Agent"
 
-    def __init__(self, persona: str, paper: str, topic: str = "", model: str = "gpt-5", api_key: str = ""):
+    def __init__(self, persona: str, paper: str, topic: str = "", model: str = "",
+                 api_key: str = "", provider: str = "cmu"):
         print(f"[{self.name}] Initializing...")
+        provider = (provider or "cmu").lower()
+        if provider not in VALID_PROVIDERS:
+            raise ValueError(f"Unsupported LLM provider: {provider}")
         self.topic   = topic
         self.persona = _inject_topic(persona, topic)
         self.paper   = paper
-        self.model   = model
-        self.client  = openai.OpenAI(
-            api_key=api_key or _get_api_key(),
-            base_url="https://ai-gateway.andrew.cmu.edu"
-        )
+        self.provider = provider
+        self.model   = model or DEFAULT_MODELS[provider]
+        self.client  = create_llm_client(provider=provider, api_key=api_key, model=self.model)
         self.messages = [
-            {"role": "developer", "content": self.persona},
             {"role": "user",      "content": f"Here is the paper you will be working with:\n\n{paper}"}
         ]
         print(f"[{self.name}] Ready.")
@@ -72,11 +210,7 @@ class Agent:
         """Send a message and return the agent's reply, maintaining conversation history."""
         print(f"[{self.name}] Getting response...")
         self.messages.append({"role": "user", "content": user_message})
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=self.messages
-        )
-        reply = response.choices[0].message.content.strip()
+        reply = self.client.complete(self.persona, self.messages)
         self.messages.append({"role": "assistant", "content": reply})
         print(f"[{self.name}] Done.\n")
         return reply
@@ -90,7 +224,8 @@ class Reviewer(Agent):
     """
 
     def __init__(self, paper: str, reviewer_type: str = "reviewer_a",
-                 topic: str = "", model: str = "gpt-5", api_key: str = ""):
+                 topic: str = "", model: str = "", api_key: str = "",
+                 provider: str = "cmu"):
         _label = {
             "reviewer_a":        "Novelty",
             "reviewer_b":        "Rigor",
@@ -99,7 +234,10 @@ class Reviewer(Agent):
         }
         self.name = f"Reviewer ({_label.get(reviewer_type, reviewer_type)})"
         persona = _load_prompt(reviewer_type)
-        super().__init__(persona=persona, paper=paper, topic=topic, model=model, api_key=api_key)
+        super().__init__(
+            persona=persona, paper=paper, topic=topic, model=model,
+            api_key=api_key, provider=provider,
+        )
 
 
 class Author(Agent):
@@ -107,9 +245,13 @@ class Author(Agent):
 
     name = "Author"
 
-    def __init__(self, paper: str, topic: str = "", model: str = "gpt-5", api_key: str = ""):
+    def __init__(self, paper: str, topic: str = "", model: str = "",
+                 api_key: str = "", provider: str = "cmu"):
         persona = _load_prompt("author")
-        super().__init__(persona=persona, paper=paper, topic=topic, model=model, api_key=api_key)
+        super().__init__(
+            persona=persona, paper=paper, topic=topic, model=model,
+            api_key=api_key, provider=provider,
+        )
 
 
 class AIDetector(Agent):
@@ -117,9 +259,13 @@ class AIDetector(Agent):
 
     name = "AI Detector"
 
-    def __init__(self, paper: str, topic: str = "", model: str = "gpt-5", api_key: str = ""):
+    def __init__(self, paper: str, topic: str = "", model: str = "",
+                 api_key: str = "", provider: str = "cmu"):
         persona = _load_prompt("ai_detector")
-        super().__init__(persona=persona, paper=paper, topic=topic, model=model, api_key=api_key)
+        super().__init__(
+            persona=persona, paper=paper, topic=topic, model=model,
+            api_key=api_key, provider=provider,
+        )
 
 
 class ConferenceRecommender(Agent):
@@ -130,6 +276,10 @@ class ConferenceRecommender(Agent):
 
     name = "Conference Recommender"
 
-    def __init__(self, paper: str, topic: str = "", model: str = "gpt-5", api_key: str = ""):
+    def __init__(self, paper: str, topic: str = "", model: str = "",
+                 api_key: str = "", provider: str = "cmu"):
         persona = _load_prompt("conf_rec")
-        super().__init__(persona=persona, paper=paper, topic=topic, model=model, api_key=api_key)
+        super().__init__(
+            persona=persona, paper=paper, topic=topic, model=model,
+            api_key=api_key, provider=provider,
+        )
