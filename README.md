@@ -172,6 +172,37 @@ Key arguments:
 
 ---
 
+## NLPeer ARR-22 Benchmark Conversion
+
+`scripts/convert_nlpeer_arr22.py` converts NLPeer ARR-22 into one JSONL record per paper with a simple schema:
+
+```json
+{"paper_id": "arr22_xxx", "accept_or_not": "accept", "score": 3, "reviews": [{"reviewer_id": "review_1", "strengths": ["..."], "weaknesses": ["..."]}]}
+```
+
+ARR-22 is used for the first NLPeer conversion because its review objects expose structured `report` fields and `scores`, including strength-like fields, weakness-like fields, and overall scores. The converter does not use an LLM and does not split free-form review text. It exports only reviews where strengths, weaknesses, and an overall score are available from structured fields, then averages the valid review scores for the paper-level `score`.
+
+Important label warning: NLPeer ARR-22 contains papers later accepted at ACL/NAACL, so `accept_or_not` is written as constant `"accept"`. This label is useful for compatibility with existing benchmark readers, but it is not suitable for accept/reject prediction or balanced decision-label evaluation.
+
+Install the official NLPeer package and run:
+
+```bash
+pip install git+https://github.com/UKPLab/nlpeer
+
+python scripts/convert_nlpeer_arr22.py \
+    --nlpeer-root /path/to/NLPeer \
+    --out eval/nlpeer_arr22.jsonl \
+    --stats-out eval/nlpeer_arr22_stats.json
+```
+
+Optional arguments:
+- `--dataset` resolves aliases such as `ARR-22` or `ARR22` against `nlpeer.DATASETS`.
+- `--version` selects the NLPeer paper version, defaulting to `1`.
+
+The stats JSON includes exported/skipped paper and review counts, score distributions, field-name distributions observed in the local dataset, and the constant-label warning.
+
+---
+
 ## OpenReviewer Baseline (via HuggingFace Spaces)
 
 To run the OpenReviewer baseline on a GPU (recommended: Google Colab with GPU):

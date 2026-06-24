@@ -34,6 +34,8 @@ from typing import Any, Iterable, Optional
 
 
 OPENREVIEW_BASE_URL = "https://openreview.net"
+OPENREVIEW_REQUEST_DELAY_SECONDS = 1.2
+_LAST_OPENREVIEW_REQUEST_AT = 0.0
 
 DEFAULT_VENUES: dict[str, dict[int, str]] = {
     "ICLR": {
@@ -150,9 +152,28 @@ def get_client(openreview: Any) -> Any:
 
 
 def get_all_notes(client: Any, **kwargs: Any) -> list[Any]:
-    if hasattr(client, "get_all_notes"):
-        return list(client.get_all_notes(**kwargs))
-    return list(client.get_notes(**kwargs))
+    global _LAST_OPENREVIEW_REQUEST_AT
+    for attempt in range(6):
+        try:
+            elapsed = time.monotonic() - _LAST_OPENREVIEW_REQUEST_AT
+            if elapsed < OPENREVIEW_REQUEST_DELAY_SECONDS:
+                time.sleep(OPENREVIEW_REQUEST_DELAY_SECONDS - elapsed)
+            if hasattr(client, "get_all_notes"):
+                notes = list(client.get_all_notes(**kwargs))
+            else:
+                notes = list(client.get_notes(**kwargs))
+            _LAST_OPENREVIEW_REQUEST_AT = time.monotonic()
+            return notes
+        except Exception as exc:
+            _LAST_OPENREVIEW_REQUEST_AT = time.monotonic()
+            message = str(exc)
+            if "RateLimitError" not in message and "429" not in message and "Too many requests" not in message:
+                raise
+            match = re.search(r"try again in (\d+) seconds", message, re.IGNORECASE)
+            wait_seconds = int(match.group(1)) + 5 if match else min(90, 15 * (attempt + 1))
+            print(f"Rate limited by OpenReview; sleeping {wait_seconds}s before retrying...")
+            time.sleep(wait_seconds)
+    raise RuntimeError(f"OpenReview request failed after repeated rate-limit retries: {kwargs}")
 
 
 def fetch_submissions(client: Any, venue: VenueSpec) -> list[Any]:
@@ -173,10 +194,31 @@ def fetch_submissions(client: Any, venue: VenueSpec) -> list[Any]:
 
 
 def fetch_forum_notes(client: Any, forum: str) -> list[Any]:
-    try:
-        return get_all_notes(client, forum=forum, details="replyCount")
-    except TypeError:
-        return get_all_notes(client, forum=forum)
+    return get_all_notes(client, forum=forum)
+
+
+def fetch_decision_notes(client: Any, venue: VenueSpec) -> dict[str, str]:
+    decision_by_forum = {}
+    invitations = [
+        f"{venue.venue_id}/-/Decision",
+        f"{venue.venue_id}/-/Paper_Decision",
+        f"{venue.venue_id}/-/Acceptance_Decision",
+        f"{venue.venue_id}/-/Final_Decision",
+    ]
+    for invitation in invitations:
+        try:
+            notes = get_all_notes(client, invitation=invitation)
+        except Exception as exc:
+            print(f"Decision-note lookup skipped for {invitation}: {exc}")
+            continue
+        for note in notes:
+            forum = note_forum(note)
+            text = decision_text(note)
+            if forum and text:
+                decision_by_forum[forum] = text
+        if decision_by_forum:
+            break
+    return decision_by_forum
 
 
 def has_invitation(note: Any, pattern: str) -> bool:
@@ -228,6 +270,18 @@ def paper_decision(submission: Any, forum_notes: list[Any]) -> str:
     content = get_content(submission)
     candidates = [content.get("decision"), content.get("Decision"), content.get("venue")]
     candidates.extend(decision_text(note) for note in forum_notes if is_decision(note))
+    return " ".join(as_text(candidate) for candidate in candidates if as_text(candidate))
+
+
+def submission_decision(submission: Any) -> str:
+    content = get_content(submission)
+    candidates = [
+        content.get("decision"),
+        content.get("Decision"),
+        content.get("venue"),
+        content.get("venueid"),
+        content.get("Venue"),
+    ]
     return " ".join(as_text(candidate) for candidate in candidates if as_text(candidate))
 
 
@@ -611,14 +665,42 @@ def select_papers(
     per_category: int,
 ) -> list[tuple[Any, str, list[Any]]]:
     selected: dict[str, list[tuple[Any, str, list[Any]]]] = {"accept_oral": [], "reject": []}
+    decision_by_forum = fetch_decision_notes(client, venue)
+    if decision_by_forum:
+        print(f"Found {len(decision_by_forum)} decision notes for {venue.conference} {venue.year}")
+
     for submission in submissions:
         if all(len(items) >= per_category for items in selected.values()):
             break
         forum = note_forum(submission)
+        label = classify_decision(" ".join([submission_decision(submission), decision_by_forum.get(forum, "")]))
+        if label in selected and len(selected[label]) < per_category:
+            forum_notes = fetch_forum_notes(client, forum)
+            selected[label].append((submission, label, forum_notes))
+            print(
+                f"  {venue.conference} {venue.year}: "
+                f"{len(selected[label])}/{per_category} {label} - {get_title(submission)[:80]}"
+            )
+
+    if all(len(items) >= per_category for items in selected.values()):
+        return selected["accept_oral"] + selected["reject"]
+
+    print(
+        f"Metadata decision labels were incomplete for {venue.conference} {venue.year}; "
+        "falling back to throttled forum checks for remaining papers."
+    )
+    selected_forums = {note_forum(submission) for items in selected.values() for submission, _, _ in items}
+    for submission in submissions:
+        if all(len(items) >= per_category for items in selected.values()):
+            break
+        forum = note_forum(submission)
+        if forum in selected_forums:
+            continue
         forum_notes = fetch_forum_notes(client, forum)
         label = classify_decision(paper_decision(submission, forum_notes))
         if label in selected and len(selected[label]) < per_category:
             selected[label].append((submission, label, forum_notes))
+            selected_forums.add(forum)
             print(
                 f"  {venue.conference} {venue.year}: "
                 f"{len(selected[label])}/{per_category} {label} - {get_title(submission)[:80]}"
