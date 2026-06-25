@@ -9,10 +9,10 @@ text, rebuttal text, and OpenReview URLs.
 
 Examples:
     python scripts/build_openreview_eval_dataset.py \
-        --output eval/openreview_collected_papers.json \
+        --output eval/LetsTalk_papers_Qwen.json \
         --download-pdfs
 
-    OPENAI_API_KEY=... python scripts/build_openreview_eval_dataset.py \
+    DASHSCOPE_API_KEY=... python scripts/build_openreview_eval_dataset.py \
         --use-llm-segmentation \
         --per-category 50 \
         --venues ICLR:2025 ICML:2025 NeurIPS:2025
@@ -463,18 +463,43 @@ def build_raw_review(content: dict[str, Any]) -> str:
     return "\n\n".join(parts).strip()
 
 
-def llm_segment_review(raw_review: str, model: str) -> tuple[list[str], list[str]]:
+def extract_json_object(text: str) -> dict[str, Any]:
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", text, re.DOTALL)
+        if not match:
+            return {"strengths": [], "weaknesses": []}
+        try:
+            data = json.loads(match.group(0))
+        except json.JSONDecodeError:
+            return {"strengths": [], "weaknesses": []}
+    return data if isinstance(data, dict) else {"strengths": [], "weaknesses": []}
+
+
+def llm_segment_review(
+    raw_review: str,
+    model: str,
+    base_url: Optional[str],
+    api_key_env: str,
+) -> tuple[list[str], list[str]]:
     try:
         from openai import OpenAI
     except ImportError as exc:
         raise RuntimeError("Missing openai package; install it or omit --use-llm-segmentation.") from exc
 
-    client = OpenAI()
-    response = client.chat.completions.create(
-        model=model,
-        temperature=0,
-        response_format={"type": "json_object"},
-        messages=[
+    api_key = os.getenv(api_key_env)
+    if not api_key and api_key_env in {"DASHSCOPE_API_KEY", "QWEN_API_KEY"}:
+        api_key = os.getenv("QWEN_API_KEY") or os.getenv("DASHSCOPE_API_KEY")
+    if not api_key:
+        raise RuntimeError(f"--use-llm-segmentation requires {api_key_env} in the environment.")
+
+    client = OpenAI(api_key=api_key, base_url=base_url) if base_url else OpenAI(api_key=api_key)
+    request = {
+        "model": model,
+        "temperature": 0,
+        "response_format": {"type": "json_object"},
+        "messages": [
             {
                 "role": "system",
                 "content": (
@@ -485,9 +510,14 @@ def llm_segment_review(raw_review: str, model: str) -> tuple[list[str], list[str
             },
             {"role": "user", "content": raw_review},
         ],
-    )
+    }
+    try:
+        response = client.chat.completions.create(**request)
+    except Exception:
+        request.pop("response_format", None)
+        response = client.chat.completions.create(**request)
     payload = response.choices[0].message.content or "{}"
-    data = json.loads(payload)
+    data = extract_json_object(payload)
     return (
         dedupe_preserve_order(as_text(item) for item in data.get("strengths", [])),
         dedupe_preserve_order(as_text(item) for item in data.get("weaknesses", [])),
@@ -621,6 +651,8 @@ def collect_reviews(
     forum_notes: list[Any],
     use_llm_segmentation: bool,
     llm_model: str,
+    llm_base_url: Optional[str],
+    llm_api_key_env: str,
     max_reviews: int,
     dataset_decision: str,
 ) -> list[dict[str, Any]]:
@@ -633,7 +665,12 @@ def collect_reviews(
         raw_review = build_raw_review(content)
         strengths, weaknesses = deterministic_segment(content, raw_review)
         if use_llm_segmentation and raw_review and (not strengths or not weaknesses):
-            strengths, weaknesses = llm_segment_review(raw_review, llm_model)
+            strengths, weaknesses = llm_segment_review(
+                raw_review=raw_review,
+                model=llm_model,
+                base_url=llm_base_url,
+                api_key_env=llm_api_key_env,
+            )
 
         rating = review_rating(content)
         review_obj = {
@@ -663,8 +700,8 @@ def select_papers(
     client: Any,
     venue: VenueSpec,
     per_category: int,
-) -> list[tuple[Any, str, list[Any]]]:
-    selected: dict[str, list[tuple[Any, str, list[Any]]]] = {"accept_oral": [], "reject": []}
+) -> list[tuple[Any, str, Optional[list[Any]]]]:
+    selected: dict[str, list[tuple[Any, str, Optional[list[Any]]]]] = {"accept_oral": [], "reject": []}
     decision_by_forum = fetch_decision_notes(client, venue)
     if decision_by_forum:
         print(f"Found {len(decision_by_forum)} decision notes for {venue.conference} {venue.year}")
@@ -675,8 +712,7 @@ def select_papers(
         forum = note_forum(submission)
         label = classify_decision(" ".join([submission_decision(submission), decision_by_forum.get(forum, "")]))
         if label in selected and len(selected[label]) < per_category:
-            forum_notes = fetch_forum_notes(client, forum)
-            selected[label].append((submission, label, forum_notes))
+            selected[label].append((submission, label, None))
             print(
                 f"  {venue.conference} {venue.year}: "
                 f"{len(selected[label])}/{per_category} {label} - {get_title(submission)[:80]}"
@@ -708,24 +744,80 @@ def select_papers(
     return selected["accept_oral"] + selected["reject"]
 
 
+def wait_for_next_paper(last_started_at: Optional[float], gap_seconds: float) -> float:
+    if last_started_at is not None and gap_seconds > 0:
+        elapsed = time.monotonic() - last_started_at
+        if elapsed < gap_seconds:
+            wait_seconds = gap_seconds - elapsed
+            print(f"Waiting {wait_seconds:.1f}s to keep paper processing at <= 5 papers/minute...")
+            time.sleep(wait_seconds)
+    return time.monotonic()
+
+
+def validate_dataset(
+    dataset: dict[str, Any],
+    venues: list[VenueSpec],
+    expected_per_category: int,
+    expected_reviews_per_paper: int,
+) -> None:
+    print("\nDataset summary:")
+    for venue in venues:
+        papers = [paper for paper in dataset.values() if paper.get("conference") == venue.conference]
+        accept_count = sum(1 for paper in papers if paper.get("accept_or_not") == "accept")
+        reject_count = sum(1 for paper in papers if paper.get("accept_or_not") == "reject")
+        short_reviews = [
+            paper.get("title", "Untitled")
+            for paper in papers
+            if len(paper.get("reviews", [])) != expected_reviews_per_paper
+        ]
+        print(
+            f"  {venue.conference} {venue.year}: "
+            f"{len(papers)} papers, accept={accept_count}, reject={reject_count}"
+        )
+        if accept_count < expected_per_category or reject_count < expected_per_category:
+            print(
+                f"    Warning: target is {expected_per_category} accept and "
+                f"{expected_per_category} reject papers."
+            )
+        if short_reviews:
+            print(
+                f"    Warning: {len(short_reviews)} papers do not have "
+                f"{expected_reviews_per_paper} reviews."
+            )
+
+
 def build_dataset(args: argparse.Namespace) -> dict[str, Any]:
     openreview = import_openreview()
     client = get_client(openreview)
     dataset = {}
     pdf_dir = Path(args.pdf_dir)
+    output_path = Path(args.output)
+    last_paper_started_at: Optional[float] = None
+    venues = parse_venue_specs(args.venues)
 
-    for venue in parse_venue_specs(args.venues):
+    for venue in venues:
         print(f"Fetching submissions for {venue.conference} {venue.year} ({venue.venue_id})")
         submissions = fetch_submissions(client, venue)
         print(f"Found {len(submissions)} submissions; selecting target categories")
-        selected = select_papers(submissions, client, venue, args.per_category)
+        effective_per_category = min(args.per_category, args.max_papers_per_conference // 2)
+        if effective_per_category < args.per_category:
+            print(
+                f"Capping {venue.conference} {venue.year} to "
+                f"{effective_per_category * 2} papers "
+                f"({effective_per_category} accept_oral + {effective_per_category} reject)."
+            )
+        selected = select_papers(submissions, client, venue, effective_per_category)
+        selected = selected[: args.max_papers_per_conference]
         print(f"Selected {len(selected)} papers for {venue.conference} {venue.year}")
 
         counters = {"accept_oral": 0, "reject": 0}
         for submission, label, forum_notes in selected:
+            last_paper_started_at = wait_for_next_paper(last_paper_started_at, args.paper_gap_seconds)
             counters[label] += 1
             title = get_title(submission)
             category_name = "accept" if label == "accept_oral" else "reject"
+            if forum_notes is None:
+                forum_notes = fetch_forum_notes(client, note_forum(submission))
             final_decision, override_reason = dataset_decision_label(
                 submission=submission,
                 forum_notes=forum_notes,
@@ -738,6 +830,8 @@ def build_dataset(args: argparse.Namespace) -> dict[str, Any]:
             )
             pdf_url = get_pdf_url(submission)
             paper_dir = ""
+
+            # Per-paper order: find correct paper -> download -> collect review/rebuttal -> Qwen segment -> add to dataset.
             if args.download_pdfs and pdf_url:
                 pdf_path = pdf_dir / f"{key}.pdf"
                 if download_pdf(pdf_url, pdf_path, sleep_seconds=args.sleep):
@@ -747,6 +841,8 @@ def build_dataset(args: argparse.Namespace) -> dict[str, Any]:
                 forum_notes=forum_notes,
                 use_llm_segmentation=args.use_llm_segmentation,
                 llm_model=args.llm_model,
+                llm_base_url=args.llm_base_url,
+                llm_api_key_env=args.llm_api_key_env,
                 max_reviews=args.reviews_per_paper,
                 dataset_decision=final_decision,
             )
@@ -770,8 +866,10 @@ def build_dataset(args: argparse.Namespace) -> dict[str, Any]:
             if override_reason:
                 paper_record["decision_override_reason"] = override_reason
             dataset[key] = paper_record
-            if args.sleep:
-                time.sleep(args.sleep)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(json.dumps(dataset, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    validate_dataset(dataset, venues, min(args.per_category, args.max_papers_per_conference // 2), args.reviews_per_paper)
     return dataset
 
 
@@ -784,22 +882,51 @@ def parse_args() -> argparse.Namespace:
         help="Venue specs as CONF:YEAR or CONF:YEAR:OPENREVIEW_VENUE_ID.",
     )
     parser.add_argument("--per-category", type=int, default=50)
+    parser.add_argument(
+        "--max-papers-per-conference",
+        type=int,
+        default=100,
+        help="Maximum total papers to collect/download per conference.",
+    )
     parser.add_argument("--reviews-per-paper", type=int, default=3)
-    parser.add_argument("--output", default="eval/openreview_collected_papers.json")
+    parser.add_argument("--output", default="eval/LetsTalk_papers_Qwen.json")
     parser.add_argument("--pdf-dir", default="data/openreview_pdf")
     parser.add_argument("--topic", default="Others")
     parser.add_argument("--download-pdfs", action="store_true")
     parser.add_argument("--allow-incomplete", action="store_true")
     parser.add_argument("--use-llm-segmentation", action="store_true")
-    parser.add_argument("--llm-model", default="gpt-4o-mini")
+    parser.add_argument("--llm-model", default="qwen3.6-plus")
+    parser.add_argument(
+        "--llm-base-url",
+        default="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        help="OpenAI-compatible API base URL. Use empty string for OpenAI's default endpoint.",
+    )
+    parser.add_argument(
+        "--llm-api-key-env",
+        default="DASHSCOPE_API_KEY",
+        help="Environment variable containing the OpenAI-compatible API key.",
+    )
     parser.add_argument("--sleep", type=float, default=0.2, help="Delay between network-heavy requests.")
+    parser.add_argument(
+        "--paper-gap-seconds",
+        type=float,
+        default=12.0,
+        help="Minimum gap between selected paper processing starts; 12s means at most 5 papers/minute.",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    if args.use_llm_segmentation and not os.getenv("OPENAI_API_KEY"):
-        raise SystemExit("--use-llm-segmentation requires OPENAI_API_KEY in the environment.")
+    if args.llm_base_url == "":
+        args.llm_base_url = None
+    api_key_available = (
+        os.getenv(args.llm_api_key_env)
+        or os.getenv("QWEN_API_KEY")
+        or os.getenv("DASHSCOPE_API_KEY")
+    )
+    if args.use_llm_segmentation and not api_key_available:
+        raise SystemExit(f"--use-llm-segmentation requires {args.llm_api_key_env} in the environment.")
 
     dataset = build_dataset(args)
     output = Path(args.output)
