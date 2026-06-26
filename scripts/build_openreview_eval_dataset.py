@@ -4,8 +4,8 @@ Build an evaluation dataset from OpenReview papers, reviews, and rebuttals.
 
 The output is intentionally compatible with eval/papers.json: a dictionary keyed
 by paper id, where each value contains paper metadata and a reviews list with
-strengths / weaknesses. This script adds extra audit fields such as raw review
-text, rebuttal text, and OpenReview URLs.
+strengths / weaknesses. This script adds extra fields such as rebuttal text and
+OpenReview URLs.
 
 Examples:
     python scripts/build_openreview_eval_dataset.py \
@@ -21,6 +21,8 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import contextlib
+import io
 import json
 import os
 import re
@@ -34,7 +36,7 @@ from typing import Any, Iterable, Optional
 
 
 OPENREVIEW_BASE_URL = "https://openreview.net"
-OPENREVIEW_REQUEST_DELAY_SECONDS = 1.2
+OPENREVIEW_REQUEST_DELAY_SECONDS = 1.0
 _LAST_OPENREVIEW_REQUEST_AT = 0.0
 
 DEFAULT_VENUES: dict[str, dict[int, str]] = {
@@ -158,10 +160,11 @@ def get_all_notes(client: Any, **kwargs: Any) -> list[Any]:
             elapsed = time.monotonic() - _LAST_OPENREVIEW_REQUEST_AT
             if elapsed < OPENREVIEW_REQUEST_DELAY_SECONDS:
                 time.sleep(OPENREVIEW_REQUEST_DELAY_SECONDS - elapsed)
-            if hasattr(client, "get_all_notes"):
-                notes = list(client.get_all_notes(**kwargs))
-            else:
-                notes = list(client.get_notes(**kwargs))
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                if hasattr(client, "get_all_notes"):
+                    notes = list(client.get_all_notes(**kwargs))
+                else:
+                    notes = list(client.get_notes(**kwargs))
             _LAST_OPENREVIEW_REQUEST_AT = time.monotonic()
             return notes
         except Exception as exc:
@@ -178,8 +181,8 @@ def get_all_notes(client: Any, **kwargs: Any) -> list[Any]:
 
 def fetch_submissions(client: Any, venue: VenueSpec) -> list[Any]:
     attempts = [
-        {"content": {"venueid": venue.venue_id}},
         {"invitation": f"{venue.venue_id}/-/Submission"},
+        {"content": {"venueid": venue.venue_id}},
     ]
     last_error = None
     for kwargs in attempts:
@@ -285,6 +288,12 @@ def submission_decision(submission: Any) -> str:
     return " ".join(as_text(candidate) for candidate in candidates if as_text(candidate))
 
 
+ACCEPTANCE_MARKER_RE = re.compile(
+    r"\b(?:accept(?:ed)?|oral|spotlight|poster|notable|award)\b",
+    re.IGNORECASE,
+)
+
+
 def classify_decision(text: str) -> Optional[str]:
     normalized = text.lower()
     if not normalized:
@@ -292,9 +301,30 @@ def classify_decision(text: str) -> Optional[str]:
     reject_tokens = ("reject", "withdrawn", "desk reject")
     if any(token in normalized for token in reject_tokens):
         return "reject"
-    if "accept" in normalized and "oral" in normalized:
+    if ACCEPTANCE_MARKER_RE.search(normalized):
         return "accept_oral"
     return None
+
+
+def likely_reject_from_submission_metadata(submission: Any, venue: VenueSpec) -> bool:
+    content = get_content(submission)
+    decision_text = submission_decision(submission)
+    if classify_decision(decision_text):
+        return False
+
+    venueid = as_text(content.get("venueid") or content.get("venue_id") or content.get("Venue ID"))
+    venue_text = as_text(content.get("venue") or content.get("Venue"))
+    normalized_venue_text = venue_text.lower()
+    if ACCEPTANCE_MARKER_RE.search(normalized_venue_text):
+        return False
+    if venueid == venue.venue_id:
+        return True
+    conference = venue.conference.lower()
+    year = str(venue.year)
+    return bool(
+        conference in normalized_venue_text
+        and ("submitted" in normalized_venue_text or year in normalized_venue_text)
+    )
 
 
 def get_title(submission: Any) -> str:
@@ -327,11 +357,91 @@ def download_pdf(url: str, destination: Path, sleep_seconds: float = 0.0) -> boo
         return False
 
 
+STRUCTURED_STRENGTH_KEYS = [
+    "strengths",
+    "Strengths",
+    "paper_strengths",
+    "Paper Strengths",
+    "summary_of_strengths",
+    "Summary Of Strengths",
+    "Main Strengths",
+    "Other Strengths",
+    "Other Strengths And Weaknesses",
+]
+
+STRUCTURED_WEAKNESS_KEYS = [
+    "weaknesses",
+    "Weaknesses",
+    "limitations",
+    "Limitations",
+    "paper_weaknesses",
+    "Paper Weaknesses",
+    "summary_of_weaknesses",
+    "Summary Of Weaknesses",
+    "Main Weaknesses",
+    "Other Weaknesses",
+    "Other Strengths And Weaknesses",
+]
+
+REVIEW_TEXT_KEYS = [
+    "summary",
+    "Summary",
+    "main_review",
+    "Main Review",
+    "review",
+    "Review",
+    "comment",
+    "Comment",
+    "comments",
+    "Comments",
+    *STRUCTURED_STRENGTH_KEYS,
+    *STRUCTURED_WEAKNESS_KEYS,
+]
+
+REBUTTAL_TEXT_KEYS = [
+    "rebuttal",
+    "Rebuttal",
+    "response",
+    "Response",
+    "author_response",
+    "Author Response",
+    "comment",
+    "Comment",
+    "comments",
+    "Comments",
+]
+
+IGNORED_REVIEW_TEXT_KEYS = {
+    "rating",
+    "confidence",
+    "recommendation",
+    "decision",
+    "reviewer",
+    "reviewer_id",
+    "review_id",
+    "pdf",
+    "questions",
+    "soundness",
+    "presentation",
+    "contribution",
+    "flag_for_ethics_review",
+    "code_of_conduct",
+}
+
 SECTION_HEADER_RE = re.compile(
-    r"^\s*(?:#+\s*)?(strengths?|weakness(?:es)?|limitations?|concerns?|"
-    r"summary(?:\s+of\s+the\s+review)?|main\s+review|review|comments?)\s*:?\s*$",
+    r"^\s*(?:#+\s*)?("
+    r"strengths?|weakness(?:es)?|limitations?|concerns?|"
+    r"summary(?:\s+of\s+the\s+review)?|main\s+review|review|comments?|"
+    r"questions?|soundness|presentation|contribution|"
+    r"flag[_\s-]+for[_\s-]+ethics[_\s-]+review|code[_\s-]+of[_\s-]+conduct|"
+    r"rating|confidence|recommendation|decision"
+    r")\s*:?\s*$",
     re.IGNORECASE | re.MULTILINE,
 )
+
+
+def canonical_field_name(key: str) -> str:
+    return re.sub(r"[\s-]+", "_", key.strip().lower())
 
 
 def split_bullets(text: str) -> list[str]:
@@ -365,36 +475,12 @@ def section_blocks(text: str) -> dict[str, str]:
 
 
 def deterministic_segment(content: dict[str, Any], raw_review: str) -> tuple[list[str], list[str]]:
-    strength_keys = [
-        "strengths",
-        "Strengths",
-        "paper_strengths",
-        "Paper Strengths",
-        "summary_of_strengths",
-        "Summary Of Strengths",
-        "Main Strengths",
-        "Other Strengths",
-        "Other Strengths And Weaknesses",
-    ]
-    weakness_keys = [
-        "weaknesses",
-        "Weaknesses",
-        "limitations",
-        "Limitations",
-        "paper_weaknesses",
-        "Paper Weaknesses",
-        "summary_of_weaknesses",
-        "Summary Of Weaknesses",
-        "Main Weaknesses",
-        "Other Weaknesses",
-        "Other Strengths And Weaknesses",
-    ]
     strengths = []
     weaknesses = []
-    for key in strength_keys:
+    for key in STRUCTURED_STRENGTH_KEYS:
         if key in content and key != "Other Strengths And Weaknesses":
             strengths.extend(split_bullets(as_text(content[key])))
-    for key in weakness_keys:
+    for key in STRUCTURED_WEAKNESS_KEYS:
         if key in content and key != "Other Strengths And Weaknesses":
             weaknesses.extend(split_bullets(as_text(content[key])))
 
@@ -419,48 +505,51 @@ def dedupe_preserve_order(items: Iterable[str]) -> list[str]:
     return out
 
 
-def build_raw_review(content: dict[str, Any]) -> str:
-    skipped = {
-        "rating",
-        "confidence",
-        "recommendation",
-        "decision",
-        "reviewer",
-        "reviewer_id",
-        "review_id",
-        "pdf",
-    }
+def content_text_parts(content: dict[str, Any], preferred: list[str], include_labels: bool) -> list[str]:
     parts = []
-    preferred = [
-        "summary",
-        "Summary",
-        "main_review",
-        "Main Review",
-        "review",
-        "Review",
-        "comments",
-        "Comments",
-        "strengths",
-        "Strengths",
-        "weaknesses",
-        "Weaknesses",
-        "questions",
-        "Questions",
-        "limitations",
-        "Limitations",
-    ]
-    for key in preferred:
-        value = as_text(content.get(key))
-        if value:
-            parts.append(f"{key}\n{value}")
-    for key, value in content.items():
-        canonical = key.lower().replace(" ", "_")
-        if canonical in skipped or key in preferred:
+    seen = set()
+    for preferred_key in preferred:
+        canonical = canonical_field_name(preferred_key)
+        if canonical in seen:
             continue
-        text = as_text(value)
-        if text:
-            parts.append(f"{key}\n{text}")
-    return "\n\n".join(parts).strip()
+        for key, value in content.items():
+            if canonical_field_name(key) != canonical:
+                continue
+            text = as_text(value)
+            if text:
+                parts.append(f"{key}\n{text}" if include_labels else text)
+            seen.add(canonical)
+            break
+    return parts
+
+
+def strip_leading_field_label(text: str, labels: Iterable[str]) -> str:
+    label_set = {canonical_field_name(label) for label in labels}
+    lines = text.strip().splitlines()
+    while lines and canonical_field_name(lines[0].rstrip(":")) in label_set:
+        lines = lines[1:]
+        while lines and not lines[0].strip():
+            lines = lines[1:]
+    return "\n".join(lines).strip()
+
+
+def build_raw_review(content: dict[str, Any]) -> str:
+    return "\n\n".join(content_text_parts(content, REVIEW_TEXT_KEYS, include_labels=True)).strip()
+
+
+def build_rebuttal_text(content: dict[str, Any]) -> str:
+    parts = [
+        strip_leading_field_label(part, REBUTTAL_TEXT_KEYS)
+        for part in content_text_parts(content, REBUTTAL_TEXT_KEYS, include_labels=False)
+    ]
+    if not parts:
+        for key, value in content.items():
+            if canonical_field_name(key) in IGNORED_REVIEW_TEXT_KEYS:
+                continue
+            text = strip_leading_field_label(as_text(value), REBUTTAL_TEXT_KEYS)
+            if text:
+                parts.append(text)
+    return "\n\n".join(part for part in parts if part).strip()
 
 
 def extract_json_object(text: str) -> dict[str, Any]:
@@ -588,8 +677,10 @@ POLICY_REJECTION_RE = re.compile(
 def forum_policy_text(submission: Any, forum_notes: list[Any]) -> str:
     parts = [paper_decision(submission, forum_notes)]
     for note in forum_notes:
-        if is_decision(note) or is_author_rebuttal(note):
+        if is_decision(note):
             parts.append(build_raw_review(get_content(note)))
+        elif is_author_rebuttal(note):
+            parts.append(build_rebuttal_text(get_content(note)))
     return "\n\n".join(part for part in parts if part)
 
 
@@ -636,7 +727,7 @@ def rebuttals_for_review(review: Any, forum_notes: list[Any]) -> list[str]:
         if note_id(note) == review_id or not is_author_rebuttal(note):
             continue
         content = get_content(note)
-        text = build_raw_review(content) or as_text(content.get("comment") or content.get("rebuttal"))
+        text = build_rebuttal_text(content)
         if not text:
             continue
         replyto = getattr(note, "replyto", None)
@@ -680,7 +771,6 @@ def collect_reviews(
             "rating": rating,
             "confidence": review_confidence(content),
             "decision": dataset_decision,
-            "raw_review": raw_review,
             "rebuttal": "\n\n".join(rebuttals_for_review(note, forum_notes)),
         }
         if strengths or weaknesses or raw_review:
@@ -700,6 +790,7 @@ def select_papers(
     client: Any,
     venue: VenueSpec,
     per_category: int,
+    max_fallback_forum_checks: int,
 ) -> list[tuple[Any, str, Optional[list[Any]]]]:
     selected: dict[str, list[tuple[Any, str, Optional[list[Any]]]]] = {"accept_oral": [], "reject": []}
     decision_by_forum = fetch_decision_notes(client, venue)
@@ -711,6 +802,8 @@ def select_papers(
             break
         forum = note_forum(submission)
         label = classify_decision(" ".join([submission_decision(submission), decision_by_forum.get(forum, "")]))
+        if label is None and likely_reject_from_submission_metadata(submission, venue):
+            label = "reject"
         if label in selected and len(selected[label]) < per_category:
             selected[label].append((submission, label, None))
             print(
@@ -721,17 +814,32 @@ def select_papers(
     if all(len(items) >= per_category for items in selected.values()):
         return selected["accept_oral"] + selected["reject"]
 
+    if max_fallback_forum_checks <= 0:
+        print(
+            f"Metadata decision labels were incomplete for {venue.conference} {venue.year}; "
+            "skipping fallback forum scan to avoid OpenReview rate-limit retries."
+        )
+        return selected["accept_oral"] + selected["reject"]
+
     print(
         f"Metadata decision labels were incomplete for {venue.conference} {venue.year}; "
-        "falling back to throttled forum checks for remaining papers."
+        f"checking up to {max_fallback_forum_checks} remaining forums."
     )
     selected_forums = {note_forum(submission) for items in selected.values() for submission, _, _ in items}
+    fallback_checks = 0
     for submission in submissions:
         if all(len(items) >= per_category for items in selected.values()):
+            break
+        if fallback_checks >= max_fallback_forum_checks:
+            print(
+                f"Stopped fallback forum checks for {venue.conference} {venue.year} after "
+                f"{fallback_checks} papers; selected {sum(len(items) for items in selected.values())} papers."
+            )
             break
         forum = note_forum(submission)
         if forum in selected_forums:
             continue
+        fallback_checks += 1
         forum_notes = fetch_forum_notes(client, forum)
         label = classify_decision(paper_decision(submission, forum_notes))
         if label in selected and len(selected[label]) < per_category:
@@ -806,7 +914,13 @@ def build_dataset(args: argparse.Namespace) -> dict[str, Any]:
                 f"{effective_per_category * 2} papers "
                 f"({effective_per_category} accept_oral + {effective_per_category} reject)."
             )
-        selected = select_papers(submissions, client, venue, effective_per_category)
+        selected = select_papers(
+            submissions,
+            client,
+            venue,
+            effective_per_category,
+            args.max_fallback_forum_checks,
+        )
         selected = selected[: args.max_papers_per_conference]
         print(f"Selected {len(selected)} papers for {venue.conference} {venue.year}")
 
@@ -894,8 +1008,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--topic", default="Others")
     parser.add_argument("--download-pdfs", action="store_true")
     parser.add_argument("--allow-incomplete", action="store_true")
+    parser.add_argument(
+        "--max-fallback-forum-checks",
+        type=int,
+        default=0,
+        help=(
+            "Maximum unselected forums to fetch when metadata cannot fill target categories. "
+            "Default 0 avoids OpenReview rate-limit retry noise."
+        ),
+    )
     parser.add_argument("--use-llm-segmentation", action="store_true")
-    parser.add_argument("--llm-model", default="qwen3.6-plus")
+    parser.add_argument("--llm-model", default="qwen3.7-plus")
     parser.add_argument(
         "--llm-base-url",
         default="https://dashscope.aliyuncs.com/compatible-mode/v1",
@@ -910,8 +1033,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--paper-gap-seconds",
         type=float,
-        default=12.0,
-        help="Minimum gap between selected paper processing starts; 12s means at most 5 papers/minute.",
+        default=5.0,
+        help="Minimum gap between selected paper processing starts; 5s means at most 12 papers/minute.",
     )
     return parser.parse_args()
 
