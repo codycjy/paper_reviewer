@@ -15,12 +15,14 @@ Metrics per paper per system:
     - src_strengths       : Semantic Review Coverage for strength statements
     - src_weaknesses      : Semantic Review Coverage for weakness statements
     - src_overall         : average of the two SRC scores
-    - conference_check    : whether our accept/reject decision matches ground truth
+    - decision_match      : whether accept/reject decision matches ground truth
+    - conference_check    : optional method-specific conference/policy check
     - norm_score          : our avg score normalised to [0,1] (our scale 1-5)
     - norm_gt_score       : GT avg rating normalised to [0,1] (per-conference scale)
 
 Aggregate metrics:
-    - conference_check_accuracy : proportion of papers with correct accept/reject
+    - decision_accuracy         : proportion of papers with correct accept/reject
+    - conference_check_accuracy : optional conference/policy check accuracy
     - score_spearman_rho        : Spearman ρ between norm_score and norm_gt_score
     - src_strengths_mean        : mean SRC strengths
     - src_weaknesses_mean       : mean SRC weaknesses
@@ -151,10 +153,10 @@ def _scope_slug(selected_ids: list[str], used_all_papers: bool) -> str:
     n = len(selected_ids)
     if n == 0:
         return "no-papers"
-    if used_all_papers:
-        return f"all-{n}-papers"
     if n == 1:
         return _slugify(selected_ids[0])
+    if used_all_papers:
+        return f"all-{n}-papers"
     if n <= 3:
         return "_".join(_slugify(pid) for pid in selected_ids)
     return f"subset-{n}-papers"
@@ -227,12 +229,12 @@ def _evaluate_system(
         model=model,
     )
 
-    # conference_check: does our decision match GT?
-    conference_check = None
+    decision_match = None
     if gt_decision and sys_decision:
-        conference_check = (
+        decision_match = (
             _normalise_decision(gt_decision) == _normalise_decision(sys_decision)
         )
+    conference_check = decision_match if system_name.startswith("our_") else None
 
     norm_score    = _normalise_our_score(sys_score)
     norm_gt_score = _normalise_gt_score(gt_score, conference)
@@ -241,6 +243,7 @@ def _evaluate_system(
         "system":           system_name,
         "decision":         sys_decision,
         "score":            sys_score,
+        "decision_match":   decision_match,
         "conference_check": conference_check,
         "norm_score":       norm_score,
         "norm_gt_score":    norm_gt_score,
@@ -417,12 +420,14 @@ def run_evaluation(
 
         aggregate[sys_name] = {
             "n_papers":                   n,
+            "decision_accuracy":           _bool_acc("decision_match"),
             "conference_check_accuracy":  _bool_acc("conference_check"),
-            "score_spearman":             score_corr,
             "src_strengths_mean":         _mean("src_strengths"),
             "src_weaknesses_mean":        _mean("src_weaknesses"),
             "src_overall_mean":           _mean("src_overall"),
         }
+        if score_corr:
+            aggregate[sys_name]["score_spearman"] = score_corr
 
     results["aggregate"] = aggregate
 
@@ -447,7 +452,7 @@ def run_evaluation(
     for sys_name, agg in aggregate.items():
         print(f"\n  System: {sys_name}  (n={agg['n_papers']})")
         print(f"    {'conference_check_accuracy':<30}: {agg['conference_check_accuracy']}")
-        sc = agg['score_spearman']
+        sc = agg.get('score_spearman')
         if sc:
             print(f"    {'score_spearman_rho':<30}: {sc['rho']}  (p={sc['pval']}, n={sc['n']})")
         else:
