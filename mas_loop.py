@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import json
 import re
@@ -112,7 +114,10 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
          provider: str = "cmu", model: str = "",
          on_event=None, on_agent_status=None, on_message=None,
          on_citation_event=None,
-         run_citation_check: bool = True) -> dict:
+         run_citation_check: bool = True,
+         enable_rag: bool = False,
+         precomputed_rag_package: dict | None = None,
+         rag_config: dict | None = None) -> dict:
     """
     Run the multi-agent review loop.
 
@@ -140,6 +145,39 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
         if on_message:
             on_message(agent_name, content)
 
+    # ── Optional RAG context ─────────────────────────────────────────────────
+    rag_package = None
+    rag_prompt_block = ""
+    rag_warnings = []
+    cutoff_report = {}
+    if enable_rag:
+        emit("Building related-work RAG evidence...")
+        try:
+            from rag import build_rag_package, format_rag_prompt_block
+            if precomputed_rag_package:
+                rag_package = precomputed_rag_package
+                emit("Using precomputed related-work RAG package.")
+            else:
+                rag_package = build_rag_package(
+                    paper=paper,
+                    topic="",
+                    provider=provider,
+                    model=model,
+                    api_key=api_key,
+                    config=rag_config,
+                )
+            rag_prompt_block = format_rag_prompt_block(rag_package)
+            rag_warnings = rag_package.get("warnings", []) if isinstance(rag_package, dict) else []
+            cutoff_report = rag_package.get("cutoff_report", {}) if isinstance(rag_package, dict) else {}
+            emit("Related-work RAG evidence ready.")
+        except Exception as exc:
+            rag_warnings = [f"Related-work RAG failed; reviewers will run without RAG evidence: {exc}"]
+            emit(rag_warnings[0])
+
+    reviewer_paper = paper
+    if rag_prompt_block:
+        reviewer_paper = paper + "\n\n" + rag_prompt_block
+
     # ── Init agents ──────────────────────────────────────────────────────────
     emit(f"Initializing agents with {provider} provider...")
     _type_label = {
@@ -151,7 +189,7 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
     reviewers = []
     for i, rt in enumerate(reviewer_types, 1):
         r = Reviewer(
-            paper=paper, reviewer_type=rt, topic=topic, api_key=api_key,
+            paper=reviewer_paper, reviewer_type=rt, topic=topic, api_key=api_key,
             provider=provider, model=model,
         )
         r.name = f"Reviewer {i} ({_type_label.get(rt, rt)})"
@@ -181,6 +219,11 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
     # ── Iteration 0: initial reviews (parallel) ──────────────────────────────
     emit(f"--- Iteration 1 / {n_iter}: Initial Reviews ---")
     init_prompt = "Based on the given paper and your persona, provide your initial review."
+    if rag_prompt_block:
+        init_prompt += (
+            " Use the ###RAG_EVIDENCE### related-work block as advisory evidence "
+            "when it is relevant to novelty, baselines, benchmarks, and limitations."
+        )
 
     for r in reviewers:
         emit_agent_status(r.name, "waiting")
@@ -279,6 +322,9 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
         "reviewers":  parsed_reviews,
         "conference": parsed_conf,
         "citations":  citation_results,
+        "rag_package": rag_package,
+        "rag_warnings": rag_warnings,
+        "cutoff_report": cutoff_report,
     }
 
 
@@ -295,6 +341,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", default="")
     parser.add_argument("--api_key", default="")
     parser.add_argument("--output", default=None)
+    parser.add_argument("--enable_rag", action="store_true")
     args = parser.parse_args()
 
     with open(args.paper, "r", encoding="utf-8") as f:
@@ -303,6 +350,7 @@ if __name__ == "__main__":
     result = main(
         paper=paper, topic=args.topic, n_iter=args.n_iter,
         provider=args.provider, model=args.model, api_key=args.api_key,
+        enable_rag=args.enable_rag,
     )
 
     lines = []

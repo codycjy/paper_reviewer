@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import json
 import queue
 import sys
 import threading
 import uuid
+import hashlib
 from datetime import datetime
 from pathlib import Path
 
@@ -11,7 +14,6 @@ import werkzeug
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from modular_seg import reconstruct_md, save_sections, segment_md
-from doc_preprocess import doc_preprocess, load_or_create_markdown
 
 app = Flask(__name__)
 
@@ -20,14 +22,48 @@ current_md_name = None
 current_sections = {}
 current_topic = None
 
-from config import VALID_TOPICS
-from agents import DEFAULT_MODELS, VALID_PROVIDERS
+from config import DEFAULT_RAG_CONFIG, VALID_TOPICS
+from agents import DEFAULT_MODELS, VALID_PROVIDERS, validate_api_key_for_provider
 VALID_REVIEWERS = {"reviewer_a", "reviewer_b", "reviewer_c", "reviewer_nopersona"}
 
 # job_id -> queue.Queue  (progress events)
 _jobs: dict[str, queue.Queue] = {}
 # job_id -> structured results dict (populated when job finishes)
 _results: dict[str, dict] = {}
+# One reusable RAG package for the currently loaded paper/settings.
+_last_rag: dict | None = None
+
+
+def _paper_hash(paper: str) -> str:
+    return hashlib.sha1(paper.encode("utf-8")).hexdigest()
+
+
+def _rag_signature(paper: str, provider: str, model: str, rag_config: dict) -> dict:
+    return {
+        "paper_hash": _paper_hash(paper),
+        "provider": provider,
+        "model": model,
+        "cutoff_date": rag_config.get("cutoff_date", DEFAULT_RAG_CONFIG["cutoff_date"]),
+        "allow_undated_evidence": bool(rag_config.get("allow_undated_evidence", False)),
+        "enable_review_memory_rag": bool(
+            rag_config.get("enable_review_memory_rag", DEFAULT_RAG_CONFIG["enable_review_memory_rag"])
+        ),
+        "provider_top_k": int(rag_config.get("provider_top_k", DEFAULT_RAG_CONFIG["provider_top_k"])),
+        "rerank_top_k": int(rag_config.get("rerank_top_k", DEFAULT_RAG_CONFIG["rerank_top_k"])),
+        "review_memory_max_reviews": int(rag_config.get("review_memory_max_reviews", DEFAULT_RAG_CONFIG["review_memory_max_reviews"])),
+    }
+
+
+def _request_rag_config(data: dict) -> dict:
+    rag_config = dict(DEFAULT_RAG_CONFIG)
+    rag_config["enable_rag"] = bool(data.get("enable_rag", rag_config["enable_rag"]))
+    if data.get("cutoff_date"):
+        rag_config["cutoff_date"] = str(data.get("cutoff_date"))
+    if "allow_undated_evidence" in data:
+        rag_config["allow_undated_evidence"] = bool(data.get("allow_undated_evidence"))
+    if "enable_review_memory_rag" in data:
+        rag_config["enable_review_memory_rag"] = bool(data.get("enable_review_memory_rag"))
+    return rag_config
 
 
 # ── Page ─────────────────────────────────────────────────────────────────────
@@ -41,7 +77,7 @@ def index():
 
 @app.route("/api/upload", methods=["POST"])
 def upload_file():
-    global current_md_name, current_sections
+    global current_md_name, current_sections, _last_rag
 
     if "file" not in request.files:
         return jsonify({"error": "No file provided."}), 400
@@ -57,6 +93,8 @@ def upload_file():
 
     try:
         if ext == ".pdf":
+            from doc_preprocess import load_or_create_markdown
+
             pdf_dir = Path("data/pdf")
             pdf_dir.mkdir(parents=True, exist_ok=True)
             pdf_path = pdf_dir / filename
@@ -75,6 +113,7 @@ def upload_file():
         # Segment the resulting MD file
         current_sections = segment_md(md_filename, md_path="data/md")
         current_md_name  = md_filename
+        _last_rag = None
         save_sections(md_filename, current_sections, suffix="raw")
 
         md_content = (Path("data/md") / md_filename).read_text(encoding="utf-8")
@@ -116,7 +155,7 @@ def segments():
 
 @app.route("/api/save", methods=["POST"])
 def save():
-    global current_sections
+    global current_sections, _last_rag
     data      = request.get_json()
     responses = data.get("responses", {})
 
@@ -135,6 +174,7 @@ def save():
         else:
             new_sections[old_header] = full_text
     current_sections = new_sections
+    _last_rag = None
 
     md_path = Path("data/md") / Path(current_md_name).name
     md_path.write_text(reconstruct_md(current_sections), encoding="utf-8")
@@ -145,6 +185,7 @@ def save():
 
 @app.route("/api/run", methods=["POST"])
 def run_review():
+    global _last_rag
     global current_topic
     data           = request.get_json()
     topic          = data.get("topic", "")
@@ -153,6 +194,8 @@ def run_review():
     api_key        = data.get("api_key", "").strip()
     provider       = data.get("provider", "cmu").strip().lower()
     model          = data.get("model", "").strip()
+    rag_config     = _request_rag_config(data)
+    enable_rag     = bool(data.get("enable_rag", DEFAULT_RAG_CONFIG["enable_rag"]))
 
     if topic not in VALID_TOPICS:
         return jsonify({"error": f"Invalid topic. Choose from: {sorted(VALID_TOPICS)}"}), 400
@@ -165,12 +208,18 @@ def run_review():
         return jsonify({"error": "No paper loaded. Go back and load a paper first."}), 400
     if provider not in VALID_PROVIDERS:
         return jsonify({"error": f"Invalid API provider. Choose from: {sorted(VALID_PROVIDERS)}"}), 400
-    if not api_key:
-        return jsonify({"error": "API key is required."}), 400
+    key_error = validate_api_key_for_provider(provider, api_key)
+    if key_error:
+        return jsonify({"error": key_error}), 400
 
     md_path      = Path("data/md") / Path(current_md_name).name
     paper        = md_path.read_text(encoding="utf-8")
     current_topic = topic
+    precomputed_rag = None
+    if enable_rag and _last_rag:
+        signature = _rag_signature(paper, provider, model, rag_config)
+        if _last_rag.get("signature") == signature:
+            precomputed_rag = _last_rag.get("package")
 
     job_id = str(uuid.uuid4())
     q: queue.Queue = queue.Queue()
@@ -183,6 +232,9 @@ def run_review():
                 paper=paper, topic=topic, n_iter=n_iter,
                 reviewer_types=reviewer_types, api_key=api_key,
                 provider=provider, model=model,
+                enable_rag=enable_rag,
+                precomputed_rag_package=precomputed_rag,
+                rag_config=rag_config,
                 on_event=lambda msg: q.put(("status", msg)),
                 on_agent_status=lambda name, status: q.put(("agent_status", {"agent": name, "status": status})),
                 on_message=lambda name, content: q.put(("message", {"agent": name, "content": content})),
@@ -205,6 +257,48 @@ def run_review():
 
     threading.Thread(target=run, daemon=True).start()
     return jsonify({"job_id": job_id})
+
+
+@app.route("/api/run-rag", methods=["POST"])
+def run_rag():
+    global _last_rag
+    data     = request.get_json()
+    api_key  = data.get("api_key", "").strip()
+    provider = data.get("provider", "cmu").strip().lower()
+    model    = data.get("model", "").strip()
+    rag_config = _request_rag_config({"enable_rag": True, **data})
+
+    if not current_md_name:
+        return jsonify({"error": "No paper loaded. Go back and load a paper first."}), 400
+    if provider not in VALID_PROVIDERS:
+        return jsonify({"error": f"Invalid API provider. Choose from: {sorted(VALID_PROVIDERS)}"}), 400
+    key_error = validate_api_key_for_provider(provider, api_key)
+    if key_error:
+        return jsonify({"error": key_error}), 400
+
+    try:
+        md_path = Path("data/md") / Path(current_md_name).name
+        paper = md_path.read_text(encoding="utf-8")
+        from rag import build_rag_package
+
+        package = build_rag_package(
+            paper=paper,
+            topic="",
+            provider=provider,
+            model=model,
+            api_key=api_key,
+            config=rag_config,
+        )
+        signature = _rag_signature(paper, provider, model, rag_config)
+        _last_rag = {"signature": signature, "package": package}
+        return jsonify({
+            "rag_package": package,
+            "rag_warnings": package.get("warnings", []),
+            "cutoff_report": package.get("cutoff_report", {}),
+            "signature": signature,
+        })
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
 
 
 # ── SSE stream ───────────────────────────────────────────────────────────────

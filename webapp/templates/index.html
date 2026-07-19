@@ -97,6 +97,35 @@
     <div class="topic-pills" id="topic-pills"></div>
   </div>
 
+  <!-- RAG evidence -->
+  <div class="config-section rag-section">
+    <div class="config-label">RAG Evidence <span class="required">optional</span></div>
+    <label class="rag-toggle">
+      <input id="enable-rag" type="checkbox" onchange="handleRagSettingChange()" />
+      <span>Use related-work RAG evidence in reviewer prompts</span>
+    </label>
+    <div class="rag-ablation-row">
+      <div>
+        <div class="rag-option-title">Review-memory RAG</div>
+        <div class="rag-option-subtitle">OpenReview review patterns</div>
+      </div>
+      <label class="switch-toggle" title="Toggle review-memory RAG for ablation runs">
+        <input id="enable-review-memory-rag" type="checkbox" onchange="handleRagSettingChange()" />
+        <span class="switch-track"></span>
+      </label>
+    </div>
+    <div class="rag-controls">
+      <label class="rag-field">
+        <span>Cutoff date</span>
+        <input id="rag-cutoff-date" type="text" value="2024-12-31" oninput="handleRagSettingChange()" />
+      </label>
+      <button type="button" class="btn-rag" id="btn-run-rag" onclick="runRelatedWorkRag()">Run RAG</button>
+    </div>
+    <div class="apikey-hint">Run RAG independently to inspect query generation, retrieved metadata, LLM reranking, review-memory selection, and the summary that will be sent to reviewers when the checkbox is enabled.</div>
+    <div id="rag-status" class="rag-status"></div>
+    <div id="rag-preview" class="rag-preview" style="display:none;"></div>
+  </div>
+
   <!-- Reviewers -->
   <div class="config-section">
     <div class="config-label">Reviewers <span class="required">* select at least one</span></div>
@@ -276,6 +305,7 @@
   let selectedProvider = "cmu";
   let providerDefaults = {};
   let finishedJobId = null;
+  let currentRagPackage = null;
 
   // ── Render topic pills from server ───────────────────────────────────────
   fetch("/api/topics")
@@ -336,6 +366,7 @@
     btn.classList.add("active");
     selectedProvider = btn.dataset.provider;
     updateProviderFields();
+    handleRagSettingChange();
   }
 
   function updateProviderFields() {
@@ -367,6 +398,21 @@
     document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
     btn.classList.add("active");
     selectedTopic = btn.dataset.topic;
+    handleRagSettingChange();
+  }
+
+  function handleRagSettingChange() {
+    currentRagPackage = null;
+    const preview = document.getElementById("rag-preview");
+    if (preview) {
+      preview.style.display = "none";
+      preview.innerHTML = "";
+    }
+    const status = document.getElementById("rag-status");
+    if (status) {
+      status.className = "rag-status";
+      status.textContent = "";
+    }
   }
 
   // ── Page 1: file picker ───────────────────────────────────────────────────
@@ -392,6 +438,11 @@
 
     document.getElementById("error").textContent = "";
     document.getElementById("sections").innerHTML = "";
+    currentRagPackage = null;
+    const ragPreview = document.getElementById("rag-preview");
+    if (ragPreview) { ragPreview.style.display = "none"; ragPreview.innerHTML = ""; }
+    const ragStatus = document.getElementById("rag-status");
+    if (ragStatus) ragStatus.textContent = "";
     document.getElementById("save-row").style.display = "none";
     document.getElementById("save-status").textContent = "";
     document.getElementById("md-preview-wrap").style.display = "none";
@@ -475,6 +526,133 @@
     });
     const data = await res.json();
     document.getElementById("save-status").textContent = data.message || "Saved.";
+    currentRagPackage = null;
+    document.getElementById("rag-preview").style.display = "none";
+    document.getElementById("rag-status").textContent = "";
+  }
+
+  function ragRequestPayload() {
+    return {
+      topic: "",
+      api_key: document.getElementById("api-key").value.trim(),
+      provider: selectedProvider,
+      model: document.getElementById("model-name").value.trim(),
+      enable_rag: true,
+      enable_review_memory_rag: document.getElementById("enable-review-memory-rag").checked,
+      cutoff_date: document.getElementById("rag-cutoff-date").value.trim() || "2024-12-31",
+    };
+  }
+
+  async function runRelatedWorkRag() {
+    const status = document.getElementById("rag-status");
+    const preview = document.getElementById("rag-preview");
+    const btn = document.getElementById("btn-run-rag");
+    status.className = "rag-status";
+    status.textContent = "";
+    preview.style.display = "none";
+    preview.innerHTML = "";
+
+    const payload = ragRequestPayload();
+    if (!payload.api_key) { status.className = "rag-status rag-error"; status.textContent = "Please enter your API key."; return; }
+
+    btn.disabled = true;
+    btn.textContent = "Running RAG…";
+    status.textContent = "Generating queries, retrieving metadata, and reranking papers…";
+    try {
+      const res = await fetch("/api/run-rag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.error) {
+        status.className = "rag-status rag-error";
+        status.textContent = data.error;
+        return;
+      }
+      currentRagPackage = data.rag_package;
+      status.className = "rag-status rag-ok";
+      status.textContent = "RAG ready. Run Review will reuse it while paper and RAG settings match.";
+      renderRagPreview(currentRagPackage);
+    } catch (err) {
+      status.className = "rag-status rag-error";
+      status.textContent = "RAG failed: " + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Run RAG";
+    }
+  }
+
+  function renderRagPreview(pkg) {
+    const preview = document.getElementById("rag-preview");
+    const queries = pkg.query_generation?.queries || [];
+    const metadata = pkg.paper_metadata || [];
+    const reranked = pkg.reranking_results || [];
+    const cutoff = pkg.cutoff_report || {};
+    const providers = pkg.provider_status || {};
+    const reviewMemory = pkg.review_memory || {};
+    const memorySummary = reviewMemory.summary || {};
+    const selectedMemory = reviewMemory.selected_case || {};
+    const lookup = Object.fromEntries(metadata.map(p => [p.paper_id, p]));
+    const querySource = pkg.query_generation?.source || "unknown";
+    const rerankSource = pkg.reranking?.source || "unknown";
+    const queryLabel = querySource === "llm" ? "LLM-generated queries"
+      : querySource === "mixed" ? "LLM + fallback queries"
+      : "Fallback queries";
+    const rerankLabel = rerankSource === "llm" ? "LLM reranking"
+      : rerankSource === "mixed" ? "LLM reranking + omitted candidates appended"
+      : rerankSource === "none" ? "Reranking"
+      : "Fallback lexical reranking";
+
+    const providerHtml = Object.entries(providers).map(([name, info]) =>
+      `<span class="rag-chip">${escHtml(name)}: ${escHtml(info.status || "")} · ${info.retrieved || 0}</span>`
+    ).join("");
+    const queryHtml = queries.map(q =>
+      `<li><strong>${escHtml(q.group)}</strong>: ${escHtml(q.query)}</li>`
+    ).join("");
+    const paperHtml = metadata.map(p =>
+      `<li><strong>[${escHtml(p.paper_id)}]</strong> ${escHtml(p.title)} <span class="muted">(${escHtml(p.year || p.publication_date || "date unknown")} · ${(p.sources || []).map(escHtml).join(", ")})</span></li>`
+    ).join("");
+    const rerankHtml = reranked.map(r => {
+      const p = lookup[r.paper_id] || {};
+      return `<li><strong>#${r.rank} [${escHtml(r.paper_id)}]</strong> ${escHtml(p.title || "")}
+        <span class="muted">score ${escHtml(r.relevance_score)}</span><br>
+        <span>${escHtml(r.rationale || "")}</span></li>`;
+    }).join("");
+    const memoryHtml = reviewMemory.status === "used"
+      ? `<p><strong>Selected:</strong> [${escHtml(selectedMemory.source_paper_id || "")}] ${escHtml(selectedMemory.title || "")}
+          <span class="muted">decision ${escHtml(selectedMemory.decision || "unknown")} · reviews ${(selectedMemory.reviews || []).length}</span></p>
+         <p>${escHtml(memorySummary.summary || "")}</p>
+         ${(memorySummary.common_strengths || []).length ? `<p><strong>Common strengths:</strong> ${memorySummary.common_strengths.map(escHtml).join("; ")}</p>` : ""}
+         ${(memorySummary.common_weaknesses || []).length ? `<p><strong>Common weaknesses:</strong> ${memorySummary.common_weaknesses.map(escHtml).join("; ")}</p>` : ""}
+         ${(memorySummary.calibration_notes || []).length ? `<p><strong>Calibration notes:</strong> ${memorySummary.calibration_notes.map(escHtml).join("; ")}</p>` : ""}`
+      : `<p>${escHtml((reviewMemory.warnings || []).join(" ") || "No review-memory records found.")}</p>`;
+    const warningHtml = (pkg.warnings || []).map(w => `<li>${escHtml(w)}</li>`).join("");
+
+    preview.innerHTML = `
+      <div class="rag-header-row">
+        <strong>RAG Package</strong>
+        <code>${escHtml(pkg.rag_package_id || "")}</code>
+      </div>
+      <div class="rag-chip-row">
+        <span class="rag-chip">metadata used: ${metadata.length}</span>
+        <span class="rag-chip">queries: ${escHtml(querySource)}</span>
+        <span class="rag-chip">reranking: ${escHtml(rerankSource)}</span>
+        <span class="rag-chip">reranked: ${reranked.length}</span>
+        <span class="rag-chip">review memory: ${escHtml(reviewMemory.status || "missing")}</span>
+        <span class="rag-chip">removed post-cutoff: ${cutoff.num_removed_post_cutoff ?? 0}</span>
+        <span class="rag-chip">removed undated: ${cutoff.num_removed_undated ?? 0}</span>
+        <span class="rag-chip">removed by cap: ${cutoff.num_removed_by_candidate_cap ?? 0}</span>
+        ${providerHtml}
+      </div>
+      <details open><summary>${escHtml(queryLabel)} (${queries.length})</summary><ul>${queryHtml}</ul></details>
+      <details open><summary>Related paper metadata (${metadata.length})</summary><ul>${paperHtml || "<li>No cutoff-valid papers retrieved.</li>"}</ul></details>
+      <details open><summary>${escHtml(rerankLabel)} (${reranked.length})</summary><ul>${rerankHtml || "<li>No reranking results.</li>"}</ul></details>
+      <details open><summary>Review-memory summary (${escHtml(reviewMemory.status || "missing")})</summary>${memoryHtml}</details>
+      <details open><summary>Related-work summary</summary><p>${escHtml(pkg.related_work_summary || "")}</p></details>
+      ${warningHtml ? `<details open><summary>Warnings</summary><ul class="rag-warnings">${warningHtml}</ul></details>` : ""}
+    `;
+    preview.style.display = "block";
   }
 
   // ── Agent status panel ────────────────────────────────────────────────────
@@ -566,6 +744,7 @@
     }
 
     const nIter = parseInt(document.getElementById("n-iter").value) || 3;
+    const enableRag = document.getElementById("enable-rag").checked;
 
     // Navigate to running page and reset state
     document.getElementById("log").innerHTML  = "";
@@ -579,7 +758,7 @@
     initAgentStatusPanel(reviewerDisplayNames);
     goToPage3();
 
-    appendLog("info", `Provider: ${selectedProvider} | Topic: ${selectedTopic} | Reviewers: ${checkedReviewers.join(", ")} | Iterations: ${nIter}`);
+    appendLog("info", `Provider: ${selectedProvider} | Topic: ${selectedTopic} | Reviewers: ${checkedReviewers.join(", ")} | Iterations: ${nIter} | RAG: ${enableRag ? "enabled" : "disabled"}`);
 
     const res  = await fetch("/api/run", {
       method: "POST",
@@ -588,6 +767,9 @@
         topic: selectedTopic, reviewers: checkedReviewers,
         n_iter: nIter, api_key: apiKey,
         provider: selectedProvider, model: modelName,
+        enable_rag: enableRag,
+        enable_review_memory_rag: document.getElementById("enable-review-memory-rag").checked,
+        cutoff_date: document.getElementById("rag-cutoff-date").value.trim() || "2024-12-31",
       }),
     });
     const data = await res.json();

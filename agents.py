@@ -6,9 +6,47 @@ VALID_PROVIDERS = {"cmu", "openai", "gemini", "claude"}
 DEFAULT_MODELS = {
     "cmu": "gpt-5",
     "openai": "gpt-4o-mini",
-    "gemini": "gemini-1.5-flash",
+    "gemini": "gemini-3.5-flash",
     "claude": "claude-3-5-sonnet-20240620",
 }
+
+
+def validate_api_key_for_provider(provider: str, api_key: str) -> str:
+    provider = (provider or "cmu").lower()
+    api_key = (api_key or "").strip()
+    if not api_key:
+        return "API key is required."
+    if provider == "cmu" and not api_key.startswith("sk-"):
+        return (
+            "CMU AI Gateway expects a gateway key that starts with 'sk-'. "
+            "Select the matching provider for this key, or paste the CMU gateway key."
+        )
+    if provider == "openai" and not api_key.startswith("sk-"):
+        return "OpenAI API keys should start with 'sk-'. Select the matching provider for this key."
+    return ""
+
+
+def format_llm_error(provider: str, exc: Exception) -> str:
+    provider = (provider or "cmu").lower()
+    text = str(exc)
+    looks_like_auth = (
+        "401" in text
+        or "auth" in text.lower()
+        or "api key" in text.lower()
+        or "virtual key" in text.lower()
+    )
+    if looks_like_auth and provider == "cmu":
+        return (
+            "CMU AI Gateway authentication failed. Use the CMU gateway key for the selected "
+            "provider; it should start with 'sk-'."
+        )
+    if looks_like_auth and provider == "openai":
+        return "OpenAI authentication failed. Check that the selected provider and API key match."
+    if looks_like_auth and provider == "gemini":
+        return "Gemini authentication failed. Check that the selected provider and API key match."
+    if looks_like_auth and provider == "claude":
+        return "Claude authentication failed. Check that the selected provider and API key match."
+    return text
 
 
 def _get_api_key(provider: str = "cmu") -> str:
