@@ -97,38 +97,13 @@
     <div class="topic-pills" id="topic-pills"></div>
   </div>
 
-  <!-- RAG evidence -->
-  <div class="config-section rag-section">
-    <div class="config-label">RAG Evidence <span class="required">optional</span></div>
-    <label class="rag-toggle">
-      <input id="enable-rag" type="checkbox" onchange="handleRagSettingChange()" />
-      <span>Use related-work RAG evidence in reviewer prompts</span>
-    </label>
-    <div class="rag-ablation-row">
-      <div>
-        <div class="rag-option-title">Review-memory RAG</div>
-        <div class="rag-option-subtitle">OpenReview review patterns</div>
-      </div>
-      <label class="switch-toggle" title="Toggle review-memory RAG for ablation runs">
-        <input id="enable-review-memory-rag" type="checkbox" onchange="handleRagSettingChange()" />
-        <span class="switch-track"></span>
-      </label>
-    </div>
-    <div class="rag-controls">
-      <label class="rag-field">
-        <span>Cutoff date</span>
-        <input id="rag-cutoff-date" type="text" value="2024-12-31" oninput="handleRagSettingChange()" />
-      </label>
-      <button type="button" class="btn-rag" id="btn-run-rag" onclick="runRelatedWorkRag()">Run RAG</button>
-    </div>
-    <div class="apikey-hint">Run RAG independently to inspect query generation, retrieved metadata, LLM reranking, review-memory selection, and the summary that will be sent to reviewers when the checkbox is enabled.</div>
-    <div id="rag-status" class="rag-status"></div>
-    <div id="rag-preview" class="rag-preview" style="display:none;"></div>
-  </div>
-
   <!-- Reviewers -->
-  <div class="config-section">
-    <div class="config-label">Reviewers <span class="required">* select at least one</span></div>
+  <div class="config-section workflow-section">
+    <div class="workflow-heading">
+      <span class="step-number">1</span>
+      <div><div class="config-label">Configure review cycle</div><div class="step-caption">Choose the reviewer mix, agents, and number of iterations.</div></div>
+    </div>
+    <div class="config-sublabel">Reviewers <span class="required">* select at least one</span></div>
     <div class="agent-grid">
       <div class="agent-card selectable active" id="card-reviewer_a">
         <div class="agent-info">
@@ -188,6 +163,12 @@
       </div>
     </div>
 
+    <div class="config-sublabel">Optional agents</div>
+    <label class="rag-toggle">
+      <input id="enable-ai-detector" type="checkbox" />
+      <span>AI Detector <span class="muted">— analyze reviewer text during rebuttal iterations</span></span>
+    </label>
+
     <div class="config-sublabel">Always included</div>
     <div class="agent-grid">
       <div class="agent-card fixed">
@@ -203,19 +184,40 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Iterations -->
-  <div class="config-section">
-    <div class="config-label">Review Iterations</div>
+    <div class="config-sublabel">Review iterations</div>
     <div class="iter-row">
       <input type="number" id="n-iter" value="3" min="1" max="10" />
       <span class="iter-hint">iterations &nbsp;(1 = initial review only, no rebuttal)</span>
     </div>
   </div>
 
+  <!-- RAG evidence -->
+  <div class="config-section rag-section workflow-section">
+    <div class="workflow-heading">
+      <span class="step-number">2</span>
+      <div><div class="config-label">Prepare related-work evidence <span class="required">optional</span></div><div class="step-caption">Retrieve and inspect supporting papers before starting the review.</div></div>
+    </div>
+    <div class="rag-action-row">
+      <label class="rag-field">
+        <span>Evidence cutoff date</span>
+        <input id="rag-cutoff-date" type="text" value="2024-12-31" oninput="handleRagSettingChange()" />
+      </label>
+      <button type="button" class="btn-rag" id="btn-run-rag" onclick="runRelatedWorkRag()">Run RAG</button>
+    </div>
+    <label class="rag-toggle rag-use-toggle">
+      <input id="enable-rag" type="checkbox" onchange="handleRagUsageChange()" />
+      <span><strong>Use this RAG evidence in the review</strong><small>You can also run RAG only to inspect the retrieved evidence.</small></span>
+    </label>
+    <div id="rag-status" class="rag-status">RAG has not been run.</div>
+    <div id="rag-preview" class="rag-preview" style="display:none;"></div>
+  </div>
+
   <!-- Run -->
-  <div class="config-section">
+  <div class="config-section run-section workflow-section">
+    <div class="workflow-heading">
+      <span class="step-number">3</span>
+      <div><div class="config-label">Start review</div><div class="step-caption">The review will use the configuration and optional RAG evidence above.</div></div>
+    </div>
     <div id="run-error" class="error"></div>
     <button class="btn-run" id="btn-run" onclick="runReview()">&#9654; Run Review</button>
   </div>
@@ -375,12 +377,16 @@
       openai: "OpenAI API Key",
       gemini: "Gemini API Key",
       claude: "Anthropic API Key",
+      deepseek: "DeepSeek API Key",
+      qwen: "Qwen / Model Studio API Key",
     };
     const placeholders = {
       cmu: "Paste your CMU AI Gateway key here...",
       openai: "Paste your OpenAI API key here...",
       gemini: "Paste your Gemini API key here...",
       claude: "Paste your Anthropic API key here...",
+      deepseek: "Paste your DeepSeek API key here...",
+      qwen: "Paste your Alibaba Cloud Model Studio API key here...",
     };
     const provider = providerDefaults[selectedProvider] || {};
     document.getElementById("api-key-label").textContent = labels[selectedProvider] || "API Key";
@@ -411,8 +417,18 @@
     const status = document.getElementById("rag-status");
     if (status) {
       status.className = "rag-status";
-      status.textContent = "";
+      status.textContent = "RAG settings changed. Run RAG to refresh the evidence.";
     }
+  }
+
+  function handleRagUsageChange() {
+    const enabled = document.getElementById("enable-rag").checked;
+    const status = document.getElementById("rag-status");
+    if (!status || !currentRagPackage) return;
+    status.className = "rag-status rag-ok";
+    status.textContent = enabled
+      ? "RAG ready and selected for the review."
+      : "RAG ready for inspection, but will not be used in the review.";
   }
 
   // ── Page 1: file picker ───────────────────────────────────────────────────
@@ -538,7 +554,7 @@
       provider: selectedProvider,
       model: document.getElementById("model-name").value.trim(),
       enable_rag: true,
-      enable_review_memory_rag: document.getElementById("enable-review-memory-rag").checked,
+      enable_review_memory_rag: false,
       cutoff_date: document.getElementById("rag-cutoff-date").value.trim() || "2024-12-31",
     };
   }
@@ -557,7 +573,7 @@
 
     btn.disabled = true;
     btn.textContent = "Running RAG…";
-    status.textContent = "Generating queries, retrieving metadata, and reranking papers…";
+    status.textContent = "Generating queries, retrieving papers, and reranking evidence…";
     try {
       const res = await fetch("/api/run-rag", {
         method: "POST",
@@ -571,8 +587,9 @@
         return;
       }
       currentRagPackage = data.rag_package;
+      document.getElementById("enable-rag").checked = true;
       status.className = "rag-status rag-ok";
-      status.textContent = "RAG ready. Run Review will reuse it while paper and RAG settings match.";
+      status.textContent = "RAG ready and selected for the review.";
       renderRagPreview(currentRagPackage);
     } catch (err) {
       status.className = "rag-status rag-error";
@@ -590,9 +607,6 @@
     const reranked = pkg.reranking_results || [];
     const cutoff = pkg.cutoff_report || {};
     const providers = pkg.provider_status || {};
-    const reviewMemory = pkg.review_memory || {};
-    const memorySummary = reviewMemory.summary || {};
-    const selectedMemory = reviewMemory.selected_case || {};
     const lookup = Object.fromEntries(metadata.map(p => [p.paper_id, p]));
     const querySource = pkg.query_generation?.source || "unknown";
     const rerankSource = pkg.reranking?.source || "unknown";
@@ -619,37 +633,24 @@
         <span class="muted">score ${escHtml(r.relevance_score)}</span><br>
         <span>${escHtml(r.rationale || "")}</span></li>`;
     }).join("");
-    const memoryHtml = reviewMemory.status === "used"
-      ? `<p><strong>Selected:</strong> [${escHtml(selectedMemory.source_paper_id || "")}] ${escHtml(selectedMemory.title || "")}
-          <span class="muted">decision ${escHtml(selectedMemory.decision || "unknown")} · reviews ${(selectedMemory.reviews || []).length}</span></p>
-         <p>${escHtml(memorySummary.summary || "")}</p>
-         ${(memorySummary.common_strengths || []).length ? `<p><strong>Common strengths:</strong> ${memorySummary.common_strengths.map(escHtml).join("; ")}</p>` : ""}
-         ${(memorySummary.common_weaknesses || []).length ? `<p><strong>Common weaknesses:</strong> ${memorySummary.common_weaknesses.map(escHtml).join("; ")}</p>` : ""}
-         ${(memorySummary.calibration_notes || []).length ? `<p><strong>Calibration notes:</strong> ${memorySummary.calibration_notes.map(escHtml).join("; ")}</p>` : ""}`
-      : `<p>${escHtml((reviewMemory.warnings || []).join(" ") || "No review-memory records found.")}</p>`;
     const warningHtml = (pkg.warnings || []).map(w => `<li>${escHtml(w)}</li>`).join("");
 
     preview.innerHTML = `
-      <div class="rag-header-row">
-        <strong>RAG Package</strong>
+      <div class="rag-result-header">
+        <div><span class="rag-ready-dot"></span><strong>Evidence package ready</strong></div>
         <code>${escHtml(pkg.rag_package_id || "")}</code>
       </div>
-      <div class="rag-chip-row">
-        <span class="rag-chip">metadata used: ${metadata.length}</span>
-        <span class="rag-chip">queries: ${escHtml(querySource)}</span>
-        <span class="rag-chip">reranking: ${escHtml(rerankSource)}</span>
-        <span class="rag-chip">reranked: ${reranked.length}</span>
-        <span class="rag-chip">review memory: ${escHtml(reviewMemory.status || "missing")}</span>
-        <span class="rag-chip">removed post-cutoff: ${cutoff.num_removed_post_cutoff ?? 0}</span>
-        <span class="rag-chip">removed undated: ${cutoff.num_removed_undated ?? 0}</span>
-        <span class="rag-chip">removed by cap: ${cutoff.num_removed_by_candidate_cap ?? 0}</span>
-        ${providerHtml}
+      <div class="rag-stat-grid">
+        <div class="rag-stat"><strong>${queries.length}</strong><span>Search queries</span></div>
+        <div class="rag-stat"><strong>${metadata.length}</strong><span>Papers retrieved</span></div>
+        <div class="rag-stat"><strong>${reranked.length}</strong><span>Papers reranked</span></div>
+        <div class="rag-stat"><strong>${cutoff.num_removed_post_cutoff ?? 0}</strong><span>After cutoff</span></div>
       </div>
-      <details open><summary>${escHtml(queryLabel)} (${queries.length})</summary><ul>${queryHtml}</ul></details>
-      <details open><summary>Related paper metadata (${metadata.length})</summary><ul>${paperHtml || "<li>No cutoff-valid papers retrieved.</li>"}</ul></details>
-      <details open><summary>${escHtml(rerankLabel)} (${reranked.length})</summary><ul>${rerankHtml || "<li>No reranking results.</li>"}</ul></details>
-      <details open><summary>Review-memory summary (${escHtml(reviewMemory.status || "missing")})</summary>${memoryHtml}</details>
-      <details open><summary>Related-work summary</summary><p>${escHtml(pkg.related_work_summary || "")}</p></details>
+      <div class="rag-chip-row">${providerHtml}</div>
+      <div class="rag-summary-card"><span>Summary sent to reviewers</span><p>${escHtml(pkg.related_work_summary || "No summary generated.")}</p></div>
+      <details open><summary>${escHtml(rerankLabel)} (${reranked.length})</summary><ol class="rag-ranked-list">${rerankHtml || "<li>No reranking results.</li>"}</ol></details>
+      <details><summary>${escHtml(queryLabel)} (${queries.length})</summary><ul>${queryHtml}</ul></details>
+      <details><summary>All retrieved papers (${metadata.length})</summary><ul>${paperHtml || "<li>No cutoff-valid papers retrieved.</li>"}</ul></details>
       ${warningHtml ? `<details open><summary>Warnings</summary><ul class="rag-warnings">${warningHtml}</ul></details>` : ""}
     `;
     preview.style.display = "block";
@@ -745,6 +746,7 @@
 
     const nIter = parseInt(document.getElementById("n-iter").value) || 3;
     const enableRag = document.getElementById("enable-rag").checked;
+    const enableAiDetector = document.getElementById("enable-ai-detector").checked;
 
     // Navigate to running page and reset state
     document.getElementById("log").innerHTML  = "";
@@ -758,7 +760,7 @@
     initAgentStatusPanel(reviewerDisplayNames);
     goToPage3();
 
-    appendLog("info", `Provider: ${selectedProvider} | Topic: ${selectedTopic} | Reviewers: ${checkedReviewers.join(", ")} | Iterations: ${nIter} | RAG: ${enableRag ? "enabled" : "disabled"}`);
+    appendLog("info", `Provider: ${selectedProvider} | Topic: ${selectedTopic} | Reviewers: ${checkedReviewers.join(", ")} | Iterations: ${nIter} | RAG: ${enableRag ? "enabled" : "disabled"} | AI Detector: ${enableAiDetector ? "enabled" : "disabled"}`);
 
     const res  = await fetch("/api/run", {
       method: "POST",
@@ -768,7 +770,8 @@
         n_iter: nIter, api_key: apiKey,
         provider: selectedProvider, model: modelName,
         enable_rag: enableRag,
-        enable_review_memory_rag: document.getElementById("enable-review-memory-rag").checked,
+        enable_ai_detector: enableAiDetector,
+        enable_review_memory_rag: false,
         cutoff_date: document.getElementById("rag-cutoff-date").value.trim() || "2024-12-31",
       }),
     });

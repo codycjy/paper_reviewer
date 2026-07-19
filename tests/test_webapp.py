@@ -106,6 +106,14 @@ class TestWebappCitationCheckDefault(unittest.TestCase):
     def test_gemini_default_model_is_current_flash_generation(self):
         self.assertEqual(DEFAULT_MODELS["gemini"], "gemini-3.5-flash")
 
+    def test_provider_endpoint_lists_deepseek_and_qwen(self):
+        app_module = self._load_app_module()
+        response = app_module.app.test_client().get("/api/providers")
+        self.assertEqual(response.status_code, 200)
+        providers = {item["id"]: item for item in response.get_json()["providers"]}
+        self.assertEqual(providers["deepseek"]["default_model"], "deepseek-v4-flash")
+        self.assertEqual(providers["qwen"]["default_model"], "qwen3.7-plus")
+
     def test_run_rag_rejects_non_cmu_gateway_key_before_llm_fallback(self):
         app_module = self._load_app_module()
 
@@ -207,7 +215,7 @@ class TestWebappCitationCheckDefault(unittest.TestCase):
                 else:
                     sys.modules["rag"] = old_rag_module
 
-    def test_review_memory_rag_toggle_is_forwarded_and_reused(self):
+    def test_review_memory_rag_stays_disabled_and_package_is_reused(self):
         app_module = self._load_app_module()
 
         rag_stub = types.ModuleType("rag")
@@ -280,7 +288,7 @@ class TestWebappCitationCheckDefault(unittest.TestCase):
                 else:
                     sys.modules["rag"] = old_rag_module
 
-    def test_review_memory_rag_toggle_changes_rag_reuse_signature(self):
+    def test_review_memory_rag_request_is_forced_off_and_does_not_change_signature(self):
         app_module = self._load_app_module()
 
         rag_stub = types.ModuleType("rag")
@@ -343,7 +351,7 @@ class TestWebappCitationCheckDefault(unittest.TestCase):
                 self.assertEqual(run_response.status_code, 200)
                 self.mas_loop_stub.main.assert_called_once()
                 call_kwargs = self.mas_loop_stub.main.call_args.kwargs
-                self.assertIsNone(call_kwargs["precomputed_rag_package"])
+                self.assertIs(call_kwargs["precomputed_rag_package"], rag_package)
                 self.assertFalse(call_kwargs["rag_config"]["enable_review_memory_rag"])
             finally:
                 os.chdir(old_cwd)

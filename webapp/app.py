@@ -57,12 +57,13 @@ def _rag_signature(paper: str, provider: str, model: str, rag_config: dict) -> d
 def _request_rag_config(data: dict) -> dict:
     rag_config = dict(DEFAULT_RAG_CONFIG)
     rag_config["enable_rag"] = bool(data.get("enable_rag", rag_config["enable_rag"]))
+    # Review-memory RAG is retained in the core module for future experiments,
+    # but is intentionally disabled in the web workflow for now.
+    rag_config["enable_review_memory_rag"] = False
     if data.get("cutoff_date"):
         rag_config["cutoff_date"] = str(data.get("cutoff_date"))
     if "allow_undated_evidence" in data:
         rag_config["allow_undated_evidence"] = bool(data.get("allow_undated_evidence"))
-    if "enable_review_memory_rag" in data:
-        rag_config["enable_review_memory_rag"] = bool(data.get("enable_review_memory_rag"))
     return rag_config
 
 
@@ -196,6 +197,7 @@ def run_review():
     model          = data.get("model", "").strip()
     rag_config     = _request_rag_config(data)
     enable_rag     = bool(data.get("enable_rag", DEFAULT_RAG_CONFIG["enable_rag"]))
+    enable_ai_detector = bool(data.get("enable_ai_detector", False))
 
     if topic not in VALID_TOPICS:
         return jsonify({"error": f"Invalid topic. Choose from: {sorted(VALID_TOPICS)}"}), 400
@@ -233,6 +235,7 @@ def run_review():
                 reviewer_types=reviewer_types, api_key=api_key,
                 provider=provider, model=model,
                 enable_rag=enable_rag,
+                enable_ai_detector=enable_ai_detector,
                 precomputed_rag_package=precomputed_rag,
                 rag_config=rag_config,
                 on_event=lambda msg: q.put(("status", msg)),
@@ -358,11 +361,13 @@ def get_providers():
         "openai": "ChatGPT / OpenAI API",
         "gemini": "Gemini API",
         "claude": "Claude API",
+        "deepseek": "DeepSeek API",
+        "qwen": "Qwen API (Model Studio)",
     }
     return jsonify({
         "providers": [
             {"id": provider, "label": labels[provider], "default_model": DEFAULT_MODELS[provider]}
-            for provider in ("cmu", "openai", "gemini", "claude")
+            for provider in ("cmu", "openai", "gemini", "claude", "deepseek", "qwen")
         ]
     })
 

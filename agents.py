@@ -2,12 +2,19 @@ import importlib
 import os
 
 
-VALID_PROVIDERS = {"cmu", "openai", "gemini", "claude"}
+VALID_PROVIDERS = {"cmu", "openai", "gemini", "claude", "deepseek", "qwen"}
 DEFAULT_MODELS = {
     "cmu": "gpt-5",
     "openai": "gpt-4o-mini",
     "gemini": "gemini-3.5-flash",
     "claude": "claude-3-5-sonnet-20240620",
+    "deepseek": "deepseek-v4-flash",
+    "qwen": "qwen3.7-plus",
+}
+
+OPENAI_COMPATIBLE_BASE_URLS = {
+    "deepseek": "https://api.deepseek.com",
+    "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1",
 }
 
 
@@ -23,6 +30,10 @@ def validate_api_key_for_provider(provider: str, api_key: str) -> str:
         )
     if provider == "openai" and not api_key.startswith("sk-"):
         return "OpenAI API keys should start with 'sk-'. Select the matching provider for this key."
+    if provider == "deepseek" and not api_key.startswith("sk-"):
+        return "DeepSeek API keys should start with 'sk-'. Select the matching provider for this key."
+    if provider == "qwen" and not api_key.startswith("sk-"):
+        return "Qwen / Model Studio API keys should start with 'sk-'. Select the matching provider for this key."
     return ""
 
 
@@ -46,6 +57,10 @@ def format_llm_error(provider: str, exc: Exception) -> str:
         return "Gemini authentication failed. Check that the selected provider and API key match."
     if looks_like_auth and provider == "claude":
         return "Claude authentication failed. Check that the selected provider and API key match."
+    if looks_like_auth and provider == "deepseek":
+        return "DeepSeek authentication failed. Check your DeepSeek API key."
+    if looks_like_auth and provider == "qwen":
+        return "Qwen authentication failed. Check that the API key and Qwen region endpoint match."
     return text
 
 
@@ -55,6 +70,8 @@ def _get_api_key(provider: str = "cmu") -> str:
         "openai": "OPENAI_API_KEY",
         "gemini": "GEMINI_API_KEY",
         "claude": "ANTHROPIC_API_KEY",
+        "deepseek": "DEEPSEEK_API_KEY",
+        "qwen": "DASHSCOPE_API_KEY",
     }
     try:
         from google.colab import userdata
@@ -112,6 +129,37 @@ class OpenAIChatGPTClient:
             ) from exc
         self.model = model or DEFAULT_MODELS["openai"]
         self.client = openai.OpenAI(api_key=api_key or _get_api_key("openai"))
+
+    def complete(self, system_prompt: str, messages: list[dict]) -> str:
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "system", "content": system_prompt}, *messages],
+        )
+        return response.choices[0].message.content.strip()
+
+
+class OpenAICompatibleClient:
+    """Chat-completions client for providers exposing an OpenAI-compatible API."""
+
+    def __init__(self, provider: str, api_key: str, model: str):
+        try:
+            import openai
+        except ImportError as exc:
+            raise RuntimeError(
+                f"{provider.title()} support requires the openai package. "
+                "Install requirements.txt and try again."
+            ) from exc
+        self.provider = provider
+        self.model = model or DEFAULT_MODELS[provider]
+        env_base_url = {
+            "deepseek": "DEEPSEEK_BASE_URL",
+            "qwen": "QWEN_BASE_URL",
+        }[provider]
+        self.base_url = os.environ.get(env_base_url, OPENAI_COMPATIBLE_BASE_URLS[provider])
+        self.client = openai.OpenAI(
+            api_key=api_key or _get_api_key(provider),
+            base_url=self.base_url,
+        )
 
     def complete(self, system_prompt: str, messages: list[dict]) -> str:
         response = self.client.chat.completions.create(
@@ -183,6 +231,8 @@ def create_llm_client(provider: str, api_key: str, model: str):
         return GeminiClient(api_key=api_key, model=model)
     if provider == "claude":
         return ClaudeClient(api_key=api_key, model=model)
+    if provider in OPENAI_COMPATIBLE_BASE_URLS:
+        return OpenAICompatibleClient(provider=provider, api_key=api_key, model=model)
     raise ValueError(f"Unsupported LLM provider: {provider}")
 
 

@@ -82,12 +82,11 @@ def _run_citation_check(paper_text: str, on_citation_event=None) -> dict:
 
 # ── Loop helpers ─────────────────────────────────────────────────────────────
 
-def construct_reviewer_prompt(author_resp: str, aicheck_resp: str) -> str:
-    return (
-        f"###AUTHOR_RESPONSE###\n{author_resp}\n\n"
-        f"###AICHECKER_RESPONSE###\n{aicheck_resp}\n\n"
-        f"###TASK###\n{reviewer_iteration}"
-    )
+def construct_reviewer_prompt(author_resp: str, aicheck_resp: str | None = None) -> str:
+    prompt = f"###AUTHOR_RESPONSE###\n{author_resp}\n\n"
+    if aicheck_resp is not None:
+        prompt += f"###AICHECKER_RESPONSE###\n{aicheck_resp}\n\n"
+    return prompt + f"###TASK###\n{reviewer_iteration}"
 
 
 def construct_conf_rec_prompt(topic: str, reviews: list) -> str:
@@ -115,6 +114,7 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
          on_event=None, on_agent_status=None, on_message=None,
          on_citation_event=None,
          run_citation_check: bool = True,
+         enable_ai_detector: bool = False,
          enable_rag: bool = False,
          precomputed_rag_package: dict | None = None,
          rag_config: dict | None = None) -> dict:
@@ -195,9 +195,14 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
         r.name = f"Reviewer {i} ({_type_label.get(rt, rt)})"
         reviewers.append(r)
     author     = Author(paper=paper, topic=topic, api_key=api_key, provider=provider, model=model)
-    ai_detect  = AIDetector(paper=paper, topic=topic, api_key=api_key, provider=provider, model=model)
+    ai_detect = None
+    if enable_ai_detector:
+        ai_detect = AIDetector(
+            paper=paper, topic=topic, api_key=api_key, provider=provider, model=model,
+        )
     conf_rec   = ConferenceRecommender(paper=paper, topic=topic, api_key=api_key, provider=provider, model=model)
-    emit(f"Initialized {len(reviewers)} reviewer(s), AI Author, AI Detector, "
+    detector_label = ", AI Detector" if enable_ai_detector else ""
+    emit(f"Initialized {len(reviewers)} reviewer(s), AI Author{detector_label}, "
          f"Conference Recommender.")
 
     # ── Storage ──────────────────────────────────────────────────────────────
@@ -244,8 +249,9 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
 
     # ── Iterations 1..n_iter-1: rebuttal loop ────────────────────────────────
     for iteration in range(1, n_iter):
-        # Phase B: Author + Detector process previous reviews (sequential, shared agents)
-        emit(f"--- Iteration {iteration + 1} / {n_iter}: Author & Detector Processing ---")
+        # Phase B: Author and optional Detector process previous reviews.
+        phase_label = "Author & Detector" if enable_ai_detector else "Author"
+        emit(f"--- Iteration {iteration + 1} / {n_iter}: {phase_label} Processing ---")
         for i, reviewer in enumerate(reviewers):
             emit(f"AI Author writing rebuttal to {reviewer.name}...")
             emit_agent_status(author.name, "running")
@@ -255,7 +261,11 @@ def main(paper: str, topic: str = "", n_iter: int = 10,
             )
             emit_agent_status(author.name, "done")
             emit_message(author.name, author_resps[iteration][i])
-            aicheck_resps[iteration][i] = ai_detect.call(reviews[iteration - 1][i])
+            if ai_detect is not None:
+                emit_agent_status(ai_detect.name, "running")
+                aicheck_resps[iteration][i] = ai_detect.call(reviews[iteration - 1][i])
+                emit_agent_status(ai_detect.name, "done")
+                emit_message(ai_detect.name, aicheck_resps[iteration][i])
 
         # Phase A: All reviewers update in parallel
         emit(f"--- Iteration {iteration + 1} / {n_iter}: Reviewer Updates ---")
@@ -337,11 +347,13 @@ if __name__ == "__main__":
     parser.add_argument("--topic",  default="")
     parser.add_argument("--n_iter", type=int, default=10)
     parser.add_argument("--provider", default="cmu",
-                        choices=["cmu", "openai", "gemini", "claude"])
+                        choices=["cmu", "openai", "gemini", "claude", "deepseek", "qwen"])
     parser.add_argument("--model", default="")
     parser.add_argument("--api_key", default="")
     parser.add_argument("--output", default=None)
     parser.add_argument("--enable_rag", action="store_true")
+    parser.add_argument("--enable_ai_detector", action="store_true",
+                        help="Enable the optional AI Detector agent (disabled by default).")
     args = parser.parse_args()
 
     with open(args.paper, "r", encoding="utf-8") as f:
@@ -351,6 +363,7 @@ if __name__ == "__main__":
         paper=paper, topic=args.topic, n_iter=args.n_iter,
         provider=args.provider, model=args.model, api_key=args.api_key,
         enable_rag=args.enable_rag,
+        enable_ai_detector=args.enable_ai_detector,
     )
 
     lines = []
