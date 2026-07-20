@@ -95,9 +95,9 @@ BASELINE_USER_PROMPT = "Here is the paper to review:\n\n{paper}\n\nNow produce y
 def _get_api_key() -> str:
     try:
         from google.colab import userdata
-        return userdata.get("API_KEY")
+        return userdata.get("OPENAI_API_KEY")
     except Exception:
-        return os.environ.get("API_KEY", "")
+        return os.environ.get("OPENAI_API_KEY", "")
 
 
 def normalize_topic(topic: str) -> str:
@@ -150,19 +150,19 @@ def pdf_to_markdown(pdf_dir: str) -> str:
 
 # ── Core baseline call ────────────────────────────────────────────────────────
 
-def run_baseline_review(paper_text: str, api_key: str, model: str = "gpt-5") -> dict:
+def run_baseline_review(paper_text: str, api_key: str, model: str = "google/gemini-3.5-flash") -> dict:
     """
     Single LLM call with no persona. Returns a result dict shaped like the
     main pipeline output so downstream evaluation code can consume it directly.
     """
     client = openai.OpenAI(
         api_key=api_key or _get_api_key(),
-        base_url="https://ai-gateway.andrew.cmu.edu",
+        base_url=os.environ.get("OPENAI_API_BASE", "https://openrouter.ai/api/v1"),
     )
 
     messages = [
-        {"role": "developer", "content": BASELINE_SYSTEM_PROMPT},
-        {"role": "user",      "content": BASELINE_USER_PROMPT.format(paper=paper_text)},
+        {"role": "system", "content": BASELINE_SYSTEM_PROMPT},
+        {"role": "user",   "content": BASELINE_USER_PROMPT.format(paper=paper_text)},
     ]
 
     print("[Baseline] Calling model (single shot, no persona)...")
@@ -280,8 +280,8 @@ def main():
                         help="Directory to save result files.")
     parser.add_argument("--paper_id",   default=None,
                         help="Optional: run only this paper_id.")
-    parser.add_argument("--model",      default="gpt-5",
-                        help="LLM model name (default: gpt-5).")
+    parser.add_argument("--model",      default="google/gemini-3.5-flash",
+                        help="LLM model name (default: google/gemini-3.5-flash, via OpenRouter).")
     parser.add_argument("--all_md",     action="store_true",
                         help="Run on all .md files in --md_dir, skipping existing results.")
     parser.add_argument("--md_dir",     default="data/md",

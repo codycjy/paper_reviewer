@@ -2,7 +2,7 @@ import importlib
 import os
 
 
-VALID_PROVIDERS = {"cmu", "openai", "gemini", "claude", "deepseek", "qwen"}
+VALID_PROVIDERS = {"cmu", "openai", "gemini", "claude", "deepseek", "qwen", "openrouter"}
 DEFAULT_MODELS = {
     "cmu": "gpt-5",
     "openai": "gpt-4o-mini",
@@ -10,11 +10,24 @@ DEFAULT_MODELS = {
     "claude": "claude-3-5-sonnet-20240620",
     "deepseek": "deepseek-v4-flash",
     "qwen": "qwen3.7-plus",
+    "openrouter": "google/gemini-3.5-flash",
 }
 
 OPENAI_COMPATIBLE_BASE_URLS = {
     "deepseek": "https://api.deepseek.com",
     "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "openrouter": "https://openrouter.ai/api/v1",
+}
+OPENAI_COMPATIBLE_ENV_BASE_URL = {
+    "deepseek": "DEEPSEEK_BASE_URL",
+    "qwen": "QWEN_BASE_URL",
+    "openrouter": "OPENAI_API_BASE",
+}
+# OpenRouter fans out to third-party "thinking" models that spend part of
+# max_tokens on hidden reasoning tokens before ever producing visible
+# content; cap it well above the reasoning budget so replies aren't empty.
+OPENAI_COMPATIBLE_MAX_TOKENS = {
+    "openrouter": 25600,
 }
 
 
@@ -34,6 +47,8 @@ def validate_api_key_for_provider(provider: str, api_key: str) -> str:
         return "DeepSeek API keys should start with 'sk-'. Select the matching provider for this key."
     if provider == "qwen" and not api_key.startswith("sk-"):
         return "Qwen / Model Studio API keys should start with 'sk-'. Select the matching provider for this key."
+    if provider == "openrouter" and not api_key.startswith("sk-"):
+        return "OpenRouter API keys should start with 'sk-'. Select the matching provider for this key."
     return ""
 
 
@@ -61,6 +76,8 @@ def format_llm_error(provider: str, exc: Exception) -> str:
         return "DeepSeek authentication failed. Check your DeepSeek API key."
     if looks_like_auth and provider == "qwen":
         return "Qwen authentication failed. Check that the API key and Qwen region endpoint match."
+    if looks_like_auth and provider == "openrouter":
+        return "OpenRouter authentication failed. Check that the selected provider and API key match."
     return text
 
 
@@ -72,6 +89,7 @@ def _get_api_key(provider: str = "cmu") -> str:
         "claude": "ANTHROPIC_API_KEY",
         "deepseek": "DEEPSEEK_API_KEY",
         "qwen": "DASHSCOPE_API_KEY",
+        "openrouter": "OPENAI_API_KEY",
     }
     try:
         from google.colab import userdata
@@ -151,22 +169,23 @@ class OpenAICompatibleClient:
             ) from exc
         self.provider = provider
         self.model = model or DEFAULT_MODELS[provider]
-        env_base_url = {
-            "deepseek": "DEEPSEEK_BASE_URL",
-            "qwen": "QWEN_BASE_URL",
-        }[provider]
-        self.base_url = os.environ.get(env_base_url, OPENAI_COMPATIBLE_BASE_URLS[provider])
+        self.base_url = os.environ.get(
+            OPENAI_COMPATIBLE_ENV_BASE_URL[provider], OPENAI_COMPATIBLE_BASE_URLS[provider]
+        )
         self.client = openai.OpenAI(
             api_key=api_key or _get_api_key(provider),
             base_url=self.base_url,
         )
+        self.max_tokens = OPENAI_COMPATIBLE_MAX_TOKENS.get(provider)
 
     def complete(self, system_prompt: str, messages: list[dict]) -> str:
+        kwargs = {"max_tokens": self.max_tokens} if self.max_tokens is not None else {}
         response = self.client.chat.completions.create(
             model=self.model,
             messages=[{"role": "system", "content": system_prompt}, *messages],
+            **kwargs,
         )
-        return response.choices[0].message.content.strip()
+        return (response.choices[0].message.content or "").strip()
 
 
 class GeminiClient:

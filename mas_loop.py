@@ -110,7 +110,7 @@ def get_review(reviewer: Reviewer, reviewer_prompt: str, iteration: int,
 
 def main(paper: str, topic: str = "", n_iter: int = 10,
          reviewer_types: list = None, api_key: str = "",
-         provider: str = "cmu", model: str = "",
+         provider: str = "openrouter", model: str = "",
          on_event=None, on_agent_status=None, on_message=None,
          on_citation_event=None,
          run_citation_check: bool = True,
@@ -346,8 +346,8 @@ if __name__ == "__main__":
     parser.add_argument("--paper",  default="data/md/example_paper.md")
     parser.add_argument("--topic",  default="")
     parser.add_argument("--n_iter", type=int, default=10)
-    parser.add_argument("--provider", default="cmu",
-                        choices=["cmu", "openai", "gemini", "claude", "deepseek", "qwen"])
+    parser.add_argument("--provider", default="openrouter",
+                        choices=["cmu", "openai", "gemini", "claude", "deepseek", "qwen", "openrouter"])
     parser.add_argument("--model", default="")
     parser.add_argument("--api_key", default="")
     parser.add_argument("--output", default=None)
