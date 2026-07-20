@@ -68,7 +68,7 @@ from eval.SRC import compute_src_both, load_model
 _CONF_SCORE_RANGE: dict[str, tuple[float, float]] = {
     "ICLR":    (1.0, 10.0),
     "ICML":    (1.0,  5.0),
-    "NeurIPS": (1.0,  6.0),
+    "NEURIPS": (1.0,  6.0),
 }
 _OUR_SCORE_RANGE: tuple[float, float] = (1.0, 5.0)
 
@@ -451,6 +451,7 @@ def run_evaluation(
     print(f"{'='*65}")
     for sys_name, agg in aggregate.items():
         print(f"\n  System: {sys_name}  (n={agg['n_papers']})")
+        print(f"    {'decision_accuracy':<30}: {agg['decision_accuracy']}")
         print(f"    {'conference_check_accuracy':<30}: {agg['conference_check_accuracy']}")
         sc = agg.get('score_spearman')
         if sc:
