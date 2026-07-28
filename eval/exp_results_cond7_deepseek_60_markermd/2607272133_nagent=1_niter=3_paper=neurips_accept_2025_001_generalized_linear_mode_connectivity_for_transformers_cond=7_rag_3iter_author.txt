@@ -1,0 +1,762 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel and comprehensive unified framework for symmetry-aware model alignment that generalizes beyond simple permutations to include semi-permutations, orthogonal transformations, and invertible maps",
+        "Achieves, for the first time, low- and zero-loss linear connectivity between independently trained Vision Transformers and GPT-2 models, significantly advancing the understanding of Transformer loss landscapes",
+        "Demonstrates practical value through multi-model connectivity and width-heterogeneous alignment, showing broad applicability across different architectures and scales",
+        "Provides thorough theoretical grounding for the symmetry classes and their relationship to specific Transformer components",
+        "Offers extensive experimental validation across multiple datasets and model types with proper statistical reporting"
+      ],
+      "weaknesses": [
+        "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+        "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+        "Some language model experiments (particularly BookCorpus) show persistent barriers, suggesting potential fundamental limitations or incomplete alignment that warrant deeper investigation"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+          "severity": "minor",
+          "evidence": "Appendix A states: 'The empirical results for language models were based on a smaller version of GPT-2 language models with reduced parameters due to resource constraints' and indicates the need for evaluation on larger models",
+          "affected_claim": "General applicability of the method to state-of-the-art transformer architectures",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+          "severity": "minor",
+          "evidence": "Section 6 identifies that learned matching primarily refines the orthogonal transformation but doesn't comprehensively explore improved data-free estimation methods for O",
+          "affected_claim": "Optimality and completeness of the proposed alignment methodology",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The theoretical framework is well-grounded in neural network symmetry theory, and experiments are properly conducted with appropriate statistical reporting. Mathematical derivations in Appendix E provide solid theoretical support for the symmetry classes."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The unified symmetry framework represents a substantial advance over prior permutation-focused approaches. Unlike the related work in the RAG evidence, which primarily applies transformers to various domains, this paper fundamentally advances our understanding of transformer loss landscapes through novel symmetry analysis."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "This work meaningfully advances the field by demonstrating, for the first time, linear mode connectivity in Transformers, with implications for model merging, federated learning, and fundamental understanding of neural network geometry."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Comprehensive experiments across Vision Transformers and GPT-2 models, multiple datasets, and various alignment strategies provide convincing evidence. The ablation studies in Appendix C strengthen the experimental validation."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written with well-structured sections, helpful figures, and comprehensive appendices. The symmetry framework is explained systematically, though some mathematical derivations could benefit from additional clarification."
+        }
+      },
+      "summary_comment": "This paper makes a significant contribution to understanding neural network loss landscapes by introducing a unified symmetry framework that enables, for the first time, linear mode connectivity between independently trained Transformers. The extension beyond simple permutations to richer symmetry classes is theoretically sound and empirically validated across multiple architectures and tasks. While some practical limitations exist regarding model scale and certain language tasks, the core contributions are substantial and meet top-tier conference standards. The work opens important directions for model merging, federated learning, and fundamental landscape analysis."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong topic fit: ICML covers optimization, deep learning theory, and loss landscape analysis, which align with this paper's focus on linear mode connectivity and symmetry-aware model alignment.",
+        "Methodological rigor: The paper provides extensive theoretical grounding for symmetry classes (Appendix E) and thorough experimental validation across multiple architectures (ViT, GPT-2) and datasets, meeting ICML's standards for technical depth.",
+        "Novelty contribution: The unified symmetry framework generalizes beyond prior permutation-based approaches, demonstrating first-time LMC for Transformers, which represents a meaningful advance in understanding neural network geometry."
+      ],
+      "why_it_does_not_fit": [
+        "Potential scalability concerns: ICML often favors papers with larger-scale experiments, while this work acknowledges limitations in evaluating larger contemporary language models due to computational constraints (Appendix A).",
+        "Application focus: While the paper mentions implications for federated learning and model merging, the core contribution is more theoretical/geometric than applied, which might align slightly better with NeurIPS' balance of theory and practice.",
+        "Reviewer noted persistent barriers on BookCorpus tasks, suggesting some limitations in generalizability across all domains."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent topic alignment: NeurIPS strongly emphasizes deep learning theory, optimization landscapes, and transformer architectures, all central to this work.",
+        "Strong empirical validation: The paper provides comprehensive experiments across vision and language tasks (CIFAR, ImageNet, Shakespeare, BookCorpus) with proper statistical reporting, meeting NeurIPS' standards for rigorous evaluation.",
+        "Interdisciplinary appeal: The work connects theory (symmetry classes), optimization (loss landscapes), and practical applications (model merging), fitting NeurIPS' broad ML focus.",
+        "Reviewer assessment: The reviewer scored significance at 5/5 and noted the work 'meaningfully advances the field,' indicating strong alignment with NeurIPS' impact standards."
+      ],
+      "why_it_does_not_fit": [
+        "Theoretical depth: While theoretically grounded, the paper might be slightly more applied than some purely theoretical contributions NeurIPS accepts, though it strikes a good balance.",
+        "Scalability limitations: Like with ICML, the computational constraints on larger models might be a minor concern for NeurIPS, which often features state-of-the-art scale experiments."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect architectural focus: ICLR specializes in deep learning and transformer architectures, making this paper's focus on Vision Transformers and GPT-2 an excellent fit.",
+        "Strong symmetry analysis: The detailed treatment of network symmetries (permutations, orthogonal transformations, invertible maps) aligns well with ICLR's interest in theoretical understanding of deep learning components.",
+        "Experimental rigor: The comprehensive ablation studies (Appendix C), soft permutation analyses (Appendix D), and multi-model connectivity results match ICLR's emphasis on thorough deep learning experimentation.",
+        "Reviewer endorsement: The reviewer's high novelty (5/5) and significance (5/5) scores indicate this work would be well-received at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "Slightly broader than pure deep learning: While focused on transformers, the work has connections to broader ML topics (optimization theory, model merging) that might make it slightly less specialized than some ICLR contributions.",
+        "Language model limitations: The persistent barriers on BookCorpus tasks might be seen as a limitation for a venue focused on state-of-the-art deep learning results."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel and comprehensive unified framework for symmetry-aware model alignment that generalizes beyond simple permutations to include semi-permutations, orthogonal transformations, and invertible maps",
+              "Achieves, for the first time, low- and zero-loss linear connectivity between independently trained Vision Transformers and GPT-2 models, significantly advancing the understanding of Transformer loss landscapes",
+              "Demonstrates practical value through multi-model connectivity and width-heterogeneous alignment, showing broad applicability across different architectures and scales",
+              "Provides thorough theoretical grounding for the symmetry classes and their relationship to specific Transformer components",
+              "Offers extensive experimental validation across multiple datasets and model types with proper statistical reporting"
+            ],
+            "weaknesses": [
+              "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+              "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+              "Some language model experiments (particularly BookCorpus) show persistent barriers, suggesting potential fundamental limitations or incomplete alignment that warrant deeper investigation"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+                "severity": "minor",
+                "evidence": "Appendix A states: 'The empirical results for language models were based on a smaller version of GPT-2 language models with reduced parameters due to resource constraints' and indicates the need for evaluation on larger models",
+                "affected_claim": "General applicability of the method to state-of-the-art transformer architectures",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+                "severity": "minor",
+                "evidence": "Section 6 identifies that learned matching primarily refines the orthogonal transformation but doesn't comprehensively explore improved data-free estimation methods for O",
+                "affected_claim": "Optimality and completeness of the proposed alignment methodology",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical framework is well-grounded in neural network symmetry theory, and experiments are properly conducted with appropriate statistical reporting. Mathematical derivations in Appendix E provide solid theoretical support for the symmetry classes."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The unified symmetry framework represents a substantial advance over prior permutation-focused approaches. Unlike the related work in the RAG evidence, which primarily applies transformers to various domains, this paper fundamentally advances our understanding of transformer loss landscapes through novel symmetry analysis."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This work meaningfully advances the field by demonstrating, for the first time, linear mode connectivity in Transformers, with implications for model merging, federated learning, and fundamental understanding of neural network geometry."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments across Vision Transformers and GPT-2 models, multiple datasets, and various alignment strategies provide convincing evidence. The ablation studies in Appendix C strengthen the experimental validation."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written with well-structured sections, helpful figures, and comprehensive appendices. The symmetry framework is explained systematically, though some mathematical derivations could benefit from additional clarification."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution to understanding neural network loss landscapes by introducing a unified symmetry framework that enables, for the first time, linear mode connectivity between independently trained Transformers. The extension beyond simple permutations to richer symmetry classes is theoretically sound and empirically validated across multiple architectures and tasks. While some practical limitations exist regarding model scale and certain language tasks, the core contributions are substantial and meet top-tier conference standards. The work opens important directions for model merging, federated learning, and fundamental landscape analysis."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel and comprehensive unified framework for symmetry-aware model alignment that generalizes beyond simple permutations to include semi-permutations, orthogonal transformations, and invertible maps",
+              "Achieves, for the first time, low- and zero-loss linear connectivity between independently trained Vision Transformers and GPT-2 models, significantly advancing the understanding of Transformer loss landscapes",
+              "Demonstrates practical value through multi-model connectivity and width-heterogeneous alignment, showing broad applicability across different architectures and scales",
+              "Provides thorough theoretical grounding for the symmetry classes and their relationship to specific Transformer components",
+              "Offers extensive experimental validation across multiple datasets and model types with proper statistical reporting"
+            ],
+            "weaknesses": [
+              "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+              "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+              "Some language model experiments (particularly BookCorpus) show persistent barriers, suggesting potential fundamental limitations or incomplete alignment that warrant deeper investigation"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+                "severity": "minor",
+                "evidence": "Appendix A states: 'The empirical results for language models were based on a smaller version of GPT-2 language models with reduced parameters due to resource constraints' and indicates the need for evaluation on larger models",
+                "affected_claim": "General applicability of the method to state-of-the-art transformer architectures",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+                "severity": "minor",
+                "evidence": "Section 6 identifies that learned matching primarily refines the orthogonal transformation but doesn't comprehensively explore improved data-free estimation methods for O",
+                "affected_claim": "Optimality and completeness of the proposed alignment methodology",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical framework is well-grounded in neural network symmetry theory, and experiments are properly conducted with appropriate statistical reporting. Mathematical derivations in Appendix E provide solid theoretical support for the symmetry classes."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The unified symmetry framework represents a substantial advance over prior permutation-focused approaches. Unlike the related work in the RAG evidence, which primarily applies transformers to various domains, this paper fundamentally advances our understanding of transformer loss landscapes through novel symmetry analysis."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This work meaningfully advances the field by demonstrating, for the first time, linear mode connectivity in Transformers, with implications for model merging, federated learning, and fundamental understanding of neural network geometry."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments across Vision Transformers and GPT-2 models, multiple datasets, and various alignment strategies provide convincing evidence. The ablation studies in Appendix C strengthen the experimental validation."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written with well-structured sections, helpful figures, and comprehensive appendices. The symmetry framework is explained systematically, though some mathematical derivations could benefit from additional clarification."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution to understanding neural network loss landscapes by introducing a unified symmetry framework that enables, for the first time, linear mode connectivity between independently trained Transformers. The extension beyond simple permutations to richer symmetry classes is theoretically sound and empirically validated across multiple architectures and tasks. While some practical limitations exist regarding model scale and certain language tasks, the core contributions are substantial and meet top-tier conference standards. The work opens important directions for model merging, federated learning, and fundamental landscape analysis."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Computational limitations: Experiments use smaller GPT-2 models and standard benchmarks, with acknowledged need for validation on larger, contemporary language models.\",\n        \"Analysis gap: The gap between weight and learned matching is identified (learned matching refines orthogonal alignment) but a systematic exploration of improved, data-free orthogonal alignment methods is not provided.\",\n        \"Persistent barriers: Non-zero barriers in some language model experiments (notably BookCorpus) suggest potential fundamental limitations or incomplete alignment, warranting deeper investigation.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Computational limitations and scale of evaluations.\",\n          \"location\": \"Appendix A (Limitations).\",\n          \"explanation\": \"The paper explicitly states: 'The empirical results for language models were based on a smaller version of GPT-2 language models with reduced parameters due to resource constraints (Appendix B), indicating the need for evaluation on larger, more contemporary language models.'\"\n        },\n        {\n          \"concern\": \"Analysis of the gap between weight and learned matching.\",\n          \"location\": \"Section 6 (Understanding the gap between weight- and learned matching) and Figure 5.\",\n          \"explanation\": \"The analysis shows that learned matching primarily refines the orthogonal map O estimated by weight matching, with the permutation matrices remaining largely unchanged. Figure 5 visualizes this by comparing the eigenvalue spectra of the orthogonal maps from weight matching (OWM) and the relative correction from learned matching (Odiff). This identifies the orthogonal alignment as the primary source of the performance gap.\"\n        },\n        {\n          \"concern\": \"Persistent interpolation barriers in certain tasks.\",\n          \"location\": \"Section 5 (Results), discussion regarding BookCorpus results.\",\n          \"explanation\": \"The paper discusses the higher barriers on BookCorpus, hypothesizing that they 'may reflect fundamentally different solutions rather than merely suboptimal alignment.' It cites related work [Juneja et al., 2023] suggesting fine-tuning can yield multiple basins associated with distinct generalization strategies. This frames the non-zero barrier as a potential indication of landscape disconnectivity, not a failure of the method.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Need for a more systematic investigation of data-free orthogonal alignment methods to close the gap with learned matching.\",\n          \"proposed_change\": \"The paper would benefit from a short discussion in Section 6 or the conclusion explicitly outlining promising avenues for better, data-free estimation of the orthogonal matrix O, such as incorporating structural priors or developing spectral objectives. This would address the reviewer's point about a 'more systematic investigation'.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and insightful comments. We address the points raised below.\\n\\n**1. Computational Limitations & Model Scale:** We acknowledge the limitation regarding model scale, as stated in Appendix A. Our primary contribution is the theoretical framework and its empirical validation that LMC for Transformers is *possible* when leveraging richer symmetries. Demonstrating this on smaller, controlled models (as is standard in foundational landscape studies) provides a crucial proof of concept. The framework is architecture-agnostic; scaling to larger models is a natural and important extension for future work, which we will highlight more clearly in the revised discussion/conclusion.\\n\\n**2. Gap Between Weight and Learned Matching:** The reviewer correctly notes our analysis identifies the orthogonal transformation refinement as the primary gap. Section 6 and Figure 5 provide this evidence. We agree that exploring improved, purely data-free methods for orthogonal alignment is a valuable direction. In the revised manuscript, we will expand the final paragraph of Section 6 to more explicitly propose specific research avenues (e.g., using spectral properties of the residual stream weights or constructing alignment objectives that preserve certain invariants) that could narrow this gap without task-loss supervision.\\n\\n**3. Persistent Barriers on Language Tasks:** The persistent barrier on BookCorpus is not dismissed but discussed as a meaningful finding (Section 5). It suggests that for complex language modeling, independently trained solutions may sometimes reside in genuinely disconnected basins, potentially corresponding to different generalization strategies as cited from [Juneja et al., 2023]. This does not undermine our core contribution—demonstrating zero-barrier connectivity is achievable in many settings (ViTs, Tiny Shakespeare GPT-2)—but rather reveals an interesting boundary condition. We will ensure this interpretation is stated clearly.\\n\\n**Overall:** The reviewer's points are well-taken and highlight fruitful areas for follow-up research. We will incorporate clarifying language regarding future work on data-free orthogonal alignment and the interpretation of persistent barriers. We believe these revisions will strengthen the paper's discussion without affecting the soundness or novelty of the presented contributions.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel and comprehensive unified framework for symmetry-aware model alignment that generalizes beyond simple permutations to include semi-permutations, orthogonal transformations, and invertible maps",
+              "Achieves, for the first time, low- and zero-loss linear connectivity between independently trained Vision Transformers and GPT-2 models, significantly advancing the understanding of Transformer loss landscapes",
+              "Demonstrates practical value through multi-model connectivity and width-heterogeneous alignment, showing broad applicability across different architectures and scales",
+              "Provides thorough theoretical grounding for the symmetry classes and their relationship to specific Transformer components",
+              "Offers extensive experimental validation across multiple datasets and model types with proper statistical reporting"
+            ],
+            "weaknesses": [
+              "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+              "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+              "Some language model experiments (particularly BookCorpus) show persistent barriers, suggesting potential fundamental limitations or incomplete alignment that warrant deeper investigation"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper acknowledges limitations in scaling to larger contemporary language models and more complex benchmarks due to computational constraints",
+                "severity": "minor",
+                "evidence": "Appendix A states: 'The empirical results for language models were based on a smaller version of GPT-2 language models with reduced parameters due to resource constraints' and indicates the need for evaluation on larger models",
+                "affected_claim": "General applicability of the method to state-of-the-art transformer architectures",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The gap between weight matching and learned matching is analyzed but leaves room for more systematic investigation of data-free orthogonal alignment methods",
+                "severity": "minor",
+                "evidence": "Section 6 identifies that learned matching primarily refines the orthogonal transformation but doesn't comprehensively explore improved data-free estimation methods for O",
+                "affected_claim": "Optimality and completeness of the proposed alignment methodology",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical framework is well-grounded in neural network symmetry theory, and experiments are properly conducted with appropriate statistical reporting. Mathematical derivations in Appendix E provide solid theoretical support for the symmetry classes."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The unified symmetry framework represents a substantial advance over prior permutation-focused approaches. Unlike the related work in the RAG evidence, which primarily applies transformers to various domains, this paper fundamentally advances our understanding of transformer loss landscapes through novel symmetry analysis."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This work meaningfully advances the field by demonstrating, for the first time, linear mode connectivity in Transformers, with implications for model merging, federated learning, and fundamental understanding of neural network geometry."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments across Vision Transformers and GPT-2 models, multiple datasets, and various alignment strategies provide convincing evidence. The ablation studies in Appendix C strengthen the experimental validation."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written with well-structured sections, helpful figures, and comprehensive appendices. The symmetry framework is explained systematically, though some mathematical derivations could benefit from additional clarification."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution to understanding neural network loss landscapes by introducing a unified symmetry framework that enables, for the first time, linear mode connectivity between independently trained Transformers. The extension beyond simple permutations to richer symmetry classes is theoretically sound and empirically validated across multiple architectures and tasks. While some practical limitations exist regarding model scale and certain language tasks, the core contributions are substantial and meet top-tier conference standards. The work opens important directions for model merging, federated learning, and fundamental landscape analysis."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Computational limitations: Experiments on smaller GPT-2 models and standard benchmarks; need for validation on larger contemporary models.\",\n        \"Analysis gap: The gap between weight and learned matching is identified but a more systematic investigation of improved, data-free orthogonal alignment methods is not provided.\",\n        \"Persistent barriers: Non-zero barriers in some language model experiments suggest potential fundamental limitations or incomplete alignment.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Computational limitations and scale of evaluations are acknowledged.\",\n          \"location\": \"Appendix A (Limitations)\",\n          \"explanation\": \"The paper explicitly states: 'The empirical results for language models were based on a smaller version of GPT-2 language models with reduced parameters due to resource constraints (Appendix B), indicating the need for evaluation on larger, more contemporary language models.' This is presented transparently as a limitation.\"\n        },\n        {\n          \"concern\": \"The performance gap between weight matching and learned matching is analyzed.\",\n          \"location\": \"Section 6 (Understanding the gap between weight- and learned matching) and Figure 5.\",\n          \"explanation\": \"The analysis shows that learned matching primarily refines the orthogonal map O estimated by weight matching, while the permutation matrices remain largely unchanged. This is demonstrated by comparing eigenvalue spectra in Figure 5, directly isolating the orthogonal alignment as the source of improvement.\"\n        },\n        {\n          \"concern\": \"Discussion of persistent barriers on certain tasks.\",\n          \"location\": \"Section 5 (Results), paragraph discussing BookCorpus results.\",\n          \"explanation\": \"The paper discusses the higher barriers on BookCorpus, stating they 'may reflect fundamentally different solutions rather than merely suboptimal alignment' and linking this to prior work [Juneja et al., 2023] on distinct generalization strategies. This connects the empirical observation to existing literature on loss landscape disconnectivity.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Need for a more systematic discussion of future directions to narrow the gap between data-free weight matching and supervised learned matching.\",\n          \"proposed_change\": \"In the revised manuscript, we will enhance the discussion in Section 6 (or the conclusion) to explicitly outline promising research avenues for improving data-free orthogonal alignment. This will include suggestions such as incorporating spectral objectives based on the structure of residual stream weights or developing priors that preserve functional similarity, thereby providing a clearer roadmap for future work.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Clarifying the significance and interpretation of non-zero barriers in language tasks.\",\n          \"proposed_change\": \"We will add a sentence in the BookCorpus discussion (Section 5) to more explicitly state that these persistent barriers highlight a potential frontier for the framework—distinguishing between alignment failures and genuinely disconnected modes—and that this merits further investigation as a key direction for future work.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive evaluation and constructive feedback. We address each point below.\\n\\n**1. Computational Limitations & Model Scale:** We agree that evaluating on larger, contemporary models is an important direction. As noted in Appendix A, our current experiments are constrained by resources. The primary contribution is the conceptual and empirical demonstration that LMC for Transformers is achievable via richer symmetries, establishing a foundational result. The framework itself is architecture-agnostic. In the revised manuscript, we will strengthen the discussion in Appendix A and the conclusion to more explicitly frame scaling as a clear and exciting next step, while maintaining that our results on controlled models provide a necessary and convincing proof of concept.\\n\\n**2. Gap Between Weight and Learned Matching:** The reviewer is correct that our analysis identifies the refinement of the orthogonal transformation as the key gap (Section 6, Figure 5). We agree that proposing concrete avenues for data-free orthogonal alignment is a valuable addition. In revision, we will expand the final paragraph of Section 6 to suggest specific strategies—such as exploiting spectral properties of weight matrices or designing alignment objectives that preserve functional invariants—that could bridge this gap without task-loss supervision. This will provide a more systematic outlook for future research.\\n\\n**3. Persistent Barriers on Language Tasks:** The non-zero barrier on BookCorpus is a meaningful finding. Our discussion already links it to the possibility of genuinely disconnected modes (Section 5), citing relevant work [Juneja et al., 2023]. To address the reviewer's point, we will clarify this interpretation further, stating explicitly that such barriers may indicate a limit of connectivity (and thus an interesting boundary of the phenomenon) rather than a shortcoming of the alignment method. This positions the result as an insight into the landscape's structure, reinforcing the paper's contribution.\\n\\nOverall, the reviewer's suggestions will help improve the paper's discussion of limitations and future work. We are confident these textual revisions will address the concerns without requiring new experiments, strengthening the manuscript while preserving its core contributions.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_dd4e29c76e40",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_001_generalized_linear_mode_connectivity_for_transformers.md",
+    "target_paper_summary": {
+      "paper_id": "paper_dd4e29c76e40",
+      "title": "Generalized Linear Mode Connectivity For Transformers",
+      "abstract": "Understanding the geometry of neural network loss landscapes is a central question in deep learning, with implications for generalization and optimization. A striking phenomenon is *linear mode connectivity* (LMC), where independently trained models can be connected by low- or zero-barrier paths, despite appearing to lie in separate loss basins. However, this is often obscured by symmetries in parameter space—such as neuron permutations—which make functionally equivalent models appear dissimilar. Prior work has predominantly focused on neuron reordering through permutations, but such approaches are limited in scope and fail to capture the richer symmetries exhibited by modern architectures such as Transformers. In this work, we introduce a unified framework that captures four symmetry classes—permutations, semi-permutations, orthogonal transformations, and general invertible maps—broadening the set of valid reparameterizations and subsuming many previous approaches as special cases. Crucially, this generalization enables, for the first time, the discovery of low- and zero-barrier linear interpolation paths between independently trained Vision Transformers and GPT-2 models. Furthermore, our framework extends beyond pairwise alignment, to multi-model and width-heterogeneous settings, enabling alignment across architectures of different sizes. These results reveal deeper structure in the loss landscape and underscore the importance of symmetry-aware analysis for understanding model space geometry. Our code is available here.",
+      "topic": "",
+      "claims": [
+        "we introduce a unified framework that captures four symmetry classes—permutations, semi-permutations, orthogonal transformations, and general invertible maps—broadening the set of valid reparameterizations and subsuming many previous approaches as special cases.",
+        "our framework extends beyond pairwise alignment, to multi-model and width-heterogeneous settings, enabling alignment across architectures of different sizes."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_7dc9cd61c",
+        "title": "GPT (Generative Pre-Trained Transformer)— A Comprehensive Review on Enabling Technologies, Potential Applications, Emerging Challenges, and Future Directions",
+        "authors": [
+          "Gokul Yenduri",
+          "M. Ramalingam",
+          "G. Chemmalar Selvi",
+          "Y. Supriya",
+          "Gautam Srivastava",
+          "Praveen Kumar Reddy Maddikunta",
+          "G. Deepti Raj",
+          "Rutvij H. Jhaveri",
+          "B. Prabadevi",
+          "Weizheng Wang",
+          "Athanasios V. Vasilakos",
+          "Thippa Reddy Gadekallu"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "IEEE Access",
+        "abstract": "The Generative Pre-trained Transformer (GPT) represents a notable breakthrough in the domain of natural language processing, which is propelling us toward the development of machines that can understand and communicate using language in a manner that closely resembles that of humans. GPT is based on the transformer architecture, a deep neural network designed for natural language processing tasks. Due to their impressive performance on natural language processing tasks and ability to effectively converse, GPT have gained significant popularity among researchers and industrial communities, making them one of the most widely used and effective models in natural language processing and related fields, which motivated to conduct this review. This review provides a detailed overview of the GPT, including its architecture, working process, training procedures, enabling technologies, and its impact on various applications. In this review, we also explored the potential challenges and limitations of a GPT. Furthermore, we discuss potential solutions and future directions. Overall, this paper aims to provide a comprehensive understanding of GPT, its enabling technologies, their impact on various applications, emerging challenges, and potential solutions.",
+        "url": "https://doi.org/10.1109/access.2024.3389497",
+        "doi": "https://doi.org/10.1109/access.2024.3389497",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4394828356"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 555
+      },
+      {
+        "paper_id": "rw_002_f444c290b",
+        "title": "Knowledge-Enhanced Hierarchical Graph Transformer Network for Multi-Behavior Recommendation",
+        "authors": [
+          "Lianghao Xia",
+          "Chao Huang",
+          "Yong Xu",
+          "Peng Dai",
+          "Xiyue Zhang",
+          "Hongsheng Yang",
+          "Jian Pei",
+          "Liefeng Bo"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-18",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "Accurate user and item embedding learning is crucial for modern recommender systems. However, most existing recommendation techniques have thus far focused on modeling users' preferences over singular type of user-item interactions. Many practical recommendation scenarios involve multi-typed user interactive behaviors (e.g., page view, add-to-favorite and purchase), which presents unique challenges that cannot be handled by current recommendation solutions. In particular: i) complex inter-dependencies across different types of user behaviors; ii) the incorporation of knowledge-aware item relations into the multi-behavior recommendation framework; iii) dynamic characteristics of multi-typed user-item interactions. To tackle these challenges, this work proposes a Knowledge-Enhanced Hierarchical Graph Transformer Network (KHGT), to investigate multi-typed interactive patterns between users and items in recommender systems. Specifically, KHGT is build upon a graph-structured neural architecture to i) capture type-specific behavior semantics; ii) explicitly discriminate which types of user-item interactions are more important in assisting the forecasting task on the target behavior. Additionally, we further integrate the multi-modal graph attention layer with temporal encoding strategy, to empower the learned embeddings be reflective of both dedicated multiplex user-item and item-item collaborative relations, as well as the underlying interaction dynamics. Extensive experiments conducted on three real-world datasets show that KHGT consistently outperforms many state-of-the-art recommendation methods across various evaluation settings. Our implementation is available in https://github.com/akaxlh/KHGT.",
+        "url": "https://doi.org/10.1609/aaai.v35i5.16576",
+        "doi": "https://doi.org/10.1609/aaai.v35i5.16576",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3207257408"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 228
+      },
+      {
+        "paper_id": "rw_003_9268e6293",
+        "title": "Transformer Architecture and Attention Mechanisms in Genome Data Analysis: A Comprehensive Review",
+        "authors": [
+          "Sanghyuk Roy Choi",
+          "Minhyeok Lee"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-22",
+        "venue": "Biology",
+        "abstract": "The emergence and rapid development of deep learning, specifically transformer-based architectures and attention mechanisms, have had transformative implications across several domains, including bioinformatics and genome data analysis. The analogous nature of genome sequences to language texts has enabled the application of techniques that have exhibited success in fields ranging from natural language processing to genomic data. This review provides a comprehensive analysis of the most recent advancements in the application of transformer architectures and attention mechanisms to genome and transcriptome data. The focus of this review is on the critical evaluation of these techniques, discussing their advantages and limitations in the context of genome data analysis. With the swift pace of development in deep learning methodologies, it becomes vital to continually assess and reflect on the current standing and future direction of the research. Therefore, this review aims to serve as a timely resource for both seasoned researchers and newcomers, offering a panoramic view of the recent advancements and elucidating the state-of-the-art applications in the field. Furthermore, this review paper serves to highlight potential areas of future investigation by critically evaluating studies from 2019 to 2023, thereby acting as a stepping-stone for further research endeavors.",
+        "url": "https://doi.org/10.3390/biology12071033",
+        "doi": "https://doi.org/10.3390/biology12071033",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385201870"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 216
+      },
+      {
+        "paper_id": "rw_004_c919f2fa8",
+        "title": "End-to-End Transformer-Based Models in Textual-Based NLP",
+        "authors": [
+          "Abir Rahali",
+          "Moulay A. Akhloufi"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-05",
+        "venue": "AI",
+        "abstract": "Transformer architectures are highly expressive because they use self-attention mechanisms to encode long-range dependencies in the input sequences. In this paper, we present a literature review on Transformer-based (TB) models, providing a detailed overview of each model in comparison to the Transformer’s standard architecture. This survey focuses on TB models used in the field of Natural Language Processing (NLP) for textual-based tasks. We begin with an overview of the fundamental concepts at the heart of the success of these models. Then, we classify them based on their architecture and training mode. We compare the advantages and disadvantages of popular techniques in terms of architectural design and experimental value. Finally, we discuss open research, directions, and potential future work to help solve current TB application challenges in NLP.",
+        "url": "https://doi.org/10.3390/ai4010004",
+        "doi": "https://doi.org/10.3390/ai4010004",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4313558932"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 153
+      },
+      {
+        "paper_id": "rw_005_8953aa102",
+        "title": "Vision Transformers in Image Restoration: A Survey",
+        "authors": [
+          "Anas M. Ali",
+          "Bilel Benjdira",
+          "Anis Koubâa",
+          "Walid El‐Shafai",
+          "Zahid Khan",
+          "Wadii Boulila"
+        ],
+        "year": 2023,
+        "publication_date": "2023-02-21",
+        "venue": "Sensors",
+        "abstract": "The Vision Transformer (ViT) architecture has been remarkably successful in image restoration. For a while, Convolutional Neural Networks (CNN) predominated in most computer vision tasks. Now, both CNN and ViT are efficient approaches that demonstrate powerful capabilities to restore a better version of an image given in a low-quality format. In this study, the efficiency of ViT in image restoration is studied extensively. The ViT architectures are classified for every task of image restoration. Seven image restoration tasks are considered: Image Super-Resolution, Image Denoising, General Image Enhancement, JPEG Compression Artifact Reduction, Image Deblurring, Removing Adverse Weather Conditions, and Image Dehazing. The outcomes, the advantages, the limitations, and the possible areas for future research are detailed. Overall, it is noted that incorporating ViT in the new architectures for image restoration is becoming a rule. This is due to some advantages compared to CNN, such as better efficiency, especially when more data are fed to the network, robustness in feature extraction, and a better feature learning approach that sees better the variances and characteristics of the input. Nevertheless, some drawbacks exist, such as the need for more data to show the benefits of ViT over CNN, the increased computational cost due to the complexity of the self-attention block, a more challenging training process, and the lack of interpretability. These drawbacks represent the future research direction that should be targeted to increase the efficiency of ViT in the image restoration domain.",
+        "url": "https://doi.org/10.3390/s23052385",
+        "doi": "https://doi.org/10.3390/s23052385",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4321497943"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 136
+      },
+      {
+        "paper_id": "rw_006_d70e3f0aa",
+        "title": "DICE-Net: A Novel Convolution-Transformer Architecture for Alzheimer Detection in EEG Signals",
+        "authors": [
+          "Ανδρέας Μιλτιάδους",
+          "Emmanouil Gionanidis",
+          "Katerina D. Tzimourta",
+          "Νικόλαος Γιαννακέας",
+          "Alexandros T. Tzallas"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Objective: Alzheimer’s disease (AD) is a progressive neurodegenerative disorder that affects a significant percentage of the elderly. EEG has emerged as a promising tool for the timely diagnosis and classification of AD or other dementia types. This paper proposes a novel approach to AD EEG classification using a Dual-Input Convolution Encoder Network (DICE-net). Approach: Recordings of 36 AD, 23 Frontotemporal dementia (FTD), and 29 age-matched healthy individuals (CN) were used. After denoising, Band power and Coherence features were extracted and fed to DICE-net, which consists of Convolution, Transformer Encoder, and Feed-Forward layers. Main results: Our results show that DICE-net achieved an accuracy of 83.28% in the AD-CN problem using Leave-One-Subject-Out validation, outperforming several baseline models, and achieving good generalization performance. Significance: Our findings suggest that a convolution transformer network can effectively capture the complex features of EEG signals for the classification of AD patients versus control subjects and may be expanded to other types of dementia, such as FTD. This approach could improve the accuracy of early diagnosis and lead to the development of more effective interventions for AD.",
+        "url": "https://doi.org/10.1109/access.2023.3294618",
+        "doi": "https://doi.org/10.1109/access.2023.3294618",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4384080511"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 177
+      },
+      {
+        "paper_id": "rw_007_a46d77698",
+        "title": "A Review of Multilevel Converters With Parallel Connectivity",
+        "authors": [
+          "Jingyang Fang",
+          "Frede Blaabjerg",
+          "Steven Liu",
+          "Stefan M. Goetz"
+        ],
+        "year": 2021,
+        "publication_date": "2021-04-23",
+        "venue": "IEEE Transactions on Power Electronics",
+        "abstract": "Cascaded-bridge converters (CBCs) and modular multilevel converters (MMCs) enjoy growing popularity mostly due to modularity and scalability. Conventionally, their submodules allow only serial and bypass operation so that the use of low-voltage components for high-voltage output becomes possible. Dually, submodule parallelization adds the switched-capacitor behavior to CBCs/MMCs and has witnessed an upward trend in recent years. The salient advantages of parallel operation comprise sensorless voltage balancing, capacitance saving, current sharing, and system efficiency optimization. To capture the advancement in the field, this article reviews the state-of-the-art multilevel converters with parallel connectivity, covering various submodules, macrolevel circuit topologies, implementation challenges, and solutions, as well as control and optimization schemes. In particular, this article derives and classifies submodules as well as macro-level topologies according to basic H-bridge, asymmetrical half-bridge, and symmetrical half-bridge submodules. On top of that, this article introduces strategies for the simplification of submodules and the creation of novel topologies yet maintaining parallel connectivity. We highlight the role of graph theory in creating new analytic and synthetic methodologies for multilevel converters. In addition, this article discloses the relationship between multilevel converters with parallel connectivity and switched-capacitor converters.",
+        "url": "https://doi.org/10.1109/tpel.2021.3075211",
+        "doi": "https://doi.org/10.1109/tpel.2021.3075211",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3157571362"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 148
+      },
+      {
+        "paper_id": "rw_008_1954d7be3",
+        "title": "B2-ViT Net: Broad Vision Transformer Network With Broad Attention for Seizure Prediction",
+        "authors": [
+          "Shuiling Shi",
+          "Wenqi Liu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-25",
+        "venue": "IEEE Transactions on Neural Systems and Rehabilitation Engineering",
+        "abstract": "Seizure prediction are necessary for epileptic patients. The global spatial interactions among channels, and long-range temporal dependencies play a crucial role in seizure onset prediction. In addition, it is necessary to search for seizure prediction features in a vast space to learn new generalized feature representations. Many previous deep learning algorithms have achieved some results in automatic seizure prediction. However, most of them do not consider global spatial interactions among channels and long-range temporal dependencies together, and only learn the feature representation in the deep space. To tackle these issues, in this study, an novel bi-level programming seizure prediction model, B2-ViT Net, is proposed for learning the new generalized spatio-temporal long-range correlation features, which can characterize the global interactions among channels in spatial, and long-range dependencies in temporal required for seizure prediction. In addition, the proposed model can comprehensively learn generalized seizure prediction features in a vast space due to its strong deep and broad feature search capabilities. Sufficient experiments are conducted on two public datasets, CHB-MIT and Kaggle datasets. Compared with other existing methods, our proposed model has shown promising results in automatic seizure prediction tasks, and provides a certain degree of interpretability.",
+        "url": "https://doi.org/10.1109/tnsre.2023.3346955",
+        "doi": "https://doi.org/10.1109/tnsre.2023.3346955",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390204163"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 108
+      },
+      {
+        "paper_id": "rw_009_0a2b1bd86",
+        "title": "EEGformer: A transformer–based brain activity classification method using EEG signal",
+        "authors": [
+          "Zhijiang Wan",
+          "Manyu Li",
+          "Shichang Liu",
+          "Jiajin Huang",
+          "Hai Tan",
+          "Wenfeng Duan"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-24",
+        "venue": "Frontiers in Neuroscience",
+        "abstract": "Background: The effective analysis methods for steady-state visual evoked potential (SSVEP) signals are critical in supporting an early diagnosis of glaucoma. Most efforts focused on adopting existing techniques to the SSVEPs-based brain-computer interface (BCI) task rather than proposing new ones specifically suited to the domain. Method: Given that electroencephalogram (EEG) signals possess temporal, regional, and synchronous characteristics of brain activity, we proposed a transformer-based EEG analysis model known as EEGformer to capture the EEG characteristics in a unified manner. We adopted a one-dimensional convolution neural network (1DCNN) to automatically extract EEG-channel-wise features. The output was fed into the EEGformer, which is sequentially constructed using three components: regional, synchronous, and temporal transformers. In addition to using a large benchmark database (BETA) toward SSVEP-BCI application to validate model performance, we compared the EEGformer to current state-of-the-art deep learning models using two EEG datasets, which are obtained from our previous study: SJTU emotion EEG dataset (SEED) and a depressive EEG database (DepEEG). Results: The experimental results show that the EEGformer achieves the best classification performance across the three EEG datasets, indicating that the rationality of our model architecture and learning EEG characteristics in a unified manner can improve model classification performance. Conclusion: EEGformer generalizes well to different EEG datasets, demonstrating our approach can be potentially suitable for providing accurate brain activity classification and being used in different application scenarios, such as SSVEP-based early glaucoma diagnosis, emotion recognition and depression discrimination.",
+        "url": "https://doi.org/10.3389/fnins.2023.1148855",
+        "doi": "https://doi.org/10.3389/fnins.2023.1148855",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4360871668"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 99
+      },
+      {
+        "paper_id": "rw_010_4d16b9cd6",
+        "title": "Deep scaffold hopping with multimodal transformer neural networks",
+        "authors": [
+          "Shuangjia Zheng",
+          "Zengrong Lei",
+          "Haitao Ai",
+          "Hongming Chen",
+          "Daiguo Deng",
+          "Yuedong Yang"
+        ],
+        "year": 2021,
+        "publication_date": "2021-11-13",
+        "venue": "Journal of Cheminformatics",
+        "abstract": "Scaffold hopping is a central task of modern medicinal chemistry for rational drug design, which aims to design molecules of novel scaffolds sharing similar target biological activities toward known hit molecules. Traditionally, scaffolding hopping depends on searching databases of available compounds that can't exploit vast chemical space. In this study, we have re-formulated this task as a supervised molecule-to-molecule translation to generate hopped molecules novel in 2D structure but similar in 3D structure, as inspired by the fact that candidate compounds bind with their targets through 3D conformations. To efficiently train the model, we curated over 50 thousand pairs of molecules with increased bioactivity, similar 3D structure, but different 2D structure from public bioactivity database, which spanned 40 kinases commonly investigated by medicinal chemists. Moreover, we have designed a multimodal molecular transformer architecture by integrating molecular 3D conformer through a spatial graph neural network and protein sequence information through Transformer. The trained DeepHop model was shown able to generate around 70% molecules having improved bioactivity together with high 3D similarity but low 2D scaffold similarity to the template molecules. This ratio was 1.9 times higher than other state-of-the-art deep learning methods and rule- and virtual screening-based methods. Furthermore, we demonstrated that the model could generalize to new target proteins through fine-tuning with a small set of active compounds. Case studies have also shown the advantages and usefulness of DeepHop in practical scaffold hopping scenarios.",
+        "url": "https://doi.org/10.1186/s13321-021-00565-5",
+        "doi": "https://doi.org/10.1186/s13321-021-00565-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3213530673"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 75
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_7dc9cd61c",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Provides comprehensive background on GPT-2 and transformer architectures, which are directly referenced in the target paper's experiments and framework application.",
+        "evidence_summary": "Yenduri et al. (2024) published a review on GPT, detailing its transformer architecture, enabling technologies, and impact on various applications, while also discussing challenges and future directions."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_005_8953aa102",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Focuses on Vision Transformers (ViT), one of the model types examined in the target paper for linear mode connectivity, providing context on ViT applications and limitations.",
+        "evidence_summary": "Ali et al. (2023) surveyed Vision Transformers in image restoration tasks, classifying architectures across seven tasks and noting advantages like efficiency and robustness, alongside drawbacks such as computational cost and data requirements."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_008_1954d7be3",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Uses a Vision Transformer variant with attention mechanisms, relevant to understanding transformer symmetries and architectures discussed in the target.",
+        "evidence_summary": "Shi and Liu (2023) proposed B2-ViT Net, a bi-level programming model for seizure prediction that uses broad attention in a Vision Transformer to capture spatio-temporal correlations, validated on CHB-MIT and Kaggle datasets with improved accuracy."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_009_0a2b1bd86",
+        "relevance_score": 0.36,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Introduces a transformer-based model for EEG analysis, demonstrating another application domain for transformers which aligns with the target's broad architectural focus.",
+        "evidence_summary": "Wan et al. (2023) developed EEGformer, a transformer-based method for EEG signal classification that integrates 1DCNN with regional, synchronous, and temporal transformers, achieving top performance on BETA, SEED, and DepEEG datasets."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_002_f444c290b",
+        "relevance_score": 0.34,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Employs a graph transformer network, contributing to the understanding of transformer variants and multi-behavior contexts, though less directly related to mode connectivity.",
+        "evidence_summary": "Xia et al. (2021) presented a Knowledge-Enhanced Hierarchical Graph Transformer Network for multi-behavior recommendation, using graph attention and temporal encoding to model user-item interactions and dependencies across behavior types."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_003_9268e6293",
+        "relevance_score": 0.32,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Reviews transformer applications in genome data, offering background on transformer adaptability and attention mechanisms, which are foundational to the target's symmetry analysis.",
+        "evidence_summary": "Choi and Lee (2023) reviewed transformer architectures and attention mechanisms in genome data analysis, evaluating advancements from 2019 to 2023 and discussing their advantages and limitations in bioinformatics contexts."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_004_c919f2fa8",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Provides a literature review on transformer-based models in NLP, relevant for general transformer context but not specific to mode connectivity or symmetries.",
+        "evidence_summary": "Rahali and Akhloufi (2023) conducted a literature review on end-to-end transformer-based models in textual NLP tasks, classifying models by architecture and training mode, and discussing open research challenges."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_006_d70e3f0aa",
+        "relevance_score": 0.28,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Uses a convolution-transformer architecture, showing hybrid approaches but not directly addressing connectivity or symmetries in transformers.",
+        "evidence_summary": "Gionanidis et al. (2023) introduced DICE-Net, a convolution-transformer architecture for Alzheimer's detection in EEG signals, achieving 83.28% accuracy in AD-CN classification using band power and coherence features."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_010_4d16b9cd6",
+        "relevance_score": 0.26,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Applies multimodal transformers in cheminformatics, demonstrating transformer versatility but with no overlap in the target's focus on neural network loss landscapes.",
+        "evidence_summary": "Zheng et al. (2021) developed a multimodal transformer neural network for scaffold hopping in drug design, integrating 3D conformer and protein sequence data, and showing improved bioactivity generation compared to other methods."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_007_a46d77698",
+        "relevance_score": 0.1,
+        "relevance_types": [],
+        "rationale": "Discusses connectivity in multilevel converters, which is terminologically similar but unrelated to neural network mode connectivity, making it weakly relevant.",
+        "evidence_summary": "Fang et al. (2021) reviewed multilevel converters with parallel connectivity, covering submodules, topologies, and control schemes in power electronics, with advantages like sensorless voltage balancing and efficiency optimization."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, Gokul Yenduri et al. published \"GPT (Generative Pre-Trained Transformer)— A Comprehensive Review on Enabling Technologies, Potential Applications, Emerging Challenges, and Future Directions\" in IEEE Access. The Generative Pre-trained Transformer (GPT) represents a notable breakthrough in the domain of natural language processing, which is propelling us toward the development of machines that can understand and communicate using language in a manner that closely resembles that of humans. Due to their impressive performance on natural language processing tasks and ability to effectively converse, GPT have gained significant popularity among researchers and industrial communities, making them one of the most widely used and effective models in natural language processing and related fields, which motivated to conduct this review. In this review, the authors also explored the potential challenges and limitations of a GPT. In 2023, Anas M. Ali et al. published \"Vision Transformers in Image Restoration: A Survey\" in Sensors. Overall, it is noted that incorporating ViT in the new architectures for image restoration is becoming a rule. For a while, Convolutional Neural Networks (CNN) predominated in most computer vision tasks. The outcomes, the advantages, the limitations, and the possible areas for future research are detailed. In 2023, Shuiling Shi and Wenqi Liu published \"B2-ViT Net: Broad Vision Transformer Network With Broad Attention for Seizure Prediction\" in IEEE Transactions on Neural Systems and Rehabilitation Engineering. To tackle these issues, in this study, an novel bi-level programming seizure prediction model, B2-ViT Net, is proposed for learning the new generalized spatio-temporal long-range correlation features, which can characterize the global interactions among channels in spatial, and long-range dependencies in temporal required for seizure prediction. Sufficient experiments are conducted on two public datasets, CHB-MIT and Kaggle datasets. Many previous deep learning algorithms have achieved some results in automatic seizure prediction. In 2023, Zhijiang Wan et al. published \"EEGformer: A transformer–based brain activity classification method using EEG signal\" in Frontiers in Neuroscience. Most efforts focused on adopting existing techniques to the SSVEPs-based brain-computer interface (BCI) task rather than proposing new ones specifically suited to the domain. Results: The experimental results show that the EEGformer achieves the best classification performance across the three EEG datasets, indicating that the rationality of the model architecture and learning EEG characteristics in a unified manner can improve model classification performance. In addition to using a large benchmark database (BETA) toward SSVEP-BCI application to validate model performance, the authors compared the EEGformer to current state-of-the-art deep learning models using two EEG datasets, which are obtained from the authors' previous study: SJTU emotion EEG dataset (SEED) and a depressive EEG database (DepEEG). In 2021, Lianghao Xia et al. published \"Knowledge-Enhanced Hierarchical Graph Transformer Network for Multi-Behavior Recommendation\" in Proceedings of the AAAI Conference on Artificial Intelligence. Many practical recommendation scenarios involve multi-typed user interactive behaviors (e.g., page view, add-to-favorite and purchase), which presents unique challenges that cannot be handled by current recommendation solutions. Extensive experiments conducted on three real-world datasets show that KHGT consistently outperforms many state-of-the-art recommendation methods across various evaluation settings. To tackle these challenges, this work proposes a Knowledge-Enhanced Hierarchical Graph Transformer Network (KHGT), to investigate multi-typed interactive patterns between users and items in recommender systems. In 2023, Sanghyuk Roy Choi and Minhyeok Lee published \"Transformer Architecture and Attention Mechanisms in Genome Data Analysis: A Comprehensive Review\" in Biology. The emergence and rapid development of deep learning, specifically transformer-based architectures and attention mechanisms, have had transformative implications across several domains, including bioinformatics and genome data analysis. Therefore, this review aims to serve as a timely resource for both seasoned researchers and newcomers, offering a panoramic view of the recent advancements and elucidating the state-of-the-art applications in the field. The focus of this review is on the critical evaluation of these techniques, discussing their advantages and limitations in the context of genome data analysis.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

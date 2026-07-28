@@ -1,0 +1,124 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of Compositional Phase Diffusion, which integrates semantic and transitional phase details in a diffusion process, is highly novel and effectively addresses the glaring weakness of prior motion generation models in handling smooth transitions.",
+        "The introduction of ACT-PAE to handle variable-length motion in a unified phase manifold, paired with SPDM and TPDM modules, represents a sophisticated and creative architectural design that enables parallel processing and improved long-term consistency.",
+        "The experimental results demonstrate clear quantitative and qualitative improvements over existing methods across various tasks (compositional generation, long-term generation, inbetweening), indicating the practical significance and potential impact of this work."
+      ],
+      "weaknesses": [
+        "While the approach is generally sound, the specifics of the `Phase Mixing Equation` and the rationale behind the parameter `r` (especially `(k/K)^3`) could be more thoroughly elucidated in the main text. It feels a bit ad-hoc without deeper theoretical justification, even if empirically effective.",
+        "The `Remark on Dataset` highlights the reliance on BABEL-TEACH due to its unique annotation structure. While understandable, this indicates a potential limitation in generalizability to other datasets if they lack similar fine-grained semantic and temporal pair annotations, which could hinder broader adoption."
+      ],
+      "summary_comment": "The authors have adequately addressed my concerns regarding the empirical choice of the mixing parameter and the dataset's generalizability by providing a clear explanation of their reasoning and committing to incorporating this discussion into the revised paper. The work remains excellent in its novelty and significance, proposing an innovative solution to a challenging problem in motion generation. I am confident that the proposed revisions will further enhance the paper's clarity and completeness."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel compositional phase diffusion framework that effectively addresses the critical problem of maintaining continuity and semantic alignment across multiple motion segments, which is a significant challenge in long-term motion generation.",
+        "The proposed ACT-PAE, SPDM, and TPDM modules, operating in a latent motion frequency domain, demonstrate a sound and well-reasoned approach to integrate both semantic and transitional phase information into the diffusion process. The use of frame-level and param-level tokens for denoising is a clever design choice.",
+        "The empirical evaluation is exceptionally thorough, covering compositional motion pair generation, long-term motion generation, and motion inbetweening. The quantitative results, using established metrics like FID, MMD, L2-Vel, L2-Rot6D, NPSS, and RMS-Jerk, consistently show the superiority or competitive performance of the proposed method against strong baselines.",
+        "The scalability and flexibility of the framework for parallel processing of multiple motion segments, making denoising time independent of the number of segments, is a notable practical advantage."
+      ],
+      "weaknesses": [
+        "The absence of statistical significance analysis (e.g., error bars) for the quantitative results, while acknowledged by the authors as a practical limitation due to extensive computational resource requirements, remains a weakness. Though the raw improvements are substantial, the lack of measures of variance makes it difficult to fully ascertain the robustness and consistency of these gains across different runs or conditions.",
+        "While the authors plan to incorporate more architectural details directly into the main text, the initial submission necessitated inferring certain model complexities from supplementary materials or external references. Providing these key details (e.g., transformer layer count, hidden dimensions, attention heads) more prominently would improve the immediate comprehension of the model's design and enhance clarity for the reader."
+      ],
+      "summary_comment": "This paper presents a strong contribution to the field of human motion generation, particularly for long-term and compositional sequences. The core idea of using phase diffusion in a latent space, incorporating both semantic and transitional guidance, is sound and well-executed. The methodological approach of ACT-PAE, SPDM, and TPDM is logically coherent and addresses a key problem in existing methods. The experimental setup is comprehensive, and the results clearly demonstrate the effectiveness of the proposed framework across various tasks, outperforming several state-of-the-art baselines. The authors' commitment to adding details regarding training and architectural specifics to the appendix and the main text, respectively, is a positive step. While the absence of statistical significance in evaluations is a persistent, albeit practical and understandable, limitation, the overall rigor and strong empirical results justify acceptance. The framework's scalability and its ability to handle variable-length motions are significant practical advantages."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly relevant and practical problem in motion generation: creating long, semantically coherent motion sequences with smooth transitions. This is a critical challenge for applications in animation and robotics.",
+        "The proposed Compositional Phase Diffusion framework, particularly the separation into Semantic (SPDM) and Transitional (TPDM) Phase Diffusion Modules operating in a learned phase latent space (ACT-PAE), is a well-conceived and technically sound approach to tackle the problem. The core idea of using phase dynamics to ensure smooth transitions while maintaining semantic alignment is effective.",
+        "The evaluation is comprehensive and convincing, covering compositional motion pair generation, long-term motion generation, and motion inbetweening. The quantitative results, supported by qualitative examples, demonstrate significant improvements over strong baselines, highlighting the practical utility and superior performance of the method."
+      ],
+      "weaknesses": [
+        "While the concept of variable-length motion handling by ACT-PAE is described, some low-level implementation details (e.g., the exact structure of the Transformer for variable-length input, how PE and T are precisely adapted for ACT-PAE beyond the high-level descriptions in A.2) could be elaborated further in the main text or a more detailed appendix for full clarity to practitioners looking to reproduce or extend the work. (The author's commitment to revise the appendix for more details directly addresses this concern).",
+        "The explanation of 'Phase Mixing Equation' (Equation 2) could be clearer regarding its derivation or intuition, particularly the choice of the exponential factor $ (k/K)^3 $ and why r=1 for Xt. While the outcome is validated empirically, a more theoretical grounding or a stronger intuitive explanation of this specific mixing strategy would strengthen the soundness. (The author's response in the previous round provided good intuitive justification, significantly improving understanding)."
+      ],
+      "summary_comment": "This paper presents a strong contribution to the field of motion generation, addressing the crucial problem of creating long, coherent motion sequences with smooth transitions. The compositional phase diffusion framework, leveraging specialized modules (SPDM, TPDM) within a learned phase latent space (ACT-PAE), is both novel and well-executed. The extensive experimental evaluation demonstrates clear practical superiority over existing methods in various tasks. The author has proactively engaged with the feedback, committing to expand the appendix with more precise implementation details for ACT-PAE, a point directly related to my initial concern about reproducibility. The previous rebuttal already provided satisfactory intuitive justification for the phase mixing equation. Given the strong significance and robust evaluation, coupled with the author's responsiveness, the paper is well-positioned for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel deep learning framework, Compositional Phase Diffusion, which aligns well with ICML's focus on general machine learning and deep learning, particularly in architectures and generative models.",
+        "The use of diffusion models for motion generation, combined with specialized modules (SPDM, TPDM) and an Action-Centric Periodic Autoencoder (ACT-PAE) to handle complex tasks like compositional generation, long-term generation, and motion inbetweening, fits within ICML's interest in 'deep learning architectures' and 'generative models'.",
+        "The paper presents a significant methodological contribution by addressing the challenge of smooth transitions and semantic alignment in long motion sequences, a problem relevant to application-driven machine learning (e.g., robotics, virtual animation) which ICML explicitly lists as an area of interest.",
+        "The empirical evaluation is thorough, demonstrating quantitative improvements over existing methods across various tasks and metrics (FID, MMD, L2-Vel, L2-Rot6D, NPSS, RMS-Jerk), which aligns with ICML's value for strong experimental results.",
+        "Reviewers consistently praise the novelty of the core idea and the sophisticated architectural design, which are key aspects ICML values in submitted works. (Reviewer A: 'core idea ... is highly novel', Reviewer B: 'novel compositional phase diffusion framework', Reviewer C: 'novel and well-executed')."
+      ],
+      "why_it_does_not_fit": [
+        "While the overall methodology is strong, Reviewer A notes that the 'Phase Mixing Equation' and the rationale behind the parameter 'r' (especially '(k/K)^3') could benefit from more thorough theoretical justification, which might slightly reduce its fit for theoretical rigor often sought by ICML.",
+        "Reviewer B points out the absence of statistical significance analysis (e.g., error bars) for the quantitative results, a practical limitation. While understandable given computational resources, this limits the full assessment of robustness and consistency, which ICML typically encourages for experimental rigor."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on deep learning for human motion generation, particularly for long and compositional sequences, aligns well with NeurIPS's interest in 'Deep learning' and 'General machine learning: core contributions in supervised and unsupervised methods'.",
+        "The method's application to human motion, which is foundational for areas like 'Robotics, embodied systems, and engineering', is a strong fit for NeurIPS, which encourages interdisciplinary submissions.",
+        "The introduction of a novel phase diffusion framework with specific modules (SPDM, TPDM) operating in a latent space for robust motion generation directly addresses a complex problem. This methodological innovation with strong empirical results is highly valued at NeurIPS.",
+        "Reviewers uniformly commend the empirical thoroughness and strong performance across various benchmarks (compositional motion pair generation, long-term motion generation, motion inbetweening), which are crucial for NeurIPS acceptance. (Reviewer B: 'empirical evaluation is exceptionally thorough').",
+        "The paper addresses 'Data-centric aspects of AI' by effectively leveraging the BABEL-TEACH dataset, which provides temporally connected motion segments critical for learning transitions, showcasing practical data handling and utilization."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the somewhat ad-hoc nature of the 'Phase Mixing Equation' and its parameter 'r', as noted by Reviewer A, might be perceived as a slight weakness in theoretical underpinning, which NeurIPS also values.",
+        "The limitation of the study in relying on the unique annotation structure of the BABEL-TEACH dataset (as highlighted by Reviewer A) and potential difficulties in generalizability to other datasets might be a concern for a broad conference like NeurIPS, which often seeks widely applicable solutions.",
+        "The absence of statistical significance analysis (error bars) due to computational limitations, as noted by Reviewer B, is a point of rigor frequently emphasized at NeurIPS, potentially impacting the perceived robustness of the claims."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The core methodology leveraging diffusion models for motion generation falls squarely within 'generative models' and 'reinforcement learning' (implicitly, if considering motion control, though explicitly it's generative models), which are key topics for ICLR.",
+        "The paper's development of new modules (SPDM, TPDM) within a deep learning architecture (ACT-PAE) to improve 'representation learning' for motion sequences, particularly for handling variable lengths and ensuring smooth transitions, aligns well with ICLR's emphasis on deep learning architectures and representation learning.",
+        "The focus on long-term motion generation and motion inbetweening problems, which are practical applications of deep learning, fits within ICLR's interest in 'applications to robotics, autonomy, planning' and 'applications to physical sciences'.",
+        "The paper tackles a challenging problem in motion generation by proposing an innovative solution within the deep learning paradigm, which is attractive to ICLR's cutting-edge research focus. Reviewer C specifically highlights its 'high relevance and practical problem in motion generation' for animation and robotics.",
+        "The use of 'frame-level tokens' and 'param-level tokens' for denoising (as highlighted by Reviewer B) reflects novel design choices in representation and learning within a deep learning context, a common thread in ICLR papers."
+      ],
+      "why_it_does_not_fit": [
+        "While significant, the paper does not present a strong theoretical contribution in 'learning theory' which is a specific topic area for ICLR. Reviewers' comments about the 'somewhat ad-hoc' nature of crucial components like the phase mixing equation (Reviewer A), suggest a less rigorous theoretical grounding than some ICLR papers.",
+        "Although the approach is deep learning-based, it doesn't primarily focus on fundamental aspects of 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' in a generic sense, but rather specifically for motion, which might make it a slightly less central fit compared to broader deep learning method papers.",
+        "The discussion of limitations, particularly the reliance on a specific dataset (BABEL-TEACH) for its fine-grained annotations (Reviewer A, part of 'weaknesses'), suggests potential challenges in broader generalizability, which ICLR typically favors for core deep learning advancements.",
+        "The issues regarding experimental rigor, such as the acknowledged absence of statistical significance analysis (Reviewer B), might be viewed more critically by ICLR reviewers who maintain a high bar for empirical soundness in deep learning research."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

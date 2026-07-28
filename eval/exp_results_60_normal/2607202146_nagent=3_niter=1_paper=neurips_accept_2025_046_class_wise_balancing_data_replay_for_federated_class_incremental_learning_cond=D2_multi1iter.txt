@@ -1,0 +1,127 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of combining global-perspective data replay with task-aware temperature scaling for federated class-incremental learning is highly novel and addresses critical challenges in the field.",
+        "The privacy-preserving mechanism using SVD/ISVD for constructing global-perspective data representations is a creative and impactful solution to a fundamental problem in federated learning.",
+        "The experimental results demonstrate significant performance improvements (2%-15% Top-1 accuracy) over several state-of-the-art baselines under various heterogeneous and incremental scenarios, showcasing its practical applicability and effectiveness."
+      ],
+      "weaknesses": [
+        "The selection of hyperparameters for temperature scaling and re-weighting appears to be a heuristic search, and the paper acknowledges its sensitivity. A more robust, adaptive, or theoretically grounded approach to setting these parameters could further strengthen the method.",
+        "While a complexity analysis is provided, a more in-depth discussion on the practical overheads of SVD/ISVD in very large-scale federated settings (e.g., beyond 100 clients) and its impact on communication rounds and overall training time would be beneficial."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach to Federated Class-Incremental Learning, tackling the critical issues of class imbalance and catastrophic forgetting. The dual-module design, featuring a privacy-preserving global-perspective data replay through SVD and a task-aware temperature scaling, is exceptionally creative and pushes the boundaries of what's possible in FCIL. The significant performance gains across diverse datasets and heterogeneity levels highlight its potential impact. While there are minor concerns about hyperparameter robustness and scalability for extremely large settings, these do not overshadow the bold and novel contributions of this work. The potential for inspiring future research in global-aware, privacy-preserving data management in FL is immense. This is exactly the kind of forward-thinking research that needs to be brought to light."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a well-thought-out methodology for addressing catastrophic forgetting and class imbalance in Federated Class-Incremental Learning, combining a global-perspective data replay module with a task-aware temperature scaling module. The two components address distinct but related challenges effectively.",
+        "The evaluation is exceptionally thorough, encompassing comparisons with six state-of-the-art methods across three datasets and various heterogeneity levels. The inclusion of extensive ablation studies, sensitivity analyses, buffer size comparisons, and incremental task evaluations robustly supports the claims and demonstrates the effectiveness of FedCBDR.",
+        "The proposed Global-perspective Data Replay (GDR) module offers a privacy-preserving mechanism for global sample selection by using Inverse SVD and leverage scores, which is a methodologically interesting approach to derive global insights without sharing raw data."
+      ],
+      "weaknesses": [
+        "While the concept of Inverse SVD for privacy-preserving feature sharing is described, the privacy guarantees and potential vulnerabilities (e.g., reconstruction attacks on original features given sufficient side information or repeated queries to the aggregate) are not deeply analyzed. A more formal discussion or empirical assessment of the privacy aspects, beyond just stating 'privacy-preserving manner,' would strengthen this claim.",
+        "The hyperparameter tuning for `τold`, `τnew`, `ωold`, and `ωnew` in the TTS module appears to be quite sensitive, as indicated by the sensitivity analysis. While the paper finds optimal values, a more robust method for adaptive or less sensitive tuning of these parameters, perhaps based on task characteristics or data distribution, could enhance the practical applicability of the method."
+      ],
+      "summary_comment": "This paper presents FedCBDR, a novel approach to Federated Class-Incremental Learning that tackles the critical issues of catastrophic forgetting and class imbalance. The methodology is sound, combining a global-perspective data replay module with a task-aware temperature scaling module. The evaluation is exceptionally strong, with comprehensive experiments covering various datasets, heterogeneity levels, and ablation studies, convincingly demonstrating the superiority of FedCBDR over existing methods. The results are significant, showing substantial accuracy improvements. While the privacy claims could benefit from a more formal analysis and the hyperparameter sensitivity for TTS is a minor concern, these do not overshadow the overall rigor and contribution of the work. The paper is well-written and easy to follow. The detailed experimental results and analysis are a major strength."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a highly practical and relevant problem in Federated Class-Incremental Learning (FCIL): catastrophic forgetting exacerbated by class imbalance within replay buffers, which is a common challenge in real-world FL deployments.",
+        "Proposes a well-structured and effective solution (FedCBDR) with two complementary modules: Global-perspective Data Replay (GDR) for balanced sampling and Task-aware Temperature Scaling (TTS) for robust learning. The proposed SVD-based privacy-preserving global feature aggregation for sampling is a clever way to address information asymmetry.",
+        "Extensive experimental evaluation across three datasets, various heterogeneity levels, and different task splits, with compelling quantitative results showing significant improvements (2%-15% Top-1 accuracy) over current state-of-the-art methods. The ablation study and detailed analysis (e.g., replay buffer size, per-class distributions, model attention) further validate the contributions.",
+        "The paper includes a thorough discussion of limitations and explicitly addresses practical concerns such as computational complexity, communication overhead, and comparisons of generated vs. real samples, which is highly appreciated from a practitioner's perspective."
+      ],
+      "weaknesses": [
+        "The description of the privacy-preserving SVD mechanism (Equations 1-4) could be made clearer, particularly in how the client-side ISVD and server-side SVD interact to reconstruct global features without exposing raw data. While the concept is interesting, its practical implementation and potential vulnerabilities might need more detailed explanation in an appendix or supplementary material.",
+        "The hyperparameter tuning for temperature scaling and re-weighting (τold, τnew, ωold, ωnew) seems quite specific and could be sensitive. While a sensitivity analysis is provided, a more robust or adaptive mechanism for these parameters could enhance the method's practical applicability in diverse real-world scenarios without extensive manual tuning."
+      ],
+      "summary_comment": "This paper presents FedCBDR, a highly impactful and well-evaluated solution for Federated Class-Incremental Learning. The core idea of combining global-perspective balanced data replay with task-aware temperature scaling to counteract class imbalance is both novel and addresses a critical practical problem in FL. The empirical results are strong and demonstrate significant performance gains over a comprehensive set of baselines. The paper is clearly written, and the authors have done an excellent job of discussing limitations and providing extensive experimental evidence, which is crucial for real-world applicability. This work provides a tangible advancement for practitioners working on robust federated learning systems where data streams are continuously evolving."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel method, FedCBDR, for Federated Class Incremental Learning (FCIL), which falls under general machine learning and deep learning topics, specifically addressing challenges in federated learning, continual learning, and imbalanced data, all of which are core to ICML's interests.",
+        "The methodology includes 'optimization' components (reweighting the learning objective) and 'probabilistic methods' (leveraging SVD for global representation and importance-sensitive sampling), aligning with ICML's topical scope.",
+        "The contribution is strong with significant empirical results, demonstrating 2%-15% accuracy improvements over state-of-the-art methods in FCIL, across various datasets and heterogeneity levels, which ICML values.",
+        "Reviewers praise the novelty of combining global-perspective data replay with task-aware temperature scaling, and the privacy-preserving mechanism using SVD/ISVD, which is a key scientific and methodological contribution that ICML seeks.",
+        "The thorough experimental evaluation, including ablation studies, sensitivity analyses, and comparisons with numerous baselines, ensures the rigor and soundness fit ICML's high standards.",
+        "The clarity and comprehensive discussion of the methodology, experimental setup, and results, as noted by reviewers, would make it well-received at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While a complexity analysis is provided, Reviewer A notes that a deeper discussion on practical overheads of SVD/ISVD in very large-scale federated settings (beyond 100 clients) could be beneficial, hinting at a potential area for further systems-level exploration which might be slightly less emphasized at ICML compared to core ML theory or algorithms.",
+        "Reviewers B and C point out that the hyperparameter tuning for temperature scaling and re-weighting appears to be a heuristic search and sensitive, suggesting an area where greater theoretical grounding or adaptive mechanisms could reinforce the methodological rigor, a point that ICML's theory-focused audience might scrutinize.",
+        "Reviewer B also notes that privacy guarantees and potential vulnerabilities for the Inverse SVD mechanism are not deeply analyzed, which, while acknowledged as 'minor,' could be a point of further theoretical or empirical investigation for a conference that values deep theoretical understanding of such mechanisms."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses Federated Class-Incremental Learning, which falls under 'General machine learning: core contributions in supervised and unsupervised methods' and 'Decision-making, reinforcement learning, and control' (due to incremental learning) topics, making it a good fit for NeurIPS's broad scope.",
+        "The use of SVD for global representation relates to 'Probabilistic methods' and 'Theory' of machine learning, both explicitly listed as NeurIPS topics, indicating a good topical alignment.",
+        "The approach's focus on mitigating catastrophic forgetting and handling data heterogeneity, particularly in settings relevant to real-world applications (e.g., computer vision tasks with CIFAR datasets), aligns with NeurIPS's interest in impactful research.",
+        "The significant empirical performance improvements and the comprehensive evaluation across diverse settings are highly valued by NeurIPS, given its emphasis on strong experimental validation.",
+        "Reviewer A highlights the novelty and creativity of the dual-module design, fitting NeurIPS's focus on cutting-edge and interdisciplinary research.",
+        "The paper includes a NeurIPS checklist, suggesting the authors explicitly considered NeurIPS guidelines and fit, which is a good indicator of alignment."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the hyperparameter sensitivity for the Task-Aware Temperature Scaling module, as raised by reviewers, could be a point of less optimal fit if NeurIPS reviewers prioritize stronger theoretical guarantees or more robust, less manually tuned methods.",
+        "The discussion on privacy guarantees for the SVD/ISVD mechanism, while conceptually sound, is not as formally rigorous as some NeurIPS attendees might prefer. Reviewer B suggests a more formal discussion or empirical assessment of privacy aspects is needed.",
+        "While practical, the paper's primary contribution is algorithmic and empirical, with the theoretical depth of the privacy-preserving SVD needing further elaboration to fully satisfy a NeurIPS audience that often demands strong theoretical foundations alongside empirical results."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper deals with 'Federated Class-Incremental Learning', an extension of Federated Learning, and specifically addresses deep learning models (ResNet-18 as backbone) for 'computer vision' tasks (CIFAR and TinyImageNet datasets), which are central themes for ICLR.",
+        "The method involves 'representation learning' through SVD for constructing global representations and aims to mitigate catastrophic forgetting in incremental settings, aligning well with ICLR's interest in representation learning.",
+        "The use of temperature scaling in the loss function directly relates to training deep learning models and handling class imbalance, which is a practical and relevant aspect of deep learning research often found at ICLR.",
+        "The significant empirical superiority over state-of-the-art deep learning methods, as evidenced by the 2%-15% accuracy improvements, strongly supports its relevance to ICLR, which values practical advancements in deep learning.",
+        "The comprehensive experimental evaluation and ablation studies, showing the effectiveness of each deep learning component, align with ICLR's preference for thorough empirical validation of deep learning techniques."
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution is less about novel deep learning architectures or fundamental theoretical breakthroughs in deep learning, and more about an algorithmic solution for a specific problem (FCIL) using existing deep learning components. While relevant, it might not be as architecturally 'deep learning focused' as some ICLR papers.",
+        "While the SVD/ISVD mechanism is innovative for privacy-preserving data replay, ICLR typically prioritizes novel deep learning specific methods over more general matrix factorization techniques, unless it has a very direct and profound impact on deep learning training or architecture.",
+        "The hyperparameter sensitivity for temperature scaling and re-weighting, highlighted by reviewers, suggests that the method might require substantial tuning for different deep learning setups, which could be seen as a practical limitation for ICLR's emphasis on broadly applicable deep learning techniques. More adaptive mechanisms would be preferred.",
+        "The privacy claims, though mentioned, are not a primary focus nor deeply analyzed from a pure deep learning perspective, which might be a weaker point of fit compared to conferences with a more dedicated privacy track or theoretical focus."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

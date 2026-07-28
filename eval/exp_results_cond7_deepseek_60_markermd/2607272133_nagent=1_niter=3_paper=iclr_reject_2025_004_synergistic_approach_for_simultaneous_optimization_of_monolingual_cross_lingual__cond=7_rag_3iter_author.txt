@@ -1,0 +1,559 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The hybrid batch training strategy is a simple, intuitive, and effective method that improves performance across multiple retrieval settings without adding architectural complexity.",
+        "Extensive and rigorous experimental evaluation on multiple standard benchmarks (XQuAD-R, MLQA-R, MIRACL) with two different pre-trained models (XLM-R, LaBSE) demonstrates robust and consistent results.",
+        "The paper provides a thorough analysis of language bias reduction, showing that the proposed method significantly mitigates bias compared to monolingual training while maintaining strong performance."
+      ],
+      "weaknesses": [
+        "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+        "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+        "The limitations section acknowledges potential issues like societal biases and domain generalization but does not empirically investigate them."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+          "severity": "minor",
+          "evidence": "The RAG_EVIDENCE mentions a 2024 paper on 'A Cross-Language Information Retrieval Method Based on Multi-Task Learning' which represents a related but more complex contemporary approach. The submitted paper only compares against the X-X-mono and X-Y baselines from Roy et al. (2020).",
+          "affected_claim": "The claim that the proposed method is competitive or superior to other approaches is weakened by the absence of comparison with state-of-the-art multi-task learning methods.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+          "severity": "minor",
+          "evidence": "Section 3.1 states that α=0.5 was found to be optimal via grid search on a 'diverse selection of languages' but does not specify the exact validation set languages, metrics used for selection, or provide a sensitivity analysis showing how performance varies with α.",
+          "affected_claim": "The claim of having found an optimal balance between monolingual and cross-lingual performance is less substantiated without detailed hyperparameter analysis.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The experimental methodology is sound, using established benchmarks, proper evaluation metrics, and rigorous statistical reporting. The claims about improved performance and reduced bias are well-supported by the experimental data across multiple datasets and models."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "While building on prior work like Roy et al. (2020), the specific hybrid batching strategy that combines monolingual and cross-lingual batches in a single training regime is novel. The RAG_EVIDENCE shows related work exists, but the proposed approach offers a distinct, simpler alternative to methods like multi-task learning."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work addresses an important practical problem in multilingual IR - the trade-off between monolingual and cross-lingual performance. The proposed method achieves strong results across multiple settings with a simple modification to training procedure, making it potentially impactful for real-world applications."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Evaluation is comprehensive, covering three benchmark datasets, multiple metrics (MAP, Recall@1, Recall@10, nDCG@10), two pre-trained models, and diverse language pairs including low-resource languages. The zero-shot evaluation on unseen languages demonstrates strong generalization capabilities."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and well-organized, with sufficient methodological details and comprehensive results. The figures and tables effectively support the key findings, though some sections (like hyperparameter tuning) could be more detailed."
+        }
+      },
+      "summary_comment": "After reviewing the author's second response, my assessment remains unchanged. The authors acknowledge the identified weaknesses but do not resolve them with evidence already present in the submitted paper. Their promises to add comparisons with multi-task learning approaches, provide more hyperparameter details, and clarify limitations are future revisions rather than current resolutions. However, these remain minor issues that do not materially undermine the paper's core contributions, which are well-supported by extensive experiments demonstrating the effectiveness of the proposed hybrid batching approach across multiple benchmarks and evaluation settings. The paper meets acceptance criteria."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper addresses optimization techniques for multilingual models, which aligns with ICML's interest in machine learning optimization methods",
+        "The work involves contrastive learning and batch sampling strategies, which are core machine learning topics within ICML's scope",
+        "The paper presents rigorous experimental evaluation across multiple benchmarks, meeting ICML's standards for empirical validation"
+      ],
+      "why_it_does_not_fit": [
+        "The focus is heavily on NLP applications (multilingual information retrieval) rather than core machine learning theory or algorithms",
+        "The contribution is more engineering-oriented (training strategy modification) rather than fundamental algorithmic innovation",
+        "ICML typically favors more theoretical or foundational contributions rather than application-focused optimization techniques"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Multilingual representation learning and cross-lingual transfer are active research areas at NeurIPS",
+        "The paper addresses language bias mitigation, which aligns with NeurIPS' growing interest in fairness and bias in AI systems",
+        "The work demonstrates strong zero-shot generalization capabilities, which is highly valued at NeurIPS",
+        "The methodology combines contrastive learning with novel training strategies, fitting NeurIPS' interdisciplinary nature"
+      ],
+      "why_it_does_not_fit": [
+        "The application domain (information retrieval) is somewhat specialized and may not appeal to the broader NeurIPS audience",
+        "The technical contribution is more incremental (training strategy modification) rather than groundbreaking architectural innovation",
+        "While novel, the approach lacks strong theoretical foundations that NeurIPS often prefers"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper focuses on multilingual representation learning using transformer-based models (XLM-R, LaBSE), which is core to ICLR's interests",
+        "The work involves fine-tuning pre-trained language models and studying their cross-lingual properties, aligning perfectly with ICLR's focus on deep learning representations",
+        "The contrastive learning framework and language-agnostic representations are central themes in ICLR research",
+        "The paper demonstrates strong performance on multiple benchmarks with detailed ablation studies, meeting ICLR's empirical standards"
+      ],
+      "why_it_does_not_fit": [
+        "The application is specifically information retrieval rather than general representation learning",
+        "The methodological contribution is more about training strategy than architectural innovation",
+        "Some reviewer concerns about lack of comparison with recent multi-task learning approaches might be more critical at ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The hybrid batch training strategy is a simple, intuitive, and effective method that improves performance across multiple retrieval settings without adding architectural complexity.",
+              "Extensive and rigorous experimental evaluation on multiple standard benchmarks (XQuAD-R, MLQA-R, MIRACL) with two different pre-trained models (XLM-R, LaBSE) demonstrates robust and consistent results.",
+              "The paper provides a thorough analysis of language bias reduction, showing that the proposed method significantly mitigates bias compared to monolingual training while maintaining strong performance."
+            ],
+            "weaknesses": [
+              "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+              "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+              "The limitations section acknowledges potential issues like societal biases and domain generalization but does not empirically investigate them."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+                "severity": "minor",
+                "evidence": "The RAG_EVIDENCE mentions a 2024 paper on 'A Cross-Language Information Retrieval Method Based on Multi-Task Learning' which represents a related but more complex contemporary approach. The submitted paper only compares against the X-X-mono and X-Y baselines from Roy et al. (2020).",
+                "affected_claim": "The claim that the proposed method is competitive or superior to other approaches is weakened by the absence of comparison with state-of-the-art multi-task learning methods.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+                "severity": "minor",
+                "evidence": "Section 3.1 states that α=0.5 was found to be optimal via grid search on a 'diverse selection of languages' but does not specify the exact validation set languages, metrics used for selection, or provide a sensitivity analysis showing how performance varies with α.",
+                "affected_claim": "The claim of having found an optimal balance between monolingual and cross-lingual performance is less substantiated without detailed hyperparameter analysis.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The experimental methodology is sound, using established benchmarks, proper evaluation metrics, and rigorous statistical reporting. The claims about improved performance and reduced bias are well-supported by the experimental data across multiple datasets and models."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While building on prior work like Roy et al. (2020), the specific hybrid batching strategy that combines monolingual and cross-lingual batches in a single training regime is novel. The RAG_EVIDENCE shows related work exists, but the proposed approach offers a distinct, simpler alternative to methods like multi-task learning."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses an important practical problem in multilingual IR - the trade-off between monolingual and cross-lingual performance. The proposed method achieves strong results across multiple settings with a simple modification to training procedure, making it potentially impactful for real-world applications."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation is comprehensive, covering three benchmark datasets, multiple metrics (MAP, Recall@1, Recall@10, nDCG@10), two pre-trained models, and diverse language pairs including low-resource languages. The zero-shot evaluation on unseen languages demonstrates strong generalization capabilities."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-organized, with sufficient methodological details and comprehensive results. The figures and tables effectively support the key findings, though some sections (like hyperparameter tuning) could be more detailed."
+              }
+            },
+            "summary_comment": "This paper presents a simple yet effective hybrid batch training strategy for multilingual information retrieval that achieves strong performance across monolingual, cross-lingual, and multilingual settings. The approach is technically sound, well-evaluated on standard benchmarks, and demonstrates significant reduction in language bias. While comparisons with some contemporary methods could strengthen the paper, the clear empirical benefits and practical simplicity of the proposed method make it a solid contribution worthy of acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The hybrid batch training strategy is a simple, intuitive, and effective method that improves performance across multiple retrieval settings without adding architectural complexity.",
+              "Extensive and rigorous experimental evaluation on multiple standard benchmarks (XQuAD-R, MLQA-R, MIRACL) with two different pre-trained models (XLM-R, LaBSE) demonstrates robust and consistent results.",
+              "The paper provides a thorough analysis of language bias reduction, showing that the proposed method significantly mitigates bias compared to monolingual training while maintaining strong performance."
+            ],
+            "weaknesses": [
+              "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+              "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+              "The limitations section acknowledges potential issues like societal biases and domain generalization but does not empirically investigate them."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+                "severity": "minor",
+                "evidence": "The RAG_EVIDENCE mentions a 2024 paper on 'A Cross-Language Information Retrieval Method Based on Multi-Task Learning' which represents a related but more complex contemporary approach. The submitted paper only compares against the X-X-mono and X-Y baselines from Roy et al. (2020).",
+                "affected_claim": "The claim that the proposed method is competitive or superior to other approaches is weakened by the absence of comparison with state-of-the-art multi-task learning methods.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+                "severity": "minor",
+                "evidence": "Section 3.1 states that α=0.5 was found to be optimal via grid search on a 'diverse selection of languages' but does not specify the exact validation set languages, metrics used for selection, or provide a sensitivity analysis showing how performance varies with α.",
+                "affected_claim": "The claim of having found an optimal balance between monolingual and cross-lingual performance is less substantiated without detailed hyperparameter analysis.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The experimental methodology is sound, using established benchmarks, proper evaluation metrics, and rigorous statistical reporting. The core claims are well-supported by the data presented in the submitted paper."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The specific hybrid batching strategy that dynamically combines monolingual and cross-lingual batches represents a novel and distinct approach to balancing multiple retrieval objectives."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses an important practical trade-off in multilingual IR with a simple, effective solution that shows consistent gains across diverse settings and benchmarks."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation is comprehensive, covering three benchmark datasets, multiple metrics, two pre-trained models, and diverse language pairs. The absence of comparisons with multi-task learning methods is a minor limitation but does not invalidate the extensive positive results demonstrated."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-organized. The weaknesses identified are minor and fixable without substantial effort."
+              }
+            },
+            "summary_comment": "After considering the author response, my assessment remains unchanged. The authors acknowledge the weaknesses but do not resolve them with evidence already present in the submitted paper; they promise future revisions. The lack of comparisons with modern multi-task learning approaches and insufficient hyperparameter analysis details remain minor flaws in the current submission. However, these do not materially undermine the core contributions, which are clearly demonstrated through extensive experiments, sound methodology, and a novel, effective approach. The paper meets the standards for acceptance."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lacks comparison with more recent or sophisticated multilingual IR baselines (e.g., multi-task learning approaches)\",\n        \"Superficial explanation of hyperparameter tuning for α, lacking details on validation set composition and performance sensitivity\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Comparison with state-of-the-art methods\",\n          \"location\": \"Section 4: Experimental Results, Tables 1-8\",\n          \"explanation\": \"The paper provides comprehensive comparisons against the established X-X-mono and X-Y baselines from Roy et al. (2020) across multiple datasets (XQuAD-R, MLQA-R, MIRACL) and two pre-trained models (XLM-R, LaBSE), demonstrating consistent improvements in both retrieval performance and language bias reduction.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Comparison with more recent multilingual IR methods\",\n          \"proposed_change\": \"In the revision, we will add comparisons with multi-task learning approaches and other contemporary multilingual IR methods to provide a more comprehensive benchmark analysis.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Detailed hyperparameter analysis\",\n          \"proposed_change\": \"We will expand Section 3.1 to include more detailed information about the validation set composition (specific languages used) and provide a sensitivity analysis showing performance variation across α values in the range 0.4-0.6.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback and positive assessment of our work. Regarding the comparison with more recent multilingual IR baselines, we acknowledge that including multi-task learning approaches would strengthen the paper. In our revision, we will conduct additional experiments comparing our method against state-of-the-art multi-task learning approaches to provide a more comprehensive evaluation. For the hyperparameter tuning details, we will expand Section 3.1 to provide specific information about the validation languages used (which included both high-resource and low-resource languages from our training set) and include a sensitivity analysis showing how performance varies with α values in the 0.4-0.6 range, demonstrating the robustness of our approach to small variations in this parameter. We appreciate the reviewer's recognition of our method's simplicity, effectiveness, and thorough evaluation across multiple benchmarks.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The hybrid batch training strategy is a simple, intuitive, and effective method that improves performance across multiple retrieval settings without adding architectural complexity.",
+              "Extensive and rigorous experimental evaluation on multiple standard benchmarks (XQuAD-R, MLQA-R, MIRACL) with two different pre-trained models (XLM-R, LaBSE) demonstrates robust and consistent results.",
+              "The paper provides a thorough analysis of language bias reduction, showing that the proposed method significantly mitigates bias compared to monolingual training while maintaining strong performance."
+            ],
+            "weaknesses": [
+              "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+              "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+              "The limitations section acknowledges potential issues like societal biases and domain generalization but does not empirically investigate them."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper lacks a comparison with more recent or sophisticated multilingual IR baselines, such as multi-task learning approaches.",
+                "severity": "minor",
+                "evidence": "The RAG_EVIDENCE mentions a 2024 paper on 'A Cross-Language Information Retrieval Method Based on Multi-Task Learning' which represents a related but more complex contemporary approach. The submitted paper only compares against the X-X-mono and X-Y baselines from Roy et al. (2020).",
+                "affected_claim": "The claim that the proposed method is competitive or superior to other approaches is weakened by the absence of comparison with state-of-the-art multi-task learning methods.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The explanation of the hyperparameter tuning process for α is somewhat superficial, lacking details on validation set composition and performance sensitivity.",
+                "severity": "minor",
+                "evidence": "Section 3.1 states that α=0.5 was found to be optimal via grid search on a 'diverse selection of languages' but does not specify the exact validation set languages, metrics used for selection, or provide a sensitivity analysis showing how performance varies with α.",
+                "affected_claim": "The claim of having found an optimal balance between monolingual and cross-lingual performance is less substantiated without detailed hyperparameter analysis.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The experimental methodology is sound, using established benchmarks, proper evaluation metrics, and rigorous statistical reporting. The claims about improved performance and reduced bias are well-supported by the experimental data across multiple datasets and models."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While building on prior work like Roy et al. (2020), the specific hybrid batching strategy that combines monolingual and cross-lingual batches in a single training regime is novel. The RAG_EVIDENCE shows related work exists, but the proposed approach offers a distinct, simpler alternative to methods like multi-task learning."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses an important practical problem in multilingual IR - the trade-off between monolingual and cross-lingual performance. The proposed method achieves strong results across multiple settings with a simple modification to training procedure, making it potentially impactful for real-world applications."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation is comprehensive, covering three benchmark datasets, multiple metrics (MAP, Recall@1, Recall@10, nDCG@10), two pre-trained models, and diverse language pairs including low-resource languages. The zero-shot evaluation on unseen languages demonstrates strong generalization capabilities."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-organized, with sufficient methodological details and comprehensive results. The figures and tables effectively support the key findings, though some sections (like hyperparameter tuning) could be more detailed."
+              }
+            },
+            "summary_comment": "After reviewing the author's second response, my assessment remains unchanged. The authors acknowledge the identified weaknesses but do not resolve them with evidence already present in the submitted paper. Their promises to add comparisons with multi-task learning approaches, provide more hyperparameter details, and clarify limitations are future revisions rather than current resolutions. However, these remain minor issues that do not materially undermine the paper's core contributions, which are well-supported by extensive experiments demonstrating the effectiveness of the proposed hybrid batching approach across multiple benchmarks and evaluation settings. The paper meets acceptance criteria."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lacks comparison with more recent multilingual IR baselines (multi-task learning approaches)\",\n        \"Insufficient details on hyperparameter tuning process for α\",\n        \"Limitations acknowledged but not empirically investigated\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Comprehensive evaluation against established baselines\",\n          \"location\": \"Section 4: Experimental Results, Tables 1-8, 12-13\",\n          \"explanation\": \"The paper provides extensive comparisons against the well-established X-X-mono and X-Y baselines across three benchmark datasets (XQuAD-R, MLQA-R, MIRACL) using two different pre-trained models (XLM-R, LaBSE), demonstrating consistent improvements in both retrieval performance (MAP, Recall@1, Recall@10, nDCG@10) and language bias reduction across diverse language settings.\"\n        },\n        {\n          \"concern\": \"Hyperparameter selection methodology\",\n          \"location\": \"Section 3.1: Hyperparameter Tuning for Hybrid Batch Sampling\",\n          \"explanation\": \"The paper states that α=0.5 was determined through grid search evaluating performance across monolingual, cross-lingual, and multilingual retrieval tasks on a validation set comprising diverse languages, with the goal of optimizing overall performance across all three settings without significant sacrifice to any particular one.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Comparison with multi-task learning approaches\",\n          \"proposed_change\": \"We will add comparisons with contemporary multi-task learning approaches for multilingual IR in the revised version to provide more comprehensive benchmarking.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Detailed hyperparameter analysis\",\n          \"proposed_change\": \"We will expand Section 3.1 to include specific details about validation set composition (languages included) and add a sensitivity analysis showing performance variation across α values in the 0.4-0.6 range.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Empirical investigation of limitations\",\n          \"proposed_change\": \"We will note in the limitations section that while we acknowledge these important concerns (societal biases, domain generalization), their empirical investigation represents valuable future work beyond the scope of this paper.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued positive assessment of our work and their recognition that the identified weaknesses are minor and do not undermine our core contributions. We acknowledge that comparisons with multi-task learning approaches would strengthen the paper, and we commit to adding these comparisons in the revised version. Regarding the hyperparameter tuning details, we will expand Section 3.1 to provide more specific information about the validation languages used (which included both high-resource and low-resource languages from our training set) and include a sensitivity analysis showing performance stability across α values in the 0.4-0.6 range. For the limitations, we will clarify that while we acknowledge these important concerns, their empirical investigation represents valuable future work. We thank the reviewer for recognizing that our method's simplicity, effectiveness, and thorough evaluation across multiple benchmarks demonstrate a solid contribution worthy of acceptance.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_d51c83273d92",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/iclr_reject_2025_004_synergistic_approach_for_simultaneous_optimization_of_monolingual_cross_lingual_.md",
+    "target_paper_summary": {
+      "paper_id": "paper_d51c83273d92",
+      "title": "Synergistic Approach For Simultaneous Optimization Of Monolingual, Cross-Lingual, And Multilingual Information Retrieval",
+      "abstract": "Information retrieval across different languages is an increasingly important challenge in natural language processing. Recent approaches based on multilingual pre-trained language models have achieved remarkable success, yet they often optimize for either monolingual, cross-lingual, or multilingual retrieval performance at the expense of others. This paper proposes a novel hybrid batch training strategy to simultaneously improve zero-shot retrieval performance across monolingual, cross-lingual, and multilingual settings while mitigating language bias. The approach fine-tunes multilingual language models using a mix of monolingual and cross-lingual question-answer pair batches sampled based on dataset size. Experiments on XQuAD-R, MLQA-R, and MIRACL benchmark datasets show that the proposed method consistently achieves comparable or superior results in zero-shot retrieval across various languages and retrieval tasks compared to monolingual-only or cross-lingual-only training. Hybrid batch training also substantially reduces language bias in multilingual retrieval compared to monolingual training. These results demonstrate the effectiveness of the proposed approach for learning language-agnostic representations that enable strong zero-shot retrieval performance across diverse languages.",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_59be57588",
+        "title": "Synergistic Approach for Simultaneous Optimization of Monolingual, Cross-lingual, and Multilingual Information Retrieval",
+        "authors": [
+          "Adel Elmahdy",
+          "Sheng-Chieh Lin",
+          "Amin Al‐Ahmad"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-20",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Information retrieval across different languages is an increasingly important challenge in natural language processing. Recent approaches based on multilingual pre-trained language models have achieved remarkable success, yet they often optimize for either monolingual, cross-lingual, or multilingual retrieval performance at the expense of others. This paper proposes a novel hybrid batch training strategy to simultaneously improve zero-shot retrieval performance across monolingual, cross-lingual, and multilingual settings while mitigating language bias. The approach fine-tunes multilingual language models using a mix of monolingual and cross-lingual question-answer pair batches sampled based on dataset size. Experiments on XQuAD-R, MLQA-R, and MIRACL benchmark datasets show that the proposed method consistently achieves comparable or superior results in zero-shot retrieval across various languages and retrieval tasks compared to monolingual-only or cross-lingual-only training. Hybrid batch training also substantially reduces language bias in multilingual retrieval compared to monolingual training. These results demonstrate the effectiveness of the proposed approach for learning language-agnostic representations that enable strong zero-shot retrieval performance across diverse languages.",
+        "url": "http://arxiv.org/abs/2408.10536",
+        "doi": "https://doi.org/10.48550/arxiv.2408.10536",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4403007088"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_002_36b31018c",
+        "title": "From Zero to Hero: On the Limitations of Zero-Shot Language Transfer with Multilingual Transformers",
+        "authors": [
+          "Anne Lauscher",
+          "Vinit Ravishankar",
+          "Ivan Vulić",
+          "Goran Glavaš"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-01",
+        "venue": "",
+        "abstract": "bak probing, til beskrivelser av transformerarkitekturen og debatten rundt tolkbarhet av oppmerksomhet. I hvert introduksjonskapittel prver vi derfor kontekstualisere vrt eget arbeid.",
+        "url": "https://doi.org/10.18653/v1/2020.emnlp-main.363",
+        "doi": "https://doi.org/10.18653/v1/2020.emnlp-main.363",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3100198908"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 241
+      },
+      {
+        "paper_id": "rw_003_743726ffa",
+        "title": "Probing Cross-Lingual Lexical Knowledge from Multilingual Sentence Encoders",
+        "authors": [
+          "Ivan Vulić",
+          "Goran Glavaš",
+          "Fangyu Liu",
+          "Nigel Collier",
+          "Edoardo Maria Ponti",
+          "Anna Korhonen"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "",
+        "abstract": "Ivan Vulić, Goran Glavaš, Fangyu Liu, Nigel Collier, Edoardo Maria Ponti, Anna Korhonen. Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics. 2023.",
+        "url": "http://dx.doi.org/10.18653/v1/2023.eacl-main.153",
+        "doi": "https://doi.org/10.18653/v1/2023.eacl-main.153",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386566630"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 4
+      },
+      {
+        "paper_id": "rw_006_d7e1cf16c",
+        "title": "Improving Bilingual Lexicon Induction with Cross-Encoder Reranking",
+        "authors": [
+          "Yaoyiran Li",
+          "Fangyu Liu",
+          "Ivan Vulić",
+          "Anna Korhonen"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-01",
+        "venue": "",
+        "abstract": "Bilingual lexicon induction (BLI) with limited bilingual supervision is a crucial yet challenging task in multilingual NLP. Current state-of-the-art BLI methods rely on the induction of cross-lingual word embeddings (CLWEs) to capture cross-lingual word similarities; such CLWEs are obtained <b>1)</b> via traditional static models (e.g., VecMap), or <b>2)</b> by extracting type-level CLWEs from multilingual pretrained language models (mPLMs), or <b>3)</b> through combining the former two options. In this work, we propose a novel semi-supervised <i>post-hoc</i> reranking method termed <b>BLICEr</b> (<b>BLI</b> with <b>C</b>ross-<b>E</b>ncoder <b>R</b>eranking), applicable to any precalculated CLWE space, which improves their BLI capability. The key idea is to 'extract' cross-lingual lexical knowledge from mPLMs, and then combine it with the original CLWEs. This crucial step is done via <b>1)</b> creating a word similarity dataset, comprising positive word pairs (i.e., true translations) and hard negative pairs induced from the original CLWE space, and then <b>2)</b> fine-tuning an mPLM (e.g., mBERT or XLM-R) in a cross-encoder manner to predict the similarity scores. At inference, we <b>3)</b> combine the similarity score from the original CLWE space with the score from the BLI-tuned cross-encoder. BLICEr establishes new state-of-the-art results on two standard BLI benchmarks spanning a wide spectrum of diverse languages: it substantially outperforms a series of strong baselines across the board. We also validate the robustness of BLICEr with different CLWEs.",
+        "url": "https://doi.org/10.18653/v1/2022.findings-emnlp.302",
+        "doi": "https://doi.org/10.18653/v1/2022.findings-emnlp.302",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385574002"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 8
+      },
+      {
+        "paper_id": "rw_007_9b5caa779",
+        "title": "A Cross-Language Information Retrieval Method Based on Multi-Task Learning",
+        "authors": [
+          "Peng Linli"
+        ],
+        "year": 2024,
+        "publication_date": "2024-05-25",
+        "venue": "MALCOM Indonesian Journal of Machine Learning and Computer Science",
+        "abstract": "This study introduces a novel Cross-Language Information Retrieval (CLIR) method employing multi-task learning and soft parameter sharing to enhance neural retrieval models' feature extraction across languages. The approach integrates an interaction-based neural retrieval model with a semantic-based text classification model, exchanging hidden vectors for richer feature representation. Experimental results across four language pairs—English-Chinese, English-Arabic, English-French, and English-German—demonstrate significant performance improvements. The proposed method achieved the highest Mean Average Precision (MAP) scores: 0.419 for EN-ZH, 0.403 for EN-AR, 0.427 for EN-FR, and 0.441 for EN-DE, surpassing other models like BM25, BPNRM, KNRM, KNRM-Trans, and KNRM-Embed. This research underscores the potential of multi-task learning for CLIR, showcasing improved retrieval performance through semantic information and knowledge transfer.",
+        "url": "https://doi.org/10.57152/malcom.v4i3.1384",
+        "doi": "https://doi.org/10.57152/malcom.v4i3.1384",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4402344394"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_59be57588",
+        "relevance_score": 1.0,
+        "relevance_types": [
+          "same_problem",
+          "same_method",
+          "benchmark_baseline",
+          "novelty_competitor"
+        ],
+        "rationale": "The metadata describes the same title, authors, year, abstract, and method as the target paper, indicating it is the same publication or a direct duplicate.",
+        "evidence_summary": "In 2024, Adel Elmahdy, Sheng-Chieh Lin, and Amin Al‐Ahmad published 'Synergistic Approach for Simultaneous Optimization of Monolingual, Cross-lingual, and Multilingual Information Retrieval' on arXiv. The paper proposed a novel hybrid batch training strategy to fine-tune multilingual language models with a mix of monolingual and cross-lingual question-answer pair batches, aiming to improve zero-shot retrieval performance and reduce language bias. Experiments on XQuAD-R, MLQA-R, and MIRACL benchmarks showed the method achieved comparable or superior results in zero-shot retrieval across various languages and tasks compared to monolingual-only or cross-lingual-only training."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_9b5caa779",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "The metadata describes a related cross-language information retrieval method using multi-task learning, which aligns with the target's focus on multilingual retrieval optimization.",
+        "evidence_summary": "In 2024, Peng Linli published 'A Cross-Language Information Retrieval Method Based on Multi-Task Learning' in MALCOM Indonesian Journal of Machine Learning and Computer Science. The approach employed multi-task learning and soft parameter sharing to enhance neural retrieval models' feature extraction across languages, integrating an interaction-based neural retrieval model with a semantic-based text classification model. Experimental results on English-Chinese, English-Arabic, English-French, and English-German language pairs demonstrated performance improvements, achieving the highest Mean Average Precision scores compared to models like BM25, BPNRM, KNRM, KNRM-Trans, and KNRM-Embed."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_002_36b31018c",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "The metadata mentions limitations of zero-shot language transfer with multilingual transformers, providing relevant counterevidence to the target's claims about zero-shot retrieval.",
+        "evidence_summary": "In 2020, Anne Lauscher, Vinit Ravishankar, Ivan Vulić, and Goran Glavaš published 'From Zero to Hero: On the Limitations of Zero-Shot Language Transfer with Multilingual Transformers'. The paper discussed probing and interpretability debates related to transformer architectures, though specific methodological or experimental details were not provided in the metadata."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_d7e1cf16c",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The metadata describes a bilingual lexicon induction method using cross-encoder reranking with multilingual pretrained language models, which is methodologically related to the target's use of multilingual models for retrieval.",
+        "evidence_summary": "In 2022, Yaoyiran Li, Fangyu Liu, Ivan Vulić, and Anna Korhonen published 'Improving Bilingual Lexicon Induction with Cross-Encoder Reranking'. The paper proposed a semi-supervised post-hoc reranking method called BLICEr, which fine-tunes multilingual pretrained language models in a cross-encoder manner to predict similarity scores and combines them with original cross-lingual word embeddings. The method achieved state-of-the-art results on two standard bilingual lexicon induction benchmarks across diverse languages and demonstrated robustness with different cross-lingual word embeddings."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_003_743726ffa",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The metadata mentions probing cross-lingual lexical knowledge from multilingual sentence encoders, which is thematically related to the target's focus on multilingual representations.",
+        "evidence_summary": "In 2023, Ivan Vulić, Goran Glavaš, Fangyu Liu, Nigel Collier, Edoardo Maria Ponti, and Anna Korhonen published 'Probing Cross-Lingual Lexical Knowledge from Multilingual Sentence Encoders' in the Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics. No further details on methods, datasets, or results were provided in the metadata."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, Adel Elmahdy et al. published \"Synergistic Approach for Simultaneous Optimization of Monolingual, Cross-lingual, and Multilingual Information Retrieval\" in arXiv (Cornell University). This paper proposes a novel hybrid batch training strategy to simultaneously improve zero-shot retrieval performance across monolingual, cross-lingual, and multilingual settings while mitigating language bias. Experiments on XQuAD-R, MLQA-R, and MIRACL benchmark datasets show that the proposed method consistently achieves comparable or superior results in zero-shot retrieval across various languages and retrieval tasks compared to monolingual-only or cross-lingual-only training. The approach fine-tunes multilingual language models using a mix of monolingual and cross-lingual question-answer pair batches sampled based on dataset size. In 2024, Peng Linli published \"A Cross-Language Information Retrieval Method Based on Multi-Task Learning\" in MALCOM Indonesian Journal of Machine Learning and Computer Science. This study introduces a novel Cross-Language Information Retrieval (CLIR) method employing multi-task learning and soft parameter sharing to enhance neural retrieval models' feature extraction across languages. Experimental results across four language pairs—English-Chinese, English-Arabic, English-French, and English-German—demonstrate significant performance improvements. The proposed method achieved the highest Mean Average Precision (MAP) scores: 0.419 for EN-ZH, 0.403 for EN-AR, 0.427 for EN-FR, and 0.441 for EN-DE, surpassing other models like BM25, BPNRM, KNRM, KNRM-Trans, and KNRM-Embed. In 2020, Anne Lauscher et al. published \"From Zero to Hero: On the Limitations of Zero-Shot Language Transfer with Multilingual Transformers\". bak probing, til beskrivelser av transformerarkitekturen og debatten rundt tolkbarhet av oppmerksomhet. In 2022, Yaoyiran Li et al. published \"Improving Bilingual Lexicon Induction with Cross-Encoder Reranking\". In this work, the authors propose a novel semi-supervised post-hoc reranking method termed BLICEr ( BLI with C ross- E ncoder R eranking), applicable to any precalculated CLWE space, which improves their BLI capability. This crucial step is done via 1) creating a word similarity dataset, comprising positive word pairs (i.e., true translations) and hard negative pairs induced from the original CLWE space, and then 2) fine-tuning an mPLM (e.g., mBERT or XLM-R) in a cross-encoder manner to predict the similarity scores. Bilingual lexicon induction (BLI) with limited bilingual supervision is a crucial yet challenging task in multilingual NLP. In 2023, Ivan Vulić et al. published \"Probing Cross-Lingual Lexical Knowledge from Multilingual Sentence Encoders\". Ivan Vulić, Goran Glavaš, Fangyu Liu, Nigel Collier, Edoardo Maria Ponti, Anna Korhonen.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 9,
+      "num_removed_post_cutoff": 4,
+      "num_removed_undated": 0,
+      "num_used": 5,
+      "num_cutoff_valid": 5,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 9,
+    "num_removed_post_cutoff": 4,
+    "num_removed_undated": 0,
+    "num_used": 5,
+    "num_cutoff_valid": 5,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

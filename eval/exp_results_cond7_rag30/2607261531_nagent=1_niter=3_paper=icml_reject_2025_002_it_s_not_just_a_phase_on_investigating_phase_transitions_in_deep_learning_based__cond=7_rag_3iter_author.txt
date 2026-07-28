@@ -1,0 +1,790 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "The paper tackles a challenging real-world interpretability problem in deep learning-based side-channel analysis (DLSCA), demonstrating the feasibility of mechanistic interpretability (MI) in a noisy, high-dimensional domain where direct feature intervention is impossible.",
+        "The study provides concrete evidence for the 'weak universality' hypothesis, showing similar interpretable structures emerge during phase transitions across different SCA datasets (CHES CTF, ESHARD, ASCAD).",
+        "It proposes a practical outcome: moving from black-box to white-box evaluation by recovering secret masks from network activations, which has implications for security evaluation and countermeasure design."
+      ],
+      "weaknesses": [
+        "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+        "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+          "severity": "major",
+          "evidence": "The rebuttal points to the procedural description of mapping model outputs to a binomial distribution (Section 5.1.1). This describes an algorithm for *assigning* HW values based on sorted model outputs, but does not provide a quantitative *validation* of the correctness of those assignments against the ground truth secret shares for individual traces. Figure 4 shows a distribution match, which is suggestive but not conclusive proof of accurate per-trace mask retrieval. For ASCAD, the failure is explicitly noted. The lack of a standard evaluation metric (e.g., accuracy of retrieved masks per trace, mutual information) across all datasets means the central claim's empirical support remains weak in the submitted paper.",
+          "affected_claim": "The claim that the method 'directly retrieve[s] the secret share values' and 'provides a path to move from black-box to white-box evaluations'.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach.",
+          "severity": "major",
+          "evidence": "The rebuttal clarifies that patching involves fixing PCs to 'extremes' or 'corners' based on grid structures, which is present in the text (Section 5.1.1). However, it does not resolve the fundamental vagueness: the process for selecting which PC dimensions correspond to which share, and the precise mathematical operation of 'fixing' (e.g., setting activations to a constant vector, clamping via intervention) is not specified. The description remains high-level, relying on the reader's familiarity with MI practices. The rebuttal's promise to revise Section 4 confirms the current version lacks the necessary clarity for reliable assessment.",
+          "affected_claim": "The claim that the proposed analysis process (Figure 1) is a robust and systematic method for mechanistic interpretability in DLSCA.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The rebuttal provides some clarification on the patching procedure but does not substantiate the core claim of successful mask retrieval with the quantitative rigor required. The validation method described is procedural and distributional, not a direct per-trace accuracy measurement against ground truth. The acknowledged failure on ASCAD further questions the generality and robustness of the method. Therefore, the central claims remain insufficiently supported."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The application of MI to SCA, especially with a focus on phase transitions, remains novel. The rebuttal does not change this assessment."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The potential significance is high, but the demonstrated contribution in the submitted paper is preliminary. The lack of strong quantitative validation for the primary outcome (mask retrieval) and the method's failure on a key benchmark dataset (ASCAD) mean the work does not yet present a reliably impactful advance."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation remains insufficient. The rebuttal defends the existing validation as 'quantitative,' but the described method (sorting outputs and mapping to a theoretical distribution) is an indirect proxy rather than a direct evaluation of retrieval accuracy. No standard performance metrics are reported. Promises to add KL divergence metrics confirm their absence in the current submission."
+        },
+        "presentation": {
+          "result": "fail",
+          "justification": "The methodological exposition remains vague. While the rebuttal explains the intent behind patching steps, the submitted paper's Section 4 and related descriptions do not provide the precise, systematic exposition needed for reproducibility. The rebuttal's admission that revisions are needed confirms the current presentation is inadequate."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal provides further explanation of their validation procedure and methodological intent. However, it does not alter the fundamental assessment of the submitted paper. The validation for mask retrieval, while involving a quantitative mapping procedure, lacks the direct, per-trace accuracy metrics or robust statistical comparisons to ground truth expected for a top-tier ML publication. The method's explicit failure on the ASCAD dataset further limits its demonstrated generality. The methodological description, though clarified in intent, remains insufficiently detailed in the manuscript for reliable reproduction or assessment. The novel application and observed patterns are valuable, but the work in its current form does not meet the standards for acceptance due to unresolved major weaknesses in evaluation and presentation that critically impact soundness and significance."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses interpretability of deep learning models, a core topic in machine learning research that aligns with ICML's focus on general ML methodologies.",
+        "It applies mechanistic interpretability techniques to real-world side-channel analysis problems, demonstrating scalability to noisy, high-dimensional data, which fits ICML's interest in practical ML applications.",
+        "The work connects to theoretical concepts like phase transitions and weak universality, which are relevant to ICML's theory and optimization tracks."
+      ],
+      "why_it_does_not_fit": [
+        "The primary application domain (side-channel analysis) is highly specialized and security-focused, which may not align with ICML's broader ML community interests.",
+        "Reviewer concerns about insufficient empirical validation and vague methodological details reduce the paper's rigor fit for ICML's standards.",
+        "The work lacks strong theoretical contributions or novel algorithmic advances, which are often emphasized at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS has strong interest in interpretability and mechanistic analysis of neural networks, making this paper's core methodology well-aligned.",
+        "The paper's focus on phase transitions and emergent structures connects to NeurIPS's interest in understanding learning dynamics and generalization.",
+        "Security applications like side-channel analysis fit NeurIPS's interdisciplinary scope, including AI safety and robust ML."
+      ],
+      "why_it_does_not_fit": [
+        "The highly specialized cryptographic context may limit appeal to NeurIPS's broad audience.",
+        "Reviewer criticisms about evaluation insufficiency and presentation clarity could be problematic for NeurIPS's high standards.",
+        "The paper's empirical results are not as robust as typical NeurIPS contributions, with acknowledged failures on key benchmarks."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR focuses heavily on deep learning interpretability and representation learning, which are central to this paper's contributions.",
+        "The analysis of phase transitions and internal representations aligns with ICLR's emphasis on understanding deep learning mechanisms.",
+        "The application to security-relevant domains could be of interest given ICLR's expanding scope beyond pure ML."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's primary focus is on ML applications rather than deep learning architecture or theory innovations, which are ICLR's core strengths.",
+        "Reviewer concerns about methodological vagueness and insufficient validation are particularly damaging for ICLR's rigorous standards.",
+        "The security domain specialization may not resonate with ICLR's predominantly ML-focused audience."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper tackles a challenging real-world interpretability problem in deep learning-based side-channel analysis (DLSCA), demonstrating the feasibility of mechanistic interpretability (MI) in a noisy, high-dimensional domain where direct feature intervention is impossible.",
+              "The study provides concrete evidence for the 'weak universality' hypothesis, showing similar interpretable structures emerge during phase transitions across different SCA datasets (CHES CTF, ESHARD, ASCAD).",
+              "It proposes a practical outcome: moving from black-box to white-box evaluation by recovering secret masks from network activations, which has implications for security evaluation and countermeasure design."
+            ],
+            "weaknesses": [
+              "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+              "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+                "severity": "major",
+                "evidence": "The paper describes qualitative structures (grids, separations) in Principal Component (PC) plots and activation patching experiments. However, it lacks clear, quantitative metrics to substantiate the central claim of successfully retrieving secret masks. For CHES CTF, the description of mask extraction is procedural but lacks a reported success rate or a formal comparison against ground truth. For ASCAD, the text explicitly states in Section D (line 785-792): 'the SNR values are significantly lower... only result in two or three classes, where we expect four... the reversed shares do not combine to the correct label... further post-processing is necessary...' This indicates the core claim of successful mask retrieval is not fully verified for all datasets.",
+                "affected_claim": "The claim that the method 'directly retrieve[s] the secret share values' and 'provides a path to move from black-box to white-box evaluations'.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach.",
+                "severity": "major",
+                "evidence": "The methodology description (Section 4) is high-level and contingent ('additional analysis and MI techniques might have been used depending on each specific dataset'). The process involves several manual, dataset-specific steps (e.g., 'some manual effort in determining the correct (number of) components and subdivisions might be necessary', 'we rotate the PC coordinates before patching'). The description of how to 'fix' a PC value when performing activation patching to retrieve masks is unclear. The paper references appendices (e.g., E, F) for crucial derivations and details, but reliance on extensive appendices fragments the core argument.",
+                "affected_claim": "The claim that the proposed analysis process (Figure 1) is a robust and systematic method for mechanistic interpretability in DLSCA.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claim of retrieving secret masks from model activations is not convincingly supported by the presented evidence. The qualitative visual structures from PC analysis are intriguing but insufficient. The description of the patching-based mask extraction appears procedural and lacks quantitative validation, especially for the complex ASCAD dataset, where the method appears to struggle. Without robust quantitative results demonstrating successful mask recovery, the core technical contribution is inadequately substantiated."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The paper applies mechanistic interpretability (MI) to the challenging domain of side-channel analysis, a novel combination. While MI has been applied to toy models and language models, its application to this specific, noisy, real-world security task, and the connection made to phase transitions and grokking in SCA, represents a distinct contribution from prior work on input visualization or explainable architectures in SCA."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the potential impact is high (black-box to white-box evaluation), the demonstrated contribution is not yet meaningful for a top-tier ML conference. The work is promising but preliminary. The insights into phase transitions are descriptive rather than prescriptive (e.g., leading to a new algorithm or guaranteed interpretability method). The mask retrieval is presented as a partial success reliant on manual analysis steps, not as a robust, validated tool. Hence, the significance of the demonstrated results falls short of the top-tier threshold."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experimental support is not convincing. The paper analyzes three standard datasets but provides insufficient quantitative evaluation of the main outcome (mask retrieval). Key results are supported by plots of distributions, PC maps, and SNR comparisons, but these are qualitative and descriptive. There are no controlled ablation studies, comparisons to baseline interpretability methods for SCA, or robust statistical measures of success for the proposed activation patching procedure."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The paper is not sufficiently clear to permit reliable assessment. The writing is dense and the methodological flow is difficult to follow, with heavy reliance on appendices for core derivations (e.g., Table 1 in Appendix E, bit recombination in Appendix F). Key terms like 'phase transition' are connected to prior work on grokking, but the operational definition and detection method in this context are not crisply defined. The overall narrative lacks a clear, step-by-step exposition of a reproducible method."
+              }
+            },
+            "summary_comment": "This paper presents a novel and potentially impactful application of mechanistic interpretability to deep learning-based side-channel analysis. The connection to phase transitions and the observation of universal structures are interesting strengths. However, the work suffers from major weaknesses in evaluation and presentation. The central claim of retrieving secret masks is not convincingly quantified or validated, making the technical contribution unsound. The exposition is complex and lacks clarity, hindering reproducibility and reliable assessment. Given the failure of the soundness, significance, and evaluation gates under top-tier conference standards, I recommend rejection. The ideas have promise, but the work requires substantial empirical validation and a clearer presentation of a robust, quantitative methodology to be suitable for a top-tier venue."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper tackles a challenging real-world interpretability problem in deep learning-based side-channel analysis (DLSCA), demonstrating the feasibility of mechanistic interpretability (MI) in a noisy, high-dimensional domain where direct feature intervention is impossible.",
+              "The study provides concrete evidence for the 'weak universality' hypothesis, showing similar interpretable structures emerge during phase transitions across different SCA datasets (CHES CTF, ESHARD, ASCAD).",
+              "It proposes a practical outcome: moving from black-box to white-box evaluation by recovering secret masks from network activations, which has implications for security evaluation and countermeasure design."
+            ],
+            "weaknesses": [
+              "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+              "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+                "severity": "major",
+                "evidence": "The rebuttal points to Figure 4 and text describing the mask retrieval procedure for CHES CTF/ESHARD, but the submitted paper lacks formal quantitative metrics (e.g., success rates, statistical tests) comparing retrieved masks to ground truth. Visual inspection of distribution matching is not sufficient for a top-tier ML publication. For ASCAD, the paper explicitly states the method fails to properly retrieve all mask classes. The absence of standardized evaluation metrics across all datasets undermines the central claim.",
+                "affected_claim": "The claim that the method 'directly retrieve[s] the secret share values' and 'provides a path to move from black-box to white-box evaluations'.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach.",
+                "severity": "major",
+                "evidence": "The rebuttal acknowledges the need for methodological clarification but does not point to existing text that resolves the vagueness. Section 4 remains high-level and contingent in the submitted paper. Key procedures like PC value 'fixing' during activation patching and the manual selection of components lack precise descriptions. The reliance on promises of future clarification rather than existing clear exposition confirms this weakness in the current submission.",
+                "affected_claim": "The claim that the proposed analysis process (Figure 1) is a robust and systematic method for mechanistic interpretability in DLSCA.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal does not provide new evidence from the submitted paper that substantiates the mask retrieval claims with rigorous quantitative validation. While qualitative patterns are shown, the absence of formal metrics and the acknowledged failure on ASCAD prevent confident assessment of the central technical contribution. The methodological vagueness further impedes soundness evaluation."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of MI to SCA remains novel. The rebuttal correctly notes this combination represents a distinct contribution from prior SCA interpretability work."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The potential impact is acknowledged, but the demonstrated contribution in the submitted paper is preliminary. The lack of robust, quantitative validation across all datasets and the reliance on manual, dataset-specific analysis steps mean the work does not yet present a general, reliable method meeting top-tier significance standards."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation remains insufficient. The rebuttal identifies existing figures but does not demonstrate that they constitute the rigorous, quantitative comparison needed. Promises of future quantitative assessment for ASCAD confirm that such evaluation is lacking in the current submission."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The rebuttal's agreement that Section 4 requires revision confirms that the current exposition is not sufficiently clear for reliable assessment. The methodological description remains vague and contingent in the submitted manuscript."
+              }
+            },
+            "summary_comment": "The authors' rebuttal is constructive and acknowledges the need for improved quantitative validation and methodological clarity. However, it relies on promises of future revisions rather than identifying sufficient evidence within the submitted paper to resolve the core weaknesses. The central claim of reliable mask retrieval lacks the rigorous quantitative support expected for a top-tier ML conference, particularly given the method's failure on the complex ASCAD dataset. The methodological exposition remains too vague for reproducibility. While the novel application of MI to SCA and the observed structural patterns are interesting, the work in its current form does not meet the standards for acceptance due to major weaknesses in soundness and evaluation. The proposed revisions would strengthen the paper, but the decision must be based on the submitted material."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Insufficient empirical validation and lack of quantitative metrics to substantiate the central claim of successfully retrieving secret masks. The description is qualitative and procedural, with the method struggling on the ASCAD dataset.\",\n        \"Vague exposition and methodological details, making the proposed analysis approach difficult to assess for soundness and reproducibility. The process involves manual, dataset-specific steps and is described in a high-level, contingent manner.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Empirical validation for mask retrieval is insufficient.\",\n          \"location\": \"Section 5.1.1 (lines 291-306), Figure 4, Appendix C.1 (lines 732-737)\",\n          \"explanation\": \"For the CHES CTF and ESHARD datasets, the paper presents concrete quantitative evidence for mask retrieval. Figure 4 (CHES CTF) shows the distribution of retrieved share Hamming weights compared to the expected distribution. The text describes a quantitative procedure: 'since we know the expected number of occurrences for each HW... we can take the first 1/256 values to be HW = 0...' This is a direct comparison to ground truth. Appendix C.1 (Figure 9) for ESHARD states: 'The results we see in Figure 9 closely match the actual distributions of secret share HWs as seen in the rightmost plots of Figure 8.' These are specific, results-driven assessments.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Quantitative validation for mask retrieval on the ASCAD dataset is incomplete.\",\n          \"proposed_change\": \"We will add a clear quantitative assessment to Section 5.2 (or Appendix D). This will include a metric (e.g., accuracy or mutual information) comparing the retrieved clusters of share values to the ground truth and a discussion of the limitations leading to the current sub-optimal SNR and class separation, as noted in lines 785-792.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"The methodology description in Section 4 is high-level and contingent.\",\n          \"proposed_change\": \"We will revise Section 4 to provide a more systematic and less contingent description of the core analysis process, explicitly separating the universal steps (logit analysis, hypothesis formation, PC inspection, patching verification) from dataset-specific adaptations. We will clarify the logical flow from Figure 1 and detail the patching procedure with a clearer example.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful and constructive critique. We acknowledge the need to strengthen the empirical validation and clarify the methodology. We believe the core contributions are sound and address the reviewer's main concerns as follows.\\n\\n**1. Addressing Quantitative Validation of Mask Retrieval:** The reviewer is correct that the discussion of ASCAD mask retrieval (Appendix D/Section 5.2) should be more quantitatively grounded. We explicitly noted the sub-optimal SNR and class separation (lines 785-792) to honestly present the current limitations. However, for the CHES CTF and ESHARD datasets, the validation is quantitative and robust. In Section 5.1.1, we describe a procedure that directly yields the Hamming weight distribution of the secret shares, which is shown against the expected binomial distribution in Figure 4. The close match is a quantitative result. For ESHARD, Appendix C.1 states the retrieved distributions 'closely match the actual distributions' (Figure 9 vs. Figure 8). We commit to enhancing the ASCAD section by adding a specific quantitative assessment (e.g., cluster purity or correlation with ground truth) to better frame the partial success and clarify the distinction between successful extraction on HW-leaking targets and the more challenging bitwise leakage of ASCAD.\\n\\n**2. Clarifying Methodology and Exposition:** We agree that Section 4 can be made more systematic. The current description aims to be general, but we will revise it to present a clearer, step-by-step pipeline based on Figure 1. We will explicitly list the core steps (logit analysis during phase transitions → hypothesis formation about physical leakage → inspection of principal components in relevant layers → causal verification via activation patching → share value derivation) and then discuss how these steps are instantiated on different datasets. The 'manual effort' mentioned refers to selecting which layer's PCs to analyze—a standard step in mechanistic interpretability. We will clarify the patching procedure, perhaps with a pseudocode-like description in the appendix, to improve reproducibility.\\n\\n**3. Significance and Soundness:** The novelty and potential impact lie in demonstrating that mechanistic interpretability, a technique from pure ML research, can be scaled to a noisy, real-world security domain with structured success, enabling the transition from black-box to white-box analysis. The soundness of the core finding—that networks learn structures corresponding to physical leakage during phase transitions—is supported by the consistent, replicable patterns across three independent datasets (grids for HW leakage in CHES CTF/ESHARD, bitwise structures in ASCAD) and the causal verification via patching. The retrieval of secret shares for CHES CTF/ESHARD is a concrete, quantitative demonstration of this understanding. We believe these contributions are meaningful for the ML community, showing the applicability of MI beyond toy models, and for the security community, providing a new analytical tool.\\n\\nWe are confident that the proposed revisions will address the reviewer's concerns regarding clarity and evaluation rigor, strengthening the paper's contribution.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper tackles a challenging real-world interpretability problem in deep learning-based side-channel analysis (DLSCA), demonstrating the feasibility of mechanistic interpretability (MI) in a noisy, high-dimensional domain where direct feature intervention is impossible.",
+              "The study provides concrete evidence for the 'weak universality' hypothesis, showing similar interpretable structures emerge during phase transitions across different SCA datasets (CHES CTF, ESHARD, ASCAD).",
+              "It proposes a practical outcome: moving from black-box to white-box evaluation by recovering secret masks from network activations, which has implications for security evaluation and countermeasure design."
+            ],
+            "weaknesses": [
+              "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+              "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The empirical validation and evaluation are insufficient and lack rigor; key claims about mask retrieval are not convincingly supported by quantitative results or robust statistical evidence.",
+                "severity": "major",
+                "evidence": "The rebuttal points to the procedural description of mapping model outputs to a binomial distribution (Section 5.1.1). This describes an algorithm for *assigning* HW values based on sorted model outputs, but does not provide a quantitative *validation* of the correctness of those assignments against the ground truth secret shares for individual traces. Figure 4 shows a distribution match, which is suggestive but not conclusive proof of accurate per-trace mask retrieval. For ASCAD, the failure is explicitly noted. The lack of a standard evaluation metric (e.g., accuracy of retrieved masks per trace, mutual information) across all datasets means the central claim's empirical support remains weak in the submitted paper.",
+                "affected_claim": "The claim that the method 'directly retrieve[s] the secret share values' and 'provides a path to move from black-box to white-box evaluations'.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The exposition and methodological details are often vague, making it difficult to assess the soundness and reproducibility of the proposed analysis approach.",
+                "severity": "major",
+                "evidence": "The rebuttal clarifies that patching involves fixing PCs to 'extremes' or 'corners' based on grid structures, which is present in the text (Section 5.1.1). However, it does not resolve the fundamental vagueness: the process for selecting which PC dimensions correspond to which share, and the precise mathematical operation of 'fixing' (e.g., setting activations to a constant vector, clamping via intervention) is not specified. The description remains high-level, relying on the reader's familiarity with MI practices. The rebuttal's promise to revise Section 4 confirms the current version lacks the necessary clarity for reliable assessment.",
+                "affected_claim": "The claim that the proposed analysis process (Figure 1) is a robust and systematic method for mechanistic interpretability in DLSCA.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal provides some clarification on the patching procedure but does not substantiate the core claim of successful mask retrieval with the quantitative rigor required. The validation method described is procedural and distributional, not a direct per-trace accuracy measurement against ground truth. The acknowledged failure on ASCAD further questions the generality and robustness of the method. Therefore, the central claims remain insufficiently supported."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of MI to SCA, especially with a focus on phase transitions, remains novel. The rebuttal does not change this assessment."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The potential significance is high, but the demonstrated contribution in the submitted paper is preliminary. The lack of strong quantitative validation for the primary outcome (mask retrieval) and the method's failure on a key benchmark dataset (ASCAD) mean the work does not yet present a reliably impactful advance."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation remains insufficient. The rebuttal defends the existing validation as 'quantitative,' but the described method (sorting outputs and mapping to a theoretical distribution) is an indirect proxy rather than a direct evaluation of retrieval accuracy. No standard performance metrics are reported. Promises to add KL divergence metrics confirm their absence in the current submission."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The methodological exposition remains vague. While the rebuttal explains the intent behind patching steps, the submitted paper's Section 4 and related descriptions do not provide the precise, systematic exposition needed for reproducibility. The rebuttal's admission that revisions are needed confirms the current presentation is inadequate."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal provides further explanation of their validation procedure and methodological intent. However, it does not alter the fundamental assessment of the submitted paper. The validation for mask retrieval, while involving a quantitative mapping procedure, lacks the direct, per-trace accuracy metrics or robust statistical comparisons to ground truth expected for a top-tier ML publication. The method's explicit failure on the ASCAD dataset further limits its demonstrated generality. The methodological description, though clarified in intent, remains insufficiently detailed in the manuscript for reliable reproduction or assessment. The novel application and observed patterns are valuable, but the work in its current form does not meet the standards for acceptance due to unresolved major weaknesses in evaluation and presentation that critically impact soundness and significance."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of formal quantitative metrics (e.g., success rates, statistical tests) comparing retrieved masks to ground truth for CHES CTF/ESHARD datasets\",\n        \"Methodological vagueness in key procedures like PC value 'fixing' during activation patching and manual component selection\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Lack of quantitative metrics for mask retrieval\",\n          \"location\": \"Section 5.1.1, Figure 4, Appendix C.1, Figure 9\",\n          \"explanation\": \"The paper provides quantitative validation through direct comparison to known statistical distributions. For CHES CTF, the text explicitly states: 'we know the expected number of occurrences for each HW... we can take the first 1/256 values to be HW = 0, then the next 8/256 values for HW = 1, and so on.' This procedure quantitatively maps model outputs to the expected binomial distribution of Hamming weights (9 classes). Figure 4 visually demonstrates this quantitative matching. For ESHARD, Appendix C.1 states the results 'closely match the actual distributions,' with Figure 9 showing this quantitative comparison. This constitutes a statistically grounded evaluation method tailored to the domain.\"\n        },\n        {\n          \"concern\": \"Methodological vagueness in activation patching\",\n          \"location\": \"Section 4, Section 5.1.1\",\n          \"explanation\": \"The paper describes the activation patching procedure: 'fixing the value of one PC to be (near) one of the corners of the grid' and observing changes in model outputs. For CHES CTF, it specifies fixing to 0 or 8 (extreme values corresponding to known physical leakage behavior). This follows established MI practices (Heimersheim & Nanda, 2024) adapted to the SCA domain. The manual component selection is inherent to exploratory MI work but is guided by the clear structural patterns emerging in PCs during phase transitions.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Need for more explicit quantitative metrics\",\n          \"proposed_change\": \"We will add explicit quantitative metrics (e.g., Kullback-Leibler divergence between retrieved and expected HW distributions) to Section 5.1.1 and Appendix C.1 to supplement the existing visual and procedural validation.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Clarification of methodological steps\",\n          \"proposed_change\": \"We will revise Section 4 to provide a more structured description of the activation patching procedure, including a clearer explanation of how PC values are selected for fixing (based on grid extremes) and how the rotation step for ESHARD aligns with expected physical behavior.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We respectfully disagree that our validation is insufficient and address the specific concerns:\\n\\n**1. Quantitative Validation:** The paper does provide quantitative validation for mask retrieval on CHES CTF and ESHARD. The procedure described in Section 5.1.1 is fundamentally quantitative - it maps model outputs to specific Hamming weight values based on the known binomial distribution (256 total values, with HW=0 occurring 1/256 times, HW=1 occurring 8/256 times, etc.). This is not merely visual inspection but a statistical mapping to ground truth. Figure 4 and Figure 9 show the results of this quantitative procedure. We acknowledge that for ASCAD, the results are partial, which we explicitly state as a limitation and area for future work. We will enhance the presentation by adding formal statistical metrics (e.g., KL divergence) to make the quantitative nature of our validation more explicit.\\n\\n**2. Methodological Clarity:** The activation patching methodology is described with sufficient detail for reproducibility. We specify that we fix PC values to 'extremes' or 'corners of the grid' (Section 5.1.1), which corresponds to setting share values to 0 or 8 in the HW leakage model. This is a standard approach in MI when ground truth values are unknown. The manual component selection is guided by the clear structural patterns that emerge during phase transitions (e.g., the grid structure in Figure 3), which is a feature rather than a bug of our approach. We will revise Section 4 to make this process more systematic and explicit.\\n\\n**3. Significance and Soundness:** The core contribution - demonstrating that MI can scale to real-world SCA and enable mask retrieval - is sound and significant. We provide concrete, quantitative results for two datasets and honest assessment of limitations on a third. The methodological approach, while requiring some domain adaptation, is rigorous and follows MI best practices. The observed universal structures across datasets provide strong evidence for the validity of our approach.\\n\\nWe believe the paper makes a substantial contribution by showing MI can work in a challenging real-world domain and provides a path toward white-box security evaluation. The proposed revisions will address the reviewer's concerns about presentation while maintaining the paper's core contributions.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_e8b9f22c03ba",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/icml_reject_2025_002_it_s_not_just_a_phase_on_investigating_phase_transitions_in_deep_learning_based_.md",
+    "target_paper_summary": {
+      "paper_id": "paper_e8b9f22c03ba",
+      "title": "It'S Not Just A Phase: On Investigating Phase Transitions In Deep Learning-Based Side-Channel Analysis",
+      "abstract": "## 1. Introduction",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_879aaa0fa",
+        "title": "A survey on deep learning in medical image analysis",
+        "authors": [
+          "Geert Litjens",
+          "Thijs Kooi",
+          "Babak Ehteshami Bejnordi",
+          "Arnaud A. A. Setio",
+          "Francesco Ciompi",
+          "Mohsen Ghafoorian",
+          "Jeroen van der Laak",
+          "Bram van Ginneken",
+          "Clara I. Sá‎nchez"
+        ],
+        "year": 2017,
+        "publication_date": "2017-07-26",
+        "venue": "Medical Image Analysis",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.media.2017.07.005",
+        "doi": "https://doi.org/10.1016/j.media.2017.07.005",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2592929672"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 14650
+      },
+      {
+        "paper_id": "rw_002_2d0fc7c87",
+        "title": "Review of deep learning: concepts, CNN architectures, challenges, applications, future directions",
+        "authors": [
+          "Laith Alzubaidi",
+          "Jinglan Zhang",
+          "Amjad J. Humaidi",
+          "Ayad Q. Al-Dujaili",
+          "Ye Duan",
+          "Omran Al-Shamma",
+          "José Santamaría",
+          "Mohammed A. Fadhel",
+          "Muthana Al‐Amidie",
+          "Laith Farhan"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-31",
+        "venue": "Journal Of Big Data",
+        "abstract": "In the last few years, the deep learning (DL) computing paradigm has been deemed the Gold Standard in the machine learning (ML) community. Moreover, it has gradually become the most widely used computational approach in the field of ML, thus achieving outstanding results on several complex cognitive tasks, matching or even beating those provided by human performance. One of the benefits of DL is the ability to learn massive amounts of data. The DL field has grown fast in the last few years and it has been extensively used to successfully address a wide range of traditional applications. More importantly, DL has outperformed well-known ML techniques in many domains, e.g., cybersecurity, natural language processing, bioinformatics, robotics and control, and medical information processing, among many others. Despite it has been contributed several works reviewing the State-of-the-Art on DL, all of them only tackled one aspect of the DL, which leads to an overall lack of knowledge about it. Therefore, in this contribution, we propose using a more holistic approach in order to provide a more suitable starting point from which to develop a full understanding of DL. Specifically, this review attempts to provide a more comprehensive survey of the most important aspects of DL and including those enhancements recently added to the field. In particular, this paper outlines the importance of DL, presents the types of DL techniques and networks. It then presents convolutional neural networks (CNNs) which the most utilized DL network type and describes the development of CNNs architectures together with their main features, e.g., starting with the AlexNet network and closing with the High-Resolution network (HR.Net). Finally, we further present the challenges and suggested solutions to help researchers understand the existing research gaps. It is followed by a list of the major DL applications. Computational tools including FPGA, GPU, and CPU are summarized along with a description of their influence on DL. The paper ends with the evolution matrix, benchmark datasets, and summary and conclusion.",
+        "url": "https://doi.org/10.1186/s40537-021-00444-8",
+        "doi": "https://doi.org/10.1186/s40537-021-00444-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3140854437"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 7685
+      },
+      {
+        "paper_id": "rw_003_423c30810",
+        "title": "Glutamate Receptor Ion Channels: Structure, Regulation, and Function",
+        "authors": [
+          "Stephen F. Traynelis",
+          "Lonnie P. Wollmuth",
+          "Chris J. McBain",
+          "Frank S. Menniti",
+          "Katie M. Vance",
+          "Kevin K. Ogden",
+          "Kasper B. Hansen",
+          "Hongjie Yuan",
+          "Scott J. Myers",
+          "Raymond Dingledine"
+        ],
+        "year": 2010,
+        "publication_date": "2010-08-17",
+        "venue": "Pharmacological Reviews",
+        "abstract": "",
+        "url": "https://doi.org/10.1124/pr.109.002451",
+        "doi": "https://doi.org/10.1124/pr.109.002451",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2037852973"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 3558
+      },
+      {
+        "paper_id": "rw_004_bfca47231",
+        "title": "Deep learning in optical metrology: a review",
+        "authors": [
+          "Chao Zuo",
+          "Jiaming Qian",
+          "Shijie Feng",
+          "Wei Yin",
+          "Yixuan Li",
+          "Pengfei Fan",
+          "Jing Han",
+          "Qian Kemao",
+          "Qian Chen"
+        ],
+        "year": 2022,
+        "publication_date": "2022-02-23",
+        "venue": "Light Science & Applications",
+        "abstract": "With the advances in scientific foundations and technological implementations, optical metrology has become versatile problem-solving backbones in manufacturing, fundamental research, and engineering applications, such as quality control, nondestructive testing, experimental mechanics, and biomedicine. In recent years, deep learning, a subfield of machine learning, is emerging as a powerful tool to address problems by learning from data, largely driven by the availability of massive datasets, enhanced computational power, fast data storage, and novel training algorithms for the deep neural network. It is currently promoting increased interests and gaining extensive attention for its utilization in the field of optical metrology. Unlike the traditional \"physics-based\" approach, deep-learning-enabled optical metrology is a kind of \"data-driven\" approach, which has already provided numerous alternative solutions to many challenging problems in this field with better performances. In this review, we present an overview of the current status and the latest progress of deep-learning technologies in the field of optical metrology. We first briefly introduce both traditional image-processing algorithms in optical metrology and the basic concepts of deep learning, followed by a comprehensive review of its applications in various optical metrology tasks, such as fringe denoising, phase retrieval, phase unwrapping, subset correlation, and error compensation. The open challenges faced by the current deep-learning approach in optical metrology are then discussed. Finally, the directions for future research are outlined.",
+        "url": "https://doi.org/10.1038/s41377-022-00714-x",
+        "doi": "https://doi.org/10.1038/s41377-022-00714-x",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4214513770"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 669
+      },
+      {
+        "paper_id": "rw_005_3c46fbe4b",
+        "title": "Deep learning modelling techniques: current progress, applications, advantages, and challenges",
+        "authors": [
+          "Shams Forruque Ahmed",
+          "Md. Sakib Bin Alam",
+          "Maruf Hassan",
+          "Mahtabin Rodela Rozbu",
+          "Taoseef Ishtiak",
+          "Nazifa Rafa",
+          "M. Mofijur",
+          "A. B. M. Shawkat Ali",
+          "Amir H. Gandomi"
+        ],
+        "year": 2023,
+        "publication_date": "2023-04-17",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Abstract Deep learning (DL) is revolutionizing evidence-based decision-making techniques that can be applied across various sectors. Specifically, it possesses the ability to utilize two or more levels of non-linear feature transformation of the given data via representation learning in order to overcome limitations posed by large datasets. As a multidisciplinary field that is still in its nascent phase, articles that survey DL architectures encompassing the full scope of the field are rather limited. Thus, this paper comprehensively reviews the state-of-art DL modelling techniques and provides insights into their advantages and challenges. It was found that many of the models exhibit a highly domain-specific efficiency and could be trained by two or more methods. However, training DL models can be very time-consuming, expensive, and requires huge samples for better accuracy. Since DL is also susceptible to deception and misclassification and tends to get stuck on local minima, improved optimization of parameters is required to create more robust models. Regardless, DL has already been leading to groundbreaking results in the healthcare, education, security, commercial, industrial, as well as government sectors. Some models, like the convolutional neural network (CNN), generative adversarial networks (GAN), recurrent neural network (RNN), recursive neural networks, and autoencoders, are frequently used, while the potential of other models remains widely unexplored. Pertinently, hybrid conventional DL architectures have the capacity to overcome the challenges experienced by conventional models. Considering that capsule architectures may dominate future DL models, this work aimed to compile information for stakeholders involved in the development and use of DL models in the contemporary world.",
+        "url": "https://doi.org/10.1007/s10462-023-10466-8",
+        "doi": "https://doi.org/10.1007/s10462-023-10466-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4366091323"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 997
+      },
+      {
+        "paper_id": "rw_006_17b525241",
+        "title": "Deep Learning for Cardiac Image Segmentation: A Review",
+        "authors": [
+          "Chen Chen",
+          "Chen Qin",
+          "Huaqi Qiu",
+          "Giacomo Tarroni",
+          "Jinming Duan",
+          "Wenjia Bai",
+          "Daniel Rueckert"
+        ],
+        "year": 2020,
+        "publication_date": "2020-03-05",
+        "venue": "Frontiers in Cardiovascular Medicine",
+        "abstract": "Deep learning has become the most widely used approach for cardiac image segmentation in recent years. In this paper, we provide a review of over 100 cardiac image segmentation papers using deep learning, which covers common imaging modalities including magnetic resonance imaging (MRI), computed tomography (CT), and ultrasound and major anatomical structures of interest (ventricles, atria, and vessels). In addition, a summary of publicly available cardiac image datasets and code repositories are included to provide a base for encouraging reproducible research. Finally, we discuss the challenges and limitations with current deep learning-based approaches (scarcity of labels, model generalizability across different domains, interpretability) and suggest potential directions for future research.",
+        "url": "https://doi.org/10.3389/fcvm.2020.00025",
+        "doi": "https://doi.org/10.3389/fcvm.2020.00025",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3009563704"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 848
+      },
+      {
+        "paper_id": "rw_007_63a578b6b",
+        "title": "The multi-level perspective on sustainability transitions: Responses to seven criticisms",
+        "authors": [
+          "Frank W. Geels"
+        ],
+        "year": 2011,
+        "publication_date": "2011-02-27",
+        "venue": "Environmental Innovation and Societal Transitions",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.eist.2011.02.002",
+        "doi": "https://doi.org/10.1016/j.eist.2011.02.002",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2146706569"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2923
+      },
+      {
+        "paper_id": "rw_008_77c307690",
+        "title": "An agenda for sustainability transitions research: State of the art and future directions",
+        "authors": [
+          "Jonathan Köhler",
+          "Frank W. Geels",
+          "Florian Kern",
+          "Jochen Markard",
+          "Elsie Onsongo",
+          "A. Wieczorek",
+          "Floortje Alkemade",
+          "Flor Avelino",
+          "Anna Bergek",
+          "Frank Boons",
+          "Lea Fünfschilling",
+          "David Hess",
+          "Georg Holtz",
+          "Sampsa Hyysalo",
+          "Kirsten Jenkins",
+          "Paula Kivimaa",
+          "Mari Martiskainen",
+          "Andrew McMeekin",
+          "Marie Susan Mühlemeier",
+          "Björn Nykvist",
+          "Bonno Pel",
+          "Rob Raven",
+          "Harald Rohracher",
+          "Björn A. Sandén",
+          "Johan Schot",
+          "Benjamin K. Sovacool",
+          "Bruno Turnheim",
+          "Daniel Welch",
+          "Peter Wells"
+        ],
+        "year": 2019,
+        "publication_date": "2019-02-01",
+        "venue": "Environmental Innovation and Societal Transitions",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.eist.2019.01.004",
+        "doi": "https://doi.org/10.1016/j.eist.2019.01.004",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2910922638"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2711
+      },
+      {
+        "paper_id": "rw_009_23b3372d8",
+        "title": "Recent advances and applications of machine learning in solid-state materials science",
+        "authors": [
+          "Jonathan Schmidt",
+          "Mário R. G. Marques",
+          "Silvana Botti",
+          "Miguel A. L. Marques"
+        ],
+        "year": 2019,
+        "publication_date": "2019-08-08",
+        "venue": "npj Computational Materials",
+        "abstract": "Abstract One of the most exciting tools that have entered the material science toolbox in recent years is machine learning. This collection of statistical methods has already proved to be capable of considerably speeding up both fundamental and applied research. At present, we are witnessing an explosion of works that develop and apply machine learning to solid-state systems. We provide a comprehensive overview and analysis of the most recent research in this topic. As a starting point, we introduce machine learning principles, algorithms, descriptors, and databases in materials science. We continue with the description of different machine learning approaches for the discovery of stable materials and the prediction of their crystal structure. Then we discuss research in numerous quantitative structure–property relationships and various approaches for the replacement of first-principle methods by machine learning. We review how active learning and surrogate-based optimization can be applied to improve the rational design process and related examples of applications. Two major questions are always the interpretability of and the physical understanding gained from machine learning models. We consider therefore the different facets of interpretability and their importance in materials science. Finally, we propose solutions and future research paths for various challenges in computational materials science.",
+        "url": "https://doi.org/10.1038/s41524-019-0221-0",
+        "doi": "https://doi.org/10.1038/s41524-019-0221-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2968923792"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2442
+      },
+      {
+        "paper_id": "rw_010_ea2387856",
+        "title": "Phasic vs Sustained Fear in Rats and Humans: Role of the Extended Amygdala in Fear vs Anxiety",
+        "authors": [
+          "Michael Davis",
+          "David Walker",
+          "Leigh Miles",
+          "Christian Grillon"
+        ],
+        "year": 2009,
+        "publication_date": "2009-08-19",
+        "venue": "Neuropsychopharmacology",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/npp.2009.109",
+        "doi": "https://doi.org/10.1038/npp.2009.109",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1972489844"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1469
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_2d0fc7c87",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The candidate reviews deep learning methods including CNNs, discusses their broad applications, and outlines challenges like training inefficiency and susceptibility to deception, which aligns with deep learning-based side-channel analysis methods and constraints.",
+        "evidence_summary": "In 2021, Alzubaidi et al. published 'Review of deep learning: concepts, CNN architectures, challenges, applications, future directions,' which presented a comprehensive survey of deep learning techniques, emphasizing convolutional neural networks as the most utilized type. The review noted that deep learning has outperformed traditional machine learning in domains like cybersecurity but highlighted limitations such as time-consuming training, expense, large data requirements, susceptibility to deception, and getting stuck in local minima."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_bfca47231",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The candidate surveys deep learning applications in optical metrology as a data-driven approach, addressing tasks like denoising and phase retrieval, with discussion of challenges, which relates to the target's deep learning methods and phase-related analysis.",
+        "evidence_summary": "In 2022, Zuo et al. published 'Deep learning in optical metrology: a review,' which explored deep learning as a data-driven alternative to physics-based approaches for tasks including fringe denoising and phase retrieval. The review also discussed open challenges faced by deep learning in this field."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_005_3c46fbe4b",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The candidate reviews deep learning modeling techniques, applications, and challenges like parameter optimization and model robustness, which is relevant to the target's method and constraint considerations.",
+        "evidence_summary": "In 2023, Ahmed et al. published 'Deep learning modelling techniques: current progress, applications, advantages, and challenges,' which covered state-of-art deep learning architectures and their use across sectors. The review identified challenges including time-consuming training, expense, need for large samples, susceptibility to deception, and requirement for improved parameter optimization to enhance robustness."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_009_23b3372d8",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The candidate discusses machine learning applications in materials science, including structure-property relationships and active learning, which provides general method background relevant to deep learning approaches.",
+        "evidence_summary": "In 2019, Schmidt et al. published 'Recent advances and applications of machine learning in solid-state materials science,' which overviewed machine learning for tasks like material discovery, crystal structure prediction, and quantitative structure-property relationships. The review also addressed interpretability and proposed solutions for computational challenges."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_17b525241",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The candidate reviews deep learning for cardiac image segmentation, covering datasets and challenges like label scarcity and model generalizability, which relates to method application and constraints.",
+        "evidence_summary": "In 2020, Chen et al. published 'Deep learning for cardiac image segmentation: A review,' which summarized over 100 papers using deep learning on modalities like MRI and CT for segmenting ventricles and atria. The review included public datasets and discussed limitations such as scarcity of labels, model generalizability, and interpretability."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_63a578b6b",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "The candidate discusses multi-level perspective on sustainability transitions and responses to criticisms, which may provide background on transition concepts relevant to the target's phase transitions.",
+        "evidence_summary": "In 2011, Geels published 'The multi-level perspective on sustainability transitions: Responses to seven criticisms,' which addressed theoretical critiques of transition frameworks in environmental innovation."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_008_77c307690",
+        "relevance_score": 0.43,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "The candidate outlines an agenda for sustainability transitions research, providing general transition context.",
+        "evidence_summary": "In 2019, Köhler et al. published 'An agenda for sustainability transitions research: State of the art and future directions,' which reviewed the state of transition studies and proposed future research paths."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_010_ea2387856",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "The candidate examines phasic vs sustained fear, offering domain-specific phase analysis background.",
+        "evidence_summary": "In 2009, Davis et al. published 'Phasic vs Sustained Fear in Rats and Humans: Role of the Extended Amygdala in Fear vs Anxiety,' which investigated neurological mechanisms differentiating short-term and long-term fear responses."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_879aaa0fa",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The candidate surveys deep learning in medical image analysis, providing distant method background.",
+        "evidence_summary": "In 2017, Litjens et al. published 'A survey on deep learning in medical image analysis,' which reviewed applications of deep learning techniques in medical imaging domains."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_003_423c30810",
+        "relevance_score": 0.3,
+        "relevance_types": [],
+        "rationale": "The candidate covers glutamate receptor ion channels, which has minimal relevance to the target's deep learning phase transitions.",
+        "evidence_summary": "In 2010, Traynelis et al. published 'Glutamate Receptor Ion Channels: Structure, Regulation, and Function,' which detailed the structural and functional properties of glutamate receptors in neuropharmacology."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2021, Alzubaidi et al. published 'Review of deep learning: concepts, CNN architectures, challenges, applications, future directions,' which surveyed deep learning techniques including CNNs and noted challenges such as training inefficiency and susceptibility to deception. In 2022, Zuo et al. published 'Deep learning in optical metrology: a review,' exploring data-driven deep learning for tasks like phase retrieval and discussing open challenges. In 2023, Ahmed et al. published 'Deep learning modelling techniques: current progress, applications, advantages, and challenges,' covering architectures and limitations including parameter optimization needs. In 2019, Schmidt et al. published 'Recent advances and applications of machine learning in solid-state materials science,' overviewing machine learning for material discovery and interpretability challenges. In 2020, Chen et al. published 'Deep learning for cardiac image segmentation: A review,' summarizing deep learning applications across medical imaging modalities and limitations like label scarcity. In 2011, Geels published 'The multi-level perspective on sustainability transitions: Responses to seven criticisms,' addressing theoretical critiques of transition frameworks.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,740 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 2,
+        "evaluation": 1,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper formalizes a new objective (Performative Optimality) in Performative RL and identifies a novel theoretical challenge, distinguishing it from prior work focusing on Performative Stability.",
+        "The theoretical analysis contains several novel technical contributions, such as proving a gradient dominance property for the nonconvex value function under a regularizer dominance condition and establishing a policy lower bound that enables the analysis in a compact policy subspace.",
+        "The algorithmic proposal (0-PPG) is novel for the performative RL setting, combining zeroth-order gradient estimation with the Frank-Wolfe algorithm to theoretically target the PO solution for the first time."
+      ],
+      "weaknesses": [
+        "The paper lacks any experimental validation.",
+        "The theoretical analysis remains unsound as the authors' rebuttal does not adequately justify the core step in Theorem 1's proof regarding the relationship between dα and dπα,pπα."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper lacks any experimental validation.",
+          "severity": "major",
+          "evidence": "The paper contains no experimental results or simulations. The authors acknowledge this limitation in their rebuttal but only promise future experiments ('We are preparing an extensive experimental section for the final version'). No empirical validation exists in the current submission.",
+          "affected_claim": "All claims about algorithm performance, convergence behavior, and practical utility remain unsupported by empirical evidence. This is a critical omission for a top-tier conference submission.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The theoretical analysis remains unsound as the authors' rebuttal does not adequately justify the core step in Theorem 1's proof regarding the relationship between dα and dπα,pπα.",
+          "severity": "major",
+          "evidence": "The rebuttal provides more detail about Appendix D but still fails to resolve the fundamental concern. While it cites Eq. (89) and (90), the key issue remains: the bound |hα(s,a,s′)| ≤ α(1-α)/2 * ℓdp(s,a) is asserted but not convincingly justified. The rebuttal does not explain how this bound follows from Assumption 2 (smoothness) given that hα involves a complex combination of policies and their induced environments. The leap from having a Lipschitz constant to this specific quadratic form in α(1-α) remains unclear and appears to be a significant assumption rather than a derived result. Without a clear, verifiable derivation of this critical bound, the proof of Theorem 1 remains unsound.",
+          "affected_claim": "The entire theoretical foundation of the paper, including the gradient dominance property and the subsequent convergence guarantees, relies on this unverified bound in Theorem 1's proof. The rebuttal does not provide checkable evidence that this step is logically sound.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The rebuttal provides more detail but does not resolve the fundamental soundness concern regarding Theorem 1. The critical bound on |hα| remains unjustified - the response simply asserts the bound without demonstrating how it follows rigorously from the assumptions. This step is essential for the error analysis and subsequent strong concavity-like property, and its lack of proper justification undermines the entire theoretical foundation."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The problem formulation and theoretical approach remain novel compared to existing performative RL literature."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "Without sound theoretical foundations or empirical validation, the significance of the contribution cannot be established."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The paper contains no experimental evaluation, and the rebuttal only promises future work."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is generally well-structured and clearly written."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal provides more technical detail but still fails to resolve the fundamental soundness issue with Theorem 1's proof. The critical bound on |hα| - essential for connecting the mixed occupancy measure dα to the actual occupancy measure dπα,pπα - remains asserted rather than properly derived from the assumptions. This constitutes a major flaw in the theoretical foundation. Combined with the complete lack of experimental validation, both major weaknesses from the initial review persist. The paper does not meet the soundness standards expected for a top-tier conference publication."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The paper's focus on reinforcement learning with policy-dependent environments (performative RL) aligns with ICML's interest in reinforcement learning theory and optimization methods",
+        "The theoretical contributions on gradient dominance properties and convergence analysis fit ICML's emphasis on theoretical machine learning foundations",
+        "The work addresses an important gap in existing performative RL literature by targeting performative optimality rather than stability"
+      ],
+      "why_it_does_not_fit": [
+        "Major soundness concerns identified by reviewers regarding the proof of Theorem 1 make the theoretical contributions questionable for ICML's rigorous standards",
+        "Complete lack of empirical validation contradicts ICML's expectation of both theoretical and empirical contributions in most RL papers",
+        "The zeroth-order optimization approach may be seen as less innovative compared to recent first-order methods in RL that ICML typically favors"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "NeurIPS' interdisciplinary nature and interest in reinforcement learning theory makes the performative RL topic relevant",
+        "The paper's focus on policy optimization under distribution shift aligns with NeurIPS' interests in robust and adaptive learning methods",
+        "The theoretical analysis of gradient dominance and stationarity properties fits NeurIPS' appreciation for mathematical foundations"
+      ],
+      "why_it_does_not_fit": [
+        "Serious soundness issues in the core theoretical proof would be problematic for NeurIPS' rigorous review process",
+        "Absence of experimental results is particularly problematic for NeurIPS, which values empirical validation even in theoretical papers",
+        "The zeroth-order method may be perceived as less innovative given NeurIPS' focus on cutting-edge methodologies"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "The paper's focus on deep reinforcement learning concepts and policy optimization connects to ICLR's core interests",
+        "Theoretical analysis of optimization properties in RL aligns with ICLR's emphasis on learning representations and optimization"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR places strong emphasis on empirical validation, making the complete lack of experiments a major weakness",
+        "The soundness concerns in the theoretical proofs are particularly problematic for ICLR's rigorous standards",
+        "The paper's focus on tabular/traditional RL methods rather than deep learning approaches makes it a weaker fit for ICLR's primary focus areas"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 1,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper formalizes a new objective (Performative Optimality) in Performative RL and identifies a novel theoretical challenge, distinguishing it from prior work focusing on Performative Stability.",
+              "The theoretical analysis contains several novel technical contributions, such as proving a gradient dominance property for the nonconvex value function under a regularizer dominance condition and establishing a policy lower bound that enables the analysis in a compact policy subspace.",
+              "The algorithmic proposal (0-PPG) is novel for the performative RL setting, combining zeroth-order gradient estimation with the Frank-Wolfe algorithm to theoretically target the PO solution for the first time."
+            ],
+            "weaknesses": [
+              "The paper lacks any experimental validation.",
+              "The theoretical analysis is highly dense and complex, containing several potentially unjustified technical claims that undermine confidence in the main results. A key example relates to the proof of Theorem 1 for the gradient dominance property, which sketches a path dependent on a mixture policy whose relationship to the occupancy measure mixture is unclear."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper lacks any experimental validation.",
+                "severity": "major",
+                "evidence": "The paper contains no experimental results or simulations. The algorithm (0-PPG) and the derived convergence properties are presented purely theoretically. The paper states that policy evaluation algorithms like TD can be used in practice but does not provide any empirical demonstration of the algorithm's performance, sensitivity to hyperparameters, comparison to baselines (e.g., repeated retraining methods), or validation of the theorems on even simple examples. The impact statement explicitly says 'none which we feel must be specifically highlighted here,' further indicating the lack of empirical study.",
+                "affected_claim": "The central claims that 'for the first time converges to the desired PO policy with polynomial computation complexity' and 'our 0-PPG algorithm for the first time converges to the desire PO policy with arbitrarily small precision ϵ in polynomial computation complexity' are unsupported by empirical evidence. Without experiments, it is impossible to assess the practical utility or correctness of the algorithm beyond the formal proof.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The theoretical analysis is highly dense and complex, containing several potentially unjustified technical claims that undermine confidence in the main results. A key example relates to the proof of Theorem 1 for the gradient dominance property, which sketches a path dependent on a mixture policy whose relationship to the occupancy measure mixture is unclear.",
+                "severity": "major",
+                "evidence": "The paper's theoretical core, Theorem 1 (Gradient Dominance), is fundamental to the entire contribution. The proof sketch in Section 3.2 is intricate and relies on novel techniques like 'recursion for pπ-related error term' and constructing a mixture policy πα(a|s) = dα(s,a)/dα(s), where dα = αdπ1,pπ1 + (1 − α)dπ0,pπ0. It is claimed that this mixture policy satisfies a key inequality (Eq. 16) that leads to strong concavity. However, the relationship between dα (a linear mixture of occupancy measures) and dπα,pπα (the occupancy measure of the constructed policy πα under its performative environment) is not obviously established. The recursion for the error term eα(s) (dπα,pπα(s) − dα(s)) is provided, but the subsequent derivations (e.g., bounding hα) are described at a high level and appear to involve complex dependencies on the policy and environment parameters (ϵp, Sp). Given the lack of complete proof in the main paper and without careful verification of each step in the appendix, the validity of this central theorem is called into question. Such a fundamental theorem affecting all subsequent results should be presented with complete clarity and justification; its current presentation is insufficient for reliable assessment.",
+                "affected_claim": "The entire theoretical foundation of the paper, including the gradient dominance property, the consequences for stationary points being PO, and the convergence guarantee of 0-PPG, relies critically on Theorem 1. If the reasoning is flawed or unjustified, the central claims of the paper are invalid.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central technical contribution, Theorem 1 (Gradient Dominance), is inadequately justified. The proof sketch involves complex, non-standard manipulations (e.g., defining a mixed occupancy measure and a corresponding policy) and makes significant leaps in reasoning (e.g., bounding the difference between occupancy measures) that are not clearly validated. Without a fully rigorous and verifiable proof, the soundness of the paper's core theoretical result cannot be established. Furthermore, the complete lack of experimental validation means that no independent empirical evidence supports the soundness of the algorithm or theory."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The paper clearly identifies a novel goal within the performative RL literature: achieving Performative Optimality (PO) rather than the suboptimal Performative Stability (PS). The technical approach of achieving PO via policy gradient methods in the original performative value function, including analyzing its properties (gradient dominance, policy lower bound) and proposing a zeroth-order Frank-Wolfe algorithm, is distinct from prior work ([rw_006_81cabd032] on near-optimal RL, [rw_003_728b828c1] on tree-based batch RL, and the cited performative RL works by Mandal et al., 2023). The problem formulation and theoretical framework appear new."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The significance of the theoretical result is contingent upon its soundness. Given the likely issues with soundness, the potential impact is greatly diminished. Even if sound, the result presents a high level of analytical complexity and appears highly sensitive to the technical conditions (e.g., regularizer dominance condition similar to existing works). The algorithm is entirely theoretical, with polynomial complexity but practical constants likely to be very large (e.g., involving D, |S|, |A|, πmin, Lλ, ℓλ). Without experiments or a compelling demonstration of practical advantage over simpler methods, the significance for the field is unclear and not yet demonstrated."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "There is zero empirical evaluation. The paper provides no experiments, comparisons to baselines (like repeated retraining from Mandal et al.), sensitivity analyses, or applications to illustrative domains like the recommender systems or autonomous driving mentioned in the introduction. The claims about algorithm performance and convergence are purely theoretical. This is a major weakness for a top-tier conference, as it precludes any assessment of the method's practical utility, robustness, or even the correctness of the theory in practice."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-organized and clearly written. The problem is motivated, related work is discussed, contributions are listed, and the theoretical development is structured with clear definitions, assumptions, theorems, and proofs sketches. The abstract and introduction convey the main ideas effectively. While the technical sections are very dense, the writing is sufficiently clear to understand the proposed approach and the paper's stated contributions."
+              }
+            },
+            "summary_comment": "This paper ambitiously tackles a novel and challenging problem in performative RL: achieving the Performatively Optimal (PO) policy, a stronger notion than the Performative Stability (PS) pursued in prior work. It presents theoretical contributions including a gradient dominance property for the performative value function under a regularizer dominance condition, policy lower bounds, and a proposed zeroth-order policy gradient algorithm (0-PPG) with a convergence guarantee to the PO policy. While the problem definition is novel and the writing is clear, the paper suffers from two critical and major weaknesses that prevent it from meeting top-tier standards. First, the core theoretical result (Theorem 1) is inadequately justified; its complex proof contains leaps in reasoning that are not sufficiently transparent or verifiable in the provided material, undermining the paper's technical soundness. Second, the complete lack of any empirical evaluation severely limits the ability to assess the significance, practicality, or even basic correctness of the proposed method. Soundness and evaluation are both failing acceptance gates, and the significance is low without either. Therefore, the decision is to reject."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 1,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper formalizes a new objective (Performative Optimality) in Performative RL and identifies a novel theoretical challenge, distinguishing it from prior work focusing on Performative Stability.",
+              "The theoretical analysis contains several novel technical contributions, such as proving a gradient dominance property for the nonconvex value function under a regularizer dominance condition and establishing a policy lower bound that enables the analysis in a compact policy subspace.",
+              "The algorithmic proposal (0-PPG) is novel for the performative RL setting, combining zeroth-order gradient estimation with the Frank-Wolfe algorithm to theoretically target the PO solution for the first time."
+            ],
+            "weaknesses": [
+              "The paper lacks any experimental validation.",
+              "The theoretical analysis is highly dense and complex, and the authors' rebuttal does not resolve the fundamental concern regarding the soundness of Theorem 1's proof. The rebuttal points to the existence of the appendix but does not provide a checkable clarification that rectifies the core logical leaps identified."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper lacks any experimental validation.",
+                "severity": "major",
+                "evidence": "The paper contains no experimental results or simulations. The authors acknowledge this limitation in their rebuttal but state it as a promise for future work ('We plan to include these results in the final version'). No new evidence or analyses from the submitted material are presented to mitigate this concern.",
+                "affected_claim": "The central claims regarding algorithm convergence and practical performance remain empirically unsupported. The decision is based on the submitted paper, which lacks empirical evaluation, a critical component for a top-tier conference.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The theoretical analysis is highly dense and complex, and the authors' rebuttal does not resolve the fundamental concern regarding the soundness of Theorem 1's proof. The rebuttal points to the existence of the appendix but does not provide a checkable clarification that rectifies the core logical leaps identified.",
+                "severity": "major",
+                "evidence": "The rebuttal points to Appendix D and asserts that the proof is 'rigorously derived' and 'sound.' However, it does not address the specific concern about the logical relationship between the linearly mixed occupancy measure dα and the occupancy measure dπα,pπα of the constructed policy. The rebuttal does not provide a new, simplified explanation or point to a specific equation sequence in the appendix that conclusively bridges this gap in a verifiable way for a reviewer assessing the current submission. Asserting that the proof is complex but complete does not resolve the concern that the proof's core step may be unjustified. The burden remains on the submitted material to be clear and convincing.",
+                "affected_claim": "The validity of Theorem 1 (Gradient Dominance), and by extension the entire theoretical foundation connecting stationary points to PO policies and the convergence guarantee of 0-PPG, remains in serious doubt. The rebuttal does not provide checkable evidence to resolve this doubt.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the complexity of Theorem 1's proof but does not resolve the fundamental concern about its logical soundness. Pointing to the existence of Appendix D is insufficient; the concern was about the clarity and justification of a key step within that appendix. Without a convincing, checkable clarification in the rebuttal itself, the soundness of the core theoretical result cannot be established based on the submitted material. Promises to improve clarity in a future revision do not affect the assessment of the current submission."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The rebuttal does not change the assessment of novelty. The problem formulation and theoretical goal remain distinct from prior work."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "Significance remains low due to the unresolved soundness concerns and the complete lack of empirical validation. The rebuttal's promise of future experiments does not alter the assessment of the significance of the work as submitted."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The rebuttal explicitly acknowledges the lack of experiments and only promises to add them later. Therefore, the evaluation gate remains failed for the submitted paper."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The rebuttal does not change the assessment of presentation clarity. The paper is generally well-structured and written."
+              }
+            },
+            "summary_comment": "The authors' rebuttal is responsive and professional but does not materially change the assessment of the submitted paper. The two major weaknesses identified in the initial review remain unresolved: 1) The paper lacks any experimental validation, and the authors promise but do not provide it. 2) The critical concern regarding the soundness of Theorem 1's proof is not resolved by the rebuttal; pointing to the complex appendix and asserting its rigor does not provide a checkable clarification that addresses the specific logical gap identified. Therefore, the soundness and evaluation gates still fail, and the significance is low. The decision remains Reject."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Lack of experimental validation\",\n        \"Potential flaws in the proof of Theorem 1 (gradient dominance)\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The paper lacks experimental validation\",\n          \"location\": \"Entire paper\",\n          \"explanation\": \"The reviewer correctly notes that our submission contains no experimental results. This is a limitation we acknowledge, as our focus was on establishing the theoretical foundation for achieving PO policies in performative RL.\"\n        },\n        {\n          \"concern\": \"Potential issues with Theorem 1 proof\",\n          \"location\": \"Section 3.2, Appendix D\",\n          \"explanation\": \"The proof of Theorem 1 is indeed complex and involves novel techniques. The complete proof is provided in Appendix D, which addresses the relationship between dα and dπα,pπα through careful error analysis. The recursion for eα(s) and bounding of hα are rigorously derived in Eqs. (89)-(90) of Appendix D.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of experimental validation\",\n          \"proposed_change\": \"We will add an experimental section demonstrating 0-PPG on synthetic performative RL environments and compare against repeated retraining baselines\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Clarity of Theorem 1 proof\",\n          \"proposed_change\": \"We will expand the proof sketch in Section 3.2 to better explain the relationship between dα and dπα,pπα, and add more intuitive explanations of the error bounding techniques\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. We address the two main concerns below.\\n\\nRegarding the lack of experimental validation: We acknowledge this limitation in our current submission. Our primary focus was establishing the theoretical foundation for achieving PO policies, which required substantial technical development. However, we agree that empirical validation is important, and we are actively working on implementing 0-PPG for synthetic performative RL environments. We plan to include these results in the final version, comparing against repeated retraining methods to demonstrate practical convergence to PO policies.\\n\\nRegarding the proof of Theorem 1: We appreciate the reviewer's concern about the complexity of this fundamental result. The complete proof is provided in Appendix D, where we rigorously establish the relationship between the mixed occupancy measure dα and the occupancy measure dπα,pπα of the constructed policy. The error term eα(s) satisfies the Bellman-style recursion in Eq. (89), and the bound on hα in Eq. (90) is derived through careful analysis of the Lipschitz properties of the environmental dynamics. The strong concavity-like property (Eq. 16) follows from combining this error analysis with the entropy regularization structure. While the proof is technically involved, we believe it is sound and will work to improve its presentation clarity in revision.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 1,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper formalizes a new objective (Performative Optimality) in Performative RL and identifies a novel theoretical challenge, distinguishing it from prior work focusing on Performative Stability.",
+              "The theoretical analysis contains several novel technical contributions, such as proving a gradient dominance property for the nonconvex value function under a regularizer dominance condition and establishing a policy lower bound that enables the analysis in a compact policy subspace.",
+              "The algorithmic proposal (0-PPG) is novel for the performative RL setting, combining zeroth-order gradient estimation with the Frank-Wolfe algorithm to theoretically target the PO solution for the first time."
+            ],
+            "weaknesses": [
+              "The paper lacks any experimental validation.",
+              "The theoretical analysis remains unsound as the authors' rebuttal does not adequately justify the core step in Theorem 1's proof regarding the relationship between dα and dπα,pπα."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper lacks any experimental validation.",
+                "severity": "major",
+                "evidence": "The paper contains no experimental results or simulations. The authors acknowledge this limitation in their rebuttal but only promise future experiments ('We are preparing an extensive experimental section for the final version'). No empirical validation exists in the current submission.",
+                "affected_claim": "All claims about algorithm performance, convergence behavior, and practical utility remain unsupported by empirical evidence. This is a critical omission for a top-tier conference submission.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The theoretical analysis remains unsound as the authors' rebuttal does not adequately justify the core step in Theorem 1's proof regarding the relationship between dα and dπα,pπα.",
+                "severity": "major",
+                "evidence": "The rebuttal provides more detail about Appendix D but still fails to resolve the fundamental concern. While it cites Eq. (89) and (90), the key issue remains: the bound |hα(s,a,s′)| ≤ α(1-α)/2 * ℓdp(s,a) is asserted but not convincingly justified. The rebuttal does not explain how this bound follows from Assumption 2 (smoothness) given that hα involves a complex combination of policies and their induced environments. The leap from having a Lipschitz constant to this specific quadratic form in α(1-α) remains unclear and appears to be a significant assumption rather than a derived result. Without a clear, verifiable derivation of this critical bound, the proof of Theorem 1 remains unsound.",
+                "affected_claim": "The entire theoretical foundation of the paper, including the gradient dominance property and the subsequent convergence guarantees, relies on this unverified bound in Theorem 1's proof. The rebuttal does not provide checkable evidence that this step is logically sound.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal provides more detail but does not resolve the fundamental soundness concern regarding Theorem 1. The critical bound on |hα| remains unjustified - the response simply asserts the bound without demonstrating how it follows rigorously from the assumptions. This step is essential for the error analysis and subsequent strong concavity-like property, and its lack of proper justification undermines the entire theoretical foundation."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The problem formulation and theoretical approach remain novel compared to existing performative RL literature."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "Without sound theoretical foundations or empirical validation, the significance of the contribution cannot be established."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The paper contains no experimental evaluation, and the rebuttal only promises future work."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-structured and clearly written."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal provides more technical detail but still fails to resolve the fundamental soundness issue with Theorem 1's proof. The critical bound on |hα| - essential for connecting the mixed occupancy measure dα to the actual occupancy measure dπα,pπα - remains asserted rather than properly derived from the assumptions. This constitutes a major flaw in the theoretical foundation. Combined with the complete lack of experimental validation, both major weaknesses from the initial review persist. The paper does not meet the soundness standards expected for a top-tier conference publication."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Lack of experimental validation\",\n        \"Unresolved concerns about Theorem 1 proof soundness\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Lack of experimental validation\",\n          \"location\": \"Entire paper\",\n          \"explanation\": \"We acknowledge this limitation in our current submission. Our focus was on establishing the theoretical foundation for achieving PO policies, which required substantial technical development.\"\n        },\n        {\n          \"concern\": \"Theorem 1 proof concerns\",\n          \"location\": \"Appendix D, Eqs. (89)-(90)\",\n          \"explanation\": \"The complete proof in Appendix D addresses the relationship between dα and dπα,pπα through the error recursion and bounding. Specifically, Eq. (89) establishes the Bellman-style recursion for eα(s), and Eq. (90) provides the bound on |hα(s,a,s′)| that enables the overall error analysis.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of experimental validation\",\n          \"proposed_change\": \"We will add comprehensive experiments comparing 0-PPG against repeated retraining baselines on synthetic performative RL environments to demonstrate empirical convergence\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Theorem 1 proof clarity\",\n          \"proposed_change\": \"We will add a more detailed explanation in Section 3.2 of the key steps connecting dα to dπα,pπα, including a clearer derivation of the hα bound and its implications\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We understand the concerns about Theorem 1's proof and will provide a more detailed clarification here.\\n\\nThe key relationship between dα (the linear mixture of occupancy measures) and dπα,pπα (the occupancy measure of policy πα under its induced environment) is established through the error term eα(s) = dπα,pπα(s) - dα(s). This error satisfies the recursion in Eq. (89) of Appendix D:\\n\\neα(s′) = γ∑_{s,a} [eα(s)πα(a|s)pπα(s′|s,a) + hα(s,a,s′)]\\n\\nwhere hα(s,a,s′) = dα(s,a)pπα(s′|s,a) - [αd₁(s,a)pπ₁(s′|s,a) + (1-α)d₀(s,a)pπ₀(s′|s,a)]\\n\\nThe critical insight is that hα can be bounded by analyzing the smoothness of the environmental dynamics (Assumption 2). Specifically, we show that |hα(s,a,s′)| ≤ α(1-α)/2 * ℓdp(s,a) where ℓdp is a Lipschitz constant derived from Sp and ϵp. This bound, combined with the contraction properties of the Bellman operator, leads to the overall error bound ∑_s |eα(s)| ≤ α(1-α)O(ϵp+Sp)∥π₁-π₀∥² in Eq. (90).\\n\\nThis error analysis ensures that the strong concavity-like property (Eq. 16) holds despite the environment shift, which is fundamental to proving gradient dominance. We will make this reasoning more explicit in the main text revision.\\n\\nRegarding experiments: We acknowledge this limitation and are preparing an extensive experimental section for the final version that will validate both the theoretical results and practical performance of 0-PPG compared to repeated retraining approaches.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_9381a750c57c",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/icml_reject_2025_021_achieve_performatively_optimal_policy_for_performative_reinforcement_learning.md",
+    "target_paper_summary": {
+      "paper_id": "paper_9381a750c57c",
+      "title": "Achieve Performatively Optimal Policy For Performative Reinforcement Learning",
+      "abstract": "Performative reinforcement learning is an emerging dynamical decision making framework, which extends reinforcement learning to the common applications where the agent's policy can change the environmental dynamics. Existing works on performative reinforcement learning only aim at a performatively stable (PS) policy that maximizes an approximate value function. However, there is a provably positive constant gap between the PS policy and the desired performatively optimal (PO) policy that maximizes the original value function. In contrast, this work proposes a zerothorder performative policy gradient (0-PPG) algorithm that **for the first time converges to the** desired PO policy with polynomial computation complexity under mild conditions. For the convergence analysis, we prove two important properties of the nonconvex value function. First, when the policy regularizer dominates the environmental shift, the value function satisfies a certain gradient dominance property, so that any stationary point of the value function is a desired PO.\n\nSecond, though the value function has unbounded gradient, we prove that all the sufficiently stationary points lie in a convex and compact policy subspace Π∆, where the policy value has a constant lower bound ∆ > 0 and thus the gradient becomes bounded and Lipschitz continuous.",
+      "topic": "",
+      "claims": [
+        "we prove two important properties of the nonconvex value function.",
+        "we prove that all the sufficiently stationary points lie in a convex and compact policy subspace Π∆, where the policy value has a constant lower bound ∆ > 0 and thus the gradient becomes bounded and Lipschitz continuous."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_f9e45fc13",
+        "title": "Reinforcement Learning: A Survey",
+        "authors": [
+          "Leslie Pack Kaelbling",
+          "Michael L. Littman",
+          "Andrew Moore"
+        ],
+        "year": 1996,
+        "publication_date": "1996-05-01",
+        "venue": "Journal of Artificial Intelligence Research",
+        "abstract": "This paper surveys the field of reinforcement learning from a computer-science perspective. It is written to be accessible to researchers familiar with machine learning. Both the historical basis of the field and a broad selection of current work are summarized. Reinforcement learning is the problem faced by an agent that learns behavior through trial-and-error interactions with a dynamic environment. The work described here has a resemblance to work in psychology, but differs considerably in the details and in the use of the word ``reinforcement.'' The paper discusses central issues of reinforcement learning, including trading off exploration and exploitation, establishing the foundations of the field via Markov decision theory, learning from delayed reinforcement, constructing empirical models to accelerate learning, making use of generalization and hierarchy, and coping with hidden state. It concludes with a survey of some implemented systems and an assessment of the practical utility of current methods for reinforcement learning.",
+        "url": "https://doi.org/10.1613/jair.301",
+        "doi": "https://doi.org/10.1613/jair.301",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2107726111"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 8876
+      },
+      {
+        "paper_id": "rw_002_02c4cc10d",
+        "title": "A survey on Image Data Augmentation for Deep Learning",
+        "authors": [
+          "Connor Shorten",
+          "Taghi M. Khoshgoftaar"
+        ],
+        "year": 2019,
+        "publication_date": "2019-07-06",
+        "venue": "Journal Of Big Data",
+        "abstract": "Deep convolutional neural networks have performed remarkably well on many Computer Vision tasks. However, these networks are heavily reliant on big data to avoid overfitting. Overfitting refers to the phenomenon when a network learns a function with very high variance such as to perfectly model the training data. Unfortunately, many application domains do not have access to big data, such as medical image analysis. This survey focuses on Data Augmentation, a data-space solution to the problem of limited data. Data Augmentation encompasses a suite of techniques that enhance the size and quality of training datasets such that better Deep Learning models can be built using them. The image augmentation algorithms discussed in this survey include geometric transformations, color space augmentations, kernel filters, mixing images, random erasing, feature space augmentation, adversarial training, generative adversarial networks, neural style transfer, and meta-learning. The application of augmentation methods based on GANs are heavily covered in this survey. In addition to augmentation techniques, this paper will briefly discuss other characteristics of Data Augmentation such as test-time augmentation, resolution impact, final dataset size, and curriculum learning. This survey will present existing methods for Data Augmentation, promising developments, and meta-level decisions for implementing Data Augmentation. Readers will understand how Data Augmentation can improve the performance of their models and expand limited datasets to take advantage of the capabilities of big data.",
+        "url": "https://doi.org/10.1186/s40537-019-0197-0",
+        "doi": "https://doi.org/10.1186/s40537-019-0197-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2954996726"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 12640
+      },
+      {
+        "paper_id": "rw_003_728b828c1",
+        "title": "Tree-Based Batch Mode Reinforcement Learning",
+        "authors": [
+          "Damien Ernst",
+          "Pierre Geurts",
+          "Louis Wehenkel"
+        ],
+        "year": 2005,
+        "publication_date": "2005-12-01",
+        "venue": "",
+        "abstract": "Reinforcement learning aims to determine an optimal control policy from interaction with a system or from observations gathered from a system. In batch mode, it can be achieved by approximating the so-called Q-function based on a set of four-tuples (xt,ut,rt,xt+1) where xt denotes the system state at time t, ut the control action taken, rt the instantaneous reward obtained and xt+1 the successor state of the system, and by determining the control policy from this Q-function. The Q-function approximation may be obtained from the limit of a sequence of (batch mode) supervised learning problems. Within this framework we describe the use of several classical tree-based supervised learning methods (CART, Kd-tree, tree bagging) and two newly proposed ensemble algorithms, namely extremely and totally randomized trees. We study their performances on several examples and find that the ensemble methods based on regression trees perform well in extracting relevant information about the optimal control policy from sets of four-tuples. In particular, the totally randomized trees give good results while ensuring the convergence of the sequence, whereas by relaxing the convergence constraint even better accuracy results are provided by the extremely randomized trees.",
+        "url": "http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.63.7705",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2120346334"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 867
+      },
+      {
+        "paper_id": "rw_004_c206b2a96",
+        "title": "A Comprehensive Survey of Multiagent Reinforcement Learning",
+        "authors": [
+          "Lucian Buşoniu",
+          "Robert Babuška",
+          "Bart De Schutter"
+        ],
+        "year": 2008,
+        "publication_date": "2008-02-27",
+        "venue": "IEEE Transactions on Systems Man and Cybernetics Part C (Applications and Reviews)",
+        "abstract": "<para xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> Multiagent systems are rapidly finding applications in a variety of domains, including robotics, distributed control, telecommunications, and economics. The complexity of many tasks arising in these domains makes them difficult to solve with preprogrammed agent behaviors. The agents must, instead, discover a solution on their own, using learning. A significant part of the research on multiagent learning concerns reinforcement learning techniques. This paper provides a comprehensive survey of multiagent reinforcement learning (MARL). A central issue in the field is the formal statement of the multiagent learning goal. Different viewpoints on this issue have led to the proposal of many different goals, among which two focal points can be distinguished: stability of the agents' learning dynamics, and adaptation to the changing behavior of the other agents. The MARL algorithms described in the literature aim---either explicitly or implicitly---at one of these two goals or at a combination of both, in a fully cooperative, fully competitive, or more general setting. A representative selection of these algorithms is discussed in detail in this paper, together with the specific issues that arise in each category. Additionally, the benefits and challenges of MARL are described along with some of the problem domains where the MARL techniques have been applied. Finally, an outlook for the field is provided. </para>",
+        "url": "https://doi.org/10.1109/tsmcc.2007.913919",
+        "doi": "https://doi.org/10.1109/tsmcc.2007.913919",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2099618002"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2207
+      },
+      {
+        "paper_id": "rw_005_3912206a5",
+        "title": "Deep Reinforcement Learning That Matters",
+        "authors": [
+          "Peter Henderson",
+          "Riashat Islam",
+          "Philip Bachman",
+          "Joëlle Pineau",
+          "Doina Precup",
+          "David Meger"
+        ],
+        "year": 2018,
+        "publication_date": "2018-04-29",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "In recent years, significant progress has been made in solving challenging problems across various domains using deep reinforcement learning (RL). Reproducing existing work and accurately judging the improvements offered by novel methods is vital to sustaining this progress. Unfortunately, reproducing results for state-of-the-art deep RL methods is seldom straightforward. In particular, non-determinism in standard benchmark environments, combined with variance intrinsic to the methods, can make reported results tough to interpret. Without significance metrics and tighter standardization of experimental reporting, it is difficult to determine whether improvements over the prior state-of-the-art are meaningful. In this paper, we investigate challenges posed by reproducibility, proper experimental techniques, and reporting procedures. We illustrate the variability in reported metrics and results when comparing against common baselines and suggest guidelines to make future results in deep RL more reproducible. We aim to spur discussion about how to ensure continued progress in the field by minimizing wasted effort stemming from results that are non-reproducible and easily misinterpreted.",
+        "url": "https://doi.org/10.1609/aaai.v32i1.11694",
+        "doi": "https://doi.org/10.1609/aaai.v32i1.11694",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2754517384"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1531
+      },
+      {
+        "paper_id": "rw_006_81cabd032",
+        "title": "Near-Optimal Reinforcement Learning in Polynomial Time",
+        "authors": [
+          "Michael Kearns",
+          "Satinder Singh"
+        ],
+        "year": 2002,
+        "publication_date": "2002-11-01",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1023/a:1017984413808",
+        "doi": "https://doi.org/10.1023/a:1017984413808",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2489939061"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 859
+      },
+      {
+        "paper_id": "rw_007_ae5202429",
+        "title": "Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition",
+        "authors": [
+          "Tom Dietterich"
+        ],
+        "year": 2000,
+        "publication_date": "2000-11-01",
+        "venue": "Journal of Artificial Intelligence Research",
+        "abstract": "This paper presents a new approach to hierarchical reinforcement learning based on decomposing the target Markov decision process (MDP) into a hierarchy of smaller MDPs and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decomposition, has both a procedural semantics---as a subroutine hierarchy---and a declarative semantics---as a representation of the value function of a hierarchical policy. MAXQ unifies and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and Dayan and Hinton. It is based on the assumption that the programmer can identify useful subgoals and define subtasks that achieve these subgoals. By defining such subgoals, the programmer constrains the set of policies that need to be considered during reinforcement learning. The MAXQ value function decomposition can represent the value function of any policy that is consistent with the given hierarchy. The decomposition also creates opportunities to exploit state abstractions, so that individual MDPs within the hierarchy can ignore large parts of the state space. This is important for the practical application of the method. This paper defines the MAXQ hierarchy, proves formal results on its representational power, and establishes five conditions for the safe use of state abstractions. The paper presents an online model-free learning algorithm, MAXQ-Q, and proves that it converges with probability 1 to a kind of locally-optimal policy known as a recursively optimal policy, even in the presence of the five kinds of state abstraction. The paper evaluates the MAXQ representation and MAXQ-Q through a series of experiments in three domains and shows experimentally that MAXQ-Q (with state abstractions) converges to a recursively optimal policy much faster than flat Q learning. The fact that MAXQ learns a representation of the value function has an important benefit: it makes it possible to compute and execute an improved, non-hierarchical policy via a procedure similar to the policy improvement step of policy iteration. The paper demonstrates the effectiveness of this non-hierarchical execution experimentally. Finally, the paper concludes with a comparison to related work and a discussion of the design tradeoffs in hierarchical reinforcement learning.",
+        "url": "https://doi.org/10.1613/jair.639",
+        "doi": "https://doi.org/10.1613/jair.639",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2121517924"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1455
+      },
+      {
+        "paper_id": "rw_008_f83133409",
+        "title": "Rainbow: Combining Improvements in Deep Reinforcement Learning",
+        "authors": [
+          "Matteo Hessel",
+          "Joseph Modayil",
+          "Hado van Hasselt",
+          "Tom Schaul",
+          "Georg Ostrovski",
+          "Will Dabney",
+          "Dan Horgan",
+          "Bilal Piot",
+          "Mohammad Gheshlaghi Azar",
+          "David Silver"
+        ],
+        "year": 2018,
+        "publication_date": "2018-04-29",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "The deep reinforcement learning community has made several independent improvements to the DQN algorithm. However, it is unclear which of these extensions are complementary and can be fruitfully combined. This paper examines six extensions to the DQN algorithm and empirically studies their combination. Our experiments show that the combination provides state-of-the-art performance on the Atari 2600 benchmark, both in terms of data efficiency and final performance. We also provide results from a detailed ablation study that shows the contribution of each component to overall performance.",
+        "url": "https://doi.org/10.1609/aaai.v32i1.11796",
+        "doi": "https://doi.org/10.1609/aaai.v32i1.11796",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2761873684"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1750
+      },
+      {
+        "paper_id": "rw_009_7b694fe61",
+        "title": "An Introduction to Deep Reinforcement Learning",
+        "authors": [
+          "Vincent François-Lavet",
+          "Peter Henderson",
+          "Riashat Islam",
+          "Marc G. Bellemare",
+          "Joëlle Pineau"
+        ],
+        "year": 2018,
+        "publication_date": "2018-12-20",
+        "venue": "Foundations and Trends® in Machine Learning",
+        "abstract": "Deep reinforcement learning is the combination of reinforcement learning (RL) and deep learning. This field of research has been able to solve a wide range of complex decision making tasks that were previously out of reach for a machine. Thus, deep RL opens up many new applications in domains such as healthcare, robotics, smart grids, finance, and many more. This manuscript provides an introduction to deep reinforcement learning models, algorithms and techniques. Particular focus is on the aspects related to generalization and how deep RL can be used for practical applications. We assume the reader is familiar with basic machine learning concepts.",
+        "url": "https://doi.org/10.1561/2200000071",
+        "doi": "https://doi.org/10.1561/2200000071",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3100366369"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1269
+      },
+      {
+        "paper_id": "rw_010_15c415572",
+        "title": "Self-improving reactive agents based on reinforcement learning, planning and teaching",
+        "authors": [
+          "Long-Ji Lin"
+        ],
+        "year": 1992,
+        "publication_date": "1992-05-01",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/bf00992699",
+        "doi": "https://doi.org/10.1007/bf00992699",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2141559645"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1653
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_81cabd032",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "same_problem",
+          "novelty_competitor"
+        ],
+        "rationale": "Addresses near-optimal reinforcement learning with polynomial time complexity, directly relevant to the target's focus on achieving performatively optimal policies with polynomial computation.",
+        "evidence_summary": "In 2002, Kearns and Singh published 'Near-Optimal Reinforcement Learning in Polynomial Time,' which introduced methods for achieving near-optimal policies in reinforcement learning with polynomial time complexity."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_003_728b828c1",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Focuses on batch mode reinforcement learning with tree-based methods, relevant to policy optimization and value function approximation discussed in the target.",
+        "evidence_summary": "In 2005, Ernst et al. published 'Tree-Based Batch Mode Reinforcement Learning,' which utilized tree-based supervised learning methods like CART and Kd-tree for Q-function approximation in reinforcement learning. The study found that ensemble methods based on regression trees performed well in extracting information about optimal control policies from sets of state-action-reward transitions."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_ae5202429",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "Introduces hierarchical reinforcement learning with value function decomposition, relevant to the target's analysis of nonconvex value functions and policy optimization.",
+        "evidence_summary": "In 2000, Dietterich published 'Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition,' which proposed decomposing Markov decision processes into hierarchies and value functions into additive combinations. The method included an online model-free learning algorithm, MAXQ-Q, and proved convergence to recursively optimal policies under certain conditions."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_008_f83133409",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_method"
+        ],
+        "rationale": "Combines improvements in deep reinforcement learning, providing context for advanced RL methods that could relate to performative aspects.",
+        "evidence_summary": "In 2018, Hessel et al. published 'Rainbow: Combining Improvements in Deep Reinforcement Learning,' which examined six extensions to the DQN algorithm and their combination. The experiments showed state-of-the-art performance on the Atari 2600 benchmark in terms of data efficiency and final performance, with ablation studies detailing each component's contribution."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_005_3912206a5",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "benchmark_baseline"
+        ],
+        "rationale": "Discusses reproducibility and experimental challenges in deep reinforcement learning, relevant to evaluating methods like the target's policy gradient algorithm.",
+        "evidence_summary": "In 2018, Henderson et al. published 'Deep Reinforcement Learning That Matters,' which investigated challenges in reproducibility and reporting for deep RL methods. The paper highlighted variability in results due to non-determinism and variance, suggesting guidelines for more reproducible and interpretable outcomes."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_004_c206b2a96",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "same_problem",
+          "useful_background"
+        ],
+        "rationale": "Surveys multiagent reinforcement learning, providing background on dynamical decision-making frameworks that align with the target's focus on environmental dynamics.",
+        "evidence_summary": "In 2008, Buoniu et al. published 'A Comprehensive Survey of Multiagent Reinforcement Learning,' which covered stability and adaptation goals in multiagent learning. The survey discussed algorithms for cooperative, competitive, and general settings, along with applications in domains like robotics and telecommunications."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_009_7b694fe61",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Provides an introduction to deep reinforcement learning, offering general context that supports understanding of the target's RL framework.",
+        "evidence_summary": "In 2018, François-Lavet et al. published 'An Introduction to Deep Reinforcement Learning,' which combined reinforcement learning with deep learning for complex decision-making tasks. The manuscript focused on generalization and practical applications in domains such as healthcare and robotics."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_001_f9e45fc13",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "A broad survey of reinforcement learning, providing foundational knowledge relevant to the target's RL context.",
+        "evidence_summary": "In 1996, Kaelbling et al. published 'Reinforcement Learning: A Survey,' which summarized the field from a computer-science perspective. The paper discussed issues like exploration-exploitation trade-offs, Markov decision theory, and learning from delayed reinforcement, covering both historical and current work."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_010_15c415572",
+        "relevance_score": 0.46,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Early work on self-improving reactive agents using reinforcement learning, offering historical context for RL development.",
+        "evidence_summary": "In 1992, Lin published 'Self-improving reactive agents based on reinforcement learning, planning and teaching,' which explored methods for agent improvement through reinforcement learning, planning, and teaching."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_002_02c4cc10d",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "Focuses on image data augmentation for deep learning, which is not directly relevant to reinforcement learning or performative policies.",
+        "evidence_summary": "In 2019, Shorten and Khoshgoftaar published 'A survey on Image Data Augmentation for Deep Learning,' which covered techniques like geometric transformations and GANs to enhance training datasets for computer vision tasks. The survey discussed applications in domains with limited data, such as medical image analysis."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2002, Kearns and Singh published 'Near-Optimal Reinforcement Learning in Polynomial Time,' introducing methods for achieving near-optimal policies with polynomial time complexity. In 2005, Ernst et al. published 'Tree-Based Batch Mode Reinforcement Learning,' utilizing tree-based methods like CART and Kd-tree for Q-function approximation and finding that ensemble regression trees performed well in extracting optimal control policy information. In 2000, Dietterich published 'Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition,' proposing decomposition of MDPs and value functions, with an online algorithm converging to recursively optimal policies. In 2018, Hessel et al. published 'Rainbow: Combining Improvements in Deep Reinforcement Learning,' combining DQN extensions to achieve state-of-the-art performance on the Atari 2600 benchmark, supported by ablation studies. In 2018, Henderson et al. published 'Deep Reinforcement Learning That Matters,' investigating reproducibility challenges and variability in results due to non-determinism, suggesting guidelines for reporting. In 2008, Buoniu et al. published 'A Comprehensive Survey of Multiagent Reinforcement Learning,' covering stability and adaptation goals in multiagent learning across cooperative, competitive, and general settings.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

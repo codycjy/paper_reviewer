@@ -1,0 +1,649 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and impactful idea by demonstrating that extending the eigenvalue range of Linear Recurrent Neural Networks (LRNNs) to include negative values significantly unlocks their state-tracking capabilities. This addresses a fundamental limitation of current LRNNs and Transformers.",
+        "The theoretical contributions are strong, providing formal proofs (Theorems 1, 2, 3, 4) that current LRNNs fail at simple state-tracking tasks due to eigenvalue restrictions and that the proposed modification enables recognition of regular languages, and even groups, with higher expressivity.",
+        "The empirical evaluation is comprehensive, showing consistent improvements on synthetic state-tracking tasks (parity, modular arithmetic, S5 group word problems) and demonstrating that the modification can be integrated into large-scale models (Mamba, DeltaNet up to 1.3B parameters) without compromising stability or efficiency on language modeling, with DeltaNet even showing improved perplexity on code and math tasks."
+      ],
+      "weaknesses": [
+        "While the theoretical proofs are generally sound, some steps in the proofs (e.g., in Lemma 1 for `finite precision`) might benefit from more rigorous formalization, especially regarding the 'cast' function and its implications on specific values. Minor mathematical imperfections are acceptable given the novelty, but could be tightened.",
+        "The paper acknowledges that the modification is not compatible with numerical techniques used by some diagonal LRNNs for stability (e.g., log-space computations). This is a practical limitation that needs further investigation for broader applicability and highlights a potential trade-off between expressivity and numerical stability in certain architectures."
+      ],
+      "summary_comment": "This paper presents a truly bold and innovative idea that addresses a critical limitation of modern LRNNs and Transformers: their struggle with state-tracking. The core insight—that allowing negative eigenvalues in state-transition matrices can unlock significant expressivity—is highly novel and has profound implications for the field. The theoretical backing is substantial, proving both the limitations of current designs and the enhanced capabilities of the proposed modification. The empirical evidence across synthetic and large-scale language modeling tasks convincingly supports the claims, especially for DeltaNet. While there are minor points for refinement in the theoretical rigor and practical compatibility with some existing models, these are small compared to the potential for this work to inspire new directions in LRNN research. This is precisely the kind of forward-thinking research that pushes boundaries and deserves recognition. I am very excited by this work."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' and 'deep learning (theory)' topics by exploring fundamental limitations and advancements in Linear Recurrent Neural Networks (LRNNs).",
+        "The core contribution involves 'theory of machine learning' through formal proofs of LRNN expressivity and limitations, particularly concerning state-tracking capabilities.",
+        "The empirical evaluation covers 'application-driven machine learning' in language modeling, including competitive performance on code and math tasks, aligning with ICML's interest in practical applications.",
+        "The research offers 'innovative techniques' by proposing a novel modification to eigenvalue ranges, significantly enhancing LRNNs' ability to handle state-tracking, a critical problem in ML.",
+        "The paper's focus on the 'expressivity' of models and comparison with Transformers aligns well with ICML's emphasis on understanding model capabilities, as indicated by the reviewer's praise for its 'highly novel and impactful idea'."
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer noted that 'some steps in the proofs (e.g., in Lemma 1 for `finite precision`) might benefit from more rigorous formalization', which could be a minor concern for a venue highly valuing theoretical rigor.",
+        "The acknowledged practical limitation regarding 'compatibility with numerical techniques used by some diagonal LRNNs' might slightly detract from the 'improved implementation and scalability' aspect that ICML also values, though the paper presents it as a trade-off for expressivity."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper presents 'new and original research' on 'deep learning' and 'general machine learning: core contributions in supervised and unsupervised methods', specifically focusing on LRNNs.",
+        "It directly tackles a significant challenge in 'decision-making, reinforcement learning, and control' by enabling better state-tracking in sequential models, a crucial component for such tasks.",
+        "The work involves 'theory' of machine learning by providing formal proofs regarding the expressive power of LRNNs and the impact of eigenvalue ranges.",
+        "The empirical section includes 'language and multimodal language models' applications, demonstrating improved perplexity on code and math datasets with the proposed modifications.",
+        "The interdisciplinary nature of addressing fundamental limitations in neural networks while also showcasing practical improvements aligns with NeurIPS's encouragement of 'interdisciplinary submissions that do not fit neatly into existing categories', as noted by the reviewer's excitement for the 'bold and innovative idea'."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reviewer's comment on 'minor mathematical imperfections' in the theoretical proofs could be a slight point of scrutiny for NeurIPS, which also emphasizes theoretical soundness.",
+        "While the paper demonstrates strong empirical results, the 'numerical techniques' compatibility issue mentioned by the reviewer, though not a major drawback, might be a point of discussion regarding practical deployment in all LRNN variants."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper is an excellent fit for ICLR's primary focus on 'deep learning', specifically addressing architectural properties and theoretical underpinnings of Linear Recurrent Neural Networks (LRNNs), including Mamba and DeltaNet.",
+        "It directly relates to 'representation learning' by investigating how modifications to state-transition matrices impact the ability of LRNNs to learn and track states, which is fundamental to robust representations.",
+        "The theoretical analysis and empirical validation on 'formal language tasks' and 'group word problems' align with ICLR's interest in the 'learning theory' and 'applications to autonomy, planning' as state-tracking is crucial for such applications.",
+        "The contributions on 'generative models' shown through language modeling experiments with Mamba and DeltaNet are highly relevant to ICLR's scope.",
+        "The novelty of 'extending the eigenvalue range of state-transition matrices to include negative values' is a cutting-edge research direction that ICLR actively seeks, as highlighted by the reviewer's emphasis on 'bold and innovative idea' and 'truly novel' work."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper has strong theoretical contributions, the reviewer noted that 'some steps in the proofs... might benefit from more rigorous formalization', which might be scrutinized more heavily given ICLR's inclination towards foundational deep learning research.",
+        "The practical limitation regarding 'compatibility with numerical techniques used by some diagonal LRNNs' could slightly temper the enthusiasm, as ICLR also values advancements in 'infrastructure, software libraries' and stable methods, though the paper positions it as a trade-off for expressivity."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_e3a81329d514",
+    "paper_id": "paper_f409b2b36b9f",
+    "target_paper_summary": {
+      "paper_id": "paper_f409b2b36b9f",
+      "title": "Unlocking State-Tracking In Linear Rnns Through Negative Eigenvalues",
+      "abstract": "Linear Recurrent Neural Networks (LRNNs) such as Mamba, RWKV, GLA, mL-\nSTM, and DeltaNet have emerged as efficient alternatives to Transformers for long sequences. However, both Transformers and LRNNs struggle to perform state-tracking, which may impair performance in tasks such as code evaluation. In one forward pass, current architectures are unable to solve even parity, the simplest state-tracking task, which non-linear RNNs can handle effectively. Recently, Sarrof et al. (2024) demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to [0, 1] and that incorporating negative values can resolve this issue. We extend this result to non-diagonal LRNNs such as DeltaNet. We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo 3. Notably, we also prove that LRNNs can learn any regular language when their state-transition matrices are products of identity minus vector outer product matrices, each with eigenvalues in the range [−1, 1]. Our experiments confirm that extending the eigenvalue range of Mamba and DeltaNet to include negative values not only enables them to solve parity but consistently improves their performance on state-tracking tasks. We also show that state-tracking enabled LRNNs can be pretrained stably and efficiently at scale (1.3B parameters), achieving competitive performance on language modeling and showing promise on code and math tasks.",
+      "topic": "",
+      "claims": [
+        "We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo 3."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "state tracking in linear recurrent neural networks",
+          "rationale": "The core problem addressed is the struggle of LRNNs to perform state-tracking tasks, which is explicitly mentioned in the abstract."
+        },
+        {
+          "group": "same_method",
+          "query": "linear recurrent neural networks negative eigenvalues",
+          "rationale": "The paper's method revolves around incorporating negative eigenvalues in state-transition matrices of LRNNs to improve state-tracking. This query captures the essence of the methodological approach."
+        },
+        {
+          "group": "same_constraints",
+          "query": "finite precision linear RNN regular language learning",
+          "rationale": "The paper specifically discusses 'finite precision LRNNs' and their ability to 'learn any regular language' under certain conditions related to state-transition matrices, highlighting a specific constraint and capability investigated."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "parity task evaluation linear recurrent neural networks",
+          "rationale": "The abstract explicitly states that 'current architectures are unable to solve even parity, the simplest state-tracking task' and later mentions experiments confirming improved performance on state-tracking tasks, with parity being a key evaluation point."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "Sarrof et al. 2024 linear RNN Mamba negative eigenvalues",
+          "rationale": "The abstract directly cites Sarrof et al. (2024) as having 'demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to [0, 1] and that incorporating negative values can resolve this issue'. This indicates Sarrof et al. (2024) is a direct competitor or predecessor in addressing the problem, challenging the novelty of the negative eigenvalue idea for diagonal LRNNs."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "unlocking state-tracking linear rnns negative eigenvalues recurrent neural networks lrnns limitations failure analysis",
+          "rationale": "Fallback query generated from target title, abstract, and extracted claims."
+        }
+      ],
+      "source": "mixed"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 8,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 6,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_e11f70607",
+        "title": "Gradient-based learning applied to document recognition",
+        "authors": [
+          "Yann LeCun",
+          "Léon Bottou",
+          "Yoshua Bengio",
+          "Patrick Haffner"
+        ],
+        "year": 1998,
+        "publication_date": "1998-01-01",
+        "venue": "Proceedings of the IEEE",
+        "abstract": "Multilayer neural networks trained with the back-propagation algorithm constitute the best example of a successful gradient based learning technique. Given an appropriate network architecture, gradient-based learning algorithms can be used to synthesize a complex decision surface that can classify high-dimensional patterns, such as handwritten characters, with minimal preprocessing. This paper reviews various methods applied to handwritten character recognition and compares them on a standard handwritten digit recognition task. Convolutional neural networks, which are specifically designed to deal with the variability of 2D shapes, are shown to outperform all other techniques. Real-life document recognition systems are composed of multiple modules including field extraction, segmentation recognition, and language modeling. A new learning paradigm, called graph transformer networks (GTN), allows such multimodule systems to be trained globally using gradient-based methods so as to minimize an overall performance measure. Two systems for online handwriting recognition are described. Experiments demonstrate the advantage of global training, and the flexibility of graph transformer networks. A graph transformer network for reading a bank cheque is also described. It uses convolutional neural network character recognizers combined with global training techniques to provide record accuracy on business and personal cheques. It is deployed commercially and reads several million cheques per day.",
+        "url": "https://doi.org/10.1109/5.726791",
+        "doi": "https://doi.org/10.1109/5.726791",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2112796928"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 58620
+      },
+      {
+        "paper_id": "rw_002_9d4483585",
+        "title": "Deep Convolutional and LSTM Recurrent Neural Networks for Multimodal Wearable Activity Recognition",
+        "authors": [
+          "Francisco Ordóñez",
+          "Daniel Roggen"
+        ],
+        "year": 2016,
+        "publication_date": "2016-01-18",
+        "venue": "Sensors",
+        "abstract": "Human activity recognition (HAR) tasks have traditionally been solved using engineered features obtained by heuristic processes. Current research suggests that deep convolutional neural networks are suited to automate feature extraction from raw sensor inputs. However, human activities are made of complex sequences of motor movements, and capturing this temporal dynamics is fundamental for successful HAR. Based on the recent success of recurrent neural networks for time series domains, we propose a generic deep framework for activity recognition based on convolutional and LSTM recurrent units, which: (i) is suitable for multimodal wearable sensors; (ii) can perform sensor fusion naturally; (iii) does not require expert knowledge in designing features; and (iv) explicitly models the temporal dynamics of feature activations. We evaluate our framework on two datasets, one of which has been used in a public activity recognition challenge. Our results show that our framework outperforms competing deep non-recurrent networks on the challenge dataset by 4% on average; outperforming some of the previous reported results by up to 9%. Our results show that the framework can be applied to homogeneous sensor modalities, but can also fuse multimodal sensors to improve performance. We characterise key architectural hyperparameters' influence on performance to provide insights about their optimisation.",
+        "url": "https://doi.org/10.3390/s16010115",
+        "doi": "https://doi.org/10.3390/s16010115",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2270470215"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 2669
+      },
+      {
+        "paper_id": "rw_003_dbef79868",
+        "title": "Distributed representations, simple recurrent networks, and grammatical structure",
+        "authors": [
+          "Jeffrey L. Elman"
+        ],
+        "year": 1991,
+        "publication_date": "1991-09-01",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/bf00114844",
+        "doi": "https://doi.org/10.1007/bf00114844",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2087946919"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 1382
+      },
+      {
+        "paper_id": "rw_004_7fd127211",
+        "title": "Scientific Machine Learning Through Physics–Informed Neural Networks: Where we are and What’s Next",
+        "authors": [
+          "Salvatore Cuomo",
+          "Vincenzo Schiano Di Cola",
+          "Fabio Giampaolo",
+          "Gianluigi Rozza",
+          "Maziar Raissi",
+          "Francesco Piccialli"
+        ],
+        "year": 2022,
+        "publication_date": "2022-07-26",
+        "venue": "Journal of Scientific Computing",
+        "abstract": "Abstract Physics-Informed Neural Networks (PINN) are neural networks (NNs) that encode model equations, like Partial Differential Equations (PDE), as a component of the neural network itself. PINNs are nowadays used to solve PDEs, fractional equations, integral-differential equations, and stochastic PDEs. This novel methodology has arisen as a multi-task learning framework in which a NN must fit observed data while reducing a PDE residual. This article provides a comprehensive review of the literature on PINNs: while the primary goal of the study was to characterize these networks and their related advantages and disadvantages. The review also attempts to incorporate publications on a broader range of collocation-based physics informed neural networks, which stars form the vanilla PINN, as well as many other variants, such as physics-constrained neural networks (PCNN), variational hp-VPINN, and conservative PINN (CPINN). The study indicates that most research has focused on customizing the PINN through different activation functions, gradient optimization techniques, neural network structures, and loss function structures. Despite the wide range of applications for which PINNs have been used, by demonstrating their ability to be more feasible in some contexts than classical numerical techniques like Finite Element Method (FEM), advancements are still possible, most notably theoretical issues that remain unresolved.",
+        "url": "https://doi.org/10.1007/s10915-022-01939-z",
+        "doi": "https://doi.org/10.1007/s10915-022-01939-z",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4288039037"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints",
+          "same_method"
+        ],
+        "citation_count": 2407
+      },
+      {
+        "paper_id": "rw_005_f64604081",
+        "title": "Explainable Artificial Intelligence (XAI): Concepts, taxonomies, opportunities and challenges toward responsible AI",
+        "authors": [
+          "Alejandro Barredo Arrieta",
+          "Natalia Díaz-Rodríguez",
+          "Javier Del Ser",
+          "Adrien Bennetot",
+          "Siham Tabik",
+          "Alberto Barbado",
+          "Salvador García",
+          "Sergio Gil-López",
+          "Daniel Molina",
+          "Richard Benjamins",
+          "Raja Chatila",
+          "Francisco Herrera"
+        ],
+        "year": 2019,
+        "publication_date": "2019-12-26",
+        "venue": "Information Fusion",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.inffus.2019.12.012",
+        "doi": "https://doi.org/10.1016/j.inffus.2019.12.012",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2981731882"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "citation_count": 9238
+      },
+      {
+        "paper_id": "rw_006_e89be088f",
+        "title": "Review on Methods to Fix Number of Hidden Neurons in Neural Networks",
+        "authors": [
+          "K. Gnana Sheela",
+          "S. N. Deepa"
+        ],
+        "year": 2013,
+        "publication_date": "2013-01-01",
+        "venue": "Mathematical Problems in Engineering",
+        "abstract": "This paper reviews methods to fix a number of hidden neurons in neural networks for the past 20 years. And it also proposes a new method to fix the hidden neurons in Elman networks for wind speed prediction in renewable energy systems. The random selection of a number of hidden neurons might cause either overfitting or underfitting problems. This paper proposes the solution of these problems. To fix hidden neurons, 101 various criteria are tested based on the statistical errors. The results show that proposed model improves the accuracy and minimal error. The perfect design of the neural network based on the selection criteria is substantiated using convergence theorem. To verify the effectiveness of the model, simulations were conducted on real-time wind data. The experimental results show that with minimum errors the proposed approach can be used for wind speed prediction. The survey has been made for the fixation of hidden neurons in neural networks. The proposed model is simple, with minimal error, and efficient for fixation of hidden neurons in Elman networks.",
+        "url": "https://doi.org/10.1155/2013/425740",
+        "doi": "https://doi.org/10.1155/2013/425740",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2137356002"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 949
+      },
+      {
+        "paper_id": "rw_007_d0aa42221",
+        "title": "Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues",
+        "authors": [
+          "Riccardo Grazzi",
+          "Julien Siems",
+          "Arber Zela",
+          "Jörg K. H. Franke",
+          "Frank Hutter",
+          "Massimiliano Pontil"
+        ],
+        "year": 2024,
+        "publication_date": "2024-11-19",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Linear Recurrent Neural Networks (LRNNs) such as Mamba, RWKV, GLA, mLSTM, and DeltaNet have emerged as efficient alternatives to Transformers for long sequences. However, both Transformers and LRNNs struggle to perform state-tracking, which may impair performance in tasks such as code evaluation. In one forward pass, current architectures are unable to solve even parity, the simplest state-tracking task, which non-linear RNNs can handle effectively. Recently, Sarrof et al. (2024) demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to $[0, 1]$ and that incorporating negative values can resolve this issue. We extend this result to non-diagonal LRNNs such as DeltaNet. We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo $3$. Notably, we also prove that LRNNs can learn any regular language when their state-transition matrices are products of identity minus vector outer product matrices, each with eigenvalues in the range $[-1, 1]$. Our experiments confirm that extending the eigenvalue range of Mamba and DeltaNet to include negative values not only enables them to solve parity but consistently improves their performance on state-tracking tasks. We also show that state-tracking enabled LRNNs can be pretrained stably and efficiently at scale (1.3B parameters), achieving competitive performance on language modeling and showing promise on code and math tasks.",
+        "url": "http://arxiv.org/abs/2411.12537",
+        "doi": "https://doi.org/10.48550/arxiv.2411.12537",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404573957"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_008_f1696abd2",
+        "title": "The Expressive Capacity of State Space Models: A Formal Language Perspective",
+        "authors": [
+          "Yash Sarrof",
+          "Yana Veitsman",
+          "Michael Hahn"
+        ],
+        "year": 2024,
+        "publication_date": "2024-05-27",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Recently, recurrent models based on linear state space models (SSMs) have shown promising performance in language modeling (LM), competititve with transformers. However, there is little understanding of the in-principle abilities of such models, which could provide useful guidance to the search for better LM architectures. We present a comprehensive theoretical study of the capacity of such SSMs as it compares to that of transformers and traditional RNNs. We find that SSMs and transformers have overlapping but distinct strengths. In star-free state tracking, SSMs implement straightforward and exact solutions to problems that transformers struggle to represent exactly. They can also model bounded hierarchical structure with optimal memory even without simulating a stack. On the other hand, we identify a design choice in current SSMs that limits their expressive power. We discuss implications for SSM and LM research, and verify results empirically on a recent SSM, Mamba.",
+        "url": "http://arxiv.org/abs/2405.17394",
+        "doi": "https://doi.org/10.48550/arxiv.2405.17394",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4399144166"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_010_8baf258ca",
+        "title": "Continual Learning for Recurrent Neural Networks: an Empirical Evaluation",
+        "authors": [
+          "Andrea Cossu",
+          "Antonio Carta",
+          "Vincenzo Lomonaco",
+          "Davide Bacciu"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-12",
+        "venue": "arXiv",
+        "abstract": "Learning continuously during all model lifetime is fundamental to deploy machine learning solutions robust to drifts in the data distribution. Advances in Continual Learning (CL) with recurrent neural networks could pave the way to a large number of applications where incoming data is non stationary, like natural language processing and robotics. However, the existing body of work on the topic is still fragmented, with approaches which are application-specific and whose assessment is based on heterogeneous learning protocols and datasets. In this paper, we organize the literature on CL for sequential data processing by providing a categorization of the contributions and a review of the benchmarks. We propose two new benchmarks for CL with sequential data based on existing datasets, whose characteristics resemble real-world applications. We also provide a broad empirical evaluation of CL and Recurrent Neural Networks in class-incremental scenario, by testing their ability to mitigate forgetting with a number of different strategies which are not specific to sequential data processing. Our results highlight the key role played by the sequence length and the importance of a clear specification of the CL scenario.",
+        "url": "http://arxiv.org/abs/2103.07492v4",
+        "doi": "",
+        "arxiv_id": "2103.07492v4",
+        "source_ids": {
+          "arXiv": "2103.07492v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "same_method",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_011_8052ca4d0",
+        "title": "FASTUS: A Cascaded Finite-State Transducer for Extracting Information from Natural-Language Text",
+        "authors": [
+          "Jerry R. Hobbs",
+          "Douglas Appelt",
+          "John Bear",
+          "David Israel",
+          "Megumi Kameyama",
+          "Mark Stickel",
+          "Mabry Tyson"
+        ],
+        "year": 1997,
+        "publication_date": "1997-05-20",
+        "venue": "arXiv",
+        "abstract": "FASTUS is a system for extracting information from natural language text for entry into a database and for other applications. It works essentially as a cascaded, nondeterministic finite-state automaton. There are five stages in the operation of FASTUS. In Stage 1, names and other fixed form expressions are recognized. In Stage 2, basic noun groups, verb groups, and prepositions and some other particles are recognized. In Stage 3, certain complex noun groups and verb groups are constructed. Patterns for events of interest are identified in Stage 4 and corresponding ``event structures'' are built. In Stage 5, distinct event structures that describe the same event are identified and merged, and these are used in generating database entries. This decomposition of language processing enables the system to do exactly the right amount of domain-independent syntax, so that domain-dependent semantic and pragmatic processing can be applied to the right larger-scale structures. FASTUS is very efficient and effective, and has been used successfully in a number of applications.",
+        "url": "http://arxiv.org/abs/cmp-lg/9705013v1",
+        "doi": "",
+        "arxiv_id": "9705013v1",
+        "source_ids": {
+          "arXiv": "9705013v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_013_c395d6fbe",
+        "title": "Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues",
+        "authors": [
+          "Riccardo Grazzi",
+          "Julien Siems",
+          "Arber Zela",
+          "Jörg K. H. Franke",
+          "Frank Hutter",
+          "Massimiliano Pontil"
+        ],
+        "year": 2024,
+        "publication_date": "2024-11-19",
+        "venue": "arXiv",
+        "abstract": "Linear Recurrent Neural Networks (LRNNs) such as Mamba, RWKV, GLA, mLSTM, and DeltaNet have emerged as efficient alternatives to Transformers for long sequences. However, both Transformers and LRNNs struggle to perform state-tracking, which may impair performance in tasks such as code evaluation. In one forward pass, current architectures are unable to solve even parity, the simplest state-tracking task, which non-linear RNNs can handle effectively. Recently, Sarrof et al. (2024) demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to $[0, 1]$ and that incorporating negative values can resolve this issue. We extend this result to non-diagonal LRNNs such as DeltaNet. We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo $3$. Notably, we also prove that LRNNs can learn any regular language when their state-transition matrices are products of identity minus vector outer product matrices, each with eigenvalues in the range $[-1, 1]$. Our experiments confirm that extending the eigenvalue range of Mamba and DeltaNet to include negative values not only enables them to solve parity but consistently improves their performance on state-tracking tasks. We also show that state-tracking enabled LRNNs can be pretrained stably and efficiently at scale (1.3B parameters), achieving competitive performance on language modeling and showing promise on code and math tasks.",
+        "url": "http://arxiv.org/abs/2411.12537v5",
+        "doi": "",
+        "arxiv_id": "2411.12537v5",
+        "source_ids": {
+          "arXiv": "2411.12537v5"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_928c01f3d",
+        "title": "NTU-NPU System for Voice Privacy 2024 Challenge",
+        "authors": [
+          "Nikita Kuzmin",
+          "Hieu-Thi Luong",
+          "Jixun Yao",
+          "Lei Xie",
+          "Kong Aik Lee",
+          "Eng Siong Chng"
+        ],
+        "year": 2024,
+        "publication_date": "2024-10-03",
+        "venue": "arXiv",
+        "abstract": "In this work, we describe our submissions for the Voice Privacy Challenge 2024. Rather than proposing a novel speech anonymization system, we enhance the provided baselines to meet all required conditions and improve evaluated metrics. Specifically, we implement emotion embedding and experiment with WavLM and ECAPA2 speaker embedders for the B3 baseline. Additionally, we compare different speaker and prosody anonymization techniques. Furthermore, we introduce Mean Reversion F0 for B5, which helps to enhance privacy without a loss in utility. Finally, we explore disentanglement models, namely $β$-VAE and NaturalSpeech3 FACodec.",
+        "url": "http://arxiv.org/abs/2410.02371v1",
+        "doi": "",
+        "arxiv_id": "2410.02371v1",
+        "source_ids": {
+          "arXiv": "2410.02371v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_008_f1696abd2",
+        "relevance_score": 0.95,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Sarrof et al. (2024) is directly cited in the abstract as preceding work that identified the issue of state-tracking failure in Mamba due to restricted eigenvalue range and the potential benefit of negative eigenvalues, making it a direct point of comparison for the target paper's novelty.",
+        "evidence_summary": "The Expressive Capacity of State Space Models: A Formal Language Perspective (Sarrof et al., 2024) demonstrated the failure of LRNNs like Mamba to solve parity due to restricted eigenvalue ranges and suggested incorporating negative values."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_d0aa42221",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper is an earlier version of the target paper itself, indicating it as a foundational or direct predecessor. While it's largely the same content, it represents a prior iteration of the work.",
+        "evidence_summary": "Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues (Grazzi et al., 2024) is an earlier version of the target paper, addressing the same problem of state-tracking in LRNNs using negative eigenvalues."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_013_c395d6fbe",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper is another earlier version of the target paper. It provides further context for the evolution of the ideas presented in the target paper.",
+        "evidence_summary": "Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues (Grazzi et al., 2024) is another version of the current paper, demonstrating the problem and solution of state-tracking in LRNNs."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_003_dbef79868",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "While not directly about negative eigenvalues, Elman (1991) is a seminal work on Simple Recurrent Networks (SRNs), which are fundamental non-linear RNNs capable of state-tracking and are implicitly contrasted with LRNNs in the target paper's statement about non-linear RNNs handling parity effectively.",
+        "evidence_summary": "Distributed representations, simple recurrent networks, and grammatical structure (Elman, 1991) introduced Simple Recurrent Networks, which are a class of non-linear RNNs that can effectively handle state-tracking tasks, forming a broad methodological contrast to the linear models studied."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_010_8baf258ca",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_method",
+          "same_problem"
+        ],
+        "rationale": "This paper provides an empirical evaluation of Continual Learning for Recurrent Neural Networks. While not specifically about linear RNNs or negative eigenvalues, it addresses a related problem (continual learning, which involves maintaining state/knowledge over time) and evaluates RNNs, making it relevant for understanding broader RNN capabilities and evaluation benchmarks.",
+        "evidence_summary": "Continual Learning for Recurrent Neural Networks: an Empirical Evaluation (Cossu et al., 2021) reviews and evaluates RNNs in continual learning scenarios, a problem related to maintaining state/knowledge over time, offering broader context on RNN capabilities."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_002_9d4483585",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper discusses deep convolutional and LSTM recurrent neural networks for multimodal wearable activity recognition. While it uses LSTMs (a non-linear RNN), it is relevant as it addresses activity recognition, which can be seen as a form of state-tracking over time series data, and highlights the strengths of RNNs in modeling temporal dynamics.",
+        "evidence_summary": "Deep Convolutional and LSTM Recurrent Neural Networks for Multimodal Wearable Activity Recognition (Ordez and Roggen, 2016) uses LSTMs for activity recognition, a form of state-tracking, and discusses their ability to model complex temporal dynamics from sensor data."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_011_8052ca4d0",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper describes FASTUS, a cascaded finite-state transducer, which relates to formal language theory and regular languages. The target paper proves LRNNs can learn any regular language under certain conditions, making papers on finite-state machines relevant for theoretical context.",
+        "evidence_summary": "FASTUS: A Cascaded Finite-State Transducer for Extracting Information from Natural-Language Text (Hobbs et al., 1997) describes a system based on finite-state transducers, providing theoretical context for the target paper's claims about LRNNs learning regular languages."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_004_7fd127211",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_constraints",
+          "same_method"
+        ],
+        "rationale": "This paper discusses Physics-Informed Neural Networks (PINNs). While not directly related to LRNNs or state-tracking, it falls under the umbrella of specialized neural network architectures and their theoretical properties (e.g., encoding model equations). This offers a distant parallel to the target paper's theoretical investigation into LRNN capacities.",
+        "evidence_summary": "Scientific Machine Learning Through Physics–Informed Neural Networks: Where we are and What’s Next (Cuomo et al., 2022) reviews Physics-Informed Neural Networks, which encode model equations into their structure, a distant parallel to the theoretical investigation of LRNN capacities."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_006_e89be088f",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper reviews methods to fix the number of hidden neurons in neural networks and proposes a new method for Elman networks. While not directly pertinent to state-tracking, it relates to the architectural design and optimization of RNNs more broadly, which is a background concern for efficient LRNNs.",
+        "evidence_summary": "Review on Methods to Fix Number of Hidden Neurons in Neural Networks (Sheela and Deepa, 2013) discusses architectural choices in neural networks, including Elman networks, which provides general background on RNN design considerations."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_005_f64604081",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "rationale": "This paper is a review on Explainable AI (XAI). While XAI is a significant area in ML, it's broadly related to understanding model behavior rather than directly addressing state-tracking, LRNNs, or eigenvalue properties. It offers very general context.",
+        "evidence_summary": "Explainable Artificial Intelligence (XAI): Concepts, taxonomies, opportunities and challenges toward responsible AI (Arrieta et al., 2019) provides a broad overview of Explainable AI, offering general context on understanding complex model behaviors."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_014_928c01f3d",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper describes a system for the Voice Privacy Challenge. While it discusses enhancing baselines and comparing techniques for anonymization, its connection to the core topic of state-tracking in linear RNNs or the role of negative eigenvalues is tenuous. It is likely too far removed in application domain.",
+        "evidence_summary": "NTU-NPU System for Voice Privacy 2024 Challenge (Kuzmin et al., 2024) details a system for voice anonymization, which is largely unrelated to the architectural or theoretical advancements for linear RNNs discussed in the target paper."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_001_e11f70607",
+        "relevance_score": 0.081,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "Multilayer neural networks trained with the back-propagation algorithm constitute the best example of a successful gradient based learning technique. Given an appropriate network architecture, gradient-based learning algorithms can be used to synthesize a complex decision surface that can classify h"
+      }
+    ],
+    "reranking": {
+      "source": "mixed"
+    },
+    "related_work_summary": "Linear Recurrent Neural Networks (LRNNs) such as Mamba and DeltaNet struggle with state-tracking, exhibiting limitations even on simple tasks like parity, which non-linear RNNs can solve (Elman, 1991). This challenge impairs performance in complex domains such as code evaluation. Sarrof et al. (2024) previously demonstrated that this failure in LRNNs like Mamba stems from restricting the value range of their diagonal state-transition matrices to [0,1], suggesting that incorporating negative values could be a solution. This work extends these findings to non-diagonal LRNNs, providing theoretical proofs and empirical validations. While foundational gradient-based learning techniques (LeCun et al., 1998) and broad RNN evaluations in areas like continual learning (Cossu et al., 2021) or activity recognition (Ordez and Roggen, 2016) inform the general landscape of RNN capabilities, the specific focus on eigenvalue ranges and their impact on state-tracking represents a novel contribution within LRNN research.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 14,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 12,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 14,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 12,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

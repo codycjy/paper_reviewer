@@ -1,0 +1,126 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel perspective by systematically exploring 'inference scaling laws for RAG', moving beyond simple knowledge quantity scaling to incorporate strategies like demonstration-based RAG (DRAG) and iterative DRAG (IterDRAG). This is a significant conceptual leap.",
+        "The development of the 'computation allocation model for RAG' is a bold and forward-thinking attempt to quantitatively predict optimal inference parameters. This model's ability to generalize across domains and extrapolate context lengths, even with some limitations, is very exciting.",
+        "The finding that RAG performance can scale almost linearly with increasing inference computation when optimally configured is a major, impactful observation that challenges conventional wisdom about diminishing returns and plateauing RAG performance."
+      ],
+      "weaknesses": [
+        "While the concept of the computation allocation model is strong, the specific formulation (Equation 2) and the choice of `i` parameters for informativeness could be further elaborated or justified with more theoretical grounding beyond empirical fitting. The 'small epsilon' for log(0) also indicates a potential edge case in the formulation.",
+        "The reliance on Gemini 1.5 Flash, while practical, limits generalizability to other LLMs. It would strengthen the claim of 'inference scaling laws' if similar trends could be demonstrated across a broader range of models, including open-source alternatives."
+      ],
+      "summary_comment": "This paper presents a truly innovative and highly significant contribution to the field of Retrieval Augmented Generation. The concept of 'inference scaling laws for RAG' and the accompanying 'computation allocation model' open up entirely new avenues for optimizing RAG systems. The shift from merely increasing knowledge quantity to optimizing inference parameters through DRAG and IterDRAG is a critical, forward-looking step. While the mathematical model might have minor imperfections and the evaluation relies heavily on one model, the core idea is exceptionally novel and impactful, providing invaluable guidance for future research on long-context RAG. This work pushes the field forward significantly. I am excited by this."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously investigates the scaling of inference computation for RAG, introducing and evaluating two distinct strategies (DRAG, IterDRAG) beyond mere knowledge quantity increases. This systematic approach to defining and exploring the 'effective context length' as a measure of computation is well-executed.",
+        "The derivation and validation of the 'inference scaling laws for RAG' and the subsequent 'computation allocation model' are significant contributions. The model demonstrates strong predictive capability, particularly in domain generalization and length extrapolation, which is rigorously supported by quantitative metrics (R2, MSE) and ablation studies.",
+        "The experimental setup is comprehensive, covering multiple knowledge-intensive QA datasets (multi-hop and one-hop), various inference parameters (documents, shots, iterations), and comparison against relevant baselines. The detailed analysis, including parameter-specific scaling and error analysis, provides valuable insights into the behavior of different RAG configurations."
+      ],
+      "weaknesses": [
+        "While the paper defines 'effective context length' as the primary measure of inference computation, it explicitly excludes output tokens and retrieval costs. Although justifications are provided, a more thorough discussion or sensitivity analysis regarding the impact of these excluded components on the observed scaling laws would strengthen the argument, especially since iterative methods can incur higher retrieval costs and more generation steps (and thus output tokens from intermediate steps).",
+        "The formulation of the computation allocation model in Equation (2) relies on an inverse sigmoidal mapping `sigma^-1` to account for sub-linearity in extremely long contexts. While the ablation study validates its effectiveness statistically (Table 2), the specific functional form `sigma(x) = 3.30 / (1+e^(-1.81(x+0.46))) - 2.18` (Appendix G) appears rather ad-hoc. A more principled justification or exploration of alternative, theoretically grounded transformations would enhance the model's interpretability and generality."
+      ],
+      "summary_comment": "This paper presents a strong and rigorous investigation into inference scaling for long-context Retrieval Augmented Generation. The introduction of DRAG and IterDRAG as strategies for effective compute utilization, coupled with the systematic study of 'inference scaling laws for RAG', is a valuable contribution. The 'computation allocation model' is well-formulated and its predictive capabilities are extensively validated through comprehensive experiments, ablation studies, and generalization tests. The paper's strength lies in its methodological soundness and the detailed evaluation, providing concrete guidance for optimizing RAG performance under compute constraints. While minor concerns exist regarding the exclusion of certain computational costs and the empirical nature of the sigmoidal mapping, these do not detract significantly from the overall robust findings and contributions."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces DRAG and IterDRAG as practical strategies for scaling RAG performance, which tackle real-world limitations of current LLMs in ultra-long contexts. The IterDRAG approach, in particular, with its iterative retrieval and generation, directly addresses the compositionality gap for multi-hop queries, a common challenge in knowledge-intensive tasks.",
+        "The empirical investigation into 'inference scaling laws for RAG' and the development of a 'computation allocation model' offer valuable practical guidance for practitioners. Understanding how RAG performance scales with different computational budgets and predicting optimal parameter configurations can lead to more efficient resource allocation and better system design in deployed applications.",
+        "The extensive evaluation on various QA datasets with different context lengths, comparing against strong baselines, provides strong evidence for the effectiveness and superior scaling properties of DRAG and IterDRAG. The quantitative analysis with metrics like EM, F1, and Accuracy, along with the ablation studies on the computation allocation model, reinforces the soundness of the empirical findings."
+      ],
+      "weaknesses": [
+        "The paper focuses heavily on 'effective context length' as the primary measure of inference computation, excluding LLM output tokens and retrieval costs. While justified as less computationally expensive, a more comprehensive analysis or at least a discussion on the potential impact of these excluded costs (especially for very frequent retrieval or verbose LLM outputs in other tasks) would strengthen the practical relevance for systems with tighter computational budgets.",
+        "While the computation allocation model shows promise for domain generalization and length extrapolation, the observed performance plateau beyond 1M effective context length and the challenges in extrapolating to 5M tokens suggest limitations. A deeper dive into the root causes of this plateau (e.g., inherent LLM limitations, retriever saturation, demonstration quality) and more robust mitigation strategies for ultra-long context extrapolation could enhance the model's practical utility for extreme scaling."
+      ],
+      "summary_comment": "This paper presents a strong practical contribution to the field of RAG for long-context LLMs. The introduction of DRAG and especially IterDRAG provides concrete, effective strategies for leveraging increased inference computation beyond simply adding more documents. The empirical demonstration of 'inference scaling laws' and the 'computation allocation model' offers valuable insights for practitioners looking to optimize RAG systems under various computational constraints. The experiments are thorough, and the results clearly highlight the benefits of the proposed methods. While some limitations in extreme context length extrapolation and cost modeling exist, the overall practical impact and clarity of the work are high, making it a valuable addition to the literature."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' and 'deep learning' topics, specifically within the context of large language models (LLMs) and Retrieval Augmented Generation (RAG). The exploration of inference scaling laws for RAG, DRAG, and IterDRAG aligns well with ICML's interest in foundational machine learning techniques and their scaling properties.",
+        "The work involves 'optimization' by seeking to predict optimal *test-time compute allocation* for RAG and developing a *computation allocation model*. This quantitative modeling and optimization aspect fits squarely within ICML's highlighted topics.",
+        "The paper presents strong 'empirical results' demonstrating significant performance gains (up to 58.9%) on benchmark QA datasets, which are consistently valued by ICML. Reviewer B notes the 'comprehensive experimental setup' and 'detailed analysis' as strengths.",
+        "The 'trustworthy machine learning' aspect, particularly concerning the effective utilization of contextual information and addressing limitations of LLMs in very long contexts, has indirect relevance. While not explicitly framed as such, improving RAG performance and predictability contributes to more reliable AI systems.",
+        "Reviewer A highlights the 'highly novel perspective' and 'significant conceptual leap' of systematically exploring inference scaling laws for RAG, which aligns with ICML's focus on cutting-edge research. Reviewer B also praises the rigorous investigation and formulation/validation of the scaling laws and allocation model."
+      ],
+      "why_it_does_not_fit": [
+        "While the overall theme is ML, the specific application domain (knowledge-intensive QA with LLMs) might be considered more specialized for pure NLP conferences, though RAG is a broadly relevant ML technique now. ICML has a broader scope, so this is a minor point.",
+        "Reviewer A points out that the 'reliance on Gemini 1.5 Flash... limits generalizability to other LLMs', which might be a minor concern regarding the universality of the proposed 'scaling laws' for some ICML reviewers who prefer more model-agnostic theoretical contributions.",
+        "Reviewer B notes that the formulation of the computation allocation model's sigmoidal mapping is 'rather ad-hoc' and lacks 'principled justification'. While empirically validated, a more theoretical underpinning for such modeling choices could enhance its appeal for some theory-focused ICML submissions."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic of 'General machine learning: core contributions in supervised and unsupervised methods' is a perfect fit. RAG and inference scaling are fundamental aspects of applying and improving LLMs.",
+        "The explicit focus on 'Deep learning' and 'Language and multimodal language models' through its application to long-context LLMs for Retrieval Augmented Generation directly aligns with NeurIPS's stated interests.",
+        "NeurIPS welcomes 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior beyond the scope of the original work'. This paper does exactly that by analyzing RAG's behavior with increasing inference computation and addressing limitations of previous scaling approaches.",
+        "The development of 'computation allocation model' and 'inference scaling laws for RAG' involves 'probabilistic methods' and 'optimization', which are listed as key topics. This theoretical and modeling aspect is highly valued by NeurIPS.",
+        "Reviewer A emphasizes the 'highly novel perspective' and 'significant conceptual leap', while Reviewer B praises the 'rigorous investigation' and 'systematic approach'. These aspects align well with NeurIPS's pursuit of groundbreaking research.",
+        "The empirical validation on multiple QA datasets using Gemini 1.5 Flash provides concrete evidence of the findings, fitting NeurIPS's strong emphasis on rigorous evaluation and practical impact, as noted by Reviewer C."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A mentions that 'the specific formulation (Equation 2) and the choice of `i` parameters for informativeness could be further elaborated or justified with more theoretical grounding'. While the paper has a strong empirical and modeling component, some NeurIPS reviewers might seek deeper theoretical derivations for the 'scaling laws'.",
+        "Similar to ICML, the reliance on a single proprietary LLM (Gemini 1.5 Flash) might be seen as a minor limitation for some NeurIPS researchers who look for broader generalizability or open-source solutions.",
+        "The exclusion of output tokens and retrieval costs in the 'effective context length' definition, as highlighted by Reviewer B and C, could be a point of contention for reviewers focused on complete computational cost models, especially for a conference that broadly covers 'AI and network science' and 'SysML Infrastructure'."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR primarily focuses on 'deep learning' and its applications. This paper directly contributes to deep learning by improving RAG for long-context LLMs, which are deep learning models.",
+        "The strategies `DRAG` (demonstration-based RAG) and `IterDRAG` are fundamentally concerned with 'representation learning for ... language' and 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' through in-context learning and iterative prompting to better utilize language model capabilities.",
+        "The paper investigates 'optimization' by finding optimal inference parameters and proposing a 'computation allocation model' to guide this optimization, which is a relevant topic for ICLR.",
+        "The exploration of 'effective context length' and its impact on RAG performance aligns with ICLR's interest in understanding the behavior and scaling properties of deep learning models.",
+        "Reviewer A noted the 'novel perspective' and 'significant conceptual leap' which aligns with ICLR's emphasis on cutting-edge research in representation learning.",
+        "Reviewer C highlights the practical strategies (DRAG, IterDRAG) that tackle real-world limitations of LLMs, which is also a valuable aspect for ICLR, especially for applications like 'text understanding'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is about deep learning, its primary contribution is more on the 'inference scaling' and 'allocation model' rather than novel deep learning architectures or fundamental representation learning mechanisms. ICLR often favors papers presenting new model architectures, training methods, or theoretical insights directly applicable to deep learning models.",
+        "Reviewer B and C mention the exclusion of 'output tokens and retrieval costs' from the definition of effective context length. For a conference that lists 'infrastructure, software libraries, hardware, etc.' as relevant topics, a more complete cost model might be expected, especially given the iterative nature of IterDRAG.",
+        "Reviewer A's comment about the 'reliance on Gemini 1.5 Flash' could be a minor drawback for ICLR, as there's a strong community focus on open-source reproducibility and broader applicability across various deep learning frameworks and models.",
+        "The 'ad-hoc' nature of the sigmoidal mapping in the computation allocation model (as per Reviewer B) might be less appealing to ICLR's theory-leaning submissions in areas like 'learning theory' or 'probabilistic methods' if a more principled derivation is not provided."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,70 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "A highly novel and unified theoretical framework that generalizes neural network symmetries into a hierarchy of four distinct classes: permutations, semi-permutations, orthogonal transformations, and general invertible maps.",
+        "Successfully demonstrates near-zero loss barriers in linear interpolation between independently trained Vision Transformers and GPT-2 models, addressing a significant bottleneck in modern deep learning loss landscape research.",
+        "Extends the connectivity paradigm to both width-heterogeneous settings (aligning models of different dimensions) and multi-model settings (demonstrating beautiful simplex-based loss landscapes for three models)."
+      ],
+      "weaknesses": [
+        "The learned matching optimization relies heavily on the weight-matching initialization; without this step, end-to-end optimization fails to find zero-barrier pathways, showing a strong sensitivity to the starting point.",
+        "The empirical validation is performed on relatively small-scale architectures (e.g., small-scale GPT-2 and ViT configurations on toy benchmarks) due to resource constraints; further evaluation on modern, larger scale LLMs is left to future work.",
+        "For complex language modeling tasks like BookCorpus, a substantial loss barrier remains, and while the paper attributes this to potentially separate generalization basins, the framework does not provide a mechanism to resolve or fully characterized this disconnect."
+      ],
+      "summary_comment": "This paper is a major step forward for the mode connectivity community. By moving past the restrictive assumption of simple discrete permutations, the authors elegantly show that modern architectures like Transformers are governed by richer continuous symmetries (orthogonal and invertible operations) that can be exploited to reveal zero-barrier paths in the loss landscape. Despite some limitations regarding model scale and initialization sensitivity, the conceptual novelty and the profound implications for model merging, ensembling, and understanding model space geometry make this a highly exciting and significant work."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper aligns perfectly with ICML's focus on deep learning theory, optimization landscapes, and general machine learning.",
+        "It proposes highly structured and mathematically satisfying formulations, establishing a clear hierarchy of symmetries (permutations, semi-permutations, orthogonal, and general invertible transformations).",
+        "Features a solid algorithmic component (coordinate descent, Procrustes solver, Sinkhorn-based learned matching) and provides a rigorous ablation/analysis detailing the optimization gap between weight and learned matching."
+      ],
+      "why_it_does_not_fit": [
+        "ICML reviewers can be highly demanding regarding empirical scale; the evaluation relies on smaller scale architectures (toy GPT-2 and ViTs) on smaller benchmarks like CIFAR and Tiny ImageNet, which might be targeted as a weakness.",
+        "The proposed learned matching is highly sensitive to initialization, failing to converge without weight-matching initialization, which some optimization-focused reviewers might criticize as a methodological vulnerability."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS historically serves as the primary home for foundational 'science of deep learning' papers, particularly those studying loss landscape geometry and linear mode connectivity (e.g., Git Re-basin, OT fusion).",
+        "The unified conceptual framework of nested symmetries brings a major paradigm shift to model merging, which has immense appeal for the broad NeurIPS audience interested in federated learning and model ensembling.",
+        "The extension of linear mode connectivity to width-heterogeneous and multi-model simplex configurations addresses open, highly visible questions in representational alignment."
+      ],
+      "why_it_does_not_fit": [
+        "The paper fails to achieve a zero-barrier path on more complex language modeling corpora (e.g., BookCorpus), showing a potential limitation of the framework when scaling to more diverse functional spaces.",
+        "While the paper identifies the optimization gap (especially in the refinement of the orthogonal map O), it does not provide a robust, data-free mathematical resolution to completely shut down this variance, leaving a slight theoretical gap."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR focuses intensely on representation learning, Transformer architecture internal structures, and the geometry of learned representations, making this paper's study of the QK and OV circuits a natural fit.",
+        "The introduction of soft continuous permutations utilizing differentiable Sinkhorn projections on the Birkhoff polytope is highly aligned with ICLR's reputation for novel representation-based optimization tricks.",
+        "The paper explores architectural width-heterogeneity (matching models of different embedding dimensions), which directly relates to ICLR's interest in transfer learning, scaling laws, and model compression."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's reliance on custom model reparameterization (e.g., rewriting LayerNorm in terms of RMSNorm) alters the base models' structures, which some practical representation-learning practitioners at ICLR might find too restrictive.",
+        "The experiments do not evaluate downstream transferability or performance on massive-scale modern LLMs (e.g., LLaMA or Mistral), which could be a sticking point for ICLR reviewers demanding state-of-the-art scale."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

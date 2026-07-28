@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of combining Block Coordinate Descent with Hessian-informed zeroth-order optimization is genuinely novel and targets a critical memory-convergence trade-off in LLM fine-tuning.",
+        "The paper demonstrates significant practical improvements in memory efficiency (up to 39% reduction) while maintaining competitive accuracy and offering a speedup over existing full zeroth-order methods (MeZO), making it highly relevant for resource-constrained environments.",
+        "The motivation is strong: addressing the memory bottleneck of second-order information in zeroth-order optimizers, which is a known challenge for scaling these methods to larger models."
+      ],
+      "weaknesses": [
+        "The theoretical convergence analysis heavily relies on adaptations from a prior work (HiZOO) and does not fully account for the specifics of block coordinate updates, which might introduce subtleties not captured by the current proof outline.",
+        "The paper mentions various BCD block selection strategies but primarily evaluates only the 'ascending order' rule. Exploring and validating other, potentially more adaptive or efficient, block selection methods would strengthen the practical recommendations and novelty of the BCD component."
+      ],
+      "summary_comment": "This paper presents a novel and significant approach to memory-efficient LLM fine-tuning by integrating Block Coordinate Descent with Hessian-informed zeroth-order optimization. The core idea is innovative, effectively tackling the memory-convergence trade-off that limits prior zeroth-order methods. The empirical results show compelling memory reductions and competitive performance on relevant benchmarks and model sizes (OPT-1.3B, LLaMA-2-7B), which is a clear step forward for fine-tuning on constrained hardware. While the theoretical analysis is somewhat brief and relies on existing work, and a deeper exploration of BCD strategies would be beneficial, the practical impact and novelty of the proposed B-PDF method are strong enough to warrant acceptance. It pushes the boundaries of what's possible for efficient LLM deployment and will likely inspire further research in this area."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper addresses a practically relevant problem of memory-efficient fine-tuning of LLMs on resource-constrained devices, which is a significant practical challenge.",
+        "The idea of combining block coordinate descent with Hessian-informed zeroth-order optimization to manage memory overhead is interesting and conceptually sound.",
+        "The experimental results present a clear picture of memory savings and runtime improvements compared to HiZOO and MeZO on OPT-1.3B, which supports some claims."
+      ],
+      "weaknesses": [
+        "The theoretical convergence analysis in Section 4.2 and Appendix D is superficial and directly reuses prior work (HiZOO) without properly adapting it for the BCD setting. The crucial block-wise updates introduced by BCD change the optimization dynamics, and simply stating \"our proposed B-PDF retains the convergence properties of HiZOO\" is not a rigorous justification. A proper re-derivation or at least a detailed discussion of why the existing proof applies (or how it needs to be modified) is essential.",
+        "The experimental evaluation for LLaMA-2-7B is very weak. Only one task (SST-2) is reported, and the authors admit \"accuracy drop from incomplete convergence.\" This compromises the validity of the reported accuracy gains and makes it difficult to draw firm conclusions about the method's effectiveness on larger models. Furthermore, the performance comparisons are not comprehensive (e.g., HiZOO OOMs, so no direct accuracy comparison).",
+        "Algorithm 1 details are problematic. The line 'θi ← θi + µiΣ^(1/2)t z' implies that `z` is per-parameter, but `z` is sampled per block if taken from the initial description of SPSA/MeZO. This inconsistency needs clarification. Moreover, the Hessian update rule `Σ^t ← ∆ℓ / (2µ^2) * (Σ^-1/2t-1 z z^T Σ^-1/2t-1 - Σ^-1t-1)` is dimensionally incorrect as `∆ℓ` is a scalar while the rest is a matrix. This suggests a fundamental error in the algorithm description.",
+        "The notion of average memory in Table 1, 2, and 4 and Figure 2 is not sufficiently clear. How is 'average' calculated? Is it peak memory, or a time-averaged memory? More precise definitions of memory metrics are needed for rigorous comparison."
+      ],
+      "summary_comment": "This paper presents an interesting approach to memory-efficient LLM fine-tuning by integrating Block Coordinate Descent (BCD) with Hessian-informed zeroth-order optimization. The core idea of optimizing only a subset of layers at a time to reduce Hessian storage is compelling. However, the paper suffers from significant weaknesses in its theoretical soundness and experimental rigor. The convergence analysis is largely a copy-paste from a previous work (HiZOO) without adequate adaptation or justification for the BCD setting, which fundamentally changes the optimization problem. The algorithm description (Algorithm 1) contains critical errors in mathematical notation and dimensionality that need to be resolved. Furthermore, the evaluation on the larger LLaMA-2-7B model is limited and inconclusive, with acknowledged \"incomplete convergence.\" While the memory reduction on OPT-1.3B is encouraging, the identified flaws in the theoretical and algorithmic descriptions, coupled with insufficient evaluation for larger models, prevent the paper from meeting the bar for acceptance. Rectifying the theoretical derivation and providing a more robust evaluation on larger models would significantly strengthen the work."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a highly practical and relevant problem: fine-tuning large LLMs on memory-constrained devices, which is a major bottleneck for real-world adoption.",
+        "Proposes a clear and intuitive solution by combining established techniques (BCD and Hessian-informed ZO) to specifically target the memory overhead of second-order information.",
+        "Empirical evaluation is strong, showing significant memory reduction (up to 39%) and comparable accuracy/speed benefits against well-motivated baselines (MeZO, HiZOO) on relevant LLMs (OPT-1.3B, LLaMA-2-7B)."
+      ],
+      "weaknesses": [
+        "While the approach is a practical combination of existing methods, the core novelty is moderate. The improvement comes from intelligent application rather than a fundamentally new algorithmic primitive.",
+        "The theoretical convergence analysis is very brief and heavily relies on prior work (HiZOO). While acknowledged as a practical focus, a slightly more detailed discussion on how BCD specifically impacts convergence properties in this context would strengthen the paper."
+      ],
+      "summary_comment": "This paper presents a strong practical contribution to the field of efficient LLM fine-tuning. The problem of memory-intensive training, especially for second-order methods, is a critical barrier to wider adoption on everyday hardware. The proposed B-PDF method tackles this directly by cleverly integrating Block Coordinate Descent with a Hessian-informed zeroth-order optimizer. The results clearly demonstrate significant memory reduction and improved runtime compared to Hessian-informed baselines, while maintaining accuracy. The evaluation on OPT-1.3B and LLaMA-2-7B is convincing and directly addresses the practical utility. The clarity of the paper is good, making the approach easy to understand and appreciate. The practical impact is high, as it makes advanced optimization techniques accessible to more users and devices. Minor concerns exist regarding the novelty of individual components and the depth of theoretical analysis, but these are outweighed by the clear practical benefits and rigorous empirical validation."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' specifically optimizing deep learning models (LLMs) which aligns well with ICML's topics of interest.",
+        "The topic of 'optimization' (stochastic, non-convex) is a core area for ICML, and the paper proposes a novel memory-efficient block coordinate descent Newton method.",
+        "The paper provides empirical evaluation on foundation models (OPT-1.3B and LLaMA-2-7B) on GLUE/SuperGLUE tasks, which also falls under 'application-driven machine learning' with innovative techniques for healthcare, physical sciences, biosciences, social sciences, sustainability, and climate, as it deals with LLMs.",
+        "Reviewer A highlights the 'genuinely novel' idea of combining BCD with Hessian-informed zeroth-order optimization, which is a strong point for a top-tier conference like ICML.",
+        "Reviewer C emphasizes the high practical relevance of fine-tuning LLMs on memory-constrained devices, a significant contribution to the broader ML community that ICML serves."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B points out significant weaknesses in the 'theoretical convergence analysis', stating it is superficial and reuses prior work without proper adaptation for the BCD setting. While the paper states its focus is practical, ICML often expects stronger theoretical grounding for novel optimization methods.",
+        "The experimental evaluation for LLaMA-2-7B is deemed 'very weak' by Reviewer B, with only one task reported and acknowledged 'incomplete convergence'. This lack of comprehensive experimental rigor on larger models could be a detractor for ICML.",
+        "Reviewer B's concerns about 'problematic' Algorithm 1 details, including potential dimensional inconsistencies in the Hessian update rule, indicate a lack of formal rigor that might be scrutinized in an ICML review."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's focus on memory-efficient fine-tuning for LLMs addresses 'language and multimodal language models' and 'general machine learning: core contributions in supervised and unsupervised methods', both relevant NeurIPS topics.",
+        "The methodology involves 'optimization' (specifically a block coordinate descent Newton method) and 'probabilistic methods' (zeroth-order optimization with Hessian information using random perturbations), which are explicit topics for NeurIPS.",
+        "The practical relevance of running LLMs on 'resource-constrained devices' speaks to the 'Socio-technical aspects of AI' and 'SysML Infrastructure' by improving accessibility, as highlighted by reviewers A and C.",
+        "Reviewer A acknowledges the 'novel' approach to tackle a 'critical memory-convergence trade-off', which would be appealing to NeurIPS for advancing the state-of-the-art in LLM training efficiency."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the 'superficial' and unadapted theoretical convergence analysis (Reviewer B) might not meet NeurIPS's expectations for rigorous justification, especially when introducing a new optimizer variant.",
+        "The identified 'critical errors in mathematical notation and dimensionality' in Algorithm 1 by Reviewer B suggest a lack of precision that is generally not well-received at NeurIPS.",
+        "The 'very weak' experimental evaluation for LLaMA-2-7B with 'incomplete convergence' and limited tasks (Reviewer B) could be a concern for NeurIPS, which typically values robust empirical validation, especially for practical solutions for LLMs.",
+        "While the paper has practical implications, NeurIPS often values a stronger theoretical contribution alongside practical results, and this paper leans heavily on the practical side with theoretical weaknesses."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper focuses on 'fine-tuning large language models', which inherently involves 'deep learning' and 'representation learning for language', core areas for ICLR.",
+        "The method proposes a new 'optimization' technique (block coordinate descent Newton method) for deep learning models, which is a listed topic of interest for ICLR.",
+        "The emphasis on 'memory-efficient' fine-tuning for resource-constrained devices aligns with ICLR's interest in 'infrastructure, software libraries, hardware, etc.' especially as it pertains to making deep learning more accessible.",
+        "Reviewer A notes the 'genuinely novel' approach of combining BCD with Hessian-informed zeroth-order optimization which is relevant for a conference focusing on cutting-edge research in deep learning."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR places a strong emphasis on deep learning specific advancements. While the paper applies to LLMs, the core contribution is an optimizer. Reviewer C states the novelty is 'moderate' as it combines existing techniques, which might be a weaker fit for ICLR's expectation of fundamentally new algorithmic primitives in deep learning.",
+        "The most significant weakness, according to Reviewer B, is the 'superficial and directly reuses prior work' for theoretical convergence analysis and 'critical errors in mathematical notation' in Algorithm 1. ICLR, despite its applied focus, still expects a high degree of technical rigor in the presented methodology.",
+        "The limited experimental validation on larger models (LLaMA-2-7B) with acknowledged 'incomplete convergence' (Reviewer B) might not be sufficient for ICLR, which values strong empirical results for deep learning models.",
+        "The paper mentions exploring different BCD block selection strategies but 'primarily evaluates only the 'ascending order' rule' (Reviewer A), potentially missing out on a deeper exploration of representation learning or adaptive strategies relevant to ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

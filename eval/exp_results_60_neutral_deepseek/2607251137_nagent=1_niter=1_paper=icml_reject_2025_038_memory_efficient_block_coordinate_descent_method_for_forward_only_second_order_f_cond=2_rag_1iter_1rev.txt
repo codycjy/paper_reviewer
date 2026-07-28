@@ -1,0 +1,618 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper proposes a novel integration of Block Coordinate Descent (BCD) with a Hessian-informed zeroth-order optimizer (B-PDF) to address the memory overhead of second-order methods.",
+        "The method achieves a significant and practically useful reduction in memory consumption (up to 39%) compared to the HiZOO baseline while maintaining competitive accuracy.",
+        "The experimental evaluation is conducted on relevant and contemporary LLMs (OPT-1.3B, LLaMA-2-7B) across standard benchmarks (GLUE, SuperGLUE), demonstrating the method's practical applicability."
+      ],
+      "weaknesses": [
+        "The novelty of the core components (BCD, Hessian-informed ZO) is somewhat limited, as they are established techniques; the contribution lies in their specific integration for this problem.",
+        "The experimental comparison is mainly within the ZO optimization family (vs. MeZO, HiZOO). A more thorough comparison with other memory-efficient fine-tuning paradigms (e.g., PEFT methods) would strengthen the claims."
+      ],
+      "summary_comment": "This paper presents a well-motivated and practical solution to a clear problem: the high memory cost of incorporating second-order information into zeroth-order LLM fine-tuning. The proposed B-PDF method effectively combines BCD with a Hessian-informed ZO optimizer, yielding significant memory savings while preserving performance. The experiments are convincing for the stated goal, though the framing of novelty could be more precise. The soundness of the approach and its practical significance for memory-constrained environments support a decision to Accept."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core topic -- memory-efficient optimization for large language models -- falls squarely under ICML's 'machine learning systems' and 'optimization' tracks, with direct relevance to 'general machine learning'.",
+        "The methodological contribution of integrating block coordinate descent with Hessian-informed zeroth-order optimization aligns with ICML's high standards for algorithmic innovation and rigorous empirical evaluation.",
+        "The practical focus on reducing memory overhead for LLM fine-tuning addresses a significant scalability challenge, which resonates with ICML's interest in systems-oriented ML research and applications (e.g., 'machine learning systems')."
+      ],
+      "why_it_does_not_fit": [
+        "While the topic is relevant, the paper's novelty is somewhat incremental, as noted by Reviewer 1 ('novelty of the core components... is somewhat limited'). ICML often favors higher-risk, more foundational advances.",
+        "The experimental evaluation is primarily empirical and focused on a specific application (LLM fine-tuning). While thorough, it may be less theoretically deep than some ICML submissions, which often emphasize stronger theoretical analysis alongside empirical results.",
+        "The paper's positioning is more as a practical engineering solution than a fundamental algorithmic breakthrough, which might place it slightly below the very top tier of ICML submissions in terms of conceptual novelty."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "NeurIPS has a strong track record in large-scale optimization, efficient training methods, and systems for large models (e.g., under 'SysML Infrastructure', 'General machine learning', 'Optimization'), making this paper's focus a good match.",
+        "The application to LLM fine-tuning aligns well with NeurIPS's broad interest in language models and their efficient deployment.",
+        "The paper addresses a practical bottleneck (memory constraints) with clear empirical results, which NeurIPS values in its systems-oriented and applied ML tracks."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1's criticism regarding limited novelty and lack of comparison with broader PEFT methods could be a concern at NeurIPS, where competition is intense and contributions are expected to be highly novel or impactful.",
+        "The paper's theoretical contribution is minimal (the convergence analysis is adapted from prior work). NeurIPS often expects more substantial theoretical grounding alongside empirical results, especially in optimization papers.",
+        "While the topic is relevant, the method is quite specialized to a particular optimization family (zeroth-order methods). It may not have the broad, interdisciplinary appeal that some NeurIPS papers strive for."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR's focus on 'deep learning' and 'optimization' makes the paper's technical content relevant. Efficient fine-tuning of LLMs is a core topic at ICLR.",
+        "The work directly relates to 'infrastructure, software libraries, hardware, etc.' and 'optimization', which are listed as topics of interest.",
+        "The empirical evaluation on contemporary LLMs (LLaMA-2, OPT) is appropriate for ICLR's emphasis on deep learning architectures and applications."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly prioritizes deep learning, representation learning, and foundational advances in neural networks. This paper is more of an optimization/system engineering contribution applied to deep networks, rather than a core deep learning innovation.",
+        "The method is not primarily about representation learning, generative models, or novel architectures—key ICLR themes—but rather an optimization procedure to reduce memory overhead.",
+        "Reviewer 1's comment about incremental novelty could be a significant hurdle at ICLR, which often seeks cutting-edge ideas in deep learning theory, architecture, or algorithms. This work is a clever integration of existing ideas rather than a new paradigm."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_98810c42204f",
+    "paper_id": "paper_cd8b39284acb",
+    "target_paper_summary": {
+      "paper_id": "paper_cd8b39284acb",
+      "title": "Memory Efficient Block Coordinate Descent Method For Forward-Only Second-Order Finetuning Of Llm Models",
+      "abstract": "Fine-tuning large language models (LLMs) for specific downstream tasks has traditionally relied on memory-intensive optimizers using classical backpropagation, which demands substantial memory to store model states for gradient computation, motivating the development of memoryefficient zeroth-order optimizers that operate in a forward-only manner. However, the slower convergence of the zeroth-order optimizer remains a challenge, which recent research addresses by incorporating Hessian information to accelerate training, although storing even the diagonal Hessian requires memory equivalent to that of the model weights, leading to significant memory usage. To mitigate this problem, we propose a novel approach that integrates the block coordinate descent (BCD) method with a Hessian-informed zeroth-order optimizer, allowing us to treat model layers as separate blocks and update only a subset of layers per training iteration, thereby reducing memory requirements and accelerating convergence. Specifically, at each iteration, an active block of layers is selected according to the chosen BCD rule, such as ascending order, and their weights are updated while the other layers remain fixed, with diagonal Hessian information stored and updated exclusively for the active layers. For fine-tuning foundation models of medium size (OPT-1.3B and LLaMA-2-7B), our method achieves up to 39% memory reduction compared to existing Hessian-informed zeroth-order methods, while preserving baseline accuracy and memory usage to zeroth-order methods across various tasks, offering a memory-efficient alternative method for LLMs fine-tuning, especially on memory-constrained devices.",
+      "topic": "",
+      "claims": [
+        "we propose a novel approach that integrates the block coordinate descent (BCD) method with a Hessian-informed zeroth-order optimizer, allowing us to treat model layers as separate blocks and update only a subset of layers per training iteration, thereby reducing memory requirements and accelerating convergence.",
+        "our method achieves up to 39% memory reduction compared to existing Hessian-informed zeroth-order methods, while preserving baseline accuracy and memory usage to zeroth-order methods across various tasks, offering a memory-efficient alternative method for LLMs fine-tuning, especially on memory-constrained devices."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "memory-efficient fine-tuning large language models LLMs",
+          "rationale": "The paper focuses on reducing memory usage during LLM fine-tuning, so this query targets papers addressing the same core problem."
+        },
+        {
+          "group": "same_method",
+          "query": "block coordinate descent BCD optimizer fine-tuning LLM",
+          "rationale": "The method integrates BCD with Hessian-informed zeroth-order optimization; this query seeks similar optimization approaches."
+        },
+        {
+          "group": "same_constraints",
+          "query": "memory-constrained devices LLM fine-tuning forward-only optimizer",
+          "rationale": "The paper emphasizes deployment on memory-limited hardware with forward-only methods; this query matches those constraints."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "Hessian-informed zeroth-order optimizer LLM fine-tuning benchmark",
+          "rationale": "The paper compares against existing Hessian-informed zeroth-order methods; this query aims to find benchmarking studies."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "block coordinate descent Hessian optimizer memory reduction LLM fine-tuning",
+          "rationale": "To challenge novelty, this query searches for prior work combining BCD and Hessian information for memory efficiency in LLM fine-tuning."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "block coordinate descent convergence issues memory optimization negative results",
+          "rationale": "This query targets papers that might show limitations or negative outcomes of BCD methods in optimization contexts."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 4,
+        "warnings": [
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_6682b1e9f",
+        "title": "Large language models encode clinical knowledge",
+        "authors": [
+          "Karan Singhal",
+          "Shekoofeh Azizi",
+          "Tao Tu",
+          "S. Sara Mahdavi",
+          "Jason Lee",
+          "Hyung Won Chung",
+          "Nathan Scales",
+          "Ajay Kumar Tanwani",
+          "Heather Cole-Lewis",
+          "Stephen Pfohl",
+          "Perry W. Payne",
+          "Martin Seneviratne",
+          "Paul Gamble",
+          "Christopher Kelly",
+          "Abubakr Babiker",
+          "Nathanael Schärli",
+          "Aakanksha Chowdhery",
+          "P. Mansfield",
+          "Dina Demner‐Fushman",
+          "Blaise Agüera y Arcas",
+          "Dale R. Webster",
+          "Greg S. Corrado",
+          "Yossi Matias",
+          "Katherine Chou",
+          "Juraj Gottweis",
+          "Nenad Tomašev",
+          "Yun Liu",
+          "Alvin Rajkomar",
+          "Joëlle Barral",
+          "Christopher Semturs",
+          "Alan Karthikesalingam",
+          "Vivek Natarajan"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-12",
+        "venue": "Nature",
+        "abstract": "Abstract Large language models (LLMs) have demonstrated impressive capabilities, but the bar for clinical applications is high. Attempts to assess the clinical knowledge of models typically rely on automated evaluations based on limited benchmarks. Here, to address these limitations, we present MultiMedQA, a benchmark combining six existing medical question answering datasets spanning professional medicine, research and consumer queries and a new dataset of medical questions searched online, HealthSearchQA. We propose a human evaluation framework for model answers along multiple axes including factuality, comprehension, reasoning, possible harm and bias. In addition, we evaluate Pathways Language Model 1 (PaLM, a 540-billion parameter LLM) and its instruction-tuned variant, Flan-PaLM 2 on MultiMedQA. Using a combination of prompting strategies, Flan-PaLM achieves state-of-the-art accuracy on every MultiMedQA multiple-choice dataset (MedQA 3 , MedMCQA 4 , PubMedQA 5 and Measuring Massive Multitask Language Understanding (MMLU) clinical topics 6 ), including 67.6% accuracy on MedQA (US Medical Licensing Exam-style questions), surpassing the prior state of the art by more than 17%. However, human evaluation reveals key gaps. To resolve this, we introduce instruction prompt tuning, a parameter-efficient approach for aligning LLMs to new domains using a few exemplars. The resulting model, Med-PaLM, performs encouragingly, but remains inferior to clinicians. We show that comprehension, knowledge recall and reasoning improve with model scale and instruction prompt tuning, suggesting the potential utility of LLMs in medicine. Our human evaluations reveal limitations of today’s models, reinforcing the importance of both evaluation frameworks and method development in creating safe, helpful LLMs for clinical applications.",
+        "url": "https://doi.org/10.1038/s41586-023-06291-2",
+        "doi": "https://doi.org/10.1038/s41586-023-06291-2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4384071683"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 3379
+      },
+      {
+        "paper_id": "rw_002_8c08cab91",
+        "title": "LLaMA: Open and Efficient Foundation Language Models",
+        "authors": [
+          "Hugo Touvron",
+          "Thibaut Lavril",
+          "Gautier Izacard",
+          "Xavier Martinet",
+          "Marie-Anne Lachaux",
+          "Timothée Lacroix",
+          "Baptiste Rozière",
+          "Naman Goyal",
+          "Eric Hambro",
+          "Faisal Azhar",
+          "Aurelien Rodriguez",
+          "Armand Joulin",
+          "Édouard Grave",
+          "Guillaume Lample"
+        ],
+        "year": 2023,
+        "publication_date": "2023-02-27",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "We introduce LLaMA, a collection of foundation language models ranging from 7B to 65B parameters. We train our models on trillions of tokens, and show that it is possible to train state-of-the-art models using publicly available datasets exclusively, without resorting to proprietary and inaccessible datasets. In particular, LLaMA-13B outperforms GPT-3 (175B) on most benchmarks, and LLaMA-65B is competitive with the best models, Chinchilla-70B and PaLM-540B. We release all our models to the research community.",
+        "url": "http://arxiv.org/abs/2302.13971",
+        "doi": "https://doi.org/10.48550/arxiv.2302.13971",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4322718191"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 3932
+      },
+      {
+        "paper_id": "rw_003_3a2d9a6e8",
+        "title": "Dual coordinate descent methods for logistic regression and maximum entropy models",
+        "authors": [
+          "Hsiang‐Fu Yu",
+          "Fang-Lan Huang",
+          "Chih‐Jen Lin"
+        ],
+        "year": 2010,
+        "publication_date": "2010-11-10",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s10994-010-5221-8",
+        "doi": "https://doi.org/10.1007/s10994-010-5221-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2108712612"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": 392
+      },
+      {
+        "paper_id": "rw_004_a60e87825",
+        "title": "Convergence of Edge Computing and Deep Learning: A Comprehensive Survey",
+        "authors": [
+          "Xiaofei Wang",
+          "Yiwen Han",
+          "Victor C. M. Leung",
+          "Dusit Niyato",
+          "Xueqiang Yan",
+          "Xu Chen"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-01",
+        "venue": "IEEE Communications Surveys & Tutorials",
+        "abstract": "Ubiquitous sensors and smart devices from factories and communities are generating massive amounts of data, and ever-increasing computing power is driving the core of computation and services from the cloud to the edge of the network. As an important enabler broadly changing people's lives, from face recognition to ambitious smart factories and cities, developments of artificial intelligence (especially deep learning, DL) based applications and services are thriving. However, due to efficiency and latency issues, the current cloud computing service architecture hinders the vision of “providing artificial intelligence for every person and every organization at everywhere”. Thus, unleashing DL services using resources at the network edge near the data sources has emerged as a desirable solution. Therefore, edge intelligence, aiming to facilitate the deployment of DL services by edge computing, has received significant attention. In addition, DL, as the representative technique of artificial intelligence, can be integrated into edge computing frameworks to build intelligent edge for dynamic, adaptive edge maintenance and management. With regard to mutually beneficial edge intelligence and intelligent edge, this paper introduces and discusses: 1) the application scenarios of both; 2) the practical implementation methods and enabling technologies, namely DL training and inference in the customized edge computing framework; 3) challenges and future trends of more pervasive and fine-grained intelligence. We believe that by consolidating information scattered across the communication, networking, and DL areas, this survey can help readers to understand the connections between enabling technologies while promoting further discussions on the fusion of edge intelligence and intelligent edge, i.e., Edge DL.",
+        "url": "https://doi.org/10.1109/comst.2020.2970550",
+        "doi": "https://doi.org/10.1109/comst.2020.2970550",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2962814013"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": 1457
+      },
+      {
+        "paper_id": "rw_005_b126111a8",
+        "title": "Differentially Private Fine-tuning of Language Models",
+        "authors": [
+          "Da Yu",
+          "Saurabh Naik",
+          "Arturs Backurs",
+          "Sivakanth Gopi",
+          "Huseyin A. Inan",
+          "Gautam Kamath",
+          "Janardhan Kulkarni",
+          "Yin Tat Lee",
+          "Andre Manoel",
+          "Lukas Wutschitz",
+          "Sergey Yekhanin",
+          "Huishuai Zhang"
+        ],
+        "year": 2021,
+        "publication_date": "2021-10-13",
+        "venue": "arXiv",
+        "abstract": "We give simpler, sparser, and faster algorithms for differentially private fine-tuning of large-scale pre-trained language models, which achieve the state-of-the-art privacy versus utility tradeoffs on many standard NLP tasks. We propose a meta-framework for this problem, inspired by the recent success of highly parameter-efficient methods for fine-tuning. Our experiments show that differentially private adaptations of these approaches outperform previous private algorithms in three important dimensions: utility, privacy, and the computational and memory cost of private training. On many commonly studied datasets, the utility of private models approaches that of non-private models. For example, on the MNLI dataset we achieve an accuracy of $87.8\\%$ using RoBERTa-Large and $83.5\\%$ using RoBERTa-Base with a privacy budget of $ε= 6.7$. In comparison, absent privacy constraints, RoBERTa-Large achieves an accuracy of $90.2\\%$. Our findings are similar for natural language generation tasks. Privately fine-tuning with DART, GPT-2-Small, GPT-2-Medium, GPT-2-Large, and GPT-2-XL achieve BLEU scores of 38.5, 42.0, 43.1, and 43.8 respectively (privacy budget of $ε= 6.8,δ=$ 1e-5) whereas the non-private baseline is $48.1$. All our experiments suggest that larger models are better suited for private fine-tuning: while they are well known to achieve superior accuracy non-privately, we find that they also better maintain their accuracy when privacy is introduced.",
+        "url": "http://arxiv.org/abs/2110.06500v2",
+        "doi": "",
+        "arxiv_id": "2110.06500v2",
+        "source_ids": {
+          "arXiv": "2110.06500v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_006_e78f6195e",
+        "title": "Demystifying Instruction Mixing for Fine-tuning Large Language Models",
+        "authors": [
+          "Renxi Wang",
+          "Haonan Li",
+          "Minghao Wu",
+          "Yuxia Wang",
+          "Xudong Han",
+          "Chiyu Zhang",
+          "Timothy Baldwin"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-17",
+        "venue": "arXiv",
+        "abstract": "Instruction tuning significantly enhances the performance of large language models (LLMs) across various tasks. However, the procedure to optimizing the mixing of instruction datasets for LLM fine-tuning is still poorly understood. This study categorizes instructions into three primary types: NLP downstream tasks, coding, and general chat. We explore the effects of instruction tuning on different combinations of datasets on LLM performance, and find that certain instruction types are more advantageous for specific applications but can negatively impact other areas. This work provides insights into instruction mixtures, laying the foundations for future research.",
+        "url": "http://arxiv.org/abs/2312.10793v3",
+        "doi": "",
+        "arxiv_id": "2312.10793v3",
+        "source_ids": {
+          "arXiv": "2312.10793v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_2aab01f29",
+        "title": "MoFO: Momentum-Filtered Optimizer for Mitigating Forgetting in LLM Fine-Tuning",
+        "authors": [
+          "Yupeng Chen",
+          "Senmiao Wang",
+          "Yushun Zhang",
+          "Zhihang Lin",
+          "Haozhe Zhang",
+          "Weijian Sun",
+          "Tian Ding",
+          "Ruoyu Sun"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-30",
+        "venue": "arXiv",
+        "abstract": "Large language models (LLMs) have demonstrated remarkable capabilities across a wide range of tasks. Typically, LLMs are first pre-trained on large corpora and subsequently fine-tuned on task-specific datasets. However, during fine-tuning, LLMs may forget some knowledge acquired in the pre-training stage, leading to a decline in general capabilities. Existing approaches to mitigate forgetting often rely on access to pre-training data, which may be unavailable in many real-world scenarios--such as fine-tuning checkpoint-only open-source LLMs. To address this challenge, we propose a new fine-tuning algorithm termed Momentum-Filtered Optimizer (MoFO). MoFO is an extension of greedy block coordinate descent (BCD) methods: in each iteration, MoFO only updates the model parameters with the largest momentum magnitudes, while keeping all other parameters fixed. MoFO achieves similar fine-tuning performance to the default fine-tuning algorithm while effectively mitigating knowledge forgetting. We validate MoFO through rigorous convergence analysis and extensive experiments, demonstrating its effectiveness in mitigating forgetting without pre-training data.",
+        "url": "http://arxiv.org/abs/2407.20999v4",
+        "doi": "",
+        "arxiv_id": "2407.20999v4",
+        "source_ids": {
+          "arXiv": "2407.20999v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_010_14bba431d",
+        "title": "Second-Order Fine-Tuning without Pain for LLMs:A Hessian Informed Zeroth-Order Optimizer",
+        "authors": [
+          "Yanjun Zhao",
+          "Sizhe Dang",
+          "Haishan Ye",
+          "Guang Dai",
+          "Yi Qian",
+          "Ivor W. Tsang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-23",
+        "venue": "arXiv",
+        "abstract": "Fine-tuning large language models (LLMs) with classic first-order optimizers entails prohibitive GPU memory due to the backpropagation process. Recent works have turned to zeroth-order optimizers for fine-tuning, which save substantial memory by using two forward passes. However, these optimizers are plagued by the heterogeneity of parameter curvatures across different dimensions. In this work, we propose HiZOO, a diagonal Hessian informed zeroth-order optimizer which is the first work to leverage the diagonal Hessian to enhance zeroth-order optimizer for fine-tuning LLMs. What's more, HiZOO avoids the expensive memory cost and only increases one forward pass per step. Extensive experiments on various models (350M~66B parameters) indicate that HiZOO improves model convergence, significantly reducing training steps and effectively enhancing model accuracy. Moreover, we visualize the optimization trajectories of HiZOO on test functions, illustrating its effectiveness in handling heterogeneous curvatures. Lastly, we provide theoretical proofs of convergence for HiZOO. Code is publicly available at https://anonymous.4open.science/r/HiZOO27F8.",
+        "url": "http://arxiv.org/abs/2402.15173v4",
+        "doi": "",
+        "arxiv_id": "2402.15173v4",
+        "source_ids": {
+          "arXiv": "2402.15173v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_8d90cf95d",
+        "title": "Randomized Block Coordinate Descent for Online and Stochastic Optimization",
+        "authors": [
+          "Huahua Wang",
+          "Arindam Banerjee"
+        ],
+        "year": 2014,
+        "publication_date": "2014-07-01",
+        "venue": "arXiv",
+        "abstract": "Two types of low cost-per-iteration gradient descent methods have been extensively studied in parallel. One is online or stochastic gradient descent (OGD/SGD), and the other is randomzied coordinate descent (RBCD). In this paper, we combine the two types of methods together and propose online randomized block coordinate descent (ORBCD). At each iteration, ORBCD only computes the partial gradient of one block coordinate of one mini-batch samples. ORBCD is well suited for the composite minimization problem where one function is the average of the losses of a large number of samples and the other is a simple regularizer defined on high dimensional variables. We show that the iteration complexity of ORBCD has the same order as OGD or SGD. For strongly convex functions, by reducing the variance of stochastic gradients, we show that ORBCD can converge at a geometric rate in expectation, matching the convergence rate of SGD with variance reduction and RBCD.",
+        "url": "http://arxiv.org/abs/1407.0107v3",
+        "doi": "",
+        "arxiv_id": "1407.0107v3",
+        "source_ids": {
+          "arXiv": "1407.0107v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_61ea2dd3c",
+        "title": "Conjectures on Convergence and Scalar Curvature",
+        "authors": [
+          "Christina Sormani",
+          "Participants at the IAS Emerging Topics Workshop on Scalar Curvature",
+          "Convergence"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-18",
+        "venue": "arXiv",
+        "abstract": "Here we survey the compactness and geometric stability conjectures formulated by the participants at the 2018 IAS Emerging Topics Workshop on {\\em Scalar Curvature and Convergence}. We have tried to survey all the progress towards these conjectures as well as related examples, although it is impossible to cover everything. We focus primarily on sequences of compact Riemannian manifolds with nonnegative scalar curvature and their limit spaces. Christina Sormani is grateful to have had the opportunity to write up our ideas and has done her best to credit everyone involved within the paper even though she is the only author listed above. In truth we are a team of over thirty people working together and apart on these deep questions and we welcome everyone who is interested in these conjectures to join us.",
+        "url": "http://arxiv.org/abs/2103.10093v1",
+        "doi": "",
+        "arxiv_id": "2103.10093v1",
+        "source_ids": {
+          "arXiv": "2103.10093v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_010_14bba431d",
+        "relevance_score": 0.92,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper introduces HiZOO, a Hessian-informed zeroth-order optimizer, which is a key baseline method compared in the target paper for memory-efficient LLM fine-tuning.",
+        "evidence_summary": "HiZOO (Zhao et al., 2024) is a diagonal Hessian informed zeroth-order optimizer proposed for memory-efficient fine-tuning of LLMs, directly benchmarking against the target's methods."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_008_2aab01f29",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper uses greedy block coordinate descent for LLM fine-tuning, aligning with the target's method of integrating BCD for optimization, though focuses on mitigating forgetting rather than memory reduction.",
+        "evidence_summary": "MoFO (Chen et al., 2024) proposes a greedy block coordinate descent method for LLM fine-tuning, sharing methodological similarities with the target's BCD integration."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_012_8d90cf95d",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper explores randomized block coordinate descent for optimization, providing prior work on BCD methods that could challenge the novelty claim of integrating BCD with Hessian-informed zeroth-order optimization.",
+        "evidence_summary": "Randomized Block Coordinate Descent for Online and Stochastic Optimization (Wang and Banerjee, 2014) investigates BCD methods, offering foundational insights relevant to the target's approach."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_003_3a2d9a6e8",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper discusses dual coordinate descent methods for logistic regression, which may provide evidence on limitations or convergence issues of coordinate descent approaches in optimization contexts.",
+        "evidence_summary": "Dual coordinate descent methods for logistic regression and maximum entropy models (Yu et al., 2010) examines BCD variants, potentially highlighting optimization challenges."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_a60e87825",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey covers edge computing and deep learning convergence, which includes discussions on memory constraints and optimization challenges relevant to the target's focus on memory-constrained devices.",
+        "evidence_summary": "Convergence of Edge Computing and Deep Learning: A Comprehensive Survey (Wang et al., 2020) addresses computational constraints and optimization in edge environments, aligning with the target's memory-focused context."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_005_b126111a8",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper focuses on differentially private fine-tuning of language models, addressing memory and efficiency issues in LLM fine-tuning, though not specifically Hessian or BCD methods.",
+        "evidence_summary": "Differentially Private Fine-tuning of Language Models (Yu et al., 2021) explores efficient fine-tuning techniques, contributing to the broader problem space of memory-aware LLM optimization."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_006_e78f6195e",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This study examines instruction mixing for LLM fine-tuning, which relates to optimizing fine-tuning processes but does not address Hessian or BCD methods directly.",
+        "evidence_summary": "Demystifying Instruction Mixing for Fine-tuning Large Language Models (Wang et al., 2023) investigates dataset optimization in fine-tuning, providing contextual background on LLM adaptation challenges."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_002_8c08cab91",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper introduces LLaMA models, which are used in the target's experiments, providing background on the model architecture but not on optimization methods.",
+        "evidence_summary": "LLaMA: Open and Efficient Foundation Language Models (Touvron et al., 2023) presents models fine-tuned in the target study, offering foundational context."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_6682b1e9f",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper evaluates clinical knowledge in LLMs and fine-tuning approaches, but focuses on accuracy and benchmarks rather than memory-efficient optimization methods.",
+        "evidence_summary": "Large language models encode clinical knowledge (Singhal et al., 2023) discusses LLM fine-tuning and evaluation, contributing general insights into downstream task adaptation."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_014_61ea2dd3c",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper on convergence conjectures in scalar curvature is weakly related, as it touches on mathematical convergence but lacks direct relevance to LLM optimization or BCD methods.",
+        "evidence_summary": "Conjectures on Convergence and Scalar Curvature (Sormani et al., 2021) explores mathematical convergence theories, with minimal connection to LLM fine-tuning or optimization techniques."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Fine-tuning large language models (LLMs) efficiently has been addressed through various optimization strategies, including zeroth-order methods like HiZOO (Zhao et al., 2024) which incorporate Hessian information to reduce memory usage but still face high storage demands. Block coordinate descent (BCD) approaches, such as those in Randomized Block Coordinate Descent for Online and Stochastic Optimization (Wang and Banerjee, 2014) and MoFO (Chen et al., 2024), have been applied to optimization problems, highlighting potential benefits in convergence and resource management. Prior work on coordinate descent, including Dual coordinate descent methods for logistic regression and maximum entropy models (Yu et al., 2010), has explored its limitations and convergence properties. Additionally, studies on memory-constrained environments, like Convergence of Edge Computing and Deep Learning: A Comprehensive Survey (Wang et al., 2020), and fine-tuning techniques such as Differentially Private Fine-tuning of Language Models (Yu et al., 2021), provide context for efficient LLM adaptation. Foundations like LLaMA (Touvron et al., 2023) and broader fine-tuning analyses contribute to understanding model performance and constraints.",
+    "warnings": [
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 14,
+      "num_removed_post_cutoff": 4,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 14,
+    "num_removed_post_cutoff": 4,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

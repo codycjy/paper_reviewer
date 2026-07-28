@@ -1,0 +1,108 @@
+{
+  "reviewers": [
+    {
+      "raw": "```json\n{\n  \"reviewer\": \"Reviewer A - Novelty Focused\",\n  \"decision\": \"Accept\",\n  \"scores\": {\n    \"novelty\": 5,\n    \"soundness\": 4,\n    \"significance\": 5,\n    \"evaluation\": 4,\n    \"clarity\": 4\n  },\n  \"strengths\": [\n    \"The core idea of \"erase-and-squeeze\" combined with a conditional uniform-based sampler is highly novel and breaks from the traditional super-resolution paradigm for edge compression.\",\n    \"The proposed framework offers exceptional flexibility in compression levels and is shown to be compatible with existing compression algorithms, making it highly adaptable and practical for diverse IoT scenarios.\",\n    \"The empirical evaluations demonstrate significant improvements in computational efficiency and resource consumption on edge devices, addressing a critical bottleneck in deploying neural image compression in resource-constrained environments.\"\n  ],\n  \"weaknesses\": [\n    \"While the paper claims minimal overhead on the edge, the reconstruction model still relies on a server-side GPU, which might not always be available or cost-effective for all IoT deployments, despite being lightweight.\",\n    \"The evaluation uses non-reference perceptual metrics, which, while justified, might make direct comparisons with purely reference-based methods challenging for some readers or applications. More examples of reconstructed images with varying erase ratios would be beneficial.\"\n  ],\n  \"summary_comment\": \"This paper presents a truly innovative approach to image compression for IoT devices by rethinking the fundamental assumption of uniform downsampling. The 'erase-and-squeeze' method, coupled with a lightweight transformer for reconstruction, represents a significant conceptual leap. The idea of introducing fine-grained, flexible compression levels without heavy computational burden on the edge is highly valuable. While there are minor points regarding reconstruction dependency on a server GPU and the choice of metrics, these do not overshadow the bold novelty and significant potential impact of this work. The compatibility with existing codecs also makes it a compelling and forward-thinking solution. I believe this work pushes the boundaries of edge image compression and could inspire a new line of research.\"\n}\n```",
+      "parse_error": true
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously identifies and addresses the 'implicit assumption' of uniform downsampling in existing image enhancement frameworks, leading to a more flexible compression scheme.",
+        "The proposed 'Erase-and-Squeeze' algorithm combined with a lightweight transformer reconstruction model demonstrates strong practical advantages, particularly in terms of computational efficiency and adaptability on resource-constrained edge devices.",
+        "The comprehensive evaluation, including latency breakdown analysis, resource consumption metrics, and comparison with both super-resolution methods and state-of-the-art compression techniques on real-world testbeds (Jetson TX2, desktop server), provides convincing evidence for the system's effectiveness.",
+        "The two-stage patchifying process and complexity analysis effectively justify the design choices for the lightweight transformer, demonstrating a clear understanding of the computational constraints."
+      ],
+      "weaknesses": [
+        "While the paper states that the 'mask is applied to small sub-patches... and the transmission of this size is not a concern,' a more quantitative analysis or justification of the mask overhead (e.g., bits per pixel specifically for the mask) in relation to the overall compression ratio would strengthen this claim, especially for very low BPP targets.",
+        "The details regarding the `Transformer for Sub-Patch Restoration` are somewhat high-level. A more in-depth description of the internal architecture of the lightweight transformer (e.g., number of layers, attention heads, specific type of attention mechanism, activation functions) would be beneficial for reproducibility and understanding its capacity."
+      ],
+      "summary_comment": "This paper presents a well-structured and rigorously evaluated framework, Easz, for enhancing image compression on edge devices. The core idea of challenging the uniform downsampling assumption and introducing a conditional uniform-based sampler is novel and provides significant flexibility. The proposed lightweight transformer for reconstruction is a sound technical contribution to address the challenges posed by non-uniform sampling. The evaluation is thorough, demonstrating clear benefits in efficiency and perceptual quality when integrated with existing codecs. While some architectural details could be expanded, the overall scientific validity and practical relevance are high, meeting the criteria for acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a highly relevant and practical problem: efficient image compression on resource-constrained edge devices with flexible compression levels, which is a significant pain point for practitioners.",
+        "The proposed 'erase-and-squeeze' technique combined with a lightweight transformer for reconstruction offers a genuinely novel and effective approach to achieve flexible compression ratios with minimal edge overhead.",
+        "The evaluation is thorough and convincing, using real-world hardware (Jetson TX2), multiple datasets (Kodak, CLIC), relevant baselines (JPEG, BPG, NN-based codecs), and both reference and non-reference perceptual metrics, demonstrating clear practical advantages."
+      ],
+      "weaknesses": [
+        "While the paper states that the mask size is \"not a concern\" a more detailed quantification of the mask's impact on total transmission size at various erase ratios and patch sizes would be beneficial, as it still contributes to the overall BPP.",
+        "The discussion on limitations could be expanded to include potential scenarios where the 'erase-and-squeeze' might be suboptimal (e.g., highly textured areas being erased) or specific use cases where a fixed compression ratio might still be preferable for predictability."
+      ],
+      "summary_comment": "This paper presents Easz, a practical and effective framework for flexible image compression on edge devices. The core idea of conditionally erasing parts of an image at the edge (with minimal computational cost) and reconstructing them on the server with a lightweight transformer is highly significant for real-world IoT and edge computing applications. The rigorous evaluation on a Jetson TX2, comparing against both traditional and neural network-based codecs, strongly supports the claims of improved efficiency, flexibility, and perceptual quality. The clear articulation of the problem, the innovative solution, and the comprehensive experimental validation make this a strong contribution that practitioners can directly benefit from."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces a novel 'erase-and-squeeze' technique with a conditional uniform-based sampler for flexible image compression, which falls under 'general machine learning' and 'application-driven machine learning' (IoT/edge devices) topics.",
+        "The development of a 'Receiver-Side Lightweight Transformer Architecture' (8.7MB) for image reconstruction aligns well with 'deep learning' (architectures, generative models) and 'optimization' for resource-constrained environments.",
+        "The empirical evaluation on a real-world testbed (NVIDIA Jetson TX2) demonstrating significant improvements in computational efficiency, resource consumption, and adaptability addresses practical challenges in machine learning systems, a key interest of ICML.",
+        "The paper's focus on enhancing efficiency and flexibility for edge deployment, coupled with compatibility with existing algorithms, presents a strong practical contribution that ICML values, particularly in 'machine learning systems' and 'application-driven machine learning'.",
+        "Reviewers consistently highlight the high novelty of the erase-and-squeeze paradigm and its potential impact, which is a strong positive for a top-tier conference like ICML (Reviewer A: 'truly innovative approach', 'significant conceptual leap')."
+      ],
+      "why_it_does_not_fit": [
+        "While solid, the theoretical contributions are not the primary focus, as identified by Reviewer B's comment about 'architectural details could be expanded', which might be scrutinized more heavily if the paper were positioned as a core theory contribution.",
+        "The 'Others' topic for the paper is somewhat broad; while it fits application-driven ML, ICML often features papers with a more direct ties to fundamental ML advancements, though practical systems are also welcome.",
+        "Reviewer feedback suggests some aspects could be more rigorously detailed (mask overhead quantitative analysis, transformer architecture details), which, though not fatal, could invite questions about the completeness of the methodological exposition for some ICML reviewers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses 'Computer vision' (specifically image compression) and 'Robotics, embodied systems, and engineering' through its focus on efficient ML for IoT edge devices.",
+        "The use of a lightweight transformer for reconstruction and the core machine learning problem of image compression align well with NeurIPS topics such as 'Deep learning' and 'General machine learning: core contributions in supervised and unsupervised methods'.",
+        "The strong emphasis on computational efficiency and deployment on resource-constrained edge devices (Jetson TX2) makes it relevant to 'Socio-technical aspects of AI' and 'SysML Infrastructure', as it addresses practical deployment challenges.",
+        "The rigorous empirical evaluation on real-world testbeds, comparing against state-of-the-art methods (JPEG, BPG, MBT, Cheng-Anchor), demonstrates strong practical significance and rigorous experimentation, aligning with NeurIPS's value for well-validated research.",
+        "Reviewers note the 'highly novel' approach (Reviewer A) and 'strong practical advantages' (Reviewer B), making the paper suitable for NeurIPS which values both novel algorithmic approaches and their practical impact."
+      ],
+      "why_it_does_not_fit": [
+        "NeurIPS, while broad, often emphasizes papers with a stronger theoretical underpinning or novel algorithmic development that is less application-specific; this paper leans more towards systems and applications.",
+        "The paper falls under 'Others' as its primary topic, which could make it less immediately identifiable with a core NeurIPS category, although it touches on several.",
+        "Reviewer comments indicate a desire for more architectural detail on the transformer and a more quantitative analysis of mask overhead, which could be perceived as a lack of complete rigor by some NeurIPS reviewers who value in-depth technical exposition."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly deals with 'representation learning' through its conditional uniform-based sampler and 'generative models' in the context of image reconstruction via a lightweight transformer.",
+        "The 'Receiver-Side Lightweight Transformer Architecture' is a clear contribution to 'deep learning architectures' and 'optimization' relevant to ICLR's focus on cutting-edge deep learning research.",
+        "The discussion of complexity analysis for transformers and the two-stage patchify process directly addresses challenges in applying deep learning models, particularly attention mechanisms, which is highly relevant to ICLR.",
+        "The focus on 'applications to robotics, autonomy, planning' and 'infrastructure, software libraries, hardware' is a good match through the context of IoT/edge devices, showcasing practical deployment of deep learning.",
+        "Reviewers praise the novelty of the approach ('novel and effective approach' - Reviewer C) and its 'significant conceptual leap' (Reviewer A), which ICLR highly values for deep learning innovations."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper uses a transformer, the core contribution is less about fundamental advancements in transformer architecture or deep learning theory itself, and more about a novel application and system design using deep learning components.",
+        "ICLR sometimes prefers papers that introduce new deep learning models or theoretical insights more explicitly, rather than focusing on optimizing existing deep learning components for specific application scenarios, as this paper does.",
+        "Reviewers point out that 'architectural details could be expanded' (Reviewer B) for the transformer, which might be a critical omission for an ICLR audience that expects granular technical specifics of deep learning models.",
+        "The 'Others' topic might be too generic for ICLR, which has a very specific focus on representation learning and deep learning, even if related topics are also covered."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

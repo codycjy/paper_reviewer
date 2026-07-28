@@ -1,0 +1,643 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Provides the first polynomial-time learnability results (strong, agnostic PAC learning) for multi-head linear attention Transformers, addressing a critical open question.",
+        "Establishes a novel, efficiently checkable 'certifiable identifiability' condition that guarantees out-of-distribution generalization for all empirical risk minimizers.",
+        "Bridges a significant gap between theoretical expressivity and practical learnability for an important class of models, with empirical validation on synthetic tasks."
+      ],
+      "weaknesses": [
+        "The analysis is restricted to linear attention, a significant simplification compared to the standard softmax-based Transformer architecture used in practice.",
+        "The practical relevance of the theoretical guarantees, particularly the application to learning Universal Turing Machines, is limited by the very high embedding dimensions and head counts required.",
+        "The paper's technical sections, particularly the definitions and notations, are dense and could be challenging to parse, affecting overall clarity."
+      ],
+      "summary_comment": "This paper makes a foundational theoretical contribution by proving the polynomial-time learnability of multi-head linear attention. The results are novel and sound, with significant implications for understanding Transformer optimization. While the model is simplified and the practical applicability of the UTM result is limited, the core theoretical advances are strong. The empirical evaluations effectively support the theoretical claims, though the writing is dense."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The topic fits ICML's 'theory of machine learning' and 'optimization' tracks perfectly. The paper provides strong polynomial-time learnability results (agnostic PAC) for a specific neural architecture, which is a core theoretical contribution valued at ICML.",
+        "The contribution is highly rigorous, involving algorithmic design, sample complexity analysis, and generalization theory. The reviewers praised its soundness, aligning with ICML's high methodological standards.",
+        "The work bridges expressivity and learnability, a fundamental question in ML theory. The novel 'certifiable identifiability' condition for OOD generalization is a conceptual advance fitting ICML's scope.",
+        "Empirical validation on synthetic tasks (like learning random networks and key-value associations) provides necessary experimental support for the theoretical claims, a good balance for ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus is narrow, analyzing only linear attention—a significant simplification of the standard Transformer. While ICML welcomes theory, the gap to practical architectures (like softmax attention) might be seen as a limitation in immediate impact.",
+        "Reviewer 1 noted clarity issues ('dense and could be challenging to parse'). ICML values clear exposition; writing that is hard to follow could hinder reception despite strong technical content.",
+        "The most ambitious application—learning Universal Turing Machines—requires impractical embedding dimensions and head counts. This might be perceived as more of a theoretical curiosity than a result with direct practical implications for current ML systems, which could slightly reduce its appeal at a venue that also values actionable insights."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core falls under NeurIPS's 'Theory' and 'Deep learning' tracks. Proving efficient learnability for a component of transformer-like architectures is directly relevant to the NeurIPS community's interest in understanding foundational models.",
+        "The work touches on 'AI/ML for physical sciences' and 'AI/ML for social sciences' indirectly through its formal frameworks (e.g., learning automata), which aligns with NeurIPS's broad, interdisciplinary scope.",
+        "The concept of 'certifiable identifiability' for OOD generalization connects to important themes of reliability and generalization in AI systems, which are of high interest at NeurIPS.",
+        "The empirical validation, while on synthetic tasks, provides concrete evidence supporting the theory, which NeurIPS typically expects even for theoretical contributions."
+      ],
+      "why_it_does_not_fit": [
+        "The gap to mainstream architectures (linear vs. softmax attention) is a significant limitation. NeurIPS often prioritizes work with clearer pathways to impacting state-of-the-art deep learning practice.",
+        "Reviewer 1 pointed out limited 'practical relevance' of the UTM application. NeurIPS values both theoretical and empirical advances, but the very high-dimensional constructions needed might lessen the perceived significance for the broader audience.",
+        "The writing clarity issue noted by the reviewer is a risk factor. NeurIPS is highly competitive, and papers with presentation challenges can struggle, even with strong technical ideas."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR's focus is explicitly on deep learning. Analyzing the learnability of a linear attention mechanism, a variant used in recent efficient architectures (e.g., Linear Transformers, RetNet), is relevant to ICLR's core interests in novel architectures and their properties.",
+        "The paper's investigation into the role of over-parameterization (via heads) for optimization connects directly to ICLR's frequent discussions on optimization and generalization in deep models.",
+        "The theoretical approach to understanding transformer components through the lens of kernel methods and feature maps fits ICLR's growing subfield of theoretically grounded deep learning research."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's contribution is primarily theoretical (PAC learning, identifiability certificates) with supporting but limited experiments on synthetic data. ICLR, while accepting theory, has a strong culture of empirical validation on standard benchmarks (vision, language, etc.). The lack of experiments on real-world datasets is a major misalignment.",
+        "ICLR's typical 'deep learning' submissions involve non-linearities, backpropagation, and complex models. The analysis of a strictly linear attention mechanism (despite its non-convex parameterization) might be seen as too simplified for the venue's primary focus.",
+        "Reviewer 1's concern about 'practical relevance' is most acute for ICLR, which highly values empirical advancements and insights that can be directly transferred to training modern neural networks. The paper's strongest guarantees are for a model class not widely used in its exact form.",
+        "The clarity issue is again a concern, as ICLR papers must be accessible to a broad deep learning audience."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_197473f8b872",
+    "paper_id": "paper_bc9d56615796",
+    "target_paper_summary": {
+      "paper_id": "paper_bc9d56615796",
+      "title": "Learning Linear Attention In Polynomial Time",
+      "abstract": "Previous research has explored the expressivity of Transformer models in simulating Boolean circuits or Turing machines. However, the efficient learnability of Transformers from data has remained an open question. Our study addresses this gap by providing the first polynomial-time learnability results (specifically strong, agnostic PAC learning) for single-layer Transformers with linear attention. We show that learning the optimal multi head linear attention can be recast as finding the optimal kernel predictor in a suitably defined RKHS. Moving to generalization, we construct an algorithm that, given a dataset, checks in polynomial time whether the set of best fit multi head linear attention networks on this data all perform an identical computation–a powerful notion for out of distribution generalization. We empirically validate our theoretical findings on several canonical tasks: learning random linear attention networks, key–value associations, and learning to execute finite automata. Our findings bridge a critical gap between theoretical expressivity and learnability of Transformer models.",
+      "topic": "",
+      "claims": [
+        "We show that learning the optimal multi head linear attention can be recast as finding the optimal kernel predictor in a suitably defined RKHS."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "polynomial-time learnability Transformers linear attention PAC learning",
+          "rationale": "This targets papers studying the computational complexity of learning Transformer variants, specifically focusing on efficient learnability of attention mechanisms"
+        },
+        {
+          "group": "same_method",
+          "query": "linear attention Transformers kernel methods RKHS multi-head attention",
+          "rationale": "This focuses on papers using linear attention mechanisms, kernel predictors, and RKHS formulations for multi-head attention architectures"
+        },
+        {
+          "group": "same_constraints",
+          "query": "single-layer Transformers polynomial-time learning computational complexity theory",
+          "rationale": "This captures papers working with simplified single-layer architectures under computational complexity constraints and theoretical learning frameworks"
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "Transformer learnability benchmarks finite automata learning key-value associations datasets",
+          "rationale": "This searches for papers establishing benchmarks for Transformer learnability, particularly on tasks like finite automata and associative memory tasks"
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "expressivity of Transformers Boolean circuits Turing machines simulation learnability",
+          "rationale": "This targets prior theoretical work on Transformer expressivity that the paper claims to extend to learnability, potentially challenging novelty claims"
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "Transformer learning lower bounds hardness results linear attention limitations scalability issues",
+          "rationale": "This searches for papers showing limitations, negative results, or computational lower bounds for Transformer learning that might counter the paper's positive results"
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_2ba74bc43",
+        "title": "Artificial intelligence and machine learning for medical imaging: A technology review",
+        "authors": [
+          "Ana María Barragán Montero",
+          "Umair Javaid",
+          "Gilmer Valdés",
+          "Dan Nguyen",
+          "Paul Desbordes",
+          "Benoît Macq",
+          "Siri Willems",
+          "Liesbeth Vandewinckele",
+          "Mats Holmström",
+          "Fredrik Löfman",
+          "Steven Michiels",
+          "Kevin Souris",
+          "Edmond Sterpin",
+          "John A. Lee"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-01",
+        "venue": "Physica Medica",
+        "abstract": "Artificial intelligence (AI) has recently become a very popular buzzword, as a consequence of disruptive technical advances and impressive experimental results, notably in the field of image analysis and processing. In medicine, specialties where images are central, like radiology, pathology or oncology, have seized the opportunity and considerable efforts in research and development have been deployed to transfer the potential of AI to clinical applications. With AI becoming a more mainstream tool for typical medical imaging analysis tasks, such as diagnosis, segmentation, or classification, the key for a safe and efficient use of clinical AI applications relies, in part, on informed practitioners. The aim of this review is to present the basic technological pillars of AI, together with the state-of-the-art machine learning methods and their application to medical imaging. In addition, we discuss the new trends and future research directions. This will help the reader to understand how AI methods are now becoming an ubiquitous tool in any medical image analysis workflow and pave the way for the clinical implementation of AI-based solutions.",
+        "url": "https://doi.org/10.1016/j.ejmp.2021.04.016",
+        "doi": "https://doi.org/10.1016/j.ejmp.2021.04.016",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3161335554"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 434
+      },
+      {
+        "paper_id": "rw_002_5a86ee130",
+        "title": "The Shape of Learning Curves: A Review",
+        "authors": [
+          "Tom J. Viering",
+          "Marco Loog"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-09",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "Learning curves provide insight into the dependence of a learner's generalization performance on the training set size. This important tool can be used for model selection, to predict the effect of more training data, and to reduce the computational complexity of model training and hyperparameter tuning. This review recounts the origins of the term, provides a formal definition of the learning curve, and briefly covers basics such as its estimation. Our main contribution is a comprehensive overview of the literature regarding the shape of learning curves. We discuss empirical and theoretical evidence that supports well-behaved curves that often have the shape of a power law or an exponential. We consider the learning curves of Gaussian processes, the complex shapes they can display, and the factors influencing them. We draw specific attention to examples of learning curves that are ill-behaved, showing worse learning performance with more training data. To wrap up, we point out various open problems that warrant deeper empirical and theoretical investigation. All in all, our review underscores that learning curves are surprisingly diverse and no universal model can be identified.",
+        "url": "https://doi.org/10.1109/tpami.2022.3220744",
+        "doi": "https://doi.org/10.1109/tpami.2022.3220744",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3136016591"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 175
+      },
+      {
+        "paper_id": "rw_003_9a88cc08f",
+        "title": "Self-Supervised Transformer for Sparse and Irregularly Sampled Multivariate Clinical Time-Series",
+        "authors": [
+          "Sindhu Tipirneni",
+          "Chandan K. Reddy"
+        ],
+        "year": 2022,
+        "publication_date": "2022-06-24",
+        "venue": "ACM Transactions on Knowledge Discovery from Data",
+        "abstract": "Multivariate time-series data are frequently observed in critical care settings and are typically characterized by sparsity (missing information) and irregular time intervals. Existing approaches for learning representations in this domain handle these challenges by either aggregation or imputation of values, which in-turn suppresses the fine-grained information and adds undesirable noise/overhead into the machine learning model. To tackle this problem, we propose a S elf-supervised Tra nsformer for T ime- S eries (STraTS) model, which overcomes these pitfalls by treating time-series as a set of observation triplets instead of using the standard dense matrix representation. It employs a novel Continuous Value Embedding technique to encode continuous time and variable values without the need for discretization. It is composed of a Transformer component with multi-head attention layers, which enable it to learn contextual triplet embeddings while avoiding the problems of recurrence and vanishing gradients that occur in recurrent architectures. In addition, to tackle the problem of limited availability of labeled data (which is typically observed in many healthcare applications), STraTS utilizes self-supervision by leveraging unlabeled data to learn better representations by using time-series forecasting as an auxiliary proxy task. Experiments on real-world multivariate clinical time-series benchmark datasets demonstrate that STraTS has better prediction performance than state-of-the-art methods for mortality prediction, especially when labeled data is limited. Finally, we also present an interpretable version of STraTS, which can identify important measurements in the time-series data. Our data preprocessing and model implementation codes are available at https://github.com/sindhura97/STraTS .",
+        "url": "https://doi.org/10.1145/3516367",
+        "doi": "https://doi.org/10.1145/3516367",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4283370926"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 120
+      },
+      {
+        "paper_id": "rw_004_436ead852",
+        "title": "Air pollutant prediction model based on transfer learning two-stage attention mechanism",
+        "authors": [
+          "Zhanfei Ma",
+          "Bisheng Wang",
+          "Wenli Luo",
+          "Jing Jiang",
+          "Dongxiang Liu",
+          "Hui Wei",
+          "Haoye Luo"
+        ],
+        "year": 2024,
+        "publication_date": "2024-03-28",
+        "venue": "Scientific Reports",
+        "abstract": "Atmospheric pollution significantly impacts the regional economy and human health, and its prediction has been increasingly emphasized. The performance of traditional prediction methods is limited due to the lack of historical data support in new atmospheric monitoring sites. Therefore, this paper proposes a two-stage attention mechanism model based on transfer learning (TL-AdaBiGRU). First, the first stage of the model utilizes a temporal distribution characterization algorithm to segment the air pollutant sequences into periods. It introduces a temporal attention mechanism to assign self-learning weights to the period segments in order to filter out essential period features. Then, in the second stage of the model, a multi-head external attention mechanism is introduced to mine the network's hidden layer key features. Finally, the adequate knowledge learned by the model at the source domain site is migrated to the new site to improve the prediction capability of the new site. The results show that (1) the model is modeled from the data distribution perspective, and the critical information within the sequence of periodic segments is mined in depth. (2) The model employs a unique two-stage attention mechanism to capture complex nonlinear relationships in air pollutant data. (3) Compared with the existing models, the mean absolute error (MAE), root mean square error (RMSE), and mean absolute percentage error (MAPE) of the model decreased by 14%, 13%, and 4%, respectively, and the prediction accuracy was greatly improved.",
+        "url": "https://doi.org/10.1038/s41598-024-57784-7",
+        "doi": "https://doi.org/10.1038/s41598-024-57784-7",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4393259435"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 18
+      },
+      {
+        "paper_id": "rw_005_e11f70607",
+        "title": "Gradient-based learning applied to document recognition",
+        "authors": [
+          "Yann LeCun",
+          "Léon Bottou",
+          "Yoshua Bengio",
+          "Patrick Haffner"
+        ],
+        "year": 1998,
+        "publication_date": "1998-01-01",
+        "venue": "Proceedings of the IEEE",
+        "abstract": "Multilayer neural networks trained with the back-propagation algorithm constitute the best example of a successful gradient based learning technique. Given an appropriate network architecture, gradient-based learning algorithms can be used to synthesize a complex decision surface that can classify high-dimensional patterns, such as handwritten characters, with minimal preprocessing. This paper reviews various methods applied to handwritten character recognition and compares them on a standard handwritten digit recognition task. Convolutional neural networks, which are specifically designed to deal with the variability of 2D shapes, are shown to outperform all other techniques. Real-life document recognition systems are composed of multiple modules including field extraction, segmentation recognition, and language modeling. A new learning paradigm, called graph transformer networks (GTN), allows such multimodule systems to be trained globally using gradient-based methods so as to minimize an overall performance measure. Two systems for online handwriting recognition are described. Experiments demonstrate the advantage of global training, and the flexibility of graph transformer networks. A graph transformer network for reading a bank cheque is also described. It uses convolutional neural network character recognizers combined with global training techniques to provide record accuracy on business and personal cheques. It is deployed commercially and reads several million cheques per day.",
+        "url": "https://doi.org/10.1109/5.726791",
+        "doi": "https://doi.org/10.1109/5.726791",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2112796928"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 58695
+      },
+      {
+        "paper_id": "rw_006_32b64b8c5",
+        "title": "Physics-informed machine learning",
+        "authors": [
+          "George Em Karniadakis",
+          "Ioannis G. Kevrekidis",
+          "Lu Lu",
+          "Paris Perdikaris",
+          "Sifan Wang",
+          "Liu Yang"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-24",
+        "venue": "Nature Reviews Physics",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/s42254-021-00314-5",
+        "doi": "https://doi.org/10.1038/s42254-021-00314-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3163993681"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 7008
+      },
+      {
+        "paper_id": "rw_007_971ff71f1",
+        "title": "Survey of transformers and towards ensemble learning using transformers for natural language processing",
+        "authors": [
+          "Hongzhi Zhang",
+          "M. Omair Shafiq"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-04",
+        "venue": "Journal Of Big Data",
+        "abstract": "The transformer model is a famous natural language processing model proposed by Google in 2017. Now, with the extensive development of deep learning, many natural language processing tasks can be solved by deep learning methods. After the BERT model was proposed, many pre-trained models such as the XLNet model, the RoBERTa model, and the ALBERT model were also proposed in the research community. These models perform very well in various natural language processing tasks. In this paper, we describe and compare these well-known models. In addition, we also apply several types of existing and well-known models which are the BERT model, the XLNet model, the RoBERTa model, the GPT2 model, and the ALBERT model to different existing and well-known natural language processing tasks, and analyze each model based on their performance. There are a few papers that comprehensively compare various transformer models. In our paper, we use six types of well-known tasks, such as sentiment analysis, question answering, text generation, text summarization, name entity recognition, and topic modeling tasks to compare the performance of various transformer models. In addition, using the existing models, we also propose ensemble learning models for the different natural language processing tasks. The results show that our ensemble learning models perform better than a single classifier on specific tasks.",
+        "url": "https://doi.org/10.1186/s40537-023-00842-0",
+        "doi": "https://doi.org/10.1186/s40537-023-00842-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4391520039"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 117
+      },
+      {
+        "paper_id": "rw_008_31b6a4895",
+        "title": "Artificial intelligence and smart vision for building and construction 4.0: Machine and deep learning methods and applications",
+        "authors": [
+          "Shanaka Kristombu Baduge",
+          "Sadeep Thilakarathna",
+          "Jude Shalitha Perera",
+          "Mehrdad Arashpour",
+          "P. Sharafi",
+          "Bertrand Teodosio",
+          "Ankit Shringi",
+          "Priyan Mendis"
+        ],
+        "year": 2022,
+        "publication_date": "2022-06-24",
+        "venue": "Automation in Construction",
+        "abstract": "This article presents a state-of-the-art review of the applications of Artificial Intelligence (AI), Machine Learning (ML), and Deep Learning (DL) in building and construction industry 4.0 in the facets of architectural design and visualization; material design and optimization; structural design and analysis; offsite manufacturing and automation; construction management, progress monitoring, and safety; smart operation, building management and health monitoring; and durability, life cycle analysis, and circular economy. This paper presents a unique perspective on applications of AI/DL/ML in these domains for the complete building lifecycle, from conceptual stage, design stage, construction stage, operational and maintenance stage until the end of life. Furthermore, data collection strategies using smart vision and sensors, data cleaning methods (post-processing), data storage for developing these models are discussed, and the challenges in model development and strategies to overcome these challenges are elaborated. Future trends in these domains and possible research avenues are also presented.",
+        "url": "https://doi.org/10.1016/j.autcon.2022.104440",
+        "doi": "https://doi.org/10.1016/j.autcon.2022.104440",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4283392904"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 935
+      },
+      {
+        "paper_id": "rw_009_dd1416d9d",
+        "title": "Exploiting Symmetry in Variational Quantum Machine Learning",
+        "authors": [
+          "Johannes Jakob Meyer",
+          "Marian Mularski",
+          "Elies Gil-Fuster",
+          "Antonio Anna Mele",
+          "Francesco Arzani",
+          "Alissa Wilms",
+          "Jens Eisert"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-17",
+        "venue": "PRX Quantum",
+        "abstract": "A blueprint for exploiting symmetries in the construction of variational quantum learning models that can result in improved generalization performance is developed and demonstrated on practical problems.",
+        "url": "https://doi.org/10.1103/prxquantum.4.010328",
+        "doi": "https://doi.org/10.1103/prxquantum.4.010328",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4327713021"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 182
+      },
+      {
+        "paper_id": "rw_010_94f65be25",
+        "title": "Comprehensive Mapping of Continuous/Switching Circuits in CCM and DCM to Machine Learning Domain Using Homogeneous Graph Neural Networks",
+        "authors": [
+          "Ahmed K. Khamis",
+          "Mohammed Agamy"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "IEEE Open Journal of Circuits and Systems",
+        "abstract": "This paper proposes a method of transferring physical continuous and switching/converter circuits working in continuous conduction mode (CCM) and discontinuous conduction mode (DCM) to graph representation, independent of the connection or the number of circuit components, so that machine learning (ML) algorithms and applications can be easily applied. Such methodology is generalized and is applicable to circuits with any number of switches, components, sources and loads, and can be useful in applications such as artificial intelligence (AI) based circuit design automation, layout optimization, circuit synthesis and performance monitoring and control. The proposed circuit representation and feature extraction methodology is applied to seven types of continuous circuits, ranging from second to fourth order and it is also applied to three of the most common converters (Buck, Boost, and Buck-boost) operating in CCM or DCM. A classifier ML task can easily differentiate between circuit types as well as their mode of operation, showing classification accuracy of 97.37% in continuous circuits and 100% in switching circuits.",
+        "url": "https://doi.org/10.1109/ojcas.2023.3234244",
+        "doi": "https://doi.org/10.1109/ojcas.2023.3234244",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4313484961"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 19
+      },
+      {
+        "paper_id": "rw_011_f9e504e1f",
+        "title": "On the Sample Complexity of Adversarial Multi-Source PAC Learning",
+        "authors": [
+          "Nikola Konstantinov",
+          "Elias Frantar",
+          "Dan Alistarh",
+          "Christoph H. Lampert"
+        ],
+        "year": 2020,
+        "publication_date": "2020-02-24",
+        "venue": "arXiv",
+        "abstract": "We study the problem of learning from multiple untrusted data sources, a scenario of increasing practical relevance given the recent emergence of crowdsourcing and collaborative learning paradigms. Specifically, we analyze the situation in which a learning system obtains datasets from multiple sources, some of which might be biased or even adversarially perturbed. It is known that in the single-source case, an adversary with the power to corrupt a fixed fraction of the training data can prevent PAC-learnability, that is, even in the limit of infinitely much training data, no learning system can approach the optimal test error. In this work we show that, surprisingly, the same is not true in the multi-source setting, where the adversary can arbitrarily corrupt a fixed fraction of the data sources. Our main results are a generalization bound that provides finite-sample guarantees for this learning setting, as well as corresponding lower bounds. Besides establishing PAC-learnability our results also show that in a cooperative learning setting sharing data with other parties has provable benefits, even if some participants are malicious.",
+        "url": "http://arxiv.org/abs/2002.10384v2",
+        "doi": "",
+        "arxiv_id": "2002.10384v2",
+        "source_ids": {
+          "arXiv": "2002.10384v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_2255c0dc2",
+        "title": "Learning Linear Attention in Polynomial Time",
+        "authors": [
+          "Morris Yau",
+          "Ekin Akyürek",
+          "Jiayuan Mao",
+          "Joshua B. Tenenbaum",
+          "Stefanie Jegelka",
+          "Jacob Andreas"
+        ],
+        "year": 2024,
+        "publication_date": "2024-10-14",
+        "venue": "arXiv",
+        "abstract": "Previous research has explored the computational expressivity of Transformer models in simulating Boolean circuits or Turing machines. However, the learnability of these simulators from observational data has remained an open question. Our study addresses this gap by providing the first polynomial-time learnability results (specifically strong, agnostic PAC learning) for single-layer Transformers with linear attention. We show that linear attention may be viewed as a linear predictor in a suitably defined RKHS. As a consequence, the problem of learning any linear transformer may be converted into the problem of learning an ordinary linear predictor in an expanded feature space, and any such predictor may be converted back into a multiheaded linear transformer. Moving to generalization, we show how to efficiently identify training datasets for which every empirical risk minimizer is equivalent (up to trivial symmetries) to the linear Transformer that generated the data, thereby guaranteeing the learned model will correctly generalize across all inputs. Finally, we provide examples of computations expressible via linear attention and therefore polynomial-time learnable, including associative memories, finite automata, and a class of Universal Turing Machine (UTMs) with polynomially bounded computation histories. We empirically validate our theoretical findings on three tasks: learning random linear attention networks, key--value associations, and learning to execute finite automata. Our findings bridge a critical gap between theoretical expressivity and learnability of Transformers, and show that flexible and general models of computation are efficiently learnable.",
+        "url": "http://arxiv.org/abs/2410.10101v4",
+        "doi": "",
+        "arxiv_id": "2410.10101v4",
+        "source_ids": {
+          "arXiv": "2410.10101v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_012_2255c0dc2",
+        "relevance_score": 1.0,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This is the exact same paper as the target, identified by the same authors and the identical abstract, making it essential for identifying prior versions or duplicates.",
+        "evidence_summary": "This is the same paper 'Learning Linear Attention in Polynomial Time' by Yau et al. (2024) with an identical abstract, published on arXiv."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_011_f9e504e1f",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper directly addresses PAC learning in an adversarial, multi-source setting, which is a key theoretical framework related to the target's agnostic PAC learning results for Transformers.",
+        "evidence_summary": "The paper 'On the Sample Complexity of Adversarial Multi-Source PAC Learning' (Konstantinov et al., 2020) studies PAC-learnability and provides generalization bounds in settings with potentially corrupted data sources."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_9a88cc08f",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper uses a Transformer architecture with multi-head attention to handle sparse time-series data, demonstrating a practical application of attention mechanisms, though not specifically linear attention.",
+        "evidence_summary": "Tipirneni and Reddy (2022) propose a self-supervised Transformer model with multi-head attention layers for clinical time-series data."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_004_436ead852",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper employs a multi-head external attention mechanism, which is a specific architectural variant of attention, providing context on how attention is adapted in practical models.",
+        "evidence_summary": "Ma et al. (2024) develop a two-stage attention model for air pollution prediction, incorporating a multi-head external attention mechanism to mine hidden layer features."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_007_971ff71f1",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This survey of Transformer models and their application to NLP tasks provides a broad baseline for understanding Transformer architectures and their typical performance benchmarks, which contextualizes the target's specialized analysis.",
+        "evidence_summary": "Zhang and Shafiq (2024) provide a survey and comparison of Transformer models like BERT and GPT-2 across multiple natural language processing tasks, analyzing their performance."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_002_5a86ee130",
+        "relevance_score": 0.56,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This review on learning curves discusses model generalization and the dependence on training set size, a core concept in machine learning theory that underpins learnability studies like the target's.",
+        "evidence_summary": "Viering and Loog (2022) review the theory and estimation of learning curves, which analyze how a learner's generalization performance depends on training set size."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_e11f70607",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This seminal paper on gradient-based learning for document recognition establishes foundational concepts in supervised learning and model training, which are broad prerequisites for studying the learnability of any modern architecture like Transformers.",
+        "evidence_summary": "LeCun et al. (1998) present foundational work on gradient-based learning and convolutional neural networks for handwritten digit recognition."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_31b6a4895",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This review of AI/ML applications in construction provides a high-level overview of machine learning methods and their deployment in practical domains, offering a general background on the field.",
+        "evidence_summary": "Baduge et al. (2022) review applications of Artificial Intelligence, Machine Learning, and Deep Learning across the complete building lifecycle, from design to operation."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_009_dd1416d9d",
+        "relevance_score": 0.41,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper on exploiting symmetry in variational quantum machine learning introduces a method to improve generalization via structural constraints, a different approach to achieving robust learning compared to the target's theoretical PAC analysis.",
+        "evidence_summary": "Meyer et al. (2023) develop methods for exploiting symmetries in variational quantum learning models to improve generalization performance."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_010_94f65be25",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper maps physical circuits to a graph representation for machine learning, touching on representation and learning of structured systems, but is highly domain-specific and not directly related to Transformer learnability.",
+        "evidence_summary": "Khamis and Agamy (2023) propose a method to transfer physical continuous and switching circuits to a graph representation for applying machine learning algorithms."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_006_32b64b8c5",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This review on physics-informed machine learning discusses integrating domain knowledge into models, a broad constraint in ML, but does not address the computational complexity or architectural constraints central to the target paper.",
+        "evidence_summary": "Karniadakis et al. (2021) review the field of physics-informed machine learning, which integrates physical laws into data-driven models."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_001_2ba74bc43",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This is a general technology review of AI/ML for medical imaging; it is only weakly related as it discusses machine learning broadly but does not address Transformer architectures, linear attention, or theoretical learnability.",
+        "evidence_summary": "Montero et al. (2021) provide a general review of artificial intelligence and machine learning methods and their applications in medical imaging."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Prior theoretical work has established the computational expressivity of Transformer models in simulating formal systems like Boolean circuits and Turing machines, but the efficient learnability of these architectures from data has remained an open question. Research on learning theory, such as the work on adversarial multi-source PAC learning by Konstantinov et al. (2020), has advanced our understanding of sample complexity and generalization in challenging settings. Concurrently, numerous applied studies have leveraged attention mechanisms, including multi-head architectures as seen in models for clinical time-series by Tipirneni and Reddy (2022) and for air pollution prediction by Ma et al. (2024), demonstrating their practical utility. Broader surveys, like that of Transformer models for NLP by Zhang and Shafiq (2024), and foundational reviews on learning curves by Viering and Loog (2022), provide necessary context for evaluating model performance and generalization.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 20,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 19,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 7
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 20,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 19,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 7
+  }
+}

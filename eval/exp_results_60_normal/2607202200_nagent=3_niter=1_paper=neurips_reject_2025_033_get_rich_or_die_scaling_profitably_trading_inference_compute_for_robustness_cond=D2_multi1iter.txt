@@ -1,0 +1,122 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core hypothesis (RICH) is genuinely novel and provides a refreshing perspective on the interplay between inference-time compute, model robustness, and adversarial attacks. It challenges existing assumptions about the universal benefit of reasoning.",
+        "The 'rich-get-richer' dynamic proposed is a bold and insightful prediction that is well-investigated through experiments, showing a synergistic rather than additive relationship between train-time robustness and test-time reasoning.",
+        "The introduction of a novel white-box vision attack to specifically test multimodal robustness benefits of scaling inference-time compute is a significant methodological contribution, pushing the boundaries of adversarial evaluation in VLMs."
+      ],
+      "weaknesses": [
+        "The paper relies on a 'proxy' for inference-time compute scaling (textual repetition) in the white-box attacks, rather than truly leveraging advanced reasoning systems like those mentioned (o1, Gemini). While acknowledged, this could limit the direct generalizability of some findings to real-world frontier models.",
+        "The scale of experiments is noted as a limitation. While commendable to test highly robust VLMs, the lack of validation on larger, frontier-scale models, where the practical implications are most significant, leaves some questions about the broader applicability of RICH."
+      ],
+      "summary_comment": "This paper presents a highly novel and significant hypothesis, the Robustness from Inference Compute Hypothesis (RICH), that posits a 'rich-get-richer' dynamic: models inherently more robust gain disproportionately more from increased inference-time compute for defense. This is a genuinely fresh idea that challenges conventional thinking regarding adversarial robustness and the role of reasoning. The paper introduces a clever white-box attack to test this and provides compelling evidence across various models and attack types. While the proxy for inference-time compute and the scale of experiments are acknowledged limitations, the core idea is strong, well-supported, and paves the way for exciting future research into synergistic defense strategies. This work significantly advances our understanding of robustness in VLMs and is precisely the kind of bold, forward-looking research I like to see."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces and rigorously tests the Robustness from Inference Compute Hypothesis (RICH), providing a clear conceptual framework for understanding the interaction between model robustness and inference-time compute.",
+        "The experimental design is methodologically sound, using models with varying degrees of pre-existing adversarial robustness (LLaVA-v1.5, FARE-LLaVA-v1.5, Delta2LLaVA-v1.5) and employing both white-box PGD attacks and black-box transfer attacks (Attack-Bard with and without Chain of Thought).",
+        "The paper systematically investigates different levels of inference-time compute and perturbation budgets. The results consistently support the RICH, demonstrating that robust models benefit disproportionately more from increased inference-time compute, particularly when attacks are more in-distribution."
+      ],
+      "weaknesses": [
+        "The method for scaling inference-time compute in the white-box PGD attack experiments, via textual repetition (repeating instructions K times), is a somewhat indirect proxy for true reasoning-based inference compute. While the authors acknowledge this, a more direct manipulation or measurement of complex reasoning steps would strengthen the argument.",
+        "The 'Limitations' section mentions that the findings are observed at a smaller scale compared to frontier models. While this is a common challenge, the lack of discussion on the practical implications or potential solutions for validating RICH at larger scales (e.g., resource estimations, specific challenges with API-only models) could be improved."
+      ],
+      "summary_comment": "This paper presents a compelling hypothesis (RICH) regarding the synergistic interaction between model robustness and inference-time compute in defending against adversarial attacks. The methodological approach is robust, employing a diverse set of models and attack strategies, and systematically varying parameters to test the hypothesis. The results consistently support the 'rich-get-richer' dynamic, where models with higher initial robustness gain more from increased inference-time compute. While the proxy for inference-time compute in some experiments could be more direct, and the discussions on scaling to frontier models are brief, the overall scientific validity and experimental rigor are strong. The findings offer valuable insights into designing more effective multi-layered defenses for multimodal models. The paper makes a solid contribution to the field by clarifying when inference-time compute yields significant robustness benefits."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly significant and practically relevant problem: the robustness of foundation models to adversarial attacks, especially considering the cost-benefit trade-off of inference-time compute.",
+        "The core hypothesis (RICH) is well-motivated, clearly stated, and provides a compelling explanation for prior inconsistent observations regarding inference-time compute for robustness in different modalities. It introduces a valuable practical insight.",
+        "The experimental design is thoughtful, involving models with varying levels of pre-existing robustness, different types of attacks (white-box PGD, black-box transfer, and CoT), and careful control of inference-time compute scaling. This allows for thorough validation of the RICH."
+      ],
+      "weaknesses": [
+        "The proxies used for \"inference-time compute scaling\" (textual repetition 'K' and external Claude classification/CoT) are somewhat abstracted from the actual complex reasoning processes seen in frontier models. While acknowledged, this could limit the direct generalizability of the observed *magnitude* of benefit.",
+        "The scale of experiments, while enabling testing of adversarially robust VLMs, is acknowledged as being smaller than frontier models. This means the extrapolation of these results to the highest-stakes, large-scale deployments where the problem is most critical still requires further validation, as noted by the authors."
+      ],
+      "summary_comment": "This paper presents a highly relevant and practical contribution to the field of AI safety and robustness. The Robustness from Inference Compute Hypothesis (RICH) offers a clear and actionable framework for understanding when investing in inference-time compute for robustness is most effective. The experimental validation is strong, leveraging models with different inherent robustness levels and a variety of attack scenarios. While the 'inference-time compute' proxies are simplified, the underlying principle is clearly demonstrated, offering valuable guidance for practitioners. The paper's insights into the synergistic interaction between train-time and test-time defenses are particularly significant for real-world deployment of robust AI systems."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'trustworthy machine learning' through its focus on 'reliability,' 'robustness,' and 'safety' in adversarial attacks, which is a key topic for ICML.",
+        "The core contribution, the Robustness from Inference Compute Hypothesis (RICH), offers a novel theoretical framework and empirical evaluation of how inference-time compute affects adversarial robustness, aligning with ICML's interest in 'general machine learning' and 'deep learning theory'.",
+        "The paper employs rigorous experimental methodology, including novel white-box PGD attacks and black-box transfer attacks (Attack-Bard with CoT), systematically varying inference-time compute and perturbation budgets. This aligns well with ICML's emphasis on sound 'evaluation methodology' and 'optimization' for adversarial robustness.",
+        "Reviewers lauded the hypothesis as 'genuinely novel' and 'bold and insightful,' indicating a high novelty fit, a key characteristic for top-tier ICML publications (Reviewer A, C).",
+        "The findings clarify the synergistic interaction between train-time and test-time defenses, providing insights into 'innovative techniques' for application-driven machine learning in safety-critical areas (e.g., self-driving), relevant to ICML's applications focus."
+      ],
+      "why_it_does_not_fit": [
+        "The paper uses a 'proxy' for inference-time compute scaling (textual repetition) in some white-box experiments, rather than complex reasoning systems. As noted by Reviewers A and B, this could limit the direct generalizability to advanced reasoning systems, which ICML might prefer to see fully explored.",
+        "Reviewers B and C noted that the experimental scale is smaller compared to frontier models. While acknowledged as a limitation by the authors, ICML often looks for immediate applicability or validation in large-scale, real-world scenarios, which this paper suggests is future work."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on adversarial robustness and its relation to inference-time compute aligns with NeurIPS's broad interest in 'General machine learning: core contributions in supervised and unsupervised methods' and 'Socio-technical aspects of AI' by increasing trust and safety.",
+        "The use of multimodal models (VLMs) and analysis of vision jailbreaks fits well with NeurIPS topics such as 'Computer vision' and 'Language and multimodal language models'.",
+        "The paper's investigation into the 'rich-get-richer' dynamic and the synergistic interaction of train-time and test-time defenses provides significant insights into 'Generalization and multi-task learning' and practical 'Decision-making, reinforcement learning, and control' in robust systems.",
+        "The methodological rigor, including diverse attack types (white-box PGD, black-box transfer using Chain-of-Thought) and systematic variation of parameters, is suitable for NeurIPS which values strong empirical validation alongside novel concepts.",
+        "The explicit discussion of 'Limitations' and 'Broader Impact' demonstrates a responsible approach to AI research, which is increasingly valued by NeurIPS, especially for papers touching on AI safety and societal implications."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper proposes a novel hypothesis and provides strong empirical evidence, Reviewer B rated its novelty as 3/5, which is slightly lower than what NeurIPS often seeks for its most impactful papers, especially given the acknowledged limitations in direct measurement of complex reasoning and scale.",
+        "The proxy method for inference-time compute scaling, though acknowledged and justified, might be seen by some NeurIPS reviewers as less direct than desired for a paper making claims about the fundamental mechanisms of 'inference compute' in frontier models (Reviewer A, B).",
+        "The paper's topic, while relevant, fits within many categories, and some NeurIPS papers tend to focus more deeply on a specific methodological contribution (e.g., a new optimization algorithm or theoretical guarantee), rather than a broad hypothesis test, even if well-supported."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly concerns 'deep learning' and 'representation learning for computer vision' by evaluating robustness of VLMs like LLaVA, FARE-LLaVA, and Delta2LLaVA against vision attacks.",
+        "The discussion of 'unsupervised, self-supervised,...adversarial training' through the use of FARE-LLaVA and Delta2LLaVA models aligns perfectly with ICLR's focus on representation learning and training paradigms.",
+        "The investigation into the 'Robustness from Inference Compute Hypothesis' (RICH) provides insights into 'societal considerations including fairness, safety, privacy' by addressing adversarial robustness in deep learning models.",
+        "The use of 'Chain of Thought' (CoT) prompting techniques to elicit reasoning in VLMs relates to ICLR's interest in 'representation learning for...language, and other modalities'.",
+        "Reviewers consistently praise the paper's novelty and significance. The introduction of a novel white-box vision attack strengthens the paper's methodological contribution, which aligns with ICLR's emphasis on technical innovation in deep learning (Reviewer A)."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is about deep learning models, its focus is more on hypothesis testing and understanding the interplay of existing robustness mechanisms rather than proposing novel deep learning architectures or fundamental representation learning techniques, which ICLR often prioritizes.",
+        "The proxy used for inference-time compute scaling (textual repetition) as noted by Reviewers A and B, might be viewed as less direct for a conference heavily focused on cutting-edge deep learning methods and systems.",
+        "The scale limitation, as acknowledged by the authors and reviewers, is a common hurdle, but ICLR often features and expects evaluations on large-scale, state-of-the-art deep learning models, particularly when discussing frontier model behavior. The need for future validation on 'larger (possibly frontier-scale) models' might slightly diminish its perceived immediate impact at ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

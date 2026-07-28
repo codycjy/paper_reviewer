@@ -1,0 +1,119 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel and creative idea: replacing Gaussian noise in diffusion models with uniform noise to enable efficient progressive compression via universal quantization. This is a genuinely new approach to a long-standing problem.",
+        "The work makes a significant conceptual and practical contribution by bridging diffusion models with computationally tractable compression, potentially enabling practical neural progressive codecs for the first time.",
+        "The paper provides strong theoretical grounding, including a proof of convergence to the Gaussian diffusion continuous-time limit, and thorough experimental validation on both toy data and real image benchmarks (CIFAR-10, ImageNet 64x64)."
+      ],
+      "weaknesses": [
+        "The computational efficiency of the learned reverse variance version is currently limited due to non-parallel entropy coding implementation, which is acknowledged but presents a practical hurdle.",
+        "The method exhibits a performance gap compared to the theoretical ideal of Gaussian diffusion (VDM), especially when T is small, and perfect realism remains challenging even with flow-based reconstructions."
+      ],
+      "summary_comment": "This paper presents a highly novel and significant advancement. The core idea of UQDM — using uniform noise to make diffusion-based progressive compression computationally feasible — is creative and forward-thinking. While there are minor practical and performance gaps compared to the theoretical ideal, the novelty, strong theoretical foundation, and promising empirical results make this work a clear candidate for acceptance. It opens up a new research direction and could inspire substantial future work in neural compression and diffusion models."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a rigorous and sound methodological adaptation of diffusion models (UQDM) specifically for efficient progressive compression, addressing the critical intractability of Gaussian channel simulation with a theoretically justified uniform noise alternative.",
+        "Provides a thorough theoretical analysis, including the connection between the proposed forward process and the Gaussian diffusion limit (via the Central Limit Theorem), demonstrating strong mathematical reasoning and understanding of the underlying principles.",
+        "The experimental evaluation is comprehensive and convincing, including controlled toy experiments, benchmarks on CIFAR10 and ImageNet datasets, and comparison against a wide range of classic and recent neural baselines, supporting the practical value of the proposal."
+      ],
+      "weaknesses": [
+        "The paper identifies that a gap remains between UQDM's performance and the theoretical ideal of VDM with a large T, acknowledging a limitation in the method's current formulation. The reasons for this gap and the optimal choice of T warrant deeper analysis.",
+        "While the computational efficiency relative to naive Gaussian channel simulation is a key advantage, the implementation with learned reverse-process variance currently suffers from slow entropy coding due to a serial CPU loop. This practical bottleneck should be more prominently discussed as a current limitation for real-time deployment."
+      ],
+      "summary_comment": "The paper presents a methodologically sound and novel adaptation of diffusion models for progressive compression. The approach is theoretically well-founded, with careful derivations and proofs. The experimental evaluation is thorough and convincingly demonstrates competitive performance against strong baselines. The weaknesses are openly acknowledged and do not undermine the core methodological contribution and the solid empirical evidence provided. The work makes a significant advance in making diffusion-based progressive compression practical."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 5
+      },
+      "strengths": [
+        "Presents a practical and novel approach (UQDM) for progressive neural compression using uniform noise channels, directly addressing the key computational intractability of prior Gaussian diffusion-based methods.",
+        "Clearly demonstrates the significance by achieving competitive rate-distortion and rate-realism performance across a wide bit-rate range with a single model, a valuable feature for real-world deployment.",
+        "The paper is exceptionally well-written and organized; the connection between likelihood modeling, compression, and the proposed modifications is explained with great clarity, including theoretical insights and practical algorithms."
+      ],
+      "weaknesses": [
+        "The experimental evaluation, while promising, has limitations. The primary image experiments use relatively low resolutions (CIFAR-10 32x32 and ImageNet 64x64), and the computational efficiency claim for the learned variance model is undercut by a reported 5-minute encode/decode time per CIFAR image due to a sequential implementation.",
+        "There remains a noted performance gap between UQDM and the idealized performance of Gaussian diffusion models (VDM), particularly in terms of the lossless compression rate (e.g., bpd on swirl data). The practical impact of this gap at higher bit-rates or resolutions is not fully explored."
+      ],
+      "summary_comment": "This paper makes a strong practical contribution by proposing a tractable method for progressive compression using diffusion models. The core idea of replacing Gaussian with uniform noise to leverage efficient universal quantization is novel and well-motivated. The paper is a model of clarity, effectively communicating its theoretical grounding and practical implementation. While the evaluation could be more extensive (e.g., higher-resolution benchmarks, more efficient entropy coding for the learned variance case), the results convincingly demonstrate the method's potential and competitiveness with existing progressive and non-progressive codecs. The work addresses a meaningful problem with a solution that brings neural codecs closer to practical use, aligning perfectly with a practitioner-focused perspective. The strengths in significance, novelty, and clarity outweigh the noted weaknesses in the evaluation scope."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICML covers machine learning systems topics including compression and efficient implementations, which aligns well with the paper's focus on neural codecs",
+        "The paper presents strong theoretical foundations with convergence proofs and mathematical derivations, matching ICML's appreciation for rigorous methodology",
+        "The work bridges theoretical machine learning (diffusion models) with practical applications (compression), fitting ICML's interdisciplinary scope"
+      ],
+      "why_it_does_not_fit": [
+        "The primary focus is on compression rather than core machine learning algorithms, which might be more peripheral to ICML's main interests",
+        "Reviewer comments note limitations in computational efficiency (5-minute encode/decode times), which may not meet ICML's standards for practical systems contributions",
+        "The application domain (image compression) is somewhat specialized compared to ICML's broader machine learning focus"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS strongly values novel methodological contributions at the intersection of ML theory and practice, which perfectly describes this work",
+        "The paper introduces a fundamentally new approach to diffusion models (uniform noise instead of Gaussian) with strong theoretical grounding",
+        "The work connects likelihood modeling, generative models, and practical applications - all core NeurIPS interests",
+        "Reviewers praised the novelty and significance, noting it opens new research directions"
+      ],
+      "why_it_does_not_fit": [
+        "The computational efficiency issues with learned variance implementation might be concerning for NeurIPS' systems-oriented reviewers",
+        "The performance gap compared to theoretical VDM ideal might be seen as a limitation for a top-tier venue",
+        "Image compression applications might be viewed as somewhat narrow compared to NeurIPS' broader ML focus"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR specializes in deep learning and generative models, making this diffusion model paper an excellent fit",
+        "The paper contributes directly to the theoretical understanding of diffusion processes and their variants",
+        "The work extends diffusion model literature with a novel formulation (uniform noise channels) and provides convergence proofs",
+        "Reviewers highlighted the strong theoretical foundation and novel adaptation of diffusion models"
+      ],
+      "why_it_does_not_fit": [
+        "The compression application focus might be slightly peripheral to ICLR's core interest in pure deep learning methods",
+        "The computational efficiency limitations might be less concerning for ICLR but still noted as practical drawbacks",
+        "The paper's systems implementation aspects might be less emphasized at ICLR compared to theory/architecture contributions"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

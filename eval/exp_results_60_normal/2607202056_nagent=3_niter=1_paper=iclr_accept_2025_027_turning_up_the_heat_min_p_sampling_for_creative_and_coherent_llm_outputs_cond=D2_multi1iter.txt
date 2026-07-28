@@ -1,0 +1,124 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of min-p sampling, dynamically adjusting the truncation threshold based on the top token's probability, is genuinely novel and addresses a critical limitation of previous sampling methods, particularly at higher temperatures.",
+        "The paper demonstrates clear practical significance, highlighted by the rapid adoption of min-p in major open-source LLM frameworks. This 'in the wild' validation is extremely compelling.",
+        "The comprehensive evaluation across diverse benchmarks (GPQA, GSM8K, AlpacaEval Creative Writing) and models (Mistral, Llama) provides strong evidence of min-p's effectiveness in balancing quality and diversity."
+      ],
+      "weaknesses": [
+        "While the human evaluation offers valuable directional insights, the limited sample size (3 samples per configuration, rated by multiple humans) means the reported diversity scores remain point estimates rather than a robust measure of overall diversity for each condition. Expanding this section with more rigorous statistical analysis of diversity would strengthen the claims.",
+        "The discussion on the interaction between min-p and temperature, especially regarding why `pbase` values between 0.05-0.1 are effective, could be more deeply explored theoretically to provide a clearer understanding of the underlying mechanisms."
+      ],
+      "summary_comment": "This paper presents min-p sampling, a truly novel approach to LLM decoding that dynamically adjusts the sampling threshold based on model confidence. This elegant solution effectively tackles the long-standing challenge of balancing creativity and coherence, especially at high temperatures where existing methods falter. The evidence of its real-world adoption in major open-source frameworks speaks volumes about its practical utility and impact. While some aspects of the evaluation, particularly the human study's diversity metrics, could be more rigorously expanded, the core idea is highly innovative and significant enough to warrant acceptance. It pushes the boundaries of generative text modeling and provides a widely applicable method for improving LLM outputs."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of min-p sampling is technically sound and logically consistent, addressing a known limitation of existing sampling methods (top-p and top-k) at higher temperatures.",
+        "The evaluation is comprehensive and rigorous, covering multiple benchmarks (GPQA, GSM8K, AlpacaEval Creative Writing), various model families and sizes (Mistral, Llama), and comparing against numerous baselines. The inclusion of human evaluation further strengthens the empirical claims.",
+        "The paper provides clear implementation details and hyperparameter guidance, which are crucial for reproducibility and practical adoption. The discussion on community adoption and independent replications further underscores its practical utility and impact."
+      ],
+      "weaknesses": [
+        "While Figure 1 provides a visual intuition, a more quantitative analysis comparing probability distributions and truncation behavior of min-p versus top-p might further solidify the claims in Section 3.2, beyond just the case studies.",
+        "The human evaluation section, while valuable, notes limitations such as 'limited sample size' and 'point estimate' for diversity. Expanding on the robustness of these human evaluation results, perhaps through more extensive data or statistical power analysis, would strengthen this section."
+      ],
+      "summary_comment": "This paper presents min-p sampling, a novel and well-motivated dynamic truncation method for LLMs. The core idea is simple yet elegant, addressing the critical trade-off between creativity and coherence, especially at high temperatures where other methods often fail. The methodology is clearly described, and the implementation details are well-provided, ensuring reproducibility. The paper's evaluation is exceptionally strong, covering a wide range of academic benchmarks, different LLM architectures and sizes, and includes a comprehensive human evaluation that corroborates the quantitative findings. The discussion on the practical challenges with other entropy-based methods and the rapid community adoption further highlights the significance and practical utility of min-p. While some minor points could be expanded upon for even greater quantitative rigor, the overall scientific validity and methodological soundness are excellent. This work represents a significant and practical contribution to the field of generative language modeling."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper introduces a simple yet highly effective sampling method (min-p) that directly addresses a well-known practical problem in LLM generation: balancing creativity and coherence, especially at higher temperatures. Its intuitive design and low computational overhead make it highly appealing for real-world applications.",
+        "The authors provide strong empirical evidence across diverse benchmarks (reasoning, math, creative writing), multiple model families (Mistral, Llama), and model sizes (1B to 123B parameters), demonstrating the method's robustness and scalability. This comprehensive evaluation reinforces its practical utility.",
+        "The rapid and significant adoption of min-p sampling in major open-source LLM frameworks (Hugging Face Transformers, VLLM, etc.) and the independent validations by the community are extremely strong indicators of its practical value and impact. This real-world uptake speaks volumes about its effectiveness and ease of integration."
+      ],
+      "weaknesses": [
+        "While the human evaluation offers valuable directional insights, the sample size and specific setup (e.g., diversity judged from only 3 samples) could be more robustly designed to provide statistically stronger conclusions. A larger, more varied set of generated samples for diversity assessment might further strengthen these claims.",
+        "The comparison with more modern or dynamically adaptive sampling techniques (beyond top-k/top-p) feels somewhat limited in terms of depth. For instance, while it mentions issues with η-sampling, a more thorough empirical comparison on its computational aspects or perhaps a conceptual discussion of other adaptive methods could have enriched the related work and comparison sections."
+      ],
+      "summary_comment": "This paper presents min-p sampling, a straightforward yet highly impactful method for improving the trade-off between creativity and coherence in LLM-generated text. The core idea of dynamically adjusting the sampling threshold based on the top token's probability is intuitive and addresses a real pain point for practitioners using LLMs, particularly when aiming for more diverse outputs without sacrificing quality. The empirical evaluations are extensive, covering various benchmarks, model sizes, and families, consistently demonstrating min-p's superior performance, especially at higher temperatures. Furthermore, the impressive real-world adoption of min-p in prominent open-source LLM frameworks underscores its immediate practical relevance and significance. While the human evaluation could be more robustly scaled, and some comparisons perhaps deepened, the overall contribution is clearly significant and directly relevant to the practical deployment of LLMs. This work solves a real problem convincingly and has already proven its value in the wild."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel dynamic truncation method, 'min-p sampling,' which falls under 'general machine learning' and specifically addresses common challenges in deep learning (generative models).",
+        "The core contribution is a new sampling method, which is a significant methodological advancement directly relevant to the 'deep learning' and 'general machine learning' topics listed by ICML, especially for improving generative models.",
+        "The evaluation is comprehensive, covering multiple benchmarks (GPQA, GSM8K, AlpacaEval), model families (Mistral, Llama), and model sizes, demonstrating strong empirical results valued by ICML for methodological papers.",
+        "Reviewers praise the 'genuinely novel' idea (Reviewer A) and its 'technically sound and logically consistent' nature (Reviewer B), indicating a strong novelty and rigor fit for ICML, which values cutting-edge research.",
+        "The paper also discusses 'optimization' implicitly through efficient sampling, and 'trustworthy machine learning' aspects like balancing creativity and coherence, aligning with listed ICML topics.",
+        "The acknowledged 'rapid adoption of min-p by the open-source LLM community' (Reviewer A, C) highlights its practical significance and impact, a factor that strengthens its appeal for ICML submissions."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, the theoretical exploration of why specific `pbase` values are effective or a deeper mechanistic understanding could be expanded (Reviewer A), potentially limiting its fit for the 'theory of machine learning' track if a more in-depth theoretical analysis were expected.",
+        "The human evaluation section, while valuable, has acknowledged limitations in sample size and statistical robustness (Reviewer A, B, C), which might be scrutinized more heavily if the paper were presented as primarily an empirical study relying heavily on human judgment."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper makes a core contribution to 'general machine learning' by proposing a novel sampling method for Large Language Models, which are explicitly mentioned under 'Language and multimodal language models' and 'Deep learning' topics in NeurIPS.",
+        "The work addresses a fundamental issue in generative AI – balancing creativity and coherence – which is directly relevant to practitioners and researchers in 'Deep learning' and 'General machine learning: core contributions in supervised and unsupervised methods'.",
+        "The rigorous empirical evaluation across diverse benchmarks (GPQA, GSM8K, AlpacaEval Creative Writing) and models (Mistral, Llama), coupled with comprehensive human evaluation, aligns well with NeurIPS's emphasis on strong empirical validation.",
+        "Reviewers highlight the paper's 'novelty' (R1, R2, R3) and 'soundness' (R2), which are key criteria for NeurIPS submissions seeking to present new and original research.",
+        "The 'practical utility' and 'rapid community adoption' (Reviewer A, B, C) of min-p align with NeurIPS's interest in impactful research, including those with 'data-centric aspects of AI' and improvements to 'SysML Infrastructure' (via integrations into frameworks)."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, a deeper theoretical analysis of min-p's underlying mechanisms and its interaction with temperature could enhance its appeal for NeurIPS, which also values strong theoretical foundations in its 'Theory' track.",
+        "While the human evaluation is beneficial, its noted 'limited sample size' and 'point estimate' nature (Reviewer A, B, C) might be a point of minor contention for a venue that values extremely robust and statistically powerful evaluations.",
+        "The paper focuses heavily on the methodology and empirical evaluation, with less emphasis on 'Neuroscience and cognitive science' or broader 'Socio-technical aspects of AI' beyond ethical considerations, which are also listed NeurIPS topics."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper explicitly deals with 'deep learning' (LLMs, generative models) and 'reinforcement learning' (implicitly, if sampling is viewed as part of sequential decision-making for text generation), which are core topics for ICLR.",
+        "Min-p sampling is a method for 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' as it affects the output generation from pre-trained LLMs, aligning with ICLR's topic scope.",
+        "The method improves 'representation learning for computer vision, audio, language, and other modalities' by enhancing text generation, which is a major modality at ICLR.",
+        "The focus on 'optimization' (via computational efficiency and improved sampling) and 'generative models' aligns perfectly with ICLR's primary interests.",
+        "The paper's emphasis on 'infrastructure, software libraries, hardware, etc.' is strongly supported by the rapid adoption in Hugging Face Transformers and vLLM frameworks, directly addressing an ICLR topic.",
+        "The paper tackles a known issue in 'large-scale learning and non-convex optimization' (sampling in LLMs), which is very relevant to ICLR's focus."
+      ],
+      "why_it_does_not_fit": [
+        "While the method is novel and effective, some reviewers suggested stronger theoretical grounding (Reviewer A) or more quantitative analysis (Reviewer B) which, if not fully addressed, could be a slight disadvantage at ICLR, known for its strong theoretical contributions in deep learning.",
+        "The human evaluation's acknowledged limitations regarding sample size and diversity measurement (Reviewer A, B, C) could be perceived as less rigorous compared to purely quantitative or theoretical deep learning evaluations often seen at ICLR.",
+        "The comparison with entropy-based methods could be deepened (Reviewer C), as ICLR often features works on probabilistic methods and more complex adaptive sampling techniques that might warrant a more detailed discussion."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

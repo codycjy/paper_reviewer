@@ -1,0 +1,374 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 4,
+        "soundness": 3,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "Proposes a unified framework (AH-UGC) that addresses two key limitations of existing graph coarsening methods: lack of adaptivity (single pass for multiple ratios) and lack of semantic handling for heterogeneous graphs via type-isolated coarsening.",
+        "Demonstrates significant scalability improvements and computational efficiency, with extensive experiments on 23 diverse datasets (homophilic, heterophilic, heterogeneous, large-scale).",
+        "Provides theoretical guarantees regarding locality preservation (Theorem 3.1) and load balance (Theorem 3.2), linking the LSH and consistent hashing framework to the desired coarsening properties."
+      ],
+      "weaknesses": [
+        "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+        "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of effectiveness and robustness.",
+        "The presentation of the method and algorithms is convoluted and contains unclear notation and definitions that hinder understanding, particularly around the coarsening matrix construction, heterophily factor α, and the interplay between modules."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+          "severity": "major",
+          "evidence": "The rebuttal again fails to resolve this concern. It reiterates the existing technical foundation (Theorem 3.1, Lemma 1) but concedes that a 'direct comparison to other adaptive strategies (e.g., dynamic binning) is absent' from the submitted paper. The argument that CH offers 'inherent load balancing' does not justify its suitability for locality-preserving coarsening over other strategies. The promised future discussion does not change the fact that the submitted work lacks this critical justification, leaving the novelty feeling incremental rather than fundamentally justified.",
+          "affected_claim": "Claims of a novel, unified framework that is the first to support adaptive and heterogeneous coarsening.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of effectiveness and robustness.",
+          "severity": "major",
+          "evidence": "The rebuttal partially addresses this by agreeing to revise the claim of 'superior accuracy' to 'competitive accuracy.' However, this is an admission that the original claim in the submitted paper is unsupported. The evidence in Tables 3 and 8 remains unchanged: AH-UGC frequently performs similarly to or worse than UGC (e.g., PubMed-SAGE: 72.16 vs 87.34; many GIN results). While the efficiency gain is clear, the paper's overarching claim of advancing the state-of-the-art in coarsening effectiveness for downstream tasks is not met. The rebuttal's focus on enabling new applications does not alter the experimental results presented; it merely promises to reframe them.",
+          "affected_claim": "Claims that AH-UGC 'consistently outperforms existing methods in scalability, classification accuracy, and structural fidelity' and demonstrates 'superior capacity to coarsen heterogeneous graphs while preserving their semantic and structural fidelity.'",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The central claim regarding effectiveness for downstream learning tasks remains unsound. The authors concede the accuracy claim is an overstatement, and the submitted results show AH-UGC does not reliably outperform, and often underperforms, the key baseline (UGC) on node classification. The method's soundness for its stated purpose is therefore not fully established."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The unified integration of LSH and consistent hashing to achieve adaptive, single-pass coarsening for both homogeneous and heterogeneous graphs remains a novel combination, as correctly argued by the authors. This passes the novelty gate."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The significance is materially undermined by the unresolved experimental weaknesses. The primary demonstrated contribution is a runtime efficiency improvement that comes with a admitted trade-off in predictive performance relative to the state-of-the-art method (UGC). For a top-tier conference, a contribution whose main advantage is faster computation without a clear, robust advantage in the core ML task is not sufficiently significant. The rebuttal's promise to 'highlight novel application domains' does not change the evidence presented in the submission."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation does not adequately support the paper's central claims. The authors acknowledge the need to downgrade the accuracy claim from 'superior' to 'competitive,' which confirms the weakness identified in the initial review. The experiments show the method is not consistently better than UGC for downstream tasks, failing to validate a key aspect of the contribution."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The presentation is sufficient for assessment despite minor clarity issues. The authors' promises to improve clarity do not affect the gate result for the submitted work."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal provides a more nuanced defense but ultimately confirms the major weaknesses identified. They concede that the claim of 'superior accuracy' is an overstatement and that a comparative justification for their methodological choices is absent from the submission. The paper presents a novel unified framework and demonstrates impressive scalability. However, for a top-tier ML conference, a contribution that offers significant speedup but does not advance, and sometimes reduces, the state-of-the-art performance on core learning tasks lacks the significance required for acceptance. The failures in the Soundness, Significance, and Evaluation gates, based on the evidence in the submitted paper, necessitate rejection."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Topic fits ICML's focus on graph learning, coarsening, and scalable ML systems, which are well-represented areas at the conference.",
+        "Methodology combines hashing techniques with graph theory, aligning with ICML's interest in optimization and probabilistic methods.",
+        "Strong empirical evaluation on 23 datasets demonstrates scalability, which is valued for systems-oriented ML research at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about incremental novelty (LSH + consistent hashing) may not meet ICML's high bar for algorithmic innovation.",
+        "Weaknesses in node classification results (sometimes underperforming UGC) conflict with ICML's emphasis on rigorous empirical validation.",
+        "Theoretical contributions, while present, are seen as insufficiently justifying the specific combination of techniques."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Broad scope of NeurIPS accommodates graph representation learning and heterogeneous graph methods, which are active research areas.",
+        "The paper's focus on real-world applications (recommendation systems, interactive visualization) aligns with NeurIPS' interest in practical impact.",
+        "Large-scale experiments on diverse datasets match NeurIPS' preference for comprehensive empirical studies."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about significance and soundness (failed acceptance gates) are critical for NeurIPS' high selectivity.",
+        "The 'incremental combination' critique suggests the contribution may not be transformative enough for NeurIPS' spotlight on groundbreaking research.",
+        "Presentation issues (convoluted notation) could hinder accessibility for NeurIPS' broad audience."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "Graph coarsening relates to representation learning and graph neural networks, which are core ICLR topics.",
+        "Focus on deep learning applications (GNN performance) connects to ICLR's emphasis on neural network methodologies.",
+        "The method's model-agnostic nature aligns with ICLR's interest in general-purpose learning techniques."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly prioritizes novel deep learning architectures; this work's hashing-based approach may be less aligned.",
+        "Reviewer criticism of inconsistent GNN performance directly undermines the paper's value for ICLR's GNN-focused audience.",
+        "Theoretical depth may be insufficient for ICLR's growing emphasis on rigorous theoretical foundations."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a unified framework (AH-UGC) that addresses two key limitations of existing graph coarsening methods: lack of adaptivity (single pass for multiple ratios) and lack of semantic handling for heterogeneous graphs via type-isolated coarsening.",
+              "Demonstrates significant scalability improvements and computational efficiency, with extensive experiments on 23 diverse datasets (homophilic, heterophilic, heterogeneous, large-scale).",
+              "Provides theoretical guarantees regarding locality preservation (Theorem 3.1) and load balance (Theorem 3.2), linking the LSH and consistent hashing framework to the desired coarsening properties."
+            ],
+            "weaknesses": [
+              "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+              "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of robustness and effectiveness.",
+              "The presentation of the method and algorithms is convoluted and contains unclear notation and definitions that hinder understanding, particularly around the coarsening matrix construction, heterophily factor α, and the interplay between modules."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+                "severity": "major",
+                "evidence": "The paper explicitly builds on UGC (Kataria et al., 2024), retaining its LSH-based component for feature-structure projection. The novel element is the replacement of binning with consistent hashing for adaptive merging. However, the paper does not adequately motivate why consistent hashing (originally for load balancing) is the appropriate or necessary choice here versus other adaptive grouping strategies. The theoretical results (Theorem 3.1, Lemma 1) essentially restate properties of Gaussian LSH projections and do not provide new insight specific to the adaptive coarsening problem.",
+                "affected_claim": "Claims of a novel, unified framework that is the first to support adaptive and heterogeneous coarsening.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of robustness and effectiveness.",
+                "severity": "major",
+                "evidence": "Table 3 (Citeseer, PubMed, Chameleon, Cornell, Penn94) shows AH-UGC performance is often similar to or slightly worse than UGC, and in some cases significantly worse (e.g., PubMed with SAGE: AH-UGC 72.16 vs UGC 87.34 vs Base 88.28). For heterophilic graphs like Chameleon, AH-UGC's gains over UGC are minimal (e.g., SGC: 59.65 vs 58.60). Table 4 for heterogeneous graphs shows strong performance, but this is expected given the type-isolated baseline, and it's unclear if other baselines were fairly adapted. The runtime advantage (Table 1) is clear, but the trade-off in accuracy and spectral preservation (Table 2 shows mixed results) is not convincingly justified for a top-tier contribution.",
+                "affected_claim": "Claims that AH-UGC 'consistently outperforms existing methods in scalability, classification accuracy, and structural fidelity' and demonstrates 'superior capacity to coarsen heterogeneous graphs while preserving their semantic and structural fidelity.'",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claims regarding the coarsening method's effectiveness in preserving downstream task performance are not convincingly supported by the empirical evidence. Results are inconsistent, and key claims about accuracy are undermined by direct comparisons showing AH-UGC often underperforms its predecessor UGC on classification tasks."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of LSH and consistent hashing for adaptive graph coarsening and the explicit type-isolated coarsening strategy for heterogeneous graphs represent a clear, unified contribution that goes beyond prior work like UGC, FGC, or HGCond, as summarized in Figure 2."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution, while addressing practical needs (adaptivity, heterogeneity), does not represent a meaningful theoretical or empirical advance for a top-tier ML conference. The performance gains are primarily in runtime, often at the cost of accuracy, and the framework appears as a pragmatic engineering extension rather than a foundational methodological breakthrough."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments, though extensive, are not fully convincing or fair. The node classification comparisons are problematic, with AH-UGC frequently not outperforming the key baseline (UGC) it builds upon. The evaluation lacks a rigorous ablation study to isolate the contribution of the adaptive component vs. the heterogeneous component. The significance of runtime improvements is clear, but the paper fails to demonstrate that the method reliably preserves graph properties for downstream tasks better than or as well as existing methods."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally understandable, with a clear structure, figures, and appendices. However, there are issues with notation (e.g., inconsistent variable definitions, superscript/subscript formatting problems in the PDF) and some algorithmic descriptions are vague (e.g., the 'AGGREGATE' function and the precise merging process in Algorithm 1). These issues do not prevent reliable assessment but reduce clarity."
+              }
+            },
+            "summary_comment": "The paper presents AH-UGC, a framework for adaptive and heterogeneous graph coarsening. The goals are well-motivated, and the unification of adaptivity (via consistent hashing) and semantic handling for heterogeneous graphs is a clear step forward. Strengths include scalability, broad evaluation, and theoretical grounding. However, major weaknesses prevent acceptance at a top-tier venue. The core methodological innovation feels incremental. Most critically, the experimental validation is insufficient: the claimed accuracy and fidelity advantages are not consistently demonstrated, with AH-UGC often performing similarly to or worse than the UGC baseline it extends, particularly on node classification tasks. The significance of the contribution is thus limited to a specific efficiency trade-off rather than a robust advancement in graph coarsening quality. Therefore, the paper does not meet the overall top-tier standard due to failed gates in Soundness, Significance, and Evaluation."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a unified framework (AH-UGC) that addresses two key limitations of existing graph coarsening methods: lack of adaptivity (single pass for multiple ratios) and lack of semantic handling for heterogeneous graphs via type-isolated coarsening.",
+              "Demonstrates significant scalability improvements and computational efficiency, with extensive experiments on 23 diverse datasets (homophilic, heterophilic, heterogeneous, large-scale).",
+              "Provides theoretical guarantees regarding locality preservation (Theorem 3.1) and load balance (Theorem 3.2), linking the LSH and consistent hashing framework to the desired coarsening properties."
+            ],
+            "weaknesses": [
+              "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+              "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of effectiveness and robustness.",
+              "The presentation of the method and algorithms is convoluted and contains unclear notation and definitions that hinder understanding, particularly around the coarsening matrix construction, heterophily factor α, and the interplay between modules."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+                "severity": "major",
+                "evidence": "The rebuttal does not resolve this concern. It acknowledges building on UGC and correctly states that the key innovation is integrating consistent hashing for adaptivity. However, the justification remains unconvincing and is promised as a future addition. The rebuttal's argument that CH is 'inherently locality-preserving' on the LSH manifold relies on the same standard LSH properties (Theorem 3.1) already stated; it does not provide new evidence or analysis in the submitted paper demonstrating why CH is the uniquely suitable or optimal choice over other adaptive strategies. Therefore, the concern stands.",
+                "affected_claim": "Claims of a novel, unified framework that is the first to support adaptive and heterogeneous coarsening.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of effectiveness and robustness.",
+                "severity": "major",
+                "evidence": "The rebuttal partially addresses this by reframing the contribution as providing 'adaptive efficiency' with a 'minimal' accuracy trade-off. However, this is an admission that for core tasks like node classification, AH-UGC does not consistently improve upon its predecessor (UGC) and sometimes performs worse. This directly contradicts the paper's abstract and conclusion claiming it 'outperforms existing methods in... classification accuracy.' The submitted results in Tables 3 and 8 show numerous instances where AH-UGC underperforms UGC (e.g., PubMed-SAGE, many GIN results). The rebuttal's promise to 'better contextualize' these results does not change the facts presented in the submission. Therefore, the central claim of superior accuracy is not supported, and the concern is not resolved.",
+                "affected_claim": "Claims that AH-UGC 'consistently outperforms existing methods in scalability, classification accuracy, and structural fidelity' and demonstrates 'superior capacity to coarsen heterogeneous graphs while preserving their semantic and structural fidelity.'",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The core claim of providing effective coarsening for downstream tasks remains unsound based on the submitted evidence. The rebuttal concedes there is an accuracy trade-off, and the paper's own results show AH-UGC frequently does not outperform, and sometimes underperforms, the key baseline (UGC) on node classification. This undermines the technical validity of the method's effectiveness claim."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of LSH and consistent hashing for adaptive, single-pass coarsening, coupled with type-isolated processing for heterogeneous graphs, constitutes a novel unified framework, as correctly argued in the rebuttal. This passes the novelty gate."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The significance of the contribution is materially diminished by the unresolved weakness in experimental validation. The primary demonstrated advantage is runtime efficiency, but this comes with a clear, admitted trade-off in task accuracy relative to the state-of-the-art (UGC). For a top-tier ML conference, a contribution whose main benefit is faster computation at the cost of predictive performance is not sufficiently significant, unless the speedup is revolutionary or enables entirely new applications, which is not argued here."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation does not convincingly support the paper's central claims about performance. The rebuttal attempts to shift the claim focus to efficiency but does not alter the fact that the submitted experiments show inconsistent and often inferior accuracy compared to UGC. The paper's claims about accuracy are therefore inadequately supported, failing this gate."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The rebuttal promises to clarify algorithmic descriptions and notation. While current clarity is acceptable for assessment, these are fixable minor issues that do not prevent a reliable evaluation of the work's substance."
+              }
+            },
+            "summary_comment": "The authors' rebuttal thoughtfully engages with the review but does not resolve the major concerns. They reframe the contribution around 'adaptive efficiency' but in doing so, effectively acknowledge that the method does not consistently improve upon the state-of-the-art (UGC) in terms of downstream task accuracy—a key claim made in the paper. The submitted results confirm this: AH-UGC often matches or underperforms UGC on node classification. While the unified adaptive and heterogeneous framework is novel and the runtime efficiency is impressive, the failure to demonstrate a robust and reliable advantage in the core ML task of learning from the coarsened graph (beyond speed) makes the significance insufficient for a top-tier venue. The weaknesses in soundness and evaluation remain major, leading to a reject decision."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Incremental novelty: The combination of LSH (from UGC) and Consistent Hashing is not sufficiently justified as uniquely optimal for adaptive coarsening.\",\n        \"Weak experimental validation: Node classification results show inconsistent and sometimes inferior performance compared to UGC, undermining claims of effectiveness and robustness.\",\n        \"Presentation clarity: Convoluted notation and unclear algorithmic descriptions hinder understanding.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The core methodological innovation is an incremental combination of existing techniques.\",\n          \"location\": \"Section 3.1, Abstract, Introduction\",\n          \"explanation\": \"The paper explicitly positions AH-UGC as building upon UGC (which uses LSH) but introduces consistent hashing for adaptivity. The theoretical results (Theorem 3.1, Lemma 1) primarily restate standard LSH properties rather than providing novel insights specific to the adaptive coarsening problem. The justification for why consistent hashing (originally for load balancing) is uniquely suited for this graph task is not deeply explored.\"\n        },\n        {\n          \"concern\": \"Node classification results show inconsistent performance.\",\n          \"location\": \"Table 3, Section 4.3\",\n          \"explanation\": \"Results on datasets like PubMed (SAGE: AH-UGC 72.16 vs UGC 87.34) and Chameleon (minimal gains over UGC) do not consistently support the claim of superior accuracy. While AH-UGC excels on heterogeneous graphs (Table 4), its performance on homophilic/heterophilic graphs is often comparable or worse than UGC, the key baseline it extends.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Justification for the specific combination of LSH and Consistent Hashing.\",\n          \"proposed_change\": \"Add a more thorough discussion in Section 3.1 comparing alternative adaptive strategies (e.g., dynamic binning, hierarchical clustering) and justifying why consistent hashing is particularly suitable for locality-preserving merges in the sorted LSH space. Highlight any unique theoretical or empirical advantages.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Inconsistent node classification performance.\",\n          \"proposed_change\": \"Add a deeper analysis in Section 4.3 discussing the trade-offs between scalability (clear strength) and accuracy preservation. Acknowledge cases where AH-UGC does not outperform UGC and provide potential reasons (e.g., sensitivity of the clockwise merge strategy to local noise in projections). Frame the contribution more accurately as providing adaptive efficiency with generally competitive, rather than strictly superior, accuracy.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Presentation clarity.\",\n          \"proposed_change\": \"Revise Algorithm 1 and surrounding text in Section 3.1 to clarify the 'AGGREGATE' function and the precise mechanics of the clockwise merge process. Ensure notation (e.g., superscripts/subscripts) is consistent throughout the paper.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough and constructive feedback. We address the concerns below.\\n\\n**On Novelty and Justification:** We acknowledge that AH-UGC builds upon the LSH framework from UGC. However, our key innovation is the integration of Consistent Hashing (CH) to enable *adaptive*, multi-resolution coarsening in a single pass—a capability absent in UGC and all prior work. While CH is known for load balancing, its application here is novel: the sorted LSH projection creates a 1D manifold where node proximity reflects feature-structure similarity. CH's clockwise merge operation on this manifold is inherently locality-preserving, as guaranteed by Theorem 3.1 and Lemma 1. This ensures that merges primarily occur between nearby (similar) nodes, preserving structural integrity. We will enhance Section 3.1 to explicitly compare against alternative adaptive strategies (e.g., dynamic binning) and justify why CH is uniquely suited for this geometric setting.\\n\\n**On Experimental Validation:** We agree that the node classification performance on some homophilic/heterophilic datasets (e.g., PubMed with SAGE) is not uniformly superior to UGC. However, AH-UGC's primary advantage is its *adaptive efficiency*: it generates multiple coarsened graphs significantly faster than UGC (Table 1), which must reprocess the entire graph for each ratio. This is a critical contribution for applications requiring real-time, multi-resolution analysis. The accuracy trade-off is generally minimal, and AH-UGC consistently outperforms all non-adaptive baselines. On heterogeneous graphs (Table 4), where semantic correctness is paramount, AH-UGC achieves substantial gains due to its type-isolated coarsening. We will revise Section 4.3 to better contextualize these results, emphasizing the scalability-accuracy trade-off and AH-UGC's strength in preserving semantic integrity.\\n\\n**On Presentation Clarity:** We will revise Algorithm 1 and the surrounding text to clarify the aggregation function (mean is used) and the clockwise merge process. Notation will be standardized throughout the paper.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a unified framework (AH-UGC) that addresses two key limitations of existing graph coarsening methods: lack of adaptivity (single pass for multiple ratios) and lack of semantic handling for heterogeneous graphs via type-isolated coarsening.",
+              "Demonstrates significant scalability improvements and computational efficiency, with extensive experiments on 23 diverse datasets (homophilic, heterophilic, heterogeneous, large-scale).",
+              "Provides theoretical guarantees regarding locality preservation (Theorem 3.1) and load balance (Theorem 3.2), linking the LSH and consistent hashing framework to the desired coarsening properties."
+            ],
+            "weaknesses": [
+              "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+              "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of effectiveness and robustness.",
+              "The presentation of the method and algorithms is convoluted and contains unclear notation and definitions that hinder understanding, particularly around the coarsening matrix construction, heterophily factor α, and the interplay between modules."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core methodological innovation is an incremental combination of existing techniques (LSH from UGC and consistent hashing), with insufficient justification for why this specific combination is uniquely suited or optimal for the stated goals.",
+                "severity": "major",
+                "evidence": "The rebuttal again fails to resolve this concern. It reiterates the existing technical foundation (Theorem 3.1, Lemma 1) but concedes that a 'direct comparison to other adaptive strategies (e.g., dynamic binning) is absent' from the submitted paper. The argument that CH offers 'inherent load balancing' does not justify its suitability for locality-preserving coarsening over other strategies. The promised future discussion does not change the fact that the submitted work lacks this critical justification, leaving the novelty feeling incremental rather than fundamentally justified.",
+                "affected_claim": "Claims of a novel, unified framework that is the first to support adaptive and heterogeneous coarsening.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation, while broad, has critical flaws. The node classification results (e.g., Table 3) show inconsistent and sometimes inferior performance compared to baselines like UGC, especially on heterophilic graphs, undermining claims of effectiveness and robustness.",
+                "severity": "major",
+                "evidence": "The rebuttal partially addresses this by agreeing to revise the claim of 'superior accuracy' to 'competitive accuracy.' However, this is an admission that the original claim in the submitted paper is unsupported. The evidence in Tables 3 and 8 remains unchanged: AH-UGC frequently performs similarly to or worse than UGC (e.g., PubMed-SAGE: 72.16 vs 87.34; many GIN results). While the efficiency gain is clear, the paper's overarching claim of advancing the state-of-the-art in coarsening effectiveness for downstream tasks is not met. The rebuttal's focus on enabling new applications does not alter the experimental results presented; it merely promises to reframe them.",
+                "affected_claim": "Claims that AH-UGC 'consistently outperforms existing methods in scalability, classification accuracy, and structural fidelity' and demonstrates 'superior capacity to coarsen heterogeneous graphs while preserving their semantic and structural fidelity.'",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claim regarding effectiveness for downstream learning tasks remains unsound. The authors concede the accuracy claim is an overstatement, and the submitted results show AH-UGC does not reliably outperform, and often underperforms, the key baseline (UGC) on node classification. The method's soundness for its stated purpose is therefore not fully established."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The unified integration of LSH and consistent hashing to achieve adaptive, single-pass coarsening for both homogeneous and heterogeneous graphs remains a novel combination, as correctly argued by the authors. This passes the novelty gate."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The significance is materially undermined by the unresolved experimental weaknesses. The primary demonstrated contribution is a runtime efficiency improvement that comes with a admitted trade-off in predictive performance relative to the state-of-the-art method (UGC). For a top-tier conference, a contribution whose main advantage is faster computation without a clear, robust advantage in the core ML task is not sufficiently significant. The rebuttal's promise to 'highlight novel application domains' does not change the evidence presented in the submission."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation does not adequately support the paper's central claims. The authors acknowledge the need to downgrade the accuracy claim from 'superior' to 'competitive,' which confirms the weakness identified in the initial review. The experiments show the method is not consistently better than UGC for downstream tasks, failing to validate a key aspect of the contribution."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The presentation is sufficient for assessment despite minor clarity issues. The authors' promises to improve clarity do not affect the gate result for the submitted work."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal provides a more nuanced defense but ultimately confirms the major weaknesses identified. They concede that the claim of 'superior accuracy' is an overstatement and that a comparative justification for their methodological choices is absent from the submission. The paper presents a novel unified framework and demonstrates impressive scalability. However, for a top-tier ML conference, a contribution that offers significant speedup but does not advance, and sometimes reduces, the state-of-the-art performance on core learning tasks lacks the significance required for acceptance. The failures in the Soundness, Significance, and Evaluation gates, based on the evidence in the submitted paper, necessitate rejection."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"The justification for combining LSH and Consistent Hashing remains insufficient; the rebuttal relies on promised future discussion rather than evidence in the submission.\",\n        \"The experimental results show AH-UGC often underperforms UGC on node classification, contradicting claims of superior accuracy.\",\n        \"The significance is diminished as the primary contribution is runtime efficiency at a cost to accuracy, which is not sufficiently impactful for a top-tier venue.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The justification for combining LSH and Consistent Hashing is insufficient.\",\n          \"location\": \"Section 3.1, Theorem 3.1, Lemma 1\",\n          \"explanation\": \"The paper establishes that LSH projects similar nodes close together (Theorem 3.1) and that clockwise merging in this sorted space is locality-preserving (Lemma 1). This provides a foundational rationale: the sorted LSH scores create a 1D ordering where proximity indicates similarity, and consistent hashing operates directly on this ordering to form supernodes. While a comparative discussion of alternative strategies (e.g., dynamic binning) is absent, the core mechanism is sound and presented.\"\n        },\n        {\n          \"concern\": \"AH-UGC underperforms UGC on node classification.\",\n          \"location\": \"Table 3, Table 8\",\n          \"explanation\": \"The results show that AH-UGC's performance is highly competitive and often on par with UGC across many models and datasets (e.g., Citeseer-GCN: AH-UGC 65.46 vs UGC 65.31; Physics-APPNP: AH-UGC 96.10 vs UGC 96.17). While there are instances of lower performance (e.g., PubMed-SAGE), AH-UGC achieves this while being drastically more efficient (Table 1). The framework's value lies in this efficiency-accuracy trade-off, enabling scalable multi-resolution analysis where UGC is prohibitively slow.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Insufficient justification for the LSH+CH combination.\",\n          \"proposed_change\": \"In Section 3.1, add a comparative analysis discussing why consistent hashing is preferred over alternative adaptive strategies (e.g., dynamic binning) for this specific problem. Highlight its advantages: inherent load balancing (Theorem 3.2), simplicity, and direct operation on the sorted LSH manifold which preserves locality.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Claims of superior accuracy are not fully supported.\",\n          \"proposed_change\": \"Revise the abstract and conclusion to more accurately reflect the contribution: AH-UGC provides a unified framework for adaptive and heterogeneous coarsening that achieves state-of-the-art scalability and competitive accuracy. Specifically, change 'superior... classification accuracy' to 'competitive classification accuracy' or 'preserves classification accuracy with superior efficiency'.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Significance is questioned due to the accuracy-efficiency trade-off.\",\n          \"proposed_change\": \"Emphasize the novel application domains enabled by adaptive efficiency, such as real-time interactive visualization, dynamic graph analysis, and streaming settings, where reprocessing the entire graph for each resolution (as in UGC) is infeasible. The significance is not just in speed but in enabling new use cases.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We address the persisting concerns below.\\n\\n**Justification for LSH + Consistent Hashing:** The submitted paper provides a sound technical foundation for the combination: LSH projects nodes into a space where similarity is preserved as proximity (Theorem 3.1). Consistent hashing's clockwise merge operation on the sorted list of these projections (Algorithm 1) naturally groups adjacent (and thus similar) nodes. This is a principled approach, not merely an incremental combination. We acknowledge that a direct comparison to other adaptive strategies (e.g., dynamic binning) is absent and will add this discussion in Section 3.1, arguing that CH offers inherent load balancing (Theorem 3.2) and operates directly on the locality-preserving ordering generated by LSH.\\n\\n**Node Classification Performance:** We agree that the phrase 'superior accuracy' in the abstract is an overstatement relative to UGC. However, the results show that AH-UGC achieves highly competitive accuracy—often matching or nearly matching UGC—while providing orders-of-magnitude faster adaptive coarsening (Table 1). This efficiency enables applications (e.g., real-time multi-resolution analysis) that are impossible with UGC. We will revise the text to more precisely state that AH-UGC delivers 'competitive accuracy with superior scalability and adaptability'.\\n\\n**Significance:** The significance of AH-UGC extends beyond a simple speed-accuracy trade-off. It is the first framework to unify adaptivity and heterogeneous graph support, enabling new scenarios like interactive analysis of large, complex graphs. The runtime advantage is not marginal; it is transformative for scaling coarsening to real-world demands. We will revise the paper to better highlight these novel application domains and the practical impact of adaptive efficiency.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_bc3129d298e6",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/neurips_reject_2025_012_ah_ugc_underline_text_a_daptive_and_underline_text_h_eterogeneous_underline_text.md",
+    "target_paper_summary": {
+      "paper_id": "paper_bc3129d298e6",
+      "title": "Ah-Ugc: Adaptive And Heterogeneous-Universal Graph Coarsening",
+      "abstract": "1 **Graph Coarsening (GC)** is a prominent graph reduction technique that com2 presses large graphs to enable efficient learning and inference. However, existing 3 GC methods generate only one coarsened graph per run and must recompute from 4 scratch for each new coarsening ratio, resulting in unnecessary overhead. Moreover, 5 most prior approaches are tailored to *homogeneous* graphs and fail to accommodate 6 the semantic constraints of *heterogeneous* graphs, which comprise multiple node 7 and edge types. To overcome these limitations, we introduce a novel framework 8 that combines Locality-Sensitive Hashing (LSH) with Consistent Hashing to en9 able *adaptive graph coarsening*. Leveraging hashing techniques, our method is 10 inherently fast and scalable. For heterogeneous graphs, we propose a *type-isolated* 11 *coarsening* strategy that ensures semantic consistency by restricting merges to 12 nodes of the same type. Our approach is the first unified framework to support both 13 adaptive and heterogeneous coarsening. Extensive evaluations on 23 real-world 14 datasets—including homophilic, heterophilic, homogeneous, and heterogeneous 15 graphs demonstrate that our method achieves superior scalability while preserving 16 the structural and semantic integrity of the original graph. Our code is available 17 here.\n\n18 1 **Introduction**\n19 Graphs are ubiquitous and have emerged as a fundamental data structure in numerous real-world 20 applications [1–3]. Broadly, graphs can be categorized into two types: (a) *Homogeneous graphs* 21 [4–6], which consist of a single type of nodes and edges. For instance, in a homogeneous citation 22 graph, all nodes represent papers, and all edges represent the \"cite\" relation between them; (b) 23 *Heterogeneous graphs* [7–9], which involve multiple types of nodes and/or edges, enabling the 24 modeling of richer and more realistic interactions. For example, in a recommendation system, a 25 heterogeneous graph may contain nodes of different types, such as users, items, and categories, and 26 edge types such as \"(user, buys, item)\", \"(user, views, item)\", and \"(item, belongs-to, category)\".\n\n27 Although many real-world datasets are inherently heterogeneous, early research in graph machine 28 learning predominantly focused on homogeneous graphs due to their modeling simplicity, availabil29 ity of standardized benchmarks, and theoretical tractability [10, 11]. However, the limitations of 30 homogeneous representations in capturing ",
+      "topic": "",
+      "claims": [
+        "we introduce a novel framework 8 that combines Locality-Sensitive Hashing (LSH) with Consistent Hashing to en9 able *adaptive graph coarsening*.",
+        "we propose a *type-isolated* 11 *coarsening* strategy that ensures semantic consistency by restricting merges to 12 nodes of the same type.",
+        "our method is 10 inherently fast and scalable.",
+        "Our approach is the first unified framework to support both 13 adaptive and heterogeneous coarsening.",
+        "our method achieves superior scalability while preserving 16 the structural and semantic integrity of the original graph."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 2,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 2,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

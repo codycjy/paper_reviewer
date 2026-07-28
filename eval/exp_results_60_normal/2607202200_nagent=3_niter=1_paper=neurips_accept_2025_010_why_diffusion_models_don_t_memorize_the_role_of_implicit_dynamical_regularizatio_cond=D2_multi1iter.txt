@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and insightful dynamic regarding memorization and generalization in Diffusion Models, identifying two distinct timescales (τgen and τmem) and a widening generalization window with increased training data (n). This challenges conventional views on overfitting and directly addresses a critical unanswered question in the field.",
+        "The combination of extensive empirical validation on a realistic dataset (CelebA) with a rigorous theoretical analysis using random feature networks provides strong evidence for their claims. The theoretical tractability of the random feature model in the high-dimensional limit offers a deep, mechanistic understanding.",
+        "The concept of implicit dynamical regularization is a bold and forward-thinking idea, suggesting that the training process itself acts as a natural safeguard against memorization, especially in overparameterized settings. This is a significant shift in thinking about generalization in modern generative models."
+      ],
+      "weaknesses": [
+        "While the theoretical analysis with RFNN provides valuable insights, its direct translation to complex U-Net architectures and conditional generation settings might require further bridging. The paper acknowledges these limitations, but more concrete connections between the simplified model and the state-of-the-art architectures could strengthen the argument.",
+        "The experimental evaluation, while comprehensive for varying 'n' and 'p' (W), could benefit from exploring an even wider range of model capacities and datasets. The current 'n' and 'p' ranges, though informative, may not fully capture the full complexity of real-world, large-scale DM training scenarios where models are significantly more expressive."
+      ],
+      "summary_comment": "This paper presents a truly exciting and novel perspective on the generalization capabilities of Diffusion Models. The identification of two distinct timescales (τgen and τmem) and the discovery of a dynamically widening generalization window with increased training data is a highly significant finding. It deeply re-evaluates how we understand implicit regularization in overparameterized generative models. The blend of robust empirical results on CelebA and a tractable theoretical framework solidifies the core claims. While some minor points regarding the theoretical-to-practical gap and the scope of experimental parameters could be expanded in future work, the fundamental idea presented here is strong enough to inspire substantial follow-up research and fundamentally shift our understanding of DM training. It pushes the boundaries of current knowledge and is exactly the kind of bold, innovative research that should be highlighted."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a rigorous theoretical analysis using a tractable random features model, which supports the empirical observations effectively. This strong theoretical grounding enhances the soundness of the claims.",
+        "The experimental section is meticulously conducted, varying key parameters like training set size and model capacity, and using appropriate metrics (FID, memorization fraction, training/test loss). The analysis of `τgen` and `τmem` scalings is particularly convincing.",
+        "The identification and characterization of two distinct timescales (τgen and τmem) and the widening gap between them with increasing `n` provides a clear and insightful mechanism for implicit dynamical regularization in Diffusion Models, offering practical implications for training."
+      ],
+      "weaknesses": [
+        "While the theoretical model (RFNN) is tractable and demonstrates the core effects, its direct applicability to complex, real-world hierarchical architectures (like U-Net) is an abstraction. A more direct theoretical connection or bridge to the U-Net specific dynamics would strengthen the paper further, beyond just 'reproducing the core effects'.",
+        "The discussion on the impact of different optimizers (e.g., Adam vs. SGD) is somewhat brief, relegated to limitations and supplemental material. Given that Adam is widely used, a more thorough exploration of its effects on the identified timescales and generalization window would be valuable."
+      ],
+      "summary_comment": "This paper presents a strong contribution to understanding generalization in Diffusion Models. By combining extensive numerical experiments with a rigorous theoretical analysis using random feature networks, it convincingly demonstrates the role of implicit dynamical regularization. The core insight regarding the two distinct timescales for generalization and memorization (τgen and τmem) and their scaling with training set size is well-supported and offers clear practical implications for training DMs. The methodological rigor, particularly in the experimental design and statistical evaluation, is commendable. While the theoretical model is simplified, it effectively captures and explains the observed phenomena. The paper is well-written and easy to follow, making a significant step in demystifying the generalization capabilities of diffusion models."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper addresses a highly relevant and practical problem: understanding and mitigating memorization in diffusion models, which is crucial for their reliable deployment.",
+        "The identification of two distinct timescales (τgen and τmem) and their scaling with training set size (n) provides clear, actionable insights for practitioners regarding early stopping and model capacity management.",
+        "The work combines strong empirical evidence using realistic U-Net architectures on CelebA with rigorous theoretical analysis on a tractable random features model, lending significant credibility and generalizability to its claims."
+      ],
+      "weaknesses": [
+        "While the theoretical model (RFNN) provides valuable insights, its direct applicability to the complex U-Net architectures used for CelebA is not fully quantified beyond qualitative comparison. Further bridging of this gap would strengthen the paper.",
+        "The reliance on a single real-world dataset (CelebA) for the main experiments, even with variations in image sizes and training set sizes, might limit the perceived generalizability to other data modalities or more complex image distributions. Although synthetic data is in SM, more diverse realistic data would be beneficial."
+      ],
+      "summary_comment": "This paper presents a compelling investigation into memorization in diffusion models, a critical concern for their practical use. The core contribution of identifying and characterizing the two distinct timescales (τgen and τmem) for generalization and memorization, respectively, is highly significant. The finding that τmem scales linearly with the training set size (n) provides a clear practical guideline for practitioners on how to leverage implicit dynamical regularization through early stopping. The robust empirical evaluation using a U-Net on CelebA, coupled with a well-grounded theoretical analysis using random features networks, makes the claims very convincing. The paper is exceptionally clear and well-structured, making complex ideas accessible. While an explicit quantitative link between the RFNN theory and U-Net results could be further elaborated, and more diverse real-world datasets might strengthen the empirical claims, these are minor points given the overall quality and practical relevance of the work. This is a strong paper providing valuable insights for anyone working with generative models."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning (supervised, semi- and self-supervised learning, time series analysis, etc.)' particularly in the context of 'deep learning (architectures, generative models, theory, etc.)' and 'trustworthy machine learning (reliability, causality, fairness, interpretability, privacy, robustness, safety, etc.)' through its core contribution on memorization and generalization in Diffusion Models (DMs).",
+        "The combination of extensive numerical experiments (using U-Net on CelebA) and a rigorous theoretical analysis (Random Features Network model leveraging random matrix theory) aligns perfectly with ICML's interest in both empirical and theoretical advancements in machine learning. Reviewer A highlights the 'combination of extensive empirical validation... with a rigorous theoretical analysis... provides strong evidence'.",
+        "The novelty of identifying two distinct timescales (τgen and τmem) for generalization and memorization, and the concept of implicit dynamical regularization, is highly valued at ICML, which emphasizes 'cutting-edge research on all aspects of machine learning'. Reviewer A calls it 'a truly exciting and novel perspective'.",
+        "The paper offers 'practical guidelines (early-stopping, control the network capacity) to train DMs robustly and hence avoid memorization', which is relevant to 'application-driven machine learning' and improving reliability, a key aspect of 'trustworthy machine learning'. Reviewer C notes the 'actionable insights for practitioners'."
+      ],
+      "why_it_does_not_fit": [
+        "While the limitations section acknowledges the gap between the simplified theoretical model (RFNN) and complex U-Net architectures, this could be perceived as a slight disconnect by some reviewers seeking a more direct theoretical analysis of real-world deep learning models. Reviewer B mentions 'a more direct theoretical connection or bridge to the U-Net specific dynamics would strengthen the paper'.",
+        "The scope of experimental evaluation, primarily on CelebA, while comprehensive, might be viewed as limited by some who prefer broader empirical validation across diverse datasets or even more varied model capacities, as noted by Reviewer A ('could benefit from exploring an even wider range of model capacities and datasets')."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on understanding fundamental generalization properties in Diffusion Models falls squarely within NeurIPS's broad scope for 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning'. Reviewer A emphasizes the 'critical unanswered question in the field'.",
+        "NeurIPS welcomes interdisciplinary research and 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior'. This paper provides exactly that for DMs, by identifying implicit dynamical regularization and the mechanisms preventing memorization. Reviewer A highlights its strength in 'challenging conventional views on overfitting'.",
+        "The theoretical analysis using random matrix theory and the high-dimensional limit, combined with practical experimentation on DMs, aligns well with NeurIPS's strong emphasis on 'Theory' and 'Probabilistic methods'. Reviewer B praises the 'rigorous theoretical analysis using a tractable random features model'.",
+        "The practical implications for training DMs through early stopping to avoid memorization in 'data-scarce domains (e.g., physical sciences)' aligns with the NeurIPS topic 'AI/ML for physical sciences' and general application improvements. Reviewer C notes the paper 'addresses a highly relevant and practical problem'."
+      ],
+      "why_it_does_not_fit": [
+        "The explicit 'Others' topic for the paper implies it might not fit neatly into one of the more specialized categories listed by NeurIPS, though its general machine learning and theoretical aspects still make it a strong candidate. The paper's strength lies in its fundamental understanding of ML rather than a specific application domain.",
+        "While the paper acknowledges the use of Adam in practice and discusses it in limitations/SM, NeurIPS sometimes favors deeper exploration of common practical settings. Reviewer B points out that the 'discussion on the impact of different optimizers (e.g., Adam vs. SGD) is somewhat brief, relegated to limitations and supplemental material' and desires 'a more thorough exploration'."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR focuses heavily on 'deep learning' and 'generative models', making the paper's primary subject, Diffusion Models, a central area of interest. The paper directly investigates learned representations and their generalization capabilities.",
+        "The research combines theoretical insights with empirical results on U-Net architectures, a common deep learning architecture. ICLR explicitly lists 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' and 'generative models' as relevant topics.",
+        "The paper tackles 'societal considerations including fairness, safety, privacy' by addressing memorization, which is crucial for the deployment of trustworthy generative models. This aligns with ICLR's explicit mention of these aspects.",
+        "The use of 'optimization' (SGD) and analysis of training dynamics, which is central to the paper's claims about implicit dynamical regularization, is a key interest at ICLR. Reviewer A highlights the 'dynamic regarding memorization and generalization' as novel.",
+        "The theoretical analysis, even if simplified, provides fundamental understanding about deep learning phenomena, which aligns with ICLR's interest in 'learning theory'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper uses deep learning models (U-Net), the theoretical component relies on a Random Features Neural Network (RFNN) model, which is a simplification. ICLR often looks for theoretical work that directly addresses or is more tightly integrated with the properties of complex deep network architectures. Reviewer B stated 'its direct applicability to complex, real-world hierarchical architectures (like U-Net) is an abstraction'.",
+        "The experimental evaluation, while robust for DMs, is not as broad as some ICLR papers that might cover multiple modalities or a wider variety of deep learning tasks beyond generative modeling. Reviewer C mentions 'reliance on a single real-world dataset (CelebA) for the main experiments... might limit the perceived generalizability'."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,87 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and impactful approach to graph coarsening by combining LSH and Consistent Hashing for adaptive reduction, and a type-isolated strategy for heterogeneous graphs. This is a significant step forward as it addresses two major limitations of existing methods simultaneously.",
+        "The proposed AH-UGC framework offers significant computational advantages, particularly in its ability to adaptively coarsen graphs to multiple resolutions without recomputing from scratch. The runtime performance shown in experiments is exceptionally strong, especially for large-scale graphs.",
+        "The empirical evaluation is comprehensive, covering a wide range of datasets (homophilic, heterophilic, homogeneous, heterogeneous, and large-scale) and various GNN architectures. The results clearly demonstrate the superior performance of AH-UGC in classification accuracy and structural fidelity while maintaining semantic consistency in heterogeneous settings."
+      ],
+      "weaknesses": [
+        "While the theoretical proofs for LSH and consistent hashing provide a good foundation, the integration of these two techniques and their precise interaction within the 'clockwise merging' mechanism could be explained in more intuitive detail beyond the theoretical bounds. A more concrete example illustrating how this process leads to adaptive coarsening (e.g., dynamically reaching different `r` ratios) would be beneficial. The authors' rebuttal clarifies this point by explaining how the sorted list 'L' allows for dynamic adjustment of coarsening ratios without full recomputation, which significantly addresses the concern.",
+        "The paper claims support for \"streaming or evolving graph settings\" as a natural extension of the LSH/CH approach (line 63-65), but this aspect is not thoroughly evaluated or discussed beyond this statement. Providing some empirical validation or a more detailed conceptual explanation of how AH-UGC handles dynamic graph updates would strengthen this claim. The authors acknowledged the briefness and provided a clear conceptual explanation of how LSH and Consistent Hashing facilitate node insertions and feature evolution in streaming settings, which is a good step towards addressing this point, though full empirical validation would be future work."
+      ],
+      "summary_comment": "This paper presents AH-UGC, a genuinely novel and ambitious framework for graph coarsening. It tackles two critical and largely unaddressed challenges in the field: adaptive coarsening for multi-resolution needs and semantically consistent coarsening for heterogeneous graphs. The integration of Locality-Sensitive Hashing with Consistent Hashing is a particularly creative solution that promises significant speedups and flexibility, as evidenced by the strong experimental results. The authors' rebuttal successfully clarified how the adaptive coarsening mechanism functions and provided a conceptual explanation for handling streaming graphs, which substantially addresses my main concerns. The potential impact of this work on scalable and flexible GNN applications is immense. This paper pushes the boundaries of graph coarsening and presents a clear path for future research. It is a bold, forward-thinking contribution that deserves to be accepted."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' topics, specifically 'graph coarsening' for efficient learning and inference on large graphs, which is a core and highly relevant area for ICML.",
+        "The 'deep learning' aspect is relevant as the paper extensively evaluates the performance of the proposed coercing method with various GNN architectures (GCN, SAGE, APPNP, SGC, Mixhop, GPR-GNN, HeteroSGC, HeteroGCN, HeteroGCN2), showcasing its utility in deep learning applications.",
+        "The paper's focus on 'optimization' (implicitly, through efficient graph reduction) and 'machine learning systems' (scalability and implementation) aligns well. The significant computational efficiency and scalability gains demonstrated are highly valued. Reviewer A highlights \"significant speedups and flexibility, as evidenced by the strong experimental results.\"",
+        "The methods proposed, including Locality-Sensitive Hashing (LSH) and Consistent Hashing (CH), are probabilistic methods, which fall under 'probabilistic methods' and 'learning theory' which are explicitly listed ICML topics. Theorem 3.1 and 3.2, along with empirical validation in Figure 3, demonstrate theoretical rigor.",
+        "The comprehensiveness of the experimental evaluation on 23 real-world datasets, including homophilic, heterophilic, homogeneous, and heterogeneous graphs, and various GNN backbones, showcases strong 'evaluation methodology' and 'application-driven machine learning'. Reviewer A notes, \"The empirical evaluation is comprehensive, covering a wide range of datasets... The results clearly demonstrate the superior performance.\"",
+        "The 'novelty' is explicitly praised by Reviewer A, identifying the combination of LSH and Consistent Hashing for adaptive reduction and the type-isolated strategy for heterogeneous graphs as a \"highly novel and impactful approach\" and a \"significant step forward,\" which is a strong indicator of fit for a top-tier conference like ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper demonstrates strong empirical results, Reviewer A mentions that 'the integration of these two techniques and their precise interaction within the 'clockwise merging' mechanism could be explained in more intuitive detail beyond the theoretical bounds.' This suggests that while there is theoretical grounding, the explanation of the interaction could be strengthened, which could be a minor drawback for some theoretically-inclined ICML reviewers.",
+        "Reviewer A also points out a weakness regarding the claim of support for 'streaming or evolving graph settings' without thorough evaluation. While the authors provided a conceptual explanation in the rebuttal, the lack of empirical validation might be seen as a missing piece for a comprehensive 'trustworthy machine learning' or 'application-driven' contribution.",
+        "The paper is broadly machine learning, but it doesn't delve deeply into the foundational mathematical theory or delve into highly abstract theoretical domains that some ICML papers pursue. It balances theory with application, which is generally acceptable for ICML, but for a purely theoretical track, it might be less ideal."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The core topic of 'General machine learning: core contributions in supervised and unsupervised methods' aligns perfectly with graph coarsening as a graph reduction technique to enable efficient learning.",
+        "The paper covers 'Deep learning' extensively by evaluating its method with various Graph Neural Network (GNN) models for node classification tasks, showing how AH-UGC enhances their scalability and performance. This aligns with the broad emphasis on deep learning at NeurIPS.",
+        "The introduction of Locality-Sensitive Hashing and Consistent Hashing for graph coarsening falls under 'Probabilistic methods' and 'Optimization' (due to efficiency gains), which are explicit topics within NeurIPS.",
+        "The focus on scalability for 'large-scale graphs' (e.g., Flickr, Yelp, Ogbn-arxiv, Reddit datasets) is highly relevant to NeurIPS, which encourages research addressing challenges in real-world large-scale applications and 'Data-centric aspects of AI'. Reviewer A highlights \"significant computational advantages, particularly in its ability to adaptively coarsen graphs... especially for large-scale graphs.\"",
+        "The paper's method for handling 'Heterogeneous graphs' and 'heterophilic graphs' directly relates to NeurIPS's interest in methods that extend beyond simple graph structures and provide broader applicability.",
+        "The 'Novelty' of combining LSH, Consistent Hashing, and type-isolated coarsening, as noted by Reviewer A (\"highly novel and impactful approach\"), is a strong indicator for NeurIPS which values original and impactful research.",
+        "The comprehensive experimental evaluation on 23 diverse datasets and multiple GNN architectures demonstrates sound empirical contribution, which is a key aspect for NeurIPS. Reviewer A explicitly states, \"The empirical evaluation is comprehensive, covering a wide range of datasets... The results clearly demonstrate the superior performance.\""
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, Reviewer A noted that a more intuitive explanation of the precise interaction within the 'clockwise merging' mechanism could be beneficial. While the theoretical proofs exist, clearer conceptual understanding could improve accessibility for a broader NeurIPS audience.",
+        "The claim regarding support for 'streaming or evolving graph settings' (lines 63-65) is made, but without empirical validation or a more detailed conceptual explanation in the main paper. While the authors provided conceptual clarity in the rebuttal, NeurIPS often values experimental evidence for claimed features, which is a minor gap.",
+        "While the theoretical bounds for LSH and consistent hashing are provided, the paper is not primarily a theoretical contribution in the sense of proposing new statistical learning theory or foundational algorithms. Its strength lies more in practical integration and validation for a specific problem (graph coarsening), though firmly grounded in existing theory."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR focuses heavily on 'deep learning' and 'representation learning'. The proposed AH-UGC is a graph coarsening technique that directly impacts and improves the efficiency and performance of Graph Neural Networks (GNNs), which are deep learning models for graph data. The paper extensively evaluates its method by training various GNNs on coarsened graphs.",
+        "The use of Locality-Sensitive Hashing (LSH) for 'representation learning' (specifically, to group similar nodes based on features and topology) and Consistent Hashing aligns with ICLR's interest in novel techniques for learning representations.",
+        "The explicit mention of 'large-scale learning' and 'non-convex optimization' in the ICLR profile aligns with the paper's focus on scalability and efficiency for large graphs ('General machine learning (i.e., none of the above)' is also a catch-all). Reviewer A praises the \"significant speedups and flexibility, as evidenced by the strong experimental results.\"",
+        "The paper addresses 'unsupervised, self-supervised, semi-supervised' contexts indirectly by facilitating efficient learning on graphs, and explicitly evaluates using semi-supervised node classification setup for GNNs.",
+        "The emphasis on handling 'heterogeneous graphs' and 'heterophilic graphs' aligns with ICLR's interest in methods addressing complex graph structures beyond simple homogeneous graphs.",
+        "Reviewer A explicitly notes the \"genuinely novel and ambitious framework\" and \"creative solution\" of combining LSH and Consistent Hashing, indicating a strong 'novelty' fit for ICLR, which values cutting-edge research.",
+        "The extensive empirical validation across numerous datasets and GNN architectures provides strong evidence for the practical utility and robustness of the method, which is important for ICLR's focus on practical deep learning applications."
+      ],
+      "why_it_does_not_fit": [
+        "While LSH and Consistent Hashing utilize probabilistic principles, the paper does not delve into highly theoretical aspects of 'probabilistic methods' (e.g., advanced Bayesian methods, new variational inference techniques) in the same depth that some ICLR papers might. The theoretical contributions (Theorem 3.1 & 3.2) are supportive of the method's design rather than being the primary focus.",
+        "The paper's core contribution is a graph coarsening method, which, while beneficial for deep learning, is not a new deep learning architecture or a fundamental theoretical advancement in deep learning itself. It's more of a data preprocessing/reduction technique for deep learning on graphs. ICLR typically favors contributions that are more directly about deep learning models or learning theory.",
+        "The explanation of the precise interaction within the 'clockwise merging' mechanism, as pointed out by Reviewer A, could be more intuitive and detailed. This could lead to a perception of less clarity on the methodological insights for some ICLR reviewers who expect strong exposition of novel mechanisms.",
+        "The missing empirical validation for 'streaming or evolving graph settings', even with the conceptual rebuttal, could be a point of concern for ICLR, as robust empirical evidence is often sought for new claims of applicability."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

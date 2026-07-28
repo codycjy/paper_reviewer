@@ -1,0 +1,122 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of leveraging low-rank OT's co-clustering property to hierarchically construct a Monge map is highly novel and innovative, providing a new pathway for scaling OT.",
+        "The paper achieves significant practical impact by enabling the computation of full-rank OT for datasets containing over a million points, which was previously deemed impractical, opening up new applications.",
+        "The theoretical result (Proposition 3.1) stating that optimal low-rank factors co-cluster points with their images under the Monge map is a crucial insight that underpins the entire method and is a strong theoretical contribution."
+      ],
+      "weaknesses": [
+        "While the theoretical guarantee for an optimal solution relies on an 'optimal black-box low-rank solver' and 'strict r-Monge separability', the paper acknowledges that practical low-rank solvers are not necessarily optimal due to non-convexity. This gap between theory and practice could affect the optimality claims in real-world scenarios.",
+        "The complexity analysis highlights log-linear time for constant ranks and ambient dimension, but notes that in cases where the cost matrix doesn't admit a low-rank factorization (d=O(n)), the time complexity becomes O(n^2), which detracts from the universal scalability claim. More exploration on when this 'worst-case' scenario would manifest is needed."
+      ],
+      "summary_comment": "This paper presents a truly exciting and novel approach to scaling Optimal Transport. The Hierarchical Refinement (HiRef) algorithm, built upon the discovery that low-rank OT factors co-cluster Monge pairs, offers a fresh perspective on tackling the long-standing scalability issues of OT. The ability to compute full-rank OT on datasets with over a million points, achieving log-linear time and linear space complexity, is a significant breakthrough. While there are some theoretical assumptions about optimal low-rank solvers and specific cost matrix factorizations that might not always hold perfectly in practice, the boldness of the idea and its demonstrated empirical success on large-scale problems far outweigh these minor concerns. This work has the potential to profoundly impact fields relying on OT, such as generative modeling and computational biology. I am particularly impressed by the creative use of hierarchical decomposition to overcome fundamental limitations. This is exactly the kind of forward-thinking research that pushes a field forward."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core theoretical contribution, Proposition 3.1, presents a novel and insightful connection between low-rank OT factors and Monge map co-clustering. This is a strong foundation for the hierarchical refinement algorithm.",
+        "The HiRef algorithm itself is well-designed and addresses a critical scalability limitation of OT. The log-linear time and linear space complexity for full-rank OT are significant improvements, clearly demonstrated through experiments.",
+        "The empirical evaluation is thorough and compelling. The paper demonstrates HiRef's superiority or competitiveness on various synthetic and challenging real-world datasets, including those with over a million points, where other full-rank methods fail due to memory constraints."
+      ],
+      "weaknesses": [
+        "The assumption of strict r-Monge separability (Definition B.2) is quite strong and its practical implications for real-world data are not fully explored. While Proposition 3.2 guarantees its existence for *some* schedule, the conditions under which *typical* data satisfy this for small r, or how robustness could be handled otherwise, remains a question. This could limit the interpretability of `optimal` in practical scenarios.",
+        "The discussion of the complexity constant `K` in Section 3.4 for the low-rank OT subroutine could be expanded. While `K = O(BLrd)` is given, `B` (number of inner Sinkhorn iterations) and `L` (number of mirror-descent steps) can vary significantly. A more in-depth analysis or empirical study on the impact of these constants on overall runtime for different `r` values would strengthen the practical complexity argument."
+      ],
+      "summary_comment": "The paper presents Hierarchical Refinement (HiRef), a novel and well-motivated algorithm for scaling optimal transport to large datasets. The primary strength lies in its theoretical foundation (Proposition 3.1) and the impressive empirical validation on datasets exceeding a million points, where traditional methods fail. The log-linear time and linear space complexity are crucial advancements for the field. While the assumption of strict r-Monge separability may seem strong, the proof of existence and the strong empirical results suggest its practical utility. The paper is clearly written and the evaluation is comprehensive. This work makes a significant contribution to the scalability of optimal transport."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly significant and long-standing practical problem in Optimal Transport (OT): scaling computational OT to large-scale datasets while maintaining full-rank (bijective) mappings. This is a critical barrier for many real-world applications.",
+        "The proposed Hierarchical Refinement (HiRef) algorithm provides a practical and effective solution, achieving log-linear time and linear space complexity. The empirical evaluation against state-of-the-art methods on datasets up to millions of points strongly demonstrates its practical utility and superior scalability.",
+        "The core theoretical contribution (Proposition 3.1) of low-rank factors co-clustering Monge pairs provides a clear and intuitive foundation for the hierarchical refinement strategy, showing how low-rank solutions can be intelligently composed to build a full-rank map."
+      ],
+      "weaknesses": [
+        "The assumption that datasets X and Y have the same number of samples (n=|X|=|Y|) is a significant limitation for practical applications where this is often not the case. While stated as 'not a limiting factor' for many ML applications, it does constrain its general applicability without further extensions.",
+        "The reliance on 'strict r-Monge separability' and an 'optimal black-box low-rank solver' for theoretical guarantees raises questions about robustness in real-world scenarios where these conditions might not be strictly met or the low-rank solver isn't truly optimal due to non-convexity."
+      ],
+      "summary_comment": "This paper presents Hierarchical Refinement (HiRef), a novel algorithm that tackles the critical challenge of scaling optimal transport to large-scale datasets. The ability to compute full-rank, bijective Monge maps for millions of data points with log-linear time and linear space complexity is a tremendous practical advancement. The theoretical grounding, particularly Proposition 3.1, provides a clear rationale for the hierarchical approach. The comprehensive experimental evaluation on diverse datasets, including challenging biological and image datasets, convincingly demonstrates HiRef's superior performance and scalability compared to existing methods. While there are some theoretical assumptions and a limitation regarding equal dataset sizes, the practical impact of this work in making OT accessible for real-world large-scale problems is undeniable. This is a significant contribution that will be highly relevant to practitioners."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel algorithm, Hierarchical Refinement (HiRef), for Optimal Transport (OT), a core machine learning topic. OT is explicitly listed as a relevant area (general machine learning, optimization, probabilistic methods).",
+        "The key contribution is an algorithmic innovation that addresses a fundamental scalability limitation (quadratic space/time complexity) of existing OT methods like Sinkhorn. This falls under 'general machine learning' and 'machine learning systems (improved implementation and scalability)'.",
+        "The paper provides strong theoretical foundations with Proposition 3.1, connecting low-rank OT factors to Monge map co-clustering, which is a significant theoretical insight. This aligns with 'theory of machine learning' and general ML contributions.",
+        "The empirical evaluation is extensive, demonstrating HiRef's superiority on large-scale datasets (millions of points) where other full-rank OT methods fail. This showcases 'application-driven machine learning' with applications in computational biology (transcriptomics) and vision (ImageNet) which are areas of interest for ICML.",
+        "Reviewers praise the novelty and significance of the approach, deeming it a 'breakthrough' (Reviewer A) and a 'significant contribution' (Reviewer B, C) to a core ML problem, which is highly valued at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper generally fits, the theoretical assumptions (strict r-Monge separability, optimal black-box low-rank solver) might be considered strong by some theoreticians, as highlighted by reviewers. However, the strong empirical evidence mitigates this concern for a general ML conference like ICML.",
+        "Reviewer concerns about the complexity constant 'K' in the low-rank OT subroutine suggest that the practical efficiency could be subject to more variability than indicated, which might slightly temper expectations for 'improved implementation and scalability'."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The topic of Optimal Transport, particularly its scalability for large datasets, is highly relevant to NeurIPS, aligning with 'General machine learning: core contributions in supervised and unsupervised methods', 'Optimization', and 'Probabilistic methods'.",
+        "The novel Hierarchical Refinement (HiRef) algorithm directly addresses the scalability issue, proposing a log-linear time and linear space solution for full-rank OT. This is a significant algorithmic contribution that enables broader application of OT in ML.",
+        "The paper has strong empirical validation across various domains, including computational biology (single-cell transcriptomics, MERFISH brain atlas) and computer vision (ImageNet embeddings), directly aligning with 'AI/ML for health and biotechnology', and 'Computer vision' areas, which are major NeurIPS themes.",
+        "The theoretical result (Proposition 3.1) providing the foundation for HiRef is solid and contributes new insights into low-rank OT and Monge maps, fitting well with the 'Theory' aspect of NeurIPS.",
+        "The discussion explicitly mentions the potential impact on deep learning frameworks, such as generative modeling (Schrödinger bridges, flow-matching, diffusion models, neural ODEs) and large language models, indicating its relevance to 'Deep learning' and 'Language and multimodal language models' at NeurIPS.",
+        "Reviewers uniformly highlight the novelty, soundness, and significant practical impact of the work, emphasizing its potential to 'profoundly impact fields relying on OT' (Reviewer A), which is a key value for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns regarding the strong theoretical assumptions (e.g., 'strict r-Monge separability' and reliance on an 'optimal black-box low-rank solver') and their practical implications (Reviewer B, C) could lead to some scrutiny, although the empirical results are very strong.",
+        "The limitation of assuming datasets X and Y have the same number of samples, while common in some OT applications, could be a functional constraint for other potential applications, as noted by Reviewer C."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces a novel method for Optimal Transport, which has strong connections to deep learning applications such as generative models (flow-matching, diffusion models) and is mentioned in the introduction. These are highly relevant topics for ICLR (e.g., 'generative models', 'optimization', 'general machine learning').",
+        "The method focuses on scaling OT to 'millions of points', enabling its use with large-scale deep learning models often seen at ICLR, which aligns with 'large-scale learning and non-convex optimization' and 'infrastructure, software libraries, hardware, etc.' (implicitly by enabling larger scale applications).",
+        "The discussion explicitly connects HiRef to neural OT approaches and potential applications in integrating OT into large-scale deep generative models, making it very relevant to ICLR's deep learning focus.",
+        "The empirical evaluation includes alignment of ImageNet embeddings, showcasing application in an area central to ICLR (computer vision).",
+        "Reviewers laud the novelty and significance of the approach, particularly its ability to enable OT for 'large-scale deep generative models and modern vision and language tasks' (Impact Statement), directly aligning with ICLR's interests."
+      ],
+      "why_it_does_not_fit": [
+        "While relevant, the paper's core contribution is an algorithmic and theoretical advancement in Optimal Transport itself, rather than a novel deep learning architecture or a new application *of* deep learning. It's more foundational to ML than specifically deep learning, which is ICLR's primary focus.",
+        "The weaknesses highlighted by reviewers, regarding the strength of theoretical assumptions (r-Monge separability) and the practical variability of the low-rank OT subroutine's constant factors, are general concerns that could apply here, potentially leading to questions about the robustness of the 'optimal' claim in real-world deep learning contexts.",
+        "The limitation of requiring equal sample sizes, as noted by Reviewer C, could be a hurdle for some deep learning applications where this condition might not hold naturally."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

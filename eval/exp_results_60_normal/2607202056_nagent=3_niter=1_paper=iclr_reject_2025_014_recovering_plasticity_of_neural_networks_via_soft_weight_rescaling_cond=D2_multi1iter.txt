@@ -1,0 +1,121 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of Soft Weight Rescaling (SWR) for plasticity recovery, which prevents unbounded weight growth by scaling weights proportionally to their initial norms, is novel and tackles a critical problem in deep learning.",
+        "The theoretical grounding, especially Theorem 1 on proportionality and Theorem 2 on boundedness, provides a solid scientific basis for the proposed method's mechanism and advantages, which is impressive.",
+        "The experimental evaluation is comprehensive, covering warm-start learning, continual learning, and single-task learning across various models and datasets, demonstrating the broad applicability and effectiveness of SWR.",
+        "The paper directly addresses the trade-off between plasticity and knowledge retention, showing that SWR can achieve both without the typical pitfalls of re-initialization methods."
+      ],
+      "weaknesses": [
+        "While Theorem 2 proves boundedness, the practical guarantees or insights into the chosen `lambda` parameter could be further elucidated. The impact of `lambda` on the actual scale of weights and its implications for expressivity could be discussed more deeply.",
+        "The discussion on combining SWR with learning rate schedulers and the `SWR + re-init` trick (Appendix E) reveals a challenge that isn't fully resolved. The observed performance drop for larger models with `SWR + re-init` suggests that the current solution is not universally optimal, and a more robust integration strategy would strengthen the paper."
+      ],
+      "summary_comment": "This paper presents Soft Weight Rescaling (SWR), a novel and significant approach to mitigate plasticity loss in neural networks by preventing unbounded weight growth. The core idea of scaling weights based on their initial norms while maintaining network proportionality is genuinely new and addresses a persistent challenge in deep learning. The theoretical analysis, particularly on proportionality and boundedness, provides a strong foundation. The comprehensive experimental evaluation across multiple learning paradigms (warm-start, continual, single-task) convincingly showcases SWR's superior performance, especially in larger models where other regularization techniques fail. While there are minor concerns regarding the practical implications of the `lambda` parameter choices and the robustness of SWR with learning rate schedules, these do not detract from the overall novelty and potential impact of the work. The paper pushes the field forward with a creative, forward-thinking solution to a fundamental problem. It's a bold idea with strong empirical results and a clear theoretical backing, making it highly deserving of acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a well-founded theoretical concept of 'proportionality of neural networks' (Theorem 1) to explain how weights can be rescaled without altering the model's functional behavior in classification tasks. This is a crucial underpinning for the proposed SWR method.",
+        "The theoretical analysis for Soft Weight Rescaling (SWR) regarding the boundedness of weight magnitudes (Theorem 2) and improvement in layer balancedness (Theorem 3) is rigorous and provides strong justification for the method's claims. The proofs are clearly presented and align with the proposed mechanism.",
+        "The experimental evaluation is comprehensive, covering various scenarios (warm-start, continual learning (full and limited access), and single-task generalization) across different model architectures and datasets. This breadth of evaluation convincingly demonstrates the effectiveness and robustness of SWR compared to established baselines.",
+        "The discussion on how SWR interacts with normalization layers and the division of the scaling coefficient (λc, λf) for different parts of the network shows a practical understanding of deep learning architecture complexities."
+      ],
+      "weaknesses": [
+        "While the theoretical proofs are sound, the assumption that 'the change of squared Frobenius norm of the weight matrix, resulting from the single gradient update, is bounded by a constant' (Theorem 2) is a strong one. Although mentioned as not unreasonable given empirical evidence (Merrill et al., 2020), a more thorough discussion or empirical validation of this assumption's validity across diverse training dynamics and architectures would strengthen the theoretical contribution.",
+        "The practical implications of the 'proportionality constant' C (Theorem 1) on the actual output values, especially for regression tasks or when the exact output magnitude matters, are not fully discussed. While it is stated that two proportional networks have 'identical behavior in classification tasks', the scaling of output values might be a consideration for other applications. The experimental results focus solely on classification.",
+        "The hyperparameter search strategy (sweeping λ in specific ranges) is detailed, but the process of finding the 'best' hyperparameter set (e.g., how many runs for each parameter, the criteria for 'best') could be more transparent. The comment in the conclusion that 'L2 often demonstrated better performance' in some cases, despite SWR generally outperforming it, warrants further investigation or clarification within the results section about the specific conditions or datasets where this occurs."
+      ],
+      "summary_comment": "This paper presents Soft Weight Rescaling (SWR), a novel and well-justified method for preventing unbounded weight growth and recovering neural network plasticity. The theoretical development of network proportionality, weight boundedness, and balancedness is strong, providing a solid foundation for the proposed technique. The empirical evaluation is extensive and demonstrates consistent improvements over existing regularization and re-initialization methods across various learning paradigms. While some theoretical assumptions could benefit from further empirical grounding and a deeper dive into hyperparameter tuning specifics would be beneficial, the overall contribution is significant and the methodological rigor is commendable. The paper is clearly written and easy to follow."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces an intuitively appealing and straightforward method (SWR) to address plasticity loss and unbounded weight growth, which are practical concerns in various deep learning scenarios, especially continual learning. The core idea of scaling down weights based on their magnitude relative to initialization is simple yet effective.",
+        "The theoretical justification for SWR, including bounding weight magnitude and balancing weight magnitudes between layers, is well-articulated and supports the practical benefits observed. The proof of proportionality and boundedness provides a solid foundation for the method.",
+        "The empirical evaluation is comprehensive, covering warm-start learning, continual learning (both full and limited access), and single-task generalization across multiple models (MLP, CNN, VGG-16) and datasets (MNIST, CIFAR-10/100, TinyImageNet). This breadth of experiments demonstrates the versatility and robustness of SWR in practical settings, particularly for larger models like VGG-16 where it shows significant gains."
+      ],
+      "weaknesses": [
+        "The discussion around learning rate decay and SWR's interaction (SWR + re-init) during generalization experiments highlights a practical challenge. While a temporary solution is provided, the need for further research to handle this elegantly suggests that the method is not yet fully robust to common training practices. A more integrated solution would strengthen its practical appeal.",
+        "While the theoretical proofs are presented, some details in the main text are quite dense and could benefit from further simplification or clearer explanations, especially for practitioners. For instance, the transition from `equation 5` to `equation 19` in the balancedness proof could be made more explicit about how `W_c` and `W'_c` are related to the scalar `c_l` from Algorithm 1."
+      ],
+      "summary_comment": "This paper presents Soft Weight Rescaling (SWR), a novel and practical method to combat plasticity loss and unbounded weight growth in neural networks. The method is straightforward to implement, relying on weight scaling based on initial norms. The theoretical arguments for bounding weights and maintaining layer balance are sound, and the comprehensive empirical evaluation strongly supports its effectiveness across warm-start, continual, and single-task learning scenarios, particularly for larger models. The observed improvements in VGG-16 are noteworthy. While the interaction with learning rate decay needs further refinement, the core contribution is significant for practitioners dealing with model stability and longevity. The clarity is generally good, though some theoretical derivations could be more accessible. Overall, the practical impact and solid empirical results make this a valuable contribution."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel regularization method, Soft Weight Rescaling (SWR), which directly addresses a core challenge in machine learning: plasticity loss and unbounded weight growth in neural networks. This aligns perfectly with ICML's focus on 'general machine learning' and 'deep learning (theory)' topics.",
+        "The paper provides strong theoretical grounding for SWR, including proofs of proportionality (Theorem 1), boundedness of weight magnitudes (Theorem 2), and improved layer balancedness (Theorem 3). This strong theoretical contribution is highly valued by ICML, which emphasizes 'theory of machine learning' and 'optimization (non-convex optimization)'.",
+        "The experimental evaluation is comprehensive, covering multiple learning paradigms (warm-start, continual learning, and single-task learning) and demonstrating SWR's effectiveness across various models and datasets. This aligns with ICML's interest in 'evaluation (methodology, meta studies)' and 'application-driven machine learning' as it shows practical benefits.",
+        "The method offers a solution to a long-standing issue in deep learning (plasticity loss) without sacrificing previously learned information, which is a significant contribution to 'trustworthy machine learning (reliability)' and could have broad implications across various applications."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A noted that the practical implications of the `lambda` parameter choices for actual weight scale and expressivity could be discussed more deeply. While not a direct misalignment with ICML's scope, further exploration might be expected for a top-tier theoretical-leaning conference.",
+        "The weakness of `SWR + re-init` with learning rate schedulers in larger models (Appendix E) suggests there's still an active area of research for robust integration, which a very strong ICML submission might fully resolve. Reviewer C points out that this indicates the method is not yet fully robust to common training practices."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning: core contributions in supervised and unsupervised methods' by proposing a novel weight regularization technique that improves generalization and addresses plasticity loss in various learning setups.",
+        "The focus on architectural concerns (interaction with normalization layers, splitting coefficients for feature extractor and classifier) and how they impact training dynamics is relevant to NeurIPS's interest in 'Deep learning' and 'optimization'.",
+        "The experimental validation spans general image classification tasks (MNIST, CIFAR, TinyImageNet) and various learning scenarios (warm-start, continual learning, single-task learning), demonstrating broad applicability, which aligns with NeurIPS's comprehensive scope.",
+        "The theoretical analyses of weight boundedness and balancedness provide a strong 'Theory' component, making the work well-rounded and suitable for NeurIPS, which values fundamental understandings of ML systems."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B highlighted the strong assumption in Theorem 2 about the boundedness of gradient update's effect on squared Frobenius norm. While acknowledged, a more thorough empirical validation of this assumption's validity across diverse training dynamics and architectures would strengthen the paper for NeurIPS's rigorous standards.",
+        "Reviewer B also mentioned that the practical implications of the 'proportionality constant' C for tasks beyond classification (e.g., regression where exact output magnitude matters) are not fully discussed. NeurIPS often seeks general applicability of methods, and this specific limitation, while minor for classification, could be a point of improvement."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper primarily focuses on deep learning architectures (MLP, CNN, VGG-16) and directly addresses a fundamental issue in deep learning: plasticity loss and unbounded weight growth, which is highly relevant to ICLR's core emphasis on 'all aspects of deep learning'.",
+        "The proposed Soft Weight Rescaling (SWR) method is a novel 'representation learning' technique, as it manipulates weights to maintain network plasticity and improve generalization, implicitly influencing the learned representations.",
+        "The theoretical proofs regarding weight boundedness, proportionality, and balancedness contribute to 'learning theory' and 'optimization' for deep learning models, both of which are specific topics of interest for ICLR.",
+        "The comprehensive empirical evaluation on standard image classification benchmarks, including challenging scenarios like continual learning, demonstrates the practical utility of SWR within the deep learning context, aligning with ICLR's interest in 'datasets and benchmarks' and various 'applications'."
+      ],
+      "why_it_does_not_fit": [
+        "While the method is applicable to general deep neural networks, ICLR often favors cutting-edge architectures or novel architectural components, whereas SWR is a methodology applied to existing architectures, which might make it a slightly less 'hot' topic for ICLR compared to new generative models or vision transformers.",
+        "Reviewer C noted that some theoretical details in the main text are quite dense and could benefit from further simplification or clearer explanations for practitioners. ICLR, while theory-heavy, often emphasizes clear communication of ideas for its deep learning audience.",
+        "The discussion surrounding learning rate decay and the `SWR + re-init` trick (Appendix E) indicates a practical interaction that is not yet fully robust. For a conference like ICLR that is heavily focused on robust deep learning techniques, this outstanding issue could be perceived as a limitation in the current empirical demonstration, as pointed out by Reviewer C."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

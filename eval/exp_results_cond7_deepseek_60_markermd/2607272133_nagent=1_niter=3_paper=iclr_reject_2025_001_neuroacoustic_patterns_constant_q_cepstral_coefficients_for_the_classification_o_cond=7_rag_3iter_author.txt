@@ -1,0 +1,398 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "The paper addresses an important real-world problem: early classification of neurodegenerative disorders using speech signals.",
+        "The proposed use of CQCC features for neurodegenerative disorder classification is relatively novel compared to standard MFCC approaches.",
+        "The paper validates its approach on two distinct neurodegenerative disorder datasets (Parkinson's and ALS), demonstrating some generalizability."
+      ],
+      "weaknesses": [
+        "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+        "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+        "Results presentation is confusing with inconsistent table references and unexplained performance variations"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+          "severity": "major",
+          "evidence": "The author acknowledges the insufficient detail but provides no clarifying evidence from the submitted paper. Key methodological details (SMOTE implementation, dataset splitting protocol, participant-independence) remain missing. The large performance discrepancy between RF and SVM on the same CQCC features (99.0% vs 63.4%) is noted but not convincingly explained; the rebuttal's claim that this 'reflects different learning characteristics' is insufficient justification without deeper analysis.",
+          "affected_claim": "Claims of robust and superior performance of CQCC over baseline methods",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+          "severity": "major",
+          "evidence": "The author concedes that 'mathematical formatting errors and unclear transitions' exist in the current submission and states they will be fixed in a revision. This admission confirms that the errors and inconsistencies, as identified in the initial review, are present and unresolved in the paper as submitted.",
+          "affected_claim": "Technical foundation and mathematical rigor of the proposed CQCC method",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Results presentation is confusing with inconsistent table references and unexplained performance variations",
+          "severity": "minor",
+          "evidence": "The response confirms that textual errors and ambiguous captions exist in the submitted work and promises to correct them. This does not resolve the confusion present in the version under review. The performance variation between binary and multi-class tasks is acknowledged as expected but lacks the statistical validation or feature analysis needed to be convincing.",
+          "affected_claim": "Clarity and reproducibility of experimental results",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The author's admission confirms that mathematical errors and unclear derivations are present in the submission. The core experimental methodology lacks the detail required to assess reproducibility or validate the claims. Promises of future correction do not change the state of the submitted manuscript."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The application domain and feature set combination remain novel. The acknowledged technical flaws do not negate the novelty of the chosen approach for this specific classification task."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "For the work to be considered significant for a top-tier venue, it must be technically sound and convincingly evaluated. The methodological shortcomings in the current submission prevent a clear demonstration of meaningful advancement over the state of the art."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The experimental evaluation lacks critical details (data splits, statistical tests, reproducibility steps) and contains confusing presentations of results. The rebuttal identifies these as issues to be fixed but does not provide the missing information, leaving the evaluation unconvincing in the current paper."
+        },
+        "presentation": {
+          "result": "fail",
+          "justification": "The author confirms the presence of formatting errors, inconsistent references, and organizational issues. These deficiencies hinder a reliable assessment of the work."
+        }
+      },
+      "summary_comment": "The author's second response is forthright in acknowledging the paper's shortcomings but reiterates that fixes are planned for a future revision, not demonstrated in the current submission. The core issues of mathematical errors, insufficient methodological detail, and confusing results presentation therefore remain unresolved in the manuscript under review. While the application idea has merit, the execution in this submission falls below the threshold for acceptance at a selective top-tier conference. The paper requires substantial revisions to address its foundational technical and presentation flaws before it could be considered for publication."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The topic involves machine learning applied to a significant real-world problem (healthcare/medical diagnosis), which is within ICML's application-driven ML scope.",
+        "The paper proposes a novel feature extraction technique (CQCC) and evaluates it with standard ML classifiers (RF, SVM), aiming for methodological improvement, aligning with ICML's interest in general ML and applications.",
+        "The work involves a comparative evaluation of features and classifiers, which fits the empirical evaluation culture of ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The core technical contribution is an adaptation of a known signal processing method (CQT/CQCC) from audio/spoofing domains to a new application. Reviewer 1 flags a lack of significant novelty ('The proposed use... is relatively novel') and major issues with technical soundness, which are critical for ICML's high standards in methodological rigor.",
+        "Reviewer 1 identifies major flaws in the mathematical exposition and experimental setup, scoring 'soundness' as 2 and 'evaluation' as 2. ICML highly values technical correctness and reproducible, well-defined evaluations, which this paper lacks in its current form.",
+        "The paper's framing is heavily centered on signal processing and biomedical application, with the ML component serving as a standard evaluation tool. This makes it a weaker fit for ICML's core focus on advancing ML methods, theory, or systems, as opposed to primarily being an application paper with methodological concerns."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The application area (AI/ML for health and biotechnology) is explicitly listed as a topic of interest for NeurIPS.",
+        "NeurIPS encourages interdisciplinary work that may not fit neatly into categories, which describes this paper combining signal processing, neuroscience, and ML for clinical diagnosis.",
+        "The problem of early neurodegenerative disease detection is significant and of broad interest, aligning with NeurIPS's scope on impactful applications."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reviewer's critique on novelty ('relatively novel') and, more severely, on soundness and evaluation are decisive. NeurIPS expects high technical rigor and convincing empirical validation, which Reviewer 1 states are lacking.",
+        "The paper does not introduce a new ML algorithm, theoretical insight, or a broadly applicable ML methodology. It applies established classifiers to a new feature set derived from signal processing. This type of incremental application work, especially with noted flaws, is a poor fit for NeurIPS's highly competitive environment where contributions are expected to push the frontiers of ML itself.",
+        "Reviewer 1's summary states the work 'falls below the threshold for acceptance at a selective top-tier conference,' directly signaling a high risk of rejection at venues like NeurIPS.",
+        "The presentation issues (clarity score of 2) further reduce its fit, as NeurIPS submissions must clearly communicate their contribution to a broad ML audience."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "The paper uses deep learning-adjacent feature representations (cepstral coefficients) for a classification task, which is a standard pattern in signal processing.",
+        "There is a tangential connection to learning representations from audio data, a sub-topic within ICLR's broad scope."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's primary focus is on deep learning and representation learning, emphasizing neural network architectures, generative models, and theoretical advances in deep learning. This paper uses no deep learning; it employs traditional signal processing (CQT) and classical ML models (RF, SVM). This is a fundamental and severe mismatch.",
+        "The lack of a deep learning component places it outside ICLR's core interests, regardless of the application area or the novelty of the features.",
+        "The critical reviewer feedback on soundness and evaluation further compounds the misfit, as ICLR is exceptionally competitive and expects high technical quality even within its specific domain. This paper does not meet the bar for technical contribution or methodological focus required by ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper addresses an important real-world problem: early classification of neurodegenerative disorders using speech signals.",
+              "The proposed use of CQCC features for neurodegenerative disorder classification is relatively novel compared to standard MFCC approaches.",
+              "The paper validates its approach on two distinct neurodegenerative disorder datasets (Parkinson's and ALS), demonstrating some generalizability."
+            ],
+            "weaknesses": [
+              "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+              "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+              "Results presentation is confusing with inconsistent table references and unexplained performance variations"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+                "severity": "major",
+                "evidence": "Dataset details are unclear (D1, D2, D3 in Table 2 have inconsistent numbers, D3 shows '100 77' under PD ALS without clear meaning). SMOTE application is mentioned but not detailed. The paper references 'page-5-0' for Table 2 but provides no page numbers. Classification accuracies show unexplained discrepancies (e.g., CQCC with SVM drops from 99.0% in Table 4 to 63.4% in the text description of the same table).",
+                "affected_claim": "Claims of superior performance of CQCC over baseline methods",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+                "severity": "major",
+                "evidence": "Equation numbering is inconsistent (references to 'eq. [5]' and 'page-3-0'). Algorithm 1 contains formatting errors with superscripts misplaced ('<sup>g</sup><sup>m</sup> = (2 <sup>m</sup>−<sup>1</sup> <sup>D</sup> )gmin'). The form-invariance property derivation contains unclear transitions between discrete and continuous formulations without proper justification.",
+                "affected_claim": "Technical foundation and mathematical rigor of the proposed CQCC method",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Results presentation is confusing with inconsistent table references and unexplained performance variations",
+                "severity": "minor",
+                "evidence": "Table 4 shows CQCC with RF at 99.0% accuracy, but the text describes SVM performance incorrectly. Table 5 and Table 6 have identical captions but show different results. The text references 'JMFCC' in Table 4 but 'MFCC' in the caption. Performance drop from binary classification (99.0%) to multi-class (90.3%) is not adequately explained.",
+                "affected_claim": "Clarity and reproducibility of experimental results",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "Mathematical derivation contains formatting errors and unclear transitions between discrete/continuous formulations. Experimental methodology lacks sufficient detail for reproducibility, and results show inconsistencies that undermine confidence in the findings."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Application of CQCC to neurodegenerative disorder classification, particularly for multi-disease classification on sustained vowels, appears novel compared to existing MFCC-based approaches, though the paper acknowledges CQCC's prior use in antispoofing and infant cry classification."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the medical application is significant, the methodological flaws and limited evaluation (only two classifiers, basic metrics) prevent convincing demonstration of meaningful advancement. The paper does not establish clear superiority over state-of-the-art approaches beyond simple accuracy comparisons."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Experimental design lacks rigor: unclear dataset splits, inconsistent results presentation, missing statistical significance tests, and insufficient comparison with state-of-the-art methods. The performance variations between tables suggest potential data leakage or improper experimental setup."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "Paper contains formatting errors, inconsistent references, unclear explanations, and organizational issues that hinder comprehension and reliable assessment of the contribution."
+              }
+            },
+            "summary_comment": "The paper proposes using CQCC features for neurodegenerative disorder classification, which has potential novelty. However, multiple major weaknesses prevent acceptance: mathematical exposition contains errors, experimental methodology is poorly described and shows inconsistencies, and the presentation quality is insufficient for reliable assessment. While the application domain is important, the technical execution falls below top-tier conference standards. The work requires substantial revision to address methodological rigor and presentation clarity before it could be considered for publication."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper addresses an important real-world problem: early classification of neurodegenerative disorders using speech signals.",
+              "The proposed use of CQCC features for neurodegenerative disorder classification is relatively novel compared to standard MFCC approaches.",
+              "The paper validates its approach on two distinct neurodegenerative disorder datasets (Parkinson's and ALS), demonstrating some generalizability."
+            ],
+            "weaknesses": [
+              "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+              "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+              "Results presentation is confusing with inconsistent table references and unexplained performance variations"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+                "severity": "major",
+                "evidence": "Despite author clarification, the dataset organization remains confusing. The notation '100 77' in D3 is still ambiguous without explicit labeling. SMOTE application remains undetailed in the submitted paper. The performance discrepancies (e.g., CQCC with SVM dropping from 99.0% in Table 4 to 63.4% in text) are not adequately explained by the rebuttal.",
+                "affected_claim": "Claims of superior performance of CQCC over baseline methods",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+                "severity": "major",
+                "evidence": "The author acknowledges formatting errors but the submitted paper still contains inconsistent equation numbering, misplaced superscripts in Algorithm 1, and unclear transitions between discrete/continuous formulations. These issues remain unresolved in the current submission.",
+                "affected_claim": "Technical foundation and mathematical rigor of the proposed CQCC method",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Results presentation is confusing with inconsistent table references and unexplained performance variations",
+                "severity": "minor",
+                "evidence": "Author acknowledges textual errors but the submitted paper still contains inconsistent table references, identical captions for different tables, and unexplained performance variations. The rebuttal promises fixes but does not demonstrate they exist in the current submission.",
+                "affected_claim": "Clarity and reproducibility of experimental results",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "Mathematical errors and inconsistencies persist in the submitted paper. The author's acknowledgment and promises to fix them do not resolve the current technical flaws. Experimental methodology remains insufficiently documented for reproducibility."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Application of CQCC to multi-class neurodegenerative disorder classification remains novel despite the methodological flaws in execution."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The methodological weaknesses prevent the paper from convincingly demonstrating a significant advancement. The evaluation lacks statistical rigor and comprehensive comparison with state-of-the-art methods."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Experimental design flaws remain unaddressed in the submitted paper. The rebuttal acknowledges issues but provides no evidence that they are resolved in the current submission. Dataset splits, statistical testing, and reproducibility details are still missing."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "Formatting errors, unclear explanations, and organizational issues persist in the submitted paper. The author's promises to clarify do not change the current state of the submission."
+              }
+            },
+            "summary_comment": "The author's response acknowledges several weaknesses but consists primarily of promises for future revisions rather than demonstrating that these issues are resolved in the current submission. While the application of CQCC to neurodegenerative disorder classification has novelty potential, the paper as submitted contains fundamental flaws in mathematical exposition, experimental methodology, and presentation quality that prevent reliable assessment. The work requires substantial revision to address these issues before it could meet top-tier conference standards."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Experimental setup and evaluation methodology are poorly described and potentially flawed\",\n        \"Mathematical exposition contains errors and inconsistencies that undermine technical soundness\",\n        \"Results presentation is confusing with inconsistent table references and unexplained performance variations\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Dataset details are unclear (D1, D2, D3 in Table 2 have inconsistent numbers)\",\n          \"location\": \"Section 4.1, Table 2\",\n          \"explanation\": \"Table 2 provides the specific counts for each dataset: D1 (Healthy: 220, PD: 220, ALS: 77), D2 (Healthy: 220, ALS: 297), and D3 (PD: 100, ALS: 77). The notation '100 77' in D3 indicates 100 PD and 77 ALS patients. The organization of this table and the subsequent explanation in Section 4.1 on how these datasets were used for different classification tasks (binary vs. multi-class) will be clarified in the revision.\"\n        },\n        {\n          \"concern\": \"Performance drop from binary classification to multi-class is not adequately explained\",\n          \"location\": \"Section 5.2.1 and 5.2.2, Tables 4 and 5\",\n          \"explanation\": \"The performance difference between binary classification (Healthy vs. Pathological) and multi-class classification (Healthy vs. PD vs. ALS) is expected and reflects the increased complexity of distinguishing three classes versus two. The absolute accuracy values for CQCC with RF are 99.0% (binary) and 90.3% (multi-class), which is consistent with the greater challenge of multi-class problems. The text in Section 5.2.2 explicitly discusses this context.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"SMOTE application is mentioned but not detailed\",\n          \"proposed_change\": \"Add a detailed description of the SMOTE implementation, including the specific parameters used and how it was applied to address class imbalance in each dataset configuration (D1, D2, D3).\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Mathematical exposition contains formatting errors and unclear transitions\",\n          \"proposed_change\": \"Carefully review and correct all equations and the algorithm pseudo-code to fix formatting issues (e.g., superscripts in Algorithm 1) and improve the clarity of the derivation, especially the transition between discrete and continuous formulations for the form-invariance property. The appendix referenced in Section 3.1.1 will be expanded to provide the full technical details.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Results presentation is confusing with inconsistent table references\",\n          \"proposed_change\": \"Correct the textual description of Table 4 (the SVM accuracy for CQCC is 63.4%, not 99.0%). Ensure all in-text references to tables and figures are accurate. Revise the captions for Tables 5 and 6 to distinctly describe their respective classification tasks (multi-class Healthy/PD/ALS vs. binary PD/ALS).\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Experimental methodology lacks detail for reproducibility\",\n          \"proposed_change\": \"Provide a more detailed description of the dataset splits (80/20), including how the split was performed (e.g., stratified, participant-independent) and whether the results are from a single run or an average over multiple runs/cross-validation.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. We acknowledge the concerns regarding the clarity of the experimental setup, mathematical exposition, and results presentation. We will address these issues comprehensively in a revision.\\n\\nRegarding the experimental methodology, we will provide a detailed description of the SMOTE implementation and the dataset splitting procedure to ensure reproducibility. The datasets D1, D2, and D3 were constructed for specific classification tasks (e.g., D2 for binary Healthy vs. ALS, D3 for binary PD vs. ALS), and this will be clarified. The performance difference between binary and multi-class classification is inherent to the problem's complexity, but we will elaborate on this point.\\n\\nWe sincerely apologize for the mathematical formatting errors and inconsistencies, particularly in Algorithm 1 and the equation references. These will be meticulously corrected. The derivation of the form-invariance property will be refined for better clarity, with additional technical details provided in the appendix.\\n\\nThe inconsistencies in the results presentation, such as the incorrect textual reference to SVM accuracy in Table 4 and the ambiguous table captions, will be fixed. The results themselves are valid but require clearer contextualization and accurate description.\\n\\nWe believe that addressing these points will significantly improve the paper's soundness, clarity, and overall rigor, strengthening the contribution of applying CQCC features to the novel and significant task of multi-class neurodegenerative disorder classification.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper addresses an important real-world problem: early classification of neurodegenerative disorders using speech signals.",
+              "The proposed use of CQCC features for neurodegenerative disorder classification is relatively novel compared to standard MFCC approaches.",
+              "The paper validates its approach on two distinct neurodegenerative disorder datasets (Parkinson's and ALS), demonstrating some generalizability."
+            ],
+            "weaknesses": [
+              "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+              "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+              "Results presentation is confusing with inconsistent table references and unexplained performance variations"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Experimental setup and evaluation methodology are poorly described and potentially flawed",
+                "severity": "major",
+                "evidence": "The author acknowledges the insufficient detail but provides no clarifying evidence from the submitted paper. Key methodological details (SMOTE implementation, dataset splitting protocol, participant-independence) remain missing. The large performance discrepancy between RF and SVM on the same CQCC features (99.0% vs 63.4%) is noted but not convincingly explained; the rebuttal's claim that this 'reflects different learning characteristics' is insufficient justification without deeper analysis.",
+                "affected_claim": "Claims of robust and superior performance of CQCC over baseline methods",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Mathematical exposition contains errors and inconsistencies that undermine technical soundness",
+                "severity": "major",
+                "evidence": "The author concedes that 'mathematical formatting errors and unclear transitions' exist in the current submission and states they will be fixed in a revision. This admission confirms that the errors and inconsistencies, as identified in the initial review, are present and unresolved in the paper as submitted.",
+                "affected_claim": "Technical foundation and mathematical rigor of the proposed CQCC method",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Results presentation is confusing with inconsistent table references and unexplained performance variations",
+                "severity": "minor",
+                "evidence": "The response confirms that textual errors and ambiguous captions exist in the submitted work and promises to correct them. This does not resolve the confusion present in the version under review. The performance variation between binary and multi-class tasks is acknowledged as expected but lacks the statistical validation or feature analysis needed to be convincing.",
+                "affected_claim": "Clarity and reproducibility of experimental results",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author's admission confirms that mathematical errors and unclear derivations are present in the submission. The core experimental methodology lacks the detail required to assess reproducibility or validate the claims. Promises of future correction do not change the state of the submitted manuscript."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application domain and feature set combination remain novel. The acknowledged technical flaws do not negate the novelty of the chosen approach for this specific classification task."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "For the work to be considered significant for a top-tier venue, it must be technically sound and convincingly evaluated. The methodological shortcomings in the current submission prevent a clear demonstration of meaningful advancement over the state of the art."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experimental evaluation lacks critical details (data splits, statistical tests, reproducibility steps) and contains confusing presentations of results. The rebuttal identifies these as issues to be fixed but does not provide the missing information, leaving the evaluation unconvincing in the current paper."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The author confirms the presence of formatting errors, inconsistent references, and organizational issues. These deficiencies hinder a reliable assessment of the work."
+              }
+            },
+            "summary_comment": "The author's second response is forthright in acknowledging the paper's shortcomings but reiterates that fixes are planned for a future revision, not demonstrated in the current submission. The core issues of mathematical errors, insufficient methodological detail, and confusing results presentation therefore remain unresolved in the manuscript under review. While the application idea has merit, the execution in this submission falls below the threshold for acceptance at a selective top-tier conference. The paper requires substantial revisions to address its foundational technical and presentation flaws before it could be considered for publication."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Experimental methodology lacks sufficient detail in current submission\",\n        \"Mathematical errors and formatting issues persist in submitted paper\",\n        \"Results presentation contains unresolved inconsistencies\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Dataset organization and performance discrepancies require clarification\",\n          \"location\": \"Section 4.1, Tables 2, 4, 5\",\n          \"explanation\": \"The submitted paper contains the complete dataset specifications and experimental results. Table 2 shows the actual data counts used in our experiments, and Tables 4-6 contain the complete classification results. The performance difference between CQCC with RF (99.0%) and SVM (63.4%) in Table 4 reflects the different learning characteristics of these classifiers when applied to the same feature set, which is a legitimate finding in machine learning research.\"\n        },\n        {\n          \"concern\": \"Mathematical foundation of CQCC and form-invariance property\",\n          \"location\": \"Section 3, Algorithm 1\",\n          \"explanation\": \"The core mathematical derivations for CQT and the form-invariance property are presented in Sections 3.1 and 3.1.1, building on established signal processing principles from referenced works. The algorithmic implementation follows the standard CQCC pipeline as adapted from prior literature.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Dataset notation ambiguity in Table 2\",\n          \"proposed_change\": \"Revise Table 2 to explicitly label columns for PD and ALS counts in dataset D3, and provide clearer description of how each dataset was used for specific classification tasks.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Mathematical formatting errors and equation inconsistencies\",\n          \"proposed_change\": \"Correct all formatting errors in equations and Algorithm 1, ensure consistent equation numbering, and improve the clarity of mathematical transitions, particularly in the form-invariance derivation.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Insufficient detail on SMOTE implementation and experimental procedure\",\n          \"proposed_change\": \"Add comprehensive details about SMOTE parameters, dataset splitting methodology (including participant-independent considerations), and evaluation protocol to ensure full reproducibility.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Unclear table references and captions\",\n          \"proposed_change\": \"Correct all textual references to tables and figures, ensure each table has a distinct and accurate caption describing its specific experimental condition.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Lack of statistical validation\",\n          \"proposed_change\": \"Add statistical significance testing (e.g., paired t-tests) to validate performance differences between feature sets.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement with our work. We acknowledge that the current submission contains presentation issues that need correction, and we appreciate the opportunity to clarify our methodology.\\n\\nRegarding the experimental setup, we confirm that the datasets D1, D2, and D3 were specifically constructed for different classification scenarios to comprehensively evaluate our approach. The performance variations between classifiers (RF vs. SVM) and across tasks (binary vs. multi-class) are inherent to the machine learning paradigm and reflect realistic challenges in pathological speech classification. We will provide complete methodological details in the revision.\\n\\nWe acknowledge the mathematical formatting errors and unclear transitions in the current submission. These are presentation issues that do not affect the underlying technical soundness of the CQCC methodology, which is well-established in the signal processing literature. We will thoroughly revise the mathematical exposition for clarity and correctness.\\n\\nThe reviewer correctly notes that our response outlines planned revisions rather than demonstrating fixes in the current submission. We understand that conference reviews must evaluate the paper as submitted. However, we want to emphasize that all the identified issues are addressable through careful revision without requiring new experiments or fundamental changes to our approach.\\n\\nOur core contribution - the novel application of CQCC features to multi-class neurodegenerative disorder classification on sustained vowels - remains valid and significant. The experimental results demonstrate clear performance advantages over traditional features. We are committed to addressing all presentation and methodological description issues to meet the high standards expected for publication.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_bd2a7d815a86",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/iclr_reject_2025_001_neuroacoustic_patterns_constant_q_cepstral_coefficients_for_the_classification_o.md",
+    "target_paper_summary": {
+      "paper_id": "paper_bd2a7d815a86",
+      "title": "Neuroacoustic Patterns: Constant Q Cep- Stral Coefficients For The Classification Of Neurodegenerative Disorders",
+      "abstract": "Early identification of neurodegenerative diseases is crucial for effective diagnosis in neurological disorders. However, the quasi-periodic nature of vocal tract sampling often results in inadequate spectral resolution in traditional spectral features, such as Mel Frequency Cepstral Coefficients (MFCC), thereby limiting their classification effectiveness. In this study, we propose the use of Constant Q Cepstral Coefficients (CQCC), which leverage geometrically spaced frequency bins to provide superior spectrotemporal resolution, particularly for capturing the fundamental frequency and its harmonics in speech signals associated with neurodegenerative disorders. Our results demonstrate that CQCC, when integrated with Random Forest and Support Vector Machine classifiers, significantly outperform MFCC, achieving absolute improvements of 5.6 % and 7.7 %, respectively. Furthermore, CQCC show enhanced performance over traditional acoustic measures, such as Jitter, Shimmer, and Teager Energy. The effectiveness of CQCC is underpinned by the form-invariance property of the Constant Q Transform (CQT), which ensures consistent feature representation across varying pitch and tonal conditions, thereby enhancing classification robustness. Furthermore, the robustness of CQCC features against MFCC features are validated using LDA plots. These findings are validated using the Italian Parkinson's database and the Minsk2019 database of Amyotrophic Lateral Sclerosis, underscoring the potential of CQCC to advance the classification of neurodegenerative disorders.",
+      "topic": "",
+      "claims": [
+        "we propose the use of Constant Q Cepstral Coefficients (CQCC), which leverage geometrically spaced frequency bins to provide superior spectrotemporal resolution, particularly for capturing the fundamental frequency and its harmonics in speech signals associated with neurodegenerative disorders."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,739 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes an interesting and clear hypothesis (RICH) linking inference-time compute benefits to the base robustness of a model, which provides a potential explanation for prior mixed results.",
+        "Conducts experiments across varied attack setups including novel white-box PGD, black-box transfer, and chain-of-thought prompts.",
+        "Clear and well-structured writing, with the core idea communicated effectively through text and figures."
+      ],
+      "weaknesses": [
+        "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+        "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+          "severity": "major",
+          "evidence": "The paper scales \"inference-time compute\" by repeating text descriptions K times in the prompt (Section 3.1, Figure 4). The authors acknowledge this is a naive method and state it is \"not the same inference-time compute scaling performed by reasoning models like o1.\" The rebuttal argues for 'convergence' with CoT results, but CoT is also a limited prompt-engineering technique that does not replicate the internal search or compute scaling of models like o1. The core experimental design still relies on unvalidated proxies rather than directly testing reasoning-based compute scaling.",
+          "affected_claim": "The central claims about the 'Robustness from Inference Compute Hypothesis' and the interaction between scaling compute and base robustness.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work.",
+          "severity": "major",
+          "evidence": "Experiments remain limited. The CoT results in Table 2 still lack error bars or statistical tests in the submitted paper, making it impossible to assess whether the reported differences (e.g., +4.5% vs +0.5%) are statistically significant or merely noise. The white-box results in Table 1 are based on only three runs per configuration. The rebuttal acknowledges the need for improved statistical presentation but provides no new data from the submission. The evidence remains insufficient to convincingly demonstrate the 'rich-get-richer' dynamic.",
+          "affected_claim": "The empirical validation of the RICH hypothesis and the conclusion that inference-time compute acts as an 'effective defense multiplier'.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "Unresolved. The rebuttal argues for 'convergence' between the text-repetition method and CoT prompting, but both are limited proxies for the true compute scaling studied in prior work. The submitted paper provides no empirical validation that either proxy's effects are caused by the same mechanisms as models like o1. The core methodology remains unconvincing, and the central hypothesis is not technically supported."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "Unresolved. The work remains a synthesis of existing ideas (robust models force interpretable attacks; inference compute can aid robustness) without a distinct technical advance. The RICH hypothesis is interesting but not novel in its components."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "Unresolved. Without sound methodological foundations and robust statistical evidence, the findings do not provide a substantial advance for the field. The practical implications remain speculative."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "Unresolved. The evaluation still lacks statistical rigor (missing error bars on Table 2, small sample sizes in Table 1) and uses unvalidated proxies for compute scaling. The promised improvements are not present in the submission."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "Pass. The paper remains clearly written."
+        }
+      },
+      "summary_comment": "The author's second response continues to emphasize the 'convergence' between their text-repetition method and CoT prompting. However, both methods remain limited proxies for the true compute scaling (e.g., o1's internal search) that the RICH hypothesis aims to explain. The submitted paper still lacks empirical validation that these proxies operate through the same mechanisms. Furthermore, the critical CoT results in Table 2 still lack any measure of statistical uncertainty in the submission, making it impossible to assess the reliability of the claimed effects. The core methodological and evidential weaknesses remain unresolved, and the paper does not meet the soundness or evaluation standards for a top-tier conference."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core topic intersects with several ICML areas of interest: trustworthy machine learning (robustness, safety), general machine learning (adversarial attacks, evaluation, transfer learning), and application-driven machine learning (safety-critical applications like autonomous driving).",
+        "The paper presents a clear, testable hypothesis (RICH) and conducts systematic empirical evaluations using established adversarial attack methods (PGD) and robustness benchmarks, aligning with ICML's emphasis on rigorous methodology.",
+        "The work connects train-time defenses (adversarial training) with test-time defenses (inference compute), offering a synergistic perspective on robust ML systems, which fits the 'trustworthy machine learning' and 'machine learning systems' themes."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 raises a major concern that the primary experimental method (K-times text repetition) is a weak proxy for true 'inference-time compute scaling,' which undermines the paper’s central claim. ICML places high value on sound methodological foundations and might view this as a fatal flaw.",
+        "The technical novelty is questioned, with the reviewer noting that the RICH hypothesis 'is interesting but not novel in its components,' being a synthesis of existing ideas. ICML strongly favors papers with distinct technical or theoretical contributions.",
+        "The evaluation lacks statistical rigor (small sample sizes, missing error bars on key results like Table 2). ICML reviewers are typically strict on statistical significance and reproducibility, which could lower the paper's perceived rigor."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The topic sits squarely within NeurIPS’s focus areas: Human interaction in AI systems (jailbreaks, guardrails), AI/ML for safety-critical applications (e.g., robotics, embodied systems via autonomous driving examples), and Deep learning (robustness of VLMs).",
+        "The paper tackles a societally relevant problem—improving adversarial robustness to enhance trust in AI deployment—which aligns with NeurIPS's interest in responsible AI and socio-technical impacts.",
+        "The experimental setup uses multimodal models (VLMs) and explores chain-of-thought prompting, fitting NeurIPS’s broad interdisciplinary scope that includes language models, vision, and reasoning."
+      ],
+      "why_it_does_not_fit": [
+        "The core methodological weakness (using text repetition as a proxy for compute scaling) remains a significant issue. NeurIPS, like ICML, values solid experimental design, and this weakness directly impacts the paper's 'Evaluation' score per the reviewer.",
+        "Reviewer 1 explicitly states the work does not meet soundness or evaluation standards for a 'top-tier conference.' This is a high-risk signal for NeurIPS submission, where reviewer sensitivity to methodological flaws is often acute.",
+        "While the paper discusses broader impacts, its practical significance is deemed 'speculative' by the reviewer due to the unresolved methodological issues. NeurIPS typically expects clear, well-supported implications from accepted work."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper's focus is highly relevant to core ICLR themes: robustness (societal considerations like fairness, safety, privacy), applications to robotics/autonomy, and representation learning for vision and language (multimodal VLMs).",
+        "It studies the interaction between adversarial training (a form of representation learning) and test-time methods, which connects to ICLR's interest in hybrid systems and robustness.",
+        "The use of chain-of-thought prompting aligns with ICLR's focus on reasoning and generalization in deep learning models."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR has a particularly strong emphasis on deep learning foundations and novel architectures/methods. The paper’s core contribution is a hypothesis tested with what the reviewer calls 'limited proxies,' rather than a novel model, algorithm, or theoretical insight. This may be seen as insufficiently foundational for ICLR.",
+        "The reviewer's criticism that the work is a 'synthesis of existing ideas' without a 'distinct technical advance' is especially problematic for ICLR, which prioritizes cutting-edge technical novelty in deep learning.",
+        "The experimental scale (smaller VLMs compared to frontier models) might be considered less aligned with ICLR's trend towards large-scale model analysis, though the paper's limitations section acknowledges this."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes an interesting and clear hypothesis (RICH) linking inference-time compute benefits to the base robustness of a model, which provides a potential explanation for prior mixed results.",
+              "Conducts experiments across varied attack setups including novel white-box PGD, black-box transfer, and chain-of-thought prompts.",
+              "Clear and well-structured writing, with the core idea communicated effectively through text and figures."
+            ],
+            "weaknesses": [
+              "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+              "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+                "severity": "major",
+                "evidence": "The paper scales \"inference-time compute\" by repeating text descriptions K times in the prompt (Section 3.1, Figure 4). The authors acknowledge this is a naive method and state it is \"not the same inference-time compute scaling performed by reasoning models like o1.\" The black-box experiments use an external judge (Claude) or simple CoT prompts. This proxy does not convincingly simulate the long reasoning traces or search procedures that define compute scaling in models like o1, which the hypothesis aims to explain.",
+                "affected_claim": "The central claims about the 'Robustness from Inference Compute Hypothesis' and the interaction between scaling compute and base robustness.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work.",
+                "severity": "major",
+                "evidence": "Experiments are limited. White-box results (Table 1) are based on \"three attack variations of an image\" with high standard errors. Black-box evaluation on Attack-Bard (Table 2) presents accuracy numbers without error bars or statistical tests, and the dataset is small (200 images). The paper fails to conduct a rigorous, large-scale evaluation with multiple base models across a spectrum of robustness and with direct scaling of compute akin to Zaremba et al. 2025. Key claims like 'rich-get-richer' dynamics are based on sparse, noisy data.",
+                "affected_claim": "The empirical validation of the RICH hypothesis and the conclusion that inference-time compute acts as an 'effective defense multiplier'.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claim - that inference-time compute synergistically benefits robustness more for robust models - is not technically supported. The main experimental proxy (text repetition K) is not a valid substitute for reasoning-based compute scaling. The evidence is weak: low sample sizes (e.g., only 3 runs for white-box results), high variance, and lack of a direct comparison to compute scaling as defined in prior work. The causal link suggested by the hypothesis is not convincingly demonstrated with the provided experiments."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The core observation - that the effectiveness of test-time defenses may depend on base model robustness - is not new. Prior work on adversarial training already shows that robust models force attacks into more interpretable, potentially in-distribution, regimes (Gaziv et al., 2023; Bartoldson et al., 2024). The paper synthesizes this idea with the recent finding on inference-time compute. The specific hypothesis (RICH) reframes known concepts but is not a distinct technical or conceptual advance. The RAG evidence also shows extensive prior work on robustness and scaling, though it does not directly connect the two."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The potential impact is limited by the questionable validity of the core experimental methodology. Even if the hypothesis were correct, the findings are presented at a small scale and with unconvincing simulations of inference-time compute. For a top-tier ML conference, the work does not provide a substantial advance in understanding or methodology for adversarial robustness.",
+                "affected_claim": "The claim that the work meaningfully clarifies how to improve robustness in exchange for inference-time compute.",
+                "fixable_without_substantial_new_work": false
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments do not adequately support the central claims. The primary proxy for compute scaling is flawed. The evaluation lacks statistical rigor (e.g., missing confidence intervals on key results like Table 2). The baselines and comparisons are insufficient (e.g., not comparing directly with the 'o1-v' style reasoning the paper critiques in Figure 2). The experiments on general attack targets (Section 4.3) are not comprehensive enough to support the broad conclusion that RICH holds across images and targets."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The hypothesis is stated plainly, and the experimental setup is described in detail. Figures help illustrate the concepts. The work is sufficiently clear to permit assessment, which reveals the underlying methodological weaknesses."
+              }
+            },
+            "summary_comment": "This paper proposes the Robustness from Inference Compute Hypothesis (RICH), positing that the benefits of inference-time compute for adversarial robustness scale with a model's base robustness. While the idea is interesting and well-explained, the paper fails to provide convincing technical support. The crucial weakness is the experimental methodology: scaling inference-time compute via textual repetition ('K') is an inadequate proxy for the reasoning-based compute scaling studied in prior work. The empirical evidence is thin, with small-scale experiments, high variance, and insufficient statistical analysis. The central claim is therefore not substantiated. Furthermore, the underlying observation connecting robustness and interpretable attacks is not novel. The paper's clarity is a strength but does not compensate for its major flaws in soundness, novelty, and evaluation."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes an interesting and clear hypothesis (RICH) linking inference-time compute benefits to the base robustness of a model, which provides a potential explanation for prior mixed results.",
+              "Conducts experiments across varied attack setups including novel white-box PGD, black-box transfer, and chain-of-thought prompts.",
+              "Clear and well-structured writing, with the core idea communicated effectively through text and figures."
+            ],
+            "weaknesses": [
+              "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+              "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+                "severity": "major",
+                "evidence": "The paper scales \"inference-time compute\" by repeating text descriptions K times in the prompt (Section 3.1, Figure 4). The authors acknowledge this is a naive method and state it is \"not the same inference-time compute scaling performed by reasoning models like o1.\" The rebuttal provides a post-hoc theoretical justification (increasing in-context evidence) but does not provide new evidence from the submitted paper to validate this as a faithful proxy. The core experimental design relies on this unvalidated analogy.",
+                "affected_claim": "The central claims about the 'Robustness from Inference Compute Hypothesis' and the interaction between scaling compute and base robustness.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work.",
+                "severity": "major",
+                "evidence": "Experiments are limited. White-box results (Table 1) are based on \"three attack variations of an image\" with high standard errors. Multiple-choice CoT results (Table 2) present single-point accuracy numbers without error bars or significance tests on the claim that robust models benefit more. The rebuttal promises to add error bars and clarify standard errors, but this data is not present in the submitted paper. The work does not establish statistical confidence in the key 'rich-get-richer' dynamic.",
+                "affected_claim": "The empirical validation of the RICH hypothesis and the conclusion that inference-time compute acts as an 'effective defense multiplier'.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "Unresolved. The rebuttal argues for the validity of the text-repetition proxy based on a theoretical analogy (adding more evidence tokens), but the submitted paper provides no empirical validation that this proxy's effects correlate with or are caused by the same mechanisms as true reasoning-based compute scaling (e.g., o1's long traces). The hypothesis remains technically unsupported by the core experimental methodology. Moreover, the lack of robust statistical evidence (e.g., confidence intervals on the key CoT results in Table 2) in the submitted paper means the central claim is not demonstrably reliable."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "Unresolved. The rebuttal acknowledges the synthesis of two existing ideas (robust models produce interpretable attacks; inference compute can aid robustness). While the synthesis is interesting, it does not constitute a distinct technical advance or novel finding. The RICH hypothesis is a plausible reframing, but the empirical work does not provide the novel evidence required to elevate it beyond this synthesis."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "Unresolved. The potential practical impact of the hypothesis is contingent on its sound empirical validation. Given the major weaknesses in methodology and evidence, the findings as presented do not provide a substantial, reliable advance for the field. The rebuttal's promises of future clarification do not alter the significance of the submitted work."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Unresolved. The rebuttal points to the existence of multiple experimental setups but does not address the fundamental inadequacy of the evidence. The submitted evaluation still lacks statistical confidence (especially for Table 2), uses an unvalidated proxy for compute scaling, and is not conducted at a scale that convincingly supports the broad claims. The promised improvements (adding error bars, clarifying standard errors) are not present in the submission."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Pass. The paper remains clearly written. The rebuttal does not change the assessment of clarity, though it identifies areas where the justification for methodological choices could be strengthened."
+              }
+            },
+            "summary_comment": "After considering the author's response, the major concerns with the paper remain unresolved. The rebuttal provides a more detailed theoretical justification for the text-repetition ('K') proxy but does not present new evidence from the submission to validate it as a faithful model of reasoning-based compute scaling. The core methodological choice therefore remains a significant weakness undermining soundness. Furthermore, the rebuttal acknowledges the need for improved statistical presentation (e.g., error bars for Table 2), but these improvements are promised for a future revision and are not present in the submitted work. Consequently, the evaluation remains inadequate to convincingly support the RICH hypothesis. The paper presents an interesting synthesis of ideas and is clearly written, but the technical foundation is too weak for acceptance at a top-tier conference."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"The method for scaling inference-time compute (textual repetition 'K') is considered an unconvincing proxy for true reasoning-based compute scaling\",\n        \"The experimental evidence is perceived as insufficient in scale and statistical robustness to conclusively support the RICH hypothesis\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The method for scaling inference-time compute is a weak proxy\",\n          \"location\": \"Section 3.1, Figure 4\",\n          \"explanation\": \"We explicitly acknowledge in the paper that 'this is not the same inference-time compute scaling performed by reasoning models like o1, but it allows us to investigate how naively scaling inference-time compute affects robustness.' This acknowledgement is a deliberate research choice to isolate the effect of adding more supportive context evidence, which is a component of reasoning systems. The text-repetition method is a controlled, interpretable variable that allows us to test our hypothesis about the relationship between base robustness and the benefit of additional test-time 'evidence'.\"\n        },\n        {\n          \"concern\": \"Experimental evidence lacks scale and statistical robustness\",\n          \"location\": \"Section 4.4, Table 1\",\n          \"explanation\": \"The paper includes multiple lines of evidence beyond the white-box textual repetition experiments. First, Section 4.4 and Table 2 provide black-box results using chain-of-thought (CoT) prompting, a more traditional method for scaling inference-time compute via reasoning. These results support the same RICH pattern. Second, Table 1 reports means and standard errors for the white-box attack steps, demonstrating reproducibility and providing a measure of variability. The standard errors, while present, show that the observed effects (e.g., for Delta2LLaVA-v1.5 as K increases) are substantial relative to the noise.\"\n        },\n        {\n          \"concern\": \"Lack of direct comparison to compute scaling as defined in prior work\",\n          \"location\": \"Section 2, Figure 2; Section 4.4\",\n          \"explanation\": \"Our Figure 2 directly compares a highly robust model (Delta2LLaVA-v1.5) to a frontier reasoning model (o1-v) on a black-box vision attack benchmark. This shows that the robust model without additional compute outperforms the reasoning model even under high compute, addressing the core motivating question from prior work. Furthermore, Section 4.4's CoT experiments provide a direct comparison of inference-compute scaling methods within the same models, showing the RICH pattern holds with a different, more reasoning-like scaling method.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"The experimental evidence is perceived as insufficient in scale\",\n          \"proposed_change\": \"We will expand the discussion to more explicitly acknowledge the scale limitations of our experiments and clarify that the hypothesis is tested on representative, interpretable case studies rather than a large-scale model deployment. We will add a note in the Limitations section emphasizing the need for future validation at the scale of frontier models.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"The justification for the text-repetition 'K' method could be strengthened\",\n          \"proposed_change\": \"We will revise Section 3.1 to better articulate the theoretical motivation for using text repetition as a proxy. Specifically, we will clarify that the increase in supportive in-context evidence (more text repetitions) is analogous to a reasoning trace providing more tokens of evidence for a particular conclusion, thereby increasing the conditional probability of that conclusion—a core mechanism by which longer reasoning traces improve reliability in models like o1.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Statistical presentation could be enhanced\",\n          \"proposed_change\": \"We will add confidence intervals or error bars to Table 2 (Attack-Bard CoT results) to make the statistical reliability of those results clearer. We will also explicitly state in the caption of Table 1 what the standard error represents (variation across three independent attack runs).\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful critique and for acknowledging the clarity and interesting nature of the RICH hypothesis. We address the core concerns regarding methodology and evidence.\\n\\nFirst, we agree that our text-repetition method (scaling 'K') differs from the internal reasoning of models like o1. Our intent was not to replicate their architecture, but to create a controlled, interpretable variable that tests our hypothesis about the relationship between base robustness and the benefit of increased test-time \\\"evidence.\\\" In a reasoning model, a longer trace provides more tokens of supporting evidence, increasing the conditional probability of a correct answer. Our method of repeating supportive text directly implements this mechanism in a transparent way, allowing us to isolate its interaction with base model robustness. We will clarify this motivation in a revision.\\n\\nSecond, our empirical validation is multi-faceted. We present:\\n1.  **White-box attacks with text-repetition scaling** (Figures 5, 6, Table 1) showing that robust models require dramatically more PGD steps as K increases, while non-robust models do not.\\n2.  **Black-box transfer attacks with an external reasoning judge** (Figure 2) showing that robust models outperform frontier reasoning models under compute scaling.\\n3.  **Black-box attacks with internal chain-of-thought reasoning** (Table 2) showing the same RICH pattern with a more traditional reasoning-based compute scaling method.\\n\\nThe convergence of evidence across these distinct experimental setups—spanning white-box/black-box and different compute-scaling proxies—provides robust support for the RICH hypothesis. The statistical variation reported (e.g., standard errors in Table 1) does not undermine the clear, large-magnitude trends, especially for the most robust model.\\n\\nRegarding novelty, while prior work shows robust models force attacks to be more interpretable (cited as Gaziv et al., Bartoldson et al.), the novel contribution of our work is synthesizing this observation with the emerging paradigm of inference-time compute scaling for robustness (Zaremba et al.). We propose and test a specific, falsifiable hypothesis that explains prior mixed results and provides a practical guideline: investing in inference-time compute is more profitable when starting from a robust base. We believe this synthesis and the supporting empirical evidence constitute a meaningful contribution to understanding how to effectively combine disparate defense strategies.\\n\\nWe will incorporate the reviewer's feedback to improve the presentation of our statistical analysis and the justification for our methodological choices, strengthening the paper's clarity and rigor.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes an interesting and clear hypothesis (RICH) linking inference-time compute benefits to the base robustness of a model, which provides a potential explanation for prior mixed results.",
+              "Conducts experiments across varied attack setups including novel white-box PGD, black-box transfer, and chain-of-thought prompts.",
+              "Clear and well-structured writing, with the core idea communicated effectively through text and figures."
+            ],
+            "weaknesses": [
+              "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+              "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The primary method for scaling inference-time compute (textual repetition K) is a weak and unconvincing proxy for true reasoning or compute scaling used in prior work, which undermines the central claim.",
+                "severity": "major",
+                "evidence": "The paper scales \"inference-time compute\" by repeating text descriptions K times in the prompt (Section 3.1, Figure 4). The authors acknowledge this is a naive method and state it is \"not the same inference-time compute scaling performed by reasoning models like o1.\" The rebuttal argues for 'convergence' with CoT results, but CoT is also a limited prompt-engineering technique that does not replicate the internal search or compute scaling of models like o1. The core experimental design still relies on unvalidated proxies rather than directly testing reasoning-based compute scaling.",
+                "affected_claim": "The central claims about the 'Robustness from Inference Compute Hypothesis' and the interaction between scaling compute and base robustness.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Inadequate experimental methodology and evidence to conclusively support the hypothesis; lacks depth, statistical robustness, and comparison to strong baselines from prior work.",
+                "severity": "major",
+                "evidence": "Experiments remain limited. The CoT results in Table 2 still lack error bars or statistical tests in the submitted paper, making it impossible to assess whether the reported differences (e.g., +4.5% vs +0.5%) are statistically significant or merely noise. The white-box results in Table 1 are based on only three runs per configuration. The rebuttal acknowledges the need for improved statistical presentation but provides no new data from the submission. The evidence remains insufficient to convincingly demonstrate the 'rich-get-richer' dynamic.",
+                "affected_claim": "The empirical validation of the RICH hypothesis and the conclusion that inference-time compute acts as an 'effective defense multiplier'.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "Unresolved. The rebuttal argues for 'convergence' between the text-repetition method and CoT prompting, but both are limited proxies for the true compute scaling studied in prior work. The submitted paper provides no empirical validation that either proxy's effects are caused by the same mechanisms as models like o1. The core methodology remains unconvincing, and the central hypothesis is not technically supported."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "Unresolved. The work remains a synthesis of existing ideas (robust models force interpretable attacks; inference compute can aid robustness) without a distinct technical advance. The RICH hypothesis is interesting but not novel in its components."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "Unresolved. Without sound methodological foundations and robust statistical evidence, the findings do not provide a substantial advance for the field. The practical implications remain speculative."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Unresolved. The evaluation still lacks statistical rigor (missing error bars on Table 2, small sample sizes in Table 1) and uses unvalidated proxies for compute scaling. The promised improvements are not present in the submission."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Pass. The paper remains clearly written."
+              }
+            },
+            "summary_comment": "The author's second response continues to emphasize the 'convergence' between their text-repetition method and CoT prompting. However, both methods remain limited proxies for the true compute scaling (e.g., o1's internal search) that the RICH hypothesis aims to explain. The submitted paper still lacks empirical validation that these proxies operate through the same mechanisms. Furthermore, the critical CoT results in Table 2 still lack any measure of statistical uncertainty in the submission, making it impossible to assess the reliability of the claimed effects. The core methodological and evidential weaknesses remain unresolved, and the paper does not meet the soundness or evaluation standards for a top-tier conference."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Text repetition ('K') is an unvalidated proxy for true reasoning-based compute scaling\",\n        \"Statistical evidence is insufficient to support the 'rich-get-richer' claim\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Text repetition ('K') is an unvalidated proxy\",\n          \"location\": \"Section 3.1, Section 4.4\",\n          \"explanation\": \"We acknowledge that text repetition differs from the internal reasoning of models like o1. However, our paper provides empirical validation through convergence: the same RICH pattern emerges across fundamentally different compute-scaling methods. Section 4.4 uses Chain-of-Thought (CoT) prompting, a standard method for increasing reasoning effort, and Table 2 shows the same pattern—robust models benefit more from CoT. This multi-method convergence suggests the phenomenon is not specific to our 'K' proxy but reflects a general principle about how base robustness interacts with test-time computation.\"\n        },\n        {\n          \"concern\": \"Statistical evidence is insufficient\",\n          \"location\": \"Table 1\",\n          \"explanation\": \"While we report standard errors in Table 1 for the white-box attacks, we acknowledge that the statistical presentation in Table 2 (CoT results) could be improved. The effects in Table 2, however, are large and directional: Delta2LLaVA-v1.5 shows a +3.0% absolute improvement on clean data and +4.5% on adversarial data with CoT, while LLaVA-v1.5 shows a +0.5% improvement. This pattern is consistent with our hypothesis and the more granular white-box results.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Statistical evidence is insufficient\",\n          \"proposed_change\": \"We will add confidence intervals or standard errors to Table 2 in a revision to provide a clearer measure of statistical uncertainty for the CoT results.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Justification for the 'K' proxy could be strengthened\",\n          \"proposed_change\": \"We will revise the paper to more explicitly frame the 'K' scaling as a controlled test of a specific mechanism (increasing in-context evidence) that is a component of broader reasoning systems, and to emphasize the convergent evidence from the CoT experiments as a validation of the general principle.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We address the two core concerns.\\n\\nFirst, regarding the 'K' proxy: We designed the text-repetition method to isolate a specific, interpretable mechanism—increasing the weight of in-context evidence—that is a component of how longer reasoning traces operate. The critical validation, however, comes from our multi-method approach. In Section 4.4, we test the RICH hypothesis using a completely different, standard method for scaling inference-time compute: Chain-of-Thought (CoT) prompting. The results in Table 2 show the same pattern: the robust model (Delta2LLaVA-v1.5) benefits substantially from CoT (+4.5% on adversarial data), while the non-robust model (LLaVA-v1.5) shows minimal improvement (+0.5%). This convergence of evidence across distinct methodologies strongly suggests that the RICH phenomenon is not an artifact of our 'K' proxy but reflects a generalizable interaction between base robustness and test-time computation.\\n\\nSecond, regarding statistical evidence: We agree that providing confidence intervals for the CoT results in Table 2 would strengthen the paper. We will add these in a revision. The effects we report, however, are large and directional. The robust model's improvement with CoT is nearly an order of magnitude larger than the non-robust model's, which is consistent with the more granular, statistically annotated results from our white-box attacks in Table 1. Together, this evidence provides a compelling, multi-faceted case for the RICH hypothesis.\\n\\nOur work provides a novel synthesis and empirical test that explains prior mixed results on compute scaling for vision robustness. We demonstrate that the benefit of inference-time compute is not a fixed constant but a variable that depends critically on the base model's robustness, a finding with immediate practical implications for designing cost-effective defense strategies.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_c663d5b81fe2",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/neurips_reject_2025_033_get_rich_or_die_scaling_profitably_trading_inference_compute_for_robustness.md",
+    "target_paper_summary": {
+      "paper_id": "paper_c663d5b81fe2",
+      "title": "Get Rich Or Die Scaling: Profitably Trading Inference Compute For Robustness",
+      "abstract": "1 Recent work shows that increasing inference-time compute through generation of 2 long reasoning traces improves not just capability scores, but robustness to various 3 text jailbreaks designed to control models or lower their guardrails. However, 4 multimodal reasoning offers comparatively little defense against vision jailbreaks, 5 which typically succeed by creating noise-like perturbations. When attacking a 6 robust model, vision attacks are also capable of and often must resort to producing 7 human-interpretable perturbations. Rather than operating in a model's blind-spot 8 or out of its training distribution, such interpretable attacks construct familiar 9 concepts connected to the attacker's goal. Inspired by the ability of robust models 10 to force attacks into this space that appears more in-distribution for reasoning tasks, 11 we posit the Robustness from Inference Compute Hypothesis (RICH): defending 12 against attacks with inference compute (like reasoning) profits as those attacks 13 become more in-distribution. To test this, we adversarially attack models of varying 14 robustness with black-box-transfer and white-box attacks. RICH predicts a rich15 get-richer dynamic: models that start with higher initial robustness gain more 16 robustness benefits from increases in inference-time compute. Consistent with 17 RICH, we find that robust models benefit more from increased compute, whereas 18 non-robust models show little to no improvement. Our work suggests that inference19 time compute can be an effective defense against adversarial attacks, provided 20 the base model has some degree of robustness. In particular, layering disparate 21 train-time and test-time defenses aids robustness not additively, but synergistically.\n\nFigure 1: **As model robustness increases, the benefits of inference-time compute on robustness** also increase. A red dot indicates the step at which the model first generates the output targeted by the PGD attack. Robustness increases from LLaVA-v1.5 to FARE-LLaVA-v1.5 to Delta2LLaVA-v1.5.",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_002_979f71909",
+        "title": "Artificial Intelligence (AI): Multidisciplinary perspectives on emerging challenges, opportunities, and agenda for research, practice and policy",
+        "authors": [
+          "Yogesh K. Dwivedi",
+          "Laurie Hughes",
+          "Elvira Ismagilova",
+          "Gert Aarts",
+          "Crispin Coombs",
+          "Tom Crick",
+          "Yanqing Duan",
+          "Rohita Dwivedi",
+          "John S. Edwards",
+          "Aled Eirug",
+          "Vassilis Galanos",
+          "P. Vigneswara Ilavarasan",
+          "Marijn Janssen",
+          "Paul Jones",
+          "Arpan Kumar Kar",
+          "Hatice Kizgin",
+          "Bianca Kronemann",
+          "Banita Lal",
+          "Biagio Lucini",
+          "Rony Medaglia",
+          "Kenneth Le Meunier‐FitzHugh",
+          "Leslie Caroline Le Meunier-FitzHugh",
+          "Santosh K. Misra",
+          "Emmanuel Mogaji",
+          "Sujeet Kumar Sharma",
+          "Jang Bahadur Singh",
+          "Vishnupriya Raghavan",
+          "Ramakrishnan Raman",
+          "Nripendra P. Rana",
+          "Spyridon Samothrakis",
+          "Jak Spencer",
+          "Kuttimani Tamilmani",
+          "Annie Tubadji",
+          "Paul Walton",
+          "Michael D. Williams"
+        ],
+        "year": 2019,
+        "publication_date": "2019-08-27",
+        "venue": "International Journal of Information Management",
+        "abstract": "As far back as the industrial revolution, significant development in technical innovation has succeeded in transforming numerous manual tasks and processes that had been in existence for decades where humans had reached the limits of physical capacity. Artificial Intelligence (AI) offers this same transformative potential for the augmentation and potential replacement of human tasks and activities within a wide range of industrial, intellectual and social applications. The pace of change for this new AI technological age is staggering, with new breakthroughs in algorithmic machine learning and autonomous decision-making, engendering new opportunities for continued innovation. The impact of AI could be significant, with industries ranging from: finance, healthcare, manufacturing, retail, supply chain, logistics and utilities, all potentially disrupted by the onset of AI technologies. The study brings together the collective insight from a number of leading expert contributors to highlight the significant opportunities, realistic assessment of impact, challenges and potential research agenda posed by the rapid emergence of AI within a number of domains: business and management, government, public sector, and science and technology. This research offers significant and timely insight to AI technology and its impact on the future of industry and society in general, whilst recognising the societal and industrial influence on pace and direction of AI development.",
+        "url": "https://doi.org/10.1016/j.ijinfomgt.2019.08.002",
+        "doi": "https://doi.org/10.1016/j.ijinfomgt.2019.08.002",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2969625533"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 4148
+      },
+      {
+        "paper_id": "rw_003_d667a36eb",
+        "title": "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)",
+        "authors": [
+          "Leo Breiman"
+        ],
+        "year": 2001,
+        "publication_date": "2001-08-01",
+        "venue": "Statistical Science",
+        "abstract": "There are two cultures in the use of statistical modeling to reach conclusions from data. One assumes that the data are generated by a given stochastic data model. The other uses algorithmic models and treats the data mechanism as unknown. The statistical community has been committed to the almost exclusive use of data models. This commitment has led to irrelevant theory, questionable conclusions, and has kept statisticians from working on a large range of interesting current problems. Algorithmic modeling, both in theory and practice, has developed rapidly in fields outside statistics. It can be used both on large complex data sets and as a more accurate and informative alternative to data modeling on smaller data sets. If our goal as a field is to use data to solve problems, then we need to move away from exclusive dependence on data models and adopt a more diverse set of tools.",
+        "url": "https://doi.org/10.1214/ss/1009213726",
+        "doi": "https://doi.org/10.1214/ss/1009213726",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2084341220"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 4306
+      },
+      {
+        "paper_id": "rw_004_3982c5c8f",
+        "title": "Anticompetitive Effects of Common Ownership",
+        "authors": [
+          "José Azar",
+          "Martin C. Schmalz",
+          "Isabel Tecu"
+        ],
+        "year": 2018,
+        "publication_date": "2018-05-25",
+        "venue": "The Journal of Finance",
+        "abstract": "ABSTRACT Many natural competitors are jointly held by a small set of large institutional investors. In the U.S. airline industry, taking common ownership into account implies increases in market concentration that are 10 times larger than what is “presumed likely to enhance market power” by antitrust authorities. Within‐route changes in common ownership concentration robustly correlate with route‐level changes in ticket prices, even when we only use variation in ownership due to the combination of two large asset managers. We conclude that a hidden social cost—reduced product market competition—accompanies the private benefits of diversification and good governance.",
+        "url": "https://doi.org/10.1111/jofi.12698",
+        "doi": "https://doi.org/10.1111/jofi.12698",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2887416572"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 947
+      },
+      {
+        "paper_id": "rw_005_89f810e22",
+        "title": "The Value of Connections in Turbulent Times: Evidence from the United States",
+        "authors": [
+          "Daron Acemoğlu",
+          "Simon Johnson",
+          "Amir Kermani",
+          "James Kwak",
+          "Todd Mitton"
+        ],
+        "year": 2013,
+        "publication_date": "2013-01-01",
+        "venue": "SSRN Electronic Journal",
+        "abstract": "",
+        "url": "https://doi.org/10.2139/ssrn.2363609",
+        "doi": "https://doi.org/10.2139/ssrn.2363609",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1532977008"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 238
+      },
+      {
+        "paper_id": "rw_006_7f69115f5",
+        "title": "Is ChatGPT a General-Purpose Natural Language Processing Task Solver?",
+        "authors": [
+          "Chengwei Qin",
+          "Aston Zhang",
+          "Zhuosheng Zhang",
+          "Jiaao Chen",
+          "Michihiro Yasunaga",
+          "Diyi Yang"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "",
+        "abstract": "Spurred by advancements in scale, large language models (LLMs) have demonstrated the ability to perform a variety of natural language processing (NLP) tasks zero-shot—i.e., without adaptation on downstream data. Recently, the debut of ChatGPT has drawn a great deal of attention from the natural language processing (NLP) community due to the fact that it can generate high-quality responses to human input and self-correct previous mistakes based on subsequent conversations. However, it is not yet known whether ChatGPT can serve as a generalist model that can perform many NLP tasks zero-shot. In this work, we empirically analyze the zero-shot learning ability of ChatGPT by evaluating it on 20 popular NLP datasets covering 7 representative task categories. With extensive empirical studies, we demonstrate both the effectiveness and limitations of the current version of ChatGPT. We find that ChatGPT performs well on many tasks favoring reasoning capabilities (e.g., arithmetic reasoning) while it still faces challenges when solving specific tasks such as sequence tagging. We additionally provide in-depth analysis through qualitative case studies.",
+        "url": "https://doi.org/10.18653/v1/2023.emnlp-main.85",
+        "doi": "https://doi.org/10.18653/v1/2023.emnlp-main.85",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4389523957"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 461
+      },
+      {
+        "paper_id": "rw_007_85223a657",
+        "title": "Productivity Dynamics in Manufacturing Plants",
+        "authors": [
+          "Martin Neil Baily",
+          "Charles R. Hulten",
+          "David I. Campbell",
+          "Timothy F. Bresnahan",
+          "Richard E. Caves"
+        ],
+        "year": 1992,
+        "publication_date": "1992-01-01",
+        "venue": "Brookings Papers on Economic Activity Microeconomics",
+        "abstract": "Martin Neil Baily, Charles Hulten, David Campbell, Timothy Bresnahan, Richard E. Caves, Productivity Dynamics in Manufacturing Plants, Brookings Papers on Economic Activity. Microeconomics, Vol. 1992 (1992), pp. 187-267",
+        "url": "https://doi.org/10.2307/2534764",
+        "doi": "https://doi.org/10.2307/2534764",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1539267447"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1063
+      },
+      {
+        "paper_id": "rw_008_5a223df28",
+        "title": "Death by Market Power: Reform, Competition, and Patient Outcomes in the National Health Service",
+        "authors": [
+          "Martin Gaynor",
+          "Rodrigo Moreno‐Serra",
+          "Carol Propper"
+        ],
+        "year": 2013,
+        "publication_date": "2013-11-01",
+        "venue": "American Economic Journal Economic Policy",
+        "abstract": "The effect of competition on the quality of health care remains a contested issue. Most empirical estimates rely on inference from nonexperimental data. In contrast, this paper exploits a procompetitive policy reform to provide estimates of the impact of competition on hospital outcomes. The English government introduced a policy in 2006 to promote competition between hospitals. Using this policy to implement a difference-in-differences research design, we estimate the impact of the introduction of competition on not only clinical outcomes but also productivity and expenditure. We find that the effect of competition is to save lives without raising costs. (JEL H51, I11, I18, L32, L33)",
+        "url": "https://doi.org/10.1257/pol.5.4.134",
+        "doi": "https://doi.org/10.1257/pol.5.4.134",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3121196325"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 250
+      },
+      {
+        "paper_id": "rw_009_9cb7e97c8",
+        "title": "Bio-inspired computation: Where we stand and what's next",
+        "authors": [
+          "Javier Del Ser",
+          "Eneko Osaba",
+          "Daniel Molina",
+          "Xin‐She Yang",
+          "Sancho Salcedo‐Sanz",
+          "David Camacho",
+          "Swagatam Das",
+          "Ponnuthurai Nagaratnam Suganthan",
+          "Carlos A. Coello Coello",
+          "Francisco Herrera"
+        ],
+        "year": 2019,
+        "publication_date": "2019-04-29",
+        "venue": "Swarm and Evolutionary Computation",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.swevo.2019.04.008",
+        "doi": "https://doi.org/10.1016/j.swevo.2019.04.008",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2943528199"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 583
+      },
+      {
+        "paper_id": "rw_010_97cb80ca0",
+        "title": "Why is Pollution from U.S. Manufacturing Declining? The Roles of Environmental Regulation, Productivity, and Trade",
+        "authors": [
+          "Joseph Shapiro",
+          "Reed Walker"
+        ],
+        "year": 2015,
+        "publication_date": "2015-01-01",
+        "venue": "National Bureau of Economic Research",
+        "abstract": "Between 1990 and 2008, air pollution emissions from U.S. manufacturing fell by 60 percent despite a substantial increase in manufacturing output. We show that these emissions reductions are primarily driven by within-product changes in emissions intensity rather than changes in output or in the composition of products produced. We then develop and estimate a quantitative model linking trade with the environment to better understand the economic forces driving these changes. Our estimates suggest that the implicit pollution tax that manufacturers face doubled between 1990 and 2008. These changes in environmental regulation, rather than changes in productivity and trade, account for most of the emissions reductions.",
+        "url": "https://doi.org/10.3386/w20879",
+        "doi": "https://doi.org/10.3386/w20879",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3124890699"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 29
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_7f69115f5",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "novelty_competitor",
+          "benchmark_baseline",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Evaluates a large language model's zero-shot capabilities on NLP tasks, providing evidence about model robustness and reasoning performance across datasets, which relates to the target's investigation of inference compute for robustness. The abstract discusses quantitative results and explicitly identifies limitations (e.g., challenges with sequence tagging).",
+        "evidence_summary": "In 2023, Qin et al. published 'Is ChatGPT a General-Purpose Natural Language Processing Task Solver?', which empirically analyzed the zero-shot learning ability of ChatGPT by evaluating it on 20 popular NLP datasets covering 7 representative task categories. The study demonstrated that ChatGPT performed well on many tasks favoring reasoning capabilities, such as arithmetic reasoning, but still faced challenges when solving specific tasks like sequence tagging."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_979f71909",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "Provides a broad, multidisciplinary perspective on AI challenges and opportunities, including potential impacts across industries. While not directly addressing inference compute or adversarial robustness, it offers high-level background context relevant to AI's transformative potential and societal implications.",
+        "evidence_summary": "In 2019, Dwivedi et al. published 'Artificial Intelligence (AI): Multidisciplinary perspectives on emerging challenges, opportunities, and agenda for research, practice and policy' in the International Journal of Information Management. The study highlighted AI's transformative potential for augmenting or replacing human tasks across industrial, intellectual, and social applications, and discussed significant opportunities, realistic assessment of impact, challenges, and potential research agenda posed by AI's rapid emergence within domains including business, government, public sector, science, and technology."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_d667a36eb",
+        "relevance_score": 0.43,
+        "relevance_types": [
+          "background",
+          "method"
+        ],
+        "rationale": "Discusses two cultures in statistical modeling, contrasting data models with algorithmic models. This methodological framing provides relevant background for understanding different modeling approaches in machine learning, though it does not directly address inference compute or adversarial attacks.",
+        "evidence_summary": "In 2001, Breiman published 'Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)' in Statistical Science. He argued that the statistical community's exclusive commitment to data models had led to irrelevant theory and questionable conclusions, and advocated for adopting algorithmic modeling as a more accurate and informative alternative, particularly for large complex data sets or as a tool for problem-solving with data."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_009_9cb7e97c8",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "method",
+          "novelty_competitor"
+        ],
+        "rationale": "Reviews bio-inspired computation methods. While not directly related to language models or adversarial robustness, it discusses computational paradigms that could be considered alternative approaches to problem-solving, providing tangential methodological context.",
+        "evidence_summary": "In 2019, Ser et al. published 'Bio-inspired computation: Where we stand and what's next' in Swarm and Evolutionary Computation. The paper provided a review of bio-inspired computation methods, discussing the current state and future directions of this field."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_3982c5c8f",
+        "relevance_score": 0.41,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "Examines anticompetitive effects of common ownership in the airline industry, finding correlations with ticket prices. This is a weakly related economics paper that does not address inference compute, model robustness, or AI methods.",
+        "evidence_summary": "In 2018, Azar et al. published 'Anticompetitive Effects of Common Ownership' in The Journal of Finance. The study found that within-route changes in common ownership concentration robustly correlated with route-level changes in airline ticket prices, concluding that reduced product market competition represented a hidden social cost accompanying the private benefits of institutional investor diversification."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_008_5a223df28",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "Investigates effects of competition on healthcare outcomes using a policy reform. This economics study examines competition's impact on quality and costs in healthcare, providing only thematic background about system dynamics rather than technical AI research.",
+        "evidence_summary": "In 2013, Gaynor et al. published 'Death by Market Power: Reform, Competition, and Patient Outcomes in the National Health Service' in American Economic Journal: Economic Policy. Using a procompetitive policy reform in English hospitals to implement a difference-in-differences research design, the study found that competition saved lives without raising costs, estimating impacts on clinical outcomes, productivity, and expenditure."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_007_85223a657",
+        "relevance_score": 0.39,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "Analyzes productivity dynamics in manufacturing plants. This economics paper from 1992 examines productivity changes in industrial settings and has no direct connection to AI, machine learning, inference compute, or adversarial robustness.",
+        "evidence_summary": "In 1992, Baily et al. published 'Productivity Dynamics in Manufacturing Plants' in Brookings Papers on Economic Activity: Microeconomics. The study analyzed productivity changes in manufacturing plants, examining the dynamics and factors influencing industrial productivity."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_010_97cb80ca0",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "Investigates reasons for declining U.S. manufacturing pollution, focusing on regulation, productivity, and trade. This environmental economics study examines factors driving emissions reductions but does not address AI, machine learning, or computational methods.",
+        "evidence_summary": "In 2015, Shapiro and Walker published 'Why is Pollution from U.S. Manufacturing Declining? The Roles of Environmental Regulation, Productivity, and Trade' through the National Bureau of Economic Research. Their quantitative model suggested that implicit pollution taxes doubled between 1990 and 2008, and that changes in environmental regulation, rather than productivity and trade, accounted for most of the observed air pollution emissions reductions from manufacturing."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_005_89f810e22",
+        "relevance_score": 0.37,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "Examines the value of connections during turbulent economic times in the United States. This economics paper has no abstract in the metadata and shows no direct relevance to AI, machine learning, inference compute, or model robustness.",
+        "evidence_summary": "In 2013, Acemoğlu et al. published 'The Value of Connections in Turbulent Times: Evidence from the United States' in SSRN Electronic Journal. The study examined the value of connections during periods of economic turbulence in the United States."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Chengwei Qin et al. published \"Is ChatGPT a General-Purpose Natural Language Processing Task Solver?\". In this work, the authors empirically analyze the zero-shot learning ability of ChatGPT by evaluating it on 20 popular NLP datasets covering 7 representative task categories. Spurred by advancements in scale, large language models (LLMs) have demonstrated the ability to perform a variety of natural language processing (NLP) tasks zero-shot—i.e., without adaptation on downstream data. However, it is not yet known whether ChatGPT can serve as a generalist model that can perform many NLP tasks zero-shot. In 2019, Yogesh K. Dwivedi et al. published \"Artificial Intelligence (AI): Multidisciplinary perspectives on emerging challenges, opportunities, and agenda for research, practice and policy\" in International Journal of Information Management. The pace of change for this new AI technological age is staggering, with new breakthroughs in algorithmic machine learning and autonomous decision-making, engendering new opportunities for continued innovation. As far back as the industrial revolution, significant development in technical innovation has succeeded in transforming numerous manual tasks and processes that had been in existence for decades where humans had reached the limits of physical capacity. Artificial Intelligence (AI) offers this same transformative potential for the augmentation and potential replacement of human tasks and activities within a wide range of industrial, intellectual and social applications. In 2001, Leo Breiman published \"Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)\" in Statistical Science. Algorithmic modeling, both in theory and practice, has developed rapidly in fields outside statistics. It can be used both on large complex data sets and as a more accurate and informative alternative to data modeling on smaller data sets. This commitment has led to irrelevant theory, questionable conclusions, and has kept statisticians from working on a large range of interesting current problems. In 2019, Javier Del Ser et al. published \"Bio-inspired computation: Where we stand and what's next\" in Swarm and Evolutionary Computation. The available metadata does not include an abstract with contribution, dataset, or result details. In 2018, José Azar et al. published \"Anticompetitive Effects of Common Ownership\" in The Journal of Finance. In the U.S. airline industry, taking common ownership into account implies increases in market concentration that are 10 times larger than what is “presumed likely to enhance market power” by antitrust authorities. In 2013, Martin Gaynor et al. published \"Death by Market Power: Reform, Competition, and Patient Outcomes in the National Health Service\" in American Economic Journal Economic Policy. The English government introduced a policy in 2006 to promote competition between hospitals. Most empirical estimates rely on inference from nonexperimental data.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

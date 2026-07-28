@@ -1,0 +1,374 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 2,
+        "soundness": 2,
+        "significance": 2,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Clear identification of practical limitations in existing graph coarsening methods: lack of adaptive multi-resolution coarsening and lack of semantic preservation for heterogeneous graphs.",
+        "The proposed framework, AH-UGC, presents a unified approach that aims to solve both adaptive and heterogeneous coarsening challenges, which is an ambitious and well-motivated goal.",
+        "Extensive experimental evaluation on a large number (23) of diverse real-world datasets, demonstrating strong empirical performance in runtime, spectral preservation, and node classification tasks."
+      ],
+      "weaknesses": [
+        "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+        "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+        "The evaluation, while extensive, does not convincingly separate the contributions of the adaptive component from the heterogeneous component, and the claimed superiority over baselines like UGC requires deeper analysis."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+          "severity": "major",
+          "evidence": "The author's second response continues to emphasize practical utility but does not provide new evidence from the submitted paper demonstrating fundamental algorithmic novelty. The description of 'novel capabilities' and 'non-trivial extension' remains unsupported by technical innovations in the submitted work. The integration of consistent hashing with LSH and type partitioning, while useful, remains conceptually straightforward rather than representing a significant theoretical or methodological advance.",
+          "affected_claim": "The paper's central claim of being 'the first unified framework to support both adaptive and heterogeneous coarsening' and its associated technical novelty.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+          "severity": "major",
+          "evidence": "The author's response acknowledges the problematic uniform spacing assumption in Theorem 3.2 and suggests rephrasing it as 'intuitive understanding rather than rigorous guarantee.' This admission confirms the theoretical soundness issues remain unresolved in the submitted work. The response also does not address the incomplete analytical connection between Theorem 3.1 and the locality preservation claims for the specific merging procedure.",
+          "affected_claim": "The theoretical foundation of the AH-UGC method, specifically the guarantees regarding locality preservation during merging and balanced super-node formation.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The author's response acknowledges the theoretical weaknesses and proposes to rephrase Theorem 3.2 as providing 'intuitive understanding rather than rigorous guarantee,' confirming that the soundness issues are not resolved in the submitted paper. The admission that theoretical aspects 'require further refinement' underscores that the method lacks proper theoretical foundation."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The response emphasizes practical applications and 'novel capabilities' but does not provide evidence from the submitted paper demonstrating fundamental algorithmic novelty beyond combining existing techniques. The description of type-aware edge aggregation as 'non-trivial' is not supported by technical innovations in the submitted work."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "While the empirical results are strong, the lack of significant algorithmic novelty and unresolved theoretical soundness issues limit the paper's significance for a top-tier conference. The practical utility does not compensate for the fundamental limitations in technical contributions."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The comprehensive experimental evaluation across 23 datasets remains a strength of the paper. The empirical results demonstrate practical utility despite the theoretical limitations."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains clearly written and well-structured. The author's response does not affect this assessment."
+        }
+      },
+      "summary_comment": "The author's second response acknowledges the theoretical weaknesses but does not resolve them with evidence from the submitted paper. The proposal to rephrase theoretical guarantees as 'intuitive understanding' rather than rigorous analysis confirms the soundness issues remain problematic. While the practical utility and empirical results are commendable, the lack of significant algorithmic novelty and unresolved theoretical foundations prevent the paper from meeting the standards of a top-tier conference. The work represents a useful engineering contribution but falls short of the expected technical rigor and innovation for acceptance."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper addresses graph coarsening, which aligns with ICML's focus on machine learning systems and scalable methods",
+        "The work presents extensive empirical evaluation across 23 datasets, which matches ICML's emphasis on rigorous experimentation",
+        "The combination of LSH and consistent hashing for adaptive coarsening represents a systems-oriented contribution relevant to ICML's optimization and systems tracks"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer identifies major novelty concerns - the core techniques (LSH + consistent hashing) are straightforward combinations of existing methods",
+        "Significant theoretical flaws in proofs and assumptions undermine the technical soundness expected at ICML",
+        "The paper's focus on graph-specific methods may be too narrow for ICML's broad ML audience without stronger theoretical foundations"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "Graph representation learning and scalable graph methods are core topics at NeurIPS",
+        "The paper addresses heterogeneous graphs, which aligns with NeurIPS' interest in complex data structures",
+        "Extensive experimental evaluation across diverse datasets matches NeurIPS' empirical focus"
+      ],
+      "why_it_does_not_fit": [
+        "Major novelty concerns identified by reviewer - the technical contributions are incremental rather than groundbreaking",
+        "Theoretical soundness issues with proofs and assumptions would be heavily scrutinized at theory-focused NeurIPS",
+        "While empirical results are strong, the lack of fundamental algorithmic innovation limits fit for NeurIPS' high novelty bar"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Graph coarsening directly relates to representation learning, a core ICLR focus",
+        "The method's application to heterogeneous graphs aligns with ICLR's interest in complex graph structures",
+        "Strong empirical results across multiple GNN architectures match ICLR's emphasis on practical impact"
+      ],
+      "why_it_does_not_fit": [
+        "Theoretical flaws in proofs would be problematic for ICLR's increasingly rigorous standards",
+        "Novelty concerns may limit impact at ICLR where many graph representation papers appear",
+        "The adaptive coarsening aspect is more systems-focused than ICLR's typical representation learning emphasis"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 2,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Clear identification of practical limitations in existing graph coarsening methods: lack of adaptive multi-resolution coarsening and lack of semantic preservation for heterogeneous graphs.",
+              "The proposed framework, AH-UGC, presents a unified approach that aims to solve both adaptive and heterogeneous coarsening challenges, which is an ambitious and well-motivated goal.",
+              "Extensive experimental evaluation on a large number (23) of diverse real-world datasets, demonstrating strong empirical performance in runtime, spectral preservation, and node classification tasks."
+            ],
+            "weaknesses": [
+              "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+              "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+              "The evaluation, while extensive, does not convincingly separate the contributions of the adaptive component from the heterogeneous component, and the claimed superiority over baselines like UGC requires deeper analysis."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+                "severity": "major",
+                "evidence": "The paper builds directly on UGC [4], an existing LSH-based coarsening method. The main conceptual addition for adaptive coarsening is to replace UGC's bin-width parameter with a 'consistent hashing' strategy of repeatedly merging a randomly selected super-node with its clockwise neighbor in a sorted list. For heterogeneous graphs, the proposed 'type-isolated coarsening' is simply applying the base method independently to each node type partition. The paper acknowledges this lineage (e.g., 'The AH-UGC pipeline closely follows the recently proposed structure of UGC...') but does not establish why these modifications constitute a significant novel contribution beyond an engineering implementation.",
+                "affected_claim": "The paper's central claim of being 'the first unified framework to support both adaptive and heterogeneous coarsening' and its associated technical novelty.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+                "severity": "major",
+                "evidence": "Theorem 3.1 and Lemma 1 aim to justify that the consistent-hashing merge process preserves locality. However, the analysis is incomplete and makes unrealistic assumptions. Theorem 3.1 only shows that the probability two points are projected close is related to their distance, but the subsequent clockwise merging process is not analyzed in the context of locality preservation. Theorem 3.2 ('Explicit Load Balance via Random Rightward Merges') assumes the sorted list of nodes is 'uniformly spaced over [0,1]' (line 532-533 in Appendix C). This is a very strong and unjustified assumption about the distribution of LSH hash scores; it does not hold in general, rendering the load-balance guarantee potentially invalid. The soundness of the core algorithmic guarantees is therefore questionable.",
+                "affected_claim": "The theoretical foundation of the AH-UGC method, specifically the guarantees regarding locality preservation during merging and balanced super-node formation.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claims regarding the theoretical properties of the algorithm are not technically sound. The proof for load balancing (Theorem 3.2) relies on an unjustified assumption of uniform spacing of LSH scores. The connection between the LSH projection guarantees (Theorem 3.1) and the locality-preserving property of the specific consistent hashing merge procedure is not rigorously established. This undermines confidence in the formal claims of the method."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The proposed method is a direct and conceptually simple combination of existing techniques: LSH-based coarsening (UGC), consistent hashing for adaptive levels, and type-isolated processing for heterogeneity. While the unified application to both problems is a contribution, the core algorithmic ideas lack sufficient novelty for a top-tier conference. The paper does not introduce a fundamentally new paradigm or insight for graph coarsening."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The practical significance of achieving adaptive and heterogeneous coarsening simultaneously is clear. However, given the lack of major algorithmic novelty and the soundness issues, the demonstrated contribution is not of the caliber expected for a top-tier machine learning conference. The empirical gains over methods like UGC, while impressive in runtime, appear to be incremental improvements derived from the specific adaptive mechanism rather than a foundational advance."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is comprehensive, covering 23 datasets, multiple metrics (runtime, spectral error, node classification accuracy), and comparisons against numerous strong baselines. The results consistently show AH-UGC is faster and often matches or exceeds baselines in quality. However, the evaluation does not fully isolate the benefit of the adaptive component alone (e.g., comparing to running UGC multiple times) or rigorously analyze the trade-offs introduced by the consistent hashing merge strategy."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-structured and clearly written. The problem is well-motivated, the method is described in detail with algorithms and figures, and the experiments are presented comprehensively. The clarity facilitates assessment of the work's strengths and weaknesses."
+              }
+            },
+            "summary_comment": "AH-UGC addresses two important practical limitations in graph coarsening: adaptive multi-resolution generation and semantic preservation for heterogeneous graphs. The paper is well-written and includes an extensive empirical evaluation demonstrating strong performance. However, for a top-tier conference, the work falls short on core criteria. The algorithmic contributions are incremental, building straightforwardly on prior work (UGC) by incorporating consistent hashing and type partitioning. More critically, the theoretical analysis contains unsound elements, such as an unjustified uniform spacing assumption in a key proof. While the empirical results are promising, the lack of significant novelty and the technical soundness issues prevent the paper from meeting the high standard required for acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 2,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Clear identification of practical limitations in existing graph coarsening methods: lack of adaptive multi-resolution coarsening and lack of semantic preservation for heterogeneous graphs.",
+              "The proposed framework, AH-UGC, presents a unified approach that aims to solve both adaptive and heterogeneous coarsening challenges, which is an ambitious and well-motivated goal.",
+              "Extensive experimental evaluation on a large number (23) of diverse real-world datasets, demonstrating strong empirical performance in runtime, spectral preservation, and node classification tasks."
+            ],
+            "weaknesses": [
+              "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+              "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+              "The evaluation, while extensive, does not convincingly separate the contributions of the adaptive component from the heterogeneous component, and the claimed superiority over baselines like UGC requires deeper analysis."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+                "severity": "major",
+                "evidence": "The author's rebuttal acknowledges building on UGC and describes the innovations as 'non-trivial,' but does not provide evidence from the submitted paper demonstrating fundamental algorithmic novelty beyond combining existing techniques. The response emphasizes practical utility but does not counter the assessment that the core ideas (consistent hashing for adaptive levels, type-isolated processing) are straightforward applications of known concepts to the graph coarsening problem.",
+                "affected_claim": "The paper's central claim of being 'the first unified framework to support both adaptive and heterogeneous coarsening' and its associated technical novelty.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+                "severity": "major",
+                "evidence": "The author's response acknowledges the uniform spacing assumption in Theorem 3.2 is problematic ('may not hold exactly in practice') and suggests the theoretical analysis should be viewed as 'providing intuition rather than strict guarantees.' This admission confirms the soundness issue remains unresolved in the submitted work. The response also does not address the incomplete connection between Theorem 3.1 and the locality preservation claims for the merging process.",
+                "affected_claim": "The theoretical foundation of the AH-UGC method, specifically the guarantees regarding locality preservation during merging and balanced super-node formation.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author's response acknowledges the theoretical weaknesses, particularly the unjustified uniform spacing assumption in Theorem 3.2, and suggests treating the analysis as 'intuition rather than strict guarantees.' This admission confirms the technical soundness issues remain unresolved in the submitted paper. The connection between LSH projection guarantees and the specific merging procedure's locality preservation remains inadequately established."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The response emphasizes practical utility but does not provide evidence from the submitted paper demonstrating fundamental algorithmic novelty beyond combining LSH coarsening (UGC) with consistent hashing and type partitioning. While the unified application to both adaptive and heterogeneous problems is valuable, the core technical contributions remain incremental extensions of existing techniques rather than novel paradigms."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "Despite strong empirical results, the lack of major algorithmic novelty and unresolved soundness issues limit the paper's significance for a top-tier conference. The author's response focuses on practical utility but does not elevate the contribution beyond what the submitted evidence supports."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The comprehensive experimental evaluation across 23 datasets remains a strength. The author's response does not introduce new evidence, but the existing evaluation adequately demonstrates practical performance advantages."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured. The author's response does not affect this assessment."
+              }
+            },
+            "summary_comment": "The author's response acknowledges the theoretical weaknesses in the paper, particularly the problematic assumptions in Theorem 3.2, but does not resolve them with evidence from the submitted work. While the response emphasizes practical utility, it does not substantiate claims of fundamental novelty beyond combining existing techniques. The extensive empirical evaluation remains a strength, but the unresolved soundness issues and lack of significant algorithmic novelty prevent the paper from meeting top-tier conference standards. The admission that theoretical guarantees should be treated as 'intuition' rather than rigorous analysis is particularly concerning for a methods paper claiming technical contributions."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Insufficient algorithmic novelty: Combinations of LSH with consistent hashing and type-isolated partitioning are straightforward extensions of existing techniques\",\n        \"Technical soundness concerns: Proofs contain flawed assumptions (particularly Theorem 3.2's uniform spacing assumption) and incomplete analysis of locality preservation\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Theoretical analysis limitations and unjustified assumptions\",\n          \"location\": \"Section 3.1, Theorem 3.2, Appendix C\",\n          \"explanation\": \"The paper acknowledges that the analysis in Theorem 3.2 models the sorted list of nodes as uniformly spaced over [0,1] (Appendix C, lines 532-533). This assumption is explicitly stated but may not hold generally for real-world LSH score distributions.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Unjustified uniform spacing assumption in Theorem 3.2\",\n          \"proposed_change\": \"Revise the theoretical analysis to provide load balance guarantees that do not rely on the uniform spacing assumption, potentially using concentration inequalities for LSH score distributions or empirical validation of the assumption's reasonableness\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Incomplete analysis of locality preservation in merging process\",\n          \"proposed_change\": \"Strengthen the theoretical connection between Theorem 3.1 and the clockwise merging strategy, potentially with additional analysis showing how adjacent nodes in the sorted list tend to maintain similarity relationships\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. We address the concerns regarding novelty and theoretical soundness below.\\n\\nRegarding novelty: While AH-UGC builds on the foundation of UGC [4], it introduces several non-trivial innovations beyond a straightforward combination. The integration of consistent hashing transforms single-shot LSH coarsening into an adaptive framework that enables efficient multi-resolution graph generation without reprocessing. This is fundamentally different from simply running UGC multiple times, as it maintains consistency across resolutions through a unified projection and merge history. For heterogeneous graphs, type-isolated coarsening is not merely partitioning—it requires developing novel formulations for cross-type edge aggregation (Equation in Section 3.2) and handling varying feature dimensions across types. Our framework represents the first unified approach that simultaneously addresses adaptive, streaming, heterogeneous, and heterophilic graph coarsening, as validated by the comprehensive evaluation across 23 diverse datasets.\\n\\nRegarding theoretical soundness: We acknowledge the reviewer's concern about the uniform spacing assumption in Theorem 3.2. While this assumption provides a clean analytical framework for understanding load balance properties, we recognize it may not hold exactly in practice. However, our extensive empirical evaluation (Tables 1-4) demonstrates that the method achieves excellent practical load balance across all 23 datasets, with supernode sizes remaining well-controlled even on large-scale graphs like Reddit and Yelp. The theoretical analysis should be viewed as providing intuition rather than strict guarantees, and we will revise the presentation to clarify this distinction and potentially explore alternative analytical approaches in future work.\\n\\nFor the locality preservation analysis, Theorem 3.1 establishes that similar nodes are likely to be projected close together. The clockwise merging strategy ensures that these adjacent similar nodes are preferentially merged. While a more detailed analysis of how the merging process affects locality bounds would be valuable, the empirical results (Figure 3, spectral preservation metrics in Table 2, and node classification performance) strongly validate that the method effectively preserves structural and semantic properties across diverse graph types.\\n\\nWe believe the empirical strength of AH-UGC—demonstrating superior scalability while maintaining or improving performance across homophilic, heterophilic, homogeneous, and heterogeneous graphs—outweighs the limitations in the theoretical analysis, especially given the practical utility of the adaptive and heterogeneous capabilities we introduce.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 2,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Clear identification of practical limitations in existing graph coarsening methods: lack of adaptive multi-resolution coarsening and lack of semantic preservation for heterogeneous graphs.",
+              "The proposed framework, AH-UGC, presents a unified approach that aims to solve both adaptive and heterogeneous coarsening challenges, which is an ambitious and well-motivated goal.",
+              "Extensive experimental evaluation on a large number (23) of diverse real-world datasets, demonstrating strong empirical performance in runtime, spectral preservation, and node classification tasks."
+            ],
+            "weaknesses": [
+              "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+              "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+              "The evaluation, while extensive, does not convincingly separate the contributions of the adaptive component from the heterogeneous component, and the claimed superiority over baselines like UGC requires deeper analysis."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core technical contribution lacks sufficient novelty. The combination of LSH and consistent hashing for adaptive coarsening, and type-isolated partitioning for heterogeneous graphs, are conceptually straightforward extensions of well-known techniques.",
+                "severity": "major",
+                "evidence": "The author's second response continues to emphasize practical utility but does not provide new evidence from the submitted paper demonstrating fundamental algorithmic novelty. The description of 'novel capabilities' and 'non-trivial extension' remains unsupported by technical innovations in the submitted work. The integration of consistent hashing with LSH and type partitioning, while useful, remains conceptually straightforward rather than representing a significant theoretical or methodological advance.",
+                "affected_claim": "The paper's central claim of being 'the first unified framework to support both adaptive and heterogeneous coarsening' and its associated technical novelty.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The theoretical claims and proofs contain significant flaws and unjustified assumptions, undermining the technical soundness of the paper.",
+                "severity": "major",
+                "evidence": "The author's response acknowledges the problematic uniform spacing assumption in Theorem 3.2 and suggests rephrasing it as 'intuitive understanding rather than rigorous guarantee.' This admission confirms the theoretical soundness issues remain unresolved in the submitted work. The response also does not address the incomplete analytical connection between Theorem 3.1 and the locality preservation claims for the specific merging procedure.",
+                "affected_claim": "The theoretical foundation of the AH-UGC method, specifically the guarantees regarding locality preservation during merging and balanced super-node formation.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author's response acknowledges the theoretical weaknesses and proposes to rephrase Theorem 3.2 as providing 'intuitive understanding rather than rigorous guarantee,' confirming that the soundness issues are not resolved in the submitted paper. The admission that theoretical aspects 'require further refinement' underscores that the method lacks proper theoretical foundation."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The response emphasizes practical applications and 'novel capabilities' but does not provide evidence from the submitted paper demonstrating fundamental algorithmic novelty beyond combining existing techniques. The description of type-aware edge aggregation as 'non-trivial' is not supported by technical innovations in the submitted work."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the empirical results are strong, the lack of significant algorithmic novelty and unresolved theoretical soundness issues limit the paper's significance for a top-tier conference. The practical utility does not compensate for the fundamental limitations in technical contributions."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The comprehensive experimental evaluation across 23 datasets remains a strength of the paper. The empirical results demonstrate practical utility despite the theoretical limitations."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured. The author's response does not affect this assessment."
+              }
+            },
+            "summary_comment": "The author's second response acknowledges the theoretical weaknesses but does not resolve them with evidence from the submitted paper. The proposal to rephrase theoretical guarantees as 'intuitive understanding' rather than rigorous analysis confirms the soundness issues remain problematic. While the practical utility and empirical results are commendable, the lack of significant algorithmic novelty and unresolved theoretical foundations prevent the paper from meeting the standards of a top-tier conference. The work represents a useful engineering contribution but falls short of the expected technical rigor and innovation for acceptance."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Insufficient algorithmic novelty: The combination of LSH with consistent hashing and type-isolated partitioning is viewed as straightforward application of existing techniques\",\n        \"Unresolved theoretical soundness issues: The uniform spacing assumption in Theorem 3.2 remains problematic and the connection between LSH projections and locality preservation in merging is incomplete\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Theoretical analysis limitations in Theorem 3.2\",\n          \"location\": \"Appendix C, Theorem 3.2\",\n          \"explanation\": \"The proof explicitly states the assumption that 'the sorted list of n nodes [is] uniformly spaced over [0,1]' (lines 532-533), which may not hold for real LSH score distributions\"\n        },\n        {\n          \"concern\": \"Empirical validation of theoretical properties\",\n          \"location\": \"Table 1, Figure 3, Table 2\",\n          \"explanation\": \"Despite theoretical limitations, the method demonstrates strong empirical performance in runtime efficiency (Table 1), projection space behavior (Figure 3), and spectral preservation (Table 2) across diverse datasets\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Theoretical assumptions in Theorem 3.2\",\n          \"proposed_change\": \"Rephrase Theorem 3.2 as providing intuitive understanding rather than rigorous guarantee, and add empirical validation of load balance properties across all 23 datasets in supplementary materials\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Clarification of novelty contributions\",\n          \"proposed_change\": \"More clearly articulate in the introduction and contribution sections how the integration of consistent hashing with LSH-based coarsening enables novel adaptive capabilities beyond simple combination, and how type-aware edge aggregation (Section 3.2) requires non-trivial formulation\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement and acknowledge the concerns about theoretical rigor and novelty perception. We address these points below.\\n\\nRegarding novelty: While AH-UGC builds on established techniques, the integration creates novel capabilities that go beyond simple combination. The consistent hashing approach enables truly adaptive coarsening where multiple resolutions can be generated from a single computation pass, which is fundamentally different from running UGC multiple times. This enables applications like interactive visualization and real-time recommendation systems that require dynamic resolution adjustment (Section 1). For heterogeneous graphs, our type-isolated coarsening with cross-type edge aggregation (Equation in Section 3.2) represents a novel formulation that preserves semantic relationships while handling varying feature dimensions—a non-trivial extension beyond simple partitioning.\\n\\nRegarding theoretical soundness: We agree that the uniform spacing assumption in Theorem 3.2 is a simplification. However, the empirical results across 23 datasets demonstrate that the method achieves excellent practical load balance (supernode size distributions in Table 1 show consistent performance across scales). The theoretical analysis should be viewed as providing intuition for why the method works well in practice, rather than as rigorous mathematical guarantees. We will revise the presentation to clarify this distinction and emphasize the empirical validation.\\n\\nThe connection between LSH projections (Theorem 3.1) and locality preservation is supported by both theory and evidence: Theorem 3.1 shows that similar nodes are likely to be projected close together, and the clockwise merging strategy ensures these adjacent nodes are merged. Figure 3 provides empirical validation of the projection behavior, while Tables 2-4 demonstrate that structural and semantic properties are effectively preserved across diverse graph types.\\n\\nWe believe the practical significance of AH-UGC—demonstrating the first unified framework that simultaneously supports adaptive, streaming, heterogeneous, and heterophilic graph coarsening with strong empirical results across 23 datasets—represents a substantial contribution to the field, even if some theoretical aspects require further refinement.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_bc3129d298e6",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/neurips_reject_2025_012_ah_ugc_underline_text_a_daptive_and_underline_text_h_eterogeneous_underline_text.md",
+    "target_paper_summary": {
+      "paper_id": "paper_bc3129d298e6",
+      "title": "Ah-Ugc: Adaptive And Heterogeneous-Universal Graph Coarsening",
+      "abstract": "1 **Graph Coarsening (GC)** is a prominent graph reduction technique that com2 presses large graphs to enable efficient learning and inference. However, existing 3 GC methods generate only one coarsened graph per run and must recompute from 4 scratch for each new coarsening ratio, resulting in unnecessary overhead. Moreover, 5 most prior approaches are tailored to *homogeneous* graphs and fail to accommodate 6 the semantic constraints of *heterogeneous* graphs, which comprise multiple node 7 and edge types. To overcome these limitations, we introduce a novel framework 8 that combines Locality-Sensitive Hashing (LSH) with Consistent Hashing to en9 able *adaptive graph coarsening*. Leveraging hashing techniques, our method is 10 inherently fast and scalable. For heterogeneous graphs, we propose a *type-isolated* 11 *coarsening* strategy that ensures semantic consistency by restricting merges to 12 nodes of the same type. Our approach is the first unified framework to support both 13 adaptive and heterogeneous coarsening. Extensive evaluations on 23 real-world 14 datasets—including homophilic, heterophilic, homogeneous, and heterogeneous 15 graphs demonstrate that our method achieves superior scalability while preserving 16 the structural and semantic integrity of the original graph. Our code is available 17 here.\n\n18 1 **Introduction**\n19 Graphs are ubiquitous and have emerged as a fundamental data structure in numerous real-world 20 applications [1–3]. Broadly, graphs can be categorized into two types: (a) *Homogeneous graphs* 21 [4–6], which consist of a single type of nodes and edges. For instance, in a homogeneous citation 22 graph, all nodes represent papers, and all edges represent the \"cite\" relation between them; (b) 23 *Heterogeneous graphs* [7–9], which involve multiple types of nodes and/or edges, enabling the 24 modeling of richer and more realistic interactions. For example, in a recommendation system, a 25 heterogeneous graph may contain nodes of different types, such as users, items, and categories, and 26 edge types such as \"(user, buys, item)\", \"(user, views, item)\", and \"(item, belongs-to, category)\".\n\n27 Although many real-world datasets are inherently heterogeneous, early research in graph machine 28 learning predominantly focused on homogeneous graphs due to their modeling simplicity, availabil29 ity of standardized benchmarks, and theoretical tractability [10, 11]. However, the limitations of 30 homogeneous representations in capturing ",
+      "topic": "",
+      "claims": [
+        "we introduce a novel framework 8 that combines Locality-Sensitive Hashing (LSH) with Consistent Hashing to en9 able *adaptive graph coarsening*.",
+        "we propose a *type-isolated* 11 *coarsening* strategy that ensures semantic consistency by restricting merges to 12 nodes of the same type.",
+        "our method is 10 inherently fast and scalable.",
+        "Our approach is the first unified framework to support both 13 adaptive and heterogeneous coarsening.",
+        "our method achieves superior scalability while preserving 16 the structural and semantic integrity of the original graph."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 2,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 2,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a fundamentally novel 'erase-and-squeeze' paradigm by relaxing the implicit assumption of uniform downsampling, offering a fresh approach to flexible image compression for IoT/edge devices.",
+        "Proposes a creative conditional uniform-based sampler that enables granular, adaptive compression levels, a significant step forward from fixed-ratio methods like super-resolution.",
+        "Designs a surprisingly lightweight (8.7MB) transformer architecture for reconstruction, effectively addressing the computational challenge introduced by the non-uniform sampling and making it suitable for real-world server-side deployment.",
+        "Demonstrates strong practical compatibility with existing compressors (e.g., JPEG, BPG) and shows measurable improvements in latency and resource consumption on a real-world edge testbed (NVIDIA Jetson TX2)."
+      ],
+      "weaknesses": [
+        "The mathematical formulation of the conditional sampler, particularly the constraints (δ, Δ), could be more rigorously derived or theoretically justified to strengthen the soundness of the proposed method.",
+        "The evaluation, while extensive, relies heavily on non-reference perceptual metrics (Brisque, Pi, Tres) which, although valid for the task, could be complemented by a deeper analysis or user studies to fully validate the claimed perceptual quality improvements against established methods."
+      ],
+      "summary_comment": "This paper presents a highly novel and ambitious framework that breaks from the conventional uniform downsampling paradigm for edge image compression. The core idea of the conditional erase-and-squeeze process is creative and offers significant flexibility. While some theoretical details of the sampler could be more solid, the overall approach is sound and the real-world evaluation on an edge testbed demonstrates tangible benefits in efficiency and adaptability. The lightweight transformer design is a clever solution to the reconstruction challenge. The work's novelty, practical significance in advancing edge computing, and promising experimental results strongly outweigh its minor imperfections. It has the potential to inspire new research directions in adaptive compression."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper addresses a relevant problem in edge computing by proposing a flexible compression framework that reduces computational load on edge devices.",
+        "The proposed conditional uniform-based sampler offers a novel approach to achieving variable compression ratios compared to fixed-ratio super-resolution methods.",
+        "The lightweight transformer architecture (8.7MB) is designed for efficient reconstruction on the receiver side, which is practical for real-world deployments."
+      ],
+      "weaknesses": [
+        "The mathematical formulation and constraints in the sampler (e.g., intra-row and inter-row constraints) are poorly defined and lack rigorous justification, raising concerns about soundness.",
+        "Experimental evaluation is insufficiently detailed; key details like dataset sizes, statistical significance of results, and comparison baselines are missing or unclear, undermining the validity of claims.",
+        "The paper fails to adequately address the computational complexity and practical feasibility of the two-stage patchify process, especially for high-resolution images."
+      ],
+      "summary_comment": "While the paper introduces an interesting idea for flexible image compression in IoT scenarios, it suffers from major methodological flaws. The mathematical reasoning is unclear and unsupported, the experimental evaluation lacks rigor (e.g., no error bars, incomplete baseline comparisons), and the claims of efficiency and superiority are not convincingly demonstrated. The soundness and evaluation are weak, leading to unreliable conclusions. Thus, I cannot recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "The paper addresses a relevant and practical problem of reducing computational load for neural image compression on IoT/edge devices.",
+        "The proposed framework, Easz, is designed to be compatible with existing compression algorithms, which increases its practical applicability.",
+        "The experimental evaluation includes real-world testbed measurements (e.g., latency, power consumption) on edge hardware like the NVIDIA Jetson TX2, which is valuable for practitioners."
+      ],
+      "weaknesses": [
+        "The paper suffers from severe clarity issues, including numerous formatting errors, incomplete sentences, placeholder text (e.g., lines 108-533 with numbers only), and confusing mathematical notation, making it difficult to assess the proposed method's technical details and contributions.",
+        "The evaluation is insufficiently convincing; key details are missing, such as the specific datasets used for certain results, the baseline implementation details, and a clear explanation of how the perceptual metrics (Brisque, Pi, Tres) relate to practical image quality for compression tasks."
+      ],
+      "summary_comment": "While the paper tackles an important problem and the idea of a flexible, lightweight compression framework for edge devices has merit, the current manuscript is hampered by critical flaws in clarity and presentation. The numerous formatting errors and unclear exposition prevent a thorough assessment of the technical soundness and the validity of the experimental results. The evaluation, while including some practical metrics, lacks the rigor and clarity needed to convincingly demonstrate the advantages over existing methods. A major revision focused on clarity, completeness, and a more robust experimental presentation is required before the paper can be considered for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's focus on 'machine learning systems' and 'optimization' for edge devices aligns with ICML's scope. The work involves an innovative sampler and a lightweight transformer, falling under core ML topics like optimization and deep learning architectures.",
+        "The paper presents a novel algorithmic contribution (conditional uniform-based sampler) and an efficient neural architecture, which are types of contributions valued at ICML.",
+        "The empirical evaluation includes efficiency metrics (latency, power, memory) on real hardware (Jetson TX2), demonstrating a practical systems-oriented contribution, which is welcome at ICML under the 'machine learning systems' track."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about methodological rigor and clarity (particularly from Reviewers B and C) pose a significant risk. ICML places high value on soundness and clear exposition, and weaknesses in these areas (e.g., poorly defined sampler constraints, presentation issues) could lead to a negative reception.",
+        "The application domain (IoT/edge image compression) is somewhat application-driven, but the core ML novelty might be perceived as incremental relative to the venue's high bar. The 'novelty' scores from reviewers are mixed (5, 3, 3), indicating it may not stand out strongly among ICML submissions.",
+        "The evaluation relies heavily on non-reference perceptual metrics. While relevant, ICML often expects rigorous benchmarking with standard metrics and thorough ablation studies. The reviewers pointed out weaknesses in the experimental evaluation's detail and justification."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The work fits well under 'SysML Infrastructure' and 'AI/ML for sustainability' (efficient computing). NeurIPS has a strong track record in systems-aware ML and efficient model design, making the lightweight transformer and edge-computation focus a good match.",
+        "NeurIPS values interdisciplinary work that bridges ML with real-world applications. The paper's motivation stems from practical IoT/edge computing challenges, aligning with the conference's broader scope.",
+        "The proposed method introduces a novel sampling paradigm and a compact transformer architecture, which are contributions in line with NeurIPS's interest in novel deep learning methods and efficient architectures."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer critiques on clarity and presentation (Reviewer C) are a major concern. NeurIPS submissions must be exceptionally clear and well-polished; formatting errors and unclear notation noted by reviewers would be heavily penalized.",
+        "The methodological soundness was questioned by Reviewer B (scores: novelty 3, soundness 2). NeurIPS places a premium on rigorous theoretical or empirical methodology, and perceived weaknesses here increase submission risk.",
+        "While the application is relevant, the core ML technique might be seen as more of an engineering/system integration solution rather than a foundational ML advance. The mixed novelty scores suggest it may not reach the very high bar for novelty at NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper's core technical contribution involves a transformer-based architecture for image reconstruction, which directly falls under ICLR's focus on deep learning, representation learning, and generative models.",
+        "The work on 'masked-image-modeling' for reconstruction is related to generative modeling and self-supervised learning, topics of high interest at ICLR.",
+        "The paper's application involves image compression and reconstruction, which aligns with ICLR's scope in computer vision and generative models for images."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's primary focus is on deep learning fundamentals, novel architectures, and theoretical understanding. This paper's main contribution is a flexible compression *framework* with a novel sampler; the transformer component is lightweight but not architecturally groundbreaking. This may not align with ICLR's expectation for deep learning core advances.",
+        "Reviewer concerns about soundness and evaluation (Reviewers B & C) are critical. ICLR is particularly stringent on methodological rigor, clear ablation studies, and reproducibility. Weaknesses here would likely lead to rejection.",
+        "The paper's motivation and evaluation are heavily geared towards systems efficiency and edge deployment. While ICLR has applications tracks, the primary lens is deep learning innovation. The work might be perceived as more of an applied systems contribution than a core deep learning contribution."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

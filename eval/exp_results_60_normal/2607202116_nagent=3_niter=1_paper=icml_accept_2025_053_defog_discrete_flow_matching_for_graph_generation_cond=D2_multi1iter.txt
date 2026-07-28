@@ -1,0 +1,124 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of disentangling training and sampling stages in graph generative models using Discrete Flow Matching (DFM) is highly novel and significantly addresses the rigidity of prior diffusion models. This opens a vast and valuable design space.",
+        "The theoretical grounding for the disentanglement, including the explicit relationship between training loss and sampling, and the bounds on approximation errors, provides a strong foundation for the framework's soundness.",
+        "The paper thoroughly explores the expanded design space, proposing innovative sampling methods (time-adaptive steps, target guidance, stochasticity adjustments) that demonstrably improve performance and efficiency, rather than just presenting the disentangled framework abstractly."
+      ],
+      "weaknesses": [
+        "While the theoretical bounds are provided, the exact implications of the O(ω) violation of the Kolmogorov equation due to target guidance could be discussed more deeply in the main paper, especially concerning its practical limits and potential trade-offs in different graph scenarios.",
+        "The hyperparameter optimization for sampling, described as a sequential sweep for each strategy, might not fully capture complex interactions between these strategies. A more sophisticated search could potentially yield even better results, but its absence is acknowledged as a limitation for future work."
+      ],
+      "summary_comment": "This paper presents DeFoG, a highly innovative graph generative framework that disentangles the training and sampling phases through a Discrete Flow Matching formulation. This decoupling is a significant conceptual leap, offering unprecedented flexibility in designing and optimizing sampling strategies without retraining the model. The theoretical underpinnings are sound, and the empirical results demonstrate state-of-the-art performance across diverse graph generation tasks, often with significantly fewer sampling steps. The exploration of the expanded design space with novel sampling techniques is particularly exciting and promises to inspire future research. While some minor points on the practical implications of theoretical bounds and the depth of hyperparameter interaction could be further elaborated, these do not detract from the paper's bold vision and substantial contributions to the field. I am enthusiastic about the potential impact of this work and recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a strong theoretical foundation for DeFoG, explicitly relating the training loss to the sampling algorithm and demonstrating that DeFoG can faithfully replicate the ground truth graph distribution. This theoretical grounding is critical for establishing the scientific validity of the proposed disentanglement.",
+        "The detailed exploration of the design space enabled by training-sampling disentanglement is a major strength. The authors propose novel sampling methods, including time-adaptive distortions, target guidance, and stochasticity adjustments, which significantly enhance performance and efficiency. This systematic investigation goes beyond a mere proposal of a new model.",
+        "The experimental evaluation is extensive and rigorous, covering synthetic, molecular, and digital pathology datasets for both unconditional and conditional generation. The results consistently demonstrate state-of-the-art performance and significant efficiency gains, often achieving comparable or superior results with substantially fewer sampling steps. The ablation studies further validate the impact of individual components."
+      ],
+      "weaknesses": [
+        "While the paper thoroughly explores the design space and proposes various sampling optimizations, the process by which the 'optimal values' for these optimizations are combined (as mentioned in Appendix B.4; 'The optimal values obtained for each strategy are combined to form the final configuration') lacks detailed justification. It is unclear if simply combining individually optimized parameters linearly leads to a globally optimal configuration, and more rigorous methods for combining these effects could be explored.",
+        "The scope of the 'Others' research area is a bit broad. While the paper clearly addresses graph generative models, more specific categorization might help in contextualizing its direct impact within a narrower sub-field, potentially missing some nuanced comparisons or discussions that might arise if it were placed in a more specialized category."
+      ],
+      "summary_comment": "This paper presents DeFoG, a novel graph generative framework that disentangles training and sampling. The theoretical underpinnings are robust, establishing the soundness of the disentanglement and the alignment between training loss minimization and accurate rate matrix estimation. The paper's strength lies in its meticulous exploration of the enhanced design space, proposing and experimentally validating several sampling optimization techniques that lead to state-of-the-art performance with high efficiency across diverse graph generation tasks. The empirical results are convincing and well-supported by extensive experiments and ablations. While the methodology for combining sampling optimizations could be more explicitly justified, the overall rigor of the work and the significance of its contributions are commendable. This work represents a notable advancement in discrete graph generative models, addressing key limitations of prior diffusion-based approaches."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of disentangling training and sampling in graph generative models is highly significant, addressing a major practical bottleneck in diffusion-based approaches. This flexibility allows for post-training optimization, which is greatly valuable for practitioners.",
+        "The paper provides a strong theoretical foundation for DeFoG, explicitly relating the training loss to sampling dynamics and ensuring the faithfulness of the generated distributions. This is critical for building trust in the practical application of the model.",
+        "The extensive experimentation across diverse datasets (synthetic, molecular, digital pathology) and the demonstration of state-of-the-art performance, especially with significantly fewer sampling steps, convincingly highlight the practical efficiency and effectiveness of DeFoG."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates the effectiveness of the proposed sampling methods, the hyperparameter optimization strategy (sequential sweep) might not guarantee the globally optimal configuration. A more robust, albeit computationally expensive, search could potentially yield even better results or provide deeper insights into the interplay of these parameters.",
+        "The discussion on the impact of different `RDB_t` designs for stochasticity could be more detailed in the main paper. While the appendix provides examples, a clearer explanation of how these specific designs influence practical outcomes or encode different priors would strengthen the paper's insights for practitioners."
+      ],
+      "summary_comment": "This paper presents DeFoG, a novel graph generative framework that effectively disentangles training and sampling. This disentanglement is a crucial practical advancement, allowing for significant post-training optimization and efficiency improvements, which is highly valued from an experienced practitioner's perspective. The theoretical grounding, coupled with strong experimental results demonstrating SOTA performance and efficiency across various graph types (including complex molecular and pathology data), makes a compelling case for its utility. The clarity of the problem statement and the proposed solutions are commendable. While the hyperparameter search strategy could be more exhaustive, the demonstrated practical gains are significant enough to warrant acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces DeFoG, a novel graph generative model leveraging discrete flow matching, a topic clearly aligned with ICML's focus on 'general machine learning' (generative models, semi-supervised learning) and 'deep learning' (architectures, generative models). The abstract explicitly mentions 'graph diffusion models' and 'flow-matching formulations'.",
+        "ICML values contributions in 'optimization' and 'probabilistic methods' (Bayesian methods, Monte Carlo methods). The paper's theoretical grounding of disentangled formulation relating training loss to sampling and addressing rate matrix estimation error fits these criteria well, as highlighted by Reviewer A's and B's comments on 'theoretical grounding' and 'soundness'.",
+        "The extensive experimental evaluation on synthetic, molecular, and digital pathology datasets for both unconditional and conditional generation demonstrates 'application-driven machine learning' in areas like healthcare and physical sciences, which ICML explicitly lists as important application areas. Reviewer B praises the 'extensive and rigorous' experimental evaluation.",
+        "The core contribution of disentangling training and sampling stages to enhance flexibility and efficiency, and proposing novel sampling methods, directly falls under 'general machine learning' and 'machine learning systems' (improved implementation and scalability), making it a strong fit for ICML.",
+        "The paper addresses the `Others` category but is clearly a foundational ML method, which ICML highly values. Reviewer A highlights the 'highly novel' idea and 'substantial contributions to the field'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, the 'Others' topic might initially be perceived as less direct than papers focusing solely on deep learning or a specific application, although the content quickly clarifies its relevance to generative modeling.",
+        "Reviewer A noted that the 'exact implications of the O(ω) violation of the Kolmogorov equation due to target guidance could be discussed more deeply in the main paper'. While theoretical, a deeper dive into such nuanced implications might be more aligned with a very purely theoretical venue, though ICML also accommodates such work.",
+        "Reviewer B mentioned that the 'methodology for combining sampling optimizations could be more explicitly justified'. This speaks to a potential area for further methodological rigor if the paper were to be pushed towards an even stronger theoretical bent in future work, but is not a major detractor for ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS explicitly lists 'general machine learning: core contributions in supervised and unsupervised methods' as a topic, and graph generative models fall squarely within this. The paper's focus on discrete flow matching for graphs is a 'new and original research' contribution.",
+        "The paper's deep dive into 'Probabilistic methods' and 'Optimization' aligns well with NeurIPS's stated topics. The theoretical analysis of the disentangled framework and the relation between training loss and sampling dynamics are highly relevant.",
+        "NeurIPS welcomes interdisciplinary submissions, including 'AI/ML for physical sciences' and 'AI/ML for health and biotechnology'. The application to molecular graph generation and digital pathology datasets (mentioned in abstract and experiments) makes it a good fit.",
+        "The paper explores 'new insights in terms of their limitations or behavior beyond the scope of the original work' by addressing the inefficiencies and limitations of existing graph diffusion models, directly aligning with NeurIPS's encouragement for in-depth analysis.",
+        "Reviewers strongly commend the 'novelty', 'soundness', and 'significance' of the work, which are highly valued at NeurIPS. Reviewer A highlights the 'unprecedented flexibility in designing and optimizing sampling strategies without retraining the model' as a significant conceptual leap."
+      ],
+      "why_it_does_not_fit": [
+        "While a strong fit, NeurIPS might have a slightly stronger emphasis on theoretical neuroscience or broad AI implications compared to ICML's somewhat broader ML scope. The paper is primarily a methodologic contribution in graph generative modeling.",
+        "Reviewer B noted that the 'process by which the 'optimal values' for these optimizations are combined...lacks detailed justification'. While acceptable, a NeurIPS audience, with its strong emphasis on methodological rigor, might scrutinize such aspects further for ultimate optimality guarantees, though the authors address it for future work.",
+        "The paper, while rigorous, doesn't explicitly frame its contributions within the 'socio-technical aspects of AI' or 'human interaction in AI systems', which are also listed NeurIPS topics. The 'Impact Statement' is present but brief and general."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR explicitly focuses on 'all aspects of deep learning', and DeFoG, as a graph generative model (a type of deep learning model as it builds upon graph transformers), aligns well with this scope. The mention of 'generative models' as a relevant topic is also a direct fit.",
+        "The paper's exploration of 'representation learning' (implicitly through graph generation) and 'optimization' for training and sampling processes are relevant to ICLR's listed topics.",
+        "ICLR values 'new and original research', and the proposed disentanglement of training and sampling using discrete flow matching for graphs is highly novel, as noted by all reviewers who used words like 'highly innovative' and 'significant conceptual leap'.",
+        "The paper's applications to 'robotics, autonomy, planning', 'neuroscience & cognitive science', and 'physical sciences' (molecular chemistry) are explicit topics of interest for ICLR, reflecting the versatility demonstrated in the experiments and abstract.",
+        "The strong emphasis on 'efficiency improvement' and 'sampling efficiency' which often relates to practical deployment and scalability, could attract ICLR reviewers who are interested in practical applications of deep learning. Reviewer C highlights the 'crucial practical advancement' and 'significant post-training optimization'."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is at its core, the paper's theoretical contributions on flow matching and CTMC, while rigorous, might be slightly less 'deep learning architecture' focused compared to some core ICLR papers that introduce entirely new neural network designs or training paradigms focused solely on deep nets.",
+        "The extensive theoretical validation, although excellent, might be foregrounded slightly less at ICLR, which sometimes has a stronger leaning towards empirical breakthroughs and novel models / architectures compared to the very deep theoretical underpinnings presented here.",
+        "Reviewer comments on the lack of exhaustive hyperparameter search ('might not fully capture complex interactions', 'could be more explicitly justified') could be a minor concern, as ICLR values strong empirical validation alongside novel ideas. The authors do acknowledge this as future work, which mitigates it.",
+        "The specific 'Others' topic labeling is quite broad for ICLR's more focused scope on deep learning, even if the content itself is highly relevant. This merely presents a slight framing challenge rather than a true content mismatch."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,122 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of combining VAEs with a black-box COP solver in the loop, using Fenchel-Young loss and perturbed optimizers for gradient estimation, is highly novel and addresses a significant challenge in learning structured representations.",
+        "The ability to learn disentangled, multimodal latent spaces for underlying COP costs without agent labels is a significant leap, allowing for the discovery of different 'agent behaviors' or conditions from raw observational data.",
+        "The paper demonstrates clear practical applications, such as path planning and Hamiltonian cycle inference, with both synthetic and real-world datasets, highlighting the model's interpretability and predictive power."
+      ],
+      "weaknesses": [
+        "While the concept of using a 'black-box solver' is powerful, the reliance on CPU-based solvers can be a practical bottleneck, especially for larger or more complex combinatorial problems, limiting scalability in some practical scenarios.",
+        "The quantitative evaluation, particularly for the prediction tasks on the ship dataset, is somewhat inconclusive due to high variance, and could benefit from more robust statistical analysis or additional baselines to firmly establish superiority."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach, IO-LVM, that pushes the boundaries of how we learn latent representations for solutions of constrained optimization problems. The integration of variational autoencoders with non-differentiable black-box COP solvers, facilitated by Fenchel-Young losses and perturbed optimizers, is a clever and forward-thinking solution to a challenging problem. The most compelling aspect is the model's capacity to infer distinct underlying costs and multimodal behaviors from unlabelled data, which is a major step towards interpreting complex decision-making processes. Although there are some minor methodological points, like the CPU-based solver limitation and some variability in evaluation results, these do not overshadow the significant novelty and potential impact of the core idea. This work is highly significant and opens up new avenues for research in inverse optimization and interpretable AI. It's exactly the kind of bold, innovative research that should be encouraged."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously addresses the challenging problem of learning latent representations for Constrained Optimization Problems (COPS) with unknown cost functions, especially for discrete and combinatorial problems like path and cycle finding. The use of a black-box COP solver in the loop, combined with Fenchel-Young loss and perturbed gradients, is a sound methodological choice for handling non-differentiability and ensuring feasibility.",
+        "The proposed IO-LVM effectively constructs an interpretable low-dimensional latent space that disentangles different underlying cost structures, even without explicit agent labels. This is demonstrated through compelling visualizations on both synthetic and real-world datasets (Waxman graphs and ship routing data), showing distinct clusters for different agents or ship types.",
+        "The evaluation is comprehensive, covering both qualitative and quantitative aspects. The comparisons with VAEs and a Perturbed Optimizer baseline (PO) highlight the benefits of IO-LVM in robust path/cycle reconstruction and distribution prediction, particularly its ability to guarantee feasible outputs.",
+        "The analysis of the `beta` parameter's effect (Table 3) provides a valuable insight into the trade-off between denoising and reconstruction accuracy, showing a clear understanding of the model's behavior and the VAE framework's components."
+      ],
+      "weaknesses": [
+        "While the experimental setup is reasonably comprehensive, the quantitative results for the \"Prediction of Ship Dataset\" (Table 2) show only a marginal improvement over the PO baseline, with a high variance. A more in-depth discussion on the reasons for this limited improvement and methods to enhance predictive power in such complex scenarios would strengthen the paper.",
+        "The computational cost associated with running COP solvers (Dijkstra, TSP solver) in the training loop, even with SGD and a single solver run per sample, could become a significant bottleneck for larger graphs or more complex optimization problems. While stated that experiments were run on CPU due to this bottleneck, a more detailed analysis or discussion of scalability limitations and potential strategies to mitigate them for very large-scale problems would be beneficial."
+      ],
+      "summary_comment": "This paper presents a robust and well-justified approach for learning latent representations of COP costs, specifically for graph-based path and cycle problems. The core methodological contribution of integrating a black-box solver with Fenchel-Young loss and perturbed gradients to handle non-differentiable combinatorial problems is sound. The experimental evaluation is thorough, demonstrating the model's ability to create interpretable latent spaces and reconstruct feasible solutions effectively. While there are some areas where the performance gains or scalability could be further investigated, the overall rigor and contribution to the field are strong."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant challenge in learning structured outputs, particularly in cases involving multiple agents or varied contexts, which is highly relevant for real-world applications like path planning. The ability to learn from unlabeled data containing diverse behaviors is a strong practical advantage.",
+        "The proposed IO-LVM effectively integrates a black-box COP solver into a VAE-like framework, leveraging Fenchel-Young loss to handle non-differentiable operations. This is a clever and sound approach to guarantee solution feasibility and optimality.",
+        "The qualitative and quantitative evaluations on both synthetic and real-world ship routing datasets demonstrate the practical utility of the method. The latent space analysis, particularly its ability to disentangle agent behaviors and infer unobserved factors (like ship width), highlights the interpretability and power of the learned representations."
+      ],
+      "weaknesses": [
+        "While the paper highlights the advantage of using a black-box solver, training still involves running the COP solver once per data sample per epoch, which can be computationally intensive for large-scale problems or complex COPs. A more detailed discussion on the practical computational cost and scalability limitations would be beneficial.",
+        "The discussion on the impact of the beta parameter (Section 4.5) is informative but could benefit from more detailed analysis on how to optimally select beta in practice, especially for real-world scenarios where the trade-off between denoising and reconstruction might be application-specific."
+      ],
+      "summary_comment": "This paper presents IO-LVM, a novel and practically relevant approach for learning latent representations of cost functions in constrained optimization problems, specifically for graph-based path and cycle planning. The method's core strength lies in its ability to handle non-differentiable black-box solvers and learn from diverse agent behaviors without explicit labeling, which is a common challenge in applied settings. The use of Fenchel-Young loss and the black-box solver in the loop ensures feasible and optimal structured outputs, addressing a key limitation of traditional VAEs. The empirical evaluations on synthetic and real-world ship data robustly demonstrate the model's capacity for disentangling latent factors, accurate reconstruction, and distribution prediction. While acknowledging the potential computational intensity of the solver in the loop, the practical significance and clear communication of the method make it a valuable contribution to the field."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core topic of general machine learning, especially in learning latent generative representations for constrained optimization problems (COPs) and inverse optimization, aligns well with ICML's stated interests. The paper specifically mentions 'general machine learning', 'deep learning (architectures, generative models, theory, etc.)', and 'optimization (stochastic, online, non-smooth, composite, etc.)' which are directly addressed by IO-LVM.",
+        "The methodological contribution, combining VAEs with black-box COP solvers and leveraging Fenchel-Young losses for gradient estimation in non-differentiable settings, represents a significant technical advancement appropriate for ICML. Reviewer A highlights this as 'highly novel' and addressing a 'significant challenge'.",
+        "The paper's focus on structured prediction, combinatorial optimization, and differentiable optimization techniques (e.g., estimating gradients through non-differentiable solvers) is a recognized area of interest in ICML, as evidenced by references to related work by Amos & Kolter (2017) and Berthet et al. (2020), which have appeared in similar venues.",
+        "The application to graph-based planning problems (paths and cycles inference) and real-world ship routing data showcases 'application-driven machine learning' with innovative techniques, which is explicitly listed as an ICML topic. Reviewer C notes the practical relevance for real-world applications.",
+        "The comprehensive evaluation, including qualitative and quantitative results on synthetic and real-world datasets, against relevant baselines (VAEs, PO), demonstrates rigor suitable for ICML. The analysis of the beta parameter's effect also showcases thoroughness, as noted by Reviewer B."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's theoretical contributions are strong, the reliance on CPU-based COP solvers, identified as a practical bottleneck by Reviewers A, B, and C, could be seen as a limitation in scalability for very large-scale machine learning systems, which ICML often values.",
+        "Reviewer A noted that the quantitative evaluation for the ship dataset was 'somewhat inconclusive due to high variance', suggesting an area where the empirical validation might be less robust than ideally expected for a top-tier conference like ICML, although they still deemed the overall contribution highly significant."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core contribution of learning latent representations for constrained optimization problems, particularly using probabilistic methods (VAEs) and optimization techniques, aligns very well with NeurIPS topics such as 'General machine learning: core contributions in supervised and unsupervised methods', 'Probabilistic methods', and 'Optimization'.",
+        "The interdisciplinary nature of combining deep generative models with combinatorial optimization solvers, especially for graph-based problems, fits NeurIPS's welcoming of 'interdisciplinary submissions that do not fit neatly into existing categories'.",
+        "The application of AI/ML to physical sciences (e.g., ship routing data in the 'AI/ML for physical sciences' or general 'application-driven machine learning' categories) and the focus on decision-making processes for agents (related to 'Decision-making, reinforcement learning, and control') are highly relevant to NeurIPS.",
+        "The model's ability to create interpretable low-dimensional latent spaces and disentangle different underlying cost structures from unlabeled data contributes to 'in-depth analysis of existing methods that provide new insights' and has implications for 'Socio-technical aspects of AI' by understanding decision-making. Reviewer B specifically highlights the 'interpretable low-dimensional latent space'.",
+        "The rigorous methodological development of handling non-differentiable solvers using Fenchel-Young loss and perturbed optimizers is precisely the kind of sound theoretical and algorithmic contribution NeurIPS seeks, as validated by all reviewers on 'soundness'."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the practical computational constraints imposed by the CPU-based COP solvers, impacting scalability, might be a minor concern for some NeurIPS reviewers, especially given the emphasis on 'SysML Infrastructure' and large-scale applications.",
+        "While the paper provides strong contributions, the 'Prediction of Ship Dataset' results, as noted by Reviewer B, show 'only a marginal improvement over the PO baseline' with high variance, which could be seen as a slight weakness in empirical strength for a highly competitive venue like NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's methodological foundation, being an extension of Variational Autoencoders (VAEs) to handle constrained optimization problems, directly falls under ICLR's primary focus on 'deep learning' and 'generative models'. The use of 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' is also a direct fit.",
+        "The core problem of learning latent representations for structured outputs, especially in the context of discrete optimization, is a cutting-edge aspect of deep learning and relevant to ICLR topics like 'representation learning for computer vision, audio, language, and other modalities' (interpreted broadly to include graph structures).",
+        "The technique of leveraging Fenchel-Young losses and perturbed optimizers to differentiate through non-differentiable components of the model is a significant contribution to 'optimization' and 'learning theory' within deep learning, which ICLR values. This addresses the challenge of making deep models compatible with combinatorial solvers.",
+        "The qualitative and quantitative experiments, specifically comparing IO-LVM against VAEs and demonstrating VAE failures in generating feasible outputs, provide direct evidence for why the proposed deep learning architecture is superior for these types of problems. Reviewer B explicitly mentions the comparisons with VAEs.",
+        "The applications to robotics and planning ('applications to robotics, autonomy, planning') such as path planning and cycle inference, further tie into ICLR's interest in practical deep learning applications."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central, the paper alsoleans heavily into combinatorial optimization and inverse optimization theory which, without a stronger emphasis on novel deep learning architectural components beyond a VAE adaptation with a solver, might be slightly less 'deep learning-centric' than some other ICLR papers. The neural network architecture itself is described as 'not having any special implementations' (Appendix B), with 4 hidden layers of 1000 neurons, which is standard rather than a novel deep learning architecture.",
+        "The computational bottleneck of running COP solvers on CPU, repeatedly mentioned by reviewers, presents a practical challenge for scalability in deep learning contexts, which often anticipate GPU acceleration and large-scale parallel processing. This might be viewed as a limitation given ICLR's interest in 'infrastructure, software libraries, hardware, etc.' for deep learning.",
+        "The quantitative improvements over baselines, especially for the ship dataset and prediction tasks, are not always dramatically superior, as observed by Reviewers A and B. While IO-LVM ensures feasibility, the predictive performance itself is only marginally better than PO, which might be a point of critique in a deep learning conference known for strong empirical results."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

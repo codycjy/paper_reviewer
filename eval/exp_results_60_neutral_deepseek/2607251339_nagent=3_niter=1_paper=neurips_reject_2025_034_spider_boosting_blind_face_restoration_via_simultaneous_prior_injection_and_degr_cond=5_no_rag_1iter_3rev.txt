@@ -1,0 +1,117 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a genuinely novel 'simultaneous prior injection and degradation removal' (SPIDER) paradigm, a significant conceptual shift from prior sequential pipelines in blind face restoration.",
+        "Proposes innovative technical components, including the cross-modal Degradation Removal Module (DRM) that maps visual noise to textual embeddings for filtering and the Decoupled Cross Attention mechanism.",
+        "Demonstrates compelling results on extremely challenging real-world surveillance data (SCface), showing superior robustness under severe degradations where existing methods fail."
+      ],
+      "weaknesses": [
+        "The paper's explanation of why injecting prior *before* degradation removal is more effective, while supported by ablation, relies on intuitive reasoning ('amplifies signal and noise'); a deeper theoretical or experimental justification would strengthen the core claim.",
+        "The reliance on an external model (GFPGAN) to preprocess LQ inputs for LLaVA text generation during inference is a significant implementation dependency, raising questions about the method's standalone capability and efficiency."
+      ],
+      "summary_comment": "This paper presents a bold and novel paradigm (SPIDER) for blind face restoration by inverting the conventional order of operations, injecting semantic prior before performing degradation removal. This conceptual innovation, coupled with well-designed cross-modal modules (DRM, DCA), leads to impressive performance gains, particularly on severe real-world degradations where state-of-the-art methods struggle. While some implementation choices and justifications could be more deeply explored, the core idea is fresh and impactful. The work opens a new direction for restoration tasks, successfully pushing the field forward as evidenced by strong experimental validation. The novelty and significance are clear and substantial, meriting acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Methodological rigor: The paper proposes a well-defined two-stage training process (DRM training followed by joint training) and a novel Decoupled Cross Attention mechanism. The ablation studies systematically justify design choices (order of operations, prompt design, DRM effectiveness).",
+        "Comprehensive and convincing evaluation: Extensive experiments on synthetic (CelebA-Test) and multiple real-world datasets (LFW, WIDER, SCface) using a broad suite of metrics (PSNR, SSIM, LPIPS, FID, MANIQA, CLIPIQA). Results show clear superiority or competitiveness against SOTA methods, especially under severe degradations.",
+        "Technical insight and analysis: The t-SNE visualization provides compelling evidence for the DRM's mechanism, showing it projects features into a degradation-invariant space. The paper offers a clear rationale for injecting semantic prior before degradation removal to amplify signal and noise for better separation."
+      ],
+      "weaknesses": [
+        "Clarity of technical details: The description of the Degradation Mapper and Remover architectures is somewhat high-level. While the loss functions are given, more specifics on the network components (e.g., number of layers, specific projection modules) would aid reproducibility and assessment.",
+        "Limited discussion of computational cost and inference speed: The method relies on a large VLM (LLaVA) and a diffusion model. The computational burden and practical runtime for inference are not discussed, which is important for assessing the method's applicability in real-time scenarios."
+      ],
+      "summary_comment": "The paper presents SPIDER, a novel and methodologically sound approach for blind face restoration. The core idea—simultaneous prior injection and degradation removal—is well-motivated and demonstrated to be effective through rigorous experiments. The evaluation is comprehensive and convincing, showing strong performance, particularly on challenging real-world and surveillance datasets. The ablation studies and feature-space analysis provide solid evidence supporting the design choices. While some architectural details could be clearer and computational costs are not addressed, the overall soundness, evaluation, and incremental but significant contribution justify acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper clearly identifies a practical problem (performance drop under severe degradations) and proposes a well-motivated, novel paradigm (SPIDER) to address it. The core insight of injecting prior before degradation removal is well-argued.",
+        "Extensive and convincing experimental validation across multiple datasets (synthetic, real-world mild/heavy, and extreme surveillance) demonstrates clear practical superiority over SOTA methods. The use of SCface for extreme degradation is particularly relevant.",
+        "The paper is exceptionally clear and well-structured. The motivation, method, experiments, and analysis are all presented in a way that is easy to understand for both researchers and practitioners. The ablation studies provide strong evidence for design choices.",
+        "The method demonstrates strong practicality and relevance for challenging real-world applications like surveillance, which is a key concern for applied researchers."
+      ],
+      "weaknesses": [
+        "While the paradigm is novel, some components (using VLMs for semantic prior, CLIP-based cross-modal mapping) are built upon recent established techniques. The specific combination and ordering are the main novelty.",
+        "The reliance on an external, frozen VLM (LLaVA) and a preprocessing step (GFPGAN) for the text prior branch during inference adds complexity to the practical deployment pipeline, though the performance gains likely justify it."
+      ],
+      "summary_comment": "This is a strong paper that aligns perfectly with a practical research perspective. SPIDER tackles a well-defined and important problem in blind face restoration (severe degradations) with a convincingly motivated new paradigm. The approach is sound, the experiments are comprehensive and fair, using multiple benchmarks including a highly relevant extreme surveillance dataset. The results show clear improvements over SOTA methods. The paper is very clearly written, making its contributions and methodology easy to understand and likely to be impactful for both research and practical applications. The strengths far outweigh the minor weaknesses."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The topic of blind face restoration using generative models (diffusion, GANs) aligns with ICML's interests in deep learning and computer vision applications.",
+        "The paper introduces novel algorithmic components (Decoupled Cross Attention, cross-modal DRM) that fit ICML's focus on machine learning methodology.",
+        "Rigorous evaluation with comprehensive metrics and ablation studies matches ICML's standards for empirical validation."
+      ],
+      "why_it_does_not_fit": [
+        "The work is highly application-focused (face restoration) rather than core ML theory, which may be less aligned with ICML's preference for foundational contributions.",
+        "Reviewer B noted insufficient architectural details, which could be a concern for ICML's technical rigor expectations.",
+        "The reliance on external models (LLaVA, GFPGAN) makes it more engineering-heavy than typical ICML papers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS has strong representation in diffusion models, generative AI, and vision-language models—all central to SPIDER's methodology.",
+        "The novel paradigm (simultaneous prior injection) represents conceptual innovation valued at NeurIPS.",
+        "Comprehensive evaluation across synthetic/real-world datasets, including challenging surveillance scenarios, fits NeurIPS's interest in robust AI.",
+        "Reviewers praised the paper's clarity and practical significance, aligning with NeurIPS's broad interdisciplinary audience."
+      ],
+      "why_it_does_not_fit": [
+        "Some components (e.g., CLIP-based mapping) build on established techniques rather than introducing entirely new foundations.",
+        "Computational cost of VLM/diffusion inference is not discussed, which could be a minor gap given NeurIPS's growing emphasis on efficiency."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR's focus on deep learning and generative models (especially diffusion) aligns perfectly with SPIDER's technical core.",
+        "The paper's innovations in diffusion-based restoration (DCA, DRM) are well-suited to ICLR's audience.",
+        "Strong empirical results on perceptual metrics (LPIPS, FID) match ICLR's emphasis on generative quality."
+      ],
+      "why_it_does_not_fit": [
+        "The application domain (face restoration) is narrower than ICLR's typical scope, which often prioritizes generalizable deep learning advances.",
+        "Limited theoretical analysis (noted by Reviewer 1) may weaken fit for ICLR's preference for conceptual depth."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

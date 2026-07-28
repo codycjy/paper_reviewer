@@ -1,0 +1,706 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 5,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "Resolves a long-standing open problem by establishing a tight quadratic (Θ(√d)) gap between transductive and standard online learning, settling a 30-year question about the value of unlabeled data.",
+        "Presents a complete quantitative picture: an optimal lower bound of Ω(√d) for all classes and a matching upper bound via a constructive class with O(√d) transductive mistake bound, improving exponentially on prior best known bounds.",
+        "Technical contributions are substantial and clever, involving a sophisticated adversary analysis and a complex learner construction using danger zone minimization, splitting experts, and probabilistic class design.",
+        "The paper is exceptionally well-written, with a clear technical overview that provides excellent intuition before detailed proofs, making complex ideas accessible."
+      ],
+      "weaknesses": [
+        "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+        "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+          "severity": "minor",
+          "evidence": "The paper states in Section 3 (Directions for Future Work): '1. Does there exist an efficient learning algorithm that achieves the O(√d) upper bound of Theorem D.1?' The learner algorithm (Algorithms 5, 6a, 6c) uses multiplicative weights over a potentially exponential (in √d) number of splitting experts and simulates processes on a tree of size 2^d.",
+          "affected_claim": "The claim of the existence of a class learnable with O(√d) mistakes is not affected, as the paper provides an existential proof. The claim about algorithm efficiency is not made.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap.",
+          "severity": "minor",
+          "evidence": "Theorem D.1 states the constructed class H has domain size |X| = 2^d - 1. Section 3 (Future Work) asks: '2. Is there a tradeoff between the cardinality of the domain X and the upper bound on the number of mistakes? ... Is it possible to get the same bound with a domain of size poly(d)?'",
+          "affected_claim": "This does not affect the main claim of the optimal mistake bound being Θ(√d). It concerns the parameters of an existential construction.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The rebuttal correctly points to the existing evidence in the submitted paper (Section 3) that explicitly acknowledges the limitations regarding efficiency and domain size as open questions. This does not change the soundness of the mathematical proofs or the validity of the main claim that the optimal mistake bound is Θ(√d)."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "No change. The resolution of this long-standing open problem and the technical methods employed remain novel and distinct from prior work."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "No change. The result provides a definitive characterization of the gap between transductive and standard online learning, a landmark contribution to learning theory."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "No change. The paper provides complete theoretical analysis for both the lower bound and upper bound, which fully supports its central claims. The acknowledged limitations are inherent to the nature of existential proofs and do not undermine the evaluation."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "No change. The paper is exceptionally clear. The authors acknowledge that the existing disclaimers could be made more prominent, but this does not affect the pass/fail assessment of the presentation gate."
+        }
+      },
+      "summary_comment": "The authors' response correctly references the explicit statements in Section 3 of the submitted paper that acknowledge the limitations raised in the review. These statements confirm the authors' awareness and transparency about the complexity of their construction and the exponential domain size, framing them as natural open questions. The rebuttal does not introduce new information that alters the technical assessment. The weaknesses remain minor and inherent to existential proofs establishing fundamental limits. All acceptance gates clearly pass based on the submitted material. The paper provides a definitive solution to a central open problem in learning theory and represents a contribution of the highest caliber, fully deserving of acceptance."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper resolves a fundamental open problem in online learning theory, tightly characterizing the gap between transductive and standard online learning. This aligns perfectly with ICML's focus on core machine learning theory.",
+        "The work involves sophisticated theoretical analysis, including novel adversary and learner constructions, which matches ICML's emphasis on rigorous methodological contributions.",
+        "The topic directly relates to key ICML areas like 'general machine learning', 'theory of machine learning', and 'optimization', as it deals with mistake bounds, Littlestone dimension, and online learning algorithms.",
+        "The paper provides a complete quantitative picture with both lower and upper bounds, demonstrating the high level of rigor valued by ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While theoretically strong, the paper lacks empirical validation, which is sometimes (though not always) expected at ICML for learning theory papers.",
+        "The algorithmic construction for the upper bound is complex and not computationally efficient, which might be a minor concern for ICML's applied theory audience.",
+        "The paper is highly technical and theoretical, which might appeal more to a pure theory audience than ICML's broader mix of theoretical and applied work."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 10,
+      "why_it_fits": [
+        "NeurIPS has a strong tradition of publishing foundational learning theory results, particularly those resolving long-standing open problems like this 30-year-old question.",
+        "The paper's focus on understanding the value of unlabeled data connects to broader themes in machine learning that NeurIPS frequently features.",
+        "The work appears in the NeurIPS 2023 proceedings (as referenced in the related work), indicating strong community endorsement and fit.",
+        "NeurIPS explicitly welcomes 'interdisciplinary submissions that do not fit neatly into existing categories' and 'in-depth analysis of existing methods', both of which describe this paper well."
+      ],
+      "why_it_does_not_fit": [
+        "The paper is purely theoretical without empirical results, which might slightly reduce its appeal to NeurIPS' diverse audience that includes many applied researchers.",
+        "The technical depth and theoretical focus might be challenging for some NeurIPS attendees, though this is common for top theory papers at the conference."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR covers deep learning theory and optimization, and this paper's analysis of online learning algorithms and mistake bounds falls within this scope.",
+        "The work connects to representation learning and generalization theory, which are core ICLR topics.",
+        "The probabilistic construction of hypothesis classes in the upper bound has some conceptual similarity to methods in deep learning theory."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's focus is primarily on deep learning, while this paper deals with classical online learning theory without specific deep learning connections.",
+        "The paper doesn't involve neural networks, gradient-based optimization, or other deep learning-specific concepts that are central to much of ICLR.",
+        "While ICLR has a theory track, this work might be more specialized for the general ICLR audience compared to NeurIPS or ICML."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 5,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "Resolves a long-standing open problem by establishing a tight quadratic (Θ(√d)) gap between transductive and standard online learning, settling a 30-year question about the value of unlabeled data.",
+              "Presents a complete quantitative picture: an optimal lower bound of Ω(√d) for all classes and a matching upper bound via a constructive class with O(√d) transductive mistake bound, improving exponentially on prior best known bounds.",
+              "Technical contributions are substantial and clever, involving a sophisticated adversary analysis and a complex learner construction using danger zone minimization, splitting experts, and probabilistic class design.",
+              "The paper is exceptionally well-written, with a clear technical overview that provides excellent intuition before detailed proofs, making complex ideas accessible."
+            ],
+            "weaknesses": [
+              "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+              "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+                "severity": "minor",
+                "evidence": "The paper states in Section 3 (Directions for Future Work): '1. Does there exist an efficient learning algorithm that achieves the O(√d) upper bound of Theorem D.1?' The learner algorithm (Algorithms 5, 6a, 6c) uses multiplicative weights over a potentially exponential (in √d) number of splitting experts and simulates processes on a tree of size 2^d.",
+                "affected_claim": "The claim of the existence of a class learnable with O(√d) mistakes is not affected, as the paper provides an existential proof. The claim about algorithm efficiency is not made.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap.",
+                "severity": "minor",
+                "evidence": "Theorem D.1 states the constructed class H has domain size |X| = 2^d - 1. Section 3 (Future Work) asks: '2. Is there a tradeoff between the cardinality of the domain X and the upper bound on the number of mistakes? ... Is it possible to get the same bound with a domain of size poly(d)?'",
+                "affected_claim": "This does not affect the main claim of the optimal mistake bound being Θ(√d). It concerns the parameters of an existential construction.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are rigorously supported. The lower bound proof (Algorithm 1, Theorem B.1) uses a carefully constructed adversary and sequence, with detailed combinatorial analysis of version space shrinkage. The upper bound (Theorem D.1) uses a probabilistic method (Lemma D.2) to construct a class and a detailed learner algorithm with a full mistake analysis across multiple cases (Claim D.7). All assumptions are stated, and logical reasoning appears flawless."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The result is a major advance over prior work. The best previous lower bound was Ω(log d) (Hanneke, Moran, and Shafer, 2023), and the best previous upper bound was (2/3)d (Ben-David et al., 1997). The paper resolves the exponential gap by proving a tight quadratic (√d) bound. The technical ideas, including the adversary's greedy-with-limit strategy and the learner's 'danger zone minimization' and 'splitting experts' with a sparse encoding construction, are novel and distinct from prior approaches."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This is a foundational result in online learning theory, resolving a central open problem about the value of unlabeled data in the online setting. It provides a complete characterization of the gap between transductive and standard online learning, which is a quadratic separation—in stark contrast to the PAC setting where no such separation exists. This is a landmark result of clear importance to the learning theory community and will likely influence future work."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The evaluation is theoretical and complete. The paper provides full proofs for both the lower bound (showing Ω(√d) mistakes are necessary for any class of Littlestone dimension d) and the upper bound (constructing a specific class achieving O(√d) mistakes). The analysis is thorough, covering sequence length optimality (Theorem C.2) and handling all edge cases in the learner's algorithm. No empirical evaluation is needed for this purely theoretical contribution."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is exceptionally well-written and clear. The technical overview (Section 2) provides superb intuition, including helpful analogies (binary vs. one-hot encoding) and diagrams. The formal sections are precise and well-organized. The abstract and introduction clearly frame the problem and contributions. The paper meets the highest standards of clarity for a theoretical machine learning publication."
+              }
+            },
+            "summary_comment": "This paper achieves a major theoretical breakthrough by determining the optimal mistake bound for transductive online learning to be Θ(√d), where d is the Littlestone dimension. This settles a 30-year-old open problem. The results are technically deep, combining novel adversary and learner constructions with a probabilistic method. The presentation is outstanding, making complex ideas accessible. All acceptance gates clearly pass. This is a definitive, foundational contribution of the highest caliber, fully deserving of acceptance at a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 5,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "Resolves a long-standing open problem by establishing a tight quadratic (Θ(√d)) gap between transductive and standard online learning, settling a 30-year question about the value of unlabeled data.",
+              "Presents a complete quantitative picture: an optimal lower bound of Ω(√d) for all classes and a matching upper bound via a constructive class with O(√d) transductive mistake bound, improving exponentially on prior best known bounds.",
+              "Technical contributions are substantial and clever, involving a sophisticated adversary analysis and a complex learner construction using danger zone minimization, splitting experts, and probabilistic class design.",
+              "The paper is exceptionally well-written, with a clear technical overview that provides excellent intuition before detailed proofs, making complex ideas accessible."
+            ],
+            "weaknesses": [
+              "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+              "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+                "severity": "minor",
+                "evidence": "The paper states in Section 3 (Directions for Future Work): '1. Does there exist an efficient learning algorithm that achieves the O(√d) upper bound of Theorem D.1?' The learner algorithm (Algorithms 5, 6a, 6c) uses multiplicative weights over a potentially exponential (in √d) number of splitting experts and simulates processes on a tree of size 2^d.",
+                "affected_claim": "The claim of the existence of a class learnable with O(√d) mistakes is not affected, as the paper provides an existential proof. The claim about algorithm efficiency is not made.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap.",
+                "severity": "minor",
+                "evidence": "Theorem D.1 states the constructed class H has domain size |X| = 2^d - 1. Section 3 (Future Work) asks: '2. Is there a tradeoff between the cardinality of the domain X and the upper bound on the number of mistakes? ... Is it possible to get the same bound with a domain of size poly(d)?'",
+                "affected_claim": "This does not affect the main claim of the optimal mistake bound being Θ(√d). It concerns the parameters of an existential construction.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The authors correctly note that the paper already contains explicit statements clarifying that the constructions are existential proofs establishing fundamental limits, which is standard practice in learning theory. The rebuttal does not introduce new evidence, but correctly points to existing text in Section 3 that acknowledges these limitations. The core logical and mathematical reasoning supporting the main results remains sound."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The rebuttal confirms that the novelty assessment is unchanged. The resolution of the 30-year open problem with a tight quadratic bound remains a major advance over prior work, with novel technical contributions in both adversary and learner constructions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The foundational nature of this result is reinforced by the authors' response. The Θ(√d) characterization of the transductive vs. standard online learning gap is a landmark contribution to learning theory, regardless of the specific parameters of the existential construction."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The authors' response correctly notes that the paper's evaluation is theoretical and complete. The existence proofs for both lower and upper bounds, with thorough analysis, fully support the main claims. The concerns about efficiency and domain size are acknowledged as inherent to existential proofs rather than limitations of the evaluation methodology."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The rebuttal does not change the assessment that the paper is exceptionally well-written. The authors acknowledge they could make certain limitations more prominent, but the current presentation already includes the relevant disclaimers in Section 3."
+              }
+            },
+            "summary_comment": "The authors' response correctly identifies that the submitted paper already contains explicit acknowledgments of the limitations noted in the review (algorithmic efficiency and domain size), framing them as natural open questions rather than flaws in the core result. These are appropriately characterized as minor weaknesses inherent to existential proofs establishing fundamental limits. The response does not introduce new evidence that would alter the technical assessment. The paper's major contribution—resolving the 30-year open problem with a tight Θ(√d) bound—remains groundbreaking. All acceptance gates continue to pass convincingly. This is a definitive theoretical contribution of the highest quality that fully merits acceptance."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"The algorithmic construction for the upper bound is existentially proven but complex and likely not computationally efficient.\",\n        \"The domain size for the constructed hard class is exponential in d, which raises the open question of whether a polynomial-sized domain can achieve the same gap.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The algorithmic construction is not claimed to be computationally efficient.\",\n          \"location\": \"Section 3 (Directions for Future Work, Point 1)\",\n          \"explanation\": \"The paper explicitly lists the existence of an efficient algorithm achieving the O(√d) bound as an open problem for future work. This clarifies that the current constructive proof is an existential one and does not make claims about efficiency, which is consistent with standard practices in learning theory for establishing fundamental limits.\"\n        },\n        {\n          \"concern\": \"The domain size of the constructed class is exponential in d.\",\n          \"location\": \"Theorem D.1 and Section 3 (Directions for Future Work, Point 2)\",\n          \"explanation\": \"Theorem D.1 explicitly states the domain size is |X| = 2^d - 1, and the subsequent discussion in Section 3 poses the question of whether a similar bound can be achieved with a polynomial-sized domain. This shows the paper is transparent about the parameters of its construction and identifies this as a natural direction for further research, without affecting the core result about the optimal mistake bound.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify that the algorithmic upper bound is an existence proof, not a claim of practical efficiency.\",\n          \"proposed_change\": \"We will add a brief remark in the introduction or technical overview, immediately after stating the upper bound result, to emphasize that the proof is existential and that finding an efficient algorithm remains an open problem.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Highlight the open question regarding domain size more prominently.\",\n          \"proposed_change\": \"We will move the open question about domain size tradeoffs from Section 3 into the concluding remarks of Section 1.2 or 1.3, to ensure readers understand it is a natural limitation of the current construction but not of the fundamental Θ(√d) bound itself.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive and detailed assessment, and for identifying these important contextual points regarding our upper bound construction. We completely agree that the algorithm we present is complex and not computationally efficient, and that the constructed class uses an exponentially large domain. These are inherent features of our existential, probabilistic-method-based proof, which is standard for establishing fundamental limits in learning theory. Our paper's primary contribution is to resolve the quantitative gap between transductive and standard online learning by proving the optimal mistake bound is Θ(√d). The complexity of the learner and the size of the domain are not limitations of this core result, but rather parameters of a specific construction that demonstrates its tightness. As the reviewer notes, we are careful to list both the quest for an efficient algorithm and the investigation of domain size tradeoffs as explicit open problems in Section 3 (Future Work). In the revised version, we will further emphasize these points in the main text to prevent any potential misunderstanding. We are delighted that the reviewer finds our technical contributions substantial, our proofs sound, and our presentation exceptionally clear, and we appreciate their strong endorsement of the paper's significance.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 5,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "Resolves a long-standing open problem by establishing a tight quadratic (Θ(√d)) gap between transductive and standard online learning, settling a 30-year question about the value of unlabeled data.",
+              "Presents a complete quantitative picture: an optimal lower bound of Ω(√d) for all classes and a matching upper bound via a constructive class with O(√d) transductive mistake bound, improving exponentially on prior best known bounds.",
+              "Technical contributions are substantial and clever, involving a sophisticated adversary analysis and a complex learner construction using danger zone minimization, splitting experts, and probabilistic class design.",
+              "The paper is exceptionally well-written, with a clear technical overview that provides excellent intuition before detailed proofs, making complex ideas accessible."
+            ],
+            "weaknesses": [
+              "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+              "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The algorithmic construction for the upper bound is complex and likely not computationally efficient for large d; the paper itself highlights this as an open problem for future work.",
+                "severity": "minor",
+                "evidence": "The paper states in Section 3 (Directions for Future Work): '1. Does there exist an efficient learning algorithm that achieves the O(√d) upper bound of Theorem D.1?' The learner algorithm (Algorithms 5, 6a, 6c) uses multiplicative weights over a potentially exponential (in √d) number of splitting experts and simulates processes on a tree of size 2^d.",
+                "affected_claim": "The claim of the existence of a class learnable with O(√d) mistakes is not affected, as the paper provides an existential proof. The claim about algorithm efficiency is not made.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The domain size for the constructed hard class is exponential in d (|X| = 2^d - 1), raising a natural open question (acknowledged in the paper) about whether a polynomial-sized domain can achieve the same quadratic gap.",
+                "severity": "minor",
+                "evidence": "Theorem D.1 states the constructed class H has domain size |X| = 2^d - 1. Section 3 (Future Work) asks: '2. Is there a tradeoff between the cardinality of the domain X and the upper bound on the number of mistakes? ... Is it possible to get the same bound with a domain of size poly(d)?'",
+                "affected_claim": "This does not affect the main claim of the optimal mistake bound being Θ(√d). It concerns the parameters of an existential construction.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The rebuttal correctly points to the existing evidence in the submitted paper (Section 3) that explicitly acknowledges the limitations regarding efficiency and domain size as open questions. This does not change the soundness of the mathematical proofs or the validity of the main claim that the optimal mistake bound is Θ(√d)."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "No change. The resolution of this long-standing open problem and the technical methods employed remain novel and distinct from prior work."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "No change. The result provides a definitive characterization of the gap between transductive and standard online learning, a landmark contribution to learning theory."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "No change. The paper provides complete theoretical analysis for both the lower bound and upper bound, which fully supports its central claims. The acknowledged limitations are inherent to the nature of existential proofs and do not undermine the evaluation."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "No change. The paper is exceptionally clear. The authors acknowledge that the existing disclaimers could be made more prominent, but this does not affect the pass/fail assessment of the presentation gate."
+              }
+            },
+            "summary_comment": "The authors' response correctly references the explicit statements in Section 3 of the submitted paper that acknowledge the limitations raised in the review. These statements confirm the authors' awareness and transparency about the complexity of their construction and the exponential domain size, framing them as natural open questions. The rebuttal does not introduce new information that alters the technical assessment. The weaknesses remain minor and inherent to existential proofs establishing fundamental limits. All acceptance gates clearly pass based on the submitted material. The paper provides a definitive solution to a central open problem in learning theory and represents a contribution of the highest caliber, fully deserving of acceptance."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"The complexity and inefficiency of the upper bound algorithm\",\n        \"The exponential domain size of the constructed class\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The limitations are already acknowledged in the paper as open questions for future work, not as flaws in the core result.\",\n          \"location\": \"Section 3 (Directions for Future Work, Points 1 and 2)\",\n          \"explanation\": \"The paper explicitly states: \\\"1. Does there exist an efficient learning algorithm that achieves the O(√d) upper bound of Theorem D.1?\\\" and \\\"2. Is there a tradeoff between the cardinality of the domain X and the upper bound on the number of mistakes? ... Is it possible to get the same bound with a domain of size poly(d)?\\\" This shows we are transparent about these aspects as natural next questions, not hidden limitations.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Could make acknowledgments of these limitations more prominent\",\n          \"proposed_change\": \"We will add a brief sentence in the introduction or conclusion emphasizing that our constructions establish fundamental limits via existential proofs, and that questions of computational efficiency and minimal domain size are important open directions.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and for reconfirming that our paper provides a definitive solution to a longstanding open problem. We appreciate their acknowledgment that the concerns raised are minor and inherent to existential proofs in learning theory. As the reviewer notes, we have already explicitly acknowledged these points as open questions in Section 3. We agree that making these acknowledgments more prominent in the revised version would enhance clarity. Crucially, these considerations do not affect the mathematical soundness or significance of our main result: establishing that the optimal transductive mistake bound is Θ(√d). We are delighted by the reviewer's strong endorsement of our work as a \\\"groundbreaking\\\" and \\\"definitive theoretical contribution.\\\"\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_0d462b2aab3d",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_007_optimal_mistake_bounds_for_transductive_online_learning.md",
+    "target_paper_summary": {
+      "paper_id": "paper_0d462b2aab3d",
+      "title": "Optimal Mistake Bounds For Transductive Online Learning",
+      "abstract": "We resolve a 30-year-old open problem concerning the power of unlabeled data in online learning by tightly quantifying the gap between transductive and standard online learning. In the standard setting, the optimal mistake bound is characterized by the Littlestone dimension d of the concept class H (Littlestone, 1987). We prove that in the transductive setting, the mistake bound is at least Ω\n√d\n. This constitutes an exponential improvement over previous lower bounds of Ω(log log(d)), Ω\nplog(d)\n, and Ω(log(d)), due respectively to Ben-David, Kushilevitz, and Mansour (1995, 1997), and Hanneke, Moran, and Shafer (2023). We also show that this lower bound is tight: for every d, there exists a class of Littlestone dimension d with transductive mistake bound O\n√d\n. Our upper bound also improves upon the best known upper bound of (2/3) · d from Ben-David et al. (1997). These results establish a quadratic gap between transductive and standard online learning, thereby highlighting the benefit of advance access to the unlabeled instance sequence. This contrasts with the PAC setting, where transductive and standard learning exhibit similar sample complexities.",
+      "topic": "",
+      "claims": [
+        "We prove that in the transductive setting, the mistake bound is at least Ω √d ."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_b453a8ef6",
+        "title": "Online Learning: A Comprehensive Survey",
+        "authors": [
+          "Steven C. H. Hoi",
+          "Doyen Sahoo",
+          "Jing Lü",
+          "Peilin Zhao"
+        ],
+        "year": 2018,
+        "publication_date": "2018-02-08",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Online learning represents an important family of machine learning algorithms, in which a learner attempts to resolve an online prediction (or any type of decision-making) task by learning a model/hypothesis from a sequence of data instances one at a time. The goal of online learning is to ensure that the online learner would make a sequence of accurate predictions (or correct decisions) given the knowledge of correct answers to previous prediction or learning tasks and possibly additional information. This is in contrast to many traditional batch learning or offline machine learning algorithms that are often designed to train a model in batch from a given collection of training data instances. This survey aims to provide a comprehensive survey of the online machine learning literatures through a systematic review of basic ideas and key principles and a proper categorization of different algorithms and techniques. Generally speaking, according to the learning type and the forms of feedback information, the existing online learning works can be classified into three major categories: (i) supervised online learning where full feedback information is always available, (ii) online learning with limited feedback, and (iii) unsupervised online learning where there is no feedback available. Due to space limitation, the survey will be mainly focused on the first category, but also briefly cover some basics of the other two categories. Finally, we also discuss some open issues and attempt to shed light on potential future research directions in this field.",
+        "url": "http://arxiv.org/abs/1802.02871",
+        "doi": "https://doi.org/10.48550/arxiv.1802.02871",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2785952199"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 145
+      },
+      {
+        "paper_id": "rw_002_7f6abe64b",
+        "title": "From Batch to Transductive Online Learning",
+        "authors": [
+          "Sham M. Kakade",
+          "Adam Tauman Kalai"
+        ],
+        "year": 2005,
+        "publication_date": "2005-12-05",
+        "venue": "ScholarlyCommons (University of Pennsylvania)",
+        "abstract": "It is well-known that everything that is learnable in the difficult online setting, where an arbitrary sequences of examples must be labeled one at a time, is also learnable in the batch setting, where examples are drawn independently from a distribution. We show a result in the opposite direction. We give an efficient conversion algorithm from batch to online that is transductive: it uses future unlabeled data. This demonstrates the equivalence between what is properly and efficiently learnable in a batch model and a transductive online model.",
+        "url": "https://repository.upenn.edu/statistics_papers/470",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2100714909"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 19
+      },
+      {
+        "paper_id": "rw_004_e709f2324",
+        "title": "Learning from multiple annotators with varying expertise",
+        "authors": [
+          "Yan Yan",
+          "Rómer Rosales",
+          "Glenn Fung",
+          "Ramanathan Subramanian",
+          "Jennifer Dy"
+        ],
+        "year": 2013,
+        "publication_date": "2013-10-18",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s10994-013-5412-1",
+        "doi": "https://doi.org/10.1007/s10994-013-5412-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1972675781"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 199
+      },
+      {
+        "paper_id": "rw_005_50a7961e1",
+        "title": "Workshop Report on Basic Research Needs for Scientific Machine Learning: Core Technologies for Artificial Intelligence",
+        "authors": [
+          "Nathan Baker",
+          "Frank Alexander",
+          "Peer‐Timo Bremer",
+          "Aric Hagberg",
+          "Yannis Kevrekidis",
+          "Habib N. Najm",
+          "Manish Parashar",
+          "Abani Patra",
+          "James A. Sethian",
+          "Stefan M. Wild",
+          "Karen Willcox",
+          "Steven Lee"
+        ],
+        "year": 2019,
+        "publication_date": "2019-02-10",
+        "venue": "",
+        "abstract": "Scientific Machine Learning (SciML) and Artificial Intelligence (AI) will have broad use and transformative effects across the Department of Energy. Accordingly, the January 2018 Basic Research Needs workshop identified six Priority Research Directions (PRDs). The first three PRDs describe foundational research themes that correspond to the need for domain-awareness (PRD #1), interpretability (PRD #2), and robustness (PRD #3). The other three PRDs describe capability research themes and correspond to the three major use cases for massive scientific data analysis (PRD #4), machine learning-enhanced modeling and simulation (PRD #5), and intelligent automation and decision-support for complex systems (PRD #6). The Priority Research Directions provide a sound basis for a coherent, long-term research and development strategy in SciML and AI. Over the last decade, DOE investments in applied mathematics have laid the groundwork for the type of basic research that will underpin key advances in the six PRDs. Such advances will build on the work from leading researchers in optimization, linear algebra, high-performance solvers and algorithms, multiscale modeling and simulation, complex systems research, uncertainty quantification, and the new basic research areas that will emerge from the pursuit of transformative technologies.",
+        "url": "https://doi.org/10.2172/1478744",
+        "doi": "https://doi.org/10.2172/1478744",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2915854813"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 293
+      },
+      {
+        "paper_id": "rw_006_aff0133e6",
+        "title": "User-friendly Introduction to PAC-Bayes Bounds",
+        "authors": [
+          "Pierre Alquier"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-22",
+        "venue": "Foundations and Trends® in Machine Learning",
+        "abstract": "Aggregated predictors are obtained by making a set of basic predictors vote according to some weights, that is, to some probability distribution. Randomized predictors are obtained by sampling in a set of basic predictors, according to some prescribed probability distribution. Thus, aggregated and randomized predictors have in common that their definition rely on a probability distribution on the set of predictors. In statistical learning theory, there is a set of tools designed to understand the generalization ability of such predictors: PAC-Bayesian or PAC-Bayes bounds. Since the original PAC-Bayes bounds (Shawe-Taylor and Williamson, 1997; McAllester, 1998), these tools have been considerably improved in many directions. We will for example describe a simplified version of the localization technique (Catoni, 2003; Catoni, 2007) that was missed by the community, and later rediscovered as “mutual information bounds”. Very recently, PAC-Bayes bounds received a considerable attention. There was workshop on PAC-Bayes at NIPS 2017, (Almost) 50 Shades of Bayesian Learning: PAC-Bayesian trends and insights, organized by B. Guedj, F. Bach and P. Germain. One of the reasons of this recent interest is the successful application of these bounds to neural networks (Dziugaite and Roy, 2017). Since then, this is a recurring topic of workshops in the major machine learning conferences. The objective of these notes is to provide an elementary introduction to PAC-Bayes bounds.",
+        "url": "https://doi.org/10.1561/2200000100",
+        "doi": "https://doi.org/10.1561/2200000100",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3207223249"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 53
+      },
+      {
+        "paper_id": "rw_007_b86453847",
+        "title": "Active learning for data streams: a survey",
+        "authors": [
+          "Davide Cacciarelli",
+          "Murat Külahçı"
+        ],
+        "year": 2023,
+        "publication_date": "2023-11-20",
+        "venue": "Machine Learning",
+        "abstract": "Abstract Online active learning is a paradigm in machine learning that aims to select the most informative data points to label from a data stream. The problem of minimizing the cost associated with collecting labeled observations has gained a lot of attention in recent years, particularly in real-world applications where data is only available in an unlabeled form. Annotating each observation can be time-consuming and costly, making it difficult to obtain large amounts of labeled data. To overcome this issue, many active learning strategies have been proposed in the last decades, aiming to select the most informative observations for labeling in order to improve the performance of machine learning models. These approaches can be broadly divided into two categories: static pool-based and stream-based active learning. Pool-based active learning involves selecting a subset of observations from a closed pool of unlabeled data, and it has been the focus of many surveys and literature reviews. However, the growing availability of data streams has led to an increase in the number of approaches that focus on online active learning, which involves continuously selecting and labeling observations as they arrive in a stream. This work aims to provide an overview of the most recently proposed approaches for selecting the most informative observations from data streams in real time. We review the various techniques that have been proposed and discuss their strengths and limitations, as well as the challenges and opportunities that exist in this area of research.",
+        "url": "https://doi.org/10.1007/s10994-023-06454-2",
+        "doi": "https://doi.org/10.1007/s10994-023-06454-2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4388817142"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 94
+      },
+      {
+        "paper_id": "rw_008_fc4dd3d52",
+        "title": "Generalization bounds for averaged classifiers",
+        "authors": [
+          "Yoav Freund",
+          "Yishay Mansour",
+          "Robert E. Schapire"
+        ],
+        "year": 2004,
+        "publication_date": "2004-08-01",
+        "venue": "The Annals of Statistics",
+        "abstract": "We study a simple learning algorithm for binary classification. Instead of predicting with the best hypothesis in the hypothesis class, that is, the hypothesis that minimizes the training error, our algorithm predicts with a weighted average of all hypotheses, weighted exponentially with respect to their training error. We show that the prediction of this algorithm is much more stable than the prediction of an algorithm that predicts with the best hypothesis. By allowing the algorithm to abstain from predicting on some examples, we show that the predictions it makes when it does not abstain are very reliable. Finally, we show that the probability that the algorithm abstains is comparable to the generalization error of the best hypothesis in the class.",
+        "url": "https://doi.org/10.1214/009053604000000058",
+        "doi": "https://doi.org/10.1214/009053604000000058",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2093210480"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 40
+      },
+      {
+        "paper_id": "rw_009_a5919f390",
+        "title": "A Comprehensive Survey of Machine Learning Methodologies with Emphasis in Water Resources Management",
+        "authors": [
+          "Maria Drogkoula",
+          "Konstantinos Kokkinos",
+          "Nicholas Samaras"
+        ],
+        "year": 2023,
+        "publication_date": "2023-11-08",
+        "venue": "Applied Sciences",
+        "abstract": "This paper offers a comprehensive overview of machine learning (ML) methodologies and algorithms, highlighting their practical applications in the critical domain of water resource management. Environmental issues, such as climate change and ecosystem destruction, pose significant threats to humanity and the planet. Addressing these challenges necessitates sustainable resource management and increased efficiency. Artificial intelligence (AI) and ML technologies present promising solutions in this regard. By harnessing AI and ML, we can collect and analyze vast amounts of data from diverse sources, such as remote sensing, smart sensors, and social media. This enables real-time monitoring and decision making in water resource management. AI applications, including irrigation optimization, water quality monitoring, flood forecasting, and water demand forecasting, enhance agricultural practices, water distribution models, and decision making in desalination plants. Furthermore, AI facilitates data integration, supports decision-making processes, and enhances overall water management sustainability. However, the wider adoption of AI in water resource management faces challenges, such as data heterogeneity, stakeholder education, and high costs. To provide an overview of ML applications in water resource management, this research focuses on core fundamentals, major applications (prediction, clustering, and reinforcement learning), and ongoing issues to offer new insights. More specifically, after the in-depth illustration of the ML algorithmic taxonomy, we provide a comparative mapping of all ML methodologies to specific water management tasks. At the same time, we include a tabulation of such research works along with some concrete, yet compact, descriptions of their objectives at hand. By leveraging ML tools, we can develop sustainable water resource management plans and address the world’s water supply concerns effectively.",
+        "url": "https://doi.org/10.3390/app132212147",
+        "doi": "https://doi.org/10.3390/app132212147",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4388583847"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 135
+      },
+      {
+        "paper_id": "rw_010_f17649cc3",
+        "title": "The computational power of optimization in online learning",
+        "authors": [
+          "Elad Hazan",
+          "Tomer Koren"
+        ],
+        "year": 2016,
+        "publication_date": "2016-06-10",
+        "venue": "",
+        "abstract": "We consider the fundamental problem of prediction with expert advice where the experts are “optimizable”: there is a black-box optimization oracle that can be used to compute, in constant time, the leading expert in retrospect at any point in time. In this setting, we give a novel online algorithm that attains vanishing regret with respect to N experts in total O(√N) computation time. We also give a lower bound showing that this running time cannot be improved (up to log factors) in the oracle model, thereby exhibiting a quadratic speedup as compared to the standard, oracle-free setting where the required time for vanishing regret is Θ(N). These results demonstrate an exponential gap between the power of optimization in online learning and its power in statistical learning: in the latter, an optimization oracle—i.e., an efficient empirical risk minimizer—allows to learn a finite hypothesis class of size N in time O(logN).",
+        "url": "https://doi.org/10.1145/2897518.2897536",
+        "doi": "https://doi.org/10.1145/2897518.2897536",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1522619327"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 25
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_7f6abe64b",
+        "relevance_score": 0.87,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "It addresses transductive online learning and provides an efficient conversion algorithm from batch to online learning, directly relating to the target paper's focus on transductive online learning mistake bounds.",
+        "evidence_summary": "In 2005, Kakade and Kalai published 'From Batch to Transductive Online Learning,' which introduced an efficient conversion algorithm from batch to online learning that uses future unlabeled data, demonstrating equivalence between batch learnability and transductive online learnability."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_e709f2324",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "It involves learning from multiple annotators, which is a different but somewhat related area of machine learning that touches on learning with varying feedback, though not directly on transductive online learning.",
+        "evidence_summary": "In 2013, Yan et al. published 'Learning from multiple annotators with varying expertise,' which focused on handling varying expertise among annotators in machine learning models."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_001_b453a8ef6",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "It is a comprehensive survey of online learning, providing broad context that includes transductive learning aspects, useful as background information.",
+        "evidence_summary": "In 2018, Hoi et al. published 'Online Learning: A Comprehensive Survey,' which categorized online learning works into supervised, limited feedback, and unsupervised types, offering a systematic review of algorithms and techniques."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_007_b86453847",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "It surveys active learning for data streams, which involves selecting informative data points in an online setting, related to the online learning context of the target paper.",
+        "evidence_summary": "In 2023, Cacciarelli and Klah published 'Active learning for data streams: a survey,' which reviewed approaches for selecting informative observations from data streams in real time, covering both pool-based and stream-based active learning."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_008_fc4dd3d52",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "method"
+        ],
+        "rationale": "It studies generalization bounds for averaged classifiers, which is a methodological aspect in learning theory that may provide indirect context for mistake bounds.",
+        "evidence_summary": "In 2004, Freund et al. published 'Generalization bounds for averaged classifiers,' which analyzed the stability and reliability of predictions made by weighted averages of hypotheses, including scenarios where the algorithm abstains from predicting."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_010_f17649cc3",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "method"
+        ],
+        "rationale": "It explores the computational power of optimization in online learning with optimizable experts, which relates to the online learning setting and computational aspects discussed in the target paper.",
+        "evidence_summary": "In 2016, Hazan and Koren published 'The computational power of optimization in online learning,' which presented an online algorithm achieving vanishing regret with O(√N) computation time using an optimization oracle, and provided a lower bound on running time."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_50a7961e1",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "It is a workshop report on scientific machine learning, offering very general background on AI and ML research directions, not directly related to transductive online learning.",
+        "evidence_summary": "In 2019, Baker et al. published 'Workshop Report on Basic Research Needs for Scientific Machine Learning: Core Technologies for Artificial Intelligence,' which identified priority research directions for scientific machine learning, including domain-awareness, interpretability, and robustness."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_006_aff0133e6",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "method"
+        ],
+        "rationale": "It introduces PAC-Bayes bounds, which are theoretical tools in learning theory that could provide indirect context for understanding generalization and mistake bounds.",
+        "evidence_summary": "In 2024, Alquier published 'User-friendly Introduction to PAC-Bayes Bounds,' which provided an elementary introduction to PAC-Bayesian bounds for aggregated and randomized predictors, including applications to neural networks."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_009_a5919f390",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "It surveys machine learning methodologies with an emphasis on water resources management, which is an application area far removed from the theoretical focus of the target paper.",
+        "evidence_summary": "In 2023, Drogkoula et al. published 'A Comprehensive Survey of Machine Learning Methodologies with Emphasis in Water Resources Management,' which overviewed ML algorithms and their applications in water resource management, including prediction, clustering, and reinforcement learning."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2005, Kakade and Kalai published 'From Batch to Transductive Online Learning,' which introduced an efficient conversion algorithm from batch to online learning that uses future unlabeled data, demonstrating equivalence between batch learnability and transductive online learnability. In 2013, Yan et al. published 'Learning from multiple annotators with varying expertise,' which focused on handling varying expertise among annotators in machine learning models. In 2018, Hoi et al. published 'Online Learning: A Comprehensive Survey,' which categorized online learning works into supervised, limited feedback, and unsupervised types, offering a systematic review of algorithms and techniques. In 2023, Cacciarelli and Klah published 'Active learning for data streams: a survey,' which reviewed approaches for selecting informative observations from data streams in real time, covering both pool-based and stream-based active learning. In 2004, Freund et al. published 'Generalization bounds for averaged classifiers,' which analyzed the stability and reliability of predictions made by weighted averages of hypotheses, including scenarios where the algorithm abstains from predicting. In 2016, Hazan and Koren published 'The computational power of optimization in online learning,' which presented an online algorithm achieving vanishing regret with O(√N) computation time using an optimization oracle, and provided a lower bound on running time.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

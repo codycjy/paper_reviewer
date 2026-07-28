@@ -1,0 +1,218 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 2
+      },
+      "strengths": [
+        "The paper introduces a valuable direction of using consistency/distillation ideas to accelerate diffusion-based samplers for unnormalized densities, potentially offering orders-of-magnitude savings in inference-time network evaluations.",
+        "The proposed Self-Consistent Diffusion Sampler (SCDS) is interesting as it aims to eliminate the need for a pre-trained teacher, learning single-step sampling directly from the unnormalized density.",
+        "The cost-benefit analysis (break-even point calculation for total NFEs) is a solid and practical contribution, clearly demonstrating the conditions under which the computational overhead of training is amortized, making a strong argument for the method's efficiency in high-volume sampling scenarios."
+      ],
+      "weaknesses": [
+        "The mathematical presentation is severely flawed and confusing. The PDF appears corrupted with incorrect symbols, misaligned equations, and placeholder text (e.g., '$\\\\mbox{}^,t_n\\\\mbox{})$ -.'). The SDE definitions (2, 3) use non-standard and inconsistent notation (e.g., 'µ + εu', 'T ↑ s'), and key terms and distributions are poorly defined, making the core technical foundation difficult to assess. A reviewer cannot confidently evaluate the soundness of the theoretical claims.",
+        "While the empirical results in Tables 1 & 2 show promising numbers, the paper lacks comprehensive baseline comparisons. It primarily compares against other diffusion samplers (PIS, DDS, DIS) but does not adequately situate its work against the broader 'Related Work' it cites (e.g., consistency models, progressive distillation, shortcut models). A direct comparison to these established methods for data-free or unnormalized distribution settings is missing, making the novelty and advantage less clear."
+      ],
+      "summary_comment": "The paper presents a worthwhile idea: adapting consistency distillation and self-training to create single-step diffusion samplers for unnormalized distributions. The practical motivation (massive NFE reduction) is strong, and the SCDS framework is conceptually appealing. However, the submission is marred by critical presentation issues. The manuscript contains numerous typesetting errors and mathematical inconsistencies that severely compromise its clarity and make a thorough verification of its theoretical soundness impossible. The experimental evaluation, while showing positive results, would benefit from more diverse and directly relevant baselines to fully establish the novelty and significance of the contribution. Given the fundamental importance of clear, correct, and rigorous mathematical exposition in a technical paper, the current state warrants rejection, encouraging the authors to thoroughly revise and polish the manuscript for future submission."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses sampling from unnormalized distributions, which aligns with ICML's focus on probabilistic methods, Bayesian inference, and optimization.",
+        "The work introduces novel algorithms (CDDS and SCDS) that improve computational efficiency, fitting ICML's interest in machine learning systems and scalable methods.",
+        "Extensive experiments on synthetic and real-world benchmarks (e.g., Gaussian Mixture Models, Log-Gaussian Cox Process) demonstrate empirical rigor, which ICML values."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 notes severe mathematical presentation flaws, including corrupted symbols and misaligned equations, which may undermine the paper's rigor and clarity—key expectations for ICML.",
+        "The paper lacks comparisons against broader baselines beyond diffusion samplers (e.g., consistency models, progressive distillation), reducing its contextual novelty for ICML's broad audience.",
+        "The focus on single-step sampling might be perceived as incremental relative to ICML's preference for foundational advancements, though the efficiency gains are significant."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core theme—efficient sampling via diffusion and consistency methods—aligns with NeurIPS's interests in generative models, optimization, and probabilistic inference.",
+        "The self-consistency loss and distillation techniques contribute to theory and methods for scalable ML, fitting NeurIPS's emphasis on algorithmic innovation.",
+        "Applications in Bayesian inference and high-dimensional tasks (e.g., 1600-D LGCP) resonate with NeurIPS's focus on challenging, real-world problems."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 highlights mathematical inconsistencies and unclear notation, which could hinder reproducibility and clarity—critical for NeurIPS's standards.",
+        "The paper omits direct comparisons to relevant prior work (e.g., consistency models), potentially limiting its perceived novelty in the NeurIPS context.",
+        "While the practical efficiency gains are strong, the theoretical foundation may be viewed as less robust due to presentation issues, affecting rigor fit."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's focus on diffusion models, consistency training, and single-step generation aligns with ICLR's emphasis on deep learning and generative models.",
+        "Methods like consistency distillation and self-training are relevant to ICLR's interests in efficient neural network techniques and representation learning.",
+        "Experiments include synthetic and real-world distributions, demonstrating applicability to ICLR's scope of empirical validation in deep learning."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1's criticism of mathematical flaws and unclear equations is a significant concern for ICLR, which highly values theoretical clarity and correctness.",
+        "The paper does not emphasize architectural innovations or deep learning-centric applications, potentially making it a weaker fit for ICLR's core focus.",
+        "Lack of comparisons with deep learning-specific baselines (e.g., other consistency models) may reduce its impact for ICLR's audience."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_77bf65f216d4",
+    "paper_id": "paper_5d49218dccd2",
+    "target_paper_summary": {
+      "paper_id": "paper_5d49218dccd2",
+      "title": "Single-Step Consistent Diffusion Samplers",
+      "abstract": "1 Sampling from unnormalized target distributions is a fundamental yet challenging 2 task in machine learning and statistics. Existing sampling algorithms typically 3 require many iterative steps to produce high-quality samples, leading to high com4 putational costs that limit their practicality in time-sensitive or resource-constrained 5 settings. In this work, we introduce *consistent diffusion samplers*, a new class 6 of samplers designed to generate high-fidelity samples in a single step. We first 7 propose Consistency-Distilled Diffusion Samplers (CDDS), which demonstrates 8 that consistency distillation can be accomplished within sampling contexts in the 9 absence of pre-collected training datasets. To eliminate the need for a pre-trained 10 sampler, we further propose Self-Consistent Diffusion Samplers (SCDS), which 11 performs self-distillation during training. SCDS learns to perform diffusion sam12 pling and to skip intermediate steps via a self-consistency loss. Through extensive 13 experiments on a variety of synthetic and real-world unnormalized distributions, 14 we show that our approaches yield high-fidelity samples using less than 1% of the 15 network evaluations required by traditional diffusion samplers.\n\n$$p_{\\mathrm{target}}={\\frac{\\rho}{Z}},\\quad{\\mathrm{with}}\\quad Z=\\int_{\\mathbb{R}^{D}}\\rho(X)\\mathrm{d}X$$\n$$(\\mathbf{i})$$\nω(X)dX (1)",
+      "topic": "",
+      "claims": [
+        "we introduce *consistent diffusion samplers*, a new class 6 of samplers designed to generate high-fidelity samples in a single step.",
+        "we show that our approaches yield high-fidelity samples using less than 1% of the 15 network evaluations required by traditional diffusion samplers."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "sampling from unnormalized distributions single step diffusion",
+          "rationale": "The paper addresses sampling from unnormalized target distributions using single-step diffusion methods. This query captures the core problem (sampling from unnormalized distributions) and the specific approach (single-step diffusion) while excluding other sampling paradigms."
+        },
+        {
+          "group": "same_method",
+          "query": "consistency distillation diffusion sampling OR consistency model sampling unnormalized distributions",
+          "rationale": "The paper introduces consistency distillation/self-consistency techniques applied to diffusion sampling. This query targets papers using similar consistency-based training methods for sampling, particularly those adapting consistency models or distillation techniques to sampling tasks."
+        },
+        {
+          "group": "same_constraints",
+          "query": "computational cost sampling algorithms resource constrained diffusion",
+          "rationale": "The paper emphasizes computational efficiency for time-sensitive/resource-constrained settings. This query focuses on sampling papers constrained by similar computational/real-time deployment limitations, particularly within diffusion frameworks."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "diffusion sampling benchmark evaluation metrics comparison MCMC Langevin",
+          "rationale": "To assess claims of improved efficiency/fidelity, we need papers establishing standard benchmarks, metrics (e.g., FID, ESS), and baselines for comparing diffusion samplers against traditional methods like MCMC or Langevin dynamics."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "single step sampling diffusion OR one-step diffusion sampler prior 2024",
+          "rationale": "The paper claims novelty in single-step diffusion samplers. This query identifies prior work proposing similar single-step/one-step diffusion sampling approaches that could challenge the novelty claim if published earlier."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "mode collapse OR distribution mismatch single step diffusion sampling OR limitations consistency distillation",
+          "rationale": "Potential limitations include quality trade-offs (mode collapse, distribution mismatch) in single-step sampling or known issues with consistency distillation. This query targets papers documenting such negative results or fundamental accuracy/efficiency trade-offs."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+          "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+          "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+        ]
+      }
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+      "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+      "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+    "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+    "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

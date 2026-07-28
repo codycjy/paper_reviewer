@@ -1,0 +1,662 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Proposes a novel structural encoding (GIST) based on pairwise node intersection cardinality, which is a fresh and theoretically grounded approach to injecting graph structural bias into Transformers.",
+        "Extensive and rigorous empirical evaluation across multiple standard benchmarks (LRGB, MoleculeNet, ZINC), demonstrating consistent and often state-of-the-art performance against a wide array of strong baselines.",
+        "Provides a scalable, randomized algorithm (MinHash + HyperLogLog) to compute the intersection features efficiently, addressing a key practical challenge for large graphs."
+      ],
+      "weaknesses": [
+        "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+        "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+          "severity": "minor",
+          "evidence": "Definition 3.1 defines I_{ku,kv}(u,v) via a recurrence and T_{ku,k}(u,v) using a sum over I_{i,j}. This is mathematically dense and the intuitive connection to the motivating Figure 1 is not immediately clear from the equations. The attention mechanism definition (Def 4.1) introduces multiple projections (phi_y, phi_S) and terms (A_hat_{u,v}) which are not fully motivated.",
+          "affected_claim": "Clarity and ease of understanding of the proposed GIST encoding and its integration into the transformer.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim.",
+          "severity": "minor",
+          "evidence": "Section 3.3 and Algorithm 1 detail the use of MinHash and HyperLogLog for efficient, unbiased estimation of intersection cardinalities. The computational complexity reduction from O(k^2 n^4) to O(k^2 n^2) is claimed. However, the empirical results (Tables 2,3,5) are based on the approximate method. There is no experiment showing the performance difference (if any) between using exact counts (where feasible) and the approximations.",
+          "affected_claim": "The claim that the efficient randomized algorithm does not materially harm performance.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claim that GIST captures structural information to enhance graph transformers is well-supported. The method is grounded in a clear definition of intersection cardinalities, an invariance theorem is provided (with a proof sketch in the appendix), and the efficient estimation using MinHash/HyperLogLog is established practice. The experimental results are robust across many datasets."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The proposed Graph Invariant Structural Trait (GIST) is a new structural encoding. While the idea of using neighborhood intersections has appeared in other contexts (e.g., for link prediction in Chamberlain et al., 2022, cited by the authors), its formulation as a k^2+2k dimensional pairwise feature for graph transformers and its specific application to capture diverse substructures for classification is novel and distinct from prior positional/structural encodings like SPD, LapPE, or motif-based methods."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The demonstrated improvement over state-of-the-art graph transformers and GNNs on standard benchmarks is meaningful. It addresses a recognized challenge in making transformers structure-aware for graphs. The method is general and can potentially be integrated into many transformer architectures, making it a contribution of interest to the broader graph learning community."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The experimental evaluation is extensive, covering 12 datasets and comparing against over 20 recent and strong baselines, including SOTA graph transformers and pretrained models. The results consistently show GIST achieving top-tier performance. Ablation studies on the hop parameter k and motivating visualizations are included. The evaluation is convincing and fair."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "While the clarity score is 3 due to some technical denseness, the overall presentation is sufficient for reliable assessment. The paper structure is logical, the motivation and contributions are clear, and the core ideas are explained with supporting figures and empirical observations. The deficiencies noted under clarity are minor and do not prevent understanding the work."
+        }
+      },
+      "summary_comment": "This paper introduces GIST, a novel structural encoding for graph transformers based on pairwise k-hop node intersection cardinalities. The idea is well-motivated by the need to capture diverse substructures beyond simple proximity. The method is theoretically grounded (invariant) and made practical via efficient randomized approximations. The empirical evaluation is exceptionally thorough, demonstrating strong and often SOTA performance across diverse graph classification benchmarks. The weaknesses are minor, relating primarily to expositional clarity and a missing ablation on the approximation's impact. Overall, this is a solid, novel, and well-evaluated contribution that meets the standard for a top-tier conference."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem (graph classification) with applications in scientific domains, which aligns well with ICML's focus on machine learning foundations and applications",
+        "The work proposes a novel structural encoding method (GIST) that combines theoretical analysis with empirical validation, fitting ICML's emphasis on both theoretical and empirical contributions",
+        "The paper includes extensive experiments on standard benchmarks and compares against numerous state-of-the-art methods, meeting ICML's standards for rigorous evaluation",
+        "The work contributes to the optimization and probabilistic methods track through its efficient randomized algorithms for computing intersection cardinalities"
+      ],
+      "why_it_does_not_fit": [
+        "While the paper has theoretical components, the theoretical analysis is relatively light compared to some ICML papers that focus more heavily on theoretical guarantees and analysis",
+        "The application focus is primarily on molecular graphs and chemistry/biology domains, which might be more specialized than some ICML papers that address broader machine learning problems",
+        "The computational efficiency aspects, while addressed, are not the primary focus of the contribution compared to the structural encoding method itself"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper addresses a fundamental challenge in graph representation learning - making transformers structure-aware - which is highly relevant to NeurIPS's focus on neural information processing systems",
+        "The work bridges graph neural networks and transformers, two areas of significant interest to the NeurIPS community",
+        "The extensive experimental evaluation across multiple benchmarks aligns well with NeurIPS's emphasis on empirical validation",
+        "The method's ability to capture long-range dependencies and complex substructures addresses core challenges in graph learning that NeurIPS often features",
+        "The paper includes both theoretical analysis (invariance properties) and practical implementations, fitting NeurIPS's interdisciplinary nature"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical analysis, while present, is not as deep as some NeurIPS papers that focus more heavily on theoretical foundations",
+        "The application domains (chemistry/biology) might be somewhat specialized compared to more general machine learning papers at NeurIPS"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper focuses on enhancing transformers for graph data, which aligns perfectly with ICLR's focus on deep learning and representation learning",
+        "The work addresses structural encoding in attention mechanisms, a core topic for graph transformers that ICLR frequently features",
+        "The method improves upon existing graph transformer architectures, contributing to the ongoing development of deep learning methods for graphs",
+        "The paper includes both theoretical analysis of invariance properties and empirical validation, fitting ICLR's standards"
+      ],
+      "why_it_does_not_fit": [
+        "While the paper uses transformers, the core innovation is more about structural encoding than deep learning architecture design per se",
+        "The theoretical analysis is relatively light compared to some ICLR papers that focus more heavily on theoretical guarantees of deep learning methods",
+        "The efficient computation aspects using MinHash and HyperLogLog might be less central to ICLR's focus on deep learning fundamentals"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a novel structural encoding (GIST) based on pairwise node intersection cardinality, which is a fresh and theoretically grounded approach to injecting graph structural bias into Transformers.",
+              "Extensive and rigorous empirical evaluation across multiple standard benchmarks (LRGB, MoleculeNet, ZINC), demonstrating consistent and often state-of-the-art performance against a wide array of strong baselines.",
+              "Provides a scalable, randomized algorithm (MinHash + HyperLogLog) to compute the intersection features efficiently, addressing a key practical challenge for large graphs."
+            ],
+            "weaknesses": [
+              "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+              "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+                "severity": "minor",
+                "evidence": "Definition 3.1 defines I_{ku,kv}(u,v) via a recurrence and T_{ku,k}(u,v) using a sum over I_{i,j}. This is mathematically dense and the intuitive connection to the motivating Figure 1 is not immediately clear from the equations. The attention mechanism definition (Def 4.1) introduces multiple projections (phi_y, phi_S) and terms (A_hat_{u,v}) which are not fully motivated.",
+                "affected_claim": "Clarity and ease of understanding of the proposed GIST encoding and its integration into the transformer.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim.",
+                "severity": "minor",
+                "evidence": "Section 3.3 and Algorithm 1 detail the use of MinHash and HyperLogLog for efficient, unbiased estimation of intersection cardinalities. The computational complexity reduction from O(k^2 n^4) to O(k^2 n^2) is claimed. However, the empirical results (Tables 2,3,5) are based on the approximate method. There is no experiment showing the performance difference (if any) between using exact counts (where feasible) and the approximations.",
+                "affected_claim": "The claim that the efficient randomized algorithm does not materially harm performance.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim that GIST captures structural information to enhance graph transformers is well-supported. The method is grounded in a clear definition of intersection cardinalities, an invariance theorem is provided (with a proof sketch in the appendix), and the efficient estimation using MinHash/HyperLogLog is established practice. The experimental results are robust across many datasets."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The proposed Graph Invariant Structural Trait (GIST) is a new structural encoding. While the idea of using neighborhood intersections has appeared in other contexts (e.g., for link prediction in Chamberlain et al., 2022, cited by the authors), its formulation as a k^2+2k dimensional pairwise feature for graph transformers and its specific application to capture diverse substructures for classification is novel and distinct from prior positional/structural encodings like SPD, LapPE, or motif-based methods."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated improvement over state-of-the-art graph transformers and GNNs on standard benchmarks is meaningful. It addresses a recognized challenge in making transformers structure-aware for graphs. The method is general and can potentially be integrated into many transformer architectures, making it a contribution of interest to the broader graph learning community."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is extensive, covering 12 datasets and comparing against over 20 recent and strong baselines, including SOTA graph transformers and pretrained models. The results consistently show GIST achieving top-tier performance. Ablation studies on the hop parameter k and motivating visualizations are included. The evaluation is convincing and fair."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "While the clarity score is 3 due to some technical denseness, the overall presentation is sufficient for reliable assessment. The paper structure is logical, the motivation and contributions are clear, and the core ideas are explained with supporting figures and empirical observations. The deficiencies noted under clarity are minor and do not prevent understanding the work."
+              }
+            },
+            "summary_comment": "This paper introduces GIST, a novel structural encoding for graph transformers based on pairwise k-hop node intersection cardinalities. The idea is well-motivated by the need to capture diverse substructures beyond simple proximity. The method is theoretically grounded (invariant) and made practical via efficient randomized approximations. The empirical evaluation is exceptionally thorough, demonstrating strong and often SOTA performance across diverse graph classification benchmarks. The weaknesses are minor, relating primarily to expositional clarity and a missing ablation on the approximation's impact. Overall, this is a solid, novel, and well-evaluated contribution that meets the standard for a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a novel structural encoding (GIST) based on pairwise node intersection cardinality, which is a fresh and theoretically grounded approach to injecting graph structural bias into Transformers.",
+              "Extensive and rigorous empirical evaluation across multiple standard benchmarks (LRGB, MoleculeNet, ZINC), demonstrating consistent and often state-of-the-art performance against a wide array of strong baselines.",
+              "Provides a scalable, randomized algorithm (MinHash + HyperLogLog) to compute the intersection features efficiently, addressing a key practical challenge for large graphs."
+            ],
+            "weaknesses": [
+              "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+              "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+                "severity": "minor",
+                "evidence": "Definition 3.1 defines I_{ku,kv}(u,v) via a recurrence and T_{ku,k}(u,v) using a sum over I_{i,j}. This is mathematically dense and the intuitive connection to the motivating Figure 1 is not immediately clear from the equations. The attention mechanism definition (Def 4.1) introduces multiple projections (phi_y, phi_S) and terms (A_hat_{u,v}) which are not fully motivated.",
+                "affected_claim": "Clarity and ease of understanding of the proposed GIST encoding and its integration into the transformer.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim.",
+                "severity": "minor",
+                "evidence": "Section 3.3 and Algorithm 1 detail the use of MinHash and HyperLogLog for efficient, unbiased estimation of intersection cardinalities. The computational complexity reduction from O(k^2 n^4) to O(k^2 n^2) is claimed. However, the empirical results (Tables 2,3,5) are based on the approximate method. There is no experiment showing the performance difference (if any) between using exact counts (where feasible) and the approximations.",
+                "affected_claim": "The claim that the efficient randomized algorithm does not materially harm performance.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim that GIST captures structural information to enhance graph transformers is well-supported. The method is grounded in a clear definition of intersection cardinalities, an invariance theorem is provided (with a proof sketch in the appendix), and the efficient estimation using MinHash/HyperLogLog is established practice. The experimental results are robust across many datasets."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The proposed Graph Invariant Structural Trait (GIST) is a new structural encoding. While the idea of using neighborhood intersections has appeared in other contexts (e.g., for link prediction in Chamberlain et al., 2022, cited by the authors), its formulation as a k^2+2k dimensional pairwise feature for graph transformers and its specific application to capture diverse substructures for classification is novel and distinct from prior positional/structural encodings like SPD, LapPE, or motif-based methods."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated improvement over state-of-the-art graph transformers and GNNs on standard benchmarks is meaningful. It addresses a recognized challenge in making transformers structure-aware for graphs. The method is general and can potentially be integrated into many transformer architectures, making it a contribution of interest to the broader graph learning community."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is extensive, covering 12 datasets and comparing against over 20 recent and strong baselines, including SOTA graph transformers and pretrained models. The results consistently show GIST achieving top-tier performance. Ablation studies on the hop parameter k and motivating visualizations are included. The evaluation is convincing and fair."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "While the clarity score is 3 due to some technical denseness, the overall presentation is sufficient for reliable assessment. The paper structure is logical, the motivation and contributions are clear, and the core ideas are explained with supporting figures and empirical observations. The deficiencies noted under clarity are minor and do not prevent understanding the work."
+              }
+            },
+            "summary_comment": "This paper introduces GIST, a novel structural encoding for graph transformers based on pairwise k-hop node intersection cardinalities. The idea is well-motivated by the need to capture diverse substructures beyond simple proximity. The method is theoretically grounded (invariant) and made practical via efficient randomized approximations. The empirical evaluation is exceptionally thorough, demonstrating strong and often SOTA performance across diverse graph classification benchmarks. The weaknesses are minor, relating primarily to expositional clarity and a missing ablation on the approximation's impact. Overall, this is a solid, novel, and well-evaluated contribution that meets the standard for a top-tier conference."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Clarity of technical exposition, specifically in Definition 3.1 (k-hop substructure vector) and the attention mechanism (Definition 4.1).\",\n        \"Lack of an ablation study comparing the performance of the proposed efficient randomized computation (MinHash/HLL) against exact intersection counts.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Connection between the mathematical definition of the k-hop substructure vector and the motivating intuition.\",\n          \"location\": \"Section 3.1, Definition 3.1; Section 2, Figure 1 and Observation 1\",\n          \"explanation\": \"The submission offers a bridge between the formal definition and its intuitive purpose. The recurrence in Definition 3.1 is designed to compute the cardinality of nodes at *exact* distances (ku, kv), which is the core feature visualized in Figure 1 (e.g., cells I(2,2), I(4,2)). Observation 1 explicitly states that these intersection cardinalities serve as discriminative features for substructures, linking the figure's intuition to the formalism.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarity of the k-hop substructure vector definition and the GIST attention mechanism.\",\n          \"proposed_change\": \"We will revise Section 3.1 to include a more intuitive, step-by-step explanation alongside Definition 3.1, explicitly mapping the terms I and T to the visual example in Figure 1. We will also expand the explanation of Definition 4.1, particularly clarifying the roles of the MLP networks (φ_y, φ_S) and the term Â_{u,v}, to improve readability and motivation.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Lack of empirical validation for the performance impact of using the randomized approximation (MinHash/HLL) versus exact computation.\",\n          \"proposed_change\": \"We will add an ablation study in a revised version, comparing the test performance of our GIST model using the efficient estimator against a version using exact intersection counts (where computationally feasible on smaller graphs). This analysis will directly support the claim that the approximation does not materially harm performance.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful and positive assessment of our work, highlighting its novelty, strong empirical results, and practical scalability. We appreciate the specific suggestions to improve clarity and provide additional validation.\\n\\nRegarding the clarity of technical exposition (Definition 3.1 and 4.1), we agree that the presentation can be made more intuitive. In the current submission, the connection is established through Figure 1 and Observation 1 in Section 2, which explain how the intersection cardinalities I(ku, kv) correspond to the cells in the visualized substructure vector and serve as discriminative features. We acknowledge that the formal recurrence could be better motivated. In our revision, we will provide a more pedagogical explanation in Section 3.1, walking through the computation with a concrete example tied to Figure 1. We will also elaborate on the design of the attention mechanism in Definition 4.1 to clarify the purpose of each component.\\n\\nConcerning the missing ablation on the randomized approximation, we agree this is an important point to address. The efficiency claim (O(k²n²) complexity) is central to the method's practicality. While the theoretical properties of MinHash and HyperLogLog provide unbiased estimators, an empirical comparison is valuable. In our revision, we will conduct and report an ablation study on a suitable dataset (e.g., ZINC subset) comparing the performance using our efficient estimator versus exact intersection counts. This will provide direct evidence that the approximation preserves predictive performance, strengthening the scalability claim.\\n\\nWe are grateful for the reviewer's overall endorsement and will address these points to further enhance the paper's clarity and robustness.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a novel structural encoding (GIST) based on pairwise node intersection cardinality, which is a fresh and theoretically grounded approach to injecting graph structural bias into Transformers.",
+              "Extensive and rigorous empirical evaluation across multiple standard benchmarks (LRGB, MoleculeNet, ZINC), demonstrating consistent and often state-of-the-art performance against a wide array of strong baselines.",
+              "Provides a scalable, randomized algorithm (MinHash + HyperLogLog) to compute the intersection features efficiently, addressing a key practical challenge for large graphs."
+            ],
+            "weaknesses": [
+              "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+              "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's clarity suffers from technical exposition issues, particularly in the definition of the k-hop substructure vector (Def 3.1) and the attention mechanism, which could be more intuitively explained.",
+                "severity": "minor",
+                "evidence": "Definition 3.1 defines I_{ku,kv}(u,v) via a recurrence and T_{ku,k}(u,v) using a sum over I_{i,j}. This is mathematically dense and the intuitive connection to the motivating Figure 1 is not immediately clear from the equations. The attention mechanism definition (Def 4.1) introduces multiple projections (phi_y, phi_S) and terms (A_hat_{u,v}) which are not fully motivated.",
+                "affected_claim": "Clarity and ease of understanding of the proposed GIST encoding and its integration into the transformer.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "While the experiments are comprehensive, the paper does not include an ablation study on the contribution of the computational approximation (MinHash/HLL) vs. exact intersection counts, which is central to the method's scalability claim.",
+                "severity": "minor",
+                "evidence": "Section 3.3 and Algorithm 1 detail the use of MinHash and HyperLogLog for efficient, unbiased estimation of intersection cardinalities. The computational complexity reduction from O(k^2 n^4) to O(k^2 n^2) is claimed. However, the empirical results (Tables 2,3,5) are based on the approximate method. There is no experiment showing the performance difference (if any) between using exact counts (where feasible) and the approximations.",
+                "affected_claim": "The claim that the efficient randomized algorithm does not materially harm performance.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim that GIST captures structural information to enhance graph transformers is well-supported. The method is grounded in a clear definition of intersection cardinalities, an invariance theorem is provided (with a proof sketch in the appendix), and the efficient estimation using MinHash/HyperLogLog is established practice. The experimental results are robust across many datasets."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The proposed Graph Invariant Structural Trait (GIST) is a new structural encoding. While the idea of using neighborhood intersections has appeared in other contexts (e.g., for link prediction in Chamberlain et al., 2022, cited by the authors), its formulation as a k^2+2k dimensional pairwise feature for graph transformers and its specific application to capture diverse substructures for classification is novel and distinct from prior positional/structural encodings like SPD, LapPE, or motif-based methods."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated improvement over state-of-the-art graph transformers and GNNs on standard benchmarks is meaningful. It addresses a recognized challenge in making transformers structure-aware for graphs. The method is general and can potentially be integrated into many transformer architectures, making it a contribution of interest to the broader graph learning community."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is extensive, covering 12 datasets and comparing against over 20 recent and strong baselines, including SOTA graph transformers and pretrained models. The results consistently show GIST achieving top-tier performance. Ablation studies on the hop parameter k and motivating visualizations are included. The evaluation is convincing and fair."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "While the clarity score is 3 due to some technical denseness, the overall presentation is sufficient for reliable assessment. The paper structure is logical, the motivation and contributions are clear, and the core ideas are explained with supporting figures and empirical observations. The deficiencies noted under clarity are minor and do not prevent understanding the work."
+              }
+            },
+            "summary_comment": "This paper introduces GIST, a novel structural encoding for graph transformers based on pairwise k-hop node intersection cardinalities. The idea is well-motivated by the need to capture diverse substructures beyond simple proximity. The method is theoretically grounded (invariant) and made practical via efficient randomized approximations. The empirical evaluation is exceptionally thorough, demonstrating strong and often SOTA performance across diverse graph classification benchmarks. The weaknesses are minor, relating primarily to expositional clarity and a missing ablation on the approximation's impact. Overall, this is a solid, novel, and well-evaluated contribution that meets the standard for a top-tier conference."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Clarity of technical exposition, particularly in Definition 3.1 (k-hop substructure vector) and Definition 4.1 (attention mechanism).\",\n        \"Lack of ablation study comparing the performance of the efficient randomized computation (MinHash/HLL) against exact intersection counts.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Connection between the formal definition of the k-hop substructure vector and the intuitive motivation.\",\n          \"location\": \"Section 2 (Figure 1, Observation 1) and Section 3.1 (Definition 3.1)\",\n          \"explanation\": \"The paper provides a bridge between intuition and formalism. Figure 1 and the accompanying Observation 1 in Section 2 clearly illustrate how the intersection cardinalities I(k_u, k_v) serve as discriminative features for substructures. Definition 3.1 provides the precise mathematical recurrence to compute these exact-distance cardinalities from the raw neighborhood sets, which is necessary for a complete and implementable specification. The explanation in lines 218-221 states that the vector S_k(u,v) 'starts with I_{k_u,k_v}(u,v) for every pair of k_u, k_v ≤ k', directly linking the definition to the visualized feature set.\"\n        },\n        {\n          \"concern\": \"The use of established, unbiased estimators for scalability is theoretically justified.\",\n          \"location\": \"Section 3.3 and Algorithm 1\",\n          \"explanation\": \"The submission clearly states that MinHash provides an unbiased estimator for Jaccard similarity and HyperLogLog provides an unbiased estimator for union cardinality, and that their product is an unbiased estimator for the intersection cardinality. This is a standard and well-justified approach in the literature (as cited). The complexity analysis explicitly compares the exact O(k²n⁴) method to the proposed O(k²n²) method, establishing the scalability claim on theoretical grounds.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Improving the intuitive explanation and readability of the technical definitions.\",\n          \"proposed_change\": \"We will revise Section 3.1 to add a more pedagogical, step-by-step explanation alongside Definition 3.1. We will explicitly walk through how the recurrence computes the values shown in Figure 1's cells (e.g., I(2,2)). We will also expand the explanation of Definition 4.1 to motivate the design choices for the MLP networks (φ_y, φ_S) and the term Â_{u,v}, improving clarity without altering the method.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Providing empirical evidence that the efficient randomized approximation preserves model performance.\",\n          \"proposed_change\": \"We will conduct and report an ablation study comparing the test performance of our GIST model using the efficient estimator versus using exact intersection counts on a tractable dataset (e.g., ZINC subset). This will be added to the experimental section to substantiate the claim that the approximation does not harm predictive accuracy.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We sincerely thank the reviewer for their thorough and positive evaluation of our work, noting its novelty, strong empirical support, and practical contribution. We appreciate the constructive suggestions to further improve the paper's clarity and robustness.\\n\\n**On Clarity of Technical Exposition:** We acknowledge that Definitions 3.1 and 4.1 are mathematically dense. Their purpose is to provide a complete, unambiguous specification. However, we agree that their connection to the motivating intuition (Figure 1, Section 2) can be made more explicit for the reader. In the current submission, this connection is established through the narrative: Observation 1 highlights the discriminative power of intersection cardinalities, and Definition 3.1 formally defines how to compute them. We will enhance this in the revision by adding a concrete, worked example in Section 3.1 that maps the recurrence directly onto the cells of Figure 1, making the formalism more accessible. Similarly, we will elaborate on the design rationale behind the components of the GIST attention mechanism in Definition 4.1.\\n\\n**On the Ablation Study for the Randomized Algorithm:** This is a valuable point. While the unbiased nature of MinHash and HyperLogLog provides strong theoretical justification, an empirical validation strengthens the practical claim. Our current submission focuses on demonstrating the overall effectiveness and scalability of the GIST framework. We agree that directly comparing the approximate and exact computations on a suitable dataset is an excellent addition. We will conduct this ablation study (e.g., on ZINC) and include the results in a revised version, providing concrete evidence that the performance difference is negligible, thereby solidifying the scalability claim.\\n\\nWe are grateful for the reviewer's recommendation for acceptance and will incorporate these revisions to enhance the paper's clarity and empirical completeness.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_88dc4ca959e4",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/icml_reject_2025_029_graph_transformers_get_the_gist_graph_invariant_structural_trait_for_refined_gra.md",
+    "target_paper_summary": {
+      "paper_id": "paper_88dc4ca959e4",
+      "title": "Graph Transformers Get The Gist: Graph Invariant Structural Trait For Refined Graph Encoding",
+      "abstract": "## Anonymous Authors1 Abstract",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_86fa75c5e",
+        "title": "Graph-based image representation learning",
+        "authors": [
+          "Renata Khasanova"
+        ],
+        "year": 2019,
+        "publication_date": "2019-01-01",
+        "venue": "Infoscience (Ecole Polytechnique Fédérale de Lausanne)",
+        "abstract": "Though deep learning (DL) algorithms are very powerful for image processing tasks, they generally require a lot of data to reach their full potential. Furthermore, there is no straightforward way to impose various properties, given by the prior knowledge about the target task, on the features extracted by a DL model. Therefore, in this thesis we propose several techniques that rely on the power of graph representations to embed prior knowledge inside the learning process. This allows to reduce the solution space and leads to faster optimization convergence and higher accuracy in the representation learning. In our first work, inspired by the ability of a human to correctly classify rotated, shifted or flipped objects, we propose an algorithm that permits to inherently encode invariance to isometric transformations of objects in an image. Our DL architecture is based on graph representations and consists of three novel layers, which we refer to as graph convolutional, dynamic pooling and statistical layers. Our experiments on the image classification tasks show that our network correctly recognizes isometrically transformed objects even though such types of transformation are not seen by the network at training time. Standard DL techniques are typically not able to succeed in solving such a problem without extensive data augmentation. Then, we propose to exploit the properties of graph-based approaches to efficiently process images with various types of projective geometry. In particular, we are interested in increasingly popular omnidirectional cameras, which have a 360 degree field of view. Despite their effectiveness, such cameras create images with specific geometric properties, which require special techniques for efficient processing. We propose an efficient way of adjusting the weights of the graph edges to adapt the filter responses to the geometric image properties introduced by omnidirectional cameras. Our experiments prove that using the proposed graph with properly adjusted edge weights permits to reach better performance as compared to using regular grid graph with equal weights. Finally, the approach described above relies on the isotropic filters, which work well within our transformation invariant architecture for image classification. However, for other problems (e.g. image compression) or even when used without dynamic pooling and statistical layers that are defined within the proposed architecture, these filters are unable to efficiently encode the information about the object. Thus, we introduce a different technique based on anisotropic filters that adapt their shape and size according to the omnidirectional image geometry. The main advantage of this approach compared to the previous one is the ability to encode the orientation of an image pattern, which is important for various tasks such as image compression. Our experiments show that our approach adapts to different image projective geometries and achieves state-of-the-art performance on image classification and compression tasks. Overall we propose several methods, which combine the power of DL and graph signal processing towards incorporating prior information about the target task inside the optimization procedure. We hope that the research efforts presented in this thesis will help the development of efficient DL algorithms that can use various types of prior knowledge to make them efficient even when the available training data is scarce.",
+        "url": "http://infoscience.epfl.ch/record/268037",
+        "doi": "https://doi.org/10.5075/epfl-thesis-9267",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2962447056"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2
+      },
+      {
+        "paper_id": "rw_002_1c7a0d1c4",
+        "title": "Hyperspectral Image Classification: Potentials, Challenges, and Future Directions",
+        "authors": [
+          "Debaleena Datta",
+          "Pradeep Kumar Mallick",
+          "Akash Kumar Bhoi",
+          "Muhammad Fazal Ijaz",
+          "Jana Shafi",
+          "Jaeyoung Choi"
+        ],
+        "year": 2022,
+        "publication_date": "2022-04-28",
+        "venue": "Computational Intelligence and Neuroscience",
+        "abstract": "Recent imaging science and technology discoveries have considered hyperspectral imagery and remote sensing. The current intelligent technologies, such as support vector machines, sparse representations, active learning, extreme learning machines, transfer learning, and deep learning, are typically based on the learning of the machines. These techniques enrich the processing of such three-dimensional, multiple bands, and high-resolution images with their precision and fidelity. This article presents an extensive survey depicting machine-dependent technologies' contributions and deep learning on landcover classification based on hyperspectral images. The objective of this study is three-fold. First, after reading a large pool of Web of Science (WoS), Scopus, SCI, and SCIE-indexed and SCIE-related articles, we provide a novel approach for review work that is entirely systematic and aids in the inspiration of finding research gaps and developing embedded questions. Second, we emphasize contemporary advances in machine learning (ML) methods for identifying hyperspectral images, with a brief, organized overview and a thorough assessment of the literature involved. Finally, we draw the conclusions to assist researchers in expanding their understanding of the relationship between machine learning and hyperspectral images for future research.",
+        "url": "https://doi.org/10.1155/2022/3854635",
+        "doi": "https://doi.org/10.1155/2022/3854635",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4225146933"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 109
+      },
+      {
+        "paper_id": "rw_003_39112daef",
+        "title": "Artificial intelligence for geometry-based feature extraction, analysis and synthesis in artistic images: a survey",
+        "authors": [
+          "Mridula Vijendran",
+          "Jingjing Deng",
+          "Shuang Chen",
+          "Edmond S. L. Ho",
+          "Hubert P. H. Shum"
+        ],
+        "year": 2024,
+        "publication_date": "2024-12-21",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Abstract Artificial Intelligence significantly enhances the visual art industry by analyzing, identifying and generating digitized artistic images. This review highlights the substantial benefits of integrating geometric data into AI models, addressing challenges such as high inter-class variations, domain gaps, and the separation of style from content by incorporating geometric information. Models not only improve AI-generated graphics synthesis quality, but also effectively distinguish between style and content, utilizing inherent model biases and shared data traits. We explore methods like geometric data extraction from artistic images, the impact on human perception, and its use in discriminative tasks. The review also discusses the potential for improving data quality through innovative annotation techniques and the use of geometric data to enhance model adaptability and output refinement. Overall, incorporating geometric guidance boosts model performance in classification and synthesis tasks, providing crucial insights for future AI applications in the visual arts domain.",
+        "url": "https://doi.org/10.1007/s10462-024-11051-3",
+        "doi": "https://doi.org/10.1007/s10462-024-11051-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4405674657"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 11
+      },
+      {
+        "paper_id": "rw_004_308ca9ed7",
+        "title": "Automatic Scene Generation: State-of-the-Art Techniques, Models, Datasets, Challenges, and Future Prospects",
+        "authors": [
+          "Awal Ahmed Fime",
+          "Saifuddin Mahmud",
+          "Arpita Das",
+          "Md Khairul Islam",
+          "Kim, Hong-Hoon"
+        ],
+        "year": 2024,
+        "publication_date": "2024-09-14",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Automatic scene generation is an essential area of research with applications in robotics, recreation, visual representation, training and simulation, education, and more. This survey provides a comprehensive review of the current state-of-the-arts in automatic scene generation, focusing on techniques that leverage machine learning, deep learning, embedded systems, and natural language processing (NLP). We categorize the models into four main types: Variational Autoencoders (VAEs), Generative Adversarial Networks (GANs), Transformers, and Diffusion Models. Each category is explored in detail, discussing various sub-models and their contributions to the field. We also review the most commonly used datasets, such as COCO-Stuff, Visual Genome, and MS-COCO, which are critical for training and evaluating these models. Methodologies for scene generation are examined, including image-to-3D conversion, text-to-3D generation, UI/layout design, graph-based methods, and interactive scene generation. Evaluation metrics such as Frechet Inception Distance (FID), Kullback-Leibler (KL) Divergence, Inception Score (IS), Intersection over Union (IoU), and Mean Average Precision (mAP) are discussed in the context of their use in assessing model performance. The survey identifies key challenges and limitations in the field, such as maintaining realism, handling complex scenes with multiple objects, and ensuring consistency in object relationships and spatial arrangements. By summarizing recent advances and pinpointing areas for improvement, this survey aims to provide a valuable resource for researchers and practitioners working on automatic scene generation.",
+        "url": "http://arxiv.org/abs/2410.01816",
+        "doi": "https://doi.org/10.48550/arxiv.2410.01816",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4403853746"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_005_f90ac12e8",
+        "title": "On the Element-Wise Representation and Reasoning in Zero-Shot Image Recognition: A Systematic Survey",
+        "authors": [
+          "Jingcai Guo",
+          "Zhijie Rao",
+          "Zhi Chen",
+          "Song Guo",
+          "Jingren Zhou",
+          "Dacheng Tao"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-09",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Zero-shot image recognition (ZSIR) aims to recognize and reason in unseen domains by learning generalized knowledge from limited data in the seen domain. The gist of ZSIR is constructing a well-aligned mapping between the input visual space and the target semantic space, which is a bottom-up paradigm inspired by the process by which humans observe the world. In recent years, ZSIR has witnessed significant progress on a broad spectrum, from theory to algorithm design, as well as widespread applications. However, to the best of our knowledge, there remains a lack of a systematic review of ZSIR from an element-wise perspective, i.e., learning fine-grained elements of data and their inferential associations. To fill the gap, this paper thoroughly investigates recent advances in element-wise ZSIR and provides a sound basis for its future development. Concretely, we first integrate three basic ZSIR tasks, i.e., object recognition, compositional recognition, and foundation model-based open-world recognition, into a unified element-wise paradigm and provide a detailed taxonomy and analysis of the main approaches. Next, we summarize the benchmarks, covering technical implementations, standardized datasets, and some more details as a library. Last, we sketch out related applications, discuss vital challenges, and suggest potential future directions.",
+        "url": "http://arxiv.org/abs/2408.04879",
+        "doi": "https://doi.org/10.48550/arxiv.2408.04879",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404986060"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_006_73476988a",
+        "title": "A comprehensive survey on deep active learning in medical image analysis",
+        "authors": [
+          "Haoran Wang",
+          "Qiuye Jin",
+          "Shiman Li",
+          "Siyu Liu",
+          "Manning Wang",
+          "Zhijian Song"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-22",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Deep learning has achieved widespread success in medical image analysis, leading to an increasing demand for large-scale expert-annotated medical image datasets. Yet, the high cost of annotating medical images severely hampers the development of deep learning in this field. To reduce annotation costs, active learning aims to select the most informative samples for annotation and train high-performance models with as few labeled samples as possible. In this survey, we review the core methods of active learning, including the evaluation of informativeness and sampling strategy. For the first time, we provide a detailed summary of the integration of active learning with other label-efficient techniques, such as semi-supervised, self-supervised learning, and so on. We also summarize active learning works that are specifically tailored to medical image analysis. Additionally, we conduct a thorough comparative analysis of the performance of different AL methods in medical image analysis with experiments. In the end, we offer our perspectives on the future trends and challenges of active learning and its applications in medical image analysis.",
+        "url": "http://arxiv.org/abs/2310.14230",
+        "doi": "https://doi.org/10.48550/arxiv.2310.14230",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387946838"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 3
+      },
+      {
+        "paper_id": "rw_007_18794dd01",
+        "title": "PROCEEDINGS BOOK OF THE XXX SYMPOSIUM “BIOINFORMATICS AND COMPUTER-AIDED DRUG DISCOVERY”",
+        "authors": [],
+        "year": 2024,
+        "publication_date": "2024-09-16",
+        "venue": "Institute of Biomedical Chemistry, Moscow,Russia eBooks",
+        "abstract": "The materials of the XXX International Symposium “Bioinformatics and Computer-Aided Drug Discovery” (Virtual, 16-18 September 2024) are presented. This Symposium is dedicated to the emerging challenges and opportunities for in silico drug discovery. Contemporary fields of biomedical science devoted to the analysis of normal and pathological states of the organism and revealing the pathological processes at the cellular and molecular levels are discussed. The main topics include: development and practical application of computational methods for finding and validation of new pharmacological targets, in silicodesign of potent and safe pharmaceutical agents, optimization of the structure and properties of drug-like compounds, rational approaches to the utilization of pharmacotherapeutic remedies in medical practice. This information will be useful for researchers whose investigations are dedicated to creating computational methods and their application to drug research and development using bio- and chemoinformatics methods based on post-genomic technologies. It can also be useful for undergraduate, graduate, and postgraduate students specializing in the relevant fields.",
+        "url": "http://doi.org/10.18097/bcadd2024",
+        "doi": "https://doi.org/10.18097/bcadd2024",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4402808692"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_010_5ce65a922",
+        "title": "Computer vision-based vehicle recognition system using deep learning techniques / Tan Shi Hao",
+        "authors": [
+          "Tan , Shi Hao"
+        ],
+        "year": 2024,
+        "publication_date": "2024-06-01",
+        "venue": "University of Malaya Students Repository",
+        "abstract": "Vehicle recognition is essential for Intelligent Transportation System (ITS) in creating a comfortable commuting environment. It is the enabler for a diverse range of applications, including roadway maintenance, surveillance systems, electronic tolls, etc. With the aim of improving vehicle type and vehicle make and model recognition (VMMR) performance, the past studies are collated and a vehicle taxonomy that encompasses sensor-based and Computer Vision (CV)-based solutions is deliberated. Motivated to learn superior convolution filters, the first proposal employs Principal Component Analysis (PCA) and Linear Discriminant Analysis (LDA) as filter learning techniques. The proposed network dubbed PCA-LDA-Convolutional Neural Network (CNN) also incorporates a parameter-free Channel-Based Attention Module (ChBAM) to tune the feature responses guided by the channel information saliency. The framework delivers 99.6% and 97.8% accuracies on datasets with 30 and 300 vehicle models, respectively. The robustness tests verify that PCA-LDA-CNN is steadfast against image distortions. Secondly, the past studies reveal that neglecting the degree of informativeness cripples the quality of representation learning. In this regard, a Spatial Attention Module (SAM), which is empowered by Multi-Head Self-Attention (MHSA), is proposed to scale the feature responses by exploiting spatial relevancy. The proposed ResNet50-SAM model records exceptional performance on Beijing Institute of Technology (BIT)- Vehicle, Stanford Cars and Web-Nature Comprehensive Cars (CompCarsWeb) datasets by reporting 98.2%, 84.5% and 96.0% accuracies, respectively. A qualitative inspection of the feature embeddings suggests high cohesivity within the group. Integrating SAM into other CNNs also leads to considerable improvements. Next, forgoing the low-level details and concentrating on high-level features is detrimental to VMMR. The Cross Granularity (CG) module, in contrast, integrates both information to render a balanced mix of local contextual information and global semantic details. The combination of ResNet50 and CG module attains 98.6%, 95.4%, 86.4% and 99.1% accuracies on CompCarsWeb, Stanford Cars, Car-FG3K and Surveillance-Nature Comprehensive Cars (CompCarsSV) datasets, respectively. The qualitative analysis further unveils its strong ability to locate the distinctive fine-grained vehicle details. The CG module is also highly compatible with various backbone CNNs. As the fourth proposal, the Coarse-to-Fine Context Aggregation (CFCA) module presents a parameter-efficient multi-scale feature learning paradigm. The cross-scale features are generated by first refining the scalespecific components independently and then fusing them in a nonlinear manner through convolution. The multi-scale feature maps produce 98.0%, 95.1%, 86.2%, 99.0%, and 96.9% accuracies on CompCarsWeb, Stanford Cars, Car-FG3K, CompCarsSV and Mohsin-VMMR datasets, respectively. Moreover, the neurons exhibit high feature responses on the discriminative vehicle parts, corresponding to the superior feature extraction ability of the CFCA module. The fifth proposal presents an Augmented- Granularity (AG) module that executes grouped focus convolution (GFConv) to compose multi-granularity features. With the spatial-to-channel transformation, the GFConv doubles the receptive field whilst mitigating information loss. When pairing the AG module with TResNet-L, the network claims 87.8%, 95.5%, 98.6% and 92.5% on Car- FG3K, Stanford Cars, CompCarsWeb and VMMRdb datasets, respectively. The dissection of the feature embeddings affirms the ability of the AG module to reduce the intraclass variance. The AG module also brings 2.7% accuracy improvements in average for 4 backbone CNNs.",
+        "url": "https://openalex.org/W7110543247",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W7110543247"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 0
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_005_f90ac12e8",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "benchmark_baseline",
+          "novelty_competitor"
+        ],
+        "rationale": "The paper surveys element-wise representation and reasoning for zero-shot image recognition, including graph-based methods and benchmark datasets, aligning with the target's focus on graph representations and structural encoding.",
+        "evidence_summary": "In 2024, Guo et al. published 'On the Element-Wise Representation and Reasoning in Zero-Shot Image Recognition: A Systematic Survey', which provides a taxonomy of methods for learning fine-grained elements and their inferential associations in visual and semantic spaces. It integrates object recognition, compositional recognition, and foundation model-based open-world recognition into a unified paradigm, summarizing benchmarks, technical implementations, and standardized datasets."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_001_86fa75c5e",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The paper proposes graph-based deep learning architectures with invariant encoding, directly relevant to the target's graph transformers and structural traits, and discusses limitations of standard techniques.",
+        "evidence_summary": "In 2019, Renata Khasanova published 'Graph-based image representation learning', which introduces graph convolutional, dynamic pooling, and statistical layers to embed prior knowledge and encode invariance to isometric transformations. The work shows that standard deep learning techniques fail without extensive data augmentation, while their graph-based network achieves correct recognition of transformed objects in image classification tasks."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_004_308ca9ed7",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_method"
+        ],
+        "rationale": "The survey covers graph-based methods for automatic scene generation and benchmarks like COCO-Stuff, relevant to graph encoding and evaluation metrics.",
+        "evidence_summary": "In 2024, Fime et al. published 'Automatic Scene Generation: State-of-the-Art Techniques, Models, Datasets, Challenges, and Future Prospects', which reviews graph-based methods alongside VAEs, GANs, transformers, and diffusion models. It discusses datasets such as COCO-Stuff, Visual Genome, and MS-COCO, and evaluation metrics including FID, KL Divergence, and mAP, highlighting challenges in maintaining realism and handling complex scenes."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_003_39112daef",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The survey examines geometric data extraction and integration in AI models for artistic images, relating to structural traits and model biases discussed in the target.",
+        "evidence_summary": "In 2024, Vijendran et al. published 'Artificial intelligence for geometry-based feature extraction, analysis and synthesis in artistic images: a survey', which explores methods for extracting geometric data from images to address challenges like high inter-class variations and domain gaps. It notes that incorporating geometric guidance improves model performance in classification and synthesis tasks by leveraging inherent biases and shared data traits."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_002_1c7a0d1c4",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "The survey covers machine learning and deep learning techniques for hyperspectral image classification, providing background on representation learning benchmarks.",
+        "evidence_summary": "In 2022, Datta et al. published 'Hyperspectral Image Classification: Potentials, Challenges, and Future Directions', which surveys machine learning methods like support vector machines and deep learning for landcover classification using hyperspectral images. It outlines a systematic review approach and assesses the relationship between machine learning and hyperspectral imagery, drawing conclusions for future research."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_006_73476988a",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "The survey on active learning in medical image analysis discusses constraints like high annotation costs, relevant to efficiency and data limitations in representation learning.",
+        "evidence_summary": "In 2023, Wang et al. published 'A comprehensive survey on deep active learning in medical image analysis', which reviews methods for selecting informative samples to reduce annotation costs and train models with few labeled samples. It summarizes integration with semi-supervised and self-supervised learning, and provides a comparative analysis of active learning performance in medical image tasks."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_007_18794dd01",
+        "relevance_score": 0.25,
+        "relevance_types": [],
+        "rationale": "The proceedings cover bioinformatics and drug discovery with computational methods, but lack direct relevance to graph encoding or structural traits in images.",
+        "evidence_summary": "In 2024, the PROCEEDINGS BOOK OF THE XXX SYMPOSIUM “BIOINFORMATICS AND COMPUTER-AIDED DRUG DISCOVERY” was published, presenting materials on computational methods for drug discovery, including target validation and structure optimization. It discusses applications in biomedical science using bio- and chemoinformatics methods based on post-genomic technologies."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_010_5ce65a922",
+        "relevance_score": 0.2,
+        "relevance_types": [],
+        "rationale": "The thesis on vehicle recognition uses deep learning and attention modules, but focuses on specific applications without broad relevance to graph structural encoding.",
+        "evidence_summary": "In 2024, Tan Shi Hao published 'Computer vision-based vehicle recognition system using deep learning techniques', which proposes a PCA-LDA-CNN framework with attention modules for vehicle type and make/model recognition. It reports accuracies up to 99.6% on datasets with 30 vehicle models and discusses robustness against image distortions."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, Guo et al. published 'On the Element-Wise Representation and Reasoning in Zero-Shot Image Recognition: A Systematic Survey', which provides a taxonomy of methods for fine-grained element learning and inferential associations, integrating object recognition, compositional recognition, and open-world recognition with benchmark summaries. In 2019, Renata Khasanova published 'Graph-based image representation learning', introducing graph convolutional, dynamic pooling, and statistical layers for invariant encoding and showing improved classification over standard techniques without augmentation. In 2024, Fime et al. published 'Automatic Scene Generation: State-of-the-Art Techniques, Models, Datasets, Challenges, and Future Prospects', reviewing graph-based methods and datasets like COCO-Stuff while noting challenges in realism and scene complexity. In 2024, Vijendran et al. published 'Artificial intelligence for geometry-based feature extraction, analysis and synthesis in artistic images: a survey', exploring geometric data extraction to address inter-class variations and improve model performance. In 2022, Datta et al. published 'Hyperspectral Image Classification: Potentials, Challenges, and Future Directions', surveying machine learning for landcover classification with hyperspectral images. In 2023, Wang et al. published 'A comprehensive survey on deep active learning in medical image analysis', covering sample selection to reduce annotation costs and integration with other learning paradigms.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 8,
+      "num_cutoff_valid": 8,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 8,
+    "num_cutoff_valid": 8,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

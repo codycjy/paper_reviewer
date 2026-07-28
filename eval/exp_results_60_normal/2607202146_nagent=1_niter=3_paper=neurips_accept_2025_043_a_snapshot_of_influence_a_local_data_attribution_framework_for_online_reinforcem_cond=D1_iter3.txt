@@ -1,0 +1,81 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and much-needed framework for data attribution in online RL, addressing the unique challenges of dynamic data generation and circular dependencies. This is a significant conceptual leap for interpretability in RL.",
+        "The proposed Iterative Influence-Based Filtering (IIF) algorithm, directly leveraging the attribution framework, demonstrates substantial practical benefits, including improved sample efficiency, reduced computational cost, and enhanced final performance across various RL benchmarks and even in RLHF for LLMs. This shows a clear path from interpretability to practical impact.",
+        "The empirical analysis provides fresh and insightful understanding of RL training dynamics, particularly the diagnosis of harmful records (inaccurate advantage estimates) and the temporal phase transition of critical records in behavior formation. These insights can inspire further research into RL optimization."
+      ],
+      "weaknesses": [
+        "While TracIn's use with adaptive optimizers is discussed as a limitation and acknowledged in related work, its empirical effectiveness as a proxy for Adam-based RL training needs a more thorough theoretical or empirical justification beyond mere citation. This could impact the soundness of the attribution scores. The author response acknowledges this is an open research problem and relies on empirical success, which is a fair position given the early stage of this research.",
+        "The local attribution framework, while clever in circumnavigating the circular dependency challenge, inherently limits the scope of influence analysis to single training rounds. While practical, this might miss more complex, long-term, and cascading data influences crucial in online RL, which are acknowledged as a challenge but not fully explored. The author response clarifies this as a deliberate first step, providing a tractable foundation for future work on longer-term effects."
+      ],
+      "summary_comment": "This paper presents a truly innovative and important contribution by introducing the first data attribution framework for online Reinforcement Learning. The core idea of 'local' attribution to tackle the circular dependency between data and model is brilliant and opens up a new avenue for understanding and improving RL. The applications, from diagnosing learning difficulties to an effective filtering algorithm (IIF) that improves sample efficiency and final performance, are compelling and demonstrate the significant practical potential of this work. The authors' rebuttal clarifies their rationale for the identified weaknesses. While the theoretical justification for TracIn with adaptive optimizers remains an open problem, the empirical effectiveness demonstrated strongly supports the utility of the approach. Similarly, the choice of a local framework is a pragmatic and necessary first step in a very challenging domain, and the authors effectively position it as a foundation for future, more complex explorations. Overall, the work remains highly impactful and novel, and the minor points of improvement do not detract from its overall strength. This is excellent, forward-looking research that I'm eager to see published."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel framework for data attribution in online Reinforcement Learning (RL), which directly aligns with 'general machine learning' and 'reinforcement learning' topics at ICML.",
+        "The practical applications of the framework, such as diagnosing learning, temporal analysis of behavior, and especially the Iterative Influence-Based Filtering (IIF) algorithm to improve sample efficiency and performance, strongly fit the 'application-driven machine learning' and 'trustworthy machine learning' (interpretability aspect) themes.",
+        "The detailed experimental evaluation across diverse RL environments (classic control, navigation, locomotion, and RLHF for LLMs) demonstrates strong empirical contributions, which are highly valued by ICML.",
+        "The paper tackles fundamental challenges in online RL, such as sample inefficiency, training instability, and interpretability, which are key areas of interest for the ICML community.",
+        "The methodology, which adapts TracIn for online RL, involves 'optimization' aspects (dealing with gradients) and 'probabilistic methods' (RL itself is probabilistic), further fitting ICML's diverse interest areas."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 points out that while the use of TracIn with adaptive optimizers is empirically effective, its theoretical justification for such settings is not thoroughly explored. This might be considered a minor gap for a conference that also values strong theoretical foundations, although the authors recognize it as an open research problem.",
+        "The 'local' nature of the attribution framework, examining influence within single training rounds, means it doesn't fully capture complex, long-term, and cascading data influences. While a pragmatic choice for tractability, a more comprehensive long-term analysis might be desired by some researchers at ICML interested in deeper theoretical understanding of sequential decision-making."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on foundational challenges in Reinforcement Learning, particularly interpretability, sample efficiency, and training stability, directly aligns with the 'Reinforcement Learning and Control' and 'General machine learning: core contributions in supervised and unsupervised methods' topics at NeurIPS.",
+        "The application of the framework to RLHF for Large Language Models (LLMs) strongly overlaps with the 'Language and multimodal language models' track, indicating high relevance to a significant sub-community within NeurIPS.",
+        "The interdisciplinary nature of the work, combining data attribution (typically interpretability/ML theory) with online RL, makes it a good fit for NeurIPS's encouragement of 'interdisciplinary submissions that do not fit neatly into existing categories'.",
+        "The empirical robustness and significant performance improvements demonstrated by IIF across various RL benchmarks, including LLM applications, show strong practical contribution, valued by NeurIPS.",
+        "The paper provides a detailed analysis of 'inaccurate advantage estimates' as a source of harmful records, offering 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior beyond the scope of the original work', which NeurIPS specifically encourages.",
+        "The discussion of ethical considerations in AI (transparent and trustworthy machine learning through interpretability) is a growing area of interest for NeurIPS, enhancing the paper's fit."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reliance on TracIn, originally designed for SGD, as a proxy for adaptive optimizers like Adam in modern RL (as noted by Reviewer 1) could be seen as a minor point of weakness concerning rigorous theoretical grounding, though the authors acknowledge this limitation.",
+        "The 'local' nature of the attribution framework (analyzing influence within single training rounds) might be perceived by some as not fully addressing the complex temporal dependencies inherent in online RL over longer training horizons, which is a nuanced aspect of sequential decision-making often explored in NeurIPS.",
+        "While the paper is strong, its 'Others' topic category, while reflecting its interdisciplinary nature, doesn't immediately slot into a single major NeurIPS track, which might require extra effort in positioning for reviewers specializing in specific areas."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper is highly relevant to ICLR's core focus on 'deep learning', as it specifically addresses online RL algorithms like PPO that heavily rely on deep neural networks.",
+        "The framework directly contributes to 'reinforcement learning' and 'representation learning' by providing methods to understand and improve RL policy updates, including applications to behavior formation and learning diagnostics.",
+        "The use of data attribution for interpretability and improving training efficiency aligns with ICLR's interest in 'societal considerations including fairness, safety, privacy' (via interpretability) and practical aspects like 'optimization' and 'infrastructure, software libraries, hardware, etc.' (via computational efficiency improvements).",
+        "The application to RLHF for LLMs specifically fits 'representation learning for computer vision, audio, language, and other modalities', as LLM fine-tuning is a prominent application of deep learning.",
+        "IIF significantly improves 'sample efficiency' and 'computational cost' of deep RL training, which are important practical outcomes for the deep learning community."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 points out that a more thorough theoretical justification for TracIn's effectiveness with adaptive optimizers (like Adam, commonly used in deep learning) beyond empirical success would strengthen its appeal to a venue like ICLR that sometimes emphasizes rigorous theoretical underpinnings for deep learning methods, even if acknowledging it's an open problem.",
+        "While the paper's focus on 'local' attribution is practical and effective, it might be seen as a limitation by ICLR researchers who prioritize understanding the full 'lifelong learning' or 'meta-learning' implications of data influence over longer horizons in complex deep learning systems.",
+        "The paper explicitly defines its topic as 'Others', and while it touches upon many relevant ICLR topics, it doesn't solely center on a single, highly specialized deep learning technique or architecture, which is common for some ICLR papers."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

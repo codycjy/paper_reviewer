@@ -1,0 +1,75 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a fundamentally novel approach to data attribution in online RL, addressing the critical challenge of the circular dependency between data and models, which previous methods largely ignored. This is a significant conceptual leap.",
+        "The proposed framework is highly impactful, demonstrating fresh insights into RL learning dynamics (diagnosis, temporal analysis, behavior formation) and enabling a practical algorithm (IIF) that improves sample efficiency, computational cost, and final performance across diverse RL benchmarks, including RLHF for LLMs.",
+        "The design of the target function `f_return` for cumulative return is innovative, balancing tractability with meaningful evaluation for online RL, and showing promise for broader application with other attribution methods."
+      ],
+      "weaknesses": [
+        "While the paper acknowledges limitations regarding optimizers (using SGD as a proxy for Adam), relying on this proxy might introduce inaccuracies in influence estimation, especially given the prevalence of adaptive optimizers in modern deep RL and LLMs. A more robust solution for adaptive optimizers would strengthen the methodological soundness.",
+        "The 'influence saturation' phase described in Section 4.2 suggests that influence scores become dominated by noise as learning converges. This raises questions about the long-term utility of the attribution framework in very late stages of training or for highly optimized agents, and its sensitivity to noise should be further explored."
+      ],
+      "summary_comment": "This paper presents a truly innovative and significant contribution to the field of Reinforcement Learning. It tackles a long-standing challenge in online RL interpretability by proposing a novel local data attribution framework that accounts for the dynamic nature of data collection. The core idea of interpreting model checkpoints with respect to recent buffers and using gradient similarity for influence is a creative and bold step. The applications, from diagnosing learning to improving training with IIF, clearly demonstrate the power and practical utility of this framework. While there are some minor points regarding the generalizability to adaptive optimizers and the behavior of influence scores in later training stages, these do not overshadow the groundbreaking nature of the work. The paper pushes the boundaries of RL interpretability and efficiency in a meaningful way, making it a strong candidate for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core focus on 'general machine learning' topics like interpretability, with a deep dive into 'reinforcement learning' and 'optimization' for online RL, aligns perfectly with ICML's stated interests.",
+        "The methodology, which involves adapting data attribution techniques (TracIn) to a unique online RL setting, demonstrates significant novelty and rigor, highly valued by ICML. The reviewer states, 'The paper introduces a fundamentally novel approach to data attribution in online RL, addressing the critical challenge of the circular dependency between data and models, which previous methods largely ignored. This is a significant conceptual leap.'",
+        "The empirical evaluation across diverse RL environments (classic control, navigation, locomotion) and application to RLHF for LLMs showcases broad applicability and strong experimental results, matching ICML's emphasis on both theoretical understanding and practical impact. The reviewer highlights, 'The proposed framework is highly impactful, demonstrating fresh insights into RL learning dynamics (...) and enabling a practical algorithm (IIF) that improves sample efficiency, computational cost, and final performance across diverse RL benchmarks, including RLHF for LLMs.'",
+        "The paper's efforts to improve 'sample efficiency' and 'computational cost' in RL training via the IIF algorithm contribute directly to improving 'machine learning systems', which is a key ICML topic."
+      ],
+      "why_it_does_not_fit": [
+        "The reliance on SGD as a proxy for Adam in influence calculation, despite adaptive optimizers being prevalent in modern deep RL and LLMs, is a methodological limitation noted by the reviewer ('While the paper acknowledges limitations regarding optimizers (using SGD as a proxy for Adam), relying on this proxy might introduce inaccuracies...'). This might slightly detract from the rigor expected for cutting-edge optimization techniques.",
+        "The 'influence saturation' phase, where influence scores become noisy in later training stages, raises questions about the framework's 'long-term utility' as pointed out by the reviewer. While acknowledged as a limitation, it could be a point of minor contention for some reviewers expecting consistent utility throughout the learning process."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's interdisciplinary nature, blending 'reinforcement learning', 'optimization', and interpretability ('Socio-technical aspects of AI', 'Human interaction in AI systems'), makes it an excellent fit for NeurIPS, which 'welcomes interdisciplinary submissions that do not fit neatly into existing categories.'",
+        "The application to RLHF for large language models directly aligns with NeurIPS' interest in 'Language and multimodal language models' and 'AI/ML for health and biotechnology' (considering alignment's ethical implications).",
+        "The contribution offers 'in-depth analysis of existing methods' (data attribution) and provides 'new insights in terms of their limitations or behavior beyond the scope of the original work' by adapting it for online RL, which NeurIPS specifically encourages.",
+        "The focus on improving 'sample efficiency' and 'computational cost' for RL is a direct contribution to 'General machine learning: core contributions in supervised and unsupervised methods', which is a broad and central theme at NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the practical choice of using SGD as a proxy for adaptive optimizers in the influence calculation could be seen as a minor limitation given the widespread use of Adam in modern deep learning and large language models, areas NeurIPS heavily covers. The reviewer noted this as a potential point of inaccuracy.",
+        "The general topic of 'Others' might suggest it's not a primary category, but the specific sub-topics place it well within NeurIPS's diverse scope. The provided topic is a meta-category, not an actual topic within ML."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's deep focus on 'reinforcement learning', particularly PPO, and its application to 'large language models' (RLHF) makes it highly relevant to ICLR's core interests in 'deep learning' and related applications.",
+        "The method's ability to provide 'visualization or interpretation of learned representations' through data attribution for online RL fits well within ICLR's topics, as it helps understand how models arrive at their decisions.",
+        "The proposed IIF algorithm improves 'sample efficiency' and 'computational cost', contributing to better 'infrastructure, software libraries, hardware, etc.', which are relevant topics for ICLR.",
+        "The reviewer specifically highlights the 'novel approach to data attribution in online RL' and the 'significant conceptual leap', which aligns with ICLR's emphasis on 'cutting-edge research' and innovative methodologies."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper deals with RL, its primary contribution is in data attribution and interpretability, rather than novel 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' architectures or fundamental 'generative models' themselves, which are often central to ICLR submissions. The data attribution aspect, while using gradients, isn't a direct contribution to probabilistic methods like Bayesian or variational inference.",
+        "The identified 'influence saturation' phase where influence scores become less structured due to noise in later training stages could be perceived as a weakness in providing consistent 'interpretation of learned representations' throughout the learning process, which is a key goal for interpretability work at ICLR, as highlighted by the reviewer's comment on 'long-term utility'."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

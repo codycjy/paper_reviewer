@@ -1,0 +1,68 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Pioneering Shift to MR/Repository-Level Scope: Successfully shifts the paradigm of automatic code review from isolated code-snippet translation (which is unrealistic and oversimplified) to repository-wide and merge-request granularity, matching human developer workflows.",
+        "Innovative Context Retrieval through Slicing: The introduction of dataflow-aware code-slicing algorithms (such as Left Flow and Full Flow) is an exceptionally creative way to address the LLM context-window and distraction trade-off without resorting to generic vector-search RAG.",
+        "High-Impact Industrial Validation: Rather than evaluating on synthetic bugs or open-source commits with low quality assurance, the authors validate their framework against real-world, high-impact historical failures that caused actual financial and system-level losses in an enterprise serving 400M daily active users.",
+        "Developer-Aligned Metric Suite: The paper introduces highly practical metrics (KBI, FAR, CPI, LSR) that target actual code-review objectives instead of relying on flawed, translation-oriented textual similarity metrics like BLEU or ROUGE."
+      ],
+      "weaknesses": [
+        "Tension and Degradation in the Validator Role: The self-correction step (Validator), while successfully reducing the False Alarm Rate (FAR), severely hurts Key Bug Inclusion (KBI) across multiple configurations (e.g., dropping Left Flow KBI from 31.11% to 20.00% under LLaMA3.1-405B). This critical trade-off between precision and recall deserves deeper inspection.",
+        "Limited Language Generalizability in Evaluation: Although the AST-based code slicing is conceptually language-agnostic, the empirical validation of the entire pipeline is restricted solely to C++, leaving the practical effectiveness of these algorithms on other languages (like Python, Go, or Java) unverified.",
+        "Lack of Formal User Study: While requirements were gathered from a 'super reviewer' group, the paper would be significantly bolstered by a formal human-in-the-loop evaluation or user study to measure developer cognitive load and acceptance of the inline comment formatting."
+      ],
+      "summary_comment": "This paper presents an ambitious and highly practical framework that addresses the core bottle-necks of automated code review. By abandoning snippet-level translation and adopting a repo-level, AST-sliced, multi-role cooperative LLM framework, the authors bridge the gap between academic work and industrial reality. Despite minor limitations, such as the negative impact of the Validator on recall and a single-language evaluation, the core conceptual paradigm shift, clever context extraction mechanism, and realistic cost-bearing fault dataset make this work of exceptional novelty and significance for the software engineering and practitioner community."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The paper fits the 'application-driven machine learning' topic of ICML by demonstrating how LLMs can be deployed in a high-impact, real-world industrial pipeline with 400M daily active users to solve a practical system-reliability problem.",
+        "It proposes highly empirical, developer-aligned metrics (KBI, FAR, CPI, LSR) that attempt to establish rigorous and objective validation protocols over flawed traditional translation-oriented metrics like BLEU or ROUGE."
+      ],
+      "why_it_does_not_fit": [
+        "There is a severe lack of core machine learning methodology or theoretical innovation. The main components of the paper—AST parsing, code slicing (Left Flow, Full Flow), and multi-role prompting—rely on traditional software engineering heuristics and commercial APIs rather than trainable learning frameworks.",
+        "Reviewer A points out that the validation is strictly restricted to C++ and lacks generalizability. At ICML, the absence of foundational ML contributions or cross-domain generalizability makes the paper extremely likely to be rejected as an out-of-scope software engineering systems paper."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary work and practical application papers, especially under its 'Data-centric aspects of AI' or 'Socio-technical aspects of AI' paradigms, where the interaction of developers with automated code review interfaces is analyzed.",
+        "The paper's focus on analyzing the limitations of long-context LLMs and addressing distraction through structural dataflow filtering sets up a solid empirical analysis of LLM behavior in complex contexts."
+      ],
+      "why_it_does_not_fit": [
+        "The paper introduces a significant trade-off where the self-correction step (Validator) severely compromises recall (e.g., dropping Left Flow KBI from 31.11% to 20%), a limitation noted by Reviewer A. At NeurIPS, such a severe tension without a proposed algorithmic or machine-learned optimization solution (e.g., reinforcement learning from feedback) represents a weak technical contribution.",
+        "The paper relies on off-the-shelf, un-tuned open-source models (like LLaMA-3.1 and Qwen2). The architectural, training, or representation learning novelty is virtually non-existent, posing a major risk of rejection by NeurIPS reviewers who expect novel learning formulations."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "ICLR focuses deeply on representation learning, code representation, and prompt structures. The study’s exploration of prompt design (such as line-aware formatting in Table 1) and its direct impact on modeling localization (Table 8) fits cleanly into how LLMs parse and reason over structured text.",
+        "The use of multi-agent/multi-role collaboration workflows (Reviewer, Meta-Reviewer, Validator) represents a popular topic of interest for the ICLR LLM-agent community."
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution uses purely symoblic static analysis (AST code slicing) to bypass context limitation rather than proposing any neural-based representation or architectural solutions. This misses the 'representation learning' core of ICLR.",
+        "Reviewer A highlighted the lack of a formal user study to evaluate developer cognitive load. Since the workflow heavily relies on heuristic rules and prompting, an ICLR reviewer will likely find the empirical validation incomplete without human-in-the-loop psychological or practical evaluation metrics."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

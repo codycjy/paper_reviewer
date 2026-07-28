@@ -1,0 +1,121 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper presents a bold and novel theoretical claim: fixed-precision Transformers (under reasonable assumptions) are limited to recognizing only finite or co-finite languages, which is a drastically weak subclass of regular languages. This directly challenges the perceived expressive power of practical models.",
+        "The investigation of the gap between infinite-precision theoretical results and fixed-precision implementations is timely and addresses a crucial, often overlooked, aspect of Transformer expressivity theory.",
+        "The analysis of how expressivity changes with the relaxation of constraints (adding positional encoding, removing the infinity-freeness assumption) provides a nuanced view and identifies precise, albeit limited, expressive gains.",
+        "The framing of practical Transformers as 'efficient lookup tables' is a provocative and significant conceptual contribution that could inspire substantial debate and follow-up work."
+      ],
+      "weaknesses": [
+        "The mathematical proofs, particularly in Sections 5.1 and 5.2, are presented as high-level sketches and lack rigorous formal detail. Key steps, like the construction in Lemma 5.4 and the universal approximation argument for finite languages, are hand-wavy and would benefit from a more formal treatment.",
+        "The 'evaluation' is purely theoretical. There is no empirical validation, even on constructed synthetic languages, to illustrate the claimed limitations or to test the boundaries of the assumptions (like Assumption 5.1) in practice.",
+        "The connection to real-world language modeling is acknowledged but not deeply explored (Section 7.2). The jump from a formal language recognizer to a probabilistic generator is significant, and the paper's implications for the latter remain speculative."
+      ],
+      "summary_comment": "This paper makes a strong, novel, and potentially field-shifting argument: under fixed precision and a plausible parameter assumption, Transformer decoders are fundamentally limited to finite/co-finite languages, a severe constraint. The core idea is highly innovative and challenges prevailing narratives about Transformer expressivity. While the technical presentation has weaknesses—proofs are sketchy and lack empirical support—the conceptual significance and novelty are outstanding. The paper's provocative conclusion that practical Transformers may be little more than lookup tables is precisely the kind of bold, forward-thinking claim that can redefine research directions. The technical imperfections do not invalidate the central, inspiring thesis. I recommend acceptance to catalyze discussion and further rigorous investigation into this critical gap between theory and practice."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 3
+      },
+      "strengths": [
+        "Provides a rigorous theoretical analysis of Transformer expressivity under practical fixed-precision constraints",
+        "Establishes clear upper and lower bounds for different configurations (NoPE, APE, infinity-freeness)",
+        "Bridges the gap between theoretical infinite-precision models and real-world implementations"
+      ],
+      "weaknesses": [
+        "Proof sketches lack full mathematical detail and formal rigor in some sections",
+        "Experimental validation is absent; the work is purely theoretical without empirical verification",
+        "The simplified Transformer model (2 layers, single head, no normalization) may not fully capture real-world architectures"
+      ],
+      "summary_comment": "This paper makes a valuable contribution by rigorously analyzing Transformer expressivity under practical fixed-precision constraints. The theoretical framework is sound, and the results showing that fixed-precision Transformers without PE are limited to finite/co-finite languages are significant. While the proofs could be more detailed and empirical validation is lacking, the methodological approach is correct and the findings have important implications for understanding practical Transformer limitations."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 2,
+        "soundness": 2,
+        "significance": 2,
+        "evaluation": 1,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper tackles an important practical issue: the gap between theoretical expressivity results and real-world limitations like fixed floating-point precision.",
+        "It clearly defines different language classes (finite, co-finite, cyclic) as targets for expressivity analysis, providing a structured theoretical framework.",
+        "The intent to connect practical constraints (e.g., fp32/bf16 precision) to fundamental computational limits is a relevant and worthwhile goal."
+      ],
+      "weaknesses": [
+        "The soundness of the central proofs is questionable. The argument in Lemma 5.3 relies on an unexplained, non-obvious transition where a sum of exponentials 'diverges to +inf in p-precision'. The reasoning from this assumption to the final 'finite/co-finite' conclusion is not rigorously established and feels like a significant logical leap.",
+        "The 'evaluation' is purely theoretical and lacks any empirical validation or connection to actual transformer behavior. The claim that practical transformers are 'little more than efficient lookup tables' is a strong, provocative statement that is not supported by convincing evidence or a realistic model of implementation details (e.g., how gradients and training interact with finite precision).",
+        "The practical significance is undermined by the overly restrictive and arguably unrealistic 'Infinity-Freeness' assumption (Assumption 5.1). The paper does not justify why this assumption is natural or holds for 'most trained Transformer models', making the core result's relevance to practice doubtful."
+      ],
+      "summary_comment": "The paper aims to provide practical insights but falls short. The theoretical analysis is not sufficiently rigorous or convincing, and the leap from the constructed constraints to sweeping claims about real-world transformers is too great. The work lacks the empirical grounding or sound theoretical development needed to make a meaningful practical contribution. While the topic is important, the execution does not meet the threshold for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's focus on theoretical analysis of Transformer expressivity under practical constraints aligns with ICML's interest in machine learning theory and foundations",
+        "The work bridges theoretical and practical considerations in neural network architectures, which fits ICML's scope of machine learning systems and theoretical foundations",
+        "The analysis of computational limits of Transformers connects to optimization and theoretical machine learning topics at ICML"
+      ],
+      "why_it_does_not_fit": [
+        "The purely theoretical nature without empirical validation may not fully align with ICML's typical balance between theory and experimentation",
+        "The simplified Transformer model (2 layers, single head) may be too abstract for ICML's audience that often expects more practical architectural considerations",
+        "Reviewer concerns about proof rigor and lack of empirical validation could be problematic for ICML's standards"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on theoretical foundations of deep learning architectures strongly matches NeurIPS's emphasis on theoretical understanding of neural networks",
+        "The analysis of Transformers' computational limits connects to NeurIPS's interests in optimization, theory, and deep learning foundations",
+        "The provocative claim about practical Transformers being 'efficient lookup tables' aligns with NeurIPS's appreciation for bold theoretical insights that challenge conventional wisdom"
+      ],
+      "why_it_does_not_fit": [
+        "The lack of empirical validation may be a concern given NeurIPS's increasing emphasis on empirical rigor alongside theoretical contributions",
+        "The simplified model architecture may be seen as too abstract compared to more practical Transformer analyses typically seen at NeurIPS",
+        "Reviewer concerns about proof completeness could be an issue for NeurIPS's rigorous standards"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The focus on Transformer architectures and their expressivity directly aligns with ICLR's core interest in deep learning architectures",
+        "The analysis of positional encoding effects connects to ICLR's focus on architectural components in deep learning",
+        "The theoretical examination of practical constraints in Transformers matches ICLR's interest in both theoretical and practical aspects of deep learning"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically expects more empirical validation alongside theoretical claims, which is lacking here",
+        "The paper's formal language theory approach may be less aligned with ICLR's predominantly empirical focus",
+        "Reviewer concerns about the simplified model and lack of connection to real-world training dynamics could limit appeal to ICLR's audience"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

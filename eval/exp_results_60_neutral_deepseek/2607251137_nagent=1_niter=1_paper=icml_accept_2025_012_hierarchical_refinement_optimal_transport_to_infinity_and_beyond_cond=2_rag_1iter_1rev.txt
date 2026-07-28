@@ -1,0 +1,750 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel algorithm (HiRef) that achieves linear space and log-linear time complexity for computing full-rank optimal transport plans between large datasets by leveraging a hierarchy of low-rank OT sub-problems, a significant theoretical and practical advance.",
+        "The theoretical foundation (Proposition 3.1) is sound and elegant, establishing a key invariant linking low-rank OT factorizations to the underlying Monge map, which provides strong guarantees for the hierarchical refinement process.",
+        "The empirical evaluation is comprehensive and convincing, demonstrating scalability to over a million points across synthetic, transcriptomics, and ImageNet datasets, and showing superior performance compared to strong baselines like Sinkhorn, mini-batch OT, and low-rank OT in terms of cost and alignment quality.",
+        "The paper clearly situates its contribution within the existing literature on low-rank and multiscale OT, particularly differentiating from prior work like MOP by constructing partitions on-the-fly and operating intrinsically to the data, avoiding the curse of dimensionality."
+      ],
+      "weaknesses": [
+        "The algorithm currently assumes the datasets have an equal number of points, which may limit application in some real-world scenarios where this condition does not hold.",
+        "The algorithm's theoretical guarantee of optimality (Proposition 3.2) relies on the 'strict r-Monge separability' condition being satisfied at each refinement level. While the existence of a suitable rank schedule is proven, the conditions under which typical cost matrices satisfy this property (beyond the trivial rank-n case) are not deeply explored, and the algorithm's performance in practice relies on a potentially sub-optimal black-box low-rank solver."
+      ],
+      "summary_comment": "This paper presents a significant and timely contribution to scaling optimal transport. The core idea of using low-rank OT to co-cluster Monge pairs and iteratively refine them via a hierarchy is novel, theoretically grounded, and yields impressive practical results. The algorithm successfully addresses the major scalability bottleneck of quadratic space/time in full-rank OT solvers like Sinkhorn. The empirical evaluation is extensive and robust, showcasing scalability to over a million points where prior full-rank methods fail, and achieving high-quality alignments in challenging biological and vision tasks. The main limitations (equal dataset sizes, reliance on solver optimality) are minor compared to the substantial algorithmic advance. The paper is well-written, with strong theory and experiments. It merits acceptance as it opens new avenues for applying OT to large-scale machine learning problems."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICML has a strong focus on optimization and scalable algorithms, which aligns perfectly with HiRef's core contribution of achieving linear space and log-linear time complexity for optimal transport",
+        "The paper addresses fundamental machine learning problems (optimal transport, assignment problems) that are well within ICML's scope, particularly in the optimization and theory tracks",
+        "The extensive empirical evaluation on large-scale datasets demonstrates practical utility that ICML values in algorithmic contributions",
+        "The theoretical foundation (Proposition 3.1) provides mathematical rigor that aligns with ICML's standards"
+      ],
+      "why_it_does_not_fit": [
+        "While OT is relevant to ML, the paper's primary focus is more algorithmic/theoretical than application-driven, which might be slightly less aligned with ICML's recent emphasis on applied ML",
+        "The biological applications (transcriptomics) might be seen as too domain-specific for ICML's general ML audience",
+        "The assumption of equal dataset sizes limits the immediate applicability to some standard ML problems"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS has strong representation in optimization, theory, and scalable algorithms - all core strengths of this paper",
+        "The application to large-scale datasets (including ImageNet with 1.28M points) aligns well with NeurIPS' focus on scaling ML methods",
+        "The theoretical contributions (Proposition 3.1, complexity analysis) provide the mathematical depth that NeurIPS appreciates",
+        "The paper bridges theory and practice effectively, which is highly valued at NeurIPS",
+        "Optimal transport has become increasingly important in ML (generative models, attention mechanisms), making this highly relevant"
+      ],
+      "why_it_does_not_fit": [
+        "The biological applications might be somewhat peripheral to NeurIPS' core focus, though the methodological contributions outweigh this",
+        "Some reviewers might want more diverse ML applications beyond the biological and vision examples provided"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR has growing interest in optimal transport applications, particularly in generative modeling and representation learning",
+        "The scalability improvements could benefit deep learning applications that use OT (flow matching, diffusion models)",
+        "The theoretical insights about low-rank factorizations could interest the ICLR community working on efficient representations"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR is primarily focused on deep learning, and while OT is relevant, this paper is more algorithmic/theoretical than most ICLR contributions",
+        "The applications are not primarily in deep learning - the biological focus might be less aligned with ICLR's core interests",
+        "The paper doesn't involve neural networks or deep learning architectures, which are central to ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_1d43b89c3647",
+    "paper_id": "paper_452b18e9bb91",
+    "target_paper_summary": {
+      "paper_id": "paper_452b18e9bb91",
+      "title": "Peter Halmos 1 Julian Gold 1 2 Xinhao Liu 1 Benjamin J. Raphael 1",
+      "abstract": "Optimal transport (OT) has enjoyed great success in machine learning as a principled way to align datasets via a least-cost correspondence, driven in large part by the runtime efficiency of the Sinkhorn algorithm (Cuturi, 2013). However, Sinkhorn has quadratic space and time complexity in the number of points, limiting scalability to larger datasets. Low-rank OT achieves linear complexity, but by definition, cannot compute a oneto-one correspondence between points. When the optimal transport problem is an assignment problem between datasets then an optimal mapping, known as the *Monge map*, is guaranteed to be a bijection. In this setting, we show that the factors of an optimal low-rank coupling co-cluster each point with its image under the Monge map. We leverage this invariant to derive an algorithm, Hierarchical Refinement (HiRef), that dynamically constructs a multiscale partition of each dataset using low-rank OT subproblems, culminating in the bijective Monge map. Hierarchical Refinement runs in log-linear time and linear space, retaining the advantages of low-rank OT while overcoming its limited resolution. We demonstrate the advantages of Hierarchical Refinement on several datasets, including ones containing over a million points, scaling full-rank OT to problems previously beyond Sinkhorn's reach.",
+      "topic": "",
+      "claims": [
+        "we show that the factors of an optimal low-rank coupling co-cluster each point with its image under the Monge map.",
+        "We demonstrate the advantages of Hierarchical Refinement on several datasets, including ones containing over a million points, scaling full-rank OT to problems previously beyond Sinkhorn's reach."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "optimal transport assignment problem Monge map bijection",
+          "rationale": "The paper focuses on computing bijective Monge maps for optimal transport assignment problems."
+        },
+        {
+          "group": "same_method",
+          "query": "hierarchical refinement optimal transport multiscale partition",
+          "rationale": "The method uses hierarchical refinement with multiscale partitions to compute Monge maps."
+        },
+        {
+          "group": "same_constraints",
+          "query": "linear space complexity optimal transport large datasets",
+          "rationale": "The work emphasizes scalability constraints requiring linear space complexity for large datasets."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "Sinkhorn algorithm optimal transport benchmark comparison",
+          "rationale": "Sinkhorn is explicitly mentioned as a baseline with quadratic complexity limitations."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "low-rank optimal transport coupling co-clustering",
+          "rationale": "Prior low-rank OT methods are competitors that cannot compute bijective maps."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "low-rank optimal transport resolution limitations",
+          "rationale": "Low-rank OT methods inherently cannot achieve one-to-one correspondence, representing a key limitation."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 8,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_d37a19a23",
+        "title": "Adaptive multiscale model reduction with Generalized Multiscale Finite Element Methods",
+        "authors": [
+          "Eric T. Chung",
+          "Yalchin Efendiev",
+          "Thomas Y. Hou"
+        ],
+        "year": 2016,
+        "publication_date": "2016-05-13",
+        "venue": "Journal of Computational Physics",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.jcp.2016.04.054",
+        "doi": "https://doi.org/10.1016/j.jcp.2016.04.054",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2344009215"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 207
+      },
+      {
+        "paper_id": "rw_002_345496d18",
+        "title": "A review of multiscale modeling of metal-catalyzed reactions: Mechanism development for complexity and emergent behavior",
+        "authors": [
+          "M. Salciccioli",
+          "Michail Stamatakis",
+          "Stavros Caratzoulas",
+          "Dionisios G. Vlachos"
+        ],
+        "year": 2011,
+        "publication_date": "2011-06-25",
+        "venue": "Chemical Engineering Science",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.ces.2011.05.050",
+        "doi": "https://doi.org/10.1016/j.ces.2011.05.050",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1972291235"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 361
+      },
+      {
+        "paper_id": "rw_003_a267e7892",
+        "title": "Object detection using YOLO: challenges, architectural successors, datasets and applications",
+        "authors": [
+          "Tausif Diwan",
+          "G. Anirudh",
+          "Jitendra V. Tembhurne"
+        ],
+        "year": 2022,
+        "publication_date": "2022-08-08",
+        "venue": "Multimedia Tools and Applications",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s11042-022-13644-y",
+        "doi": "https://doi.org/10.1007/s11042-022-13644-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4291819654"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 1458
+      },
+      {
+        "paper_id": "rw_004_fd5ff7271",
+        "title": "Near-linear time approximation algorithms for optimal transport via Sinkhorn iteration",
+        "authors": [
+          "Jason M. Altschuler",
+          "Jonathan Weed",
+          "Philippe Rigollet"
+        ],
+        "year": 2017,
+        "publication_date": "2017-05-26",
+        "venue": "DSpace@MIT (Massachusetts Institute of Technology)",
+        "abstract": "Computing optimal transport distances such as the earth mover's distance is a fundamental problem in machine learning, statistics, and computer vision. Despite the recent introduction of several algorithms with good empirical performance, it is unknown whether general optimal transport distances can be approximated in near-linear time. This paper demonstrates that this ambitious goal is in fact achieved by Cuturi's Sinkhorn Distances. This result relies on a new analysis of Sinkhorn iterations, which also directly suggests a new greedy coordinate descent algorithm GREENKHORN with the same theoretical guarantees. Numerical simulations illustrate that GREENKHORN significantly outperforms the classical SINKHORN algorithm in practice.",
+        "url": "http://hdl.handle.net/1721.1/116389",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2964308809"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 125
+      },
+      {
+        "paper_id": "rw_005_d0174f320",
+        "title": "Interpolating between Optimal Transport and MMD using Sinkhorn Divergences",
+        "authors": [
+          "Jean Feydy",
+          "Thibault Séjourné",
+          "Vialard, François-Xavier",
+          "Шун-ичи Амари",
+          "Alain Trouvé",
+          "Gabriel Peyré"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-18",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Comparing probability distributions is a fundamental problem in data sciences. Simple norms and divergences such as the total variation and the relative entropy only compare densities in a point-wise manner and fail to capture the geometric nature of the problem. In sharp contrast, Maximum Mean Discrepancies (MMD) and Optimal Transport distances (OT) are two classes of distances between measures that take into account the geometry of the underlying space and metrize the convergence in law. This paper studies the Sinkhorn divergences, a family of geometric divergences that interpolates between MMD and OT. Relying on a new notion of geometric entropy, we provide theoretical guarantees for these divergences: positivity, convexity and metrization of the convergence in law. On the practical side, we detail a numerical scheme that enables the large scale application of these divergences for machine learning: on the GPU, gradients of the Sinkhorn loss can be computed for batches of a million samples.",
+        "url": "http://arxiv.org/abs/1810.08278",
+        "doi": "https://doi.org/10.48550/arxiv.1810.08278",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2897105053"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 120
+      },
+      {
+        "paper_id": "rw_006_c0d23ce8a",
+        "title": "LOFAR: The LOw-Frequency ARray",
+        "authors": [
+          "M. P. van Haarlem",
+          "M. W. Wise",
+          "A. W. Gunst",
+          "G. Heald",
+          "J. P. McKean",
+          "J. W. T. Hessels",
+          "A. G. de Bruyn",
+          "R. Nijboer",
+          "J. Swinbank",
+          "R. A. Fallows",
+          "M. A. Brentjens",
+          "A. Nelles",
+          "R. Beck",
+          "H. Falcke",
+          "R. P. Fender",
+          "J.R. Hörandel",
+          "L. V. E. Koopmans",
+          "G. Mann",
+          "G. K. Miley",
+          "H. J. A. Röttgering",
+          "B. W. Stappers",
+          "R. A. M. J. Wijers",
+          "Saleem Zaroubi",
+          "M. van den Akker",
+          "A. Alexov",
+          "J. M. Anderson",
+          "Kevin D. Anderson",
+          "A. van Ardenne",
+          "M. Arts",
+          "A. Asgekar",
+          "I. M. Avruch",
+          "F. Batejat",
+          "L. Bähren",
+          "M. E. Bell",
+          "M. R. Bell",
+          "Ilse van Bemmel",
+          "P. Bennema",
+          "Mark Bentum",
+          "G. Bernardi",
+          "P. N. Best",
+          "L. Bırzan",
+          "A. Bonafede",
+          "Albert‐Jan Boonstra",
+          "Róbert Braun",
+          "Joel N. Bregman",
+          "F. Breitling",
+          "R. H. van de Brink",
+          "J. W. Broderick",
+          "P. Chris Broekema",
+          "W. N. Brouw",
+          "M. Brüggen",
+          "H. R. Butcher",
+          "W. van Cappellen",
+          "B. Ciardi",
+          "Thijs Coenen",
+          "J. E. Conway",
+          "A. H. W. M. Coolen",
+          "A. Corstanje",
+          "S. Damstra",
+          "O.T. Davies",
+          "Adam T. Deller",
+          "R.‐J. Dettmar",
+          "Ger van Diepen",
+          "K. Dijkstra",
+          "P. Donker",
+          "A. Doorduin",
+          "J. Dromer",
+          "M. Drost",
+          "A. van Duin",
+          "J. Eislöffel",
+          "J. van Enst",
+          "C. Ferrari",
+          "W. Frieswijk",
+          "Henk S. GANKEMA",
+          "M. A. Garrett",
+          "F. de Gasperin",
+          "M. Gerbers",
+          "E. de Geus",
+          "J.‐M. Grießmeier",
+          "T. Grit",
+          "P. Gruppen",
+          "J. P. Hamaker",
+          "T. E. Hassall",
+          "M. Hoeft",
+          "H. A. Holties",
+          "A. Horneffer",
+          "A. J. van der Horst",
+          "A. van Houwelingen",
+          "A. Huijgen",
+          "M. Iacobelli",
+          "H. T. Intema",
+          "N. Jackson",
+          "Vibor Jelić",
+          "A. de Jong",
+          "E. Juette",
+          "D. Kant",
+          "A. Karastergiou",
+          "A. Koers",
+          "H. Kollen",
+          "V. I. Kondratiev"
+        ],
+        "year": 2013,
+        "publication_date": "2013-05-15",
+        "venue": "Astronomy and Astrophysics",
+        "abstract": "LOFAR, the LOw-Frequency ARray, is a new-generation radio interferometer constructed in the north of the Netherlands and across europe. Utilizing a novel phased-array design, LOFAR covers the largely unexplored low-frequency range from 10–240 MHz and provides a number of unique observing capabilities. Spreading out from a core located near the village of Exloo in the northeast of the Netherlands, a total of 40 LOFAR stations are nearing completion. A further five stations have been deployed throughout Germany, and one station has been built in each of France, Sweden, and the UK. Digital beam-forming techniques make the LOFAR system agile and allow for rapid repointing of the telescope as well as the potential for multiple simultaneous observations. With its dense core array and long interferometric baselines, LOFAR achieves unparalleled sensitivity and angular resolution in the low-frequency radio regime. The LOFAR facilities are jointly operated by the International LOFAR Telescope (ILT) foundation, as an observatory open to the global astronomical community. LOFAR is one of the first radio observatories to feature automated processing pipelines to deliver fully calibrated science products to its user community. LOFAR’s new capabilities, techniques and modus operandi make it an important pathfinder for the Square Kilometre Array (SKA). We give an overview of the LOFAR instrument, its major hardware and software components, and the core science objectives that have driven its design. In addition, we present a selection of new results from the commissioning phase of this new radio observatory.",
+        "url": "https://doi.org/10.1051/0004-6361/201220873",
+        "doi": "https://doi.org/10.1051/0004-6361/201220873",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2147626801"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "citation_count": 2700
+      },
+      {
+        "paper_id": "rw_007_71c110b70",
+        "title": "Screening cell–cell communication in spatial transcriptomics via collective optimal transport",
+        "authors": [
+          "Zixuan Cang",
+          "Yanxiang Zhao",
+          "Axel A. Almet",
+          "Adam R. Stabell",
+          "Raúl Ramos",
+          "Maksim V. Plikus",
+          "Scott X. Atwood",
+          "Qing Nie"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-23",
+        "venue": "Nature Methods",
+        "abstract": "Spatial transcriptomic technologies and spatially annotated single-cell RNA sequencing datasets provide unprecedented opportunities to dissect cell-cell communication (CCC). However, incorporation of the spatial information and complex biochemical processes required in the reconstruction of CCC remains a major challenge. Here, we present COMMOT (COMMunication analysis by Optimal Transport) to infer CCC in spatial transcriptomics, which accounts for the competition between different ligand and receptor species as well as spatial distances between cells. A collective optimal transport method is developed to handle complex molecular interactions and spatial constraints. Furthermore, we introduce downstream analysis tools to infer spatial signaling directionality and genes regulated by signaling using machine learning models. We apply COMMOT to simulation data and eight spatial datasets acquired with five different technologies to show its effectiveness and robustness in identifying spatial CCC in data with varying spatial resolutions and gene coverages. Finally, COMMOT identifies new CCCs during skin morphogenesis in a case study of human epidermal development.",
+        "url": "https://doi.org/10.1038/s41592-022-01728-4",
+        "doi": "https://doi.org/10.1038/s41592-022-01728-4",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4317757307"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "citation_count": 458
+      },
+      {
+        "paper_id": "rw_008_f19a439e1",
+        "title": "Optimal transport maps in Monge-Kantorovich problem",
+        "authors": [
+          "Luigi Ambrosio"
+        ],
+        "year": 2003,
+        "publication_date": "2003-04-24",
+        "venue": "arXiv",
+        "abstract": "In the first part of the paper we briefly decribe the classical problem, raised by Monge in 1781, of optimal transportation of mass. We discuss also Kantorovich's weak solution of the problem, which leads to general existence results, to a dual formulation, and to necessary and sufficient optimality conditions. In the second part we describe some recent progress on the problem of the existence of optimal transport maps. We show that in several cases optimal transport maps can be obtained by a singular perturbation technique based on the theory of $Γ$-convergence, which yields as a byproduct existence and stability results for classical Monge solutions.",
+        "url": "http://arxiv.org/abs/math/0304389v1",
+        "doi": "",
+        "arxiv_id": "0304389v1",
+        "source_ids": {
+          "arXiv": "0304389v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_009_d7d6c3cb2",
+        "title": "Large-scale optimal transport map estimation using projection pursuit",
+        "authors": [
+          "Cheng Meng",
+          "Yuan Ke",
+          "Jingyi Zhang",
+          "Mengrui Zhang",
+          "Wenxuan Zhong",
+          "Ping Ma"
+        ],
+        "year": 2021,
+        "publication_date": "2021-06-09",
+        "venue": "arXiv",
+        "abstract": "This paper studies the estimation of large-scale optimal transport maps (OTM), which is a well-known challenging problem owing to the curse of dimensionality. Existing literature approximates the large-scale OTM by a series of one-dimensional OTM problems through iterative random projection. Such methods, however, suffer from slow or none convergence in practice due to the nature of randomly selected projection directions. Instead, we propose an estimation method of large-scale OTM by combining the idea of projection pursuit regression and sufficient dimension reduction. The proposed method, named projection pursuit Monge map (PPMM), adaptively selects the most ``informative'' projection direction in each iteration. We theoretically show the proposed dimension reduction method can consistently estimate the most ``informative'' projection direction in each iteration. Furthermore, the PPMM algorithm weakly convergences to the target large-scale OTM in a reasonable number of steps. Empirically, PPMM is computationally easy and converges fast. We assess its finite sample performance through the applications of Wasserstein distance estimation and generative models.",
+        "url": "http://arxiv.org/abs/2106.05838v1",
+        "doi": "",
+        "arxiv_id": "2106.05838v1",
+        "source_ids": {
+          "arXiv": "2106.05838v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_010_58b550460",
+        "title": "Time complexity analysis of quantum difference methods for the multiscale transport equations",
+        "authors": [
+          "He Xiaoyang",
+          "Jin Shi",
+          "Yu Yue"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-12",
+        "venue": "arXiv",
+        "abstract": "We investigate time complexities of finite difference methods for solving the multiscale transport equation with quantum algorithms. We find that the time complexities of both the classical treatment and quantum treatment for a standard explicit scheme scale as $\\mathcal{O}(1/\\varepsilon)$, where $\\varepsilon$ is the small scaling parameter, while the complexities for the even-odd parity based Asymptotic-Preserving (AP) scheme do not depend on $\\varepsilon$. This indicates that it is still of great importance to use AP (and probably other efficient multiscale) schemes for multiscale problems in quantum computing when solving multiscale transport or kinetic equations.",
+        "url": "http://arxiv.org/abs/2211.06593v1",
+        "doi": "",
+        "arxiv_id": "2211.06593v1",
+        "source_ids": {
+          "arXiv": "2211.06593v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_bf9740bcb",
+        "title": "A Brief on Optimal Transport",
+        "authors": [
+          "Austin Vandegriffe"
+        ],
+        "year": 2020,
+        "publication_date": "2020-10-08",
+        "venue": "arXiv",
+        "abstract": "The presentation covers prerequisite results from Topology and Measure Theory. This is then followed by an introduction into couplings and basic definitions for optimal transport. The Kantrorovich problem is then introduced and an existence theorem is presented. Following the setup of optimal transport is a brief overview of the Wasserstein distance and a short proof of how it metrizes the space of probability measures on a COMPACT domain. This presentation is a detailed examination of Villani's \"Optimal Transport: Old and New\" chapters 1-4 and part of 6.",
+        "url": "http://arxiv.org/abs/2010.04291v1",
+        "doi": "",
+        "arxiv_id": "2010.04291v1",
+        "source_ids": {
+          "arXiv": "2010.04291v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_013_d93af4ecf",
+        "title": "SPACE: the SPectroscopic All-sky Cosmic Explorer",
+        "authors": [
+          "A. Cimatti",
+          "M. Robberto",
+          "C. M. Baugh",
+          "S. V. W. Beckwith",
+          "R. Content",
+          "E. Daddi",
+          "G. De Lucia",
+          "B. Garilli",
+          "L. Guzzo",
+          "G. Kauffmann",
+          "M. Lehnert",
+          "D. Maccagni",
+          "A. Martinez-Sansigre",
+          "F. Pasian",
+          "I. N. Reid",
+          "P. Rosati",
+          "R. Salvaterra",
+          "M. Stiavelli",
+          "Y. Wang",
+          "M. Zapatero Osorio",
+          "the SPACE team"
+        ],
+        "year": 2008,
+        "publication_date": "2008-04-28",
+        "venue": "arXiv",
+        "abstract": "We describe the scientific motivations, the mission concept and the instrumentation of SPACE, a class-M mission proposed for concept study at the first call of the ESA Cosmic-Vision 2015-2025 planning cycle. SPACE aims to produce the largest three-dimensional evolutionary map of the Universe over the past 10 billion years by taking near-IR spectra and measuring redshifts for more than half a billion galaxies at 0<z<2 down to AB~23 over 3πsr of the sky. In addition, SPACE will also target a smaller sky field, performing a deep spectroscopic survey of millions of galaxies to AB~26 and at 2<z<10+. These goals are unreachable with ground-based observations due to the ~500 times higher sky background. To achieve the main science objectives, SPACE will use a 1.5m diameter Ritchey-Chretien telescope equipped with a set of arrays of Digital Micro-mirror Devices (DMDs) covering a total field of view of 0.4 deg2, and will perform large-multiplexing multi-object spectroscopy (e.g. ~6000 targets per pointing) at a spectral resolution of R~400 as well as diffraction-limited imaging with continuous coverage from 0.8mum to 1.8mum.",
+        "url": "http://arxiv.org/abs/0804.4433v1",
+        "doi": "",
+        "arxiv_id": "0804.4433v1",
+        "source_ids": {
+          "arXiv": "0804.4433v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_004_fd5ff7271",
+        "relevance_score": 0.1,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Computing optimal transport distances such as the earth mover's distance is a fundamental problem in machine learning, statistics, and computer vision. Despite the recent introduction of several algorithms with good empirical performance, it is unknown whether general optimal transport distances can"
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_009_d7d6c3cb2",
+        "relevance_score": 0.099,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "This paper studies the estimation of large-scale optimal transport maps (OTM), which is a well-known challenging problem owing to the curse of dimensionality. Existing literature approximates the large-scale OTM by a series of one-dimensional OTM problems through iterative random projection. Such me"
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_010_58b550460",
+        "relevance_score": 0.089,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "We investigate time complexities of finite difference methods for solving the multiscale transport equation with quantum algorithms. We find that the time complexities of both the classical treatment and quantum treatment for a standard explicit scheme scale as $\\mathcal{O}(1/\\varepsilon)$, where $\\"
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_d0174f320",
+        "relevance_score": 0.085,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Comparing probability distributions is a fundamental problem in data sciences. Simple norms and divergences such as the total variation and the relative entropy only compare densities in a point-wise manner and fail to capture the geometric nature of the problem. In sharp contrast, Maximum Mean Disc"
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_007_71c110b70",
+        "relevance_score": 0.07,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Spatial transcriptomic technologies and spatially annotated single-cell RNA sequencing datasets provide unprecedented opportunities to dissect cell-cell communication (CCC). However, incorporation of the spatial information and complex biochemical processes required in the reconstruction of CCC rema"
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_008_f19a439e1",
+        "relevance_score": 0.062,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In the first part of the paper we briefly decribe the classical problem, raised by Monge in 1781, of optimal transportation of mass. We discuss also Kantorovich's weak solution of the problem, which leads to general existence results, to a dual formulation, and to necessary and sufficient optimality"
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_006_c0d23ce8a",
+        "relevance_score": 0.06,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "novelty_competitor"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "LOFAR, the LOw-Frequency ARray, is a new-generation radio interferometer constructed in the north of the Netherlands and across europe. Utilizing a novel phased-array design, LOFAR covers the largely unexplored low-frequency range from 10–240 MHz and provides a number of unique observing capabilitie"
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_012_bf9740bcb",
+        "relevance_score": 0.058,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "The presentation covers prerequisite results from Topology and Measure Theory. This is then followed by an introduction into couplings and basic definitions for optimal transport. The Kantrorovich problem is then introduced and an existence theorem is presented. Following the setup of optimal transp"
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_013_d93af4ecf",
+        "relevance_score": 0.041,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "We describe the scientific motivations, the mission concept and the instrumentation of SPACE, a class-M mission proposed for concept study at the first call of the ESA Cosmic-Vision 2015-2025 planning cycle. SPACE aims to produce the largest three-dimensional evolutionary map of the Universe over th"
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_003_a267e7892",
+        "relevance_score": 0.025,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": ""
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_002_345496d18",
+        "relevance_score": 0.024,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": ""
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_001_d37a19a23",
+        "relevance_score": 0.016,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": ""
+      }
+    ],
+    "reranking": {
+      "source": "fallback"
+    },
+    "related_work_summary": "The literature around Peter Halmos 1 Julian Gold 1 2 Xinhao Liu 1 Benjamin J. Raphael 1 sits within a broader effort to replace or augment quadratic self-attention with more efficient token-mixing mechanisms. Near-linear time approximation algorithms for optimal transport via Sinkhorn iteration (Altschuler et al., 2017) provides benchmark or baseline context for evaluating efficient long-sequence models. Large-scale optimal transport map estimation using projection pursuit (Meng et al., 2021) contributes adjacent evidence on efficient sequence modeling. Time complexity analysis of quantum difference methods for the multiscale transport equations (Xiaoyang et al., 2022) is a close methodological reference for token-mixing design. Interpolating between Optimal Transport and MMD using Sinkhorn Divergences (Feydy et al., 2018) provides benchmark or baseline context for evaluating efficient long-sequence models.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "Related-work rerank LLM failed; using lexical fallback reranking: Expecting ':' delimiter: line 45 column 25 (char 2521)"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 17,
+      "num_removed_post_cutoff": 3,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 14,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 2
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "Related-work rerank LLM failed; using lexical fallback reranking: Expecting ':' delimiter: line 45 column 25 (char 2521)"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 17,
+    "num_removed_post_cutoff": 3,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 14,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 2
+  }
+}

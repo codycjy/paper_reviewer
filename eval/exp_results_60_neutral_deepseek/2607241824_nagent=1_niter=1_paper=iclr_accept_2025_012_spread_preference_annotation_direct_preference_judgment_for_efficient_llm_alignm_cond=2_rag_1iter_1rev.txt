@@ -1,0 +1,445 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a novel and well-motivated framework (SPA) for data-efficient LLM alignment, effectively combining direct preference judgment from model logits with self-refinement for label noise. This addresses a clear pain point of costly human annotation.",
+        "Experimental evaluation is extensive and convincing, showing significant performance gains over strong baselines (PairRM, LLM-as-judge) on established benchmarks (AlpacaEval 2.0, MT-Bench) using only 3.3% of gold preference data. The results demonstrate the practical value of the method.",
+        "The paper includes thorough analyses: ablation studies confirming the importance of self-refinement and de-coupled noise detection, generalization across different model sizes/architectures (Phi-2, LLaMA-3, Phi-3), and sensitivity to seed data size. The method also works without any seed data."
+      ],
+      "weaknesses": [
+        "While the paper compares to iterative DPO with external reward models and LLM-as-judge, a direct comparison to recent work on data-centric preference alignment with rationales or multi-objective reward alignment (as suggested by the RAG evidence) is missing, potentially leaving the novelty claim less fully contextualized.",
+        "The paper notes that SPA tends to increase response length, which could be a dispreferred side-effect. Although length-controlled benchmarks show quality improvements, the potential for length bias and its user-level impact is a limitation that warrants deeper investigation."
+      ],
+      "summary_comment": "This is a strong paper that introduces a practical and effective method for aligning LLMs with minimal human-labeled preference data. The core idea of direct preference judgment using the training model's intrinsic reward, coupled with iterative self-refinement, is sound and well-executed. The experimental results are impressive and comprehensive, clearly demonstrating state-of-the-art performance in a data-efficient setting. The main weaknesses are the lack of explicit comparison to some closely related recent works and the noted length bias tendency. Overall, the contributions are significant, the methodology is sound, and the paper is clearly written, making it a compelling candidate for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem of efficient preference learning for LLM alignment, which falls under ICML's scope of general machine learning and optimization topics",
+        "The proposed method combines theoretical derivation (Bradley-Terry model adaptation) with practical algorithmic contributions, matching ICML's balance of theory and practice",
+        "The extensive experimental evaluation across multiple benchmarks and model architectures demonstrates rigorous methodology valued by ICML"
+      ],
+      "why_it_does_not_fit": [
+        "The focus on language model alignment is more application-specific than ICML's typical preference for broader ML contributions",
+        "While technically sound, the work may be perceived as more incremental relative to ICML's high novelty standards given existing work on DPO and iterative alignment",
+        "The emphasis on human preference alignment has stronger connections to NeurIPS/ICLR's focus on AI safety and alignment research"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Human preference alignment of LLMs is a core NeurIPS topic, particularly in the trustworthy ML and AI safety categories",
+        "The paper addresses scalability and efficiency challenges in human feedback systems, aligning with NeurIPS' interest in practical AI systems",
+        "The work connects to multiple NeurIPS themes: reinforcement learning, optimization, and human-AI interaction systems"
+      ],
+      "why_it_does_not_fit": [
+        "The technical approach is more engineering-focused than theoretical, which might not fully match NeurIPS' preference for strong theoretical foundations",
+        "While innovative, the method builds heavily on existing DPO framework rather than introducing fundamentally new paradigms"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR has strong focus on deep learning alignment and preference learning, making this paper an excellent fit",
+        "The work specifically addresses representation learning and optimization for language models - core ICLR topics",
+        "The iterative self-improvement approach aligns with ICLR's interest in generative models and self-supervised learning techniques",
+        "The extensive benchmarking on standard LLM evaluation suites (AlpacaEval, MT-Bench) matches ICLR's empirical focus"
+      ],
+      "why_it_does_not_fit": [
+        "The paper doesn't introduce new architectural innovations, which are sometimes prioritized at ICLR",
+        "The method is more applied than some ICLR contributions that focus on fundamental deep learning advances"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_77cc78010351",
+    "paper_id": "paper_c403f4eae344",
+    "target_paper_summary": {
+      "paper_id": "paper_c403f4eae344",
+      "title": "Spread Preference Annotation: Direct Prefer- Ence Judgment For Efficient Llm Alignment",
+      "abstract": "Aligning large language models (LLMs) with human preferences becomes a key component to obtaining state-of-the-art performance, but it yields a huge cost to construct a large human-annotated preference dataset. To tackle this problem, we propose a new framework, Spread Preference Annotation with direct preference judgment (SPA), that boosts the alignment of LLMs using only a very small amount of human-annotated preference data. Our key idea is leveraging the human prior knowledge within the small (seed) data and progressively improving the alignment of LLM, by iteratively generating the responses and learning from them with the self-annotated preference data. To be specific, we propose to derive the preference label from the logits of LLM to explicitly extract the model's inherent preference. Compared to the previous approaches using external reward models or implicit in-context learning, we observe that the proposed approach is significantly more effective. In addition, we introduce a noise-aware preference learning algorithm to mitigate the risk of low quality within generated preference data. Our experimental results demonstrate that the proposed framework significantly boosts the alignment of LLMs. For example, we achieve superior alignment performance on AlpacaEval 2.0 with only 3.3% of the ground-truth preference labels in the Ultrafeedback data compared to the cases using the entire data or state-of-the-art baselines.1",
+      "topic": "",
+      "claims": [
+        "we propose a new framework, Spread Preference Annotation with direct preference judgment (SPA), that boosts the alignment of LLMs using only a very small amount of human-annotated preference data.",
+        "we propose to derive the preference label from the logits of LLM to explicitly extract the model's inherent preference.",
+        "we introduce a noise-aware preference learning algorithm to mitigate the risk of low quality within generated preference data."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "LLM alignment human preferences data efficiency human-annotated preference dataset",
+          "rationale": "Focuses on the core problem of efficiently aligning LLMs with human preferences using minimal annotated data, matching the paper's emphasis on reducing annotation costs."
+        },
+        {
+          "group": "same_method",
+          "query": "self-annotation preference learning logits LLM alignment iterative generation",
+          "rationale": "Targets methods that use model-generated data (e.g., self-annotation) and leverage internal model signals like logits for preference judgment, aligning with SPA's technical approach."
+        },
+        {
+          "group": "same_constraints",
+          "query": "low-resource LLM alignment small seed data limited human annotations",
+          "rationale": "Captures the constraint of working with very small amounts of human-annotated data, which is central to the paper's efficiency claim."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "Ultrafeedback AlpacaEval 2.0 benchmark LLM alignment baseline comparison",
+          "rationale": "Directly references the datasets and benchmarks (Ultrafeedback, AlpacaEval 2.0) used in the paper for evaluation, ensuring retrieval of relevant baseline studies."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "direct preference optimization DPO reward model LLM alignment implicit preference learning",
+          "rationale": "Seeks prior work on direct preference methods (like DPO) or alternative approaches (reward models, in-context learning) that could challenge the novelty of SPA's direct judgment from logits."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "noise self-annotated data LLM alignment failure low-quality generations preference learning instability",
+          "rationale": "Aims to find papers discussing limitations such as noise in self-annotated data or failures in alignment methods, which could counter SPA's claims of robustness."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 5,
+        "warnings": [
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 6,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_002_2a44a794d",
+        "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+        "authors": [
+          "Tim Dettmers",
+          "Artidoro Pagnoni",
+          "Ari Holtzman",
+          "Luke Zettlemoyer"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-23",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reaching 99.3% of the performance level of ChatGPT while only requiring 24 hours of finetuning on a single GPU. QLoRA introduces a number of innovations to save memory without sacrificing performance: (a) 4-bit NormalFloat (NF4), a new data type that is information theoretically optimal for normally distributed weights (b) double quantization to reduce the average memory footprint by quantizing the quantization constants, and (c) paged optimziers to manage memory spikes. We use QLoRA to finetune more than 1,000 models, providing a detailed analysis of instruction following and chatbot performance across 8 instruction datasets, multiple model types (LLaMA, T5), and model scales that would be infeasible to run with regular finetuning (e.g. 33B and 65B parameter models). Our results show that QLoRA finetuning on a small high-quality dataset leads to state-of-the-art results, even when using smaller models than the previous SoTA. We provide a detailed analysis of chatbot performance based on both human and GPT-4 evaluations showing that GPT-4 evaluations are a cheap and reasonable alternative to human evaluation. Furthermore, we find that current chatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training.",
+        "url": "http://arxiv.org/abs/2305.14314",
+        "doi": "https://doi.org/10.48550/arxiv.2305.14314",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4378509449"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints",
+          "same_problem"
+        ],
+        "citation_count": 501
+      },
+      {
+        "paper_id": "rw_005_1ec0052fb",
+        "title": "Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond",
+        "authors": [
+          "Jingfeng Yang",
+          "Hongye Jin",
+          "Ruixiang Tang",
+          "Xiaotian Han",
+          "Qizhang Feng",
+          "Haoming Jiang",
+          "Shaochen Zhong",
+          "Bing Yin",
+          "Xia Hu"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-28",
+        "venue": "ACM Transactions on Knowledge Discovery from Data",
+        "abstract": "This article presents a comprehensive and practical guide for practitioners and end-users working with Large Language Models (LLMs) in their downstream Natural Language Processing (NLP) tasks. We provide discussions and insights into the usage of LLMs from the perspectives of models, data, and downstream tasks. First, we offer an introduction and brief summary of current language models. Then, we discuss the influence of pre-training data, training data, and test data. Most importantly, we provide a detailed discussion about the use and non-use cases of large language models for various natural language processing tasks, such as knowledge-intensive tasks, traditional natural language understanding tasks, generation tasks, emergent abilities, and considerations for specific tasks. We present various use cases and non-use cases to illustrate the practical applications and limitations of LLMs in real-world scenarios. We also try to understand the importance of data and the specific challenges associated with each NLP task. Furthermore, we explore the impact of spurious biases on LLMs and delve into other essential considerations, such as efficiency, cost, and latency, to ensure a comprehensive understanding of deploying LLMs in practice. This comprehensive guide aims to provide researchers and practitioners with valuable insights and best practices for working with LLMs, thereby enabling the successful implementation of these models in a wide range of NLP tasks. A curated list of practical guide resources of LLMs, regularly updated, can be found at https://github.com/Mooler0410/LLMsPracticalGuide . An LLMs evolutionary tree, editable yet regularly updated, can be found at llmtree.ai .",
+        "url": "https://doi.org/10.1145/3649506",
+        "doi": "https://doi.org/10.1145/3649506",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392240262"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 469
+      },
+      {
+        "paper_id": "rw_006_9b45846e8",
+        "title": "Data-Centric Human Preference with Rationales for Direct Preference Alignment",
+        "authors": [
+          "Hoang Anh Just",
+          "Ming Jin",
+          "Anit Sahu",
+          "Huy Phan",
+          "Ruoxi Jia"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-19",
+        "venue": "arXiv",
+        "abstract": "Aligning language models with human preferences through reinforcement learning from human feedback is crucial for their safe and effective deployment. The human preference is typically represented through comparison where one response is chosen over another for a given prompt. However, standard preference datasets often lack explicit information on why a particular choice was made, presenting an ambiguity that can hinder efficient learning and robust alignment, especially given the high cost of acquiring extensive human annotations. While many studies focus on algorithmic improvements, this work adopts a data-centric perspective, exploring how to enhance learning from existing preference data. We propose augmenting standard preference pairs with rationales that explain the reasoning behind the human preference. Specifically, we introduce a simple and principled framework that leverages machine-generated rationales to enrich preference data for preference optimization algorithms. Our comprehensive analysis demonstrates that incorporating rationales improves learning efficiency. Extensive experiments reveal some advantages: rationale-augmented learning accelerates convergence and can achieve higher final model performance. Furthermore, this approach is versatile and compatible with various direct preference optimization algorithms. Our findings showcase the potential of thoughtful data design in preference learning, demonstrating that enriching existing datasets with explanatory rationales can help unlock improvements in model alignment and annotation efficiency.",
+        "url": "http://arxiv.org/abs/2407.14477v4",
+        "doi": "",
+        "arxiv_id": "2407.14477v4",
+        "source_ids": {
+          "arXiv": "2407.14477v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "novelty_competitor",
+          "same_constraints",
+          "same_method",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_007_b0352e39d",
+        "title": "Arithmetic Control of LLMs for Diverse User Preferences: Directional Preference Alignment with Multi-Objective Rewards",
+        "authors": [
+          "Haoxiang Wang",
+          "Yong Lin",
+          "Wei Xiong",
+          "Rui Yang",
+          "Shizhe Diao",
+          "Shuang Qiu",
+          "Han Zhao",
+          "Tong Zhang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-28",
+        "venue": "arXiv",
+        "abstract": "Fine-grained control over large language models (LLMs) remains a significant challenge, hindering their adaptability to diverse user needs. While Reinforcement Learning from Human Feedback (RLHF) shows promise in aligning LLMs, its reliance on scalar rewards often limits its ability to capture diverse user preferences in real-world applications. To address this limitation, we introduce the Directional Preference Alignment (DPA) framework. Unlike the scalar-reward RLHF, DPA incorporates multi-objective reward modeling to represent diverse preference profiles. Additionally, DPA models user preferences as directions (i.e., unit vectors) in the reward space to achieve user-dependent preference control. Our method involves training a multi-objective reward model and then fine-tuning the LLM with a preference-conditioned variant of Rejection Sampling Finetuning (RSF), an RLHF method adopted by Llama 2. This method enjoys a better performance trade-off across various reward objectives. In comparison with the scalar-reward RLHF, DPA offers users intuitive control over LLM generation: they can arithmetically specify their desired trade-offs (e.g., more helpfulness with less verbosity). We also validate the effectiveness of DPA with real-world alignment experiments on Mistral-7B. Our method provides straightforward arithmetic control over the trade-off between helpfulness and verbosity while maintaining competitive performance with strong baselines such as Direct Preference Optimization (DPO).",
+        "url": "http://arxiv.org/abs/2402.18571v3",
+        "doi": "",
+        "arxiv_id": "2402.18571v3",
+        "source_ids": {
+          "arXiv": "2402.18571v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_e40344c63",
+        "title": "Online Iterative Reinforcement Learning from Human Feedback with General Preference Model",
+        "authors": [
+          "Chenlu Ye",
+          "Wei Xiong",
+          "Yuheng Zhang",
+          "Hanze Dong",
+          "Nan Jiang",
+          "Tong Zhang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-11",
+        "venue": "arXiv",
+        "abstract": "We investigate Reinforcement Learning from Human Feedback (RLHF) in the context of a general preference oracle. In particular, we do not assume the existence of a reward function and an oracle preference signal drawn from the Bradley-Terry model as most of the prior works do. We consider a standard mathematical formulation, the reverse-KL regularized minimax game between two LLMs for RLHF under general preference oracle. The learning objective of this formulation is to find a policy so that it is consistently preferred by the KL-regularized preference oracle over any competing LLMs. We show that this framework is strictly more general than the reward-based one, and propose sample-efficient algorithms for both the offline learning from a pre-collected preference dataset and online learning where we can query the preference oracle along the way of training. Empirical studies verify the effectiveness of the proposed framework.",
+        "url": "http://arxiv.org/abs/2402.07314v3",
+        "doi": "",
+        "arxiv_id": "2402.07314v3",
+        "source_ids": {
+          "arXiv": "2402.07314v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_011_9500c8390",
+        "title": "Deliberative Technology for Alignment",
+        "authors": [
+          "Andrew Konya",
+          "Deger Turan",
+          "Aviv Ovadya",
+          "Lina Qui",
+          "Daanish Masood",
+          "Flynn Devine",
+          "Lisa Schirch",
+          "Isabella Roberts",
+          "Deliberative Alignment Forum"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-06",
+        "venue": "arXiv",
+        "abstract": "For humanity to maintain and expand its agency into the future, the most powerful systems we create must be those which act to align the future with the will of humanity. The most powerful systems today are massive institutions like governments, firms, and NGOs. Deliberative technology is already being used across these institutions to help align governance and diplomacy with human will, and modern AI is poised to make this technology significantly better. At the same time, the race to superhuman AGI is already underway, and the AI systems it gives rise to may become the most powerful systems of the future. Failure to align the impact of such powerful AI with the will of humanity may lead to catastrophic consequences, while success may unleash abundance. Right now, there is a window of opportunity to use deliberative technology to align the impact of powerful AI with the will of humanity. Moreover, it may be possible to engineer a symbiotic coupling between powerful AI and deliberative alignment systems such that the quality of alignment improves as AI capabilities increase.",
+        "url": "http://arxiv.org/abs/2312.03893v1",
+        "doi": "",
+        "arxiv_id": "2312.03893v1",
+        "source_ids": {
+          "arXiv": "2312.03893v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_9b45846e8",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_problem",
+          "same_method",
+          "same_constraints",
+          "novelty_competitor",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper directly addresses the core problem of data-efficient LLM alignment with human preferences, introduces rationales to improve preference learning (a form of direct preference alignment), and discusses limitations of standard preference data quality, making it a central competitor and source of counter-evidence.",
+        "evidence_summary": "Data-Centric Human Preference with Rationales for Direct Preference Alignment (Just et al., 2024) augments preference pairs with rationales to improve learning efficiency and robustness in alignment, addressing annotation cost and data quality concerns."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_b0352e39d",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem",
+          "novelty_competitor"
+        ],
+        "rationale": "It focuses on directional preference alignment with multi-objective rewards, providing a competitive approach to fine-grained LLM control that challenges the novelty of direct preference judgment methods.",
+        "evidence_summary": "Arithmetic Control of LLMs for Diverse User Preferences: Directional Preference Alignment with Multi-Objective Rewards (Wang et al., 2024) uses multi-objective reward modeling for user-dependent preference control, contrasting with scalar-reward RLHF methods."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_008_e40344c63",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This work investigates online iterative RLHF under general preference models, aligning with the iterative generation and learning approach of SPA while offering insights into preference model limitations.",
+        "evidence_summary": "Online Iterative Reinforcement Learning from Human Feedback with General Preference Model (Ye et al., 2024) develops sample-efficient algorithms for RLHF without assuming Bradley-Terry preferences, relevant to iterative alignment frameworks."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_002_2a44a794d",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "same_constraints"
+        ],
+        "rationale": "It addresses efficient LLM finetuning under resource constraints, providing background on low-resource methods though not directly focused on preference alignment.",
+        "evidence_summary": "QLoRA: Efficient Finetuning of Quantized LLMs (Dettmers et al., 2023) reduces memory usage for finetuning large models, relevant to resource-efficient LLM adaptation."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_005_1ec0052fb",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This survey offers practical guidance on LLM usage including data considerations, providing general context on constraints in LLM deployment but not specific to preference alignment.",
+        "evidence_summary": "Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond (Yang et al., 2024) discusses data challenges and task-specific considerations for LLM applications."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_011_9500c8390",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "It mentions deliberative technology for alignment at a high level but lacks specific benchmarks or technical methods relevant to SPA's evaluation framework.",
+        "evidence_summary": "Deliberative Technology for Alignment (Konya et al., 2023) explores institutional alignment using deliberative methods, with limited technical overlap with preference learning benchmarks."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Recent work has explored various approaches to aligning large language models with human preferences under data efficiency constraints. Data-Centric Human Preference with Rationales for Direct Preference Alignment (Just et al., 2024) enhances preference learning through rationale augmentation, while Arithmetic Control of LLMs for Diverse User Preferences (Wang et al., 2024) introduces multi-objective reward modeling for fine-grained control. Methods like Online Iterative Reinforcement Learning from Human Feedback with General Preference Model (Ye et al., 2024) address iterative alignment without strict preference model assumptions. Broader efficiency considerations appear in QLoRA: Efficient Finetuning of Quantized LLMs (Dettmers et al., 2023) and surveys like Harnessing the Power of LLMs in Practice (Yang et al., 2024), with high-level alignment discussions in Deliberative Technology for Alignment (Konya et al., 2023).",
+    "warnings": [
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 11,
+      "num_removed_post_cutoff": 5,
+      "num_removed_undated": 0,
+      "num_used": 6,
+      "num_cutoff_valid": 6,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 11,
+    "num_removed_post_cutoff": 5,
+    "num_removed_undated": 0,
+    "num_used": 6,
+    "num_cutoff_valid": 6,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

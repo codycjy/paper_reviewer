@@ -1,0 +1,610 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper proposes a novel RL method (RLEF) that successfully grounds LLMs in execution feedback for iterative code synthesis, demonstrating state-of-the-art results on CodeContests with significant sample efficiency gains.",
+        "The evaluation is extremely thorough, including comprehensive comparisons against strong baselines (AlphaCode, AlphaCodium, MapCoder), detailed ablation studies, and generalization tests on HumanEval+/MBPP+.",
+        "The analysis provides strong evidence that RLEF specifically improves the model's ability to leverage feedback (via random-feedback ablations and code-diversity metrics), not just domain adaptation.",
+        "The method is effective across model scales (8B and 70B) and demonstrates clear practical impact by reducing required inference samples by an order of magnitude compared to prior agentic frameworks."
+      ],
+      "weaknesses": [
+        "The novelty claim, while strong in the specific integration of RL with inference-time feedback for code, shares conceptual similarities with prior RL-for-code works (e.g., Shojaee et al. 2023's 'Execution-based Code Generation using Deep Reinforcement Learning'). The distinction lies in the multi-turn, feedback-in-prompt formulation, which could be more sharply contrasted.",
+        "The paper identifies that RL training can reduce output diversity (citing Kirk et al., 2024), which may limit gains at very high sample budgets (10@100). This trade-off between precision and recall/diversity warrants deeper discussion.",
+        "The method's dependency on having unit tests (public and private) for training and inference limits its applicability to scenarios where such tests are not readily available, though this is acknowledged as a limitation."
+      ],
+      "summary_comment": "This is a strong paper that makes a significant contribution to code generation and LLM agent research. The proposed RLEF method effectively teaches LLMs to use execution feedback iteratively, achieving new SOTA results on the challenging CodeContests benchmark with remarkable sample efficiency. The experimental design is rigorous, featuring extensive comparisons, insightful ablations (e.g., random feedback), and demonstration of generalization. While the core RL idea for code has precedents, the novel framing as a multi-turn POMDP with textual feedback in the prompt and the resulting performance gains are compelling. The work is well-presented and convincing, meriting acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses reinforcement learning for code generation, which aligns with ICML's interest in optimization and RL methods",
+        "The work presents a novel application of PPO to teach LLMs to leverage execution feedback, contributing to the optimization and RL track",
+        "Strong empirical results on competitive programming benchmarks demonstrate practical impact in machine learning systems",
+        "The methodology combines deep learning with reinforcement learning, fitting ICML's broad ML scope"
+      ],
+      "why_it_does_not_fit": [
+        "The focus is heavily specialized on code generation rather than general ML methods",
+        "While RL is used, the application domain (code synthesis) may be too narrow for ICML's general ML audience",
+        "The paper lacks strong theoretical contributions, which are often valued at ICML",
+        "The work is more applied than theoretical, which might not align with ICML's preference for fundamental algorithmic contributions"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper bridges LLMs, reinforcement learning, and autonomous agents - all core NeurIPS topics",
+        "The work addresses grounding in environment feedback, which aligns with NeurIPS' interest in AI agents and decision-making",
+        "Strong empirical results with large-scale models (70B parameters) fit NeurIPS' preference for impactful AI research",
+        "The multi-turn reasoning and feedback utilization connects to NeurIPS' focus on reasoning and generalization in AI systems"
+      ],
+      "why_it_does_not_fit": [
+        "The application is specifically focused on code generation rather than general reasoning tasks",
+        "While the method is novel, the core RL approach builds on established PPO methods rather than introducing fundamentally new algorithms",
+        "The paper might be perceived as too application-specific for NeurIPS' broad AI focus"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR strongly focuses on deep learning and representation learning, which aligns with the LLM foundation of this work",
+        "The paper involves fine-tuning large language models, which is central to ICLR's interests",
+        "The application to code generation connects to ICLR's track on applications of deep learning",
+        "The iterative self-improvement approach relates to ICLR's interest in learning and adaptation"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically emphasizes architectural innovations and fundamental deep learning advances more than this paper provides",
+        "The reinforcement learning component may be less central to ICLR's core focus compared to pure deep learning",
+        "The work is more applied than theoretical, which might not fully align with ICLR's preference for deep learning foundations",
+        "While code generation is relevant, it's not as core to ICLR as vision/NLP domains"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_ec7b049f12df",
+    "paper_id": "paper_a2459f466bfd",
+    "target_paper_summary": {
+      "paper_id": "paper_a2459f466bfd",
+      "title": "Rlef: Grounding Code Llms In Execution Feedback With Reinforcement Learning",
+      "abstract": "Large language models (LLMs) deployed as agents solve user-specified tasks over multiple steps while keeping the required manual engagement to a minimum. Crucially, such LLMs need to ground their generations in any feedback obtained to reliably achieve the desired outcomes. We propose an end-to-end reinforcement learning method for teaching models to leverage execution feedback in the realm of code synthesis, where state-of-the-art LLMs struggle to improve code iteratively compared to independent sampling. We benchmark on competitive programming tasks and achieve large performance gains with both small (8B parameters) and large (70B) models, outperforming previous work while reducing the number of samples required by an order of magnitude. Our analysis of inference-time behavior demonstrates that our method produces LLMs that effectively leverage automatic feedback over multiple steps.",
+      "topic": "",
+      "claims": [
+        "We propose an end-to-end reinforcement learning method for teaching models to leverage execution feedback in the realm of code synthesis, where state-of-the-art LLMs struggle to improve code iteratively compared to independent sampling.",
+        "our method produces LLMs that effectively leverage automatic feedback over multiple steps."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "code synthesis execution feedback LLM iterative improvement",
+          "rationale": "The paper focuses on teaching LLMs to improve code synthesis through execution feedback and iterative refinement"
+        },
+        {
+          "group": "same_method",
+          "query": "reinforcement learning language models execution feedback code generation",
+          "rationale": "The method uses RL to train LLMs to incorporate execution feedback for code synthesis"
+        },
+        {
+          "group": "same_constraints",
+          "query": "competitive programming tasks code synthesis automatic feedback",
+          "rationale": "The work is constrained to code synthesis tasks with automatic execution feedback in competitive programming"
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "code synthesis benchmark competitive programming LLM baseline",
+          "rationale": "The paper benchmarks on competitive programming tasks and compares against previous work"
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "execution feedback code generation RL reinforcement learning LLM before:2023",
+          "rationale": "Searching for prior work using RL with execution feedback for code generation to assess novelty"
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "LLM code synthesis execution feedback limitations negative results",
+          "rationale": "Looking for papers that discuss limitations or negative results in using execution feedback for code synthesis with LLMs"
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 8,
+        "warnings": [
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 9,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_c6b49436a",
+        "title": "Self-Refine: Iterative Refinement with Self-Feedback",
+        "authors": [
+          "Aman Madaan",
+          "Niket Tandon",
+          "Prakhar Gupta",
+          "Skyler Hallinan",
+          "Luyu Gao",
+          "Sarah Wiegreffe",
+          "Uri Alon",
+          "Nouha Dziri",
+          "Shrimai Prabhumoye",
+          "Yiming Yang",
+          "Shashank Gupta",
+          "Bodhisattwa Prasad Majumder",
+          "Hermann, Katherine",
+          "Sean Welleck",
+          "Amir Yazdanbakhsh",
+          "Peter Clark"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-30",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Like humans, large language models (LLMs) do not always generate the best output on their first try. Motivated by how humans refine their written text, we introduce Self-Refine, an approach for improving initial outputs from LLMs through iterative feedback and refinement. The main idea is to generate an initial output using an LLMs; then, the same LLMs provides feedback for its output and uses it to refine itself, iteratively. Self-Refine does not require any supervised training data, additional training, or reinforcement learning, and instead uses a single LLM as the generator, refiner, and feedback provider. We evaluate Self-Refine across 7 diverse tasks, ranging from dialog response generation to mathematical reasoning, using state-of-the-art (GPT-3.5, ChatGPT, and GPT-4) LLMs. Across all evaluated tasks, outputs generated with Self-Refine are preferred by humans and automatic metrics over those generated with the same LLM using conventional one-step generation, improving by ~20% absolute on average in task performance. Our work demonstrates that even state-of-the-art LLMs like GPT-4 can be further improved at test time using our simple, standalone approach.",
+        "url": "http://arxiv.org/abs/2303.17651",
+        "doi": "https://doi.org/10.48550/arxiv.2303.17651",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4362508231"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 215
+      },
+      {
+        "paper_id": "rw_002_34a273d1e",
+        "title": "Large language models (LLMs): survey, technical frameworks, and future challenges",
+        "authors": [
+          "Pranjal Kumar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-18",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Artificial intelligence (AI) has significantly impacted various fields. Large language models (LLMs) like GPT-4, BARD, PaLM, Megatron-Turing NLG, Jurassic-1 Jumbo etc., have contributed to our understanding and application of AI in these domains, along with natural language processing (NLP) techniques. This work provides a comprehensive overview of LLMs in the context of language modeling, word embeddings, and deep learning. It examines the application of LLMs in diverse fields including text generation, vision-language models, personalized learning, biomedicine, and code generation. The paper offers a detailed introduction and background on LLMs, facilitating a clear understanding of their fundamental ideas and concepts. Key language modeling architectures are also discussed, alongside a survey of recent works employing LLM methods for various downstream tasks across different domains. Additionally, it assesses the limitations of current approaches and highlights the need for new methodologies and potential directions for significant advancements in this field.",
+        "url": "https://doi.org/10.1007/s10462-024-10888-y",
+        "doi": "https://doi.org/10.1007/s10462-024-10888-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401671778"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 318
+      },
+      {
+        "paper_id": "rw_003_3bcf05696",
+        "title": "Diagnosing Non-Intermittent Anomalies in Reinforcement Learning Policy Executions (Short Paper)",
+        "authors": [
+          "Esper, Khalil",
+          "Spieck, Jan",
+          "Sixdenier, Pierre-Louis",
+          "Wildermann, Stefan",
+          "Teich, Jürgen"
+        ],
+        "year": 2017,
+        "publication_date": "2017-07-20",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Due to the safety risks and training sample inefficiency, it is often preferred to develop controllers in simulation. However, minor differences between the simulation and the real world can cause a significant sim-to-real gap. This gap can reduce the effectiveness of the developed controller. In this paper, we examine a case study of transferring an octorotor reinforcement learning controller from simulation to the real world. First, we quantify the effectiveness of the real-world transfer by examining safety metrics. We find that although there is a noticeable (around 100%) increase in deviation in real flights, this deviation may not be considered unsafe, as it will be within > 2m safety corridors. Then, we estimate the densities of the measurement distributions and compare the Jensen-Shannon divergences of simulated and real measurements. From this, we show that the vehicle’s orientation is significantly different between simulated and real flights. We attribute this to a different flight mode in real flights where the vehicle turns to face the next waypoint. We also find that the reinforcement learning controller actions appear to correctly counteract disturbance forces. Then, we analyze the errors of a measurement autoencoder and state transition model neural network applied to real data. We find that these models further reinforce the difference between the simulated and real attitude control, showing the errors directly on the flight paths. Finally, we discuss important lessons learned in the sim-to-real transfer of our controller.",
+        "url": "http://arxiv.org/abs/1707.06347",
+        "doi": "https://doi.org/10.4230/oasics.dx.2024.16",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2736601468"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 11350
+      },
+      {
+        "paper_id": "rw_004_2d0fc7c87",
+        "title": "Review of deep learning: concepts, CNN architectures, challenges, applications, future directions",
+        "authors": [
+          "Laith Alzubaidi",
+          "Jinglan Zhang",
+          "Amjad J. Humaidi",
+          "Ayad Q. Al-Dujaili",
+          "Ye Duan",
+          "Omran Al-Shamma",
+          "José Santamaría",
+          "Mohammed A. Fadhel",
+          "Muthana Al‐Amidie",
+          "Laith Farhan"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-31",
+        "venue": "Journal Of Big Data",
+        "abstract": "In the last few years, the deep learning (DL) computing paradigm has been deemed the Gold Standard in the machine learning (ML) community. Moreover, it has gradually become the most widely used computational approach in the field of ML, thus achieving outstanding results on several complex cognitive tasks, matching or even beating those provided by human performance. One of the benefits of DL is the ability to learn massive amounts of data. The DL field has grown fast in the last few years and it has been extensively used to successfully address a wide range of traditional applications. More importantly, DL has outperformed well-known ML techniques in many domains, e.g., cybersecurity, natural language processing, bioinformatics, robotics and control, and medical information processing, among many others. Despite it has been contributed several works reviewing the State-of-the-Art on DL, all of them only tackled one aspect of the DL, which leads to an overall lack of knowledge about it. Therefore, in this contribution, we propose using a more holistic approach in order to provide a more suitable starting point from which to develop a full understanding of DL. Specifically, this review attempts to provide a more comprehensive survey of the most important aspects of DL and including those enhancements recently added to the field. In particular, this paper outlines the importance of DL, presents the types of DL techniques and networks. It then presents convolutional neural networks (CNNs) which the most utilized DL network type and describes the development of CNNs architectures together with their main features, e.g., starting with the AlexNet network and closing with the High-Resolution network (HR.Net). Finally, we further present the challenges and suggested solutions to help researchers understand the existing research gaps. It is followed by a list of the major DL applications. Computational tools including FPGA, GPU, and CPU are summarized along with a description of their influence on DL. The paper ends with the evolution matrix, benchmark datasets, and summary and conclusion.",
+        "url": "https://doi.org/10.1186/s40537-021-00444-8",
+        "doi": "https://doi.org/10.1186/s40537-021-00444-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3140854437"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 7684
+      },
+      {
+        "paper_id": "rw_005_463e0354c",
+        "title": "Human-competitive results produced by genetic programming",
+        "authors": [
+          "John R. Koza"
+        ],
+        "year": 2010,
+        "publication_date": "2010-05-24",
+        "venue": "Genetic Programming and Evolvable Machines",
+        "abstract": "Genetic programming has now been used to produce at least 76 instances of results that are competitive with human-produced results. These human-competitive results come from a wide variety of fields, including quantum computing circuits, analog electrical circuits, antennas, mechanical systems, controllers, game playing, finite algebras, photonic systems, image recognition, optical lens systems, mathematical algorithms, cellular automata rules, bioinformatics, sorting networks, robotics, assembly code generation, software repair, scheduling, communication protocols, symbolic regression, reverse engineering, and empirical model discovery. This paper observes that, despite considerable variation in the techniques employed by the various researchers and research groups that produced these human-competitive results, many of the results share several common features. Many of the results were achieved by using a developmental process and by using native representations regularly used by engineers in the fields involved. The best individual in the initial generation of the run of genetic programming often contains only a small number of operative parts. Most of the results that duplicated the functionality of previously issued patents were novel solutions, not infringing solutions. In addition, the production of human-competitive results, as well as the increased intricacy of the results, are broadly correlated to increased availability of computing power tracked by Moore’s law. The paper ends by predicting that the increased availability of computing power (through both parallel computing and Moore’s law) should result in the production, in the future, of an increasing flow of human-competitive results, as well as more intricate and impressive results.",
+        "url": "https://doi.org/10.1007/s10710-010-9112-3",
+        "doi": "https://doi.org/10.1007/s10710-010-9112-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2037343293"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 323
+      },
+      {
+        "paper_id": "rw_006_f48b06d11",
+        "title": "Nice Guys Finish First: The Competitive Altruism Hypothesis",
+        "authors": [
+          "Charlie L. Hardy",
+          "Mark van Vugt"
+        ],
+        "year": 2006,
+        "publication_date": "2006-09-08",
+        "venue": "Personality and Social Psychology Bulletin",
+        "abstract": "Three experimental studies examined the relationship between altruistic behavior and the emergence of status hierarchies within groups. In each study, group members were confronted with a social dilemma in which they could either benefit themselves or their group. Study 1 revealed that in a reputation environment when contributions were public, people were more altruistic. In both Studies 1 and 2, the most altruistic members gained the highest status in their group and were most frequently preferred as cooperative interaction partners. Study 3 showed that as the costs of altruism increase, the status rewards also increase. These results support the premise at the heart of competitive altruism: Individuals may behave altruistically for reputation reasons because selective benefits (associated with status) accrue to the generous.",
+        "url": "https://doi.org/10.1177/0146167206291006",
+        "doi": "https://doi.org/10.1177/0146167206291006",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2108525134"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 836
+      },
+      {
+        "paper_id": "rw_007_329dae098",
+        "title": "Few-shot training LLMs for project-specific code-summarization",
+        "authors": [
+          "Toufique Ahmed",
+          "Prémkumar Dévanbu"
+        ],
+        "year": 2022,
+        "publication_date": "2022-10-10",
+        "venue": "",
+        "abstract": "Very large language models (LLMs), such as GPT-3 and Codex have achieved state-of-the-art performance on several natural-language tasks, and show great promise also for code. A particularly exciting aspect of LLMs is their knack for few-shot and zero-shot learning: they can learn to perform a task with very few examples. Few-shotting has particular synergies in software engineering, where there are a lot of phenomena (identifier names, APIs, terminology, coding patterns) that are known to be highly project-specific. However, project-specific data can be quite limited, especially early in the history of a project; thus the few-shot learning capacity of LLMs might be very relevant. In this paper, we investigate the use few-shot training with the very large GPT (Generative Pre-trained Transformer) Codex model, and find evidence suggesting that one can significantly surpass state-of-the-art models for code-summarization, leveraging project-specific training.",
+        "url": "https://doi.org/10.1145/3551349.3559555",
+        "doi": "https://doi.org/10.1145/3551349.3559555",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4313547549"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 227
+      },
+      {
+        "paper_id": "rw_013_f31bf6fe9",
+        "title": "Will Code Remain a Relevant User Interface for End-User Programming with Generative AI Models?",
+        "authors": [
+          "Advait Sarkar"
+        ],
+        "year": 2023,
+        "publication_date": "2023-11-01",
+        "venue": "arXiv",
+        "abstract": "The research field of end-user programming has largely been concerned with helping non-experts learn to code sufficiently well in order to achieve their tasks. Generative AI stands to obviate this entirely by allowing users to generate code from naturalistic language prompts. In this essay, we explore the extent to which \"traditional\" programming languages remain relevant for non-expert end-user programmers in a world with generative AI. We posit the \"generative shift hypothesis\": that generative AI will create qualitative and quantitative expansions in the traditional scope of end-user programming. We outline some reasons that traditional programming languages may still be relevant and useful for end-user programmers. We speculate whether each of these reasons might be fundamental and enduring, or whether they may disappear with further improvements and innovations in generative AI. Finally, we articulate a set of implications for end-user programming research, including the possibility of needing to revisit many well-established core concepts, such as Ko's learning barriers and Blackwell's attention investment model.",
+        "url": "http://arxiv.org/abs/2311.00382v1",
+        "doi": "",
+        "arxiv_id": "2311.00382v1",
+        "source_ids": {
+          "arXiv": "2311.00382v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_6b9255053",
+        "title": "Code Building Genetic Programming",
+        "authors": [
+          "Edward Pantridge",
+          "Lee Spector"
+        ],
+        "year": 2020,
+        "publication_date": "2020-08-09",
+        "venue": "arXiv",
+        "abstract": "In recent years the field of genetic programming has made significant advances towards automatic programming. Research and development of contemporary program synthesis methods, such as PushGP and Grammar Guided Genetic Programming, can produce programs that solve problems typically assigned in introductory academic settings. These problems focus on a narrow, predetermined set of simple data structures, basic control flow patterns, and primitive, non-overlapping data types (without, for example, inheritance or composite types). Few, if any, genetic programming methods for program synthesis have convincingly demonstrated the capability of synthesizing programs that use arbitrary data types, data structures, and specifications that are drawn from existing codebases. In this paper, we introduce Code Building Genetic Programming (CBGP) as a framework within which this can be done, by leveraging programming language features such as reflection and first-class specifications. CBGP produces a computational graph that can be executed or translated into source code of a host language. To demonstrate the novel capabilities of CBGP, we present results on new benchmarks that use non-primitive, polymorphic data types as well as some standard program synthesis benchmarks.",
+        "url": "http://arxiv.org/abs/2008.03649v1",
+        "doi": "",
+        "arxiv_id": "2008.03649v1",
+        "source_ids": {
+          "arXiv": "2008.03649v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_016_3f07f6778",
+        "title": "Execution-based Code Generation using Deep Reinforcement Learning",
+        "authors": [
+          "Parshin Shojaee",
+          "Aneesh Jain",
+          "Sindhu Tipirneni",
+          "Chandan K. Reddy"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-31",
+        "venue": "arXiv",
+        "abstract": "The utilization of programming language (PL) models, pre-trained on large-scale code corpora, as a means of automating software engineering processes has demonstrated considerable potential in streamlining various code generation tasks such as code completion, code translation, and program synthesis. However, current approaches mainly rely on supervised fine-tuning objectives borrowed from text generation, neglecting unique sequence-level characteristics of code, including but not limited to compilability as well as syntactic and functional correctness. To address this limitation, we propose PPOCoder, a new framework for code generation that synergistically combines pre-trained PL models with Proximal Policy Optimization (PPO) which is a widely used deep reinforcement learning technique. By utilizing non-differentiable feedback from code execution and structure alignment, PPOCoder seamlessly integrates external code-specific knowledge into the model optimization process. It's important to note that PPOCoder is a task-agnostic and model-agnostic framework that can be used across different code generation tasks and PLs. Extensive experiments on three code generation tasks demonstrate the effectiveness of our proposed approach compared to SOTA methods, achieving significant improvements in compilation success rates and functional correctness across different PLs.",
+        "url": "http://arxiv.org/abs/2301.13816v4",
+        "doi": "",
+        "arxiv_id": "2301.13816v4",
+        "source_ids": {
+          "arXiv": "2301.13816v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_017_e16e39816",
+        "title": "SoK: Hardware Defenses Against Speculative Execution Attacks",
+        "authors": [
+          "Guangyuan Hu",
+          "Zecheng He",
+          "Ruby Lee"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-09",
+        "venue": "arXiv",
+        "abstract": "Speculative execution attacks leverage the speculative and out-of-order execution features in modern computer processors to access secret data or execute code that should not be executed. Secret information can then be leaked through a covert channel. While software patches can be installed for mitigation on existing hardware, these solutions can incur big performance overhead. Hardware mitigation is being studied extensively by the computer architecture community. It has the benefit of preserving software compatibility and the potential for much smaller performance overhead than software solutions. This paper presents a systematization of the hardware defenses against speculative execution attacks that have been proposed. We show that speculative execution attacks consist of 6 critical attack steps. We propose defense strategies, each of which prevents a critical attack step from happening, thus preventing the attack from succeeding. We then summarize 20 hardware defenses and overhead-reducing features that have been proposed. We show that each defense proposed can be classified under one of our defense strategies, which also explains why it can thwart the attack from succeeding. We discuss the scope of the defenses, their performance overhead, and the security-performance trade-offs that can be made.",
+        "url": "http://arxiv.org/abs/2301.03724v1",
+        "doi": "",
+        "arxiv_id": "2301.03724v1",
+        "source_ids": {
+          "arXiv": "2301.03724v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_c6b49436a",
+        "relevance_score": 0.155,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Like humans, large language models (LLMs) do not always generate the best output on their first try. Motivated by how humans refine their written text, we introduce Self-Refine, an approach for improving initial outputs from LLMs through iterative feedback and refinement. The main idea is to generat"
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_329dae098",
+        "relevance_score": 0.114,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Very large language models (LLMs), such as GPT-3 and Codex have achieved state-of-the-art performance on several natural-language tasks, and show great promise also for code. A particularly exciting aspect of LLMs is their knack for few-shot and zero-shot learning: they can learn to perform a task w"
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_016_3f07f6778",
+        "relevance_score": 0.108,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "The utilization of programming language (PL) models, pre-trained on large-scale code corpora, as a means of automating software engineering processes has demonstrated considerable potential in streamlining various code generation tasks such as code completion, code translation, and program synthesis"
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_013_f31bf6fe9",
+        "relevance_score": 0.104,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "The research field of end-user programming has largely been concerned with helping non-experts learn to code sufficiently well in order to achieve their tasks. Generative AI stands to obviate this entirely by allowing users to generate code from naturalistic language prompts. In this essay, we explo"
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_017_e16e39816",
+        "relevance_score": 0.089,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Speculative execution attacks leverage the speculative and out-of-order execution features in modern computer processors to access secret data or execute code that should not be executed. Secret information can then be leaked through a covert channel. While software patches can be installed for miti"
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_002_34a273d1e",
+        "relevance_score": 0.087,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Artificial intelligence (AI) has significantly impacted various fields. Large language models (LLMs) like GPT-4, BARD, PaLM, Megatron-Turing NLG, Jurassic-1 Jumbo etc., have contributed to our understanding and application of AI in these domains, along with natural language processing (NLP) techniqu"
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_014_6b9255053",
+        "relevance_score": 0.073,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In recent years the field of genetic programming has made significant advances towards automatic programming. Research and development of contemporary program synthesis methods, such as PushGP and Grammar Guided Genetic Programming, can produce programs that solve problems typically assigned in intr"
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_006_f48b06d11",
+        "relevance_score": 0.058,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Three experimental studies examined the relationship between altruistic behavior and the emergence of status hierarchies within groups. In each study, group members were confronted with a social dilemma in which they could either benefit themselves or their group. Study 1 revealed that in a reputati"
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_004_2d0fc7c87",
+        "relevance_score": 0.052,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In the last few years, the deep learning (DL) computing paradigm has been deemed the Gold Standard in the machine learning (ML) community. Moreover, it has gradually become the most widely used computational approach in the field of ML, thus achieving outstanding results on several complex cognitive"
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_005_463e0354c",
+        "relevance_score": 0.047,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Genetic programming has now been used to produce at least 76 instances of results that are competitive with human-produced results. These human-competitive results come from a wide variety of fields, including quantum computing circuits, analog electrical circuits, antennas, mechanical systems, cont"
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_003_3bcf05696",
+        "relevance_score": 0.045,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Due to the safety risks and training sample inefficiency, it is often preferred to develop controllers in simulation. However, minor differences between the simulation and the real world can cause a significant sim-to-real gap. This gap can reduce the effectiveness of the developed controller. In th"
+      }
+    ],
+    "reranking": {
+      "source": "fallback"
+    },
+    "related_work_summary": "The literature around Rlef: Grounding Code Llms In Execution Feedback With Reinforcement Learning sits within a broader effort to replace or augment quadratic self-attention with more efficient token-mixing mechanisms. Self-Refine: Iterative Refinement with Self-Feedback (Madaan et al., 2023) contributes adjacent evidence on efficient sequence modeling. Few-shot training LLMs for project-specific code-summarization (Ahmed and Dvanbu, 2022) provides benchmark or baseline context for evaluating efficient long-sequence models. Execution-based Code Generation using Deep Reinforcement Learning (Shojaee et al., 2023) is a close methodological reference for token-mixing design. Will Code Remain a Relevant User Interface for End-User Programming with Generative AI Models? (Sarkar, 2023) provides benchmark or baseline context for evaluating efficient long-sequence models.",
+    "warnings": [
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "Related-work rerank LLM failed; using lexical fallback reranking: Expecting ',' delimiter: line 99 column 3 (char 6183)"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 17,
+      "num_removed_post_cutoff": 6,
+      "num_removed_undated": 0,
+      "num_used": 11,
+      "num_cutoff_valid": 11,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "Related-work rerank LLM failed; using lexical fallback reranking: Expecting ',' delimiter: line 99 column 3 (char 6183)"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 17,
+    "num_removed_post_cutoff": 6,
+    "num_removed_undated": 0,
+    "num_used": 11,
+    "num_cutoff_valid": 11,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

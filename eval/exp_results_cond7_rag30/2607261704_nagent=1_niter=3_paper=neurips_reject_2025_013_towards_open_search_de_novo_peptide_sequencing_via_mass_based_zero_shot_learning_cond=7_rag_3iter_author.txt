@@ -1,0 +1,687 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 4
+      },
+      "strengths": [
+        "Presents a novel conceptual reformulation of de novo peptide sequencing from token classification to continuous mass regression, which is a clear step towards enabling predictions for unseen modifications.",
+        "Proposes an interesting multi-task training framework combining experimental and simulated spectra to encourage generalization, including a GAN-inspired adversarial component for latent space alignment.",
+        "Provides an honest and thorough analysis of the results, clearly discussing the model's limitations, failure modes (e.g., failure to generalize to truly novel PTMs on experimental data), and the gap between simulation and reality."
+      ],
+      "weaknesses": [
+        "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+        "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+          "severity": "major",
+          "evidence": "The paper shows that for methionine oxidation (held out), recall improved only marginally from 14.18% to 14.41% with MTL. For cysteine carbamidomethylation, recall was extremely low (0.6% without MTL, 3.18% with MTL). The predicted mass distributions for these unseen residues show bias towards seen masses and lack clear enrichment at the correct values (Figures 2B, 4C). The authors state the model 'struggled to generalize to truly novel modifications' and that 'absolute prediction quality for unseen residues remained limited'.",
+          "affected_claim": "The paper's main claim of providing a path towards open-search DNPS via mass-based zero-shot learning that allows 'prediction of previously unseen PTMs' (Abstract).",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing.",
+          "severity": "major",
+          "evidence": "Section 4.1 states: 'For evaluation, we ran the model in inference mode using teacher forcing. This prevents error accumulation from incorrect predictions and isolates the model's ability to predict each residue mass independently.' The paper acknowledges this as a limitation in the conclusion: 'the current framework has only been evaluated under teacher-forced decoding.'",
+          "affected_claim": "The claim that the approach provides a foundation for 'practical applications' and a 'path towards true open-search DNPS' is weakened without evaluation under full autoregressive decoding, where errors compound.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are technically supported by the experimental results. The model architecture, training procedures, and evaluation are clearly described. The logic of mapping predicted masses to tokens via a lookup table is sound. The paper honestly reports failures and limitations, which strengthens the soundness of the analysis."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "Reformulating DNPS as a continuous mass prediction problem for open-search/zero-shot PTM inference is a novel idea. While prior work (e.g., ContraNovo) incorporates mass information, the shift from classification to regression as a means to escape a fixed vocabulary is distinct. The multi-task setup with simulated spectra and adversarial alignment for this purpose is also novel in this domain."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The authors' rebuttal effectively articulates the paper's value as foundational research that proposes a novel problem formulation and framework. However, the empirical evidence for the framework's effectiveness remains weak, with minimal generalization to the core problem of identifying unseen PTMs on real data. While the analysis of challenges is valuable, the demonstrated contribution does not yet constitute a meaningful advance for a top-tier ML conference, which typically requires stronger empirical validation of a new direction's potential."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation methodology remains insufficient to support the paper's central claims. The use of teacher forcing provides a clean analysis of the mass-prediction component but does not validate the proposed method's performance in a realistic sequencing scenario. The rebuttal clarifies the diagnostic intent of this choice but does not alter the fact that the evaluation lacks results from full autoregressive decoding, which is necessary to assess the practical utility of the approach."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-written, clearly structured, and easy to understand. The authors' transparent discussion of limitations is a strength of the presentation."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal provides a compelling defense of the paper's value as foundational research that introduces a novel problem formulation and a framework for exploring it. They successfully argue that the work's significance lies in its diagnostic analysis of the challenges of mass-based zero-shot learning, not in achieving high performance. However, the rebuttal does not present new empirical evidence. The core weaknesses remain: the framework demonstrates only minimal success on the specific task it aims to enable (zero-shot PTM prediction on real data), and its evaluation is not conducted under conditions that reflect practical use. For a top-tier conference, the conceptual contribution and rigorous analysis are commendable but are outweighed by the lack of convincing empirical validation of the proposed method's potential."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper introduces a novel learning formulation (mass regression for zero-shot prediction) which aligns with ICML's interest in innovative machine learning methods.",
+        "The work applies advanced ML techniques (transformer architecture, multi-task learning, adversarial alignment) to a scientific problem, fitting ICML's 'application-driven machine learning' track, particularly for biosciences.",
+        "The paper provides a thorough algorithmic contribution with clear training strategies and loss formulations, which matches ICML's emphasis on methodological rigor."
+      ],
+      "why_it_does_not_fit": [
+        "The empirical results show limited success on the core zero-shot claim (reviewer notes 'performance gains are marginal, recall remains very low'), which may be insufficient for ICML's high empirical standards.",
+        "The evaluation is primarily diagnostic (teacher-forced) rather than demonstrating practical utility, which contrasts with ICML's preference for methods with clear demonstrated impact.",
+        "While the topic is application-driven, the focus is more on a proof-of-concept framework than a fully realized solution, which might be seen as preliminary for ICML's main track."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's focus on zero-shot learning and generalization to unseen modifications aligns well with NeurIPS's interest in generalization and multi-task learning.",
+        "The application to AI/ML for health and biotechnology is explicitly listed in NeurIPS topics, making this a strong topical fit.",
+        "The conceptual contribution of reformulating a domain-specific problem as a continuous regression task for open-world discovery is novel and fits NeurIPS's interdisciplinary scope."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about significance ('empirical evidence for the framework's effectiveness remains weak') and evaluation ('evaluation methodology remains insufficient') directly impact fit with NeurIPS's high standards for empirical validation.",
+        "The paper's limited practical success (recall <15% for unseen PTMs) may not meet NeurIPS's threshold for convincing demonstrations of new capabilities.",
+        "While interdisciplinary, the work sits at the intersection of ML and proteomics without strong theoretical contributions, which might be better suited for domain-specific venues."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The paper uses transformer architectures and attention mechanisms, which are core to ICLR's focus on deep learning.",
+        "The work involves representation learning for a specific modality (mass spectrometry spectra), which aligns with ICLR's interest in representation learning across modalities."
+      ],
+      "why_it_does_not_fit": [
+        "The paper is not primarily about deep learning architecture innovations or theoretical advances in neural networks, which are ICLR's main focus.",
+        "The application domain (proteomics) is quite specialized, and the ML contributions are more applied than fundamental to deep learning research.",
+        "Reviewer concerns about limited empirical success and diagnostic evaluation would be particularly damaging at ICLR, which expects strong empirical results in deep learning applications."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Presents a novel conceptual reformulation of de novo peptide sequencing from token classification to continuous mass regression, which is a clear step towards enabling predictions for unseen modifications.",
+              "Proposes an interesting multi-task training framework combining experimental and simulated spectra to encourage generalization, including a GAN-inspired adversarial component for latent space alignment.",
+              "Provides an honest and thorough analysis of the results, clearly discussing the model's limitations, failure modes (e.g., failure to generalize to truly novel PTMs on experimental data), and the gap between simulation and reality."
+            ],
+            "weaknesses": [
+              "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+              "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+                "severity": "major",
+                "evidence": "The paper shows that for methionine oxidation (held out), recall improved only marginally from 14.18% to 14.41% with MTL. For cysteine carbamidomethylation, recall was extremely low (0.6% without MTL, 3.18% with MTL). The predicted mass distributions for these unseen residues show bias towards seen masses and lack clear enrichment at the correct values (Figures 2B, 4C). The authors state the model 'struggled to generalize to truly novel modifications' and that 'absolute prediction quality for unseen residues remained limited'.",
+                "affected_claim": "The paper's main claim of providing a path towards open-search DNPS via mass-based zero-shot learning that allows 'prediction of previously unseen PTMs' (Abstract).",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing.",
+                "severity": "major",
+                "evidence": "Section 4.1 states: 'For evaluation, we ran the model in inference mode using teacher forcing. This prevents error accumulation from incorrect predictions and isolates the model's ability to predict each residue mass independently.' The paper acknowledges this as a limitation in the conclusion: 'the current framework has only been evaluated under teacher-forced decoding.'",
+                "affected_claim": "The claim that the approach provides a foundation for 'practical applications' and a 'path towards true open-search DNPS' is weakened without evaluation under full autoregressive decoding, where errors compound.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported by the experimental results. The model architecture, training procedures, and evaluation are clearly described. The logic of mapping predicted masses to tokens via a lookup table is sound. The paper honestly reports failures and limitations, which strengthens the soundness of the analysis."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Reformulating DNPS as a continuous mass prediction problem for open-search/zero-shot PTM inference is a novel idea. While prior work (e.g., ContraNovo) incorporates mass information, the shift from classification to regression as a means to escape a fixed vocabulary is distinct. The multi-task setup with simulated spectra and adversarial alignment for this purpose is also novel in this domain."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution is not yet meaningful for a top-tier ML conference. While the idea is promising, the empirical results show minimal generalization to unseen PTMs on real-world experimental data. The performance gains are marginal, and key challenges (domain shift, bias to seen masses) are not overcome. The work is presented as a proof-of-concept, but the concept lacks strong empirical validation on the core problem it aims to solve."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments do not adequately support the central claim of effective zero-shot learning for unseen PTMs. Evaluation is limited to two specific held-out modifications, with very low recall. The use of teacher forcing, while useful for analysis, does not constitute a convincing evaluation of a full sequencing model. Comparisons to state-of-the-art classification baselines (e.g., Casanovo, AdaNovo) on standard de novo sequencing metrics are lacking, making it difficult to assess the practical trade-offs of the proposed approach."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-written, clearly structured, and easy to understand. Figures effectively illustrate the model's behavior and limitations. The methodology and experimental setup are described in sufficient detail."
+              }
+            },
+            "summary_comment": "This paper proposes a conceptually novel reformulation of de novo peptide sequencing as a mass regression task, combined with multi-task learning on simulated and experimental spectra, aiming for zero-shot prediction of unseen post-translational modifications. While the idea is innovative and the analysis is thorough and honest about limitations, the empirical validation falls short of demonstrating a meaningful advance. The model shows only marginal, unconvincing generalization to unseen PTMs on real data, and evaluation is limited to a teacher-forced setting that does not reflect practical use. The work represents an interesting proof-of-concept but lacks the experimental results required for a top-tier conference acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Presents a novel conceptual reformulation of de novo peptide sequencing from token classification to continuous mass regression, which is a clear step towards enabling predictions for unseen modifications.",
+              "Proposes an interesting multi-task training framework combining experimental and simulated spectra to encourage generalization, including a GAN-inspired adversarial component for latent space alignment.",
+              "Provides an honest and thorough analysis of the results, clearly discussing the model's limitations, failure modes (e.g., failure to generalize to truly novel PTMs on experimental data), and the gap between simulation and reality."
+            ],
+            "weaknesses": [
+              "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+              "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+                "severity": "major",
+                "evidence": "The paper shows that for methionine oxidation (held out), recall improved only marginally from 14.18% to 14.41% with MTL. For cysteine carbamidomethylation, recall was extremely low (0.6% without MTL, 3.18% with MTL). The predicted mass distributions for these unseen residues show bias towards seen masses and lack clear enrichment at the correct values (Figures 2B, 4C). The authors state the model 'struggled to generalize to truly novel modifications' and that 'absolute prediction quality for unseen residues remained limited'.",
+                "affected_claim": "The paper's main claim of providing a path towards open-search DNPS via mass-based zero-shot learning that allows 'prediction of previously unseen PTMs' (Abstract).",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing.",
+                "severity": "major",
+                "evidence": "Section 4.1 states: 'For evaluation, we ran the model in inference mode using teacher forcing. This prevents error accumulation from incorrect predictions and isolates the model's ability to predict each residue mass independently.' The paper acknowledges this as a limitation in the conclusion: 'the current framework has only been evaluated under teacher-forced decoding.'",
+                "affected_claim": "The claim that the approach provides a foundation for 'practical applications' and a 'path towards true open-search DNPS' is weakened without evaluation under full autoregressive decoding, where errors compound.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported by the experimental results. The model architecture, training procedures, and evaluation are clearly described. The logic of mapping predicted masses to tokens via a lookup table is sound. The paper honestly reports failures and limitations, which strengthens the soundness of the analysis."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Reformulating DNPS as a continuous mass prediction problem for open-search/zero-shot PTM inference is a novel idea. While prior work (e.g., ContraNovo) incorporates mass information, the shift from classification to regression as a means to escape a fixed vocabulary is distinct. The multi-task setup with simulated spectra and adversarial alignment for this purpose is also novel in this domain."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution is not yet meaningful for a top-tier ML conference. While the idea is promising, the empirical results show minimal generalization to unseen PTMs on real-world experimental data. The author's rebuttal correctly identifies that the low recall and modest gains are central findings presented transparently, but this does not elevate the contribution to a significant advance. The work remains a proof-of-concept that highlights challenges rather than provides a solution."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments do not adequately support the central claim of effective zero-shot learning for unseen PTMs. Evaluation is limited to two specific held-out modifications, with very low recall. The use of teacher forcing, while useful for analysis, does not constitute a convincing evaluation of a full sequencing model. The author's rebuttal clarifies the rationale for this choice but does not present new results from full autoregressive decoding. The evaluation remains insufficient to validate the practical utility of the proposed method."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-written, clearly structured, and easy to understand. Figures effectively illustrate the model's behavior and limitations. The methodology and experimental setup are described in sufficient detail."
+              }
+            },
+            "summary_comment": "The author's rebuttal provides a helpful clarification of the paper's intent as a foundational analysis and proof-of-concept, honestly acknowledging the limited empirical results. However, it does not resolve the core concerns. The paper's low recall for unseen PTMs on experimental data and the reliance on teacher-forced evaluation remain major weaknesses that prevent the work from meeting the standard of a top-tier conference. The novel conceptual idea is valuable, but the evaluation does not demonstrate a meaningful advance towards practical open-search sequencing. Promises to reframe the text in a revision do not alter the assessment of the submitted work."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited empirical demonstration of zero-shot inference for unseen PTMs on experimental data (low recall, marginal gains).\",\n        \"Evaluation primarily uses teacher-forced inference, which does not validate performance in a realistic, full autoregressive decoding setting.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited empirical demonstration of zero-shot inference.\",\n          \"location\": \"Section 4.2.1, Section 4.2.3, Figure 2B, Figure 4C\",\n          \"explanation\": \"Our paper explicitly reports the limited generalization, stating: \\\"the model struggled to generalize to truly novel modifications\\\" (Sec 4.2.1), and documents the modest recall for held-out modifications (M[Oxidation] ~14%, C[Carbamidomethyl] ~3% with MTL, Sec 4.2.3). This honest presentation is integral to our analysis of the challenges.\"\n        },\n        {\n          \"concern\": \"Evaluation uses teacher-forced inference.\",\n          \"location\": \"Section 4.1\",\n          \"explanation\": \"We transparently describe the use of teacher forcing as a deliberate choice to \\\"isolate the model's ability to predict each residue mass independently.\\\" This methodology is clearly disclosed as part of our evaluation protocol.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Need to more clearly frame the main contribution as a proof-of-concept and foundational analysis, rather than a fully realized solution.\",\n          \"proposed_change\": \"We will strengthen the framing in the Abstract, Introduction, and Conclusion to explicitly position the work as a foundational analysis demonstrating the potential and highlighting the significant challenges of mass-based zero-shot learning for DNPS, rather than presenting it as a solved problem. For example, we will revise the Abstract to say: \\\"We show that our approach provides a promising proof of concept and highlights the key challenges for mass-based representations as a path towards true open-search DNPS.\\\"\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"The reviewer correctly notes the need to discuss the limitations of teacher-forced evaluation more prominently and to outline future steps for full autoregressive evaluation.\",\n          \"proposed_change\": \"We will expand the \\\"Limitations\\\" paragraph in Section 5 to more thoroughly discuss the implications of the teacher-forced evaluation and to clearly state that evaluating full autoregressive decoding is a critical next step for practical application. We will add a specific note in the \\\"Future directions\\\" section about developing and testing such decoding strategies.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful and balanced assessment. We agree with the core points: our empirical demonstration of zero-shot generalization on experimental data is limited, and the evaluation is conducted under teacher forcing. We believe these points stem from the reviewer's accurate interpretation of our results, which we presented with full transparency.\\n\\nOur primary goal was to investigate the *feasibility* of mass-based zero-shot learning, rigorously analyze its challenges, and provide a framework for future research. The low recall for held-out PTMs and the bias toward seen masses (Sec. 4.2.1, 4.2.3) are central findings that quantify the difficulty of the open-search problem. The modest gains from MTL and adversarial training (Figs. 2B, 4C) are presented not as a breakthrough but as evidence that bridging the domain gap is non-trivial. These results validate our conceptual approach's potential (it learns mass representations) while starkly delineating the obstacles (domain shift, memorization bias).\\n\\nRegarding evaluation, we used teacher forcing specifically to decouple the analysis of the core mass-prediction mechanism from the complexities of error propagation in autoregressive decoding. This allowed us to cleanly assess whether the model can learn to map spectra to correct *masses*, which is the foundational requirement for any mass-based open-search system. We acknowledge that a full sequencing model requires robust autoregressive decoding, and we highlight this as a key direction for future work (Sec. 5).\\n\\nWe appreciate the reviewer's acknowledgment of the work's novelty, soundness, and clear presentation. In revision, we will further sharpen the paper's framing to emphasize that it is a foundational analysis and proof-of-concept that clearly establishes both the promise and the significant hurdles of the mass-regression paradigm for open-search DNPS. The value lies in rigorously defining this new problem setting, proposing a novel architectural framework to address it, and providing an honest, data-driven analysis that sets a clear agenda for future research.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Presents a novel conceptual reformulation of de novo peptide sequencing from token classification to continuous mass regression, which is a clear step towards enabling predictions for unseen modifications.",
+              "Proposes an interesting multi-task training framework combining experimental and simulated spectra to encourage generalization, including a GAN-inspired adversarial component for latent space alignment.",
+              "Provides an honest and thorough analysis of the results, clearly discussing the model's limitations, failure modes (e.g., failure to generalize to truly novel PTMs on experimental data), and the gap between simulation and reality."
+            ],
+            "weaknesses": [
+              "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+              "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The central claim of enabling zero-shot inference for unseen PTMs is not convincingly demonstrated on real, experimental data; performance gains are marginal, recall remains very low (<15%), and the method fails entirely on one of the two held-out modifications.",
+                "severity": "major",
+                "evidence": "The paper shows that for methionine oxidation (held out), recall improved only marginally from 14.18% to 14.41% with MTL. For cysteine carbamidomethylation, recall was extremely low (0.6% without MTL, 3.18% with MTL). The predicted mass distributions for these unseen residues show bias towards seen masses and lack clear enrichment at the correct values (Figures 2B, 4C). The authors state the model 'struggled to generalize to truly novel modifications' and that 'absolute prediction quality for unseen residues remained limited'.",
+                "affected_claim": "The paper's main claim of providing a path towards open-search DNPS via mass-based zero-shot learning that allows 'prediction of previously unseen PTMs' (Abstract).",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation is limited, primarily relying on teacher-forced inference, which isolates local prediction errors but does not validate the model's performance in a realistic, autoregressive decoding setup necessary for practical sequencing.",
+                "severity": "major",
+                "evidence": "Section 4.1 states: 'For evaluation, we ran the model in inference mode using teacher forcing. This prevents error accumulation from incorrect predictions and isolates the model's ability to predict each residue mass independently.' The paper acknowledges this as a limitation in the conclusion: 'the current framework has only been evaluated under teacher-forced decoding.'",
+                "affected_claim": "The claim that the approach provides a foundation for 'practical applications' and a 'path towards true open-search DNPS' is weakened without evaluation under full autoregressive decoding, where errors compound.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported by the experimental results. The model architecture, training procedures, and evaluation are clearly described. The logic of mapping predicted masses to tokens via a lookup table is sound. The paper honestly reports failures and limitations, which strengthens the soundness of the analysis."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Reformulating DNPS as a continuous mass prediction problem for open-search/zero-shot PTM inference is a novel idea. While prior work (e.g., ContraNovo) incorporates mass information, the shift from classification to regression as a means to escape a fixed vocabulary is distinct. The multi-task setup with simulated spectra and adversarial alignment for this purpose is also novel in this domain."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The authors' rebuttal effectively articulates the paper's value as foundational research that proposes a novel problem formulation and framework. However, the empirical evidence for the framework's effectiveness remains weak, with minimal generalization to the core problem of identifying unseen PTMs on real data. While the analysis of challenges is valuable, the demonstrated contribution does not yet constitute a meaningful advance for a top-tier ML conference, which typically requires stronger empirical validation of a new direction's potential."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation methodology remains insufficient to support the paper's central claims. The use of teacher forcing provides a clean analysis of the mass-prediction component but does not validate the proposed method's performance in a realistic sequencing scenario. The rebuttal clarifies the diagnostic intent of this choice but does not alter the fact that the evaluation lacks results from full autoregressive decoding, which is necessary to assess the practical utility of the approach."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-written, clearly structured, and easy to understand. The authors' transparent discussion of limitations is a strength of the presentation."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal provides a compelling defense of the paper's value as foundational research that introduces a novel problem formulation and a framework for exploring it. They successfully argue that the work's significance lies in its diagnostic analysis of the challenges of mass-based zero-shot learning, not in achieving high performance. However, the rebuttal does not present new empirical evidence. The core weaknesses remain: the framework demonstrates only minimal success on the specific task it aims to enable (zero-shot PTM prediction on real data), and its evaluation is not conducted under conditions that reflect practical use. For a top-tier conference, the conceptual contribution and rigorous analysis are commendable but are outweighed by the lack of convincing empirical validation of the proposed method's potential."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited empirical proof of zero-shot inference on experimental data.\",\n        \"Teacher-forced evaluation does not demonstrate practical utility.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited empirical proof of zero-shot inference.\",\n          \"location\": \"Abstract, Sections 4.2.1 & 4.2.3, Conclusion\",\n          \"explanation\": \"The abstract states our approach \\\"provides a promising proof of concept.\\\" Throughout Sections 4.2.1 and 4.2.3, we explicitly present the quantitative evidence (low recall, biased distributions) and interpret it as demonstrating the difficulty of the problem, concluding that our framework is a step toward, not a solution for, open-search DNPS. The Conclusion frames the work as a proof of concept and clearly lists its limitations.\"\n        },\n        {\n          \"concern\": \"Teacher-forced evaluation.\",\n          \"location\": \"Section 4.1, Section 5 (Limitations)\",\n          \"explanation\": \"Section 4.1 explains our use of teacher forcing to evaluate the core mass-prediction capability in isolation. Our conclusion transparently lists this as a limitation: \\\"the current framework has only been evaluated under teacher-forced decoding.\\\" This honesty underscores the work's nature as a foundational investigation into a novel component, not a production-ready system.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarity of contribution framing as foundational research.\",\n          \"proposed_change\": \"We will revise the abstract and introduction to more directly and consistently frame the contribution as: 1) a novel conceptual reformulation of DNPS (mass regression), 2) a novel framework (MTL with simulation) to explore this reformulation, and 3) a rigorous empirical analysis that quantifies the potential and, crucially, the substantial challenges of this path. We will ensure that claims about enabling prediction of unseen PTMs are explicitly qualified as a demonstrated potential on a challenging path, not an achieved performance milestone.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for engaging with our rebuttal. We understand the core issue: while our work presents a novel direction and a rigorous analysis of its challenges, the current empirical results do not yet constitute a significant *performance* advance for practical use. We respectfully argue that this does not diminish the paper's significance as *foundational ML research* in proteomics.\\n\\nOur contribution is threefold: (1) **A conceptual shift:** We identify and formalize a critical limitation of current SOTA (fixed vocabulary) and propose a principled, generalizable alternative (mass regression). This is a novel problem formulation for the community. (2) **A methodological framework:** We design a novel MTL pipeline with adversarial alignment to explore this formulation—a non-trivial architectural contribution. (3) **A rigorous challenge analysis:** We provide the first quantitative evidence, using this novel framework, that while the mass-based approach works perfectly in simulation, the domain shift to real data is the fundamental and severe bottleneck. We precisely characterize failure modes (bias to seen masses, minimal recall gains).\\n\\nThe value of this analysis is diagnostic and directional. It moves the field beyond simply trying to expand fixed vocabularies and provides a concrete, evaluated blueprint for what a true open-search system would require, while honestly showing how far we are from that goal. The teacher-forcing evaluation was the correct tool for this diagnostic purpose.\\n\\nWe agree the work is not a deployable tool, but it is a critical step that redefines the problem and charts a clear, challenging path forward. For a top-tier conference that values novel problem formulations and rigorous analysis of hard problems, we believe this constitutes a meaningful contribution. Our proposed revisions will ensure this framing is unmistakable.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_58c191292304",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/neurips_reject_2025_013_towards_open_search_de_novo_peptide_sequencing_via_mass_based_zero_shot_learning.md",
+    "target_paper_summary": {
+      "paper_id": "paper_58c191292304",
+      "title": "Towards Open-Search De Novo Peptide Sequencing Via Mass-Based Zero-Shot Learning",
+      "abstract": "1 Proteins are the main drivers of biochemical processes and play a pivotal role in 2 almost all cellular functions. Through post-translational modifications (PTMs), 3 residues within a protein can be chemically modified to fine-tune the protein's 4 function in the cellular context. Despite the importance of PTMs, the plethora 5 of deep learning-based de novo peptide sequencing (DNPS) models, which, in 6 contrast to database searching approaches, predict peptide sequence solely from 7 tandem mass spectra without any reference organism database, can only predict 8 peptide sequences with a limited set of PTMs. This is because they rely on fixed 9 vocabularies that map residue tokens to non-generalizable learned embeddings. To 10 overcome this limitation, we propose a novel approach that leverages the fact that 11 amino acids and their derivatives are characterized by their mass, a generalizable 12 feature that enables zero-shot learning. Specifically, we reformulate DNPS as a 13 mass prediction problem instead of a multiclass classification problem, where the 14 model predicts the mass of the next residue instead of its token representation. To 15 facilitate generalization to unseen PTMs, we leverage an adversarial multi-task 16 learning scheme by supplementing the training data of experimental spectra with 17 simulated spectra that mimic spectra containing unseen residues. We show that our 18 approach allows the prediction of previously unseen PTMs, providing a promising 19 proof of concept for mass-based representations as a path towards true open-search 20 DNPS.",
+      "topic": "",
+      "claims": [
+        "we propose a novel approach that leverages the fact that 11 amino acids and their derivatives are characterized by their mass, a generalizable 12 feature that enables zero-shot learning.",
+        "We show that our 18 approach allows the prediction of previously unseen PTMs, providing a promising 19 proof of concept for mass-based representations as a path towards true open-search 20 DNPS."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_002_d5a9231ab",
+        "title": "Predicting glycan structure from tandem mass spectrometry via deep learning",
+        "authors": [
+          "James Urban",
+          "Chunsheng Jin",
+          "Kristina A. Thomsson",
+          "Niclas G. Karlsson",
+          "Callum M. Ives",
+          "Elisa Fadda",
+          "Daniel Bojar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-01",
+        "venue": "Nature Methods",
+        "abstract": "Glycans constitute the most complicated post-translational modification, modulating protein activity in health and disease. However, structural annotation from tandem mass spectrometry (MS/MS) data is a bottleneck in glycomics, preventing high-throughput endeavors and relegating glycomics to a few experts. Trained on a newly curated set of 500,000 annotated MS/MS spectra, here we present CandyCrunch, a dilated residual neural network predicting glycan structure from raw liquid chromatography-MS/MS data in seconds (top-1 accuracy: 90.3%). We developed an open-access Python-based workflow of raw data conversion and prediction, followed by automated curation and fragment annotation, with predictions recapitulating and extending expert annotation. We demonstrate that this can be used for de novo annotation, diagnostic fragment identification and high-throughput glycomics. For maximum impact, this entire pipeline is tightly interlaced with our glycowork platform and can be easily tested at https://colab.research.google.com/github/BojarLab/CandyCrunch/blob/main/CandyCrunch.ipynb . We envision CandyCrunch to democratize structural glycomics and the elucidation of biological roles of glycans.",
+        "url": "https://doi.org/10.1038/s41592-024-02314-6",
+        "doi": "https://doi.org/10.1038/s41592-024-02314-6",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4380442602"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 68
+      },
+      {
+        "paper_id": "rw_003_f5687e159",
+        "title": "Opportunities and obstacles for deep learning in biology and medicine",
+        "authors": [
+          "Travers Ching",
+          "Daniel Himmelstein",
+          "Brett K. Beaulieu‐Jones",
+          "Alexandr A. Kalinin",
+          "T. Brian",
+          "Gregory P. Way",
+          "Enrico Ferrero",
+          "Paul‐Michael Agapow",
+          "Michael Zietz",
+          "Michael M. Hoffman",
+          "Wei Xie",
+          "Gail Rosen",
+          "Benjamin J. Lengerich",
+          "Johnny Israeli",
+          "Jack Lanchantin",
+          "Stephen Woloszynek",
+          "Anne E. Carpenter",
+          "Avanti Shrikumar",
+          "Jinbo Xu",
+          "Evan M. Cofer",
+          "Christopher A. Lavender",
+          "Srinivas C. Turaga",
+          "Amr M. Alexandari",
+          "Zhiyong Lu",
+          "David J. Harris",
+          "David DeCaprio",
+          "Yanjun Qi",
+          "Anshul Kundaje",
+          "Yifan Peng",
+          "Laura K. Wiley",
+          "Marwin Segler",
+          "Simina M. Boca",
+          "S. Joshua Swamidass",
+          "Austin Huang",
+          "Anthony Gitter",
+          "Casey S. Greene"
+        ],
+        "year": 2017,
+        "publication_date": "2017-05-28",
+        "venue": "bioRxiv (Cold Spring Harbor Laboratory)",
+        "abstract": "Abstract Deep learning, which describes a class of machine learning algorithms, has recently showed impressive results across a variety of domains. Biology and medicine are data rich, but the data are complex and often ill-understood. Problems of this nature may be particularly well-suited to deep learning techniques. We examine applications of deep learning to a variety of biomedical problems—patient classification, fundamental biological processes, and treatment of patients—and discuss whether deep learning will transform these tasks or if the biomedical sphere poses unique challenges. We find that deep learning has yet to revolutionize or definitively resolve any of these problems, but promising advances have been made on the prior state of the art. Even when improvement over a previous baseline has been modest, we have seen signs that deep learning methods may speed or aid human investigation. More work is needed to address concerns related to interpretability and how to best model each problem. Furthermore, the limited amount of labeled data for training presents problems in some domains, as do legal and privacy constraints on work with sensitive health records. Nonetheless, we foresee deep learning powering changes at both bench and bedside with the potential to transform several areas of biology and medicine.",
+        "url": "https://doi.org/10.1101/142760",
+        "doi": "https://doi.org/10.1101/142760",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2618245351"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 310
+      },
+      {
+        "paper_id": "rw_004_aecf96327",
+        "title": "Prediction of glycopeptide fragment mass spectra by deep learning",
+        "authors": [
+          "Yi Yang",
+          "Qun Fang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-03-19",
+        "venue": "Nature Communications",
+        "abstract": "Deep learning has achieved a notable success in mass spectrometry-based proteomics and is now emerging in glycoproteomics. While various deep learning models can predict fragment mass spectra of peptides with good accuracy, they cannot cope with the non-linear glycan structure in an intact glycopeptide. Herein, we present DeepGlyco, a deep learning-based approach for the prediction of fragment spectra of intact glycopeptides. Our model adopts tree-structured long-short term memory networks to process the glycan moiety and a graph neural network architecture to incorporate potential fragmentation pathways of a specific glycan structure. This feature is beneficial to model explainability and differentiation ability of glycan structural isomers. We further demonstrate that predicted spectral libraries can be used for data-independent acquisition glycoproteomics as a supplement for library completeness. We expect that this work will provide a valuable deep learning resource for glycoproteomics.",
+        "url": "https://doi.org/10.1038/s41467-024-46771-1",
+        "doi": "https://doi.org/10.1038/s41467-024-46771-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392959252"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 41
+      },
+      {
+        "paper_id": "rw_006_66a93f871",
+        "title": "Deep learning and generative methods in cheminformatics and chemical biology: navigating small molecule space intelligently",
+        "authors": [
+          "Douglas B. Kell",
+          "Soumitra Samanta",
+          "Neil Swainston"
+        ],
+        "year": 2020,
+        "publication_date": "2020-12-08",
+        "venue": "Biochemical Journal",
+        "abstract": "The number of 'small' molecules that may be of interest to chemical biologists - chemical space - is enormous, but the fraction that have ever been made is tiny. Most strategies are discriminative, i.e. have involved 'forward' problems (have molecule, establish properties). However, we normally wish to solve the much harder generative or inverse problem (describe desired properties, find molecule). 'Deep' (machine) learning based on large-scale neural networks underpins technologies such as computer vision, natural language processing, driverless cars, and world-leading performance in games such as Go; it can also be applied to the solution of inverse problems in chemical biology. In particular, recent developments in deep learning admit the in silico generation of candidate molecular structures and the prediction of their properties, thereby allowing one to navigate (bio)chemical space intelligently. These methods are revolutionary but require an understanding of both (bio)chemistry and computer science to be exploited to best advantage. We give a high-level (non-mathematical) background to the deep learning revolution, and set out the crucial issue for chemical biology and informatics as a two-way mapping from the discrete nature of individual molecules to the continuous but high-dimensional latent representation that may best reflect chemical space. A variety of architectures can do this; we focus on a particular type known as variational autoencoders. We then provide some examples of recent successes of these kinds of approach, and a look towards the future.",
+        "url": "https://doi.org/10.1042/bcj20200781",
+        "doi": "https://doi.org/10.1042/bcj20200781",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3111995631"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 60
+      },
+      {
+        "paper_id": "rw_007_b4f92727c",
+        "title": "Diffusion models in bioinformatics and computational biology",
+        "authors": [
+          "Zhiye Guo",
+          "Jian Liu",
+          "Yanli Wang",
+          "Mengrui Chen",
+          "Duolin Wang",
+          "Dong Xu",
+          "Jianlin Cheng"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-27",
+        "venue": "Nature Reviews Bioengineering",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/s44222-023-00114-9",
+        "doi": "https://doi.org/10.1038/s44222-023-00114-9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4388185854"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 130
+      },
+      {
+        "paper_id": "rw_008_695dc80d8",
+        "title": "xTrimoPGLM: Unified 100B-Scale Pre-trained Transformer for Deciphering the Language of Protein",
+        "authors": [
+          "Bo Chen",
+          "Xingyi Cheng",
+          "Li Pan",
+          "Yangli‐ao Geng",
+          "Jing Gong",
+          "Shen Li",
+          "Zhilei Bei",
+          "Xu Tan",
+          "Boyan Wang",
+          "Xin Zeng",
+          "Chi-Ming Liu",
+          "Aohan Zeng",
+          "Yuxiao Dong",
+          "Jie Tang",
+          "Le Song"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-06",
+        "venue": "bioRxiv (Cold Spring Harbor Laboratory)",
+        "abstract": "Protein language models have shown remarkable success in learning biological information from protein sequences. However, most existing models are limited by either autoencoding or autoregressive pre-training objectives, which makes them struggle to handle protein understanding and generation tasks concurrently. We propose a unified protein language model, xTrimoPGLM, to address these two types of tasks simultaneously through an innovative pre-training framework. Our key technical contribution is an exploration of the compatibility and the potential for joint optimization of the two types of objectives, which has led to a strategy for training xTrimoPGLM at an unprecedented scale of 100 billion parameters and 1 trillion training tokens. Our extensive experiments reveal that 1) xTrimoPGLM significantly outperforms other advanced baselines in 18 protein understanding benchmarks across four categories. The model also facilitates an atomic-resolution view of protein structures, leading to an advanced 3D structural prediction model that surpasses existing language model-based tools. 2) xTrimoPGLM not only can generate de novo protein sequences following the principles of natural ones, but also can perform programmable generation after supervised fine-tuning (SFT) on curated sequences. These results highlight the substantial capability and versatility of xTrimoPGLM in understanding and generating protein sequences, contributing to the evolving landscape of foundation models in protein science. Trained weight for the xTrimoPGLM model, and downstream datasets are available at https://huggingface.co/proteinglm .",
+        "url": "https://doi.org/10.1101/2023.07.05.547496",
+        "doi": "https://doi.org/10.1101/2023.07.05.547496",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4383550741"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 105
+      },
+      {
+        "paper_id": "rw_009_9c24d2078",
+        "title": "Exploration of cell state heterogeneity using single-cell proteomics through sensitivity-tailored data-independent acquisition",
+        "authors": [
+          "Valdemaras Petrosius",
+          "Pedro Aragon-Fernandez",
+          "Nil Üresin",
+          "Gergő Kovács",
+          "Teeradon Phlairaharn",
+          "Benjamin Furtwängler",
+          "Jeff Op De Beeck",
+          "Sarah Line Skovbakke",
+          "Steffen Goletz",
+          "Simon Francis Thomsen",
+          "Ulrich auf dem Keller",
+          "Kedar Nath Natarajan",
+          "Bo Porse",
+          "Erwin M. Schoof"
+        ],
+        "year": 2023,
+        "publication_date": "2023-09-22",
+        "venue": "Nature Communications",
+        "abstract": "Single-cell resolution analysis of complex biological tissues is fundamental to capture cell-state heterogeneity and distinct cellular signaling patterns that remain obscured with population-based techniques. The limited amount of material encapsulated in a single cell however, raises significant technical challenges to molecular profiling. Due to extensive optimization efforts, single-cell proteomics by Mass Spectrometry (scp-MS) has emerged as a powerful tool to facilitate proteome profiling from ultra-low amounts of input, although further development is needed to realize its full potential. To this end, we carry out comprehensive analysis of orbitrap-based data-independent acquisition (DIA) for limited material proteomics. Notably, we find a fundamental difference between optimal DIA methods for high- and low-load samples. We further improve our low-input DIA method by relying on high-resolution MS1 quantification, thus enhancing sensitivity by more efficiently utilizing available mass analyzer time. With our ultra-low input tailored DIA method, we are able to accommodate long injection times and high resolution, while keeping the scan cycle time low enough to ensure robust quantification. Finally, we demonstrate the capability of our approach by profiling mouse embryonic stem cell culture conditions, showcasing heterogeneity in global proteomes and highlighting distinct differences in key metabolic enzyme expression in distinct cell subclusters.",
+        "url": "https://doi.org/10.1038/s41467-023-41602-1",
+        "doi": "https://doi.org/10.1038/s41467-023-41602-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386944450"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 106
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_d5a9231ab",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "This paper directly addresses a related, complex post-translational modification analysis via tandem mass spectrometry and deep learning, specifically for *de novo* annotation, using a large annotated dataset, which serves as a high-performance baseline.",
+        "evidence_summary": "In 2024, Urban et al. published 'Predicting glycan structure from tandem mass spectrometry via deep learning' in Nature Methods. They introduced CandyCrunch, a dilated residual neural network trained on 500,000 annotated MS/MS spectra, achieving a top-1 accuracy of 90.3% for predicting glycan structure from raw LC-MS/MS data within seconds. They demonstrated its use for de novo annotation, diagnostic fragment identification, and high-throughput glycomics, providing it as an open-access Python workflow."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_aecf96327",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "This paper develops a deep learning model for predicting fragment spectra of intact glycopeptides, addressing a related challenge of modeling non-linear glycan structures with MS data, which is a relevant methodological comparison for peptide sequencing.",
+        "evidence_summary": "In 2024, Yang and Fang published 'Prediction of glycopeptide fragment mass spectra by deep learning' in Nature Communications. They presented DeepGlyco, a model using tree-structured long-short term memory networks and graph neural networks to predict fragment spectra of intact glycopeptides, incorporating potential glycan fragmentation pathways. They demonstrated that the predicted spectral libraries could be used for data-independent acquisition glycoproteomics to supplement library completeness."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_008_695dc80d8",
+        "relevance_score": 0.71,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper introduces a large-scale protein language model for both understanding and generation, demonstrating a different deep learning approach for deciphering protein sequences, which is relevant as a contrasting method to task-specific sequence prediction models.",
+        "evidence_summary": "In 2023, Chen et al. published 'xTrimoPGLM: Unified 100B-Scale Pre-trained Transformer for Deciphering the Language of Protein.' They proposed a unified protein language model pre-trained at a scale of 100 billion parameters and 1 trillion training tokens to handle both understanding and generation tasks concurrently. The model significantly outperformed other baselines on 18 protein understanding benchmarks and could generate de novo protein sequences."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_003_f5687e159",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This review discusses the opportunities and obstacles for deep learning in biology and medicine, including challenges with limited labeled data, interpretability, and privacy, providing a general background for understanding constraints faced by field-specific models.",
+        "evidence_summary": "In 2017, Ching et al. published 'Opportunities and obstacles for deep learning in biology and medicine' on bioRxiv. They surveyed applications of deep learning to biomedical problems like patient classification and biological process modeling, noting that while promising advances had been made, deep learning had yet to definitively resolve these problems. They identified key challenges, including concerns related to interpretability, modeling approaches, and the limited availability of labeled data, as well as legal and privacy constraints on sensitive health records."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_66a93f871",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method",
+          "useful_background"
+        ],
+        "rationale": "This review discusses how deep learning and generative methods, including variational autoencoders, can address inverse problems in chemical biology, providing relevant background on navigating chemical space for property prediction and generation.",
+        "evidence_summary": "In 2020, Kell et al. published 'Deep learning and generative methods in cheminformatics and chemical biology: navigating small molecule space intelligently' in Biochemical Journal. They reviewed the potential of deep learning to solve inverse problems in chemical biology, such as finding molecules with desired properties, and discussed architectures like variational autoencoders for mapping molecules to latent representations. They outlined examples of recent successes in navigating chemical space intelligently, emphasizing the two-way mapping between discrete molecular structures and continuous latent representations."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_009_9c24d2078",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper develops a mass spectrometry data acquisition method tailored for sensitivity, which is a relevant methodological component in proteomics and could relate to the data generation process for de novo sequencing.",
+        "evidence_summary": "In 2023, Petrosius et al. published 'Exploration of cell state heterogeneity using single-cell proteomics through sensitivity-tailored data-independent acquisition' in Nature Communications. They carried out a comprehensive analysis of orbitrap-based DIA for limited material proteomics, finding a fundamental difference between optimal DIA methods for high- and low-load samples. They improved the sensitivity of their ultra-low input tailored DIA method by relying on high-resolution MS1 quantification and demonstrated its capability by profiling heterogeneity in mouse embryonic stem cell cultures."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_007_b4f92727c",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "This review paper covers the application of diffusion models in bioinformatics, representing a broader class of deep generative methods relevant to computational biology.",
+        "evidence_summary": "In 2023, Guo et al. published 'Diffusion models in bioinformatics and computational biology' in Nature Reviews Bioengineering. The work reviewed the application of diffusion models in the fields of bioinformatics and computational biology."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, James Urban et al. published \"Predicting glycan structure from tandem mass spectrometry via deep learning\" in Nature Methods. Trained on a newly curated set of 500,000 annotated MS/MS spectra, here the authors present CandyCrunch, a dilated residual neural network predicting glycan structure from raw liquid chromatography-MS/MS data in seconds (top-1 accuracy: 90.3%). The authors developed an open-access Python-based workflow of raw data conversion and prediction, followed by automated curation and fragment annotation, with predictions recapitulating and extending expert annotation. However, structural annotation from tandem mass spectrometry (MS/MS) data is a bottleneck in glycomics, preventing high-throughput endeavors and relegating glycomics to a few experts. In 2024, Yi Yang and Qun Fang published \"Prediction of glycopeptide fragment mass spectra by deep learning\" in Nature Communications. Herein, the authors present DeepGlyco, a deep learning-based approach for the prediction of fragment spectra of intact glycopeptides. The authors further demonstrate that predicted spectral libraries can be used for data-independent acquisition glycoproteomics as a supplement for library completeness. Deep learning has achieved a notable success in mass spectrometry-based proteomics and is now emerging in glycoproteomics. In 2023, Bo Chen et al. published \"xTrimoPGLM: Unified 100B-Scale Pre-trained Transformer for Deciphering the Language of Protein\" in bioRxiv (Cold Spring Harbor Laboratory). The authors propose a unified protein language model, xTrimoPGLM, to address these two types of tasks simultaneously through an innovative pre-training framework. The authors' extensive experiments reveal that 1) xTrimoPGLM significantly outperforms other advanced baselines in 18 protein understanding benchmarks across four categories. However, most existing models are limited by either autoencoding or autoregressive pre-training objectives, which makes them struggle to handle protein understanding and generation tasks concurrently. In 2017, Travers Ching et al. published \"Opportunities and obstacles for deep learning in biology and medicine\" in bioRxiv (Cold Spring Harbor Laboratory). Furthermore, the limited amount of labeled data for training presents problems in some domains, as do legal and privacy constraints on work with sensitive health records. Abstract Deep learning, which describes a class of machine learning algorithms, has recently showed impressive results across a variety of domains. The authors examine applications of deep learning to a variety of biomedical problems—patient classification, fundamental biological processes, and treatment of patients—and discuss whether deep learning will transform these tasks or if the biomedical sphere poses unique challenges. In 2020, Douglas B. Kell et al. published \"Deep learning and generative methods in cheminformatics and chemical biology: navigating small molecule space intelligently\" in Biochemical Journal. In particular, recent developments in deep learning admit the in silico generation of candidate molecular structures and the prediction of their properties, thereby allowing one to navigate (bio)chemical space intelligently. The authors then provide some examples of recent successes of these kinds of approach, and a look towards the future. However, the authors normally wish to solve the much harder generative or inverse problem (describe desired properties, find molecule). 'Deep' (machine) learning based on large-scale neural networks underpins technologies such as computer vision, natural language processing, driverless cars, and world-leading performance in games such as Go; it can also be applied to the solution of inverse problems in chemical biology. In 2023, Valdemaras Petrosius et al. published \"Exploration of cell state heterogeneity using single-cell proteomics through sensitivity-tailored data-independent acquisition\" in Nature Communications. Due to extensive optimization efforts, single-cell proteomics by Mass Spectrometry (scp-MS) has emerged as a powerful tool to facilitate proteome profiling from ultra-low amounts of input, although further development is needed to realize its full potential. To this end, the authors carry out comprehensive analysis of orbitrap-based data-independent acquisition (DIA) for limited material proteomics. The authors further improve the authors' low-input DIA method by relying on high-resolution MS1 quantification, thus enhancing sensitivity by more efficiently utilizing available mass analyzer time.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 9,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 7,
+      "num_cutoff_valid": 7,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 9,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 7,
+    "num_cutoff_valid": 7,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

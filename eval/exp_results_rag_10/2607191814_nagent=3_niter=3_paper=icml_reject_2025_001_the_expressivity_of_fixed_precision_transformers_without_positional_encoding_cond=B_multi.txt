@@ -1,0 +1,728 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper tackles a fundamentally important question regarding the practical expressivity of Transformers under real-world constraints, which has been largely underexplored compared to idealized theoretical analyses.",
+        "The core finding that fixed-precision Transformers without positional encoding are fundamentally limited to recognizing finite or co-finite languages is a bold and significant claim, challenging common perceptions of Transformer capabilities.",
+        "The detailed analysis of how relaxing specific constraints (positional encoding, 'infinity-freeness') incrementally expands expressivity provides valuable insights into the architectural components that truly matter for practical models."
+      ],
+      "weaknesses": [
+        "The proofs, especially for the lower bounds (e.g., Lemma 5.4 construction), rely on abstract 'suitable injections' or 'universal approximation arguments' without fully specifying the precise construction of the FFNs and attention mechanisms. While illustrative, more rigorous constructive proofs would strengthen the soundness against potential edge cases.",
+        "The 'evaluation' could benefit from a brief discussion on how these theoretical limits might manifest or be observable in practical, trained models, even if no explicit experiments are performed; this would strengthen the connection to real-world impact."
+      ],
+      "summary_comment": "The authors have once again affirmed their commitment to addressing the identified weaknesses, particularly the integration of a discussion on the practical implications of their theoretical findings. Their understanding of the trade-off between detailed constructive proofs and conciseness, especially within the context of existence proofs reliant on universal approximation, is reasonable. With the proposed revisions, the paper's significance and its ability to bridge theoretical insights with practical relevance will be further enhanced, solidifying its strong contribution to understanding real-world Transformer limitations. I maintain my positive decision."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a rigorous theoretical analysis of the expressivity of Transformer decoders under fixed-precision arithmetic, connecting these practical constraints to formal language theory.",
+        "The proofs for both the upper and lower bounds for finite and co-finite languages (Theorem 5.2) are well-structured and logically sound, demonstrating the limitations imposed by fixed-precision and the `Infinity-Freeness` assumption.",
+        "The paper systematically investigates the impact of positional encoding and the 'Infinity-Freeness' assumption, showing how their presence or absence marginally shifts expressivity, thus clearly delineating the contribution of each component."
+      ],
+      "weaknesses": [
+        "The descriptions of the lower bound constructions in Section 5.2 and Section 6.1 (Theorem 6.1 proof sketch) are abstract and could benefit from more detailed, concrete examples or formal algorithmic descriptions for better clarity and verifiability.",
+        "While the paper discusses the theoretical limitations, it lacks a more explicit discussion on the practical implications for real-world Transformer models beyond stating they act as 'efficient lookup tables.' A connection to common failure modes or limitations observed in real-world models would enhance significance."
+      ],
+      "summary_comment": "The authors have adequately addressed my concerns. Their re-rebuttal confirms their commitment to incorporate the suggested improvements regarding the clarity of lower bound constructions and the expansion of practical implications. The planned revisions, which include clarifying remarks on theoretical guarantees for FFNs and conceptual details for m-cyclic languages, along with a more explicit connection of theoretical limits to observed practical phenomena like poor length generalization, will significantly enhance the paper's overall quality, clarity, and relevance. The core soundness of the work remains strong, and these revisions promise to make it even more impactful."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly relevant and practical question: how real-world constraints like fixed-precision arithmetic affect Transformer expressivity. This is crucial for practitioners building and deploying these models.",
+        "It provides clear theoretical bounds, demonstrating that under realistic fixed-precision and certain assumptions, Transformers are limited to recognizing finite or co-finite languages, which is a surprisingly strong limitation.",
+        "The paper systematically investigates the impact of various components (positional encoding, query-key assumptions) on expressivity, offering insights into their specific roles and limitations.",
+        "The proofs for both upper and lower bounds (especially for finite/co-finite languages) are well-structured and appear sound, offering a solid theoretical basis for the empirical observations many practitioners might have informally made."
+      ],
+      "weaknesses": [
+        "The work is primarily theoretical, and while its motivations are practical, there aren't any empirical validations or experiments to support the theoretical claims. Connecting these findings to observable performance limitations in real-world models would significantly strengthen the paper.",
+        "The generalizability of Assumption 5.1 ('Infinity-Freeness') needs more explicit discussion. While stated as 'generally holds for most trained Transformer models,' providing some empirical evidence or further theoretical justification for this claim would be beneficial, as it underpins the main result."
+      ],
+      "summary_comment": "The authors have acknowledged and committed to addressing the weaknesses identified, particularly regarding the connection between theoretical findings and observable performance limitations, and providing a more detailed justification for Assumption 5.1. While the paper remains purely theoretical in its core contributions, the explicit commitment to enhancing the practical discussion and the generalizability of a key assumption significantly strengthens its relevance for practitioners like myself. The fundamental insight into the expressivity limitations of fixed-precision Transformers is highly significant, and the proposed revisions will make this insight even more impactful. I remain confident in recommending acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses a core topic of 'general machine learning' by investigating the fundamental expressivity of Transformer models, which are central to modern ML.",
+        "The theoretical analysis of 'deep learning' architectures under practical constraints (fixed-precision) aligns well with ICML's interest in the theory and practical aspects of deep learning.",
+        "ICML explicitly lists 'theory of machine learning' as a topic of interest, and this paper provides rigorous theoretical bounds on Transformer expressivity, fitting this criterion perfectly.",
+        "The paper makes a significant contribution by bridging the gap between idealized theoretical models and 'real-world implementations' of Transformers, which is a key concern for the ML community targeted by ICML.",
+        "The reviewer comments consistently highlight the 'rigorous theoretical analysis' (Reviewer B) and 'significant' (Reviewer A, C) claims regarding Transformer capabilities, which are highly valued at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's motivations are practical, the primary contribution is theoretical, lacking 'empirical validations or experiments' (Reviewer C) which some ICML papers, especially those with strong practical claims, might include.",
+        "Reviewer C notes that the 'generalizability of Assumption 5.1... needs more explicit discussion' and empirical evidence, which would strengthen its integration into applied ML contexts often seen at ICML.",
+        "The abstract nature of some 'lower bound constructions' (Reviewer B) could be seen as less immediately accessible to a broader ICML audience interested in concrete implementations, although the authors committed to addressing this."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on 'deep learning' and 'general machine learning: core contributions in supervised and unsupervised methods' directly aligns with NeurIPS's broad scope in machine learning research.",
+        "NeurIPS welcomes 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior beyond the scope of the original work,' which perfectly describes this paper's investigation into Transformer expressivity under real-world constraints.",
+        "The theoretical exploration of the computational capabilities of a foundational model like the Transformer is a strong fit for NeurIPS's interest in 'Theory' in machine learning.",
+        "The reviewer comments emphasize the 'fundamentally important question regarding the practical expressivity of Transformers' (Reviewer A) and the 'rigorous theoretical analysis' (Reviewer B), which are highly valued by NeurIPS reviewers.",
+        "The paper implicitly touches upon 'data-centric aspects of AI' by discussing how practical constraints affect what languages Transformers can recognize, which impacts how they process and learn from data."
+      ],
+      "why_it_does_not_fit": [
+        "Despite the practical motivation, the paper lacks explicit discussion of 'AI/ML for physical sciences,' 'health and biotechnology,' 'sustainability,' or 'social sciences,' which are specific application areas often highlighted at NeurIPS.",
+        "The paper is purely theoretical, without any 'empirical validations or experiments' (Reviewer C) that would demonstrate these limitations in specific NeurIPS-relevant applications or datasets.",
+        "While the paper discusses 'limitations,' it does not provide 'new insights in terms of their limitations or behavior beyond the scope of the original work' in the context of interdisciplinary submissions, but rather in fundamental theory."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly concerns 'all aspects of deep learning,' particularly the theoretical underpinnings and limitations of Transformer architectures, which is a primary focus of ICLR.",
+        "The topic of 'representation learning' is central to Transformers, and this paper investigates how fixed-precision constraints affect their ability to learn and recognize formal languages, thus impacting representation.",
+        "ICLR explicitly lists 'learning theory' as a relevant topic, and this paper provides a robust theoretical analysis of the expressivity bounds of Transformers, making it a good fit.",
+        "The paper's investigation into the impact of 'positional encoding' and 'optimization' (implicitly, through fixed-precision arithmetic) on Transformer expressivity aligns with ICLR's interests.",
+        "Reviewer A notes the 'significant claim, challenging common perceptions of Transformer capabilities,' which is the kind of cutting-edge research ICLR aims to publish."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is about deep learning, it doesn't extensively cover specific modalities like 'computer vision, audio, language,' or apply to robotics, which are common application areas emphasized at ICLR.",
+        "The paper is entirely theoretical, and while ICLR values theory, it also often features papers with strong empirical results or novel architectures, which are not present here.",
+        "The reviewer comments note the lack of 'empirical validations or experiments' (Reviewer C) and that some proofs 'rely on abstract universal approximation arguments' (Reviewer A), which might be less preferred in a conference that often showcases concrete deep learning advancements."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_a001443ac007",
+    "paper_id": "paper_eb6565131459",
+    "target_paper_summary": {
+      "paper_id": "paper_eb6565131459",
+      "title": "The Expressivity Of Fixed-Precision Transformers Without Positional Encoding",
+      "abstract": "## Anonymous Authors1 Abstract",
+      "topic": "",
+      "claims": []
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "Expressivity of fixed-precision transformers without positional encoding",
+          "rationale": "The paper's title directly states the core problem of investigating the expressivity of a specific transformer variant."
+        },
+        {
+          "group": "same_method",
+          "query": "Fixed-precision transformer architecture without positional encoding",
+          "rationale": "The paper focuses on a specific architectural choice (fixed-precision transformers without positional encoding), indicating research adopting similar methodologies."
+        },
+        {
+          "group": "same_constraints",
+          "query": "Transformer models omitting positional encoding analysis",
+          "rationale": "The key constraint is the absence of positional encoding in transformers, suggesting a search for other works operating under this specific architectural constraint."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "Benchmarking expressivity of transformer variants without positional encoding",
+          "rationale": "Given the 'Expressivity' focus, papers that define datasets, metrics, or baselines for evaluating the expressive power of transformer architectures (especially those without positional encoding) would be relevant."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "Analysis of transformer expressivity or fixed-precision transformer capabilities",
+          "rationale": "Research that has already extensively analyzed transformer expressivity or the capabilities of fixed-precision transformers could challenge the novelty of findings in these areas."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "expressivity fixed-precision transformers without positional encoding anonymous authors1 abstract limitations failure analysis",
+          "rationale": "Fallback query generated from target title, abstract, and extracted claims."
+        }
+      ],
+      "source": "mixed"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 8,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 7,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_11890fb9a",
+        "title": "RWKV: Reinventing RNNs for the Transformer Era",
+        "authors": [
+          "Bo Peng",
+          "Eric Alcaide",
+          "Quentin Anthony",
+          "Alon Albalak",
+          "Samuel Arcadinho",
+          "Stella Biderman",
+          "Huanqi Cao",
+          "Xin Cheng",
+          "Michael Chung",
+          "Leon Derczynski",
+          "Xingjian Du",
+          "Matteo Grella",
+          "Kranthi Kiran GV",
+          "Xuzheng He",
+          "Haowen Hou",
+          "Przemysław Kazienko",
+          "Jan Kocoń",
+          "Jiaming Kong",
+          "Bartłomiej Koptyra",
+          "H.C.W. Lau",
+          "Jiaju Lin",
+          "Krishna Sri Ipsit Mantri",
+          "Ferdinand Mom",
+          "Atsushi Saito",
+          "Guangyu Song",
+          "Xiangru Tang",
+          "Johan S. Wind",
+          "Stanisław Woźniak",
+          "Zhenyuan Zhang",
+          "Qinghua Zhou",
+          "Jian Zhu",
+          "Ruijie Zhu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "",
+        "abstract": "Bo Peng, Eric Alcaide, Quentin Anthony, Alon Albalak, Samuel Arcadinho, Stella Biderman, Huanqi Cao, Xin Cheng, Michael Chung, Leon Derczynski, Xingjian Du, Matteo Grella, Kranthi Gv, Xuzheng He, Haowen Hou, Przemyslaw Kazienko, Jan Kocon, Jiaming Kong, Bartłomiej Koptyra, Hayden Lau, Jiaju Lin, Krishna Sri Ipsit Mantri, Ferdinand Mom, Atsushi Saito, Guangyu Song, Xiangru Tang, Johan Wind, Stanisław Woźniak, Zhenyuan Zhang, Qinghua Zhou, Jian Zhu, Rui-Jie Zhu. Findings of the Association for Computational Linguistics: EMNLP 2023. 2023.",
+        "url": "https://doi.org/10.18653/v1/2023.findings-emnlp.936",
+        "doi": "https://doi.org/10.18653/v1/2023.findings-emnlp.936",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4389524555"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "citation_count": 316
+      },
+      {
+        "paper_id": "rw_002_652dcf505",
+        "title": "A survey: object detection methods from CNN to transformer",
+        "authors": [
+          "Ershat Arkin",
+          "Nurbiya Yadikar",
+          "Xuebin Xu",
+          "Alimjan Aysa",
+          "Kurban Ubul"
+        ],
+        "year": 2022,
+        "publication_date": "2022-10-21",
+        "venue": "Multimedia Tools and Applications",
+        "abstract": "Abstract Object detection is the most important problem in computer vision tasks. After AlexNet proposed, based on Convolutional Neural Network (CNN) methods have become mainstream in the computer vision field, many researches on neural networks and different transformations of algorithm structures have appeared. In order to achieve fast and accurate detection effects, it is necessary to jump out of the existing CNN framework and has great challenges. Transformer’s relatively mature theoretical support and technological development in the field of Natural Language Processing have brought it into the researcher’s sight, and it has been proved that Transformer’s method can be used for computer vision tasks, and proved that it exceeds the existing CNN method in some tasks. In order to enable more researchers to better understand the development process of object detection methods, existing methods, different frameworks, challenging problems and development trends, paper introduced historical classic methods of object detection used CNN, discusses the highlights, advantages and disadvantages of these algorithms. By consulting a large amount of paper, the paper compared different CNN detection methods and Transformer detection methods. Vertically under fair conditions, 13 different detection methods that have a broad impact on the field and are the most mainstream and promising are selected for comparison. The comparative data gives us confidence in the development of Transformer and the convergence between different methods. It also presents the recent innovative approaches to using Transformer in computer vision tasks. In the end, the challenges, opportunities and future prospects of this field are summarized.",
+        "url": "https://doi.org/10.1007/s11042-022-13801-3",
+        "doi": "https://doi.org/10.1007/s11042-022-13801-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4306967787"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 198
+      },
+      {
+        "paper_id": "rw_003_2d0fc7c87",
+        "title": "Review of deep learning: concepts, CNN architectures, challenges, applications, future directions",
+        "authors": [
+          "Laith Alzubaidi",
+          "Jinglan Zhang",
+          "Amjad J. Humaidi",
+          "Ayad Q. Al-Dujaili",
+          "Ye Duan",
+          "Omran Al-Shamma",
+          "José Santamaría",
+          "Mohammed A. Fadhel",
+          "Muthana Al‐Amidie",
+          "Laith Farhan"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-31",
+        "venue": "Journal Of Big Data",
+        "abstract": "In the last few years, the deep learning (DL) computing paradigm has been deemed the Gold Standard in the machine learning (ML) community. Moreover, it has gradually become the most widely used computational approach in the field of ML, thus achieving outstanding results on several complex cognitive tasks, matching or even beating those provided by human performance. One of the benefits of DL is the ability to learn massive amounts of data. The DL field has grown fast in the last few years and it has been extensively used to successfully address a wide range of traditional applications. More importantly, DL has outperformed well-known ML techniques in many domains, e.g., cybersecurity, natural language processing, bioinformatics, robotics and control, and medical information processing, among many others. Despite it has been contributed several works reviewing the State-of-the-Art on DL, all of them only tackled one aspect of the DL, which leads to an overall lack of knowledge about it. Therefore, in this contribution, we propose using a more holistic approach in order to provide a more suitable starting point from which to develop a full understanding of DL. Specifically, this review attempts to provide a more comprehensive survey of the most important aspects of DL and including those enhancements recently added to the field. In particular, this paper outlines the importance of DL, presents the types of DL techniques and networks. It then presents convolutional neural networks (CNNs) which the most utilized DL network type and describes the development of CNNs architectures together with their main features, e.g., starting with the AlexNet network and closing with the High-Resolution network (HR.Net). Finally, we further present the challenges and suggested solutions to help researchers understand the existing research gaps. It is followed by a list of the major DL applications. Computational tools including FPGA, GPU, and CPU are summarized along with a description of their influence on DL. The paper ends with the evolution matrix, benchmark datasets, and summary and conclusion.",
+        "url": "https://doi.org/10.1186/s40537-021-00444-8",
+        "doi": "https://doi.org/10.1186/s40537-021-00444-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3140854437"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 7660
+      },
+      {
+        "paper_id": "rw_004_2319dad38",
+        "title": "AI-Assisted Pipeline for Dynamic Generation of Trustworthy Health Supplement Content at Scale",
+        "authors": [
+          "Kefallinos, Dionysios",
+          "Alexandris, Georgios",
+          "Kenton Lee",
+          "Kristina Toutanova",
+          "Gomony, Manil Dev",
+          "Corporaal, Henk",
+          "Soudris, Dimitrios",
+          "Xydis, Sotirios"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-11",
+        "venue": "DROPS (Schloss Dagstuhl – Leibniz Center for Informatics)",
+        "abstract": "Although geospatial question answering systems have received increasing attention in recent years, existing prototype systems struggle to properly answer qualitative spatial questions. In this work, we propose a unique framework for answering qualitative spatial questions, which comprises three main components: a geoparser that takes the input questions and extracts place semantic information from text, a reasoning system which is embedded with a crisp reasoner, and finally, answer extraction, which refines the solution space and generates final answers. We present an experimental design to evaluate our framework for point-based cardinal direction calculus (CDC) relations by developing an automated approach for generating three types of synthetic qualitative spatial questions. The initial evaluations of generated answers in our system are promising because a high proportion of answers were labelled correct.",
+        "url": "https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.LDK.2019.21",
+        "doi": "https://doi.org/10.4230/lipics.cosit.2022.18",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2896457183"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 45743
+      },
+      {
+        "paper_id": "rw_005_a5cfc0e47",
+        "title": "Vision Transformers for Remote Sensing Image Classification",
+        "authors": [
+          "Yakoub Bazi",
+          "Laila Bashmal",
+          "Mohamad Mahmoud Al Rahhal",
+          "Reham Al-Dayil",
+          "Naif Al Ajlan"
+        ],
+        "year": 2021,
+        "publication_date": "2021-02-01",
+        "venue": "Remote Sensing",
+        "abstract": "In this paper, we propose a remote-sensing scene-classification method based on vision transformers. These types of networks, which are now recognized as state-of-the-art models in natural language processing, do not rely on convolution layers as in standard convolutional neural networks (CNNs). Instead, they use multihead attention mechanisms as the main building block to derive long-range contextual relation between pixels in images. In a first step, the images under analysis are divided into patches, then converted to sequence by flattening and embedding. To keep information about the position, embedding position is added to these patches. Then, the resulting sequence is fed to several multihead attention layers for generating the final representation. At the classification stage, the first token sequence is fed to a softmax classification layer. To boost the classification performance, we explore several data augmentation strategies to generate additional data for training. Moreover, we show experimentally that we can compress the network by pruning half of the layers while keeping competing classification accuracies. Experimental results conducted on different remote-sensing image datasets demonstrate the promising capability of the model compared to state-of-the-art methods. Specifically, Vision Transformer obtains an average classification accuracy of 98.49%, 95.86%, 95.56% and 93.83% on Merced, AID, Optimal31 and NWPU datasets, respectively. While the compressed version obtained by removing half of the multihead attention layers yields 97.90%, 94.27%, 95.30% and 93.05%, respectively.",
+        "url": "https://doi.org/10.3390/rs13030516",
+        "doi": "https://doi.org/10.3390/rs13030516",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3128592650"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 614
+      },
+      {
+        "paper_id": "rw_006_9442152ee",
+        "title": "Entangled Transformer for Image Captioning",
+        "authors": [
+          "Guang Li",
+          "Linchao Zhu",
+          "Ping Liu",
+          "Yi Yang"
+        ],
+        "year": 2019,
+        "publication_date": "2019-10-01",
+        "venue": "",
+        "abstract": "In image captioning, the typical attention mechanisms are arduous to identify the equivalent visual signals especially when predicting highly abstract words. This phenomenon is known as the semantic gap between vision and language. This problem can be overcome by providing semantic attributes that are homologous to language. Thanks to the inherent recurrent nature and gated operating mechanism, Recurrent Neural Network (RNN) and its variants are the dominating architectures in image captioning. However, when designing elaborate attention mechanisms to integrate visual inputs and semantic attributes, RNN-like variants become unflexible due to their complexities. In this paper, we investigate a Transformer-based sequence modeling framework, built only with attention layers and feedforward layers. To bridge the semantic gap, we introduce EnTangled Attention (ETA) that enables the Transformer to exploit semantic and visual information simultaneously. Furthermore, Gated Bilateral Controller (GBC) is proposed to guide the interactions between the multimodal information. We name our model as ETA-Transformer. Remarkably, ETA-Transformer achieves state-of-the-art performance on the MSCOCO image captioning dataset. The ablation studies validate the improvements of our proposed modules.",
+        "url": "https://doi.org/10.1109/iccv.2019.00902",
+        "doi": "https://doi.org/10.1109/iccv.2019.00902",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2990818246"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 392
+      },
+      {
+        "paper_id": "rw_007_ea524cfe1",
+        "title": "Multimodal Learning With Transformers: A Survey",
+        "authors": [
+          "Peng Xu",
+          "Xiatian Zhu",
+          "David A. Clifton"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-11",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "Transformer is a promising neural network learner, and has achieved great success in various machine learning tasks. Thanks to the recent prevalence of multimodal applications and Big Data, Transformer-based multimodal learning has become a hot topic in AI research. This paper presents a comprehensive survey of Transformer techniques oriented at multimodal data. The main contents of this survey include: (1) a background of multimodal learning, Transformer ecosystem, and the multimodal Big Data era, (2) a systematic review of Vanilla Transformer, Vision Transformer, and multimodal Transformers, from a geometrically topological perspective, (3) a review of multimodal Transformer applications, via two important paradigms, i.e., for multimodal pretraining and for specific multimodal tasks, (4) a summary of the common challenges and designs shared by the multimodal Transformer models and applications, and (5) a discussion of open problems and potential research directions for the community.",
+        "url": "https://doi.org/10.1109/tpami.2023.3275156",
+        "doi": "https://doi.org/10.1109/tpami.2023.3275156",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4376226279"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 892
+      },
+      {
+        "paper_id": "rw_008_dddd4addd",
+        "title": "Transformers in Remote Sensing: A Survey",
+        "authors": [
+          "Abdulaziz Amer Aleissaee",
+          "Amandeep Kumar",
+          "Rao Muhammad Anwer",
+          "Salman Khan",
+          "Hisham Cholakkal",
+          "Gui-Song Xia",
+          "Fahad Shahbaz Khan"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-30",
+        "venue": "Remote Sensing",
+        "abstract": "Deep learning-based algorithms have seen a massive popularity in different areas of remote sensing image analysis over the past decade. Recently, transformer-based architectures, originally introduced in natural language processing, have pervaded computer vision field where the self-attention mechanism has been utilized as a replacement to the popular convolution operator for capturing long-range dependencies. Inspired by recent advances in computer vision, the remote sensing community has also witnessed an increased exploration of vision transformers for a diverse set of tasks. Although a number of surveys have focused on transformers in computer vision in general, to the best of our knowledge we are the first to present a systematic review of recent advances based on transformers in remote sensing. Our survey covers more than 60 recent transformer-based methods for different remote sensing problems in sub-areas of remote sensing: very high-resolution (VHR), hyperspectral (HSI) and synthetic aperture radar (SAR) imagery. We conclude the survey by discussing different challenges and open issues of transformers in remote sensing.",
+        "url": "https://doi.org/10.3390/rs15071860",
+        "doi": "https://doi.org/10.3390/rs15071860",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4362519158"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 381
+      },
+      {
+        "paper_id": "rw_009_3ab72fcc3",
+        "title": "Positional Games and QBF: A Polished Encoding",
+        "authors": [
+          "Valentin Mayer-Eichberger",
+          "Abdallah Saffidine"
+        ],
+        "year": 2020,
+        "publication_date": "2020-05-11",
+        "venue": "arXiv",
+        "abstract": "Positional games are a mathematical class of two-player games comprising Tic-tac-toe and its generalizations. We propose a novel encoding of these games into Quantified Boolean Formulas (QBFs) such that a game instance admits a winning strategy for the first player if and only if the corresponding formula is true. Our approach improves over previous QBF encodings of games in multiple ways. First, it is generic and lets us encode other positional games, such as Hex. Second, the structural properties of positional games, together with careful treatment of illegal moves, let us generate more compact instances that can be solved faster by state-of-the-art QBF solvers. We establish the latter fact through extensive experiments. Finally, the compactness of our new encoding makes it feasible to translate realistic game problems. We identify a few such problems of historical significance and put them forward to the QBF community as milestones of increasing difficulty.",
+        "url": "http://arxiv.org/abs/2005.05098v2",
+        "doi": "",
+        "arxiv_id": "2005.05098v2",
+        "source_ids": {
+          "arXiv": "2005.05098v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "limitations_counterevidence",
+          "same_constraints",
+          "same_method",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_011_7d2d5f9e7",
+        "title": "Architectural Implications of Graph Neural Networks",
+        "authors": [
+          "Zhihui Zhang",
+          "Jingwen Leng",
+          "Lingxiao Ma",
+          "Youshan Miao",
+          "Chao Li",
+          "Minyi Guo"
+        ],
+        "year": 2020,
+        "publication_date": "2020-09-02",
+        "venue": "arXiv",
+        "abstract": "Graph neural networks (GNN) represent an emerging line of deep learning models that operate on graph structures. It is becoming more and more popular due to its high accuracy achieved in many graph-related tasks. However, GNN is not as well understood in the system and architecture community as its counterparts such as multi-layer perceptrons and convolutional neural networks. This work tries to introduce the GNN to our community. In contrast to prior work that only presents characterizations of GCNs, our work covers a large portion of the varieties for GNN workloads based on a general GNN description framework. By constructing the models on top of two widely-used libraries, we characterize the GNN computation at inference stage concerning general-purpose and application-specific architectures and hope our work can foster more system and architecture research for GNNs.",
+        "url": "http://arxiv.org/abs/2009.00804v2",
+        "doi": "",
+        "arxiv_id": "2009.00804v2",
+        "source_ids": {
+          "arXiv": "2009.00804v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_8de70aae9",
+        "title": "A Simple and Effective Positional Encoding for Transformers",
+        "authors": [
+          "Pu-Chin Chen",
+          "Henry Tsai",
+          "Srinadh Bhojanapalli",
+          "Hyung Won Chung",
+          "Yin-Wen Chang",
+          "Chun-Sung Ferng"
+        ],
+        "year": 2021,
+        "publication_date": "2021-04-18",
+        "venue": "arXiv",
+        "abstract": "Transformer models are permutation equivariant. To supply the order and type information of the input tokens, position and segment embeddings are usually added to the input. Recent works proposed variations of positional encodings with relative position encodings achieving better performance. Our analysis shows that the gain actually comes from moving positional information to attention layer from the input. Motivated by this, we introduce Decoupled Positional Attention for Transformers (DIET), a simple yet effective mechanism to encode position and segment information into the Transformer models. The proposed method has faster training and inference time, while achieving competitive performance on GLUE, XTREME and WMT benchmarks. We further generalize our method to long-range transformers and show performance gain.",
+        "url": "http://arxiv.org/abs/2104.08698v2",
+        "doi": "",
+        "arxiv_id": "2104.08698v2",
+        "source_ids": {
+          "arXiv": "2104.08698v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_0f687a596",
+        "title": "PyramidTNT: Improved Transformer-in-Transformer Baselines with Pyramid Architecture",
+        "authors": [
+          "Kai Han",
+          "Jianyuan Guo",
+          "Yehui Tang",
+          "Yunhe Wang"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-04",
+        "venue": "arXiv",
+        "abstract": "Transformer networks have achieved great progress for computer vision tasks. Transformer-in-Transformer (TNT) architecture utilizes inner transformer and outer transformer to extract both local and global representations. In this work, we present new TNT baselines by introducing two advanced designs: 1) pyramid architecture, and 2) convolutional stem. The new \"PyramidTNT\" significantly improves the original TNT by establishing hierarchical representations. PyramidTNT achieves better performances than the previous state-of-the-art vision transformers such as Swin Transformer. We hope this new baseline will be helpful to the further research and application of vision transformer. Code will be available at https://github.com/huawei-noah/CV-Backbones/tree/master/tnt_pytorch.",
+        "url": "http://arxiv.org/abs/2201.00978v1",
+        "doi": "",
+        "arxiv_id": "2201.00978v1",
+        "source_ids": {
+          "arXiv": "2201.00978v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_012_8de70aae9",
+        "relevance_score": 0.051,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Transformer models are permutation equivariant. To supply the order and type information of the input tokens, position and segment embeddings are usually added to the input. Recent works proposed variations of positional encodings with relative position encodings achieving better performance. Our an"
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_009_3ab72fcc3",
+        "relevance_score": 0.029,
+        "relevance_types": [
+          "benchmark_baseline",
+          "limitations_counterevidence",
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Positional games are a mathematical class of two-player games comprising Tic-tac-toe and its generalizations. We propose a novel encoding of these games into Quantified Boolean Formulas (QBFs) such that a game instance admits a winning strategy for the first player if and only if the corresponding f"
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_ea524cfe1",
+        "relevance_score": 0.026,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Transformer is a promising neural network learner, and has achieved great success in various machine learning tasks. Thanks to the recent prevalence of multimodal applications and Big Data, Transformer-based multimodal learning has become a hot topic in AI research. This paper presents a comprehensi"
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_014_0f687a596",
+        "relevance_score": 0.025,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Transformer networks have achieved great progress for computer vision tasks. Transformer-in-Transformer (TNT) architecture utilizes inner transformer and outer transformer to extract both local and global representations. In this work, we present new TNT baselines by introducing two advanced designs"
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_008_dddd4addd",
+        "relevance_score": 0.019,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Deep learning-based algorithms have seen a massive popularity in different areas of remote sensing image analysis over the past decade. Recently, transformer-based architectures, originally introduced in natural language processing, have pervaded computer vision field where the self-attention mechan"
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_006_9442152ee",
+        "relevance_score": 0.018,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In image captioning, the typical attention mechanisms are arduous to identify the equivalent visual signals especially when predicting highly abstract words. This phenomenon is known as the semantic gap between vision and language. This problem can be overcome by providing semantic attributes that a"
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_002_652dcf505",
+        "relevance_score": 0.015,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Abstract Object detection is the most important problem in computer vision tasks. After AlexNet proposed, based on Convolutional Neural Network (CNN) methods have become mainstream in the computer vision field, many researches on neural networks and different transformations of algorithm structures "
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_005_a5cfc0e47",
+        "relevance_score": 0.015,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In this paper, we propose a remote-sensing scene-classification method based on vision transformers. These types of networks, which are now recognized as state-of-the-art models in natural language processing, do not rely on convolution layers as in standard convolutional neural networks (CNNs). Ins"
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_11890fb9a",
+        "relevance_score": 0.012,
+        "relevance_types": [
+          "benchmark_baseline",
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Bo Peng, Eric Alcaide, Quentin Anthony, Alon Albalak, Samuel Arcadinho, Stella Biderman, Huanqi Cao, Xin Cheng, Michael Chung, Leon Derczynski, Xingjian Du, Matteo Grella, Kranthi Gv, Xuzheng He, Haowen Hou, Przemyslaw Kazienko, Jan Kocon, Jiaming Kong, Bartłomiej Koptyra, Hayden Lau, Jiaju Lin, Kri"
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_011_7d2d5f9e7",
+        "relevance_score": 0.011,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Graph neural networks (GNN) represent an emerging line of deep learning models that operate on graph structures. It is becoming more and more popular due to its high accuracy achieved in many graph-related tasks. However, GNN is not as well understood in the system and architecture community as its "
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_004_2319dad38",
+        "relevance_score": 0.01,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Although geospatial question answering systems have received increasing attention in recent years, existing prototype systems struggle to properly answer qualitative spatial questions. In this work, we propose a unique framework for answering qualitative spatial questions, which comprises three main"
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_003_2d0fc7c87",
+        "relevance_score": 0.005,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In the last few years, the deep learning (DL) computing paradigm has been deemed the Gold Standard in the machine learning (ML) community. Moreover, it has gradually become the most widely used computational approach in the field of ML, thus achieving outstanding results on several complex cognitive"
+      }
+    ],
+    "reranking": {
+      "source": "fallback"
+    },
+    "related_work_summary": "The literature around The Expressivity Of Fixed-Precision Transformers Without Positional Encoding sits within a broader effort to replace or augment quadratic self-attention with more efficient token-mixing mechanisms. A Simple and Effective Positional Encoding for Transformers (Chen et al., 2021) frames the efficiency and hardware constraints that motivate subquadratic architectures. Positional Games and QBF: A Polished Encoding (Mayer-Eichberger and Saffidine, 2020) provides benchmark or baseline context for evaluating efficient long-sequence models. Multimodal Learning With Transformers: A Survey (Xu et al., 2023) provides benchmark or baseline context for evaluating efficient long-sequence models. PyramidTNT: Improved Transformer-in-Transformer Baselines with Pyramid Architecture (Han et al., 2022) is a close methodological reference for token-mixing design.",
+    "warnings": [
+      "Related-work rerank LLM failed; using lexical fallback reranking: Expecting ',' delimiter: line 24 column 425 (char 1566)"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 15,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 13,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 1
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "Related-work rerank LLM failed; using lexical fallback reranking: Expecting ',' delimiter: line 24 column 425 (char 1566)"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 15,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 13,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 1
+  }
+}

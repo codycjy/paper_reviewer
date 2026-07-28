@@ -1,0 +1,604 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The concept of min-p sampling, dynamically adjusting the truncation threshold based on the top token's probability, is genuinely novel and conceptually elegant, offering a new way to tackle the creativity-coherence trade-off in LLM generation, especially at high temperatures.",
+        "The paper demonstrates significant practical impact through its rapid adoption in major open-source LLM frameworks like Hugging Face and vLLM. This real-world validation is a strong indicator of its utility and addresses a recognized need in the community (as highlighted by related works on managing temperature effects and output coherence).",
+        "The comprehensive evaluation across diverse benchmarks (GPQA, GSM8K, AlpacaEval Creative Writing), various model families and sizes, and human evaluation, provides robust evidence for the advantages of min-p sampling, particularly its ability to maintain coherence at higher temperatures while increasing diversity."
+      ],
+      "weaknesses": [
+        "While the human evaluation emphasizes diversity and quality, the sample size for some aspects (e.g., each set of 3 samples per configuration rated by all participants) is noted as limited by the authors. A more extensive and statistically robust human evaluation would further solidify the claims.",
+        "The comparison with more recent or adaptive decoding strategies, beyond top-p/k and some entropy-based methods, could be expanded. Exploring its performance against or in conjunction with methods like adaptive importance sampling (as suggested by related work) might reveal further insights or limitations."
+      ],
+      "summary_comment": "This paper presents min-p sampling, a novel and intuitively appealing dynamic truncation method for LLM decoding that addresses a critical challenge: balancing creativity and coherence, especially at high temperatures. The idea of scaling the sampling threshold by the most probable token's probability is a clever innovation. The immediate and widespread adoption of min-p in the open-source community, alongside strong benchmark results and human evaluations, speaks volumes about its practical significance. While some minor methodological aspects could be further refined (e.g., more extensive human evaluation, broader baseline comparisons), the core idea is bold, clearly demonstrated to be effective, and has already shown considerable impact. This is exactly the kind of forward-thinking research that pushes the field forward, even if not every 'i' is dotted and 't' is crossed to perfection. I enthusiastically recommend acceptance."
+    }
+  ],
+  "conference": {
+    "raw": "```json\n{\n  \"ICML\": {\n    \"fit_score\": 9,\n    \"why_it_fits\": [\n      \"The paper introduces a novel and intuitive sampling method (min-p sampling) for LLMs, directly addressing a core challenge in generative language modeling: balancing creativity and coherence. This aligns well with ICML's interest in 'general machine learning' and 'deep learning' (architectures, generative models).\",\n      \"The comprehensive experimental results across various benchmarks (GPQA, GSM8K, AlpacaEval Creative Writing), model families (Mistral, Llama), and model sizes, including human evaluations, demonstrate strong empirical validation. ICML values robust empirical evidence for new methods.\",\n      \"The method's practical utility is highlighted by its rapid adoption in major open-source LLM frameworks, showcasing its 'impact on improving text generation quality' and its relevance to 'machine learning systems' (improved implementation).\",\n      \"The paper provides 'empirical guidelines for hyperparameter selection and usecases,' which is a practical contribution often valued in research that seeks real-world applicability.\",\n      \"The discussion of 'trustworthy machine learning' aspects, such as potential misuse and safety risks, shows an awareness of broader implications, which is a growing area of interest for ICML.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"Reviewer A suggests that a 'more extensive and statistically robust human evaluation' would strengthen the claims, indicating a minor area where rigor could be improved for a top-tier theoretical-leaning conference like ICML, although they still recommend acceptance.\",\n      \"The paper could benefit from 'expanded' comparison with 'more recent or adaptive decoding strategies' beyond the baselines used. While the baselines are relevant, a broader comparison might be expected for an ICML submission to fully contextualize its novelty against the state-of-the-art.\",\n      \"While the paper has practical implications, its theoretical foundations are not deeply explored. ICML often appreciates a strong theoretical analysis supporting novel methods, beyond empirical performance.\"\n    ]\n  },\n  \"NeurIPS\": {\n    \"fit_score\": 8,\n    \"why_it_fits\": [\n      \"The paper directly addresses 'language and multimodal language models' due to its focus on LLM sampling, a core component of modern generative AI, which is a key topic at NeurIPS.\",\n      \"The evaluation includes benchmarks relevant to 'AI/ML for physical sciences' (GPQA) and quantitative reasoning (GSM8K), showcasing the method's applicability beyond just creative text generation, aligning with NeurIPS's interdisciplinary nature.\",\n      \"The paper's discussion of 'decision-making, reinforcement learning, and control' implicitly connects to the underlying mechanisms of sampling strategies in generative models, which fall under the umbrella of NeurIPS topics.\",\n      \"Min-p sampling is a novel method that aims to balance creativity and coherence, a significant contribution to 'general machine learning: core contributions in supervised and unsupervised methods' as it impacts the output quality of these models.\",\n      \"The rapid adoption in open-source frameworks and the mention of independent validations highlight the practical impact and community relevance, which NeurIPS encourages, particularly for contributions that can influence the broader ML ecosystem.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"Similar to ICML, the \"limited sample size\" in the human evaluation, as noted by Reviewer A, could be perceived as a small weakness in overall rigor for a NeurIPS submission, which also typically expects strong empirical and/or theoretical backing.\",\n      \"Reviewer A points out that 'comparison with more recent or adaptive decoding strategies... could be expanded.' NeurIPS emphasizes cutting-edge research, so a more exhaustive comparison with the absolute latest advancements might be desired.\",\n      \"While the method is novel and practically significant, NeurIPS often features papers with a stronger theoretical component or groundbreaking new algorithms. Min-p, while elegant, is presented more as an effective heuristic rather than a deep theoretical contribution.\"\n    ]\n  },\n  \"ICLR\": {\n    \"fit_score\": 9,\n    \"why_it_fits\": [\n      \"The paper's core focus on improving sampling for LLMs positions it central to 'deep learning' research, specifically concerning 'generative models' and 'representation learning for... language,' which are primary topics for ICLR.\",\n      \"The introduction of 'min-p sampling, a novel dynamic truncation method' directly falls under 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' by enhancing the output generation of these models.\",\n      \"ICLR values 'optimization' and methods for improving model behavior. Min-p sampling is an optimization method applied during the decoding process to improve output quality.\",\n      \"The emphasis on 'robustness at High Temperatures' and managing the 'quality-diversity tradeoff' are key challenges in deep learning and generative models, making the solution highly relevant to ICLR's mission.\",\n      \"The discussion of computational efficiency, 'simple, requiring minimal calculations,' and its seamless integration into 'infrastructure, software libraries, hardware' like Hugging Face Transformers and vLLM makes it a strong fit for ICLR's interests in practical deep learning systems.\",\n      \"The direct reference to 'human interaction in AI systems' through human evaluation of creativity and quality aligns with ICLR's broader subject areas.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"Reviewer A noted that 'a more extensive and statistically robust human evaluation' would further solidify the claims. While ICLR is a good fit, refining empirical validation, particularly for human-centric aspects, is always a plus.\",\n      \"The paper's novelty stems from an elegant heuristic rather than a deeply theoretical contribution or a completely new deep learning architecture. While ICLR is broad, some submissions have stronger theoretical underpinnings or architectural innovations.\",\n      \"While the method demonstrates superior performance, expanding the comparison to a wider array of 'adaptive decoding strategies' that might be more recently published in deep learning venues could make the contribution even more compelling for ICLR.\"\n    ]\n  }\n}\n```",
+    "parse_error": true
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_69d1757efb5a",
+    "paper_id": "paper_c949a67384a3",
+    "target_paper_summary": {
+      "paper_id": "paper_c949a67384a3",
+      "title": "Turning Up The Heat: Min-P Sampling For Creative And Coherent Llm Outputs",
+      "abstract": "Large Language Models (LLMs) generate text by sampling the next token from a probability distribution over the vocabulary at each decoding step. Popular sampling methods like top-p (nucleus sampling) often struggle to balance quality and diversity, especially at higher temperatures which lead to incoherent or repetitive outputs. We propose min-p **sampling**, a dynamic truncation method that adjusts the sampling threshold based on the model's confidence by using the top token's probability as a scaling factor. Our experiments on benchmarks including GPQA, GSM8K, and AlpacaEval Creative Writing show that min-p sampling improves both the quality and diversity of generated text across different model families (Mistral and Llama 3) and model sizes (1B to 123B parameters), especially at higher temperatures. Human evaluations show a preference for min-p, in both text quality and creativity. Min-p sampling has been adopted by popular open-source LLM frameworks, including Hugging Face Transformers, VLLM, and many others, highlighting its considerable impact on improving text generation quality.",
+      "topic": "",
+      "claims": [
+        "We propose min-p **sampling**, a dynamic truncation method that adjusts the sampling threshold based on the model's confidence by using the top token's probability as a scaling factor."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "text generation decoding strategies diversity quality LLM",
+          "rationale": "The paper addresses the problem of balancing quality and diversity in LLM text generation, especially at higher temperatures. This query aims to find other strategies or methods tackling the same core problem."
+        },
+        {
+          "group": "same_method",
+          "query": "dynamic truncation sampling large language models top-p alternatives",
+          "rationale": "The paper proposes min-p sampling, a dynamic truncation method. This query seeks papers that use or propose similar dynamic truncation sampling methods or alternatives to top-p that involve dynamic thresholds or scaling based on confidence in LLMs."
+        },
+        {
+          "group": "same_constraints",
+          "query": "LLM decoding high temperature incoherent repetitive output",
+          "rationale": "The paper specifically highlights issues with popular sampling methods at higher temperatures, leading to incoherent or repetitive outputs. This query looks for papers that operate under the constraint of high temperature generation and aim to address these specific output issues."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "GPQA GSM8K AlpacaEval text generation metrics creativity quality diversity",
+          "rationale": "The paper uses GPQA, GSM8K, and AlpacaEval Creative Writing as benchmarks and evaluates text quality, diversity, and creativity. This query aims to find papers that define or extensively use these benchmarks or propose new evaluation metrics for these aspects of text generation."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "LLM adaptive sampling nucleus sampling alternatives temperature scaling",
+          "rationale": "The paper presents min-p sampling as a novel dynamic truncation method. This query seeks prior work on adaptive sampling, variations of nucleus sampling, or other methods that dynamically adjust sampling thresholds or use temperature scaling in a similar vein, potentially challenging the novelty of min-p as a unique dynamic truncation approach."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "turning heat min-p sampling creative coherent llm outputs large language limitations failure analysis",
+          "rationale": "Fallback query generated from target title, abstract, and extracted claims."
+        }
+      ],
+      "source": "mixed"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_1ec0052fb",
+        "title": "Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond",
+        "authors": [
+          "Jingfeng Yang",
+          "Hongye Jin",
+          "Ruixiang Tang",
+          "Xiaotian Han",
+          "Qizhang Feng",
+          "Haoming Jiang",
+          "Shaochen Zhong",
+          "Bing Yin",
+          "Xia Hu"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-28",
+        "venue": "ACM Transactions on Knowledge Discovery from Data",
+        "abstract": "This article presents a comprehensive and practical guide for practitioners and end-users working with Large Language Models (LLMs) in their downstream Natural Language Processing (NLP) tasks. We provide discussions and insights into the usage of LLMs from the perspectives of models, data, and downstream tasks. First, we offer an introduction and brief summary of current language models. Then, we discuss the influence of pre-training data, training data, and test data. Most importantly, we provide a detailed discussion about the use and non-use cases of large language models for various natural language processing tasks, such as knowledge-intensive tasks, traditional natural language understanding tasks, generation tasks, emergent abilities, and considerations for specific tasks. We present various use cases and non-use cases to illustrate the practical applications and limitations of LLMs in real-world scenarios. We also try to understand the importance of data and the specific challenges associated with each NLP task. Furthermore, we explore the impact of spurious biases on LLMs and delve into other essential considerations, such as efficiency, cost, and latency, to ensure a comprehensive understanding of deploying LLMs in practice. This comprehensive guide aims to provide researchers and practitioners with valuable insights and best practices for working with LLMs, thereby enabling the successful implementation of these models in a wide range of NLP tasks. A curated list of practical guide resources of LLMs, regularly updated, can be found at https://github.com/Mooler0410/LLMsPracticalGuide . An LLMs evolutionary tree, editable yet regularly updated, can be found at llmtree.ai .",
+        "url": "https://doi.org/10.1145/3649506",
+        "doi": "https://doi.org/10.1145/3649506",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392240262"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 468
+      },
+      {
+        "paper_id": "rw_004_acb87e3bd",
+        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+        "authors": [
+          "Yunfan Gao",
+          "Yun Xiong",
+          "Xinyu Gao",
+          "Kangxiang Jia",
+          "Jinliu Pan",
+          "Yuxi Bi",
+          "Yi Dai",
+          "Jiawei Sun",
+          "Wang, Meng",
+          "Wang, Haofen"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-18",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large Language Models (LLMs) showcase impressive capabilities but encounter challenges like hallucination, outdated knowledge, and non-transparent, untraceable reasoning processes. Retrieval-Augmented Generation (RAG) has emerged as a promising solution by incorporating knowledge from external databases. This enhances the accuracy and credibility of the generation, particularly for knowledge-intensive tasks, and allows for continuous knowledge updates and integration of domain-specific information. RAG synergistically merges LLMs' intrinsic knowledge with the vast, dynamic repositories of external databases. This comprehensive review paper offers a detailed examination of the progression of RAG paradigms, encompassing the Naive RAG, the Advanced RAG, and the Modular RAG. It meticulously scrutinizes the tripartite foundation of RAG frameworks, which includes the retrieval, the generation and the augmentation techniques. The paper highlights the state-of-the-art technologies embedded in each of these critical components, providing a profound understanding of the advancements in RAG systems. Furthermore, this paper introduces up-to-date evaluation framework and benchmark. At the end, this article delineates the challenges currently faced and points out prospective avenues for research and development.",
+        "url": "http://arxiv.org/abs/2312.10997",
+        "doi": "https://doi.org/10.48550/arxiv.2312.10997",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4389984066"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 681
+      },
+      {
+        "paper_id": "rw_006_f9be11d01",
+        "title": "The Effect of Sampling Temperature on Problem Solving in Large Language Models",
+        "authors": [
+          "Matthew Renze"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "",
+        "abstract": "",
+        "url": "https://doi.org/10.18653/v1/2024.findings-emnlp.432",
+        "doi": "https://doi.org/10.18653/v1/2024.findings-emnlp.432",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404781852"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 149
+      },
+      {
+        "paper_id": "rw_007_598dca81f",
+        "title": "Turning Up the Heat: Min-p Sampling for Creative and Coherent LLM Outputs",
+        "authors": [
+          "Minh‐Hoang Nguyen",
+          "Andrew Baker",
+          "Clement Neo",
+          "Roush, Allen",
+          "Andreas Kirsch",
+          "Shwartz-Ziv, Ravid"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-01",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large Language Models (LLMs) generate text by sampling the next token from a probability distribution over the vocabulary at each decoding step. Popular sampling methods like top-p (nucleus sampling) often struggle to balance quality and diversity, especially at higher temperatures which lead to incoherent or repetitive outputs. We propose min-p sampling, a dynamic truncation method that adjusts the sampling threshold based on the model's confidence by using the top token's probability as a scaling factor. Our experiments on benchmarks including GPQA, GSM8K, and AlpacaEval Creative Writing show that min-p sampling improves both the quality and diversity of generated text across different model families (Mistral and Llama 3) and model sizes (1B to 123B parameters), especially at higher temperatures. Human evaluations further show a clear preference for min-p sampling, in both text quality and creativity. Min-p sampling has been adopted by popular open-source LLM frameworks, including Hugging Face Transformers, VLLM, and many others, highlighting its considerable impact on improving text generation quality.",
+        "url": "http://arxiv.org/abs/2407.01082",
+        "doi": "https://doi.org/10.48550/arxiv.2407.01082",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4400343354"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_008_1aa7eb4a4",
+        "title": "WildBench: Benchmarking LLMs with Challenging Tasks from Real Users in the Wild",
+        "authors": [
+          "Bill Yuchen Lin",
+          "Yuntian Deng",
+          "Khyathi Raghavi Chandu",
+          "Faeze Brahman",
+          "Abhilasha Ravichander",
+          "Valentina Pyatkin",
+          "Nouha Dziri",
+          "Ronan Le Bras",
+          "Yejin Choi"
+        ],
+        "year": 2024,
+        "publication_date": "2024-06-07",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "We introduce WildBench, an automated evaluation framework designed to benchmark large language models (LLMs) using challenging, real-world user queries. WildBench consists of 1,024 tasks carefully selected from over one million human-chatbot conversation logs. For automated evaluation with WildBench, we have developed two metrics, WB-Reward and WB-Score, which are computable using advanced LLMs such as GPT-4-turbo. WildBench evaluation uses task-specific checklists to evaluate model outputs systematically and provides structured explanations that justify the scores and comparisons, resulting in more reliable and interpretable automatic judgments. WB-Reward employs fine-grained pairwise comparisons between model responses, generating five potential outcomes: much better, slightly better, slightly worse, much worse, or a tie. Unlike previous evaluations that employed a single baseline model, we selected three baseline models at varying performance levels to ensure a comprehensive pairwise evaluation. Additionally, we propose a simple method to mitigate length bias, by converting outcomes of ``slightly better/worse'' to ``tie'' if the winner response exceeds the loser one by more than $K$ characters. WB-Score evaluates the quality of model outputs individually, making it a fast and cost-efficient evaluation metric. WildBench results demonstrate a strong correlation with the human-voted Elo ratings from Chatbot Arena on hard tasks. Specifically, WB-Reward achieves a Pearson correlation of 0.98 with top-ranking models. Additionally, WB-Score reaches 0.95, surpassing both ArenaHard's 0.91 and AlpacaEval2.0's 0.89 for length-controlled win rates, as well as the 0.87 for regular win rates.",
+        "url": "http://arxiv.org/abs/2406.04770",
+        "doi": "https://doi.org/10.48550/arxiv.2406.04770",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4399511950"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 4
+      },
+      {
+        "paper_id": "rw_009_2a44a794d",
+        "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+        "authors": [
+          "Tim Dettmers",
+          "Artidoro Pagnoni",
+          "Ari Holtzman",
+          "Luke Zettlemoyer"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-23",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reaching 99.3% of the performance level of ChatGPT while only requiring 24 hours of finetuning on a single GPU. QLoRA introduces a number of innovations to save memory without sacrificing performance: (a) 4-bit NormalFloat (NF4), a new data type that is information theoretically optimal for normally distributed weights (b) double quantization to reduce the average memory footprint by quantizing the quantization constants, and (c) paged optimziers to manage memory spikes. We use QLoRA to finetune more than 1,000 models, providing a detailed analysis of instruction following and chatbot performance across 8 instruction datasets, multiple model types (LLaMA, T5), and model scales that would be infeasible to run with regular finetuning (e.g. 33B and 65B parameter models). Our results show that QLoRA finetuning on a small high-quality dataset leads to state-of-the-art results, even when using smaller models than the previous SoTA. We provide a detailed analysis of chatbot performance based on both human and GPT-4 evaluations showing that GPT-4 evaluations are a cheap and reasonable alternative to human evaluation. Furthermore, we find that current chatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training.",
+        "url": "http://arxiv.org/abs/2305.14314",
+        "doi": "https://doi.org/10.48550/arxiv.2305.14314",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4378509449"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 501
+      },
+      {
+        "paper_id": "rw_010_38576219d",
+        "title": "Detecting hallucinations in large language models using semantic entropy",
+        "authors": [
+          "Sebastian Farquhar",
+          "Jannik Kossen",
+          "Lorenz Kuhn",
+          "Yarin Gal"
+        ],
+        "year": 2024,
+        "publication_date": "2024-06-19",
+        "venue": "Nature",
+        "abstract": "Abstract Large language model (LLM) systems, such as ChatGPT 1 or Gemini 2 , can show impressive reasoning and question-answering capabilities but often ‘hallucinate’ false outputs and unsubstantiated answers 3,4 . Answering unreliably or without the necessary information prevents adoption in diverse fields, with problems including fabrication of legal precedents 5 or untrue facts in news articles 6 and even posing a risk to human life in medical domains such as radiology 7 . Encouraging truthfulness through supervision or reinforcement has been only partially successful 8 . Researchers need a general method for detecting hallucinations in LLMs that works even with new and unseen questions to which humans might not know the answer. Here we develop new methods grounded in statistics, proposing entropy-based uncertainty estimators for LLMs to detect a subset of hallucinations—confabulations—which are arbitrary and incorrect generations. Our method addresses the fact that one idea can be expressed in many ways by computing uncertainty at the level of meaning rather than specific sequences of words. Our method works across datasets and tasks without a priori knowledge of the task, requires no task-specific data and robustly generalizes to new tasks not seen before. By detecting when a prompt is likely to produce a confabulation, our method helps users understand when they must take extra care with LLMs and opens up new possibilities for using LLMs that are otherwise prevented by their unreliability.",
+        "url": "https://doi.org/10.1038/s41586-024-07421-0",
+        "doi": "https://doi.org/10.1038/s41586-024-07421-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4399803256"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 687
+      },
+      {
+        "paper_id": "rw_014_4f447622d",
+        "title": "Is Self-knowledge and Action Consistent or Not: Investigating Large Language Model's Personality",
+        "authors": [
+          "Yiming Ai",
+          "Zhiwei He",
+          "Ziyin Zhang",
+          "Wenhong Zhu",
+          "Hongkun Hao",
+          "Kai Yu",
+          "Lingjun Chen",
+          "Rui Wang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-22",
+        "venue": "arXiv",
+        "abstract": "In this study, we delve into the validity of conventional personality questionnaires in capturing the human-like personality traits of Large Language Models (LLMs). Our objective is to assess the congruence between the personality traits LLMs claim to possess and their demonstrated tendencies in real-world scenarios. By conducting an extensive examination of LLM outputs against observed human response patterns, we aim to understand the disjunction between self-knowledge and action in LLMs.",
+        "url": "http://arxiv.org/abs/2402.14679v2",
+        "doi": "",
+        "arxiv_id": "2402.14679v2",
+        "source_ids": {
+          "arXiv": "2402.14679v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_015_7ce7f24bc",
+        "title": "How optimal inhomogeneity produces high temperature superconductivity",
+        "authors": [
+          "Steven A. Kivelson",
+          "Eduardo Fradkin"
+        ],
+        "year": 2005,
+        "publication_date": "2005-07-19",
+        "venue": "arXiv",
+        "abstract": "Before Vic Emery's untimely death, we had the privilege of working closely with him on the role of Coulomb frustrated phase separation in doped Mott insulators, and on the consequences of the resulting local electronic structures on the \"mechanism\" of high temperature superconductivity. In the present article, we discuss the resulting perspective on superconductivity in the cuprates, and on the more general theoretical issue of what sorts of systems can support high temperature superconductivity. We discuss some of the general, qualitative aspects of the experimental lore which we think should constrain any theory of the mechanism, and show how they are accounted for within the context of our theory.",
+        "url": "http://arxiv.org/abs/cond-mat/0507459v1",
+        "doi": "",
+        "arxiv_id": "0507459v1",
+        "source_ids": {
+          "arXiv": "0507459v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_017_93e071310",
+        "title": "Creative Data Generation: A Review Focusing on Text and Poetry",
+        "authors": [
+          "Mohamad Elzohbi",
+          "Richard Zhao"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-15",
+        "venue": "arXiv",
+        "abstract": "The rapid advancement in machine learning has led to a surge in automatic data generation, making it increasingly challenging to differentiate between naturally or human-generated data and machine-generated data. Despite these advancements, the generation of creative data remains a challenge. This paper aims to investigate and comprehend the essence of creativity, both in general and within the context of natural language generation. We review various approaches to creative writing devices and tasks, with a specific focus on the generation of poetry. We aim to shed light on the challenges and opportunities in the field of creative data generation.",
+        "url": "http://arxiv.org/abs/2305.08493v2",
+        "doi": "",
+        "arxiv_id": "2305.08493v2",
+        "source_ids": {
+          "arXiv": "2305.08493v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_018_7b3c00fa5",
+        "title": "Ethics and Creativity in Computer Vision",
+        "authors": [
+          "Negar Rostamzadeh",
+          "Emily Denton",
+          "Linda Petrini"
+        ],
+        "year": 2021,
+        "publication_date": "2021-12-06",
+        "venue": "arXiv",
+        "abstract": "This paper offers a retrospective of what we learnt from organizing the workshop *Ethical Considerations in Creative applications of Computer Vision* at CVPR 2021 conference and, prior to that, a series of workshops on *Computer Vision for Fashion, Art and Design* at ECCV 2018, ICCV 2019, and CVPR 2020. We hope this reflection will bring artists and machine learning researchers into conversation around the ethical and social dimensions of creative applications of computer vision.",
+        "url": "http://arxiv.org/abs/2112.03111v1",
+        "doi": "",
+        "arxiv_id": "2112.03111v1",
+        "source_ids": {
+          "arXiv": "2112.03111v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_019_3888900ef",
+        "title": "Implicitly Adaptive Importance Sampling",
+        "authors": [
+          "Topi Paananen",
+          "Juho Piironen",
+          "Paul-Christian Bürkner",
+          "Aki Vehtari"
+        ],
+        "year": 2019,
+        "publication_date": "2019-06-20",
+        "venue": "arXiv",
+        "abstract": "Adaptive importance sampling is a class of techniques for finding good proposal distributions for importance sampling. Often the proposal distributions are standard probability distributions whose parameters are adapted based on the mismatch between the current proposal and a target distribution. In this work, we present an implicit adaptive importance sampling method that applies to complicated distributions which are not available in closed form. The method iteratively matches the moments of a set of Monte Carlo draws to weighted moments based on importance weights. We apply the method to Bayesian leave-one-out cross-validation and show that it performs better than many existing parametric adaptive importance sampling methods while being computationally inexpensive.",
+        "url": "http://arxiv.org/abs/1906.08850v2",
+        "doi": "",
+        "arxiv_id": "1906.08850v2",
+        "source_ids": {
+          "arXiv": "1906.08850v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_007_598dca81f",
+        "relevance_score": 1.0,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This is an earlier version or direct duplicate of the target paper, published by Nguyen et al. in 2024. It is essential for understanding the target paper as it is the same work.",
+        "evidence_summary": "Turning Up the Heat: Min-p Sampling for Creative and Coherent LLM Outputs (Nguyen et al., 2024) proposes min-p sampling as a dynamic truncation method and evaluates it on GPQA, GSM8K, and AlpacaEval Creative Writing benchmarks."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_006_f9be11d01",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper directly addresses the effect of sampling temperature on LLM performance in problem-solving, which is a central constraint and motivation for the target paper's development of min-p sampling to handle higher temperatures.",
+        "evidence_summary": "Renze (2024) investigates the impact of sampling temperature on problem-solving abilities in large language models."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_010_38576219d",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper, published in Nature (2024), addresses detecting hallucinations in LLMs, which are a form of incoherent output, a key problem min-p sampling aims to mitigate, especially at high temperatures. It proposes a novel approach related to output quality.",
+        "evidence_summary": "Farquhar et al. (2024) propose using semantic entropy to detect hallucinations and confabulations in large language models across various tasks."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_009_2a44a794d",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "While not directly about decoding, QLoRA (Dettmers et al., 2023) is a highly impactful paper on efficient LLM finetuning, allowing for exploration of models up to 65B parameters which is directly relevant to the 'model sizes (1B to 123B parameters)' mentioned in the target paper's abstract. It provides context on advancements in LLM capabilities that influence what decoding techniques can be tested on.",
+        "evidence_summary": "Dettmers et al. (2023) introduce QLoRA, an efficient finetuning technique for quantized LLMs that enables training large models on a single GPU."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_014_4f447622d",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper examines LLM personality by evaluating self-knowledge versus action, which can be seen as an investigation into how LLMs generate consistent and coherent outputs based on their internal 'state' or 'knowledge.' This indirectly relates to the coherence aspect that min-p sampling aims to improve, especially under dynamic conditions.",
+        "evidence_summary": "Ai et al. (2024) investigate the consistency between self-knowledge and actions in large language models by examining their personality traits."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_019_3888900ef",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper describes an adaptive importance sampling method, a general technique that could be competitive with (or provide context for) dynamic truncation methods like min-p sampling in the broader context of adaptive sampling.",
+        "evidence_summary": "Paananen et al. (2019) propose implicitly adaptive importance sampling for finding better proposal distributions for importance sampling, especially for complicated, non-closed-form distributions."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_008_1aa7eb4a4",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "WildBench is a new benchmarking framework for LLMs that focuses on challenging user queries and proposes new metrics. While not directly using GPQA, GSM8K, or AlpacaEval, it is highly relevant for understanding the evolving landscape of LLM evaluation, especially concerning output quality and user satisfaction, which min-p sampling aims to improve.",
+        "evidence_summary": "Lin et al. (2024) introduce WildBench, an automated evaluation framework for LLMs using real-world user queries and propose WB-Reward and WB-Score metrics."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_017_93e071310",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper reviews creative data generation, specifically in text and poetry, and highlights challenges. This is relevant to the 'AlpacaEval Creative Writing' benchmark and the 'creativity' aspect of min-p sampling's evaluation.",
+        "evidence_summary": "Elzohbi and Zhao (2023) review creative data generation, focusing on text and poetry, and discuss challenges in generating creative outputs."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_1ec0052fb",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This is a broad survey on LLMs in practice that would cover generation tasks and the general challenges, providing useful background context for the problem min-p sampling addresses (quality and diversity of generation), but not a specific decoding strategy.",
+        "evidence_summary": "Yang et al. (2024) provide a comprehensive survey on the practical applications and challenges of large language models across various NLP tasks."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_004_acb87e3bd",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Retrieval-Augmented Generation (RAG) is a broad method to improve LLM outputs by augmenting with external knowledge. While not a sampling method, it aims to counter issues like hallucination and improve accuracy/credibility, which are related to the coherence aspect that min-p also addresses, but through a different mechanism.",
+        "evidence_summary": "Gao et al. (2023) provide a survey on Retrieval-Augmented Generation (RAG) for large language models, detailing its paradigms and components to enhance generation with external knowledge."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_018_7b3c00fa5",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper discusses ethics and creativity in computer vision, which is a different modality than text. While creativity is a shared theme, the direct relevance to text generation and specific benchmarks like AlpacaEval is weaker.",
+        "evidence_summary": "Rostamzadeh et al. (2021) reflect on ethics and creativity within computer vision applications based on insights from their workshops."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_015_7ce7f24bc",
+        "relevance_score": 0.05,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper is about superconductivity and uses 'high temperature' in a completely unrelated scientific context, making it irrelevant to LLM decoding strategies.",
+        "evidence_summary": "Kivelson and Fradkin (2005) discuss how optimal inhomogeneity can lead to high-temperature superconductivity."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Large Language Models often struggle to balance quality and diversity in generated text, especially at higher temperatures which can lead to incoherent or repetitive outputs (Renze, 2024). Addressing these challenges, Farquhar et al. (2024) introduce methods for detecting hallucinations in LLMs, which are a form of incoherent output. While not directly a decoding strategy, techniques like QLoRA (Dettmers et al., 2023) have enabled efficient finetuning of very large models, allowing for more extensive testing of decoding approaches across different model scales. The problem of achieving consistent and coherent outputs also resonates with broader inquiries into LLM behavior, such as investigations into LLM personality and consistency between self-knowledge and action (Ai et al., 2024). Beyond specific decoding, adaptive importance sampling methods (Paananen et al., 2019) represent a class of techniques that could be considered for dynamically adjusting sampling, similar to the dynamic truncation proposed by the target paper. Evaluating the success of these methods often relies on benchmarks, including creative writing tasks (Elzohbi and Zhao, 2023) and general LLM performance (Lin et al., 2024). This paper, \"Turning Up the Heat: Min-p Sampling for Creative and Coherent LLM Outputs\" by Nguyen et al. (2024), proposes min-p sampling as a dynamic truncation method to specifically improve text quality and creativity in LLM outputs, especially at higher temperatures.",
+    "warnings": [
+      "target paper: suspicious instruction-like text matched /you are (?:chatgpt|an ai|a language model)/"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 20,
+      "num_removed_post_cutoff": 7,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 13,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 1
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "target paper: suspicious instruction-like text matched /you are (?:chatgpt|an ai|a language model)/"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 20,
+    "num_removed_post_cutoff": 7,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 13,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 1
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a novel and elegantly simple idea: hybridizing monolingual and cross-lingual batch sampling to achieve simultaneous optimization across multiple retrieval tasks. This is a refreshingly straightforward alternative to more complex loss functions or architectural changes.",
+        "The core finding is significant: the proposed method successfully balances performance across monolingual, cross-lingual, and multilingual retrieval settings, directly addressing a key trade-off in the field and reducing language bias more effectively than single-purpose approaches.",
+        "The work demonstrates strong empirical results across two widely-used multilingual models (XLM-R, LaBSE) and multiple standard benchmark datasets (XQuAD-R, MLQA-R, MIRACL). The improvements are consistent and meaningful.",
+        "The paper effectively leverages a large and diverse training corpus, including many low-resource languages, and shows compelling zero-shot generalization to unseen languages, highlighting the practical impact of the approach."
+      ],
+      "weaknesses": [
+        "The novelty, while significant in concept, is somewhat incremental on existing sampling strategies (X-X-mono and X-Y from Roy et al., 2020). The idea of combining them is intuitive, though its effectiveness and the analysis of bias reduction are valuable contributions.",
+        "The evaluation is comprehensive but primarily focused on retrieval accuracy (MAP, Recall). A deeper analysis of *why* the hybrid balancing works, perhaps through probing or representation analysis, would strengthen the paper's scientific contribution beyond the empirical results.",
+        "The hyperparameter selection (alpha=0.5) is justified via a grid search, but the paper offers limited theoretical or empirical insight into why this equal balance is optimal, or how it might vary with different data distributions or language families."
+      ],
+      "summary_comment": "This paper introduces a simple, clever, and effective idea for multilingual retrieval training. The core proposal—blending monolingual and cross-lingual batches to optimize for all three retrieval scenarios simultaneously—is novel in its conception and proves empirically powerful. It delivers a practical solution to a well-known trade-off, shows strong results across multiple benchmarks, reduces language bias, and requires no new loss functions or architectures. While the novelty is more in the insightful application of a known technique rather than a foundational breakthrough, the impact, significance, and clean execution are high. Methodological soundness is strong, and the experimental evidence is convincing. The weaknesses are relatively minor and do not undermine the core claims. This is precisely the kind of forward-thinking, impactful research that should be accepted to inspire further work in the field."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Extensive and rigorous experimental evaluation across multiple datasets (XQuAD-R, MLQA-R, MIRACL) and two multilingual models (XLM-R, LaBSE)",
+        "Comprehensive analysis including both performance metrics (MAP, Recall) and language bias metrics (rank distance) with detailed statistical results",
+        "Methodologically sound approach with proper hyperparameter tuning (α=0.5) and validation procedures using early stopping on held-out data"
+      ],
+      "weaknesses": [
+        "Limited novelty as hybrid batch sampling is a straightforward combination of existing approaches (monolingual and cross-lingual batching)",
+        "Validation set used for early stopping consists solely of English examples, potentially introducing language bias in model selection"
+      ],
+      "summary_comment": "While the hybrid batch sampling approach demonstrates moderate novelty, the paper excels in methodological rigor and comprehensive evaluation. The experiments are thorough, well-designed, and convincingly demonstrate that the proposed method achieves balanced performance across monolingual, cross-lingual, and multilingual retrieval tasks while significantly reducing language bias. The sound experimental design and robust results justify acceptance despite the incremental nature of the technical contribution."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper addresses a clear and practical problem: balancing monolingual and cross-lingual performance in multilingual dense retrieval with a simple, straightforward method (hybrid batch sampling).",
+        "The experimental evaluation is thorough, convincing, and fair. It uses multiple standard datasets (XQuAD-R, MLQA-R, MIRACL), two base models (XLM-R, LaBSE), and comprehensively reports results for all three retrieval settings (monolingual, cross-lingual, multilingual) and a language bias analysis.",
+        "The paper is exceptionally clear and well-written. The problem, method, experiments, and results are communicated with excellent organization and precision, making the contribution easy to understand and replicate."
+      ],
+      "weaknesses": [
+        "The novelty is moderate. The core idea of mixing monolingual and cross-lingual batches is simple and intuitive. While the paper demonstrates its value empirically, the conceptual leap is not large.",
+        "The validation strategy for early stopping uses only English data, which may not be optimal for selecting checkpoints that perform best across all languages and retrieval settings, potentially introducing a slight bias."
+      ],
+      "summary_comment": "This is a strong, practical paper. It solves a well-defined, real-world problem in multilingual IR with a simple, effective technique (hybrid batch sampling). The significance is high as it provides a balanced solution that practitioners can easily adopt. The evaluation is extensive, rigorous, and convincing. The paper is a model of clarity. Although the idea is not highly novel, its empirical validation and practical utility are excellent. The minor weaknesses do not detract from the overall contribution. I recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem of representation learning and optimization techniques for multilingual models",
+        "The work employs contrastive learning and batch sampling strategies, which are well-established ML techniques that align with ICML's focus",
+        "Strong experimental rigor with comprehensive evaluation across multiple datasets and models demonstrates methodological soundness",
+        "The problem of mitigating language bias in multilingual systems has significant practical implications for real-world ML applications"
+      ],
+      "why_it_does_not_fit": [
+        "The work is more applied and engineering-focused rather than introducing fundamental ML advances or theoretical contributions",
+        "ICML typically favors more theoretically grounded or algorithmically novel contributions over incremental improvements to training procedures",
+        "The multilingual NLP focus may be too specific compared to ICML's broader ML scope that spans various domains beyond NLP",
+        "Reviewer comments note 'moderate novelty' which may not meet ICML's high bar for conceptual innovation"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' interdisciplinary nature spanning ML, NLP, and information retrieval",
+        "Addresses important societal considerations (language bias reduction) that align with NeurIPS' focus on responsible AI",
+        "Strong empirical results with comprehensive evaluation across multiple benchmarks and metrics",
+        "The work demonstrates practical impact with zero-shot generalization to unseen languages, showing real-world applicability",
+        "Clear writing and rigorous methodology meet NeurIPS' standards for presentation quality"
+      ],
+      "why_it_does_not_fit": [
+        "The technical contribution (hybrid batch sampling) is relatively straightforward compared to more theoretically deep NeurIPS papers",
+        "While novel in application, the core idea builds directly on existing sampling strategies rather than introducing fundamentally new concepts",
+        "May be perceived as more incremental engineering contribution rather than groundbreaking research"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Direct relevance to representation learning and multilingual model fine-tuning, which are core ICLR topics",
+        "Uses transformer-based architectures (XLM-R, LaBSE) and contrastive learning techniques central to ICLR's focus",
+        "Addresses language-agnostic representations and cross-lingual transfer learning, both within ICLR's scope",
+        "Strong experimental results on standard benchmarks demonstrate practical value"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly prefers deep learning innovations, architectural changes, or theoretical advances rather than training procedure modifications",
+        "The work focuses more on information retrieval applications rather than core deep learning advancements",
+        "Limited novelty in the deep learning methodology itself - primarily applies existing techniques rather than inventing new ones",
+        "Reviewers noted the approach is 'straightforward' and 'intuitive' which may not meet ICLR's bar for technical depth"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

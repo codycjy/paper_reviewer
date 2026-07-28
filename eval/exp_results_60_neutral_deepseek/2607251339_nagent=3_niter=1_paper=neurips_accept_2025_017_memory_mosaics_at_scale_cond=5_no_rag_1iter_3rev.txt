@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel architecture (Memory Mosaics v2) that scales associative memory networks to large language model sizes (up to 10B parameters) and real-world datasets, demonstrating superior in-context learning and new-knowledge storage capabilities.",
+        "Proposes a comprehensive evaluation framework with three dimensions (persistent-knowledge storage, new-knowledge storage, and in-context learning) to rigorously assess model capabilities beyond standard benchmarks.",
+        "Shows significant performance improvements over transformers on new-task learning (10+% gains) and context length extrapolation without fine-tuning, which cannot be easily replicated by simply scaling transformer training data."
+      ],
+      "weaknesses": [
+        "The paper relies on comparisons with transformers but does not extensively benchmark against other recent architectures (e.g., state-space models or other memory-enhanced networks) beyond a brief discussion in the appendix.",
+        "Some architectural details (e.g., the gated time-variant key feature extractor and adaptive bandwidth) are motivated empirically but lack thorough theoretical justification or ablation studies to isolate their individual contributions."
+      ],
+      "summary_comment": "This paper presents a ambitious and highly novel scaling of associative memory networks to large-scale language models. Memory Mosaics v2 demonstrates compelling advantages in in-context learning and new-knowledge storage, outperforming transformers significantly even with less training data. While the evaluation is extensive and convincing, the paper could benefit from more comparisons with alternative architectures and deeper theoretical insights. However, the novelty, significance, and potential impact on the field are exceptional, justifying acceptance despite minor weaknesses."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper is methodologically rigorous, with clear and well-founded architectural modifications (adaptive bandwidth, gated key extractor, 3-level memory) that are theoretically motivated.",
+        "The experimental evaluation is exceptionally thorough and convincing, using three well-defined dimensions (persistent knowledge, new knowledge storage, in-context learning) with appropriate datasets, and includes careful ablation studies (e.g., effect of removing long-term memory).",
+        "The scaling effort is substantial and credible, involving training on 1 trillion tokens up to ~10B parameters, with direct comparisons to transformer baselines of matching scale.",
+        "The work provides strong empirical evidence that the improvements are architectural and not easily replicated by simply scaling transformer data, a conclusion supported by the 8x data comparison.",
+        "The analysis of computational trade-offs (parameters, FLOPs) and fine-tuning efficiency is careful and provides practical insights."
+      ],
+      "weaknesses": [
+        "The paper does not provide a theoretical analysis of why the proposed architectural changes (e.g., 3-level memory) lead to the observed improvements in new knowledge storage and in-context learning; the explanations are largely empirical and descriptive.",
+        "The comparison against other long-context or recurrent architectures (e.g., Mamba, RWKV) is relegated to the appendix and references prior work; a direct head-to-head evaluation on the proposed tasks by the authors would strengthen the claim of architectural superiority.",
+        "While the paper claims 'superior compositional capabilities,' the evaluation focuses on retrieval and classification; a more direct test of compositional reasoning (e.g., systematic generalization) would further substantiate this claim."
+      ],
+      "summary_comment": "This is a technically sound, well-executed scaling study that makes a strong empirical case for the benefits of the Memory Mosaics v2 architecture. The methodology is rigorous: the design choices are justified, the experimental protocol is comprehensive and well-controlled (including ablation studies and fair comparisons under matched FLOPs/parameters), and the results are compelling, showing significant improvements in new knowledge storage and in-context learning over transformers that cannot be trivially matched by data scaling. While some theoretical grounding and a more direct comparison to alternative efficient architectures could be strengthened, the paper's scientific validity and the strength of its empirical evidence warrant acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Comprehensive scaling of memory mosaics to 10B parameters with 1 trillion tokens, demonstrating practical viability at realistic model scales",
+        "Impressive empirical results showing significant outperformance over transformers on new-knowledge storage and in-context learning tasks (10+% improvements) that cannot be matched by simply scaling transformer training data",
+        "Well-designed evaluation framework with three distinct dimensions that clearly separates persistent knowledge, new knowledge storage, and in-context learning capabilities"
+      ],
+      "weaknesses": [
+        "Limited discussion of computational efficiency trade-offs - while parameter counts are similar, the quadratic complexity of associative memories could be problematic for very long contexts",
+        "The paper focuses heavily on superiority claims but could better contextualize where transformers might still be preferred and provide clearer guidance on when to choose memory mosaics vs transformers"
+      ],
+      "summary_comment": "This paper presents a significant practical contribution by successfully scaling memory mosaics to competitive model sizes with compelling evidence of superior in-context learning capabilities. The evaluation is thorough and convincing, demonstrating real-world relevance through tasks that matter for practical applications. While some practical deployment considerations could be strengthened, the demonstrated improvements in critical capabilities like few-shot learning and long-context handling justify acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong fit for ICML's focus on novel machine learning architectures and scaling approaches",
+        "Excellent alignment with ICML's interests in memory systems, associative learning, and large-scale model training",
+        "Substantial empirical evaluation matches ICML's emphasis on rigorous experimental validation",
+        "Contributions in optimization (adaptive bandwidth) and systems (scaling to 10B parameters) fit ICML's broad scope"
+      ],
+      "why_it_does_not_fit": [
+        "Heavy focus on language modeling applications may be less core to ICML compared to NeurIPS/ICLR",
+        "Limited theoretical analysis beyond empirical results - ICML typically values stronger theoretical foundations",
+        "Reviewer concerns about lack of comparisons with alternative architectures (state-space models, etc.) may be more problematic for ICML's comprehensive standards"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect alignment with NeurIPS' focus on large-scale neural architectures and foundational models",
+        "Strong match for NeurIPS' interest in in-context learning, compositional capabilities, and out-of-distribution generalization",
+        "Excellent fit for NeurIPS' emphasis on scaling laws and data efficiency (showing advantages over 8x more transformer data)",
+        "Comprehensive evaluation framework with three dimensions addresses NeurIPS' preference for thorough assessment"
+      ],
+      "why_it_does_not_fit": [
+        "Some reviewer concerns about theoretical justification may be more noticeable at NeurIPS",
+        "Focus on language modeling specifically rather than broader machine learning could be slightly limiting",
+        "Limited discussion of societal impacts or ethical considerations that NeurIPS increasingly emphasizes"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit for ICLR's focus on deep learning architectures and representation learning",
+        "Strong alignment with ICLR's interest in memory systems, attention mechanisms, and associative learning",
+        "Perfect match for ICLR's emphasis on scaling deep learning models and studying emergent capabilities",
+        "Focus on transparent architectural understanding aligns with ICLR's values of interpretability"
+      ],
+      "why_it_does_not_fit": [
+        "Somewhat limited theoretical analysis compared to ICLR's typical preference for deeper theoretical insights",
+        "Heavier emphasis on empirical scaling than fundamental architectural innovations may be slightly less ideal",
+        "Reviewer concern about lack of compositional reasoning evaluation could be more problematic for ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

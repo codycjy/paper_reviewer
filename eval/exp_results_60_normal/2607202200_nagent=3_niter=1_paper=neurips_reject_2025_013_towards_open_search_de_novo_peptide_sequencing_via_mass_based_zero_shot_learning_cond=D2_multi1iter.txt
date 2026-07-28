@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of reformulating de novo peptide sequencing as a mass prediction problem to enable zero-shot learning for unseen PTMs is highly novel and innovative. This is a critical step towards true open-search DNPS.",
+        "The use of simulated spectra with randomly sampled residue masses to train models to generalize to unseen PTMs is a creative and forward-thinking approach, addressing a fundamental limitation of current DNPS models.",
+        "The paper directly tackles a significant challenge in proteomics – the identification of novel or rare PTMs. While a proof-of-concept, the potential impact on biomedical research is substantial."
+      ],
+      "weaknesses": [
+        "The experimental results, while promising, show limited generalization to unseen residues on experimental spectra (e.g., recall rates for unseen PTMs remain very low). This suggests that the current methodology might not yet be robust enough for practical deployment, even if the underlying idea is strong.",
+        "The trade-off between performance on simulated versus experimental data, and the failure of adversarial learning to significantly improve generalization, indicates that the current approach to bridging the domain gap is still underdeveloped. More sophisticated domain adaptation strategies might be required."
+      ],
+      "summary_comment": "This paper presents a bold and innovative idea for de novo peptide sequencing by reframing it as a mass prediction problem, directly addressing the critical limitation of current models with fixed PTM vocabularies. The concept of using simulated spectra to foster generalization to unseen PTMs is particularly novel and exciting, reflecting a genuinely forward-thinking approach. While the current empirical results demonstrate only a 'proof of concept' with limited practical generalization on experimental data, the core idea is highly significant and has the potential to revolutionize how we approach open-search proteomics. Minor methodological imperfections in the current implementation are acceptable given the strong novelty and potential future impact. This work lays crucial groundwork for future research in generalizing DNPS and should inspire significant follow-up."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The core idea of reformulating de novo peptide sequencing as a mass prediction problem instead of a classification problem to enable zero-shot learning of unseen PTMs is conceptually innovative and addresses a significant limitation in existing methods.",
+        "The paper carefully details the simulation strategies used to generate synthetic spectra with varied masses, which is crucial for training a model intended for zero-shot generalization. The progressive complexity of these simulations is a good design choice.",
+        "The use of multi-task learning with a GAN-inspired framework to align representations of experimental and simulated spectra is an interesting attempt to bridge the domain gap and improve generalization."
+      ],
+      "weaknesses": [
+        "The evaluation metrics and experiments, particularly regarding generalization to unseen PTMs, are not convincing. The reported recall rates for unseen modifications (e.g., 0.6% for cysteine carbamidomethylation, 14.18% for methionine oxidation) are extremely low and do not demonstrate effective zero-shot learning. The claim of \"promising proof of concept\" is not strongly supported by the presented results.",
+        "The discussion of the model's limitations and failure modes (e.g., bias towards training-set masses, only minor improvement from adversarial loss) is commendable for its honesty, but it also highlights that the proposed methods, even with the adversarial component, struggle significantly to achieve the stated goal of zero-shot generalization for unseen PTMs on experimental data.",
+        "The reliance on teacher forcing during evaluation (feeding ground truth masses of previously decoded residues) might overestimate the model's practical performance. Errors would accumulate in a free-running inference scenario, and the true recall rates would likely be even lower. This limits the validity of the reported performance as a \"proof of concept\" for a deployable system."
+      ],
+      "summary_comment": "The paper presents an interesting and novel approach to open-search de novo peptide sequencing by reframing it as a mass regression task. The motivation to overcome limitations of fixed PTM vocabularies is strong, and the methodology involving simulated data and adversarial multi-task learning is well-conceived. However, the experimental evaluation falls short of demonstrating the practical viability of the proposed zero-shot learning capabilities. The reported recall rates for unseen PTMs on experimental data are very low, suggesting that the model struggles significantly with generalization. While the honesty in reporting these limitations is appreciated, the results do not convincingly establish a 'promising proof of concept' for truly open-search DNPS on real-world data. The evaluation under teacher-forced decoding may also mask further performance degradation in realistic inference scenarios. Therefore, despite the innovative ideas, the lack of robust empirical evidence for effective generalization necessitates a 'Reject' decision."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper tackles a highly significant practical problem in proteomics: the ability to identify novel or uncharacterized post-translational modifications (PTMs) in a zero-shot manner, which is crucial for advancing biomedical research.",
+        "The proposed mass-based regression approach to de novo peptide sequencing is well-motivated and offers a clear path towards overcoming the inherent vocabulary limitations of classification-based methods. This is an elegant reformulation of the problem.",
+        "The multi-task learning strategy combining experimental and intelligently designed simulated spectra (including adversarial components) is a sensible approach to address the domain shift and encourage generalization to unseen masses, demonstrating a practical understanding of how to tackle this challenging problem."
+      ],
+      "weaknesses": [
+        "While the concept is promising, the reported recall rates for unseen PTMs on experimental data (e.g., 3.18% for carbamidomethylation, 14.41% for methionine oxidation) are still quite low. The paper acknowledges this, but it highlights that significant work remains before this becomes a truly practical, production-ready tool.",
+        "The evaluation setup using 'teacher forcing' for measuring mass accuracy and residue identification, while helpful for isolating component performance, is not indicative of end-to-end performance in a real-world scenario where errors accumulate during autoregressive decoding. This limits the practical interpretability of the reported performance."
+      ],
+      "summary_comment": "This paper presents a novel and highly relevant approach to open-search de novo peptide sequencing by reframing it as a mass prediction problem. This is a critical step towards addressing the limitations of current PTM identification methods in proteomics. The methodology is sound, leveraging transformer architectures and an intelligent multi-task learning strategy with simulated data to encourage zero-shot generalization. While the current performance on experimental unseen PTMs is modest, the paper clearly establishes a promising proof-of-concept and provides valuable insights into the challenges and potential solutions for this difficult problem. The honest discussion of limitations and areas for future work is appreciated. Despite the current low recall rates, the direction taken by this work is significant for practitioners in the field."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses a 'general machine learning' problem in the context of 'application-driven machine learning' (healthcare/biosciences), specifically de novo peptide sequencing with a novel mass prediction approach. ICML welcomes innovative techniques and problems driven by end-users in applications like healthcare.",
+        "The methodology involves deep learning (transformer architectures), optimization (MSE, BCE loss), and probabilistic methods, which are all core topics at ICML.",
+        "The novelty of reformulating peptide sequencing as a mass prediction problem for zero-shot learning is a significant algorithmic contribution that aligns well with ICML's focus on advancing machine learning methods. Reviewer A highlights this as 'highly novel and innovative'.",
+        "Despite limitations in current practical performance, the work provides a 'promising proof of concept' and 'lays crucial groundwork for future research,' which is a valued type of contribution at ICML, especially for challenging problems.",
+        "The paper explicitly discusses limitations and avenues for future work, demonstrating scientific rigor and transparency which is expected at top-tier ML conferences."
+      ],
+      "why_it_does_not_fit": [
+        "While the idea is novel, the empirical results on generalization to unseen PTMs in experimental data are still preliminary, with very low recall rates, as noted by all reviewers. Reviewer B explicitly states that the 'claim of 'promising proof of concept' is not strongly supported by the presented results' regarding effective zero-shot learning.",
+        "The reliance on teacher forcing for evaluation, as pointed out by Reviewer B and C, means the practical, deployable performance is likely lower, which could be a concern for a conference that values strong empirical validation.",
+        "The 'Others' categorization for the paper topic might indicate it's interdisciplinary, and while ICML is broad, the biological application might require a strong ML contribution to stand out against more 'pure' ML papers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper fits well within several NeurIPS topical areas, including 'AI/ML for health and biotechnology' and 'General machine learning: core contributions in supervised and unsupervised methods', given its application to proteomics and novel ML approach.",
+        "The methodology leverages deep learning (transformer-based models), optimization techniques (MSE, adversarial loss), and probabilistic considerations ('mass prediction problem'), which are central to NeurIPS's scope.",
+        "The ambition to achieve zero-shot learning for novel PTMs addresses a significant, open problem in machine learning application to biosciences, aligning with NeurIPS's interest in 'interdisciplinary submissions that do not fit neatly into existing categories' and 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior'.",
+        "NeurIPS encourages transparency regarding limitations (as seen in the NeurIPS checklist provided by the authors), and the paper's honest discussion of its current recall rates and challenges aligns with this expectation. Reviewer B commends the 'honesty' in reporting limitations."
+      ],
+      "why_it_does_not_fit": [
+        "The main weakness, highlighted by all reviewers, is the limited empirical evidence for effective zero-shot generalization on real-world experimental data. Reviewer B goes as far as to say the 'evaluation falls short of demonstrating the practical viability'. Given NeurIPS's focus on robust empirical results, the 'very low' recall rates for unseen PTMs on experimental data could be a significant hurdle.",
+        "Reviewer B's 'Reject' decision, largely due to insufficient empirical validation of the core claim, indicates a potential 'reviewer risk' if the paper is not seen as rigorously demonstrating its proof-of-concept.",
+        "The 'teacher forcing' evaluation method (weakness from Reviewer B and C) might mask the true performance in a realistic deployment, which could be seen as a flaw in the evaluation's rigor for a conference like NeurIPS that values practical implications."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's core methodology centers on 'deep learning' (transformer architectures) and 'generative models' (GAN-inspired framework for latent alignment), which are explicitly listed as relevant topics for ICLR.",
+        "The work reformulates de novo peptide sequencing as a 'representation learning' problem (mass prediction instead of token classification) to enable zero-shot learning, a concept ICLR often embraces.",
+        "The discussion of 'optimization' (various loss functions) and 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' (through multi-task learning with simulated and experimental data) aligns with ICLR's focus.",
+        "ICLR is generally receptive to novel architectural or methodological advancements in deep learning, and the 'mass prediction problem' reformulation is a novel deep learning technique as noted by Reviewer A."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central, the primary contribution is less about a novel deep learning architecture or fundamental theory and more about applying and adapting existing deep learning concepts (transformers, GANs) to a specific bioscience problem. ICLR often seeks stronger foundational deep learning contributions.",
+        "The 'proof of concept' nature and the empirical results showing 'low recall rates' on real-world unseen PTMs might be considered too preliminary for ICLR, which often looks for more conclusive empirical demonstrations within its specialized domain.",
+        "The 'Others' categorization might risk the paper being perceived as too application-specific without a sufficiently groundbreaking deep learning innovation to warrant publication at ICLR, which has a very strong emphasis on deep learning advancements.",
+        "Reviewer B's 'Reject' decision, heavily citing the lack of convincing evaluation and limited practical viability, suggests that the empirical soundness may not meet the high bar for ICLR, which values rigorous experimental results for deep learning methods."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

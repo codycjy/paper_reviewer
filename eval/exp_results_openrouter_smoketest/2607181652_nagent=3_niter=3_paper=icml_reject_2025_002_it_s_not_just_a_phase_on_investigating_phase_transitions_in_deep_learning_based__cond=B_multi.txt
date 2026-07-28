@@ -1,0 +1,115 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Compelling connection between mechanistic interpretability (specifically modular arithmetic/parity grokking) and the algebraic recombination steps performed by networks attacking Boolean masked targets.",
+        "Unsupervised extraction of masking secrets directly from latent representations without requiring access to RNG seeds, which is a significant practical advantage for third-party hardware evaluators.",
+        "Clear mapping of distinct physical leakage phenomena to discrete phase transitions—specifically finding that basic Hamming Weight separations occur early, whereas binary parity mod 2 is learned in a distinct secondary transition.",
+        "The newly executed proof-of-concept 1D CNN experiment on time-jittered traces successfully proves that pooling/conv layers resolve temporal misalignment while dense layers perform the downstream algebraic reconstruction."
+      ],
+      "weaknesses": [
+        "The alignment step for the coordinate grids is somewhat heuristic. For ESHARD (Appendix C.1), the authors manually rotated the PCA coordinates before patching. Translating this to an automated, scaleable verification pipeline across arbitrary targets remains unaddressed.",
+        "As shown by the ASCAD experiment, the framework's performance degrades when physical leakage characteristics overlap at the hardware level (e.g., the 3x3 grid on AVR). This dependency on clear-cut physical leakages suggests the extraction pipeline is currently brittle when deployed against noisier, more complex hardware."
+      ],
+      "summary_comment": "This paper presents an elegant and highly novel approach to the black-box problem in deep learning-based side-channel analysis. The authors' rebuttal successfully addressed my primary methodological concerns. Crucially, their live mock experiment on a 1D CNN architecture with 50-sample desynchronization confirms that the spatial realignment and algebraic combination phases decouple cleanly inside the network hierarchy. While the manual coordinate rotation and the physical leakage limits on some targets (like the AVR microcontroller in ASCAD) show that the practical engineering pipeline is still early, the core scientific finding that we can extract secret masks post-hoc via activation patching is a major conceptual leap. This work represents a significant step forward for white-box security evaluation and is highly deserving of acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The authors have elevated the paper's mathematical rigor by replacing the exploratory, manual coordinate rotation with a formal Orthogonal Procrustes formulation resolved via SVD ($B^T A = U \\Sigma V^T$). This resolves my major concern regarding automated reproducibility.",
+        "The newly introduced 1D CNN experiments on CHES CTF under 50-sample random jitter effectively demonstrate that spatial-preprocessing layers (convolutional) segregate temporal alignment from the algebraic share-recombination in subsequent dense layers, validating the pipeline's generalizability.",
+        "Evaluating on three public datasets (CHES CTF, ESHARD, and ASCAD) provides a substantial empirical footprint that clearly maps internal representation learning to physical variables.",
+        "The connection between the 'initial plateau' in side-channel training curves and the grokking phenomenon observed in toy group-operation models is a highly perceptive and valuable observation."
+      ],
+      "weaknesses": [
+        "The SVD-based Orthogonal Procrustes target template, $A$, is reconstructed by mapping known physical leakage variables (idealized HWs of mask and masked values). In a blind evaluation lab scenario where such physical models might be highly non-linear or multi-dimensional, constructing $A$ a priori is still non-trivial.",
+        "For the CNN experiment (Appendix G), a 40-neuron dense bottleneck was utilized. I am skeptical whether the same distinct low-dimensional grid structures would emerge as cleanly (in the first few PCs) if the bottleneck layer capacity was drastically increased (e.g., 256 or 512 units), where features could easily disperse across higher dimensions."
+      ],
+      "summary_comment": "The authors have rigorously addressed the core limitations of the initial manuscript. By formalizing the PCA alignment via SVD-based Orthogonal Procrustes and verifying the pipeline's performance under actual temporal desynchronization using a CNN, they have shifted the paper from an empirical exploration to a highly robust security evaluation framework. The theoretical expansion into information-theoretic linear probing for scaling to higher orders ($d>2$) is solid, making this a convincing and methodologically sound contribution suitable for acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "Direct empirical verification of practical automation: By implementing SVD/Procrustes and GMM clustering ($k=9$) on the CHES CTF target during the discussion, the authors proved that the manual coordinate alignment and boundary selection steps can be bypassed with a trivial deviation ($\\pm 1.2\\%$) from manual accuracy.",
+        "Real-world constraints respected: The proposed mechanistic interpretability framework operates without requiring high accuracies or a priori access to the internal random masks, which matches typical third-party hardware security evaluations.",
+        "High engineering and diagnostic value: The ability to localize specific leaking bit-level features (e.g., LSB-biased leakage in ASCAD) provides immediate, localized feedback that chip designers can use to harden physical layouts."
+      ],
+      "weaknesses": [
+        "The new programmatic automation modules are currently relegated to Appendix H. To be genuinely useful to practitioners, the methodology in Section 4 needs to be updated to present this as a fully unified, automated pipeline rather than treating automation as an afterthought.",
+        "The physical leakage overlap in 8-bit AVR targets (ASCAD) remains a bottleneck, as the paper still lacks a concrete empirical demonstration of full, error-free mask recovery for these high-order overlapping cases using the suggested soft-likelihood recombination."
+      ],
+      "summary_comment": "The authors' empirical verification of the automated pipeline on CHES CTF during the discussion phase fully addresses my concerns regarding manual overhead. Demonstrating that SVD-based rotation and GMM clustering can programmatically detect grid coordinates—while replicating the manual patching success within 1.2%—proves that this method is viable for high-throughput testing in security labs. While the overlap in ASCAD remains a limitation, the diagnostic isolation of the leaking bits is still highly valuable. The authors must update the main text to weave the Appendix H automation steps directly into the core Section 4 methodology. I strongly support acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper makes a compelling academic connection between deep learning theory (specifically grokking and phase transitions) and cryptographic representation learning, which strongly aligns with ICML's Theory of Machine Learning and Deep Learning tracks.",
+        "The authors improved the mathematical rigor of the paper significantly during rebuttal by replacing heuristic alignments with a formal SVD-based Orthogonal Procrustes formulation, matching ICML's high standards for mathematical soundness.",
+        "The paper provides a thorough empirical evaluation on three distinct public benchmarks (CHES CTF, ESHARD, ASCAD), showing a methodical scaling of experiments that fits ICML's empirical machine learning focus."
+      ],
+      "why_it_does_not_fit": [
+        "ICML tends to favor general learning theory and generalizable algorithms. The specific application to side-channel analysis (SCA) on hardware may be viewed as too domain-specific or niche for the broader ICML audience.",
+        "As pointed out by Reviewer B, the bottleneck layers used in the CNN experiments are quite small (40 neurons). ICML reviewers might express skepticism about whether these low-dimensional representations generalize to larger, standard high-capacity ML architectures.",
+        "The reliance on idealized model assumptions (e.g., reconstructing the template $A$ from known physical Hamming weights) might be criticized as lacking the general-purpose, black-box optimization focus usually favored at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS values highly interdisciplinary submissions, and this paper effectively sits at the intersection of physical hardware security, mechanistic interpretability, and deep learning dynamics.",
+        "The paper supports the 'weak universality hypothesis' by showing that identical representation structures emerge during phase transitions across different domains and physical implementations, which is a major conceptual insight fit for NeurIPS's broad audience.",
+        "The authors address real-world constraints by demonstrating their mechanistic interpretability pipeline on non-trivial, time-jittered 1D CNN implementations, validating the work under realistic spatial desynchronization."
+      ],
+      "why_it_does_not_fit": [
+        "Because NeurIPS is extremely broad, there is a distinct 'reviewer risk' of getting assigned reviewers who lack hardware security expertise and struggle to appreciate the significance of recovering masked secret keys without the RNG seeds.",
+        "The framework exhibits fragile performance when physical leakages overlap at the hardware level (as seen in the 3x3 grid on AVR for ASCAD), which might be criticized under NeurIPS's rigorous evaluation of robustness.",
+        "The programmatic automation modules (SVD/GMM clustering) are currently relegated to Appendix H, making the core, automated pipeline feel somewhat fragmented in the main body."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR is the premier venue for representation learning, and this paper explicitly studies how internal representation layers form discrete coordinates (e.g., grid-like structures of Hamming weights and parities) during training.",
+        "The methodology relies heavily on linear probing and activation patching (mediation analysis) to analyze the causal flow of learned features in hidden layers, which is a core topic of interest to ICLR's dominant mechanistic interpretability community.",
+        "The paper directly builds upon and validates theoretical concepts popularized at ICLR, such as modular arithmetic grokking (Power et al., 2022; Nanda et al., 2023), mapping these toy models onto practical, security-critical algebraic reconstructions."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer C points out that the manual versus automated coordinate alignment needs to be integrated directly into Section 4 to present a fully unified representation learning framework, rather than leaving automation as an afterthought in Appendix H.",
+        "The paper's focus on structured MLPs and small 1D CNNs might face pushback from the ICLR crowd, which often expects representation learning insights to be demonstrated on massive-scale Transformers or foundational vision-language models."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

@@ -1,0 +1,674 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of Soft Weight Rescaling (SWR) as a means to prevent unbounded weight growth and recover plasticity without losing information is highly novel and addresses a critical problem in deep learning, especially in dynamic learning scenarios.",
+        "The theoretical proofs regarding boundedness of weight magnitude and balancedness between layers provide a strong foundation for the proposed method, demonstrating a deep understanding of its mechanistic advantages.",
+        "The empirical evaluation across warm-start, continual learning, and single-task settings, using various models and datasets, convincingly demonstrates the practical utility and superior performance of SWR compared to existing regularization and re-initialization methods."
+      ],
+      "weaknesses": [
+        "While the theoretical analysis is robust for the specific properties, a more in-depth exploration of the interaction between SWR and learning rate schedulers, especially the observed performance drop in larger models for SWR+re-init, would strengthen the paper's completeness.",
+        "The paper could benefit from a more detailed discussion of the computational overhead introduced by SWR compared to other methods, especially considering its practical application in large-scale training."
+      ],
+      "summary_comment": "This paper presents Soft Weight Rescaling (SWR), a genuinely novel and creative approach to tackle plasticity loss in neural networks by dynamically scaling weights. The theoretical underpinnings are solid, proving boundedness and improved layer balance, which are crucial for stable training. What truly excites me is its bold claim of recovering plasticity *without* losing learned information, which is a significant advantage over re-initialization methods. The empirical results across various challenging learning scenarios (warm-start, continual learning, and even standard generalization) are compelling and clearly demonstrate its effectiveness, especially on larger models like VGG-16 where traditional regularization struggles. While there are minor points for further investigation, such as the full implications with learning rate schedulers, the core idea is highly innovative and significant enough to push the field forward. This work has the potential to inspire a new line of research into dynamic weight management. I actively embrace innovative research, and this paper delivers."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses a core challenge in 'general machine learning' and 'deep learning' related to plasticity loss and unbounded weight growth, which are highly relevant topics for ICML.",
+        "The theoretical analysis demonstrating boundedness of weight magnitude and improved layer balance (Section 3.3, 3.4, Appendix B, C) aligns well with ICML's interest in the 'theory of machine learning' and 'optimization' aspects.",
+        "The empirical evaluation covers 'warm-start learning,' 'continual learning,' and 'single-task learning' using standard image classification benchmarks and models (MLP, CNN, VGG-16), indicating practical machine learning application and robustness, which is a strong fit for ICML's 'application-driven machine learning' and general empirical rigor.",
+        "The methods proposed involve novel weight regularization techniques ('optimization') and address issues relevant to 'trustworthy machine learning' like reliability and generalization. Reviewer A highlights the 'genuinely novel and creative approach' and 'theoretical underpinnings are solid', which fits ICML's emphasis on cutting-edge research.",
+        "The discussion of the interaction with batch normalization (Section 3.3) and the comparison with methods like L2 regularization and re-initialization (Section 4) show a broad understanding of existing ML techniques, consistent with ICML's scope."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A noted that a 'more in-depth exploration of the interaction between SWR and learning rate schedulers' would strengthen the paper's completeness, suggesting a potential area for further theoretical or empirical rigor that might be expected for an absolute top-tier ICML paper.",
+        "The reviewer also pointed out that the paper could benefit from 'a more detailed discussion of the computational overhead,' which might be a minor weakness for a conference that values 'machine learning systems' and efficient implementations."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on 'plasticity loss' and 'unbounded weight growth' in neural networks directly falls under the 'deep learning' and 'general machine learning: core contributions in supervised and unsupervised methods' topics emphasized by NeurIPS.",
+        "The theoretical proofs regarding weight boundedness and layer balance contribute to the 'Theory' aspect of NeurIPS, as noted by Reviewer A's comment about 'theoretical underpinnings are solid, proving boundedness and improved layer balance'.",
+        "The empirical results on 'warm-start learning,' 'continual learning,' and 'single-task learning' in image classification (CIFAR, TinyImageNet) align well with NeurIPS's interest in 'Computer vision' applications and practical improvements to generalization, which is considered a 'core contribution'.",
+        "The proposed Soft Weight Rescaling method is a novel 'optimization' technique for deep learning, addressing issues in 'generalization and multi-task learning' (continual learning), which are explicit NeurIPS topics.",
+        "The problem of plasticity loss, especially in continual learning, relates to the 'data-centric aspects of AI' and how models learn and retain information over time, making it highly relevant for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reviewer's comment about needing a 'more detailed discussion of the computational overhead' could be a slight point of concern for NeurIPS, which also values practical feasibility and system implications.",
+        "While the paper demonstrates strong empirical results, the 'more in-depth exploration of the interaction between SWR and learning rate schedulers' could be seen as an area for improvement, especially for a conference that often expects comprehensive analysis of new methods.",
+        "The phrasing 'Other' for the paper topic suggests it might not fit neatly into one of the explicit NeurIPS categories, even though it touches on several. However, NeurIPS explicitly welcomes 'interdisciplinary submissions that do not fit neatly into existing categories', which mitigates this concern."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR explicitly focuses on 'all aspects of deep learning', and this paper directly addresses 'plasticity loss' and 'unbounded weight growth' in neural networks, which are fundamental issues in deep learning architectures and training dynamics.",
+        "The method, Soft Weight Rescaling, is a form of 'representation learning' (specifically, how representations are affected by weight magnitudes) and 'optimization' technique that aims to improve network performance and stability.",
+        "The theoretical demonstration of 'boundedness of weight magnitude' and 'balancing weight magnitude between layers' (Appendix B, C) is relevant to 'learning theory' and 'optimization', which are topics of interest for ICLR.",
+        "The empirical evaluations across different learning paradigms (warm-start, continual learning, single-task) with image classification models (VGG-16, CNN) align with ICLR's interest in 'applications to robotics, autonomy, planning', 'computer vision' and 'datasets and benchmarks'.",
+        "The reviewer highlights the 'genuinely novel and creative approach' which is highly valued by ICLR for cutting-edge research.",
+        "The discussion of Batch Normalization's interaction with SWR (Section 3.3) is relevant, as normalization techniques are integral to deep learning architectures, a key ICLR focus."
+      ],
+      "why_it_does_not_fit": [
+        "While the theory is present, for ICLR, which has a strong theoretical bent, a deeper theoretical dive into the Lipschitz continuity and its bounds (as touched upon in Corollary 2.1 and 'left for future work') might be expected. Reviewer A noted the 'robustness for specific properties' but also suggested 'more in-depth exploration'.",
+        "The paper's focus is on general deep learning models rather than being specifically tailored to a particular modality like 'computer vision, audio, language'. While general deep learning is accepted, some of the most impactful ICLR papers often push boundaries in specific deep learning sub-fields.",
+        "The 'computational overhead' point raised by Reviewer A, though minor, could be a slightly more critical point for ICLR, which often considers implementation details and scalability implicitly in its emphasis on novel deep learning systems."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_ae1383bbb5e1",
+    "paper_id": "paper_a27148757bfc",
+    "target_paper_summary": {
+      "paper_id": "paper_a27148757bfc",
+      "title": "Recovering Plasticity Of Neural Networks Via Soft Weight Rescaling",
+      "abstract": "Recent studies have shown that as training progresses, neural networks gradually lose their capacity to learn new information, a phenomenon known as plasticity loss. An unbounded weight growth is one of the main causes of plasticity loss. Furthermore, it harms generalization capability and disrupts optimization dynamics. Re-initializing the network can be a solution, but it results in the loss of learned information, leading to performance drops. In this paper, we propose Soft Weight Rescaling (SWR), a novel approach that prevents unbounded weight growth without losing information. SWR recovers the plasticity of the network by simply scaling down the weight at each step of the learning process. We theoretically prove that SWR bounds weight magnitude and balances weight magnitude between layers. Our experiment shows that SWR improves performance on warm-start learning, continual learning, and single-task learning setups on standard image classification benchmarks.",
+      "topic": "",
+      "claims": [
+        "we propose Soft Weight Rescaling (SWR), a novel approach that prevents unbounded weight growth without losing information."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "plasticity loss in neural networks and methods to mitigate it",
+          "rationale": "The target paper addresses the problem of 'plasticity loss' in neural networks and proposes a solution. This query seeks other papers tackling the same core problem."
+        },
+        {
+          "group": "same_method",
+          "query": "weight scaling or regularization techniques for preventing unbounded weight growth in neural networks",
+          "rationale": "The target paper introduces 'Soft Weight Rescaling (SWR)' which involves scaling down weights. This query looks for papers employing similar weight manipulation or regularization methods."
+        },
+        {
+          "group": "same_constraints",
+          "query": "continual learning or warm-start learning with preserved information in image classification",
+          "rationale": "The paper focuses on preventing weight growth 'without losing information' and evaluates performance on 'warm-start learning, continual learning, and single-task learning setups on standard image classification benchmarks'. This query identifies papers sharing these operational constraints and evaluation contexts."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "benchmarks and baselines for continual learning or plasticity recovery in neural networks",
+          "rationale": "The paper mentions evaluating on 'standard image classification benchmarks' and improving performance in 'warm-start learning, continual learning, and single-task learning setups'. This query is designed to find established benchmarks, metrics, and baseline methods in these areas."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "techniques to prevent weight growth or recover plasticity in neural networks before 2023",
+          "rationale": "The paper claims 'SWR, a novel approach that prevents unbounded weight growth without losing information.' This query aims to find earlier works that might have used similar concepts or achieved similar outcomes, potentially challenging the novelty claim."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "negative results or limitations of weight scaling or regularization in neural network plasticity or catastrophic forgetting",
+          "rationale": "The paper proposes SWR to mitigate plasticity loss due to unbounded weight growth. This query seeks papers that might have found limitations, negative side effects, or counter-evidence to the effectiveness of weight scaling or similar regularization approaches in related problems like catastrophic forgetting or when applied under different conditions."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_46ca45060",
+        "title": "Measuring Catastrophic Forgetting in Neural Networks",
+        "authors": [
+          "Ronald Kemker",
+          "Marc McClure",
+          "Angelina Abitino",
+          "Tyler L. Hayes",
+          "Christopher Kanan"
+        ],
+        "year": 2018,
+        "publication_date": "2018-04-29",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "Deep neural networks are used in many state-of-the-art systems for machine perception. Once a network is trained to do a specific task, e.g., bird classification, it cannot easily be trained to do new tasks, e.g., incrementally learning to recognize additional bird species or learning an entirely different task such as flower recognition. When new tasks are added, typical deep neural networks are prone to catastrophically forgetting previous tasks. Networks that are capable of assimilating new information incrementally, much like how humans form new memories over time, will be more efficient than re-training the model from scratch each time a new task needs to be learned. There have been multiple attempts to develop schemes that mitigate catastrophic forgetting, but these methods have not been directly compared, the tests used to evaluate them vary considerably, and these methods have only been evaluated on small-scale problems (e.g., MNIST). In this paper, we introduce new metrics and benchmarks for directly comparing five different mechanisms designed to mitigate catastrophic forgetting in neural networks: regularization, ensembling, rehearsal, dual-memory, and sparse-coding. Our experiments on real-world images and sounds show that the mechanism(s) that are critical for optimal performance vary based on the incremental training paradigm and type of data being used, but they all demonstrate that the catastrophic forgetting problem is not yet solved.",
+        "url": "https://doi.org/10.1609/aaai.v32i1.11651",
+        "doi": "https://doi.org/10.1609/aaai.v32i1.11651",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2743151379"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 557
+      },
+      {
+        "paper_id": "rw_002_944b6e67b",
+        "title": "Embracing Change: Continual Learning in Deep Neural Networks",
+        "authors": [
+          "Raia Hadsell",
+          "Dushyant Rao",
+          "Andrei A. Rusu",
+          "Razvan Pascanu"
+        ],
+        "year": 2020,
+        "publication_date": "2020-11-03",
+        "venue": "Trends in Cognitive Sciences",
+        "abstract": "Modern machine learning excels at training powerful models from fixed datasets and stationary environments, often exceeding human-level ability.Yet, these models fail to emulate the process of human learning, which is efficient, robust, and able to learn incrementally, from sequential experience in a non-stationary world.Insights into this limitation can be gleaned from the nature of neural network optimization, which implies that continual learning techniques could radically improve deep learning as well as open the door to new application areas.Promising approaches for continual learning can be found at the most granular level, with gradient-based methods, as well as at the architectural level, with modular and memory-based approaches. We also consider meta-learning as a potentially important direction. Artificial intelligence research has seen enormous progress over the past few decades, but it predominantly relies on fixed datasets and stationary environments. Continual learning is an increasingly relevant area of study that asks how artificial systems might learn sequentially, as biological systems do, from a continuous stream of correlated data. In the present review, we relate continual learning to the learning dynamics of neural networks, highlighting the potential it has to considerably improve data efficiency. We further consider the many new biologically inspired approaches that have emerged in recent years, focusing on those that utilize regularization, modularity, memory, and meta-learning, and highlight some of the most promising and impactful directions. Artificial intelligence research has seen enormous progress over the past few decades, but it predominantly relies on fixed datasets and stationary environments. Continual learning is an increasingly relevant area of study that asks how artificial systems might learn sequentially, as biological systems do, from a continuous stream of correlated data. In the present review, we relate continual learning to the learning dynamics of neural networks, highlighting the potential it has to considerably improve data efficiency. We further consider the many new biologically inspired approaches that have emerged in recent years, focusing on those that utilize regularization, modularity, memory, and meta-learning, and highlight some of the most promising and impactful directions. A common benchmark for success in artificial intelligence is the ability to emulate human learning. We measure the abilities of humans to recognize images, play games, and drive a car, to name a few, and then develop machine learning models that can match or exceed these given enough training data. This paradigm puts the emphasis on the end result, rather than the learning process, and overlooks a critical characteristic of human learning: that it is robust to changing tasks and sequential experience. It is perhaps unsurprising that humans can learn this way, after all, time is irreversible and the world is non-stationary (see Glossary), so human learning has evolved to thrive in dynamic learning settings. However, this robustness is in stark contrast to the most powerful modern machine learning methods, which perform well only when presented with data that are carefully shuffled, balanced, and homogenized. Not only do these models underperform when presented with changing or incremental data regimes, in some cases they fail completely or suffer from rapid performance degradation on earlier learned tasks, known as catastrophic forgetting. What might be gained by developing neural network models that learn sequentially like humans? First of all, many applications could benefit from continual adaptation to a changing target specification: for example, visual recognition algorithms that need to learn a diverse, growing set of image classes; or household robots that need to incrementally add skills to their repertoire. Continual learning techniques could enable models to acquire specialized solutions without forgetting previous ones, potentially learning over a lifetime, as a human does. In fact, continual learning is generally considered one of the attributes necessary for human-level artificial general intelligence [1.Hassabis D. et al.Neuroscience-inspired artificial intelligence.Neuron. 2017; 95: 245-258Abstract Full Text Full Text PDF PubMed Scopus (569) Google Scholar]. More fundamentally, continual learning methods could offer enormous advantages for deep neural networks even in stationary settings, by improving learning efficiency as well as by enabling knowledge transfer between related tasks. This article will first motivate a taxonomy of continual learning approaches through describing their connections with biological systems. Just as continual learning in humans cannot be reduced to a single biological mechanism, but is rather the product of multiple systems that range from the synaptic plasticity of single neurons to the entire memory system, continual learning in artificial neural networks is not trivial to implement and will likely require a combination of strategies. Before exploring these different approaches in detail, we will delve into the dynamics of gradient-based learning algorithms to understand the challenges of continual learning with artificial neural networks. The study of the natural world and its intelligent species has frequently intersected with artificial intelligence research, including in aspects pertaining to continual learning [1.Hassabis D. et al.Neuroscience-inspired artificial intelligence.Neuron. 2017; 95: 245-258Abstract Full Text Full Text PDF PubMed Scopus (569) Google Scholar]. Biology offers an existence proof for successful continual learning in complex environments and also hints at the design principles and trade-offs of successful approaches. There are multiple mechanisms that enable biological systems to adapt in changing environments without intransigence or forgetting. Thus, in this section we introduce four continual learning paradigms through analogy to their biological equivalents, saving a fuller discussion of each approach for following sections. Additionally, the approaches can be succinctly described by depicting their canonical models, as in Figure 1 (Key Figure). Gradient-based continual learning methods (see ‘Gradient-Based Solutions’) can be understood as distant relatives of models of synaptic plasticity. Mammalian brains have been shown to have complex mechanisms at the synaptic level, which protect against interference between old and new knowledge, or even conflicting facts and skills [2.Wixted J.T. The psychology and neuroscience of forgetting.Annu. Rev. Psychol. 2004; 55: 235-269Crossref PubMed Scopus (639) Google Scholar]. Synaptic plasticity has been studied for decades, with recent studies demonstrating remarkably precise and effective consolidation mechanisms occurring even over very short timescales et a of and and PubMed Scopus Google Scholar]. continual learning approaches have mechanisms on principles et learning with complex et catastrophic forgetting in neural 2017; PubMed Scopus Google but many is paradigm that artificial systems might to enable continual learning (see an it is not that successful in increasingly complex environments is correlated with and of systems. biological brains are with for memory or of to in of and D. et and modular of PubMed Scopus Google Scholar]. systems in the are critical for human learning and are the for memory-based continual learning in artificial neural networks (see for Artificial the complex between synaptic memory, and memory are to be described by it is that memory is the that human learning and adaptation over a of experience et and Scholar]. meta-learning for continual learning (see for Continual is an approach that is by the ability to solutions after experience et to Scholar]. machine learning to the learning approach meta-learning to the of general adaptation that biological systems The of continual learning is by the sequential training and by the from the In contrast to the common machine learning of a or the continual learning on non-stationary or changing environments, often into a set of tasks that need to be This in of or and and as or or it not even have tasks et continual of the on and Scopus Google et for continual et continual learning Scholar]. with learning et of the on Scopus Google et learning for neural of the on the not the the is to the of a are not and a that is to perform household in The cannot be in the and then of the of tasks and the will need to its set over time learning to then and each have a or and require or enable the will need to adapt and also not not is then is learning related tasks and the transfer performance and learning on each and also transfer performance on previous tasks, when of transfer from the the will have to previous tasks as well as to its or In a continual learning to many in Figure and in these that continual learning often between forgetting in a is given an of tasks. This the of which forgetting previous performance can be with a of new experience. and in transfer with the ability to previous tasks. Thus, to an the and how is the to of the and trade-offs can only be we continual learning into a this continual learning in can be and it a to of Continual learning methods catastrophic forgetting is often in research but of the following are critical for many world application to previous tasks. The not have for previous experience it can not with seen in and The approach be it cannot add a new for each catastrophic forgetting and on new tasks not performance on learned tasks adaptation and The be of adaptation to tasks or and of when presented with past plasticity. The be able to learning as new tasks are and a improve related tasks, past and in of learning efficiency and performance learning. The approach not on known or Continual learning methods catastrophic forgetting is often in research but of the following are critical for many world application to previous tasks. The not have for previous experience it can not with seen in and The approach be it cannot add a new for each catastrophic forgetting and on new tasks not performance on learned tasks adaptation and The be of adaptation to tasks or and of when presented with past plasticity. The be able to learning as new tasks are and a improve related tasks, past and in of learning efficiency and performance learning. The approach not on known or networks modern to and consider of data at in fact, this of has to the approach for and applications in the In a learning the is to set the of the network in to some as the between and Gradient-based learning, the most and is an at each a to the in to the a The of this in a each data is to on each to it or we a the that is to each it is or which data or many over many learning to progress and algorithms the of a by a in a direction. The is given by the which can be seen as for each or its will the The are and over a of data a is by a in the of this Figure this The the of the to a as a of the of a this and from a the learning the of the the of and the by a in this direction. many the to a of the we can at learning of a Figure a on the first for and the the of that the learned for has a for this catastrophic sequential training on a set of tasks can to performance on earlier the is so that tasks are by the into a optimization, as shown in Figure we the dynamics that in but the In this the is shown in and the for each are shown in and The from each the its and the is an between the of different tasks. a continual learning the ability to on tasks but it be for a continual learning approach to the dynamics by the or by memory to the with data from seen tasks. Gradient-based algorithms the of a by a in a direction. The is given by the which can be seen as for each or its will the The are and over a of data a is by a in the of this Figure this The the of the to a as a of the of a this and from a the learning the of the the of and the by a in this direction. many the to a of the we can at learning of a Figure a on the first for and the the of that the learned for has a for this catastrophic sequential training on a set of tasks can to performance on earlier tasks. the is so that tasks are by the into a optimization, as shown in Figure we the dynamics that in but the In this the is shown in and the for each are shown in and The from each the its and the is an between the of different tasks. a continual learning the ability to on tasks but it be for a continual learning approach to the dynamics by the or by memory to the with data from seen tasks. a result, for learning to be data be and consider to learn different tasks. the tasks will not on how to set the dynamics will to However, for many one is the will gradient-based learning in tasks are present to the for learning to progress and the The dynamics are the through which gradient-based methods which to the of to learning. Continual learning can be understood as for an to do one that or the dynamics that tasks do not need to be It is how learning in we can tasks are learned at the not the is that most in a are learned and the multiple to learn the et at in deep of the on et training neural networks by in a for deep Scholar]. However, the dynamics require that are even the ones, which has shown that are sequentially, even they are present in the data D. et and their from 2017; and the is for deep models et solutions to the dynamics of learning in deep neural of the on Scholar]. even tasks are complex and presented the might learn sequentially, efficiency to the of continual learning could learning even in stationary learning settings. by the learning dynamics described one promising approach is to the of different tasks. Not only this to the of the it also is by studies of synaptic consolidation in biological brains et a of and and PubMed Scopus Google Scholar]. approach is to the to with from learned tasks D. et memory for continual in et learning with potential methods can be in as for example, in learning, they have the potential to learning in the of conflicting et et for et deep learning models to of the on Scholar]. approaches on the on new tasks to forgetting of previous tasks. methods the of each for previous tasks and to each to this measure et catastrophic forgetting in neural 2017; PubMed Scopus Google et learning through synaptic 2017; Google et learning to of the on Scopus Google et continual 2017; robust of continual et catastrophic forgetting by Scholar]. example, consolidation et catastrophic forgetting in neural 2017; PubMed Scopus Google relies on the to measure the of the with to each and to which most need to be to forgetting. The as a for the of previous tasks, that the by the dynamics is that as et of catastrophic forgetting in gradient-based neural and the training in general et as an for continual et the of training in continual can have of how is set of techniques knowledge et the knowledge in a neural as a to a with to previous tasks. The learning without forgetting approach D. without on and the of previous to be even when learning a new This is by a of the network and previous each new and an to of gradient-based methods is their on of the they to which that they are likely to fail the is presented with many tasks or when the tasks in the are However, these approaches on the they to understand the continual learning and in neural network are a natural and effective to the of interference and catastrophic forgetting in continual learning. offers a between a single which is to and networks for each which catastrophic forgetting but also transfer between tasks (see Figure for of a modular is in biological systems as it of catastrophic forgetting can be by models for different tasks, but this implies transfer between tasks, and and known tasks. is to modular by tasks and with a learning that only a of This is to methods, but with a on which neurons or are for each models often to by new as new tasks are a of network have emerged that add new and et transfer in deep neural and Scopus Google et neural new as learning. solutions add new only when et learning with et deep learning: deep networks to new of the on Scopus Google continual in and then or of the et a for continual of the on et learning neural or learning of new tasks to of a fixed et in neural 2017; catastrophic interference by 2017; et catastrophic forgetting with to the of the on et for continual in et learning with of the on Scholar]. can also as a this can offer and at different of a for a might be modular at a and as well as a and enable learning of sequential tasks. This in earlier in continual learning a first continual Scopus Google (see also of at and has shown with new research et for of the on D. et for learning and transfer in but further study at to understand is from the of which has been from a and efficiency et neural of the on D. et deep neural of the on et neural networks through of the on et training of artificial neural networks with inspired by network PubMed Scopus Google et training very deep of the on training of deep neural networks by dynamic of the on as well as for its to learning and et of for in The on Artificial Google Scholar]. a continual learning et sequential and will in interference and as will be or effective to can also to the of without a modular which we as an important for The paradigm of modularity, when with and offers a powerful to continual learning. into the human-level artificial intelligence will require the ability to and the ability to modular continual learning a Gradient-based and modular methods be for continual learning rather than Gradient-based methods cannot forgetting over and modular approaches can knowledge over they in of neural network the of in different over the of then each after have a that is by as and plasticity in PubMed Scopus Google Scholar]. the sequential experience of by the of a neural network be and A be to the with a from we consider a to the continual learning to implement a neural network memory that can and knowledge or experience. artificial memory is potentially for but it with the of or learning, a for and in a that tasks. The of memory for continual learning is often or the is to a of and then learning from this well as from catastrophic forgetting continual of seen tasks and Scopus Google D. et for continual in In this are also memory methods, which are from methods they not only memory for but also for et learning with et memory in in et of the on Scholar]. and memory are and remarkably effective at but they do not than one can a set of or memory that the of each Not only is this of memory and but it and transfer multiple tasks. the critical in a memory one of which to and this has been the of a of recent et and of the on and Scopus Google et continual learning with in et for continual in et for continual learning et to past knowledge in continual Scholar]. a biological one might that has been in and humans et Full Text Full Text PDF PubMed Scopus Google of or is In memory methods, are models are and then to data as et learning with deep in et of the on Scopus Google et learning with in D. et in Scholar]. we consider methods with learned and the neural et a neural network with dynamic PubMed Scopus Google gradient-based learning to neural networks to from the memory, and to the continual learning a could learn how to and knowledge for and it for and The of the approach a training this of is even in stationary environments or from the neural network suffer from catastrophic forgetting of the memory are for continual learning and the most models have the potential to open new in the but only we can the challenges of training systems. of the solutions mechanisms or for continual learning. a different between as knowledge transfer in a memory-based It is trade-offs can be by learning a from data rather than on human to design a of or approaches have that solutions can be by learning as and learning that need to be et a of and Rev. PubMed Scopus Google to Google Scholar]. meta-learning approaches can be described as timescales of an that on tasks and an that performance over multiple to continual learning, can be that for performance in non-stationary et with of the on et learning continual adaptation for of the on et to Scholar]. example, meta-learning for continual in that learn on correlated of this the and could in catastrophic the the to forgetting and improve the non-stationary the to an of of the of meta-learning, is they are and for effective continual algorithms can be understood in of adaptation at different time of learning, or the necessary for an of The of the is to improve adaptation in different data are training and to at time algorithms can be by their or of the which adaptation to tasks, or the which a of In et to learn by by in et meta-learning for adaptation of deep of the on can also be et networks for one in et networks for in neural et to et to learn Artificial Scopus Google as a for of the on et in et neural of the on or approaches et adaptation of the on et with of the on et learning of the on et with of the on and Scopus Google Scholar]. In these the to improve the of adaptation to a new algorithms can be understood in of adaptation at different time of learning, or the necessary for an of The of the is to improve adaptation in different data are training and to at time algorithms can be by their or of the which adaptation to tasks, or the which a of In et to learn by by in et meta-learning for adaptation of deep of the on can also be et networks for one in et networks for in neural et to et to learn Artificial Scopus Google as a for of the on et in et neural of the on or approaches et adaptation of the on et with of the on et learning of the on et with of the on and Scopus Google Scholar]. In these the to improve the of adaptation to a new sequential can be considered as a meta-learning et of the on et of the on et in et adaptation and knowledge a new approach to continual in Scholar]. in et continual learning this can be for continual learning. In the is an that a that can tasks However, that in natural are many of tasks that are or on the on the or the of the the meta-learning the emphasis to adaptation and rather than this is not and on the tasks There are that one cannot to for of or or in is for of the of the experience a is an of an experience that not need the of meta-learning new solutions for continual learning is this has to be as well as design of the et a of datasets for learning to learn from few et a benchmark and for and Scholar]. meta-learning can some of the in machine learning, this is by the tasks past these meta-learning could continual learning research the of knowledge with a of learning in non-stationary learning often to the ability of humans to learn and a from a few However, we do not often on the ability of humans to learn over a of and it is this that human of and This article not only to highlight the of continual learning, but also to the of modern neural networks in this in the that in an gradient-based the we have learning paradigms that have the potential to be impactful to Not these paradigms have in neuroscience and biological systems. Gradient-based approaches the of neural networks and have been shown to catastrophic forgetting. offer solutions to interference and catastrophic enabling transfer through of skills and memory models could be a for learning, and meta-learning approaches could algorithms and potential for it is important to also the in machine learning models that of and cannot be in Continual learning could these through improving the of the learning and through developing that that or are we an to that the ability of gradient-based approaches to learn complex tasks well the dynamic and improving the efficiency of are the trade-offs between the different and can we the trade-offs of biological these are are the different or of continual learning that we do we the need to the ability to facts or is the modular of a continual learning has to be than it might it over can we learn how to or to continual might we that these mechanisms are robust to in data when with models that learn how do we that are do we and we learn the to continual we do this at the data and learning to learn the as as the the learned be robust or we an to that the ability of gradient-based approaches to learn complex tasks well the dynamic and improving the efficiency of What are the trade-offs between the different and can we the trade-offs of biological these are are the different or of continual learning that we do we the need to the ability to facts or is the modular of a continual learning has to be than it might it over can we learn how to or to continual might we that these mechanisms are robust to in data when with models that learn how do we that are do we and we learn the to continual we do this at the data and learning to learn the as as the the learned be robust or the ability to transfer knowledge from a to improve performance on a learned a in neural networks learning a new performance on previous tasks. how different in a neural network are for the of the the of the of a of tasks that learning is and efficiency on the following tasks. given by the the of the are by a in this the will the ability to transfer knowledge from previous tasks to improve performance and learning efficiency on a related the of the with to the of the the that learning to in to improve given a continuous a the in the is the of the the the and the as this only the is the nature of the as one can only a in the by how the an of the of the in modern machine learning. the set of by a machine learning in to as the or the target a that a to learning, as the between and a of or with and which process some given and an It is on neurons in biological describing a process or with a has many This can be the for network or for the implies that few are each learning",
+        "url": "https://doi.org/10.1016/j.tics.2020.09.004",
+        "doi": "https://doi.org/10.1016/j.tics.2020.09.004",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3097816393"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "same_problem"
+        ],
+        "citation_count": 464
+      },
+      {
+        "paper_id": "rw_003_d191801f9",
+        "title": "Instant neural graphics primitives with a multiresolution hash encoding",
+        "authors": [
+          "Thomas Müller",
+          "Alex Evans",
+          "Christoph Schied",
+          "Alexander Keller"
+        ],
+        "year": 2022,
+        "publication_date": "2022-07-01",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "Neural graphics primitives, parameterized by fully connected neural networks, can be costly to train and evaluate. We reduce this cost with a versatile new input encoding that permits the use of a smaller network without sacrificing quality, thus significantly reducing the number of floating point and memory access operations: a small neural network is augmented by a multiresolution hash table of trainable feature vectors whose values are optimized through stochastic gradient descent. The multiresolution structure allows the network to disambiguate hash collisions, making for a simple architecture that is trivial to parallelize on modern GPUs. We leverage this parallelism by implementing the whole system using fully-fused CUDA kernels with a focus on minimizing wasted bandwidth and compute operations. We achieve a combined speedup of several orders of magnitude, enabling training of high-quality neural graphics primitives in a matter of seconds, and rendering in tens of milliseconds at a resolution of 1920×1080.",
+        "url": "https://doi.org/10.1145/3528223.3530127",
+        "doi": "https://doi.org/10.1145/3528223.3530127",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4221151978"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 3755
+      },
+      {
+        "paper_id": "rw_004_fb4ff3929",
+        "title": "Scalable Bayesian Optimization Using Deep Neural Networks",
+        "authors": [
+          "Jasper Snoek",
+          "Oren Rippel",
+          "Kevin Swersky",
+          "Ryan Kiros",
+          "Nadathur Satish",
+          "Narayanan Sundaram",
+          "Mostofa Patwary",
+          "Prabhat",
+          "Ryan P. Adams"
+        ],
+        "year": 2015,
+        "publication_date": "2015-02-19",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Bayesian optimization is an effective methodology for the global optimization of functions with expensive evaluations. It relies on querying a distribution over functions defined by a relatively cheap surrogate model. An accurate model for this distribution over functions is critical to the effectiveness of the approach, and is typically fit using Gaussian processes (GPs). However, since GPs scale cubically with the number of observations, it has been challenging to handle objectives whose optimization requires many evaluations, and as such, massively parallelizing the optimization. In this work, we explore the use of neural networks as an alternative to GPs to model distributions over functions. We show that performing adaptive basis function regression with a neural network as the parametric form performs competitively with state-of-the-art GP-based approaches, but scales linearly with the number of data rather than cubically. This allows us to achieve a previously intractable degree of parallelism, which we apply to large scale hyperparameter optimization, rapidly finding competitive models on benchmark object recognition tasks using convolutional networks, and image caption generation using neural language models.",
+        "url": "http://arxiv.org/abs/1502.05700",
+        "doi": "https://doi.org/10.48550/arxiv.1502.05700",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1798702550"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 440
+      },
+      {
+        "paper_id": "rw_005_5f1304398",
+        "title": "Tackling Climate Change with Machine Learning",
+        "authors": [
+          "Lynn H. Kaack",
+          "David Rolnick",
+          "Priya L. Donti",
+          "Kelly Kochanski",
+          "Alexandre Lacoste",
+          "Kris Sankaran",
+          "Andrew Slavin Ross",
+          "Nikola Milojevic-Dupont",
+          "Natasha Jaques",
+          "Anna Waldman‐Brown",
+          "Alexandra Sasha Luccioni",
+          "Tegan Maharaj",
+          "Evan David Sherwin",
+          "Mukkavilli, Karthik",
+          "Konrad P. Körding",
+          "Carla P. Gomes",
+          "Andrew Y. Ng",
+          "Demis Hassabis",
+          "John Platt",
+          "Felix Creutzig",
+          "Jennifer Chayes",
+          "Yoshua Bengio"
+        ],
+        "year": 2022,
+        "publication_date": "2022-02-07",
+        "venue": "OPUS 4 (Zuse Institute Berlin)",
+        "abstract": "Climate change is one of the greatest challenges facing humanity, and we, as machine learning experts, may wonder how we can help. Here we describe how machine learning can be a powerful tool in reducing greenhouse gas emissions and helping society adapt to a changing climate. From smart grids to disaster management, we identify high impact problems where existing gaps can be filled by machine learning, in collaboration with other fields. Our recommendations encompass exciting research questions as well as promising business opportunities. We call on the machine learning community to join the global effort against climate change.",
+        "url": "https://opus4.kobv.de/opus4-hsog/frontdoor/index/index/docId/4117",
+        "doi": "https://doi.org/10.1145/3485128",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4210916416"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 892
+      },
+      {
+        "paper_id": "rw_006_f64604081",
+        "title": "Explainable Artificial Intelligence (XAI): Concepts, taxonomies, opportunities and challenges toward responsible AI",
+        "authors": [
+          "Alejandro Barredo Arrieta",
+          "Natalia Díaz-Rodríguez",
+          "Javier Del Ser",
+          "Adrien Bennetot",
+          "Siham Tabik",
+          "Alberto Barbado",
+          "Salvador García",
+          "Sergio Gil-López",
+          "Daniel Molina",
+          "Richard Benjamins",
+          "Raja Chatila",
+          "Francisco Herrera"
+        ],
+        "year": 2019,
+        "publication_date": "2019-12-26",
+        "venue": "Information Fusion",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.inffus.2019.12.012",
+        "doi": "https://doi.org/10.1016/j.inffus.2019.12.012",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2981731882"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 9238
+      },
+      {
+        "paper_id": "rw_007_5e55c44a1",
+        "title": "Inferring neural activity before plasticity as a foundation for learning beyond backpropagation",
+        "authors": [
+          "Yuhang Song",
+          "Beren Millidge",
+          "Tommaso Salvatori",
+          "Thomas Lukasiewicz",
+          "Zhenghua Xu",
+          "Rafał Bogacz"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-03",
+        "venue": "Nature Neuroscience",
+        "abstract": "For both humans and machines, the essence of learning is to pinpoint which components in its information processing pipeline are responsible for an error in its output, a challenge that is known as 'credit assignment'. It has long been assumed that credit assignment is best solved by backpropagation, which is also the foundation of modern machine learning. Here, we set out a fundamentally different principle on credit assignment called 'prospective configuration'. In prospective configuration, the network first infers the pattern of neural activity that should result from learning, and then the synaptic weights are modified to consolidate the change in neural activity. We demonstrate that this distinct mechanism, in contrast to backpropagation, (1) underlies learning in a well-established family of models of cortical circuits, (2) enables learning that is more efficient and effective in many contexts faced by biological organisms and (3) reproduces surprising patterns of neural activity and behavior observed in diverse human and rat learning experiments.",
+        "url": "https://doi.org/10.1038/s41593-023-01514-1",
+        "doi": "https://doi.org/10.1038/s41593-023-01514-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390572244"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 81
+      },
+      {
+        "paper_id": "rw_008_58fc87f20",
+        "title": "Lifelong nnU-Net: a framework for standardized medical continual learning",
+        "authors": [
+          "Camila González",
+          "Amin Ranem",
+          "Daniel Pinto dos Santos",
+          "Ahmed E. Othman",
+          "Anirban Mukhopadhyay"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-09",
+        "venue": "Scientific Reports",
+        "abstract": "As the enthusiasm surrounding Deep Learning grows, both medical practitioners and regulatory bodies are exploring ways to safely introduce image segmentation in clinical practice. One frontier to overcome when translating promising research into the clinical open world is the shift from static to continual learning. Continual learning, the practice of training models throughout their lifecycle, is seeing growing interest but is still in its infancy in healthcare. We present Lifelong nnU-Net, a standardized framework that places continual segmentation at the hands of researchers and clinicians. Built on top of the nnU-Net-widely regarded as the best-performing segmenter for multiple medical applications-and equipped with all necessary modules for training and testing models sequentially, we ensure broad applicability and lower the barrier to evaluating new methods in a continual fashion. Our benchmark results across three medical segmentation use cases and five continual learning methods give a comprehensive outlook on the current state of the field and signify a first reproducible benchmark.",
+        "url": "https://doi.org/10.1038/s41598-023-34484-2",
+        "doi": "https://doi.org/10.1038/s41598-023-34484-2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4380225114"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 45
+      },
+      {
+        "paper_id": "rw_009_5f906a656",
+        "title": "Plasticity in the developing brain: Implications for rehabilitation",
+        "authors": [
+          "Michael V. Johnston"
+        ],
+        "year": 2009,
+        "publication_date": "2009-01-01",
+        "venue": "Developmental Disabilities Research Reviews",
+        "abstract": "Neuronal plasticity allows the central nervous system to learn skills and remember information, to reorganize neuronal networks in response to environmental stimulation, and to recover from brain and spinal cord injuries. Neuronal plasticity is enhanced in the developing brain and it is usually adaptive and beneficial but can also be maladaptive and responsible for neurological disorders in some situations. Basic mechanisms that are involved in plasticity include neurogenesis, programmed cell death, and activity-dependent synaptic plasticity. Repetitive stimulation of synapses can cause long-term potentiation or long-term depression of neurotransmission. These changes are associated with physical changes in dendritic spines and neuronal circuits. Overproduction of synapses during postnatal development in children contributes to enhanced plasticity by providing an excess of synapses that are pruned during early adolescence. Clinical examples of adaptive neuronal plasticity include reorganization of cortical maps of the fingers in response to practice playing a stringed instrument and constraint-induced movement therapy to improve hemiparesis caused by stroke or cerebral palsy. These forms of plasticity are associated with structural and functional changes in the brain that can be detected with magnetic resonance imaging, positron emission tomography, or transcranial magnetic stimulation (TMS). TMS and other forms of brain stimulation are also being used experimentally to enhance brain plasticity and recovery of function. Plasticity is also influenced by genetic factors such as mutations in brain-derived neuronal growth factor. Understanding brain plasticity provides a basis for developing better therapies to improve outcome from acquired brain injuries.",
+        "url": "https://doi.org/10.1002/ddrr.64",
+        "doi": "https://doi.org/10.1002/ddrr.64",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2013848047"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 531
+      },
+      {
+        "paper_id": "rw_010_84b04dabe",
+        "title": "Loss of plasticity in deep continual learning",
+        "authors": [
+          "Shibhansh Dohare",
+          "Juan Hernandez-Garcia",
+          "Qingfeng Lan",
+          "Parash Rahman",
+          "Ashique Rupam Mahmood",
+          "Richard S. Sutton"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-21",
+        "venue": "Nature",
+        "abstract": "form the foundation of modern machine learning and artificial intelligence. These methods are almost always used in two phases, one in which the weights of the network are updated and one in which the weights are held constant while the network is used or evaluated. This contrasts with natural learning and many applications, which require continual learning. It has been unclear whether or not deep learning methods work in continual learning settings. Here we show that they do not-that standard deep-learning methods gradually lose plasticity in continual-learning settings until they learn no better than a shallow network. We show such loss of plasticity using the classic ImageNet dataset and reinforcement-learning problems across a wide range of variations in the network and the learning algorithm. Plasticity is maintained indefinitely only by algorithms that continually inject diversity into the network, such as our continual backpropagation algorithm, a variation of backpropagation in which a small fraction of less-used units are continually and randomly reinitialized. Our results indicate that methods based on gradient descent are not enough-that sustained deep learning requires a random, non-gradient component to maintain variability and plasticity.",
+        "url": "https://doi.org/10.1038/s41586-024-07711-7",
+        "doi": "https://doi.org/10.1038/s41586-024-07711-7",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401793915"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 125
+      },
+      {
+        "paper_id": "rw_011_326e8daa0",
+        "title": "The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory",
+        "authors": [
+          "Sergey Oladyshkin",
+          "Timothy Praditia",
+          "Ilja Kröker",
+          "Farid Mohammadi",
+          "Wolfgang Nowak",
+          "Sebastian Otte"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-26",
+        "venue": "arXiv",
+        "abstract": "Artificial Intelligence and Machine learning have been widely used in various fields of mathematical computing, physical modeling, computational science, communication science, and stochastic analysis. Approaches based on Deep Artificial Neural Networks (DANN) are very popular in our days. Depending on the learning task, the exact form of DANNs is determined via their multi-layer architecture, activation functions and the so-called loss function. However, for a majority of deep learning approaches based on DANNs, the kernel structure of neural signal processing remains the same, where the node response is encoded as a linear superposition of neural activity, while the non-linearity is triggered by the activation functions. In the current paper, we suggest to analyze the neural signal processing in DANNs from the point of view of homogeneous chaos theory as known from polynomial chaos expansion (PCE). From the PCE perspective, the (linear) response on each node of a DANN could be seen as a $1^{st}$ degree multi-variate polynomial of single neurons from the previous layer, i.e. linear weighted sum of monomials. From this point of view, the conventional DANN structure relies implicitly (but erroneously) on a Gaussian distribution of neural signals. Additionally, this view revels that by design DANNs do not necessarily fulfill any orthogonality or orthonormality condition for a majority of data-driven applications. Therefore, the prevailing handling of neural signals in DANNs could lead to redundant representation as any neural signal could contain some partial information from other neural signals. To tackle that challenge, we suggest to employ the data-driven generalization of PCE theory known as arbitrary polynomial chaos (aPC) to construct a corresponding multi-variate orthonormal representations on each node of a DANN to obtain Deep arbitrary polynomial chaos neural networks.",
+        "url": "http://arxiv.org/abs/2306.14753v1",
+        "doi": "",
+        "arxiv_id": "2306.14753v1",
+        "source_ids": {
+          "arXiv": "2306.14753v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_f1675dbd1",
+        "title": "A Neural Network-Evolutionary Computational Framework for Remaining Useful Life Estimation of Mechanical Systems",
+        "authors": [
+          "David Laredo",
+          "Zhaoyin Chen",
+          "Oliver Schütze",
+          "Jian-Qiao Sun"
+        ],
+        "year": 2019,
+        "publication_date": "2019-05-15",
+        "venue": "arXiv",
+        "abstract": "This paper presents a framework for estimating the remaining useful life (RUL) of mechanical systems. The framework consists of a multi-layer perceptron and an evolutionary algorithm for optimizing the data-related parameters. The framework makes use of a strided time window to estimate the RUL for mechanical components. Tuning the data-related parameters can become a very time consuming task. The framework presented here automatically reshapes the data such that the efficiency of the model is increased. Furthermore, the complexity of the model is kept low, e.g. neural networks with few hidden layers and few neurons at each layer. Having simple models has several advantages like short training times and the capacity of being in environments with limited computational resources such as embedded systems. The proposed method is evaluated on the publicly available C-MAPSS dataset, its accuracy is compared against other state-of-the art methods for the same dataset.",
+        "url": "http://arxiv.org/abs/1905.05918v1",
+        "doi": "",
+        "arxiv_id": "1905.05918v1",
+        "source_ids": {
+          "arXiv": "1905.05918v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_010_84b04dabe",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "rationale": "This paper directly addresses 'loss of plasticity in deep continual learning' and indicates that standard deep learning methods lose plasticity. It proposes 'continual backpropagation' as a solution, which directly competes with the target paper's claim of novelty in preventing plasticity loss. It was published in the same year as the target paper in a top-tier journal (Nature), making it extremely relevant for novelty comparison. The proposed method also aims to maintain variability, which could be seen as an alternative mechanism to weight rescaling for plasticity.",
+        "evidence_summary": "Dohare et al. (2024) investigate loss of plasticity in deep continual learning, showing that standard deep-learning methods gradually lose plasticity, and propose continual backpropagation to maintain it."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_944b6e67b",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "This review paper provides a comprehensive overview of continual learning, which is a major application area and evaluation context for the target paper's SWR method. It discusses various approaches to mitigate challenges in continual learning, including regularization and memory-based methods, which could be considered competitive to or complementary with SWR. Understanding the landscape presented here is crucial for evaluating the target paper's contributions to continual learning.",
+        "evidence_summary": "Hadsell et al. (2020) provide a review of continual learning in deep neural networks, discussing challenges like catastrophic forgetting and exploring various approaches including regularization, modularity, and memory."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_001_46ca45060",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "The target paper addresses plasticity loss as a cause of performance drops, particularly in warm-start and continual learning. Catastrophic forgetting is a closely related phenomenon that this paper directly measures and benchmarks, making it relevant for understanding the problem space and potential evaluation metrics/baselines. It also discusses various mitigation strategies for catastrophic forgetting, which could be considered alternative or complementary approaches to SWR.",
+        "evidence_summary": "Kemker et al. (2018) introduce new metrics and benchmarks for directly comparing five different mechanisms designed to mitigate catastrophic forgetting in neural networks, including regularization."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_008_58fc87f20",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "rationale": "This paper proposes a framework for standardized medical continual learning, which directly aligns with the target paper's evaluation in continual learning settings. It also discusses challenges and methods in continual learning, making it a relevant baseline or comparison point for the target's experimental setup and claims.",
+        "evidence_summary": "González et al. (2023) present Lifelong nnU-Net, a standardized framework for medical continual segmentation, offering a benchmark across three medical segmentation use cases and five continual learning methods."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_003_d191801f9",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "While not directly about plasticity loss, this paper uses a neural network input encoding technique involving multiresolution hash table and trainable feature vectors to reduce network size and improve efficiency. This relates to the 'same_method' group as it explores alternatives to standard weight usage, albeit for a different primary goal. The target paper focuses on weight scaling, and this paper presents an alternative method of handling network parameters to achieve specific performance goals, making it somewhat comparable in the broader sense of network parameter manipulation.",
+        "evidence_summary": "Müller et al. (2022) propose a multiresolution hash encoding for neural graphics primitives to reduce training and evaluation costs by enabling smaller networks with trainable feature vectors."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_5e55c44a1",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_problem"
+        ],
+        "rationale": "This paper discusses learning beyond backpropagation and credit assignment, which are fundamental to how neural networks learn and adapt. While not directly about plasticity loss or weight scaling, it addresses the foundational mechanisms of learning and adaptation in neural networks, which underpins the problem of plasticity. Its focus on 'learning beyond backpropagation' might offer an alternative paradigm to SWR's gradient-based weight scaling.",
+        "evidence_summary": "Song et al. (2024) propose 'prospective configuration' as a foundation for learning beyond backpropagation, inferring neural activity before plasticity to improve learning efficiency and effectiveness."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_004_fb4ff3929",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper explores using neural networks as an alternative to Gaussian processes for modeling distributions, scaling linearly rather than cubically. While the application is different (Bayesian optimization), it relates to the 'same_method' group by using neural networks in a non-standard way for modeling and scaling characteristics, similar in spirit to how SWR modifies weight dynamics. It's a more general exploration of manipulating neural network properties for performance.",
+        "evidence_summary": "Snoek et al. (2015) explore using deep neural networks as a scalable alternative to Gaussian processes for modeling distributions in Bayesian optimization, achieving linear scaling with data."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_011_326e8daa0",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "rationale": "This paper investigates the kernel structure of neural signal processing in deep artificial neural networks from the perspective of homogeneous chaos theory, suggesting potential issues with conventional DANN structures leading to redundant representation. While its approach is theoretical and different from SWR's practical weight scaling, it touches upon fundamental aspects of how neural networks process information and thus could implicitly relate to issues like plasticity loss and efficient learning (which SWR aims to improve). It's a foundational perspective that could indirectly inform future work on plasticity.",
+        "evidence_summary": "Oladyshkin et al. (2023) analyze neural signal processing in Deep Artificial Neural Networks through the lens of homogeneous chaos theory, suggesting conventional DNN structures might lead to redundant representation due to implicit assumptions about neural signals."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_009_5f906a656",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_problem"
+        ],
+        "rationale": "This paper is about neuronal plasticity in the developing brain, which provides a biological context for the concept of 'plasticity' that the target paper aims to recover in artificial neural networks. While it's in a different domain (neuroscience), it gives background on what plasticity entails in biological systems, which can provide a broader context for the problem being addressed. It's not a direct comparison but sets the stage for the biological inspiration of the problem.",
+        "evidence_summary": "Johnston (2009) discusses neuronal plasticity in the developing brain, its mechanisms including neurogenesis and synaptic plasticity, and its implications for rehabilitation."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_005_5f1304398",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper is about applying machine learning to tackle climate change. While it hints at 'high impact problems where existing gaps can be filled by machine learning', it does not describe methods related to plasticity loss, weight growth, or specific learning paradigms relevant to the target paper's core claims. Its connection to the 'same_constraints' group is weak as it does not discuss 'preserved information' or 'image classification' with a specific focus on the training constraints of the target paper.",
+        "evidence_summary": "Kaack et al. (2022) explore how machine learning can be used to address climate change, identifying high-impact problems across various sectors."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_006_f64604081",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper is a review on Explainable AI (XAI). While XAI is a broad topic in machine learning, it has no direct relevance to plasticity loss, weight rescaling, or the specific learning paradigms (continual, warm-start) and benchmarks discussed in the target paper. It does not provide any specific 'constraints' that are common between the two papers.",
+        "evidence_summary": "Arrieta et al. (2019) provide a comprehensive review of Explainable Artificial Intelligence (XAI), covering its concepts, taxonomies, opportunities, and challenges towards responsible AI."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_012_f1675dbd1",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper presents a framework for Remaining Useful Life (RUL) estimation using neural networks and evolutionary algorithms. While it mentions 'neural networks' and 'efficiency,' its problem domain and methods (evolutionary algorithms for parameter optimization in RUL) are far removed from the core problem of plasticity loss, weight growth, or the specific learning paradigms in the target paper. The connection to 'same_problem' is tenuous at best because the 'problem' is very specific to mechanical systems prognosis, not general neural network training dynamics.",
+        "evidence_summary": "Laredo et al. (2019) propose a neural network-evolutionary computational framework for estimating the remaining useful life of mechanical systems, optimizing data-related parameters for efficiency."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Recent work highlights the critical challenge of plasticity loss in neural networks, where models gradually lose their ability to learn new information as training progresses. Dohare et al. (2024), for instance, demonstrate that standard deep-learning methods often lose plasticity in continual learning settings, suggesting the need for mechanisms like 'continual backpropagation' to inject diversity. Understanding the broader context of continual learning, a key application area for plasticity recovery, is crucial, as reviewed by Hadsell et al. (2020), who discuss various strategies including regularization and memory-based approaches. This problem is closely related to catastrophic forgetting, a phenomenon where learning new tasks degrades performance on previously learned ones, a topic rigorously measured and benchmarked by Kemker et al. (2018). Furthermore, specialized frameworks like Lifelong nnU-Net by González et al. (2023) offer standardized benchmarks for continual learning in specific domains, such as medical image segmentation. While not directly addressing plasticity loss, some methods explore novel ways to manage neural network parameters; for example, Müller et al. (2022) introduce multiresolution hash encodings to make networks more efficient. Complementary to these practical concerns, other research delves into the fundamental principles of neural network functioning and learning, such as Song et al. (2024) exploring learning beyond backpropagation or Oladyshkin et al. (2023) analyzing neural signal processing through chaos theory, which may offer foundational insights into why plasticity is lost.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 20,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 20,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 8
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 20,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 20,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 8
+  }
+}

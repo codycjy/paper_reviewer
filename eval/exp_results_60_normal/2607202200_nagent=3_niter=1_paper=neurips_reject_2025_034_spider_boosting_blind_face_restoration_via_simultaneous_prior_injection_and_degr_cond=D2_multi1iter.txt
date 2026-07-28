@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of simultaneous prior injection and degradation removal, especially injecting prior *before* degradation removal, is genuinely novel and counter-intuitive, pushing the boundaries of current BFR paradigms (Figure 1 and 2 highlight this effectively).",
+        "The method demonstrates clear superiority on challenging real-world datasets, particularly the SCface dataset, showcasing practical significance in scenarios where existing SOTA methods catastrophically fail (Table 2 and Figure 5). This robust performance under extreme degradation is highly valuable.",
+        "The conceptual design of decoupling cross-attention (DCA) and leveraging VLM-extracted semantic tokens for prior injection, combined with a separate degradation removal module, is a sophisticated and innovative approach to tackle the ill-posed nature of BFR. The ablation studies provide good insight into these design choices."
+      ],
+      "weaknesses": [
+        "While the concept of \"amplifying both signal and noise\" is stated as a benefit for DRM, the precise mechanism or theoretical justification for *why* this amplification aids in distinguishing signal from noise is not fully elaborated or proven. It feels a bit like an empirical observation rather than a rigorously explained design principle.",
+        "The computational resources mentioned for training (e.g., \"one epoch on FFHQ for Stage I with batch size 4 on a single V100 GPU\") seem rather limited for complex models, especially given the scale of FFHQ. This raises a slight concern about the completeness of training or potential for even better performance with more extensive training, though the results are already strong."
+      ],
+      "summary_comment": "This paper presents a highly novel and ambitious approach to blind face restoration (BFR) by proposing SPIDER, a framework that simultaneously injects semantic prior and removes degradation. The key innovation lies in the specific ordering: injecting prior *before* degradation removal, which is a bold departure from conventional sequential pipelines. This idea, along with the sophisticated use of VLMs and a dedicated degradation removal module, is exciting and forward-looking. The extensive experiments, especially on challenging real-world data like SCface, convincingly demonstrate its superior performance, suggesting a significant leap in handling severe degradations. While some theoretical underpinnings could be further detailed, the potential impact and creative direction of this work are undeniable. This paper pushes the field forward in a meaningful way by challenging established sequential approaches."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper proposes an interesting conceptual shift in blind face restoration by suggesting simultaneous prior injection and degradation removal rather than a sequential approach, which is a novel idea.",
+        "The qualitative results, particularly on challenging real-world datasets like SCface, appear promising and visually superior to several state-of-the-art methods.",
+        "The ablation studies investigate key components, such as the Degradation Removal Module (DRM) and the order of operations, and the prompt design, providing some insights into the proposed architecture's effectiveness."
+      ],
+      "weaknesses": [
+        "The soundness of the core argument regarding 'simultaneous prior injection and degradation removal' is not fully substantiated. Figure 1(d) and the description suggest an interleaved action, but the training process (Section 3.4) describes a two-stage training where the DRM is trained first and then frozen. This means 'simultaneous' is only applied conceptually in the inference stage through a multi-scale interaction, not a truly jointly optimized process from the start, weakening the main claim.",
+        "The evaluation metrics present mixed results and are not consistently superior, especially on the synthetic dataset where the method only leads in PSNR and SSIM, but is second in other perceptual metrics. For real-world datasets, while it leads in some metrics, FID is occasionally inferior, and the lack of statistical significance tests (as per the checklist) makes absolute claims of superiority difficult to verify."
+      ],
+      "summary_comment": "The paper attempts to introduce a novel paradigm for blind face restoration, 'simultaneous prior injection and degradation removal'. While the conceptual idea is intriguing and the qualitative results are visually impressive, particularly for very challenging degradations, the implementation described does not fully align with the 'simultaneous' claim; the training is clearly staged, with the degradation module being frozen. This raises concerns about the methodological soundness of the core contribution. Furthermore, the quantitative evaluation, while generally good, is not overwhelmingly superior across all metrics, and the acknowledged absence of statistical significance tests weakens the confidence in the reported improvements. More rigorous justification for the 'simultaneous' claim, possibly through a truly end-to-end joint training scheme, and more comprehensive statistical evaluation would strengthen the paper significantly. Given the current presentation, the soundness and evaluation aspects are not robust enough for acceptance despite the interesting novelty."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of 'simultaneous prior injection and degradation removal' and injecting semantic prior *before* degradation removal is novel and addresses a practical problem (severe degradation) that existing methods struggle with. The justification behind this approach (amplifying signal and noise for better differentiation) is intuitive and well-explained.",
+        "The empirical evaluation is thorough, including both synthetic and challenging real-world datasets (LFW, WIDER, and particularly SCface for extreme surveillance scenarios). The consistent superiority of SPIDER across various metrics and visual examples validates its practical effectiveness.",
+        "The ablation studies clearly demonstrate the importance of the Degradation Removal Module (DRM) and, critically, the proposed ordering (semantic prior first) over the alternative. The t-SNE visualization provides good insight into how the DRM maps degraded features to a degradation-invariant space."
+      ],
+      "weaknesses": [
+        "While the paper claims to generate rich textual descriptions from LLaVA, the ablation study on prompt design (Table 5) only shows marginal improvements with 'Facial Attributes Prompt' over 'General Prompt' and a significant jump with 'Face Description Prompt'. More detail on what constitutes a 'Face Description Prompt' and its generation process would reinforce this claim.",
+        "The computational cost and inference speed are not explicitly discussed beyond training hardware, which is a practical concern for real-world deployments. Given the serial nature of inference (GFPGAN for preprocessing, then LLaVA, then the diffusion model), there could be latency implications not covered."
+      ],
+      "summary_comment": "This paper presents SPIDER, a blind face restoration method that introduces a novel paradigm of simultaneously injecting semantic prior and removing degradation. The key insight of injecting prior before degradation removal is well-motivated and empirically supported, leading to superior performance on challenging degradation scenarios, especially surveillance footage. The approach is clearly explained, evaluations are comprehensive, and the ablations thoughtfully reinforce the design choices. This work offers a significant practical advancement in face restoration, particularly for real-world applications where severe degradation is common. The clarity of the technical contribution and the strong experimental results make this a valuable contribution."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces a novel learning paradigm 'simultaneous prior injection and degradation removal (SPIDER)' for blind face restoration, which aligns well with ICML's interest in general machine learning, deep learning architectures, and generative models. The sophisticated use of VLMs and diffusion models is highly relevant.",
+        "The core contribution is a methodological innovation in handling severe degradations by re-ordering prior injection and degradation removal. This speaks to ICML's focus on innovative techniques and improved methodologies, especially for challenging problems in areas like computer vision.",
+        "The theoretical justification for why 'amplifying both signal and noise' aids the DRM, while briefly mentioned as a weakness by Reviewer A, presents a potentially novel theoretical angle that ICML would appreciate, especially if further elaborated. The t-SNE visualization provides good insight into the underlying mechanism of the DRM which is a good analytical approach.",
+        "The paper provides strong empirical results on both synthetic and real-world datasets, including challenging surveillance scenarios, demonstrating clear superiority over state-of-the-art methods. This aligns with ICML's interest in robust evaluation and challenging application-driven machine learning problems."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B highlights a mismatch between the 'simultaneous' claim and the two-stage training process (DRM trained then frozen), suggesting the simultaneity is conceptual rather than truly jointly optimized from the start. This weakens the methodological rigor for a highly theoretically-inclined venue like ICML.",
+        "While the novelty is high, Reviewer A mentions that 'the precise mechanism or theoretical justification for *why* this amplification aids in distinguishing signal from noise is not fully elaborated or proven,' which could be seen as a gap in theoretical rigor for ICML, which often values strong theoretical foundations.",
+        "The lack of statistical significance tests for experimental results, as noted in the NeurIPS checklist and by Reviewer B, is a notable weakness. ICML often expects robust statistical analysis to support claims of superiority."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's focus on 'Blind Face Restoration' using 'Vision-Language Models' and 'Deep Learning' architectures (diffusion models, UNet, ControlNet) fits squarely within many NeurIPS topics, including computer vision, deep learning, and probabilistic methods (due to diffusion models).",
+        "The novel learning paradigm of 'simultaneous prior injection and degradation removal (SPIDER)' challenges existing sequential approaches, which aligns with NeurIPS's interest in interdisciplinary submissions and in-depth analysis of existing methods that provide new insights or limitations beyond original work.",
+        "The comprehensive empirical evaluation on various datasets, especially challenging real-world ones like SCface, demonstrates practical significance. NeurIPS explicitly welcomes AI/ML for physical sciences, health, sustainability, and social sciences, recognizing that many applications demand robust real-world performance.",
+        "The paper's discussion of the conceptual design, ablation studies, and t-SNE visualization to understand the degradation removal mechanism shows a good level of analysis, catering to NeurIPS's emphasis on understanding model behavior.",
+        "The utilization of LLaVA for semantic prior extraction, a VLM built upon LLMs, is explicitly mentioned in the NeurIPS checklist and relevant to NeurIPS topics on language and multimodal models."
+      ],
+      "why_it_does_not_fit": [
+        "A major concern raised by Reviewer B is the discrepancy between the 'simultaneous' claim and the two-stage training process, leading to questions about the soundness of the core methodological contribution. NeurIPS, while broad, still emphasizes methodological rigor.",
+        "The acknowledged absence of statistical significance tests (as per the NeurIPS checklist response) for experimental results weakens the confidence in superiority claims, which could be a critical point for NeurIPS reviewers who value robust evaluation.",
+        "Reviewer B notes that quantitative evaluation is not \"overwhelmingly superior across all metrics,\" with FID occasionally inferior and only primary metrics leading on synthetic data. This might make the 'state-of-the-art' claims less compelling for some NeurIPS reviewers expecting clear dominance.",
+        "Reviewer A points out that the theoretical justification for why prior amplification aids in distinguishing signal from noise is not fully elaborated, which could be a minor drawback for some NeurIPS tracks that appreciate deeper theoretical insights."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper is centrally focused on 'Blind Face Restoration' using 'deep learning' methods, specifically diffusion models, VLMs (LLaVA), and UNet/ControlNet architectures. ICLR has a strong emphasis on all aspects of deep learning.",
+        "The methodological novelty of 'simultaneous prior injection and degradation removal', particularly the reverse ordering of current paradigms (injecting prior *before* degradation removal), is highly aligned with ICLR's core interest in cutting-edge research on representation learning, generative models, and architectural innovations.",
+        "The use of vision-language models for semantic prior extraction and conditioning diffusion models (through a Decoupled Cross Attention mechanism) is a direct fit for ICLR's topics such as representation learning for vision and language, and generative models.",
+        "The ablation studies, particularly those validating the architectural choice and module ordering (Table 4, Figure 6(b)), and the t-SNE visualization (Figure 7) that explains feature changes, demonstrate a strong focus on understanding learned representations and model behavior, which ICLR values.",
+        "The experimental success on challenging real-world degradations, especially the SCface dataset, showcases the model's robustness and practical applicability, which is a strong point for ICLR, reflecting its interest in applications but grounded in strong deep learning principles."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, the specific concern from Reviewer B about the 'simultaneous' claim not fully aligning with the two-stage training process might be seen as a minor methodological weakness. ICLR values rigorous technical contributions.",
+        "The lack of statistical significance tests, as highlighted in the NeurIPS checklist and noted by Reviewer B, is a point that could be scrutinized, although ICLR might be slightly more tolerant of this for empirical deep learning papers compared to more theoretical venues.",
+        "Reviewer A's comment about the lack of full elaboration on the theoretical justification for 'amplifying both signal and noise' could be a slight area for improvement. While ICLR is primarily deep learning, strong insights are always appreciated."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

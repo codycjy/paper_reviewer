@@ -1,0 +1,80 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The concept of \"supercollapse\" is truly novel and exciting, suggesting a deeper, universal scaling symmetry in NN training dynamics than previously understood. This pushes beyond prior work by identifying a more precise and robust form of collapse.",
+        "The paper provides a compelling empirical finding that compute-optimal loss curves collapse onto a single universal curve, and even supercollapse, across varied architectures, datasets, and learning rate schedules. This empirical evidence is powerful and suggestive of fundamental underlying principles.",
+        "The proposed simple theoretical model for SGD noise dynamics, while approximate, surprisingly effectively predicts loss curves and explains the origin of supercollapse. This provides a crucial step towards understanding the observed phenomena and offers a fertile ground for future theoretical exploration."
+      ],
+      "weaknesses": [
+        "While the theoretical model is surprisingly effective, its reliance on multiple approximations (e.g., quadratic loss, slowly varying Hessian, small learning rates) means it doesn't represent a complete first-principles derivation. This leaves some gaps in the full theoretical explanation.",
+        "The empirical evaluation is primarily conducted on small-scale experiments, which the authors acknowledge. While a proof-of-concept, the generalizability to truly large-scale, state-of-the-art models and complex co-scaled hyperparameters (e.g., depth, batch size, weight decay simultaneously) needs further validation."
+      ],
+      "summary_comment": "This paper presents a truly innovative discovery: \"supercollapse\" in compute-optimally trained neural networks. The idea that entire loss curves collapse to a single universal shape, even below the noise floor, is a bold and significant step forward in understanding the fundamental scaling properties of neural networks. The empirical evidence across different settings is convincing, and the theoretical model, despite its approximations, offers a surprisingly effective explanation for the phenomena, providing an excellent starting point for further research. While I acknowledge the limitations regarding the scale of experiments and the approximations in the theory, the novelty and potential for inspiring future work are paramount. This work opens up exciting new avenues for diagnostics, hyperparameter optimization, and theoretical understanding of scaling laws. It is precisely the kind of forward-thinking and high-impact research I look for."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously demonstrates empirical scaling collapse and supercollapse, meticulously quantifying the phenomenon and comparing it against the noise floor with careful experimental design.",
+        "The theoretical analysis is well-structured, providing a compelling explanation for scaling collapse based on power-law scaling and then extending this to a quadratic loss model that quantitatively explains supercollapse and the effects of learning rate schedules.",
+        "The practical utility of supercollapse as a diagnostic tool for optimal scaling with respect to hyperparameters like learning rate and data exponent is clearly demonstrated, offering a valuable contribution to large-scale training practices."
+      ],
+      "weaknesses": [
+        "The simplified quadratic loss model, while powerful, might obscure some nuances of real-world neural network training. While the paper acknowledges this, a more thorough discussion on the limitations and conditions under which this approximation holds would strengthen its generalizability.",
+        "The analysis of 'supercollapse as variance reduction' relies heavily on the assumption that inter-model (p-dependent) variance is negligible compared to intra-model (omega-dependent) variance, particularly for learning rate decay. While empirically supported, a more robust theoretical justification for this assumption across various schedules would enhance the soundness."
+      ],
+      "summary_comment": "This paper presents a strong and rigorous investigation into scaling collapse in compute-optimally trained neural networks, leading to the discovery of 'supercollapse'. The empirical evidence is meticulously collected and quantified, showing a remarkable universal behavior of loss curves. The theoretical explanations, grounded in power-law scaling and a simple yet effective noise model, provide significant insights into the underlying mechanisms. The practical diagnostic value for identifying suboptimal scaling is particularly noteworthy. While the theoretical model simplifies some aspects, the overall contributions to understanding and guiding large-scale ML training are substantial and well-supported by both rigorous experimentation and sound theoretical analysis. The paper is clearly written and accessible."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces 'supercollapse' as a practical and highly sensitive diagnostic tool for validating compute-optimal training, which has significant real-world relevance for practitioners trying to scale ML models efficiently. This is a clear, actionable insight.",
+        "The empirical evidence is compelling and covers various architectures (Transformers, MLPs), datasets (CIFAR-5M, Lichess), and learning rate schedules, enhancing the generalizability and practical applicability of the findings. The detailed experimental setup (Appendix A) supports reproducibility.",
+        "The theoretical analysis, while making simplifying assumptions, provides a surprisingly effective model for understanding and predicting loss curve behavior across different learning rate schedules and qualitatively explains supercollapse, bridging empirical observation with foundational understanding."
+      ],
+      "weaknesses": [
+        "The paper focuses mainly on width scaling; while a small experiment on depth scaling is included (Appendix B), a more extensive investigation into how these phenomena manifest under more complex, realistic scaling ladders (co-scaling width, depth, batch size, weight decay) would further strengthen its industrial relevance.",
+        "The theoretical model, particularly the assumption of a quadratic loss and the application of perturbation theory (Section 3.2.1, Appendix G), while 'surprisingly effective,' is still an approximation. A deeper understanding of its limitations or specific conditions under which these assumptions might break down would be beneficial for practitioners trying to apply these insights in diverse scenarios."
+      ],
+      "summary_comment": "This paper presents a highly significant finding, 'supercollapse,' which offers a novel and precise way to diagnose compute-optimal training configurations for neural networks. As an experienced practitioner, I find the practical utility of this diagnostic tool extremely valuable for guiding efficient large-scale ML development. The empirical validation across diverse setups is robust, and the theoretical explanation, despite its simplifications, provides strong intuition and predictive power. The clarity of the writing is generally very good, making the complex concepts accessible. While further exploration into more complex scaling ladders and a more detailed understanding of theoretical limitations would enhance the work, its current form offers substantial practical impact and advances our understanding of scaling dynamics in a meaningful way."
+    }
+  ],
+  "conference": {
+    "raw": "```json\n{\n  \"ICML\": {\n    \"fit_score\": 9,\n    \"why_it_fits\": [\n      \"The paper's core topic of 'general machine learning,' specifically neural scaling laws and training dynamics, is explicitly listed as an area of interest for ICML. The discovery of 'supercollapse' and its implications for understanding NN training dynamics align perfectly with ICML's focus on advancing machine learning.\",\n      \"The work combines strong empirical evaluation across different architectures (transformers, MLPs), datasets, and learning schedules with a theoretical analysis (e.g., power-law scaling, SGD noise dynamics). This blend of empirical and theoretical contribution is highly valued by ICML.\",\n      \"Reviewers lauded the conceptual novelty of 'supercollapse' which pushes beyond prior understanding of scaling laws. This significant advancement in the field is precisely what ICML seeks to publish, as highlighted by Reviewer A's comment: 'a bold and significant step forward in understanding the fundamental scaling properties of neural networks.'\",\n      \"The practical diagnostic utility of supercollapse for identifying suboptimal scaling, as mentioned by Reviewer B and C, presents an 'application-driven machine learning' aspect, showing how the theoretical insights can be directly applied to improve training pipelines, which is a relevant ICML topic.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"While the theoretical model is surprisingly effective, its reliance on multiple approximations (quadratic loss, slowly varying Hessian, small learning rates) means it doesn't represent a complete first-principles derivation, as noted by Reviewer A. This might be seen as a minor weakness in theoretical rigor for some ICML reviewers who prefer more foundational theoretical work.\",\n      \"Reviewers B and C noted the reliance on smaller-scale experiments, which might limit perceived generalizability to the absolute cutting-edge, largest-scale models, a domain often of interest to ICML attendees. However, the authors acknowledge this limitation and position their work as a proof-of-concept.\"\n    ]\n  },\n  \"NeurIPS\": {\n    \"fit_score\": 8,\n    \"why_it_fits\": [\n      \"The paper directly addresses 'General machine learning: core contributions in supervised and unsupervised methods' by exploring fundamental training dynamics and scaling laws in neural networks. This is a central theme for NeurIPS.\",\n      \"The empirical methodology, covering transformers and MLPs on various datasets, and the theoretical model for SGD noise dynamics, align well with NeurIPS's interest in both theoretical and empirical advancements in machine learning.\",\n      \"The work's interdisciplinary nature, drawing parallels to universality and scaling collapse in statistical physics and theoretical biology (discussed in Appendix D), fits NeurIPS's welcoming of 'interdisciplinary submissions that do not fit neatly into existing categories.'\",\n      \"The practical implications of supercollapse for designing robust and efficient training pipelines, and as a diagnostic tool for optimal scaling, directly relates to 'Data-centric aspects of AI' and 'SysML Infrastructure' by providing insights for large-scale ML practices, which is highly relevant to NeurIPS's focus on machine learning in practice.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"The paper acknowledges its empirical evaluation is primarily on small-scale experiments, which could be perceived as less impactful for NeurIPS, given its emphasis on results that often scale to very large, practical systems. Reviewer A explicitly states: 'the generalizability to truly large-scale, state-of-the-art models and complex co-scaled hyperparameters ... needs further validation.'\",\n      \"While the theoretical model provides a good explanation, the approximations used might be viewed by some NeurIPS reviewers as not sufficiently comprehensive for a foundational theory. Reviewer B points out that the simplified model 'might obscure some nuances of real-world neural network training.'\"\n    ]\n  },\n  \"ICLR\": {\n    \"fit_score\": 7,\n    \"why_it_fits\": [\n      \"The paper's focus on 'deep learning' and its training dynamics, particularly for transformers, aligns with ICLR's primary focus on cutting-edge research in deep learning and related applications.\",\n      \"The exploration of learning rate schedules, representation learning behavior (implicit in understanding loss curves' universality), and optimization dynamics are all directly relevant topics for ICLR.\",\n      \"The paper's strong empirical validation on various architectures and datasets, combined with a theoretical model explaining the dynamics, is well-suited for ICLR which values both novel architectures/methods and their underlying principles.\",\n      \"The \"supercollapse\" phenomenon is a novel observation in deep learning dynamics, and ICLR is known for valuing 'cutting-edge research' and new insights, even if theoretical underpinnings are still developing. Reviewer A's comment, 'truly novel and exciting,' directly supports this alignment.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"While the topic is deep learning, the paper is more about the fundamental scaling laws and dynamics of training rather than proposing a new deep learning architecture, algorithm, or specific application, which ICLR often emphasizes. The focus is on macro-level training behavior rather than micro-level model components.\",\n      \"Reviewers raised concerns about the primary use of small-scale experiments, which might be a more significant drawback for ICLR, as it often features papers pushing the boundaries of what's achievable with large-scale deep learning models. Reviewer C states that 'a more extensive investigation into how these phenomena manifest under more complex, realistic scaling ladders ... would further strengthen its industrial relevance,' which is important for ICLR's practical impact.\"\n    ]\n  }\n}\n```",
+    "parse_error": true
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

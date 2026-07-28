@@ -1,0 +1,114 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "An original mechanism linking local interpretability (Integrated Gradients) to global parameter weighting, presenting a creative direction for feature-aware federated learning.",
+        "A dimensionally consistent aggregation formulation that successfully confines feature-based attention scaling to the weight parameters of the input layer of the encoder.",
+        "Derivation of a rigorous global $L_2$ sensitivity bound of $2/K$ for the normalized feature importance vector, placing the differential privacy mechanism on solid theoretical footing.",
+        "The inclusion of Dynamic Feature Importance Adaptation (DFIA) offers an insightful approach to combat the rapid distribution changes endemic to 5G network traffic."
+      ],
+      "weaknesses": [
+        "The hypothesis that the noise injected into the aggregate weights acts as a regularizer explaining why FAFL-DP ($\\epsilon=0.1$) outperforms FedAvg is theoretically plausible, but lacks direct empirical isolation within the experiments.",
+        "The validation setup is relatively small (5 clients), which leaves open questions regarding how scale and high degrees of non-IID client distributions affect the attention-weight stability."
+      ],
+      "summary_comment": "The authors have successfully resolved the primary concerns raised in the initial review. By restructuring the aggregation weighting scheme to mathematically target the input layer's weight blocks and providing a rigorous DP sensitivity proof, the technical foundation of the paper is now solid. The explanation regarding the implicit regularization effect under severe DP noise is insightful. Due to its valuable conceptual novelty, robust adaptive integration, and clarified formulation, this work represents a strong contribution to decentralized anomaly detection.",
+      "final_decision": "Accept"
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "The updated weight-aggregation math explicitly scales only the input projection weights ($W^{(1)}$) at the feature index level, resolving the structural cancellation flaw and presenting a mathematically rigorous attention aggregation mechanism.",
+        "Comprehensive generalizability evaluation: The framework has now been evaluated on the standard CICIDS2017 benchmark dataset, which convincingly demonstrates that the proposed method generalizes to standard network traffic profiles outside the proprietary 5G testbed.",
+        "The 50-round longitudinal experiments completely mitigate the initial concern regarding initialization noise and premature termination, demonstrating stable, statistically significant convergence advantages relative to FedAvg and FedProx."
+      ],
+      "weaknesses": [
+        "While the explanation that stochastic DP noise acts as a pseudo-regularizer (coordinate-wise weight perturbation) is elegant and theoretically possible, the paper would still benefit from a minor cautionary note regarding the strict theoretical limits of DP aggregated weights in highly constrained regimes.",
+        "A formal proof of convergence bounds under this dynamic feature-weighted aggregation scheme is not provided, though the extensive empirical results mitigate this omission."
+      ],
+      "summary_comment": "The authors have responded to the reviews with exceptional rigor and diligence. By fixing the index mapping in Equation (10), they successfully resolved the prior algebraic error. The newly added experiments—namely, extending training to 50 rounds and carrying out validation on the CICIDS2017 benchmark dataset—address my concerns about generalizability and experimental robustness. Additionally, their mathematical and conceptual defense of the DP noise behavior under high variance (acting as coordinate-wise weight perturbation) shows a deep and satisfying understanding of their own system dynamics. The methodological soundness of the revised manuscript is excellent."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The revised model aggregation mathematically isolates feature-level scaling to the input projection layer weights ($W_k^{(1)}$), cleanly resolving the dimensional mismatch and preventing arbitrary parameter destruction during averaging.",
+        "Strong validation under non-IID data distributions (using a Dirichlet split with $\\alpha = 0.5$), proving that the proposed FAFL framework maintains a significant performance edge (0.96 accuracy) over standard baselines which degrade in heterogeneous scenarios.",
+        "Extended optimization window to 50 communication rounds, confirming that the framework achieves stable convergence by round 12 rather than relying on a dangerously brief 5-round schedule."
+      ],
+      "weaknesses": [
+        "While the explanation for the flat DP utility curve (graceful degradation to uniform feature weighting / FedAvg baseline performance) makes sense conceptually, this physical behavior must be clearly explicitly detailed in the final text so practitioners understand how utility behaves under extreme noise.",
+        "The final camera-ready manuscript must be meticulously compiled to ensure that the once-broken equations in Section 3 and the missing visual plots are completely and cleanly visible without compilation artifacts."
+      ],
+      "summary_comment": "The authors have systematically resolved my primary objections. By restricting the feature-attention weight aggregation to the input projection layer, they fixed the mathematical incoherence of the original equation. Furthermore, writing additional experiments for non-IID distributions (Dirichlet split with $\\alpha=0.5$) and scaling local runs to 50 rounds has transitioned this paper from a highly questionable draft into a technically sound, practically-viable contribution for 5G network anomaly detection. I recommend acceptance, provided the formatting and figures compile correctly in the final PDF."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper proposes a novel framework for Federated Learning (FL) that integrates feature importance into the model aggregation process, addressing key challenges in decentralized learning.",
+        "It incorporates a mathematical proof deriving a global $L_2$ sensitivity bound of $2/K$ for the normalized feature importance vector, showing the necessary theoretical rigor for ICML.",
+        "The feature-aware aggregation explicitly scales the input layer weights of the encoder block, addressing dimensional consistency in a mathematically sound manner."
+      ],
+      "why_it_does_not_fit": [
+        "ICML has highly stringent requirements for theoretical optimization, and the paper lacks a formal proof of convergence bounds under the proposed dynamic feature-weighted aggregation scheme.",
+        "The paper is heavily themed around a specific application domain (5G network anomaly detection), which might be perceived as too applied or domain-specific for ICML's core audience.",
+        "The hypothesis that the differential privacy noise acts as an implicit regularizer (explaining why FAFL-DP occasionally outperforms standard baselines) is conceptually viable but lacks direct empirical isolation within the experiments."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary machine learning papers and application-oriented ML research, such as security in 5G core networks and decentralized anomaly detection.",
+        "The proposed framework elegantly combines multiple conceptual domains: local interpretability (Integrated Gradients), privacy (Differential Privacy), and dynamic optimization (Dynamic Feature Importance Adaptation).",
+        "The authors conducted rigorous evaluations across multiple datasets (including the public CICIDS2017 benchmark dataset) and heterogeneous non-IID clients (Dirichlet split), meeting the empirical depth expected for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "NeurIPS reviewers with a purely theoretical focus may criticize the reliance on empirical results over formal optimization proofs for the dynamic adaptation process.",
+        "The behavior of the utility curve under high-variance DP noise (behaving as coordinate-wise weight perturbation) requires a minor cautionary notes and clearer explanation regarding its theoretical limits in highly constrained regimes."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The underlying methodology utilizes Autoencoders and feature importance attribution through Integrated Gradients, which directly aligns with ICLR’s core theme of representation learning and interpretability.",
+        "Resolving the algebraic mismatch by confining the attention-weight scaling to the first-layer input projection weights of the encoder represents a clean, architecture-level improvement.",
+        "The paper addresses trusted AI topics (differential privacy, robustness to distribution shifts, and model interpretability in FL) which are highly popular tracks at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "The contribution leans heavily toward federated systems engineering and network security applications rather than proposing a foundational advance in deep representation learning.",
+        "The deep architectures analyzed (standard MLP Autoencoders) are relatively simple, and some ICLR reviewers may demand evaluations on more complex architectures or sequence-based models suitable for network traffic logs."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

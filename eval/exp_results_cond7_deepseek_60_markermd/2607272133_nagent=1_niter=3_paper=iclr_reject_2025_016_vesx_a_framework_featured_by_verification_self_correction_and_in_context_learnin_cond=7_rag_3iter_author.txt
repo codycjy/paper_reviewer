@@ -1,0 +1,371 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Novel framework integrating verification, self-correction, and in-context learning for web automation tasks",
+        "Comprehensive evaluation showing state-of-the-art performance on WebArena benchmark",
+        "Well-designed hierarchical self-correction mechanism with reflection and replanning"
+      ],
+      "weaknesses": [
+        "Limited evaluation of computational cost compared to other methods",
+        "Verification accuracy has room for improvement (false positive rate of 57%)",
+        "Exemplar bank construction relies on heuristic methods without rigorous validation"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Limited evaluation of computational cost compared to other methods",
+          "severity": "minor",
+          "evidence": "Section B.1 mentions computational cost analysis but only compares with one baseline method (Sodhi et al. 2024) rather than comprehensive comparison with all baselines",
+          "affected_claim": "Claims about efficiency and practical applicability of VeSX",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Verification accuracy has room for improvement (false positive rate of 57%)",
+          "severity": "minor",
+          "evidence": "Table 13 shows confusion matrix indicating verification has 57% false positive rate, suggesting verification module could be improved",
+          "affected_claim": "Claims about reliability of subgoal-guided verification",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The framework is logically sound with well-designed components, ablation studies support the contributions, and mathematical reasoning is appropriate for the problem domain. The hierarchical design is robust to verification imperfections."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "VeSX introduces novel integration of subgoal-guided verification, hierarchical self-correction, and exemplar bank construction specifically for web automation, differentiating from prior work"
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "Achieves state-of-the-art performance on WebArena (34% success rate), significantly outperforming existing methods without human guidance, representing meaningful advancement"
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Comprehensive experiments on WebArena benchmark with proper baselines, detailed ablation studies, and case studies demonstrate convincing and fair evaluation. The paper transparently reports verification performance metrics."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "Paper is well-structured with clear explanations, detailed algorithm descriptions, and comprehensive appendix materials that facilitate understanding"
+        }
+      },
+      "summary_comment": "The authors' response acknowledges the minor weaknesses but does not provide new evidence from the submitted paper that resolves them. The concerns about limited computational cost comparison scope and verification accuracy remain valid but minor issues that do not undermine the paper's core contributions. The framework's novelty, strong experimental results, and comprehensive evaluation justify acceptance. The paper makes a significant contribution to web automation with LLMs through its innovative integration of verification, self-correction, and improved in-context learning mechanisms."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Topic aligns with several areas in ICML's interest list: 'application-driven machine learning' (innovative techniques for end-user needs) and 'trustworthy machine learning' (reliability, robustness). Web automation is a significant application area for autonomous agents.",
+        "The paper introduces a novel system/agent framework (VeSX), which involves procedural improvements (verification, self-correction, planning) and learning components (exemplar bank for ICL). This fits the 'machine learning systems' and 'general machine learning' tracks, focusing on improving the implementation and reliability of LLM-based agents.",
+        "Methodological rigor is strong, as highlighted by reviewers ('soundness', 'comprehensive evaluation'). The extensive ablation studies and SOTA results demonstrate empirical solidity, which is a core value for ICML.",
+        "The work is timely and addresses a clear challenge (infeasible subtasks in web automation), making it a potentially significant contribution to the practical application of LLMs, which ICML values."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's core contribution is more in the engineering and system design of an LLM agent workflow (verification, correction loops, exemplar retrieval) rather than a fundamental machine learning algorithm, theory, or novel learning paradigm. This might make it more applied/systems-focused than a typical ICML core ML paper.",
+        "While it uses an LLM, the learning aspect is primarily in-context learning from a constructed exemplar bank. There is no new model training, theoretical analysis of learning, or novel optimization proposed. The 'learning' is somewhat peripheral to the main workflow innovation.",
+        "Reviewer noted the verification module has a high false positive rate (57%), indicating a core component has reliability issues. While the framework is robust to this, the underlying learning/verification method itself is not significantly advanced."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS's broad and interdisciplinary scope, especially tracks like 'AI/ML for social sciences' (interacting with web UIs), 'Human interaction in AI systems', and 'General machine learning'. NeurIPS actively welcomes work on autonomous agents and human-AI interaction.",
+        "The paper's focus on building a reliable, interactive AI system (an LLM agent for the web) aligns perfectly with NeurIPS's emphasis on AI systems that operate in real-world, interactive scenarios.",
+        "The work presents a comprehensive empirical study on a standard benchmark (WebArena), achieving state-of-the-art results. NeurIPS highly values solid empirical work that pushes the frontier on established challenges.",
+        "The integration of reasoning (planning), acting (execution), and learning (exemplar bank) touches on core NeurIPS themes of reasoning, decision-making, and in-context learning. The hierarchical self-correction mechanism is a novel contribution to agent reliability."
+      ],
+      "why_it_does_not_fit": [
+        "The technical depth is more in system architecture and prompt engineering for a specific domain (web automation) rather than a foundational advance in machine learning theory, algorithms, or representation learning. Some NeurIPS reviewers might find it too applied.",
+        "The exemplar bank construction, while clever, uses heuristic metadata generation. There's limited analysis of why this particular retrieval method works or how it connects to broader principles of representation or memory in ML.",
+        "Similar to ICML, the core 'learning' component (ICL from exemplars) is not novel in itself; the novelty is in its application and integration within a specific agent framework for a specific task."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR's focus on deep learning and its applications includes LLM agents. The paper uses a large language model (GPT-4o) as the core reasoning engine, which falls under ICLR's purview.",
+        "The work involves in-context learning and managing long action sequences, which relates to topics like 'reasoning' and 'learning on graphs and other geometries & topologies' (sequential decision making).",
+        "The problem domain (web automation) can be seen as an application of deep learning to robotics/planning in a simulated environment (the web)."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's primary focus is on deep learning models, their architectures, training, and fundamental properties. This paper does not propose a new model, architecture, or training method. It uses an off-the-shelf LLM as a component in a larger system.",
+        "The core contributions are in the agent workflow and system design (verification, correction loops, planning), not in deep learning per se. It is more of an AI systems/agent paper than a deep learning paper.",
+        "The 'exemplar bank' is a retrieval mechanism with heuristic metadata, not a learned representation or a novel neural memory architecture. This aligns more with classical retrieval-augmented systems than deep learning research.",
+        "Given ICLR's strong bias towards novel deep learning techniques, this paper's engineering/system focus makes it a riskier and less natural fit compared to NeurIPS or ICML."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Novel framework integrating verification, self-correction, and in-context learning for web automation tasks",
+              "Comprehensive evaluation showing state-of-the-art performance on WebArena benchmark",
+              "Well-designed hierarchical self-correction mechanism with reflection and replanning"
+            ],
+            "weaknesses": [
+              "Limited evaluation of computational cost compared to other methods",
+              "Verification accuracy has room for improvement (false positive rate of 57%)",
+              "Exemplar bank construction relies on heuristic methods without rigorous validation"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited evaluation of computational cost compared to other methods",
+                "severity": "minor",
+                "evidence": "Section B.1 mentions computational cost analysis but only compares with one baseline method (Sodhi et al. 2024) rather than comprehensive comparison with all baselines",
+                "affected_claim": "Claims about efficiency and practical applicability of VeSX",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Verification accuracy has room for improvement (false positive rate of 57%)",
+                "severity": "minor",
+                "evidence": "Table 13 shows confusion matrix indicating verification has 57% false positive rate, suggesting verification module could be improved",
+                "affected_claim": "Claims about reliability of subgoal-guided verification",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The framework is logically sound with well-designed components, ablation studies support the contributions, and mathematical reasoning is appropriate for the problem domain"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "VeSX introduces novel integration of subgoal-guided verification, hierarchical self-correction, and exemplar bank construction specifically for web automation, differentiating from prior work"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Achieves state-of-the-art performance on WebArena (34% success rate), significantly outperforming existing methods without human guidance, representing meaningful advancement"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on WebArena benchmark with proper baselines, detailed ablation studies, and case studies demonstrate convincing and fair evaluation"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Paper is well-structured with clear explanations, detailed algorithm descriptions, and comprehensive appendix materials that facilitate understanding"
+              }
+            },
+            "summary_comment": "VeSX presents a novel and comprehensive framework for web automation that significantly advances the state-of-the-art. The integration of subgoal-guided verification, hierarchical self-correction, and improved exemplar bank construction demonstrates innovative thinking. The evaluation is thorough with strong results on WebArena benchmark, though some aspects like computational cost comparison could be strengthened. The framework is well-designed and the contributions are clearly demonstrated through ablation studies."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Novel framework integrating verification, self-correction, and in-context learning for web automation tasks",
+              "Comprehensive evaluation showing state-of-the-art performance on WebArena benchmark",
+              "Well-designed hierarchical self-correction mechanism with reflection and replanning"
+            ],
+            "weaknesses": [
+              "Limited evaluation of computational cost compared to other methods",
+              "Verification accuracy has room for improvement (false positive rate of 57%)",
+              "Exemplar bank construction relies on heuristic methods without rigorous validation"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited evaluation of computational cost compared to other methods",
+                "severity": "minor",
+                "evidence": "Section B.1 mentions computational cost analysis but only compares with one baseline method (Sodhi et al. 2024) rather than comprehensive comparison with all baselines",
+                "affected_claim": "Claims about efficiency and practical applicability of VeSX",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Verification accuracy has room for improvement (false positive rate of 57%)",
+                "severity": "minor",
+                "evidence": "Table 13 shows confusion matrix indicating verification has 57% false positive rate, suggesting verification module could be improved",
+                "affected_claim": "Claims about reliability of subgoal-guided verification",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The framework is logically sound with well-designed components, ablation studies support the contributions, and mathematical reasoning is appropriate for the problem domain. The rebuttal confirms the verification module's role as a high-recall filter within the hierarchical design."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "VeSX introduces novel integration of subgoal-guided verification, hierarchical self-correction, and exemplar bank construction specifically for web automation, differentiating from prior work"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Achieves state-of-the-art performance on WebArena (34% success rate), significantly outperforming existing methods without human guidance, representing meaningful advancement"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on WebArena benchmark with proper baselines, detailed ablation studies, and case studies demonstrate convincing and fair evaluation. The rebuttal correctly points to existing evidence (Table 13, Section B.3) that transparently reports verification performance, which was used to validate the framework design."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Paper is well-structured with clear explanations, detailed algorithm descriptions, and comprehensive appendix materials that facilitate understanding"
+              }
+            },
+            "summary_comment": "The authors' rebuttal provides useful clarifications. They correctly note that the paper already contains a detailed computational cost breakdown and a specific comparison against a key baseline. They also highlight that the verification performance is transparently reported and that the hierarchical design is robust to its limitations. These clarifications do not resolve the minor weaknesses (the cost comparison is still limited to one baseline, and the verification accuracy could be improved), but they confirm the issues are minor and do not undermine the central contribution. The paper clearly meets the top-tier standard with a novel, well-evaluated framework that advances the state-of-the-art in web automation."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited evaluation of computational cost compared to other methods\",\n        \"Verification accuracy has room for improvement (false positive rate of 57%)\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited evaluation of computational cost compared to other methods\",\n          \"location\": \"Section B.1, Table 6\",\n          \"explanation\": \"The paper analyzes the computational cost of VeSX in detail. Table 6 breaks down the token counts and module calls for each component. Section B.1 acknowledges the significant time and cost required to fully reproduce other methods but does provide a quantitative comparison against Sodhi et al. (2024), noting VeSX requires approximately 43.9% more actions. This section also discusses the cost overhead of the exemplar bank, which is typical for ICL-based methods.\"\n        },\n        {\n          \"concern\": \"Verification accuracy has room for improvement\",\n          \"location\": \"Table 13, Section B.3\",\n          \"explanation\": \"The paper transparently presents the performance of the verification module, including a confusion matrix (Table 13) and an analysis of success rates correlated with verification outcomes (Sections B.3, Tables 11 & 12). The results justify the design of the hierarchical self-correction mechanism: the verification, while not perfect, is a reliable gatekeeper that correctly flags a high proportion of errors (true negative rate estimated at 79%). The subsequent reflection and replanning modules are precisely designed to handle cases where verification fails.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Verification accuracy has room for improvement\",\n          \"proposed_change\": \"In the limitations section (Section 5), we will explicitly acknowledge the identified verification performance and discuss how future work could focus on improving the precision and recall of the verification module, potentially through more sophisticated external functions or fine-tuned evaluation models.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limited evaluation of computational cost compared to other methods\",\n          \"proposed_change\": \"In the discussion of computational efficiency (Section B.1), we will more directly contextualize our findings by explicitly stating that the additional cost is a trade-off for the significant performance gain and autonomous operation, and that the action step increase is relative to a human-guided baseline. We will also note that the exemplar bank's overhead is comparable to standard ICL practices in related works.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"Thank you for your positive and constructive review. Your acknowledgment of the framework's novelty, sound design, strong evaluation, and significance is greatly appreciated. We address your specific points below.\\n\\nRegarding the **computational cost evaluation**, we agree a broader comparison is valuable. Our analysis (Section B.1) provides a detailed breakdown (Table 6, Figures 5-7), showing the additional cost from our core modules (verification, reflection, replanning) is modest (10-22% of total resources). We compared action steps with Sodhi et al. (2024), a strong human-guided baseline, finding VeSX requires ~44% more steps but achieves superior autonomous performance. We contextualize the exemplar bank cost (Section B.1, Table 7) as consistent with the ICL paradigm used by other methods (Drouin et al. 2024; Koh et al. 2024; Sodhi et al. 2024). We will strengthen this discussion in the final version to explicitly frame the cost as a justified trade-off for performance and autonomy.\\n\\nConcerning **verification accuracy**, we agree it's an area for future work. We transparently report its performance (Table 13, Section B.3) not as a limitation of the overall framework, but to validate its role. The key insight is that verification acts as a high-recall filter (low false negative rate of ~20%, high true negative rate of ~79%), reliably triggering the self-correction mechanisms when needed. The hierarchical design is robust to verification's moderate false positive rate (~57%), as reflection and replanning provide multiple recovery paths. The ablation studies (Tables 2 & 3) confirm the entire pipeline's effectiveness. We will add a discussion in the limitations section about future directions for improving verification precision.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Novel framework integrating verification, self-correction, and in-context learning for web automation tasks",
+              "Comprehensive evaluation showing state-of-the-art performance on WebArena benchmark",
+              "Well-designed hierarchical self-correction mechanism with reflection and replanning"
+            ],
+            "weaknesses": [
+              "Limited evaluation of computational cost compared to other methods",
+              "Verification accuracy has room for improvement (false positive rate of 57%)",
+              "Exemplar bank construction relies on heuristic methods without rigorous validation"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited evaluation of computational cost compared to other methods",
+                "severity": "minor",
+                "evidence": "Section B.1 mentions computational cost analysis but only compares with one baseline method (Sodhi et al. 2024) rather than comprehensive comparison with all baselines",
+                "affected_claim": "Claims about efficiency and practical applicability of VeSX",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Verification accuracy has room for improvement (false positive rate of 57%)",
+                "severity": "minor",
+                "evidence": "Table 13 shows confusion matrix indicating verification has 57% false positive rate, suggesting verification module could be improved",
+                "affected_claim": "Claims about reliability of subgoal-guided verification",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The framework is logically sound with well-designed components, ablation studies support the contributions, and mathematical reasoning is appropriate for the problem domain. The hierarchical design is robust to verification imperfections."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "VeSX introduces novel integration of subgoal-guided verification, hierarchical self-correction, and exemplar bank construction specifically for web automation, differentiating from prior work"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Achieves state-of-the-art performance on WebArena (34% success rate), significantly outperforming existing methods without human guidance, representing meaningful advancement"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on WebArena benchmark with proper baselines, detailed ablation studies, and case studies demonstrate convincing and fair evaluation. The paper transparently reports verification performance metrics."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Paper is well-structured with clear explanations, detailed algorithm descriptions, and comprehensive appendix materials that facilitate understanding"
+              }
+            },
+            "summary_comment": "The authors' response acknowledges the minor weaknesses but does not provide new evidence from the submitted paper that resolves them. The concerns about limited computational cost comparison scope and verification accuracy remain valid but minor issues that do not undermine the paper's core contributions. The framework's novelty, strong experimental results, and comprehensive evaluation justify acceptance. The paper makes a significant contribution to web automation with LLMs through its innovative integration of verification, self-correction, and improved in-context learning mechanisms."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited computational cost comparison scope\",\n        \"Verification accuracy could be improved\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited computational cost comparison scope\",\n          \"location\": \"Section B.1, Table 6\",\n          \"explanation\": \"The paper provides detailed computational cost analysis for VeSX components (token counts, module calls) and includes a comparison against Sodhi et al. (2024), a representative human-guided baseline. This demonstrates the framework's efficiency characteristics relative to an important benchmark.\"\n        },\n        {\n          \"concern\": \"Verification accuracy could be improved\",\n          \"location\": \"Table 13, Section B.3\",\n          \"explanation\": \"The paper transparently reports verification performance metrics including the false positive rate, demonstrating rigorous self-evaluation. The hierarchical design ensures robustness to verification imperfections through reflection and replanning mechanisms.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited computational cost comparison scope\",\n          \"proposed_change\": \"We will add a sentence in Section B.1 acknowledging that while we provide detailed cost breakdowns and comparison with one key baseline, broader cost comparisons across all methods would be valuable future work given the practical challenges of full reproduction.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Verification accuracy could be improved\",\n          \"proposed_change\": \"We will enhance the limitations section (Section 5) to explicitly discuss verification accuracy as an area for future improvement, potentially through more sophisticated verification functions or learning-based approaches.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and acknowledgment that our clarifications confirm these as minor issues that don't undermine our core contributions. We appreciate the recognition that our paper already contains detailed cost analysis and transparent verification reporting.\\n\\nRegarding computational cost comparison, while we provide comprehensive internal cost breakdowns (Table 6) and comparison against the strongest human-guided baseline (Sodhi et al. 2024), we acknowledge that broader comparisons would be valuable. We will explicitly note this as a direction for future work in Section B.1.\\n\\nFor verification accuracy, we agree this represents an opportunity for improvement in future iterations. Our hierarchical design ensures the system remains effective despite current verification limitations, but we will more explicitly discuss this in our limitations section as an area for potential enhancement through more advanced verification techniques.\\n\\nThese minor revisions will strengthen the paper while maintaining its core contributions of novel integration of verification, self-correction, and exemplar bank construction that achieves state-of-the-art performance on WebArena.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_9bdd8c08e471",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/iclr_reject_2025_016_vesx_a_framework_featured_by_verification_self_correction_and_in_context_learnin.md",
+    "target_paper_summary": {
+      "paper_id": "paper_9bdd8c08e471",
+      "title": "Vesx: A Framework Featured By Verification, Self-Correction And In-Context Learning For Web Automation Tasks",
+      "abstract": "1 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100 101 102 103 104 105 106 107\n\n: the i-th subtask : the j-th action to address the i-th subtask : the i-th subgoal : verification for the i-th subgoal\n(a) Only Execution Workflow Query: Tell me the status of my latest order and when will it arrive.\n\n(b) Planning-Execution Workflow\n(with human guidance)\nDecompose into a series of subtasks\n... ...\n\n: find_order\n(\"my latest order\")\n: get_information\n(\"its status and arrival time\") : **Answer**\nplanning:\n+ +\nclick [status] **click [view details]**\n\n... ... ...\n\nGenerate actions one by one predict action and execute:\n... ...\n\npredict action and execute:\n... ...\n\nclick [my account] answer [Delivery. Tomorrow]\n\nclick [Sales]\n\nclick [my account] finish_subtask **answer [Delivery. Tomorrow]**\n\n(c) VeSX Workflow (Ours):\nDecompose into a series of subtask and subgoal pairs\n: find the **latest order** ... ...\n\nplanning:\n: Answer : check_url\n(\"my_account/orders\")\n: check_webpage\n\n(\"The order is latest\")\nclick [my_account] scroll [down] click [orders] answer [Delivery. Tomorrow] click [sorted by] **click [order_123]**\n... ... ...\n\n: find my order list predict action, execute and verify:\npass fail pass click [time]\n\nfinish_subtask **finish_subtask**\n\nfail selfcorrectionselfcorrection\nVeSX introduces two significant modules to the planning-execution workflow for web automation tasks, as illustrated in Figure 1(c). The first involves adopting **subgoal-guided verification** to ascertain the successful completion of subtasks. VeSX generates subgoals in the planning phase and conducts verification to check whether the execution result satisfies the subgoal once execution is finished. We devised two modes for verification: self-verification which makes LLMs do verification by themselves, and external verification which calls for external functions to conduct verification. Verification ensures the completion of the subtasks and avoids the issue of subsequent subtasks becoming infeasible due to errors in the execution of previous subtasks. The second improvement is **hierarchical self-correction**, which aims to self-correct both execution and planning. When verification fails, VeSX first tries to identify and correct errors in the current subtask's execution trajectory, a process referred to as \"reflection\". If reflection is unsuccessful, the",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,531 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a novel adaptation method (CSR) using sparse coding for embeddings, offering a lightweight alternative to MRL that avoids full model retraining.",
+        "Comprehensive evaluation across multiple domains (image, text, multimodal) demonstrates superior efficiency and accuracy compared to MRL and other baselines.",
+        "Significant practical impact with up to 69x speedup in retrieval tasks and drastically reduced training time, making it highly applicable to real-world systems."
+      ],
+      "weaknesses": [
+        "Performance degrades under very high sparsity constraints, particularly in multimodal settings, due to persistent 'dead latents' issue.",
+        "Limited theoretical justification for some design choices (e.g., hyperparameter selection, contrastive loss integration), relying heavily on empirical results."
+      ],
+      "summary_comment": "The paper introduces CSR, a sparse coding-based method for adaptive embeddings, which outperforms MRL in accuracy, retrieval speed, and training efficiency across diverse benchmarks. While it suffers from dead latents at extreme sparsity, its practical benefits and thorough evaluation justify acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic is representation learning and compression, which aligns well with ICML's 'general machine learning' and 'machine learning systems' tracks. CSR is a method for creating adaptive, efficient embeddings.",
+        "The contribution is both algorithmic (a new method combining sparse autoencoding and contrastive learning) and empirical (large-scale benchmarking across modalities). ICML values this mix of novel method and thorough evaluation.",
+        "The paper demonstrates strong empirical rigor across multiple benchmarks (ImageNet, MTEB, MS COCO/Flickr30K) with careful ablation studies, matching ICML's emphasis on sound experimental methodology.",
+        "The work has clear practical significance for systems where efficiency is paramount (e.g., retrieval, search), fitting ICML's interest in 'application-driven machine learning' and 'trustworthy ML' (efficiency/reliability aspects)."
+      ],
+      "why_it_does_not_fit": [
+        "The core innovation is more of an efficient engineering/compression method built on established concepts (sparse autoencoders, contrastive learning). While novel in combination and application, the theoretical novelty is moderate, which might place it in the upper-middle but not top tier for ICML's most theoretical submissions.",
+        "Some reviewer concerns about limited theoretical justification for design choices (e.g., hyperparameters) and persistent 'dead latents' issue slightly weaken the rigor/novelty fit, though the empirical strength compensates significantly."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper tackles a highly practical problem—efficient representation learning for retrieval—directly relevant to NeurIPS tracks like 'Data-centric aspects of AI', 'SysML Infrastructure', and 'General machine learning'.",
+        "The evaluation is extensive and spans multiple modalities (image, text, multimodal), aligning with NeurIPS's broad, interdisciplinary scope.",
+        "The demonstrated speedups (e.g., 69x on ImageNet) and training efficiency gains have significant real-world impact, which NeurIPS values.",
+        "The method combines concepts from sparse coding, autoencoders, and contrastive learning, showing the kind of interdisciplinary approach NeurIPS often features."
+      ],
+      "why_it_does_not_fit": [
+        "The core conceptual advance—using sparse coding for adaptive embeddings—is incremental relative to existing sparse autoencoder (SAE) literature. The primary novelty is in the application and the specific contrastive combination, which might be seen as less groundbreaking for NeurIPS's highest-tier submissions.",
+        "The 'dead latents' problem under high sparsity is acknowledged as an unresolved limitation. While honest, this could be viewed as a significant weakness for a venue like NeurIPS that often seeks more complete solutions or deeper theoretical insights.",
+        "Reviewer notes about 'limited theoretical justification' align with a potential NeurIPS weakness—the paper is heavily empirical, and the theory (leveraging an existing theorem from Wang et al.) is not a major new contribution."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper focuses on representation learning, specifically compressing pre-trained embeddings, which falls squarely under ICLR's core topics like 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' and 'generative models' (via autoencoding).",
+        "It extensively uses pre-trained deep models (ResNets, ViTs, CLIP) and improves their efficiency, aligning with ICLR's deep learning focus.",
+        "The method involves training a sparse autoencoder module, which connects to recent ICLR interest in interpretability and sparse latent codes (e.g., work on SAEs for LLMs)."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR heavily emphasizes deep learning architectures, training dynamics, and foundational model innovations. This work is more of a post-hoc compression/adaptation technique applied *on top of* frozen deep models, rather than a fundamental change to deep learning itself.",
+        "The novelty is less about the deep representation learning process and more about efficient inference and storage. The core deep learning backbone is frozen; the trainable component is a relatively simple, shallow autoencoder.",
+        "Reviewer's note about performance degradation under high sparsity ('dead latents') is a notable flaw, and the paper does not propose a novel deep learning solution to fully solve it, instead noting it as future work.",
+        "While ICLR has application tracks, the paper's strongest selling point is its systems efficiency (retrieval speed, training time), which is less central to ICLR's identity than to ICML's 'ML Systems' track or NeurIPS's 'SysML'."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_88b95bdb272d",
+    "paper_id": "paper_fdd3ff6c701c",
+    "target_paper_summary": {
+      "paper_id": "paper_fdd3ff6c701c",
+      "title": "Tiansheng Wen 1 2 Yifei Wang 3 Zequn Zeng 1 Zhong Peng 1 Yudi Su 1 Xinyang Liu 1 Bo Chen 1 Hongwei Liu 1 Stefanie Jegelka 3 4 Chenyu You 2",
+      "abstract": "Many large-scale systems rely on high-quality deep representations (embeddings) to facilitate tasks like retrieval, search, and generative modeling. Matryoshka Representation Learning (MRL) recently emerged as a solution for adaptive embedding lengths, but it requires full model retraining and suffers from noticeable performance degradations at short lengths. In this paper, we show that *sparse coding* offers a compelling alternative for achieving adaptive representation with minimal overhead and higher fidelity. We propose Contrastive Sparse Representation (CSR), a method that sparsifies pre-trained embeddings\n*Equal contribution 1National Key Laboratory of Radar Signal Processing, Xidian University, Xi'an, China 2Stony Brook University, New York, USA 3MIT CSAIL, MA, USA 4TU Munich. Correspondence to: Bo Chen <bchen@mail.xidian.edu.cn>, Hongwei Liu <hwliu@xidian.edu.cn>.\n\ninto a high-dimensional but *selectively activated* feature space. By leveraging lightweight autoencoding and task-aware contrastive objectives, CSR preserves semantic quality while allowing flexible, cost-effective inference at different sparsity levels. Extensive experiments on image, text, and multimodal benchmarks demonstrate that CSR consistently outperforms MRL in terms of both accuracy and retrieval speed—often by large margins—while also cutting training time to a fraction of that required by MRL. Our results establish sparse coding as a powerful paradigm for adaptive representation learning in real-world applications where efficiency and fidelity are both paramount. Code is available at this https URL.",
+      "topic": "",
+      "claims": [
+        "we show that *sparse coding* offers a compelling alternative for achieving adaptive representation with minimal overhead and higher fidelity.",
+        "We propose Contrastive Sparse Representation (CSR), a method that sparsifies pre-trained embeddings *Equal contribution 1National Key Laboratory of Radar Signal Processing, Xidian University, Xi'an, China 2Stony Brook University, New York, USA 3MIT CSAIL, MA, USA 4TU Munich."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "adaptive representation learning embeddings retrieval search generative modeling",
+          "rationale": "The paper addresses adaptive representation learning for tasks like retrieval, search, and generative modeling, focusing on embedding flexibility and efficiency."
+        },
+        {
+          "group": "same_method",
+          "query": "sparse coding contrastive learning autoencoding embeddings sparsification",
+          "rationale": "The proposed CSR method uses sparse coding, contrastive objectives, and lightweight autoencoding to sparsify embeddings, targeting similar techniques."
+        },
+        {
+          "group": "same_constraints",
+          "query": "pre-trained embeddings fine-tuning efficiency constraints inference overhead computational cost",
+          "rationale": "The work assumes pre-trained embeddings are available and emphasizes minimal retraining overhead, low inference cost, and deployment efficiency."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "Matryoshka Representation Learning MRL benchmark datasets image text multimodal retrieval accuracy speed",
+          "rationale": "MRL is used as a primary baseline with comparisons on accuracy, retrieval speed, and training time across multiple benchmarks."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "adaptive embedding length methods sparse representation prior to 2024",
+          "rationale": "This searches for earlier adaptive embedding techniques that might challenge the novelty of using sparse coding for this purpose."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "sparse coding limitations performance degradation high-dimensional embeddings negative results",
+          "rationale": "Seeks papers highlighting issues with sparse coding, such as semantic quality loss or inefficiency, which could counter the claims."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_f9d9295ce",
+        "title": "Quantum Architecture Search with Unsupervised Representation Learning",
+        "authors": [
+          "Yize Sun",
+          "Zixin Wu",
+          "Volker Tresp",
+          "Yunpu Ma"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-21",
+        "venue": "arXiv",
+        "abstract": "Unsupervised representation learning presents new opportunities for advancing Quantum Architecture Search (QAS) on Noisy Intermediate-Scale Quantum (NISQ) devices. QAS is designed to optimize quantum circuits for Variational Quantum Algorithms (VQAs). Most QAS algorithms tightly couple the search space and search algorithm, typically requiring the evaluation of numerous quantum circuits, resulting in high computational costs and limiting scalability to larger quantum circuits. Predictor-based QAS algorithms mitigate this issue by estimating circuit performance based on structure or embedding. However, these methods often demand time-intensive labeling to optimize gate parameters across many circuits, which is crucial for training accurate predictors. Inspired by the classical neural architecture search algorithm Arch2vec, we investigate the potential of unsupervised representation learning for QAS without relying on predictors. Our framework decouples unsupervised architecture representation learning from the search process, enabling the learned representations to be applied across various downstream tasks. Additionally, it integrates an improved quantum circuit graph encoding scheme, addressing the limitations of existing representations and enhancing search efficiency. This predictor-free approach removes the need for large labeled datasets. During the search, we employ REINFORCE and Bayesian Optimization to explore the latent representation space and compare their performance against baseline methods. We further validate our approach by executing the best-discovered MaxCut circuits on IBM's ibm_sherbrooke quantum processor, confirming that the architectures retain optimal performance even under real hardware noise. Our results demonstrate that the framework efficiently identifies high-performing quantum circuits with fewer search iterations.",
+        "url": "http://arxiv.org/abs/2401.11576v6",
+        "doi": "",
+        "arxiv_id": "2401.11576v6",
+        "source_ids": {
+          "arXiv": "2401.11576v6"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_002_cb3ed1c67",
+        "title": "Learning Cross-Lingual Sentence Representations via a Multi-task Dual-Encoder Model",
+        "authors": [
+          "Muthuraman Chidambaram",
+          "Yinfei Yang",
+          "Daniel Cer",
+          "Steve Yuan",
+          "Yun-Hsuan Sung",
+          "Brian Strope",
+          "Ray Kurzweil"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-30",
+        "venue": "arXiv",
+        "abstract": "A significant roadblock in multilingual neural language modeling is the lack of labeled non-English data. One potential method for overcoming this issue is learning cross-lingual text representations that can be used to transfer the performance from training on English tasks to non-English tasks, despite little to no task-specific non-English data. In this paper, we explore a natural setup for learning cross-lingual sentence representations: the dual-encoder. We provide a comprehensive evaluation of our cross-lingual representations on a number of monolingual, cross-lingual, and zero-shot/few-shot learning tasks, and also give an analysis of different learned cross-lingual embedding spaces.",
+        "url": "http://arxiv.org/abs/1810.12836v4",
+        "doi": "",
+        "arxiv_id": "1810.12836v4",
+        "source_ids": {
+          "arXiv": "1810.12836v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_004_039d9a7c8",
+        "title": "On the Sample Complexity of Predictive Sparse Coding",
+        "authors": [
+          "Nishant A. Mehta",
+          "Alexander G. Gray"
+        ],
+        "year": 2012,
+        "publication_date": "2012-02-18",
+        "venue": "arXiv",
+        "abstract": "The goal of predictive sparse coding is to learn a representation of examples as sparse linear combinations of elements from a dictionary, such that a learned hypothesis linear in the new representation performs well on a predictive task. Predictive sparse coding algorithms recently have demonstrated impressive performance on a variety of supervised tasks, but their generalization properties have not been studied. We establish the first generalization error bounds for predictive sparse coding, covering two settings: 1) the overcomplete setting, where the number of features k exceeds the original dimensionality d; and 2) the high or infinite-dimensional setting, where only dimension-free bounds are useful. Both learning bounds intimately depend on stability properties of the learned sparse encoder, as measured on the training sample. Consequently, we first present a fundamental stability result for the LASSO, a result characterizing the stability of the sparse codes with respect to perturbations to the dictionary. In the overcomplete setting, we present an estimation error bound that decays as \\tilde{O}(sqrt(d k/m)) with respect to d and k. In the high or infinite-dimensional setting, we show a dimension-free bound that is \\tilde{O}(sqrt(k^2 s / m)) with respect to k and s, where s is an upper bound on the number of non-zeros in the sparse code for any training data point.",
+        "url": "http://arxiv.org/abs/1202.4050v2",
+        "doi": "",
+        "arxiv_id": "1202.4050v2",
+        "source_ids": {
+          "arXiv": "1202.4050v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_005_19f34c611",
+        "title": "Point-PEFT: Parameter-Efficient Fine-Tuning for 3D Pre-trained Models",
+        "authors": [
+          "Yiwen Tang",
+          "Ray Zhang",
+          "Zoey Guo",
+          "Dong Wang",
+          "Zhigang Wang",
+          "Bin Zhao",
+          "Xuelong Li"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-04",
+        "venue": "arXiv",
+        "abstract": "The popularity of pre-trained large models has revolutionized downstream tasks across diverse fields, such as language, vision, and multi-modality. To minimize the adaption cost for downstream tasks, many Parameter-Efficient Fine-Tuning (PEFT) techniques are proposed for language and 2D image pre-trained models. However, the specialized PEFT method for 3D pre-trained models is still under-explored. To this end, we introduce Point-PEFT, a novel framework for adapting point cloud pre-trained models with minimal learnable parameters. Specifically, for a pre-trained 3D model, we freeze most of its parameters, and only tune the newly added PEFT modules on downstream tasks, which consist of a Point-prior Prompt and a Geometry-aware Adapter. The Point-prior Prompt adopts a set of learnable prompt tokens, for which we propose to construct a memory bank with domain-specific knowledge, and utilize a parameter-free attention to enhance the prompt tokens. The Geometry-aware Adapter aims to aggregate point cloud features within spatial neighborhoods to capture fine-grained geometric information through local interactions. Extensive experiments indicate that our Point-PEFT can achieve better performance than the full fine-tuning on various downstream tasks, while using only 5% of the trainable parameters, demonstrating the efficiency and effectiveness of our approach. Code is released at https://github.com/Ivan-Tang-3D/Point-PEFT.",
+        "url": "http://arxiv.org/abs/2310.03059v8",
+        "doi": "",
+        "arxiv_id": "2310.03059v8",
+        "source_ids": {
+          "arXiv": "2310.03059v8"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_006_c11de307b",
+        "title": "Transfer Learning Robustness in Multi-Class Categorization by Fine-Tuning Pre-Trained Contextualized Language Models",
+        "authors": [
+          "Xinyi Liu",
+          "Artit Wangperawong"
+        ],
+        "year": 2019,
+        "publication_date": "2019-09-08",
+        "venue": "arXiv",
+        "abstract": "This study compares the effectiveness and robustness of multi-class categorization of Amazon product data using transfer learning on pre-trained contextualized language models. Specifically, we fine-tuned BERT and XLNet, two bidirectional models that have achieved state-of-the-art performance on many natural language tasks and benchmarks, including text classification. While existing classification studies and benchmarks focus on binary targets, with the exception of ordinal ranking tasks, here we examine the robustness of such models as the number of classes grows from 1 to 20. Our experiments demonstrate an approximately linear decrease in performance metrics (i.e., precision, recall, $F_1$ score, and accuracy) with the number of class labels. BERT consistently outperforms XLNet using identical hyperparameters on the entire range of class label quantities for categorizing products based on their textual descriptions. BERT is also more affordable than XLNet in terms of the computational cost (i.e., time and memory) required for training. In all cases studied, the performance degradation rates were estimated to be 1% per additional class label.",
+        "url": "http://arxiv.org/abs/1909.03564v2",
+        "doi": "",
+        "arxiv_id": "1909.03564v2",
+        "source_ids": {
+          "arXiv": "1909.03564v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_bb21098a3",
+        "title": "Matryoshka Multimodal Models",
+        "authors": [
+          "Mu Cai",
+          "Jianwei Yang",
+          "Jianfeng Gao",
+          "Yong Jae Lee"
+        ],
+        "year": 2024,
+        "publication_date": "2024-05-27",
+        "venue": "arXiv",
+        "abstract": "Large Multimodal Models (LMMs) such as LLaVA have shown strong performance in visual-linguistic reasoning. These models first embed images into a fixed large number of visual tokens and then feed them into a Large Language Model (LLM). However, this design causes an excessive number of tokens for dense visual scenarios such as high-resolution images and videos, leading to great inefficiency. While token pruning/merging methods do exist, they produce a single length output for each image and do not afford flexibility in trading off information density v.s. efficiency. Inspired by the concept of Matryoshka Dolls, we propose M3: Matryoshka Multimodal Models, which learns to represent visual content as nested sets of visual tokens that capture information across multiple coarse-to-fine granularities. Our approach offers several unique benefits for LMMs: (1) One can explicitly control the visual granularity per test instance during inference, e.g. , adjusting the number of tokens used to represent an image based on the anticipated complexity or simplicity of the content; (2) M3 provides a framework for analyzing the granularity needed for existing datasets, where we find that COCO-style benchmarks only need around ~9 visual tokens to obtain accuracy similar to that of using all 576 tokens; (3) Our approach provides a foundation to explore the best trade-off between performance and visual token length at sample level, where our investigation reveals that a large gap exists between the oracle upper bound and current fixed-scale representations.",
+        "url": "http://arxiv.org/abs/2405.17430v2",
+        "doi": "",
+        "arxiv_id": "2405.17430v2",
+        "source_ids": {
+          "arXiv": "2405.17430v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_009_928c01f3d",
+        "title": "NTU-NPU System for Voice Privacy 2024 Challenge",
+        "authors": [
+          "Nikita Kuzmin",
+          "Hieu-Thi Luong",
+          "Jixun Yao",
+          "Lei Xie",
+          "Kong Aik Lee",
+          "Eng Siong Chng"
+        ],
+        "year": 2024,
+        "publication_date": "2024-10-03",
+        "venue": "arXiv",
+        "abstract": "In this work, we describe our submissions for the Voice Privacy Challenge 2024. Rather than proposing a novel speech anonymization system, we enhance the provided baselines to meet all required conditions and improve evaluated metrics. Specifically, we implement emotion embedding and experiment with WavLM and ECAPA2 speaker embedders for the B3 baseline. Additionally, we compare different speaker and prosody anonymization techniques. Furthermore, we introduce Mean Reversion F0 for B5, which helps to enhance privacy without a loss in utility. Finally, we explore disentanglement models, namely $β$-VAE and NaturalSpeech3 FACodec.",
+        "url": "http://arxiv.org/abs/2410.02371v1",
+        "doi": "",
+        "arxiv_id": "2410.02371v1",
+        "source_ids": {
+          "arXiv": "2410.02371v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_010_8b7e53ee8",
+        "title": "AIM 2024 Sparse Neural Rendering Challenge: Methods and Results",
+        "authors": [
+          "Michal Nazarczuk",
+          "Sibi Catley-Chandar",
+          "Thomas Tanay",
+          "Richard Shaw",
+          "Eduardo Pérez-Pellitero",
+          "Radu Timofte",
+          "Xing Yan",
+          "Pan Wang",
+          "Yali Guo",
+          "Yongxin Wu",
+          "Youcheng Cai",
+          "Yanan Yang",
+          "Junting Li",
+          "Yanghong Zhou",
+          "P. Y. Mok",
+          "Zongqi He",
+          "Zhe Xiao",
+          "Kin-Chung Chan",
+          "Hana Lebeta Goshu",
+          "Cuixin Yang",
+          "Rongkang Dong",
+          "Jun Xiao",
+          "Kin-Man Lam",
+          "Jiayao Hao",
+          "Qiong Gao",
+          "Yanyan Zu",
+          "Junpei Zhang",
+          "Licheng Jiao",
+          "Xu Liu",
+          "Kuldeep Purohit"
+        ],
+        "year": 2024,
+        "publication_date": "2024-09-23",
+        "venue": "arXiv",
+        "abstract": "This paper reviews the challenge on Sparse Neural Rendering that was part of the Advances in Image Manipulation (AIM) workshop, held in conjunction with ECCV 2024. This manuscript focuses on the competition set-up, the proposed methods and their respective results. The challenge aims at producing novel camera view synthesis of diverse scenes from sparse image observations. It is composed of two tracks, with differing levels of sparsity; 3 views in Track 1 (very sparse) and 9 views in Track 2 (sparse). Participants are asked to optimise objective fidelity to the ground-truth images as measured via the Peak Signal-to-Noise Ratio (PSNR) metric. For both tracks, we use the newly introduced Sparse Rendering (SpaRe) dataset and the popular DTU MVS dataset. In this challenge, 5 teams submitted final results to Track 1 and 4 teams submitted final results to Track 2. The submitted models are varied and push the boundaries of the current state-of-the-art in sparse neural rendering. A detailed description of all models developed in the challenge is provided in this paper.",
+        "url": "http://arxiv.org/abs/2409.15045v1",
+        "doi": "",
+        "arxiv_id": "2409.15045v1",
+        "source_ids": {
+          "arXiv": "2409.15045v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_008_bb21098a3",
+        "relevance_score": 0.92,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper directly introduces Matryoshka representation learning for multimodal models, serving as the primary baseline method that the target paper explicitly compares against and aims to improve upon.",
+        "evidence_summary": "Matryoshka Multimodal Models (Cai et al., 2024) proposes nested sets of visual tokens for controlling visual granularity and efficiency, directly related to the MRL baseline discussed in the target."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_039d9a7c8",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "same_method"
+        ],
+        "rationale": "Provides foundational theoretical analysis of sparse coding's generalization properties and sample complexity, which is critical for assessing the target's core methodological claims and potential limitations.",
+        "evidence_summary": "On the Sample Complexity of Predictive Sparse Coding (Mehta and Gray, 2012) establishes generalization error bounds for sparse representation learning, analyzing stability and dimensional scaling."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_002_cb3ed1c67",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Addresses the core problem of learning flexible, cross-lingual sentence representations for transfer tasks, aligning with the target's focus on adaptive representations for downstream applications.",
+        "evidence_summary": "Learning Cross-Lingual Sentence Representations via a Multi-task Dual-Encoder Model (Chidambaram et al., 2018) explores cross-lingual text representations for transfer learning with minimal task-specific data."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_19f34c611",
+        "relevance_score": 0.63,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Exemplifies the constraint of efficiently adapting pre-trained models with minimal parameters, a key practical concern shared by the target paper's focus on low-overhead adaptation of embeddings.",
+        "evidence_summary": "Point-PEFT: Parameter-Efficient Fine-Tuning for 3D Pre-trained Models (Tang et al., 2023) introduces a framework for adapting point cloud models with only 5% trainable parameters, emphasizing efficiency."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_c11de307b",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Studies fine-tuning robustness of pre-trained language models under efficiency constraints, providing background on the trade-offs involved in adapting pre-trained representations.",
+        "evidence_summary": "Transfer Learning Robustness in Multi-Class Categorization by Fine-Tuning Pre-Trained Contextualized Language Models (Liu and Wangperawong, 2019) compares BERT and XLNet fine-tuning efficiency and performance degradation with increasing classes."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_009_928c01f3d",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Investigates alternative embedding techniques for privacy applications, representing a different domain where adaptive representation methods compete, though not directly addressing sparse coding for efficiency.",
+        "evidence_summary": "NTU-NPU System for Voice Privacy 2024 Challenge (Kuzmin et al., 2024) explores speech anonymization using various speaker embedders and disentanglement models for privacy-utility trade-offs."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_010_8b7e53ee8",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Applies sparse techniques in neural rendering, showcasing sparse representation in a different modality, providing context for sparse methods but not directly addressing adaptive embedding lengths.",
+        "evidence_summary": "AIM 2024 Sparse Neural Rendering Challenge: Methods and Results (Nazarczuk et al., 2024) reviews methods for novel view synthesis from sparse image observations using neural rendering."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_001_f9d9295ce",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Touches on unsupervised representation learning for architecture search, but in a quantum computing domain that is methodologically and application-wise distant from the target's focus on sparse coding for efficient embeddings.",
+        "evidence_summary": "Quantum Architecture Search with Unsupervised Representation Learning (Sun et al., 2024) applies unsupervised representation learning to quantum circuit optimization, decoupling representation learning from search."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Research on adaptive representation learning has explored various approaches to balance efficiency with semantic fidelity. Matryoshka Representation Learning, as exemplified by Matryoshka Multimodal Models (Cai et al., 2024), provides nested representations but requires retraining and suffers performance degradation. Sparse coding techniques like those analyzed in On the Sample Complexity of Predictive Sparse Coding (Mehta and Gray, 2012) offer theoretical foundations for sparse representations. Parameter-efficient adaptation methods, such as Point-PEFT: Parameter-Efficient Fine-Tuning for 3D Pre-trained Models (Tang et al., 2023) and studies on Transfer Learning Robustness in Multi-Class Categorization by Fine-Tuning Pre-Trained Contextualized Language Models (Liu and Wangperawong, 2019), address the constraint of minimal retraining overhead. Cross-domain representation learning, including Learning Cross-Lingual Sentence Representations via a Multi-task Dual-Encoder Model (Chidambaram et al., 2018), demonstrates the value of flexible embeddings for transfer tasks. Alternative embedding techniques appear in domains like privacy preservation, as in NTU-NPU System for Voice Privacy 2024 Challenge (Kuzmin et al., 2024), and sparse methods in computer vision, as reviewed in AIM 2024 Sparse Neural Rendering Challenge: Methods and Results (Nazarczuk et al., 2024). Representation learning also extends to specialized domains like Quantum Architecture Search with Unsupervised Representation Learning (Sun et al., 2024).",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 8,
+      "num_cutoff_valid": 8,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 8,
+    "num_cutoff_valid": 8,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

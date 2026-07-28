@@ -1,0 +1,302 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of integrating LTL specifications with differentiable simulators to achieve differentiable rewards is highly novel and addresses a long-standing challenge of sparse rewards in formal methods for RL.",
+        "The proposed soft labeling technique, using differentiable CDFs for AP satisfaction and probabilistic automaton transitions, is a clever and effective way to bridge the gap between discrete logical specifications and gradient-based learning.",
+        "The experimental results clearly demonstrate the significant performance gains of the proposed differentiable approach over non-differentiable baselines in complex robotic tasks (CartPole and legged robots), showcasing its practical utility and impact."
+      ],
+      "weaknesses": [
+        "While the paper claims correctness is preserved, a more rigorous theoretical analysis of the impact of soft labeling on the overall LTL satisfaction probability maximization, especially in the limit, would strengthen the soundness. The current proof relies on existing work for discrete rewards (Theorem 1) and does not fully detail how differentiability impacts this guarantee.",
+        "The reliance on hyperparameter tuning for the CDF function (e.g., sigmoid) is mentioned as a limitation, but the paper doesn't explore its sensitivity or provide guidance on its selection. This could affect the robustness and generalizability of the method to new environments."
+      ],
+      "summary_comment": "This paper presents a truly innovative solution to a critical problem in formal methods for reinforcement learning: the notorious sparse reward issue arising from LTL specifications. By cleverly leveraging differentiable simulators and introducing soft labeling for both atomic propositions and automaton transitions, the authors manage to create an end-to-end differentiable pipeline for learning from LTL. The novelty here is outstanding, as it's a bold and forward-thinking approach that marries two powerful but previously hard-to-combine paradigms. The significance is enormous, as it promises to unlock the full potential of LTL in complex, long-horizon robotic tasks where correctness and efficiency are paramount. While some theoretical details on the impact of soft labeling on the asymptotic correctness might be further elaborated, and the sensitivity to the CDF choice could be explored, these are minor imperfections that don't detract from the brilliance of the core idea. The experimental results are convincing and clearly demonstrate the superior performance of the differentiable approach. This work pushes the field forward significantly and has the potential to inspire much future research."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'reinforcement learning (decision and control)' and 'trustworthy machine learning (reliability, causality, fairness, interpretability, privacy, robustness, safety, etc.)' through its focus on formal specifications (LTL) for safety and reliability in RL, which is a strong fit for ICML's interests.",
+        "The methodology involves 'deep learning (architectures, generative models, theory, etc.)' and 'optimization (convex and non-convex optimization, matrix/tensor methods, stochastic, online, non-smooth, composite, etc.)' by developing a differentiable learning framework for LTL-based rewards.",
+        "The use of differentiable simulators and the development of differentiable rewards and state transitions directly align with 'machine learning systems (improved implementation and scalability, hardware, libraries, distributed methods, etc.)' and 'general machine learning' research topics.",
+        "Reviewer A highlights the 'highly novel' core idea of integrating LTL with differentiable simulators, which ICML values for cutting-edge research.",
+        "The paper provides strong experimental evidence in robotic systems, which falls under 'application-driven machine learning (innovative techniques, problems, and datasets that are of interest to the machine learning community and driven by the needs of end-users in applications such as healthcare, physical sciences, biosciences, social sciences, sustainability, and climate etc.)'."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A noted that a more rigorous theoretical analysis of the impact of soft labeling on overall LTL satisfaction probability maximization 'would strengthen the soundness'. While the paper claims theoretical rigor, this comment suggests there might be room for deeper theoretical grounding specific to the differentiable aspect, which is often highly valued at ICML.",
+        "The mention of hyperparameter tuning for the CDF function as a limitation, without further exploration of its sensitivity, could be seen as a minor weakness in terms of practical robustness for a broad audience, though the reviewer considers it a 'minor imperfection'."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core topic of 'Decision-making, reinforcement learning, and control' is a direct match for NeurIPS topics.",
+        "The focus on ensuring learned controllers comply with safety and reliability requirements, especially using formal methods, aligns with 'Socio-technical aspects of AI' and implicitly with 'trustworthy AI' interests at NeurIPS.",
+        "The application to robotic systems (CartPole, Hopper, Cheetah, Ant) directly relates to 'Robotics, embodied systems, and engineering' which is a key topic at NeurIPS.",
+        "The use of differentiable simulators and the integration of formal logic with gradient-based learning represent 'new and original research' on complex problems, a core value for NeurIPS submissions.",
+        "Reviewer A emphasizes the 'truly innovative solution to a critical problem' and its 'enormous significance' for complex, long-horizon robotic tasks, indicating a strong fit for NeurIPS's focus on impactful research."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper has theoretical components, Reviewer A suggests that a more rigorous theoretical analysis of the impact of soft labeling on LTL satisfaction probability maximization 'would strengthen the soundness'. NeurIPS often seeks strong theoretical guarantees, and this could be a point of minor contention.",
+        "The paper's primary focus leans heavily towards applications in robotics and control systems, which while welcomed at NeurIPS, might sometimes place less emphasis on the very abstract theoretical underpinnings compared to some other sub-areas that NeurIPS also covers.",
+        "The 'Others' classification for the paper topic is quite broad. While the paper clearly fits into RL, robotics, and formal methods, NeurIPS broadly covers many aspects of machine learning, and papers explicitly aligning with one distinct subfield's core methodological advancements might sometimes be more emphasized."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper fundamentally deals with 'reinforcement learning' and 'optimization' through its approach of enabling gradient-based learning from LTL specifications by making rewards differentiable.",
+        "The introduction of 'soft labeling techniques' and the probabilistic representation of automaton states for differentiability can be considered a form of 'representation learning' (implicitly, for the automaton states and labels in a continuous space).",
+        "The methodology integrates 'differentiable simulators' which falls under 'infrastructure, software libraries, hardware, etc.' as an underlying technology, and specifically mentions PyTorch-based dFlex, a type of deep learning infrastructure.",
+        "The experimental validation primarily uses 'deep learning' baselines (PPO, SAC, SHAC, AHAC) and demonstrates significant improvements using the proposed differentiable LTL approach, which is highly relevant to ICLR's deep learning focus.",
+        "Reviewer A's praise for the 'clever and effective way to bridge the gap between discrete logical specifications and gradient-based learning' perfectly aligns with ICLR's interest in novel deep learning methods and their applications, especially in areas like robotics ('applications to robotics, autonomy, planning')."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning methods are used, the core novelty is at the intersection of formal methods (LTL) and differentiable simulation for safe RL, rather than a novel deep learning architecture or fundamental theory of deep learning itself. ICLR often prioritizes advancements directly within deep learning.",
+        "Reviewer A's comment about the need for a more rigorous theoretical analysis of the impact of soft labeling on LTL satisfaction might be more critical at ICLR if the paper were presented as a theoretical deep learning contribution, although here it is more about bridging domains.",
+        "The paper's topic of 'Others' is less specific for ICLR, which has a very strong and clear focus on deep learning. While it fits, it might not be as central to the specific community's most direct interests as papers introducing new deep learning models or paradigms."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_52cc46284ffc",
+    "paper_id": "paper_e2a12a3e3c21",
+    "target_paper_summary": {
+      "paper_id": "paper_e2a12a3e3c21",
+      "title": "Accelerated Learning With Linear Temporal Logic Using Differentiable Simulation",
+      "abstract": "1 To ensure learned controllers comply with safety and reliability requirements for 2 reinforcement learning in real-world settings remains challenging. Traditional 3 safety assurance approaches, such as state avoidance and constrained Markov 4 decision processes, often inadequately capture trajectory requirements or may 5 result in overly conservative behaviors. To address these limitations, recent studies 6 advocate the use of formal specification languages such as linear temporal logic 7 (LTL), enabling the derivation of correct-by-construction learning objectives from 8 the specified requirements. However, the sparse rewards associated with LTL\n9 specifications make learning extremely difficult, whereas dense heuristic-based 10 rewards risk compromising correctness. In this work, we propose the first method, 11 to our knowledge, that integrates LTL with differentiable simulators, facilitating 12 efficient gradient-based learning directly from LTL specifications by coupling with 13 differentiable paradigms. Our approach introduces soft labeling to achieve differ14 entiable rewards and states, effectively mitigating the sparse-reward issue intrinsic 15 to LTL without compromising objective correctness. We validate the efficacy of 16 our method through experiments, demonstrating significant improvements in both 17 reward attainment and training time compared to the discrete methods. 44 rewards make learning extremely difficult, as obtaining a nonzero reward often requires significant 45 exploration. Denser LTL-based rewards provided through heuristics might accelerate learning [38]; 46 however, if not carefully designed, they can compromise the correctness of the objective and misguide 47 exploration depending on the environment, ultimately reducing learning efficiency. In this work, 48 we address the challenges of scalable learning with correct objectives for long-horizon learning 49 tasks. We adopt LTL as the specification language, leveraging the intuitive high level language and 50 the automaton-based memory it provides. Unlike prior methods, our approach harnesses gradients 51 from differentiable simulators to facilitate efficient learning directly from LTL specifications while 52 preserving the correctness of the objectives. Our contributions can be summarized as follows: 53 - We propose, to the best of our knowledge, the first approach that accelerates learning from LTL 54 specifications using differentiable simulators. Our approach effectively mit",
+      "topic": "",
+      "claims": [
+        "we propose the first method, 11 to our knowledge, that integrates LTL with differentiable simulators, facilitating 12 efficient gradient-based learning directly from LTL specifications by coupling with 13 differentiable paradigms.",
+        "We propose, to the best of our knowledge, the first approach that accelerates learning from LTL 54 specifications using differentiable simulators.",
+        "Our approach introduces soft labeling to achieve differ14 entiable rewards and states, effectively mitigating the sparse-reward issue intrinsic 15 to LTL without compromising objective correctness.",
+        "our method through experiments, demonstrating significant improvements in both 17 reward attainment and training time compared to the discrete methods.",
+        "our approach harnesses gradients 51 from differentiable simulators to facilitate efficient learning directly from LTL specifications while 52 preserving the correctness of the objectives."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "reinforcement learning LTL sparse rewards correct objectives",
+          "rationale": "The paper addresses the problem of sparse rewards in reinforcement learning with LTL specifications while maintaining objective correctness. This query seeks other works tackling the same core problem."
+        },
+        {
+          "group": "same_method",
+          "query": "LTL differentiable simulation gradient-based learning soft labeling rewards",
+          "rationale": "This query focuses on the unique combination of methods: integrating LTL with differentiable simulators, using gradient-based learning, and employing soft labeling for differentiable rewards."
+        },
+        {
+          "group": "same_constraints",
+          "query": "reinforcement learning safety reliability LTL formal specification real-world settings",
+          "rationale": "The paper highlights the need for safety and reliability in reinforcement learning for real-world settings, using LTL as a formal specification. This query targets papers with similar application constraints."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "LTL reinforcement learning benchmarks discrete methods comparison",
+          "rationale": "The paper compares its approach to 'discrete methods'. This query looks for papers that define or use benchmarks for LTL-based reinforcement learning and provide comparisons to discrete or baseline approaches."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "LTL differentiable simulation for reinforcement learning prior work",
+          "rationale": "The paper claims to be the 'first method' integrating LTL with differentiable simulators. This query aims to find any prior work that might have explored similar integrations, challenging the novelty claim."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "limitations differentiable simulation LTL reinforcement learning robustness issues",
+          "rationale": "This query aims to find papers that discuss potential limitations, negative results, or robustness issues when combining differentiable simulation with LTL for reinforcement learning, or cases where soft labeling might fail."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 2,
+        "warnings": [
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Too Many Requests",
+          "arXiv query failed for benchmark_baseline: The read operation timed out",
+          "arXiv query failed for novelty_competitor: The read operation timed out",
+          "arXiv query failed for limitations_counterevidence: The read operation timed out"
+        ]
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_fbb443cb4",
+        "title": "Reward Machines: Exploiting Reward Function Structure in Reinforcement Learning",
+        "authors": [
+          "Rodrigo Toro Icarte",
+          "Toryn Q. Klassen",
+          "Richard Valenzano",
+          "Sheila A. McIlraith"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-11",
+        "venue": "Journal of Artificial Intelligence Research",
+        "abstract": "Reinforcement learning (RL) methods usually treat reward functions as black boxes. As such, these methods must extensively interact with the environment in order to discover rewards and optimal policies. In most RL applications, however, users have to program the reward function and, hence, there is the opportunity to make the reward function visible – to show the reward function’s code to the RL agent so it can exploit the function’s internal structure to learn optimal policies in a more sample efficient manner. In this paper, we show how to accomplish this idea in two steps. First, we propose reward machines, a type of finite state machine that supports the specification of reward functions while exposing reward function structure. We then describe different methodologies to exploit this structure to support learning, including automated reward shaping, task decomposition, and counterfactual reasoning with off-policy learning. Experiments on tabular and continuous domains, across different tasks and RL agents, show the benefits of exploiting reward structure with respect to sample efficiency and the quality of resultant policies. Finally, by virtue of being a form of finite state machine, reward machines have the expressive power of a regular language and as such support loops, sequences and conditionals, as well as the expression of temporally extended properties typical of linear temporal logic and non-Markovian reward specification.",
+        "url": "https://doi.org/10.1613/jair.1.12440",
+        "doi": "https://doi.org/10.1613/jair.1.12440",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3092156990"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 174
+      },
+      {
+        "paper_id": "rw_002_8ba6106c1",
+        "title": "Joint Inference of Reward Machines and Policies for Reinforcement Learning",
+        "authors": [
+          "Zhe Xu",
+          "Ivan Gavran",
+          "Ahmad Yousef",
+          "Rupak Majumdar",
+          "Daniel Neider",
+          "Ufuk Topcu",
+          "Bo Wu"
+        ],
+        "year": 2020,
+        "publication_date": "2020-06-01",
+        "venue": "Proceedings of the International Conference on Automated Planning and Scheduling",
+        "abstract": "Incorporating high-level knowledge is an effective way to expedite reinforcement learning (RL), especially for complex tasks with sparse rewards. We investigate an RL problem where the high-level knowledge is in the form of reward machines, a type of Mealy machines that encode non-Markovian reward functions. We focus on a setting in which this knowledge is a priori not available to the learning agent. We develop an iterative algorithm that performs joint inference of reward machines and policies for RL (more specifically, q-learning). In each iteration, the algorithm maintains a hypothesis reward machine and a sample of RL episodes. It uses a separate q-function defined for each state of the current hypothesis reward machine to determine the policy and performs RL to update the q-functions. While performing RL, the algorithm updates the sample by adding RL episodes along which the obtained rewards are inconsistent with the rewards based on the current hypothesis reward machine. In the next iteration, the algorithm infers a new hypothesis reward machine from the updated sample. Based on an equivalence relation between states of reward machines, we transfer the q-functions between the hypothesis reward machines in consecutive iterations. We prove that the proposed algorithm converges almost surely to an optimal policy in the limit. The experiments show that learning high-level knowledge in the form of reward machines leads to fast convergence to optimal policies in RL, while the baseline RL methods fail to converge to optimal policies after a substantial number of training steps.",
+        "url": "https://doi.org/10.1609/icaps.v30i1.6756",
+        "doi": "https://doi.org/10.1609/icaps.v30i1.6756",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2972500268"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 58
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_fbb443cb4",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper addresses the problem of sparse rewards in RL, particularly for environments described by LTL-like specifications, which is a core problem the target paper aims to solve. It proposes Reward Machines as a way to exploit reward function structure, offering a different approach to making LTL-based rewards more efficient. It also explicitly mentions supporting temporally extended properties and LTL, making it highly relevant to the problem space.",
+        "evidence_summary": "Reward Machines (Icarte et al., 2022) propose exploiting reward function structure through finite state machines to improve sample efficiency in reinforcement learning, supporting temporally extended properties and linear temporal logic."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_8ba6106c1",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Similar to the target paper, this work focuses on complex tasks with sparse rewards in RL, especially when high-level knowledge is given in the form of reward machines (which are capable of encoding non-Markovian reward functions and relating to LTL). While the target paper focuses on differentiable simulation for LTL, this paper provides a method for joint inference of reward machines and policies to address sparse rewards, representing an alternative approach to improving learning efficiency in similar problem settings.",
+        "evidence_summary": "Joint Inference of Reward Machines and Policies for Reinforcement Learning (Xu et al., 2020) investigates a method for learning policies and inferring reward machines from observations to address sparse rewards in complex RL tasks."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Traditional reinforcement learning methods often struggle with complex tasks that involve sparse rewards, particularly when safety and reliability are paramount. To address the challenge of sparse rewards in these settings, prior work has explored various mechanisms. For instance, Reward Machines (Icarte et al., 2022) propose exploiting the inherent structure of reward functions through finite state machines to enhance sample efficiency and support temporally extended properties akin to linear temporal logic (LTL). Complementary to this, Xu et al. (2020) investigate joint inference of reward machines and policies to tackle sparse rewards in complex reinforcement learning tasks, offering an iterative algorithm that can learn high-level knowledge from observations. While these approaches enhance learning robustness and efficiency with structured rewards, they do not leverage differentiable simulators directly to convert LTL specifications into gradient-based learning signals to mitigate sparse reward issues.",
+    "warnings": [
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Too Many Requests",
+      "arXiv query failed for benchmark_baseline: The read operation timed out",
+      "arXiv query failed for novelty_competitor: The read operation timed out",
+      "arXiv query failed for limitations_counterevidence: The read operation timed out"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 2,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 2,
+      "num_cutoff_valid": 2,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Too Many Requests",
+    "arXiv query failed for benchmark_baseline: The read operation timed out",
+    "arXiv query failed for novelty_competitor: The read operation timed out",
+    "arXiv query failed for limitations_counterevidence: The read operation timed out"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 2,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 2,
+    "num_cutoff_valid": 2,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

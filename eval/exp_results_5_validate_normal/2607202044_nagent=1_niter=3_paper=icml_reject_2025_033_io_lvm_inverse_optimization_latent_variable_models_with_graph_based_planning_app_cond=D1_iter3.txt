@@ -1,0 +1,77 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of integrating a black-box COP solver into a VAE-like framework to learn latent representations for optimization costs is highly novel and addresses a significant challenge in learning structured outputs, particularly in cases with multiple underlying cost functions/agents.",
+        "The paper introduces a clever way to handle the non-differentiability of the black-box solver by leveraging the Fenchel-Young loss with perturbed inputs, allowing for gradient estimation and end-to-end learning.",
+        "The ability of IO-LVM to naturally construct disentangled and multimodal latent spaces, even without explicit agent labels, is a major strength. This opens doors for interpretability and behavior analysis in complex real-world scenarios, as demonstrated with the ship and synthetic datasets.",
+        "The application to real-world ship routing data and Hamiltonian cycles, showcasing interpretation of latent dimensions (e.g., ship width affecting routing), is compelling and demonstrates the practical utility and insights gained from this approach."
+      ],
+      "weaknesses": [
+        "While the approach for gradient estimation through the Fenchel-Young loss is innovative, a more in-depth theoretical analysis of its robustness and limitations (e.g., impact of perturbation distribution, convergence guarantees for the combined VAE objective) would be a valuable addition. The authors acknowledge this as a complex area for future work, building on existing foundational theory, which is a reasonable stance for a conference paper.",
+        "The computational cost associated with running the COP solver, even if only once per sample per SGD step, could become a bottleneck for very large graphs or problems requiring complex solvers. While the authors explicitly mention this limitation and use CPU-bound solvers, a more detailed discussion on the implications for scalability and concrete future directions (e.g., approximate solvers, integration with specialized differentiable optimization libraries) would enhance this section."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach for learning latent representations of Constrained Optimization Problem (COP) costs, which is a significant and challenging area. The marriage of VAEs with black-box COP solvers via Fenchel-Young loss for gradient estimation is a bold and forward-thinking idea. The ability to learn distinct, multimodal underlying cost structures from observed solutions, without explicit labels, is a major leap forward for interpretability and understanding agent behaviors. The authors have adequately addressed my concerns by acknowledging the complexity of the theoretical analysis and the practical limitations regarding scalability, while also outlining how the modular nature of their framework can benefit from ongoing research in these areas. This work pushes the boundaries of what's possible in learning from optimal decisions, with compelling qualitative and quantitative evaluations, and should inspire significant future research. I maintain my strong recommendation for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel probabilistic method (IO-LVM) that combines VAEs with constrained optimization solvers, aligning perfectly with ICML's interest in 'general machine learning' and 'probabilistic methods'.",
+        "The core contribution of handling non-differentiable black-box COP solvers through Fenchel-Young loss for gradient estimation is a significant methodological advancement, which ICML values, particularly in the 'optimization' and 'deep learning (theory)' tracks.",
+        "The work's focus on learning disentangled and multimodal latent spaces for underlying cost structures from observed decisions directly addresses challenges in 'trustworthy machine learning' related to interpretability and understanding agent behaviors.",
+        "Applications to graph-based planning problems (path and cycle inference) using synthetic and real-world ship routing data showcases 'application-driven machine learning' and demonstrates practical utility across various domains, which ICML covers."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A notes that a deeper theoretical analysis of the robustness and limitations of the gradient estimation approach would be valuable. While the authors acknowledged this, a stronger theoretical foundation could further enhance its fit for ICML, which often emphasizes rigorous theoretical guarantees.",
+        "The computational cost associated with running COP solvers, as highlighted by Reviewer A, could be a bottleneck. While mentioned, the paper does not extensively mitigate this, which might be a minor concern for a conference that also values 'machine learning systems (improved implementation and scalability)' for broader applicability."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper presents 'new and original research' at the intersection of deep learning (VAEs), optimization, and probabilistic methods, which aligns well with NeurIPS's broad scope in machine learning research.",
+        "The method's ability to learn disentangled and multimodal latent representations for a general class of COPs (constrained optimization problems) from observational data (solutions) directly contributes to 'general machine learning: core contributions in supervised and unsupervised methods'.",
+        "The innovative use of Fenchel-Young losses to enable differentiation through black-box combinatorial solvers is a strong methodological contribution relevant to NeurIPS's 'optimization' and 'probabilistic methods' topics.",
+        "The application to real-world ship routing data demonstrates 'AI/ML for physical sciences' (maritime transport) and general 'application-driven machine learning', showing practical relevance embraced by NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reviewer points out the potential for more in-depth theoretical analysis regarding the robustness and limitations of the gradient estimation. While the current theoretical grounding is sufficient for many NeurIPS papers, stronger theoretical contributions are often highly valued.",
+        "The computational cost and scalability issues associated with integrating black-box COP solvers, as noted by Reviewer A, might be an area where NeurIPS reviewers, particularly those with a systems or large-scale ML focus, might seek more extensive discussion or solutions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The core methodology leveraging VAEs to learn latent representations is a direct fit for ICLR's primary focus on 'deep learning' and 'representation learning'.",
+        "The use of Fenchel-Young loss for gradient estimation in the context of learned representations is an advanced technique relevant to 'optimization' and 'learning theory' within deep learning.",
+        "The paper addresses the challenge of integrating structured outputs and constraints within deep generative models, aligning with 'generative models' and 'unsupervised, self-supervised, semi-supervised, and supervised representation learning'.",
+        "The demonstration of interpretability in the latent space (e.g., clustering paths, ship width affecting routing) and the ability to generalize to new scenarios is relevant to 'visualization or interpretation of learned representations' and 'applications to robotics, autonomy, planning'."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central, the paper's emphasis on general 'constrained optimization problems' and 'inverse optimization' might lean slightly more towards the broader scope of ICML or NeurIPS than ICLR's typically more focused deep learning methodological advancements.",
+        "Reviewer A mentions that a more in-depth theoretical analysis of the robustness and limitations of the gradient estimation techniques would be valuable. ICLR often values strong theoretical foundations for novel deep learning methods, and further guarantees here could strengthen the fit.",
+        "The practical aspects of the black-box COP solver's computational cost and scalability might be a minor point of contention for ICLR reviewers, who, while interested in novel architectures, also consider practical deployability and efficiency of deep learning systems."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

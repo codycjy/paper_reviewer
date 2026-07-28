@@ -1,0 +1,602 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a truly novel approach by recasting the learning of multi-head linear attention as a kernel regression problem, leading to the first polynomial-time learnability results (strong, agnostic PAC learning) for this class of Transformers. This is a significant theoretical breakthrough.",
+        "The introduction of 'certifiable identifiability' as an efficiently checkable condition to guarantee that all empirical risk minimizers perform an identical computation is a highly creative and forward-thinking concept, directly addressing out-of-distribution generalization.",
+        "The application to learning Universal Turing Machines, demonstrating that MHLAs can learn and generalize TM computation histories from certifiably identifiable data, provides a compelling, high-impact use case that bridges theoretical expressivity with practical learnability."
+      ],
+      "weaknesses": [
+        "While the theoretical framework is strong, the experimental validation, especially for the UTM learning, is somewhat high-level. More detailed empirical exploration of how the certifiable identifiability condition affects learning complex algorithmic tasks (beyond associative memory) would strengthen the empirical claims.",
+        "The assumption of `linear attention` might limit the immediate applicability to the broader class of Transformers using softmax attention. Although the paper mentions future work on custom key-query kernels, the current results are specific to linear attention, which, while practical, isn't the most common form in LLMs."
+      ],
+      "summary_comment": "This paper is a bold and innovative contribution that addresses a critical, under-explored area: the efficient learnability of Transformers. The core idea of reducing MHLA learning to kernel regression and introducing certifiable identifiability is highly novel and promises significant future impact. While there are minor imperfections in the current experimental depth for complex tasks, the theoretical breakthrough and the conceptual advancements are sufficiently strong to warrant acceptance. This work pushes the field forward by providing rigorous theoretical guarantees where previously there were none."
+    }
+  ],
+  "conference": {
+    "raw": "```json\n{\n  \"ICML\": {\n    \"fit_score\": 9,\n    \"why_it_fits\": [\n      \"The paper directly addresses 'general machine learning' with a focus on 'theory of machine learning' and 'deep learning (theory)', which are core topics for ICML. The polynomial-time learnability results and strong agnostic PAC learning for Transformers with linear attention align perfectly with ICML's emphasis on foundational machine learning theory.\",\n      \"The recasting of multi-head linear attention learning as a kernel regression problem, leading to verifiable bounds, is a significant theoretical contribution, a type of work highly valued by ICML (as acknowledged in reviewer comments like 'significant theoretical breakthrough').\",\n      \"The concept of 'certifiable identifiability' as an efficiently checkable condition for generalization is a novel theoretical concept with broad implications for understanding and assuring machine learning models, fitting within ICML's 'trustworthy machine learning' interests.\",\n      \"The empirical validation, though noted as 'high-level' for some aspects by the reviewer,\n      still demonstrates the theoretical findings on canonical tasks, complementing the theoretical rigor expected at ICML.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"The paper's focus on 'linear attention' might be seen as a minor limitation in immediate applicability to the dominant 'softmax attention' models in LLMs (as noted by Reviewer A), potentially making it slightly less broad in scope compared to some mainstream deep learning papers at ICML, but this is a very minor detractor given the theoretical depth.\"\n    ]\n  },\n  \"NeurIPS\": {\n    \"fit_score\": 8,\n    \"why_it_fits\": [\n      \"The paper's focus on 'General machine learning: core contributions in supervised and unsupervised methods' and 'Theory' aligns well with NeurIPS's stated topics. The learnability results for Transformer architectures are a fundamental contribution to the understanding of deep learning models.\",\n      \"The theoretical analysis of Transformer learnability, especially the polynomial-time PAC learning and the concept of certifiable identifiability, fits the interdisciplinary nature of NeurIPS, which encourages in-depth analyses providing new insights into limitations or behavior of existing methods.\",\n      \"The application to learning Universal Turing Machines (UTMs) bridges 'Theory' with aspects of 'Robotics, embodied systems, and engineering' (though indirectly), and explores how ML models can perform complex computations, which ties into the broader AI interests of NeurIPS.\",\n      \"The reviewer highlights the 'truly novel approach' and 'significant theoretical breakthrough,' praising its potential impact, which is a strong indicator of suitability for NeurIPS, a venue that values cutting-edge foundational research.\",\n      \"The empirical validation, even if high-level for some parts, supports the theoretical claims, demonstrating practical relevance in line with NeurIPS's blend of theory and practice.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"While relevant, the paper's specific focus on 'linear attention' rather than the more prevalent 'softmax attention' might limit its immediate relevance to some of the application-focused deep learning sub-communities within NeurIPS (as Reviewer A points out: 'current results are specific to linear attention, which, while practical, isn't the most common form in LLMs').\",\n      \"The experimental component, specifically for the UTM learning, is described as 'high-level' by the reviewer. While the theoretical contribution is paramount, some NeurIPS attendees may look for more extensive empirical validation on complex real-world tasks.\"\n    ]\n  },\n  \"ICLR\": {\n    \"fit_score\": 7,\n    \"why_it_fits\": [\n      \"ICLR explicitly focuses on 'all aspects of deep learning', and this paper directly contributes to the 'learning theory' and 'optimization' aspects of deep learning by providing polynomial-time learnability guarantees for a class of Transformers.\",\n      \"The paper's specific examination of 'linear attention' variations, which are increasingly relevant in large language models (as discussed in the introduction), aligns with ICLR's interest in cutting-edge deep learning architectures and their understanding.\",\n      \"The concept of 'certifiable identifiability' for guaranteeing functional equivalence and generalization directly addresses concerns related to the interpretability and robustness of learned representations, topics ICLR lists under 'societal considerations including fairness, safety, privacy' or broader 'uncertainty quantification'.\",\n      \"The application of learning Universal Turing Machines by MHLAs demonstrates a novel aspect of 'deep learning used in the fields of artificial intelligence', such as 'text understanding' and 'robotics' (via embodied systems), which are relevant to ICLR's scope.\"\n    ],\n    \"why_it_does_not_fit\": [\n      \"The paper is heavily theoretical, with a strong emphasis on PAC learning and identifiability. While ICLR does include 'learning theory', its primary focus is often perceived to be more on novel deep learning architectures, empirical breakthroughs, and practical applications, which might make this purely theoretical contribution relatively less central than at ICML or NeurIPS.\",\n      \"Reviewer A noted that the 'experimental validation, especially for the UTM learning, is somewhat high-level.' ICLR often values strong empirical results and experiments to support theoretical claims, and this aspect could be viewed as a relative weakness for this venue.\",\n      \"The specific model class (linear attention) is less general than the widely studied softmax Transformers, as noted by the reviewer. While linear attention is practical, ICLR might prefer results that directly address the most dominant deep learning models.\"\n    ]\n  }\n}\n```",
+    "parse_error": true
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_94a15a96c2a9",
+    "paper_id": "paper_bc9d56615796",
+    "target_paper_summary": {
+      "paper_id": "paper_bc9d56615796",
+      "title": "Learning Linear Attention In Polynomial Time",
+      "abstract": "Previous research has explored the expressivity of Transformer models in simulating Boolean circuits or Turing machines. However, the efficient learnability of Transformers from data has remained an open question. Our study addresses this gap by providing the first polynomial-time learnability results (specifically strong, agnostic PAC learning) for single-layer Transformers with linear attention. We show that learning the optimal multi head linear attention can be recast as finding the optimal kernel predictor in a suitably defined RKHS. Moving to generalization, we construct an algorithm that, given a dataset, checks in polynomial time whether the set of best fit multi head linear attention networks on this data all perform an identical computation–a powerful notion for out of distribution generalization. We empirically validate our theoretical findings on several canonical tasks: learning random linear attention networks, key–value associations, and learning to execute finite automata. Our findings bridge a critical gap between theoretical expressivity and learnability of Transformer models.",
+      "topic": "",
+      "claims": [
+        "We show that learning the optimal multi head linear attention can be recast as finding the optimal kernel predictor in a suitably defined RKHS."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "learnability of Transformers from data polynomial time",
+          "rationale": "The paper explicitly states its problem as addressing the open question of 'efficient learnability of Transformers from data' and providing 'the first polynomial-time learnability results'."
+        },
+        {
+          "group": "same_method",
+          "query": "learning linear attention as kernel predictor RKHS",
+          "rationale": "The paper's core methodological contribution is 'recast[ing] learning the optimal multi head linear attention as finding the optimal kernel predictor in a suitably defined RKHS'."
+        },
+        {
+          "group": "same_constraints",
+          "query": "PAC learning single-layer Transformers linear attention",
+          "rationale": "The paper focuses on 'specifically strong, agnostic PAC learning' and specifically on 'single-layer Transformers with linear attention'."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "datasets for learning random linear attention networks key-value associations finite automata",
+          "rationale": "The paper empirically validates its findings on 'canonical tasks: learning random linear attention networks, key–value associations, and learning to execute finite automata', suggesting these are used as benchmarks or example tasks."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "PAC learning for Transformer models without linear attention",
+          "rationale": "The paper claims to provide 'the first polynomial-time learnability results... for single-layer Transformers with linear attention'. Papers providing similar learnability results for other Transformer variants or attention mechanisms could challenge this novelty."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "negative results PAC learning deep Transformers",
+          "rationale": "The paper focuses on 'single-layer Transformers'. Papers demonstrating limitations or negative results for PAC learning in multi-layer or deep Transformers would highlight the scope and potential constraints of this work."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 2,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_b2a93e943",
+        "title": "Shifting machine learning for healthcare from development to deployment and from models to data",
+        "authors": [
+          "Angela Zhang",
+          "Lei Xing",
+          "James Zou",
+          "Joseph C. Wu"
+        ],
+        "year": 2022,
+        "publication_date": "2022-07-04",
+        "venue": "Nature Biomedical Engineering",
+        "abstract": "In the past decade, the application of machine learning (ML) to healthcare has helped drive the automation of physician tasks as well as enhancements in clinical capabilities and access to care. This progress has emphasized that, from model development to model deployment, data play central roles. In this Review, we provide a data-centric view of the innovations and challenges that are defining ML for healthcare. We discuss deep generative models and federated learning as strategies to augment datasets for improved model performance, as well as the use of the more recent transformer models for handling larger datasets and enhancing the modelling of clinical text. We also discuss data-focused problems in the deployment of ML, emphasizing the need to efficiently deliver data to ML models for timely clinical predictions and to account for natural data shifts that can deteriorate model performance.",
+        "url": "https://doi.org/10.1038/s41551-022-00898-y",
+        "doi": "https://doi.org/10.1038/s41551-022-00898-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4283801824"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 402
+      },
+      {
+        "paper_id": "rw_002_1b1d0b737",
+        "title": "Constrained transformer network for ECG signal processing and arrhythmia classification",
+        "authors": [
+          "Chao Che",
+          "Peiliang Zhang",
+          "Min Zhu",
+          "Yue Qu",
+          "Bo Jin"
+        ],
+        "year": 2021,
+        "publication_date": "2021-06-09",
+        "venue": "BMC Medical Informatics and Decision Making",
+        "abstract": "BACKGROUND: Heart disease diagnosis is a challenging task and it is important to explore useful information from the massive amount of electrocardiogram (ECG) records of patients. The high-precision diagnostic identification of ECG can save clinicians and cardiologists considerable time while helping reduce the possibility of misdiagnosis at the same time.Currently, some deep learning-based methods can effectively perform feature selection and classification prediction, reducing the consumption of manpower. METHODS: In this work, an end-to-end deep learning framework based on convolutional neural network (CNN) is proposed for ECG signal processing and arrhythmia classification. In the framework, a transformer network is embedded in CNN to capture the temporal information of ECG signals and a new link constraint is introduced to the loss function to enhance the classification ability of the embedding vector. RESULTS: To evaluate the proposed method, extensive experiments based on real-world data were conducted. Experimental results show that the proposed model achieve better performance than most baselines. The experiment results also proved that the transformer network pays more attention to the temporal continuity of the data and captures the hidden deep features of the data well. The link constraint strengthens the constraint on the embedded features and effectively suppresses the effect of data imbalance on the results. CONCLUSIONS: In this paper, an end-to-end model is used to process ECG signal and classify arrhythmia. The model combine CNN and Transformer network to extract temporal information in ECG signal and is capable of performing arrhythmia classification with acceptable accuracy. The model can help cardiologists perform assisted diagnosis of heart disease and improve the efficiency of healthcare delivery.",
+        "url": "https://doi.org/10.1186/s12911-021-01546-2",
+        "doi": "https://doi.org/10.1186/s12911-021-01546-2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3167986199"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 178
+      },
+      {
+        "paper_id": "rw_003_eb590b374",
+        "title": "Byzantine-Resilient SGD in High Dimensions on Heterogeneous Data",
+        "authors": [
+          "Deepesh Data",
+          "Suhas Diggavi"
+        ],
+        "year": 2020,
+        "publication_date": "2020-05-16",
+        "venue": "arXiv",
+        "abstract": "We study distributed stochastic gradient descent (SGD) in the master-worker architecture under Byzantine attacks. We consider the heterogeneous data model, where different workers may have different local datasets, and we do not make any probabilistic assumptions on data generation. At the core of our algorithm, we use the polynomial-time outlier-filtering procedure for robust mean estimation proposed by Steinhardt et al. (ITCS 2018) to filter-out corrupt gradients. In order to be able to apply their filtering procedure in our {\\em heterogeneous} data setting where workers compute {\\em stochastic} gradients, we derive a new matrix concentration result, which may be of independent interest. We provide convergence analyses for smooth strongly-convex and non-convex objectives. We derive our results under the bounded variance assumption on local stochastic gradients and a {\\em deterministic} condition on datasets, namely, gradient dissimilarity; and for both these quantities, we provide concrete bounds in the statistical heterogeneous data model. We give a trade-off between the mini-batch size for stochastic gradients and the approximation error. Our algorithm can tolerate up to $\\frac{1}{4}$ fraction Byzantine workers. It can find approximate optimal parameters in the strongly-convex setting exponentially fast and reach to an approximate stationary point in the non-convex setting with a linear speed, thus, matching the convergence rates of vanilla SGD in the Byzantine-free setting. We also propose and analyze a Byzantine-resilient SGD algorithm with gradient compression, where workers send $k$ random coordinates of their gradients. Under mild conditions, we show a $\\frac{d}{k}$-factor saving in communication bits as well as decoding complexity over our compression-free algorithm without affecting its convergence rate (order-wise) and the approximation error.",
+        "url": "http://arxiv.org/abs/2005.07866v1",
+        "doi": "",
+        "arxiv_id": "2005.07866v1",
+        "source_ids": {
+          "arXiv": "2005.07866v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_004_8073fc360",
+        "title": "Constraints on dark energy from H II starburst galaxy apparent magnitude versus redshift data",
+        "authors": [
+          "Data Mania",
+          "Bharat Ratra"
+        ],
+        "year": 2011,
+        "publication_date": "2011-10-25",
+        "venue": "arXiv",
+        "abstract": "In this paper we use H II starburst galaxy apparent magnitude versus redshift data from Siegel et al. (2005) to constrain dark energy cosmological model parameters. These constraints are generally consistent with those derived using other data sets, but are not as restrictive as the tightest currently available constraints.",
+        "url": "http://arxiv.org/abs/1110.5626v1",
+        "doi": "",
+        "arxiv_id": "1110.5626v1",
+        "source_ids": {
+          "arXiv": "1110.5626v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_005_6f26ea490",
+        "title": "Kernel Selection using Multiple Kernel Learning and Domain Adaptation in Reproducing Kernel Hilbert Space, for Face Recognition under Surveillance Scenario",
+        "authors": [
+          "Samik Banerjee",
+          "Sukhendu Das"
+        ],
+        "year": 2016,
+        "publication_date": "2016-10-03",
+        "venue": "arXiv",
+        "abstract": "Face Recognition (FR) has been the interest to several researchers over the past few decades due to its passive nature of biometric authentication. Despite high accuracy achieved by face recognition algorithms under controlled conditions, achieving the same performance for face images obtained in surveillance scenarios, is a major hurdle. Some attempts have been made to super-resolve the low-resolution face images and improve the contrast, without considerable degree of success. The proposed technique in this paper tries to cope with the very low resolution and low contrast face images obtained from surveillance cameras, for FR under surveillance conditions. For Support Vector Machine classification, the selection of appropriate kernel has been a widely discussed issue in the research community. In this paper, we propose a novel kernel selection technique termed as MFKL (Multi-Feature Kernel Learning) to obtain the best feature-kernel pairing. Our proposed technique employs a effective kernel selection by Multiple Kernel Learning (MKL) method, to choose the optimal kernel to be used along with unsupervised domain adaptation method in the Reproducing Kernel Hilbert Space (RKHS), for a solution to the problem. Rigorous experimentation has been performed on three real-world surveillance face datasets : FR\\_SURV, SCface and ChokePoint. Results have been shown using Rank-1 Recognition Accuracy, ROC and CMC measures. Our proposed method outperforms all other recent state-of-the-art techniques by a considerable margin.",
+        "url": "http://arxiv.org/abs/1610.00660v1",
+        "doi": "",
+        "arxiv_id": "1610.00660v1",
+        "source_ids": {
+          "arXiv": "1610.00660v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_006_4e605be91",
+        "title": "Transfer Learning for Kernel-based Regression",
+        "authors": [
+          "Chao Wang",
+          "Caixing Wang",
+          "Xin He",
+          "Xingdong Feng"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-21",
+        "venue": "arXiv",
+        "abstract": "In recent years, transfer learning has garnered significant attention. Its ability to leverage knowledge from related studies to improve generalization performance in a target study has made it highly appealing. This paper focuses on investigating the transfer learning problem within the context of nonparametric regression over a reproducing kernel Hilbert space. The aim is to bridge the gap between practical effectiveness and theoretical guarantees. We specifically consider two scenarios: one where the transferable sources are known and another where they are unknown. For the known transferable source case, we propose a two-step kernel-based estimator by solely using kernel ridge regression. For the unknown case, we develop a novel method based on an efficient aggregation algorithm, which can automatically detect and alleviate the effects of negative sources. This paper provides the statistical properties of the desired estimators and establishes the minimax rate. Through extensive numerical experiments on synthetic data and real examples, we validate our theoretical findings and demonstrate the effectiveness of our proposed method.",
+        "url": "http://arxiv.org/abs/2310.13966v3",
+        "doi": "",
+        "arxiv_id": "2310.13966v3",
+        "source_ids": {
+          "arXiv": "2310.13966v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_007_01832a993",
+        "title": "Attention with Markov: A Framework for Principled Analysis of Transformers via Markov Chains",
+        "authors": [
+          "Ashok Vardhan Makkuva",
+          "Marco Bondaschi",
+          "Adway Girish",
+          "Alliot Nagle",
+          "Martin Jaggi",
+          "Hyeji Kim",
+          "Michael Gastpar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-06",
+        "venue": "arXiv",
+        "abstract": "Attention-based transformers have achieved tremendous success across a variety of disciplines including natural languages. To deepen our understanding of their sequential modeling capabilities, there is a growing interest in using Markov input processes to study them. A key finding is that when trained on first-order Markov chains, transformers with two or more layers consistently develop an induction head mechanism to estimate the in-context bigram conditional distribution. In contrast, single-layer transformers, unable to form an induction head, directly learn the Markov kernel but often face a surprising challenge: they become trapped in local minima representing the unigram distribution, whereas deeper models reliably converge to the ground-truth bigram. While single-layer transformers can theoretically model first-order Markov chains, their empirical failure to learn this simple kernel in practice remains a curious phenomenon. To explain this contrasting behavior of single-layer models, in this paper we introduce a new framework for a principled analysis of transformers via Markov chains. Leveraging our framework, we theoretically characterize the loss landscape of single-layer transformers and show the existence of global minima (bigram) and bad local minima (unigram) contingent on data properties and model architecture. We precisely delineate the regimes under which these local optima occur. Backed by experiments, we demonstrate that our theoretical findings are in congruence with the empirical results. Finally, we outline several open problems in this arena. Code is available at https://github.com/Bond1995/Markov .",
+        "url": "http://arxiv.org/abs/2402.04161v2",
+        "doi": "",
+        "arxiv_id": "2402.04161v2",
+        "source_ids": {
+          "arXiv": "2402.04161v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_f9e504e1f",
+        "title": "On the Sample Complexity of Adversarial Multi-Source PAC Learning",
+        "authors": [
+          "Nikola Konstantinov",
+          "Elias Frantar",
+          "Dan Alistarh",
+          "Christoph H. Lampert"
+        ],
+        "year": 2020,
+        "publication_date": "2020-02-24",
+        "venue": "arXiv",
+        "abstract": "We study the problem of learning from multiple untrusted data sources, a scenario of increasing practical relevance given the recent emergence of crowdsourcing and collaborative learning paradigms. Specifically, we analyze the situation in which a learning system obtains datasets from multiple sources, some of which might be biased or even adversarially perturbed. It is known that in the single-source case, an adversary with the power to corrupt a fixed fraction of the training data can prevent PAC-learnability, that is, even in the limit of infinitely much training data, no learning system can approach the optimal test error. In this work we show that, surprisingly, the same is not true in the multi-source setting, where the adversary can arbitrarily corrupt a fixed fraction of the data sources. Our main results are a generalization bound that provides finite-sample guarantees for this learning setting, as well as corresponding lower bounds. Besides establishing PAC-learnability our results also show that in a cooperative learning setting sharing data with other parties has provable benefits, even if some participants are malicious.",
+        "url": "http://arxiv.org/abs/2002.10384v2",
+        "doi": "",
+        "arxiv_id": "2002.10384v2",
+        "source_ids": {
+          "arXiv": "2002.10384v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_009_d2bbad2f4",
+        "title": "Graph Embedded Intuitionistic Fuzzy Random Vector Functional Link Neural Network for Class Imbalance Learning",
+        "authors": [
+          "M. A. Ganaie",
+          "M. Sajid",
+          "A. K. Malik",
+          "M. Tanveer"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-15",
+        "venue": "arXiv",
+        "abstract": "The domain of machine learning is confronted with a crucial research area known as class imbalance learning, which presents considerable hurdles in precise classification of minority classes. This issue can result in biased models where the majority class takes precedence in the training process, leading to the underrepresentation of the minority class. The random vector functional link (RVFL) network is a widely used and effective learning model for classification due to its good generalization performance and efficiency. However, it suffers when dealing with imbalanced datasets. To overcome this limitation, we propose a novel graph embedded intuitionistic fuzzy RVFL for class imbalance learning (GE-IFRVFL-CIL) model incorporating a weighting mechanism to handle imbalanced datasets. The proposed GE-IFRVFL-CIL model offers plethora of benefits: $(i)$ leveraging graph embedding to preserve the inherent topological structure of the datasets, $(ii)$ employing intuitionistic fuzzy theory to handle uncertainty and imprecision in the data, $(iii)$ and the most important, it tackles class imbalance learning. The amalgamation of a weighting scheme, graph embedding, and intuitionistic fuzzy sets leads to the superior performance of the proposed models on KEEL benchmark imbalanced datasets with and without Gaussian noise. Furthermore, we implemented the proposed GE-IFRVFL-CIL on the ADNI dataset and achieved promising results, demonstrating the model's effectiveness in real-world applications. The proposed GE-IFRVFL-CIL model offers a promising solution to address the class imbalance issue, mitigates the detrimental effect of noise and outliers, and preserves the inherent geometrical structures of the dataset.",
+        "url": "http://arxiv.org/abs/2307.07881v2",
+        "doi": "",
+        "arxiv_id": "2307.07881v2",
+        "source_ids": {
+          "arXiv": "2307.07881v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_010_4b2ae9204",
+        "title": "Anomaly Detection on Attributed Networks via Contrastive Self-Supervised Learning",
+        "authors": [
+          "Yixin Liu",
+          "Zhao Li",
+          "Shirui Pan",
+          "Chen Gong",
+          "Chuan Zhou",
+          "George Karypis"
+        ],
+        "year": 2021,
+        "publication_date": "2021-02-27",
+        "venue": "arXiv",
+        "abstract": "Anomaly detection on attributed networks attracts considerable research interests due to wide applications of attributed networks in modeling a wide range of complex systems. Recently, the deep learning-based anomaly detection methods have shown promising results over shallow approaches, especially on networks with high-dimensional attributes and complex structures. However, existing approaches, which employ graph autoencoder as their backbone, do not fully exploit the rich information of the network, resulting in suboptimal performance. Furthermore, these methods do not directly target anomaly detection in their learning objective and fail to scale to large networks due to the full graph training mechanism. To overcome these limitations, in this paper, we present a novel contrastive self-supervised learning framework for anomaly detection on attributed networks. Our framework fully exploits the local information from network data by sampling a novel type of contrastive instance pair, which can capture the relationship between each node and its neighboring substructure in an unsupervised way. Meanwhile, a well-designed graph neural network-based contrastive learning model is proposed to learn informative embedding from high-dimensional attributes and local structure and measure the agreement of each instance pairs with its outputted scores. The multi-round predicted scores by the contrastive learning model are further used to evaluate the abnormality of each node with statistical estimation. In this way, the learning model is trained by a specific anomaly detection-aware target. Furthermore, since the input of the graph neural network module is batches of instance pairs instead of the full network, our framework can adapt to large networks flexibly. Experimental results show that our proposed framework outperforms the state-of-the-art baseline methods on all seven benchmark datasets.",
+        "url": "http://arxiv.org/abs/2103.00113v2",
+        "doi": "",
+        "arxiv_id": "2103.00113v2",
+        "source_ids": {
+          "arXiv": "2103.00113v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_011_9724cde7f",
+        "title": "Dilated Neighborhood Attention Transformer",
+        "authors": [
+          "Ali Hassani",
+          "Humphrey Shi"
+        ],
+        "year": 2022,
+        "publication_date": "2022-09-29",
+        "venue": "arXiv",
+        "abstract": "Transformers are quickly becoming one of the most heavily applied deep learning architectures across modalities, domains, and tasks. In vision, on top of ongoing efforts into plain transformers, hierarchical transformers have also gained significant attention, thanks to their performance and easy integration into existing frameworks. These models typically employ localized attention mechanisms, such as the sliding-window Neighborhood Attention (NA) or Swin Transformer's Shifted Window Self Attention. While effective at reducing self attention's quadratic complexity, local attention weakens two of the most desirable properties of self attention: long range inter-dependency modeling, and global receptive field. In this paper, we introduce Dilated Neighborhood Attention (DiNA), a natural, flexible and efficient extension to NA that can capture more global context and expand receptive fields exponentially at no additional cost. NA's local attention and DiNA's sparse global attention complement each other, and therefore we introduce Dilated Neighborhood Attention Transformer (DiNAT), a new hierarchical vision transformer built upon both. DiNAT variants enjoy significant improvements over strong baselines such as NAT, Swin, and ConvNeXt. Our large model is faster and ahead of its Swin counterpart by 1.6% box AP in COCO object detection, 1.4% mask AP in COCO instance segmentation, and 1.4% mIoU in ADE20K semantic segmentation. Paired with new frameworks, our large variant is the new state of the art panoptic segmentation model on COCO (58.5 PQ) and ADE20K (49.4 PQ), and instance segmentation model on Cityscapes (45.1 AP) and ADE20K (35.4 AP) (no extra data). It also matches the state of the art specialized semantic segmentation models on ADE20K (58.1 mIoU), and ranks second on Cityscapes (84.5 mIoU) (no extra data).",
+        "url": "http://arxiv.org/abs/2209.15001v3",
+        "doi": "",
+        "arxiv_id": "2209.15001v3",
+        "source_ids": {
+          "arXiv": "2209.15001v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_7914dbf5a",
+        "title": "Learn to Accumulate Evidence from All Training Samples: Theory and Practice",
+        "authors": [
+          "Deep Pandey",
+          "Qi Yu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-19",
+        "venue": "arXiv",
+        "abstract": "Evidential deep learning, built upon belief theory and subjective logic, offers a principled and computationally efficient way to turn a deterministic neural network uncertainty-aware. The resultant evidential models can quantify fine-grained uncertainty using the learned evidence. To ensure theoretically sound evidential models, the evidence needs to be non-negative, which requires special activation functions for model training and inference. This constraint often leads to inferior predictive performance compared to standard softmax models, making it challenging to extend them to many large-scale datasets. To unveil the real cause of this undesired behavior, we theoretically investigate evidential models and identify a fundamental limitation that explains the inferior performance: existing evidential activation functions create zero evidence regions, which prevent the model to learn from training samples falling into such regions. A deeper analysis of evidential activation functions based on our theoretical underpinning inspires the design of a novel regularizer that effectively alleviates this fundamental limitation. Extensive experiments over many challenging real-world datasets and settings confirm our theoretical findings and demonstrate the effectiveness of our proposed approach.",
+        "url": "http://arxiv.org/abs/2306.11113v2",
+        "doi": "",
+        "arxiv_id": "2306.11113v2",
+        "source_ids": {
+          "arXiv": "2306.11113v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_007_01832a993",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper directly addresses the behavior and limitations of single-layer Transformers, especially concerning their learning capabilities (or lack thereof, in certain scenarios like learning Markov kernels) and the local minima problem, which is highly relevant to the target paper's focus on PAC learning single-layer linear attention. It contrasts single-layer with multi-layer transformers for learnability.",
+        "evidence_summary": "Attention with Markov: A Framework for Principled Analysis of Transformers via Markov Chains (Makkuva et al., 2024) analyzes single-layer transformers' learning behavior with Markov Chains, noting their tendency to get trapped in local minima unlike deeper models, despite theoretical capability."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_008_f9e504e1f",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_constraints",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper discusses PAC learning in the context of adversarial multi-source data, directly touching upon PAC-learnability and its challenges, including the impact of adversaries. While not specific to Transformers, it is a foundational PAC learning work that could inform the general context of PAC learning guarantees.",
+        "evidence_summary": "On the Sample Complexity of Adversarial Multi-Source PAC Learning (Konstantinov et al., 2020) investigates PAC-learnability in multi-source settings with adversarial corruption, demonstrating benefits over single-source adversarial settings."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_006_4e605be91",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper focuses on transfer learning within the context of nonparametric regression over a Reproducing Kernel Hilbert Space (RKHS), which directly relates to the target paper's method of recasting linear attention learning as finding an optimal kernel predictor in an RKHS.",
+        "evidence_summary": "Transfer Learning for Kernel-based Regression (Wang et al., 2023) investigates transfer learning for nonparametric regression in Reproducing Kernel Hilbert Space, proposing solutions for both known and unknown transferable sources through kernel-based estimators."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_6f26ea490",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper uses Multiple Kernel Learning (MKL) and domain adaptation in Reproducing Kernel Hilbert Space (RKHS) for task-specific face recognition. This is a direct application of RKHS methods and kernel selection, which is very similar to the target paper's approach of finding an optimal kernel predictor in an RKHS for linear attention.",
+        "evidence_summary": "Kernel Selection using Multiple Kernel Learning and Domain Adaptation in Reproducing Kernel Hilbert Space, for Face Recognition under Surveillance Scenario (Banerjee and Das, 2016) proposes a novel kernel selection technique using MKL and unsupervised domain adaptation in RKHS for face recognition in surveillance."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_003_eb590b374",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper discusses polynomial-time algorithms within a learning context (Byzantine-Resilient SGD), addressing the 'polynomial-time' aspect of learnability, though not directly for Transformers. It provides a relevant general context for polynomial-time learning guarantees.",
+        "evidence_summary": "Byzantine-Resilient SGD in High Dimensions on Heterogeneous Data (Data and Diggavi, 2020) studies distributed SGD under Byzantine attacks in a heterogeneous data model, proposing a polynomial-time outlier-filtering procedure for robust mean estimation."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_012_7914dbf5a",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper analyzes limitations in evidential deep learning, identifying issues that lead to inferior performance. While not specific to PAC learning or Transformers, it is an example of theoretical investigation into limitations of learning models, which could be relevant to understanding the scope or potential counterevidence for the target paper's claims about learnability.",
+        "evidence_summary": "Learn to Accumulate Evidence from All Training Samples: Theory and Practice (Pandey and Yu, 2023) theoretically investigates evidential deep learning models, identifying fundamental limitations in existing activation functions that lead to inferior predictive performance."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_009_d2bbad2f4",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper proposes a new method and evaluates it on KEEL benchmark datasets and ADNI dataset, which serves as an example of using benchmark datasets for evaluating learning models. This is relevant to the target paper's empirical validation on canonical tasks.",
+        "evidence_summary": "Graph Embedded Intuitionistic Fuzzy Random Vector Functional Link Neural Network for Class Imbalance Learning (Ganaie et al., 2023) proposes and evaluates a novel model for class imbalance learning on KEEL benchmark datasets and the ADNI dataset."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_010_4b2ae9204",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper introduces a new framework for anomaly detection and evaluates it with experiments. While the domain is different, it demonstrates the use of empirical validation for deep learning models, which relates to the target paper's validation on canonical tasks.",
+        "evidence_summary": "Anomaly Detection on Attributed Networks via Contrastive Self-Supervised Learning (Liu et al., 2021) presents a novel contrastive self-supervised learning framework for anomaly detection on attributed networks, designed to exploit local information and evaluate abnormality statistically."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_b2a93e943",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper discusses Transformer models in a general healthcare context and mentions their use for handling larger datasets and enhancing clinical text modeling. While not directly about PAC learning, it contextualizes the broad application of Transformers and how they have moved into various domains, indicating a wider interest in their capabilities and limitations.",
+        "evidence_summary": "Shifting machine learning for healthcare from development to deployment and from models to data (Zhang et al., 2022) provides a data-centric review of ML in healthcare, discussing deep generative models, federated learning, and Transformer models for handling large datasets and clinical text."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_002_1b1d0b737",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper applies a modified Transformer network within a CNN framework for ECG signal processing. It highlights a practical application of Transformers and its empirical performance, providing a competitor to the broad claim of Transformer capabilities but not directly challenging the PAC learning claim.",
+        "evidence_summary": "Constrained transformer network for ECG signal processing and arrhythmia classification (Che et al., 2021) proposes an end-to-end deep learning framework combining CNN and a constrained Transformer network for ECG signal processing and arrhythmia classification."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_011_9724cde7f",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper introduces a new hierarchical vision transformer. While it showcases advancements in Transformer architecture and performance, it does not directly address the theoretical learnability (PAC learning) aspect, nor linear attention specifically, making it less central to the target paper's core claims but still a 'competitor' in the broader Transformer landscape.",
+        "evidence_summary": "Dilated Neighborhood Attention Transformer (Hassani and Shi, 2022) introduces Dilated Neighborhood Attention (DiNA) and a new hierarchical vision transformer, DiNAT, which extends local attention to capture more global context efficiently."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_004_8073fc360",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "While this paper uses data to constrain cosmological model parameters, and mentions 'data', it is entirely outside the domain of machine learning or deep learning and is not relevant to the 'learnability of Transformers from data' problem that the target paper addresses.",
+        "evidence_summary": "Constraints on dark energy from H II starburst galaxy apparent magnitude versus redshift data (Mania and Ratra, 2011) uses H II starburst galaxy data to constrain dark energy cosmological model parameters."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "While the expressivity of Transformer models has been extensively studied for capabilities like simulating Boolean circuits or Turing machines, their efficient learnability from data has remained an open question. Pioneering work on the theoretical understanding of Transformers, such as analyzing the learning behavior of single-layer transformers (Makkuva et al., 2024), highlights challenges like getting trapped in local minima. Related research addresses PAC learnability in complex settings, such as adversarial multi-source learning (Konstantinov et al., 2020), which demonstrates how PAC learning guarantees can be established under specific conditions. Other work explores polynomial-time algorithms in distributed learning contexts (Data and Diggavi, 2020). Our approach to learning multi-head linear attention involves recasting the problem as finding the optimal kernel predictor in a Reproducing Kernel Hilbert Space (RKHS), similar to techniques used in kernel-based regression and transfer learning (Wang et al., 2023) or multiple kernel learning for face recognition (Banerjee and Das, 2016). Our findings are empirically validated on canonical tasks, complementing the evaluations seen in models for class imbalance learning (Ganaie et al., 2023) or anomaly detection (Liu et al., 2021). While Transformers have seen broad application in various domains like healthcare (Zhang et al., 2022) and ECG processing (Che et al., 2021), and novel architectures like Dilated Neighborhood Attention Transformers (Hassani and Shi, 2022) continue to emerge, theoretical guarantees for efficient learnability, especially in a PAC learning framework, remain less explored. Furthermore, investigations into the fundamental limitations of learning models (Pandey and Yu, 2023) emphasize the need for rigorous theoretical foundations.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 12,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 12,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 12,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 12,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

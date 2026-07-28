@@ -1,0 +1,122 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel perspective by rigorously analyzing the expressivity of Transformers under the practical constraint of fixed-precision arithmetic, bridging a crucial gap between theoretical ideals and real-world implementations. This is a bold and much-needed departure from common idealized assumptions.",
+        "The core finding that fixed-precision Transformers, particularly without positional encoding, are limited to finite or co-finite languages is a significant and potentially paradigm-shifting result. It challenges prevailing perceptions of Transformer capability and offers a fresh angle for understanding their practical limitations.",
+        "The paper systematically explores the impact of different components (positional encoding, query-key assumptions) on expressivity within the fixed-precision framework, providing upper and lower bounds for various configurations. This structured analysis is valuable for understanding the subtle interplay of these factors."
+      ],
+      "weaknesses": [
+        "While the theoretical bounds are compelling, the 'evaluation' aspect is purely theoretical (proofs) rather than empirical. Given the claim of bridging the gap to real-world implementations, a small empirical verification or demonstration of these limitations (even on synthetic tasks) would significantly strengthen the paper.",
+        "The proofs, especially for the lower bounds, often rely on constructing highly specific, almost 'tuned' Transformer architectures (e.g., specific FFN designs, attention mechanisms using 1/i scaling values). While mathematically valid for proving existence, the generalizability to typical, naturally learned Transformer parameters is not immediately clear, making some of these constructions feel a bit artificial."
+      ],
+      "summary_comment": "This paper presents a truly novel and highly significant contribution to the understanding of Transformer expressivity. By focusing on the practical constraint of fixed-precision arithmetic, the authors unveil a fundamental limitation that suggests real-world Transformers might be far less expressive than theoretical models assume. The idea that these powerful models might effectively function as 'efficient lookup tables' under practical constraints is a provocative and important insight. While I would have liked to see some empirical validation to complement the theoretical proofs, the core concept and its potential implications for future research are too strong to ignore. The paper is well-written and introduces concepts clearly, making its innovative ideas accessible. Despite minor concerns about the direct applicability of some proof constructions to 'learned' parameters, the bold claims warrant acceptance as they push the field in a novel and important direction."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a rigorous theoretical analysis of Transformer expressivity under practical constraints, specifically fixed-precision arithmetic, which is often an overlooked aspect in theoretical work.",
+        "The proofs for both the upper and lower bounds for recognizing finite and co-finite languages under fixed-precision and the 'infinity-freeness' assumption (Theorem 5.2) are well-structured and logically sound.",
+        "The paper systematically investigates the impact of positional encoding and the 'infinity-freeness' assumption on expressivity, offering clear lower bounds for cyclic and letter-set languages as these constraints are relaxed."
+      ],
+      "weaknesses": [
+        "The paper's evaluation is primarily theoretical, as is appropriate for this type of work. However, the introduction of 'infinity-freeness' (Assumption 5.1) is stated as 'generally holds for most trained Transformer models' without empirical justification or reference to previous observations. While plausible, some brief experimental validation or a more robust theoretical argument for its practical relevance would strengthen this assumption.",
+        "The proof sketch for the lower bounds in Section 6.1 (m-cyclic languages with APE) and 6.2 (letter-set languages without Assumption 5.1) are somewhat high-level. While sufficient for a sketch, a more detailed breakdown of how the FFNs are specifically crafted for these language types would enhance the rigor, especially for readers less familiar with such constructions."
+      ],
+      "summary_comment": "This paper presents a rigorous theoretical analysis of the expressivity of Transformer decoders under fixed-precision arithmetic and varying positional encoding assumptions. The core contribution is the demonstration that under reasonable practical constraints (fixed-precision, 'infinity-freeness', and no positional encoding), Transformers are limited to recognizing finite or co-finite languages. The proofs provided, particularly for Theorem 5.2, are sound and meticulously detailed. The paper then explores how relaxing these constraints (introducing APE or removing the infinity-freeness assumption) marginally increases expressivity to cyclic or letter-set languages, which is a valuable insight into the fundamental limitations imposed by fixed-precision. While the novelty is moderate, building on prior work on fixed-precision Transformers, the methodological rigor and scientific validity of the analysis are strong. The work effectively bridges the gap between idealized theoretical models and real-world implementations, providing significant insights for understanding practical Transformer capabilities."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly relevant practical constraint (fixed-precision arithmetic) that often gets overlooked in theoretical expressivity studies of Transformers.",
+        "The findings provide valuable insights into the fundamental limitations of real-world Transformer implementations, suggesting they may act as efficient lookup tables for finite/co-finite languages under certain conditions, which is a significant observation for practitioners.",
+        "The study clearly defines practical constraints and methodically examines their impact on expressivity, explicitly delineating how positional encoding and the 'infinity-freeness' assumption affect the recognized language classes."
+      ],
+      "weaknesses": [
+        "The 'evaluation' section is not applicable in the traditional sense as this is a theoretical paper. While the proofs are detailed, a small illustrative example (e.g., a simple finite language and construction) would enhance intuition for practitioners and further solidify the 'soundness'.",
+        "The discussion on 'What is the key module in Transformers?' is slightly tangential and could be more directly integrated with the findings. The primary focus should remain on the implications of fixed-precision and the other constraints."
+      ],
+      "summary_comment": "This paper presents a rigorous theoretical analysis of Transformer expressivity under practical constraints such as fixed-precision arithmetic. It highlights a critical distinction between idealized theoretical models and real-world implementations, demonstrating that actual Transformers might be significantly more limited in the types of languages they can recognize. The findings, particularly the reduction to finite/co-finite languages under certain conditions, are highly significant for practitioners in understanding the fundamental capabilities and limitations of the models they deploy. While the paper is theoretical and lacks empirical evaluation (which is expected for this type of work), the clarity of the problem statement, the methodical exploration of constraints, and the practical implications make it a valuable contribution. The proofs appear sound, and the discussion of how various assumptions affect expressivity is well-argued. I recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's topic, 'expressivity of fixed-precision Transformers' and its analysis using formal language theory, aligns perfectly with ICML's interest in 'general machine learning' theory, 'deep learning theory', and 'trustworthy machine learning' (reliability, fundamental limitations).",
+        "The contribution is primarily theoretical, focusing on proving upper and lower bounds for the expressivity of Transformers under practical constraints. ICML highly values rigorous theoretical work, as indicated by its inclusion of 'theory of machine learning' as a core topic.",
+        "Reviewers consistently highlight the 'highly novel perspective' (Reviewer A) of analyzing Transformers under fixed-precision arithmetic, bridging a crucial gap between theory and practice. This level of novelty is suitable for a top-tier theoretical ML conference like ICML.",
+        "The proofs are described as 'rigorous theoretical analysis' (Reviewer B) and 'well-structured and logically sound' (Reviewer B), indicating a high degree of methodological rigor valued by ICML.",
+        "Reviewers note the paper is 'well-written and introduces concepts clearly' (Reviewer A), making the complex theoretical arguments accessible, which is important for a broad audience at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A noted the lack of empirical validation for the theoretical claims, suggesting that 'a small empirical verification or demonstration of these limitations (even on synthetic tasks) would significantly strengthen the paper.' While ICML accepts purely theoretical papers, some empirical grounding for practical implications can sometimes broaden appeal.",
+        "Reviewer B mentioned that the 'infinity-freeness' assumption (Assumption 5.1) lacked empirical justification, which could be a minor point for practical relevance, though the assumption is stated to generally hold."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper investigates the 'expressivity of Fixed-Precision Transformers,' a topic that falls under 'Theory' and 'Deep learning' within NeurIPS's areas of interest. The focus on practical constraints for core ML models makes it relevant.",
+        "NeurIPS values rigorous analysis and fundamental insights into machine learning models. The paper's theoretical contribution, which establishes fundamental limitations of real-world Transformers, aligns with the scope of 'new and original research' and 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior'.",
+        "The novelty is described as 'highly novel perspective' (Reviewer A) and 'significant and potentially paradigm-shifting result' (Reviewer A). NeurIPS welcomes novel contributions that provide fundamental understanding.",
+        "The proofs are considered 'rigorous' and 'sound' by reviewers, fitting NeurIPS's emphasis on scientific validity and methodological rigor.",
+        "The paper's discussion of the gap between theoretical models and real-world implementations ('functioning as little more than efficient lookup tables') offers 'significant insights for understanding practical Transformer capabilities' (Reviewer B), making it relevant for NeurIPS's interdisciplinary audience that includes practitioners."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the purely theoretical nature of the 'evaluation' (Reviewer A) and lack of empirical validation might be a slight drawback for some NeurIPS tracks, which often feature a stronger empirical component along with theory.",
+        "Reviewer A mentioned that some proof constructions 'feel a bit artificial' and their generalizability to 'naturally learned Transformer parameters is not immediately clear.' While common in theoretical computer science, NeurIPS often prefers theory that more directly informs practical ML development."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR focuses heavily on 'deep learning' and 'learning theory', making a paper on the expressivity of Transformers (a core deep learning architecture) a good topical fit.",
+        "The paper's contribution is a theoretical analysis of fundamental limits of deep learning models, which aligns with ICLR's interest in 'learning theory' and 'representation learning'.",
+        "The novelty lies in analyzing 'fixed-precision Transformers', which is a practical constraint on deep learning models. Reviewer A explicitly states the paper 'introduces a highly novel perspective' which is suitable for ICLR, which seeks cutting-edge research.",
+        "The paper's rigorous theoretical approach to analyzing model expressivity is valued in venues like ICLR, especially for understanding the foundational aspects of deep learning. Reviewer B describes the proofs as 'well-structured and logically sound'.",
+        "The paper is 'well-written and introduces concepts clearly' (Reviewer A), ensuring that a deep learning-focused audience can engage with the theoretical depth."
+      ],
+      "why_it_does_not_fit": [
+        "While relevant, ICLR generally has a stronger emphasis on empirical results and advancements in deep learning architectures or training methods. This paper is purely theoretical, which might be a slightly weaker match compared to a venue that explicitly prioritizes 'learning theory' above all else.",
+        "Reviewer A's concern about the absence of empirical verification, even on synthetic tasks, is particularly relevant for ICLR, where novel theoretical insights often motivate or are accompanied by practical demonstrations or experiments on deep learning models.",
+        "Reviewer B's point about the high-level nature of some proof sketches, especially how FFNs are specifically crafted, could be more detailed for an ICLR audience that often seeks implementable insights.",
+        "Reviewer C noted that the 'evaluation' section is not applicable in the traditional sense, and 'a small illustrative example... would enhance intuition for practitioners'. This practical, intuitive understanding is often highly valued at ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

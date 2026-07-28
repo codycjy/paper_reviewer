@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Identifies a novel and important phenomenon: the emergence of distinct generalization (τ_gen) and memorization (τ_mem) timescales during diffusion model training, with τ_mem scaling linearly with dataset size n.",
+        "Provides strong empirical evidence on realistic datasets (CelebA) and synthetic data, robustly demonstrating the scaling laws and phase transitions.",
+        "Offers a compelling and well-supported theoretical explanation using a tractable random features model, clearly linking the two timescales to properties of the eigenspectrum in the high-dimensional limit."
+      ],
+      "weaknesses": [
+        "The theoretical analysis, while elegant, relies on simplifying assumptions (e.g., random features, Gaussian data) which may not fully capture the complexity of modern, high-capacity U-Nets used in practice.",
+        "The empirical exploration of model capacity (parameter count p) is limited to a relatively narrow range (1M-16M parameters), leaving the full (n, p) phase diagram only partially mapped."
+      ],
+      "summary_comment": "This paper presents a highly novel and impactful insight into the training dynamics of diffusion models, revealing a crucial implicit dynamical regularization mechanism that prevents memorization. The core finding of a widening 'generalization window' between τ_gen and τ_mem as n increases is both surprising and important for theory and practice. The combination of rigorous experiments and a tractable theoretical model is compelling. While the theory uses a simplified setting, it successfully captures the essential phenomenon. The work is bold, forward-looking, and provides a significant conceptual advance in understanding generative model generalization."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Provides a compelling and rigorous explanation for the phenomenon of delayed memorization in diffusion models through the identification of two distinct, data-set-size-dependent training timescales.",
+        "Combines thorough numerical experiments on a realistic image dataset (CelebA) with a rigorous analytical treatment using a random features model, providing strong empirical and theoretical support.",
+        "The experimental methodology is robust, including careful control of model capacity (parameter count), comprehensive evaluation metrics (FID, memorization fraction), and demonstration of the τ_mem ∝ n scaling relationship."
+      ],
+      "weaknesses": [
+        "The analytical results, while rigorous, are derived under specific assumptions (e.g., random features model, Gaussian data) and their direct quantitative applicability to complex, high-dimensional data and deep U-Net architectures remains to be fully established.",
+        "The numerical experiments, while extensive, cover a limited range of model capacities (p from ~1M to 16M parameters); exploring a much wider range would strengthen the claims about the (n, p) phase diagram."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and significant investigation into the dynamics of diffusion model training. The core finding—that a linear scaling of the memorization timescale with dataset size creates a widening generalization window—is convincingly supported by both careful experiments and a non-trivial theoretical analysis. The work provides a fundamental advance in understanding how overparameterized models can generalize. While the analytical model is simplified, it successfully captures the essential mechanism. The strengths in soundness and evaluation far outweigh the minor limitations."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Provides compelling empirical evidence of the two-timescale phenomenon (τgen and τmem) across realistic and synthetic datasets",
+        "Offers a rigorous theoretical analysis using random features models that supports the empirical findings",
+        "Delivers practical insights for training diffusion models effectively, including early stopping guidelines and capacity control"
+      ],
+      "weaknesses": [
+        "Limited exploration of model capacity range (p between 1M-16M) leaves some aspects of the phase diagram underexplored",
+        "Theoretical analysis relies on simplified assumptions (e.g., random features, Gaussian data) that may not fully capture real-world complexity"
+      ],
+      "summary_comment": "This paper makes a significant contribution to understanding how diffusion models avoid memorization through implicit dynamical regularization. The combination of thorough empirical validation on realistic datasets and rigorous theoretical analysis provides strong evidence for the two-timescale phenomenon. The findings have practical implications for training robust diffusion models, particularly in data-scarce domains. While the theoretical framework uses simplified models, it successfully captures the core mechanisms. The paper is well-written and addresses an important problem with both theoretical and practical relevance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on training dynamics and implicit regularization in deep learning aligns perfectly with ICML's emphasis on machine learning theory and optimization",
+        "Analytical results using random matrix theory and high-dimensional statistics match ICML's theoretical machine learning profile",
+        "Rigorous experimental methodology with controlled variables (n, p) and comprehensive evaluation demonstrates the scientific standards ICML values",
+        "Understanding generalization in overparameterized models is a core theoretical challenge in modern ML that ICML prioritizes"
+      ],
+      "why_it_does_not_fit": [
+        "The specific focus on diffusion models is somewhat narrower than ICML's broad ML scope, though diffusion models are certainly within scope",
+        "While theoretically grounded, the practical applications to generative modeling might be slightly more aligned with NeurIPS/ICLR's generative AI focus"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 10,
+      "why_it_fits": [
+        "Diffusion models are a central topic in modern AI/ML research that NeurIPS heavily promotes",
+        "The combination of theoretical analysis with large-scale empirical validation on realistic datasets (CelebA) matches NeurIPS' interdisciplinary approach",
+        "The paper addresses fundamental questions about generalization and memorization that are highly relevant to the NeurIPS community",
+        "The work connects theory, algorithms, and applications in the context of state-of-the-art generative models, which is exactly what NeurIPS values"
+      ],
+      "why_it_does_not_fit": [
+        "While the theory is rigorous, some NeurIPS reviewers might prefer even more emphasis on practical deployment implications",
+        "The focus on training dynamics might be slightly more optimization-focused than some NeurIPS tracks prefer"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR's exclusive focus on deep learning makes this diffusion model study an excellent fit",
+        "The paper's investigation of neural network training dynamics and spectral bias aligns with ICLR's interests in deep learning theory",
+        "The connection between architectural choices (U-Net capacity) and generalization performance is core to ICLR's focus",
+        "Analysis of representation learning in generative models fits ICLR's scope on deep representation learning"
+      ],
+      "why_it_does_not_fit": [
+        "The random features theoretical model is somewhat removed from the deep architectures ICLR typically emphasizes",
+        "ICLR might expect more emphasis on architectural innovations rather than primarily training dynamics analysis",
+        "The theoretical assumptions (Gaussian data, random features) may be seen as too simplified for ICLR's deep learning focus"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

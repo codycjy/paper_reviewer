@@ -1,0 +1,133 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel approach by applying mechanistic interpretability (MI) to deep learning-based side-channel analysis (DLSCA) in a practical, challenging setting without a priori knowledge of masks, which is a significant departure from prior work.",
+        "The identification and analysis of 'phase transitions' in DLSCA model training to understand feature learning is a creative and forward-thinking idea, drawing parallels to research in grokking and neural scaling. This has the potential to unlock deeper insights into how neural networks learn.",
+        "The direct reverse-engineering of secret shares from model activations using activation patching, leading to a path for 'white-box' evaluation from 'black-box' models, represents a breakthrough in interpretability for security applications. This could revolutionize how DLSCA models are evaluated and how countermeasures are designed."
+      ],
+      "weaknesses": [
+        "While the concept of phase transitions is central, the paper could benefit from a more rigorous definition or characterization of what constitutes a 'phase transition' in this context beyond visual inspection of PI curves and logit distributions. This would strengthen the soundness of the claims.\n",
+        "The evaluation relies heavily on qualitative visual analysis of PCA plots and logit distributions. While insightful, a more quantitative measure of the 'structure' emerging during phase transitions, especially for assessing the accuracy of retrieved masks, would bolster the results, particularly for the more complex ASCAD dataset where mask extraction required further refinement."
+      ],
+      "summary_comment": "The authors have completely addressed my concerns in their rebuttal. Their commitment to providing a more rigorous, quantitative definition of 'phase transitions' and incorporating statistical measures for both transition identification and feature extraction is highly commendable. These planned additions will undoubtedly strengthen the paper's methodological soundness and the rigor of its evaluation, without diminishing the paper's outstanding novelty and significant impact. The core idea is genuinely new, could inspire substantial future work, and the authors have shown an excellent willingness to refine the presentation of their innovative research. I am fully confident that the revised paper will meet its high potential."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously applies mechanistic interpretability techniques to a challenging real-world problem (DLSCA), demonstrating its scalability and effectiveness beyond toy models.",
+        "The methodology accurately identifies and extracts secret share values from model activations without requiring a priori knowledge of mask randomness, which is a significant practical contribution to side-channel analysis.",
+        "The analysis of phase transitions provides a strong mechanistic understanding of how neural networks learn to exploit side-channel leakage, offering concrete insights into model behavior on multiple datasets.",
+        "The experiments are conducted on widely used, publicly available DLSCA benchmarks (CHES CTF, ESHARD, ASCAD), enhancing reproducibility and relevance to the field."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates the possibility of causal intervention, the mask extraction for the more complex ASCAD dataset still requires 'further refinement' and 'post-processing' for accurate value retrieval, implying that the 'white-box' objective is not fully realized for all analyzed scenarios within the presented work.",
+        "The assumption that 'the attack has already succeeded and the subkey has been recovered' (lines 173-174), while acknowledged and justified for the interpretability goal, might initially seem to limit the direct applicability for a green-field attacker attempting to break a target from scratch without prior success."
+      ],
+      "summary_comment": "The authors have adequately and comprehensively addressed the concerns raised in the initial review. Their responses confirm that the limitations regarding ASCAD mask extraction and the assumption about subkey recovery are understood and appropriately framed within the scope of their work on mechanistic interpretability. The focus on establishing causal links and foundational understanding for more complex scenarios, and the justification for post-hoc analysis in a security evaluation context, are robust. The paper stands as a strong contribution due to its methodological rigor and detailed evaluation. No further changes to the decision are warranted."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper tackles a highly practical and relevant problem: improving the interpretability of Deep Learning-based Side-Channel Analysis (DLSCA) for security evaluators. This bridges the gap between powerful black-box models and the need for actionable feedback in real-world security certifications.",
+        "The methodology of analyzing 'phase transitions' in model training is a strong and novel approach to understand how DLSCA models learn, especially in a challenging domain where direct input interventions are difficult due to countermeasures. The connection to mechanistic interpretability and 'grokking' is well-justified.",
+        "A key practical output is the ability to 'reverse engineer' secret masks from network activations using activation patching, without prior knowledge of these masks. This allows a shift from black-box to white-box evaluation, which has significant implications for improving countermeasure design and attack methodologies.",
+        "The paper's discussion of the implications (Section 7) clearly articulates the practical value for both security evaluators (better feedback, library of common attack paths) and countermeasure designers (understanding exploitable leakage)."
+      ],
+      "weaknesses": [
+        "While the authors clarify the systematic nature of their core framework, and committed to enhancing the paper with further discussion on automation and human-in-the-loop analysis, the current work still implies a non-trivial level of expert domain knowledge is beneficial, if not required, for deeper interpretability. More concrete steps or a roadmap towards robust automation would strengthen its broad applicability.",
+        "The demonstration of how MI informs *failing* models or initial attack stages remains a discussion of potential future work and hypothetical scenarios. Including even a small-scale, illustrative case study (perhaps using an intentionally weakened model or dataset) to foreshadow these capabilities would significantly enhance the paper's practical relevance during this review."
+      ],
+      "summary_comment": "This paper offers a highly significant contribution to the field of Deep Learning-based Side-Channel Analysis by addressing the critical need for interpretability. The focus on 'phase transitions' to understand model learning, and the subsequent ability to reverse-engineer secret masks, is a novel and impactful approach. This moves DLSCA from a black-box detection tool to one that can provide actionable insights for security evaluators and designers, enabling a shift towards more informed and effective countermeasure development. The authors have adequately addressed my concerns by committing to enrich the discussion on automation and the application of their MI framework to inform attack strategies even for failing models. While a full experimental demonstration of the latter is out of scope for the current work, the planned elaborations will significantly strengthen the practical impact of the paper. The clarity and evaluation of the current results are strong."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' topics by developing mechanistic interpretability (MI) methods for deep learning models, particularly in a complex, noisy real-world setting, which aligns with ICML's interest in foundational ML advancements.",
+        "The use of 'deep learning' (architectures, theory) and 'evaluation' (methodology, meta studies) are central to the paper, as it analyzes how DL models learn in DLSCA and proposes new evaluation methodologies for security.",
+        "The work on 'interpretability' and 'trustworthy machine learning' (lines 098-100, 360-379, 381-383) is a strong fit, as MI aims to make black-box models transparent, which is crucial for security applications and falls under trustworthy ML.",
+        "The analysis of 'phase transitions' in neural network training links the work to current research on 'theory of machine learning' and understanding learning dynamics, which are highly relevant at ICML (e.g., citing 'grokking' and neural scaling literature like Power et al., 2022; Michaud et al., 2023; Nanda et al., 2023a).",
+        "Reviewers lauded the 'novelty' (Reviewers A, B, C scoring 5, 4, 4) and 'significance' (Reviewers A, B, C scoring 5, 4, 5) of applying MI to DLSCA without a priori mask knowledge, highlighting a significant contribution to the ML community.",
+        "The methodology is rigorous enough for ICML given reviewer feedback. Reviewer B noted the 'rigorously applies mechanistic interpretability techniques to a challenging real-world problem', and Reviewer A's concerns about rigor were addressed in the rebuttal, leading to an 'Accept' decision.",
+        "The paper explicitly references several ICML papers (e.g., Chughtai et al., 2023; Simon et al., 2023; Power et al., 2022), indicating awareness of the relevant community and a good fit for the audience."
+      ],
+      "why_it_does_not_fit": [
+        "While the underlying problem is ML, the primary application domain is 'side-channel analysis' and 'cryptographic security' (lines 015-016, 047-051), which might lean more towards specialized security conferences. However, the focus on MI and understanding ML models makes it relevant to ICML.",
+        "Reviewer A initially pointed out that 'the paper could benefit from a more rigorous definition or characterization of what constitutes a 'phase transition'', suggesting a minor lack of theoretical depth initially, although this was addressed in the rebuttal.",
+        "The evaluation sometimes relies on 'qualitative visual analysis of PCA plots', which Reviewer A suggested could be more quantitative. While acceptable, for some core ML papers at ICML, a more formal mathematical analysis of these emergent structures might be expected."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core contribution lies in 'General machine learning: core contributions in supervised and unsupervised methods' by advancing mechanistic interpretability for deep learning models.",
+        "The research directly relates to 'Theory' by analyzing learning dynamics and 'phase transitions' in neural networks, drawing parallels to concepts like grokking and neural scaling (lines 055-060, 360-379), which are common themes at NeurIPS.",
+        "The application of AI/ML to security, specifically 'AI/ML for physical sciences' (as side-channel analysis involves physical measurements like power consumption or EM emissions, lines 122-123) is a good fit for NeurIPS's diverse application areas.",
+        "The paper addresses 'Socio-technical aspects of AI' and 'trustworthy AI' implicitly by making black-box DLSCA models interpretable, which improves security evaluations and the design of robust defenses against real-world threats (lines 027-030).",
+        "Reviewers consistently highlighted the 'novelty' and 'significance' of applying MI to a challenging real-world problem like DLSCA, demonstrating scalability beyond toy models, which is highly valued at NeurIPS.",
+        "The explicit mention of 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior beyond the scope of the original work' aligns well with the paper's goal of understanding how DLSCA models operate, moving from black-box to white-box evaluation (lines 027-030).",
+        "Activation patching and linear probes (Alain & Bengio, 2017), key techniques mentioned in the paper, are well-known within the NeurIPS community, indicating methodological alignment."
+      ],
+      "why_it_does_not_fit": [
+        "While the ML aspect is strong, the specific application of 'side-channel analysis' might be considered niche compared to broader applications like computer vision or language models that typically dominate NeurIPS submissions in applied areas.",
+        "The paper explicitly states the topic is 'Others', not directly falling into one of the main 'Computer vision' or 'Language and multimodal language models' tracks, potentially making it harder to find an appropriate reviewing committee if not clearly positioned as a 'General machine learning' or 'Theory' contribution.",
+        "Reviewer B mentioned that the objective of 'white-box' evaluation is not 'fully realized for all analyzed scenarios' (e.g., ASCAD dataset), which might be perceived as a slight limitation for a conference that values fully polished applications or theoretical completeness.",
+        "Reviewer C noted that 'the current work still implies a non-trivial level of expert domain knowledge is beneficial, if not required, for deeper interpretability' in DLSCA. While typical for specialized applications, it might slightly reduce general accessibility for some NeurIPS attendees."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR focuses heavily on 'deep learning' and 'representation learning', which are central to the paper's study of how DLSCA models learn and what features they represent (lines 043-051, 102-103).",
+        "The paper extensively discusses 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' implicitly through its analysis of learned features in deep networks and their 'phase transitions' (e.g., linking to grokking, which is a form of generalization often studied in representation learning).",
+        "The methodology employs 'optimization' techniques (Adam optimizer, L1 regularization, line 687) for training models, an area of interest for ICLR.",
+        "The emphasis on 'visualization or interpretation of learned representations' through PCA plots of activations and logit analysis (lines 207-219, 215-218 and figures) is a direct fit for ICLR's focus on understanding deep learning models.",
+        "The discussion of 'societal considerations including fairness, safety, privacy' (trustworthy ML) is covered through the paper's contribution to improving security evaluation in DLSCA, which often involves privacy-sensitive data.",
+        "Reviewer A noted the 'highly novel approach by applying mechanistic interpretability (MI) to deep learning-based side-channel analysis (DLSCA)', aligning well with ICLR's interest in cutting-edge research in deep learning.",
+        "The paper explicitly references multiple ICLR papers (Nanda et al., 2023a,b; Li et al., 2023; Wang et al., 2023), indicating that it is engaging with and building upon research commonly published at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is integral, the specific problem of 'side-channel analysis' is a niche security application. ICLR typically favors papers with broader applicability or foundational breakthroughs directly within deep learning architectures or general learning theory, rather than highly specialized applications.",
+        "The paper uses relatively simple MLP architectures (lines 683-690) rather than focusing on novel deep learning architectures or advanced generative models, which are often highlighted at ICLR.",
+        "Reviewer A mentioned that the evaluation 'relies heavily on qualitative visual analysis of PCA plots and logit distributions', and a 'more quantitative measure of the 'structure' emerging during phase transitions' would be beneficial. ICLR often expects a strong theoretical or architectural contribution to accompany empirical results, which might be a relative weakness here.",
+        "Reviewer C's point about 'non-trivial level of expert domain knowledge' being beneficial for understanding DLSCA aspects might mean that a portion of the ICLR audience, less familiar with hardware security, may find the application context harder to grasp."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

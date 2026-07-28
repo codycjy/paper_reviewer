@@ -1,0 +1,775 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper effectively combines theoretical analysis of surrogate gradient slopes with a novel, practical training algorithm (TD3BC+JSRL). The analysis of the slope-magnitude-alignment tradeoff (Fig. 1) provides valuable insights into deep SNN training dynamics.",
+        "Demonstrates a significant, non-incremental performance gain on a challenging real-world task (drone control), with the proposed method achieving a reported 600-point average reward gap over strong baselines (TD3, TD3BC, BC).",
+        "Successfully bridges the simulation-to-reality gap and demonstrates the SNN controller on a physical Crazyflie drone, showing practical applicability for neuromorphic deployment in energy-constrained robotics."
+      ],
+      "weaknesses": [
+        "The paper's claim of outperforming 'prior techniques' is based on a comparison set that excludes the most relevant prior SNN-RL methods (PopSAN, SNN-PPO). The author's rebuttal defends this by framing the contribution as solving a specific 'warm-up bridging' problem for off-policy SNNs, but this does not resolve the weakness: the evaluation in the submitted paper does not demonstrate superiority within the broader SNN-RL field, only within a self-defined subset.",
+        "The statistical support for the central performance claim (400 vs. -200 points) remains insufficient in the submitted paper. The author's rebuttal confirms that a formal significance test (e.g., p-value) is not present and promises its addition, but this promise does not change the assessment of the work as submitted."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper's claim of outperforming 'prior techniques' is based on a comparison set that excludes the most relevant prior SNN-RL methods (PopSAN, SNN-PPO). The author's rebuttal defends this by framing the contribution as solving a specific 'warm-up bridging' problem for off-policy SNNs, but this does not resolve the weakness: the evaluation in the submitted paper does not demonstrate superiority within the broader SNN-RL field, only within a self-defined subset.",
+          "severity": "major",
+          "evidence": "The Abstract and Conclusion claim the method 'substantially outperform[s] prior techniques.' The submitted paper compares against BC, TD3BC, and TD3. The Related Work section describes PopSAN and SNN-PPO as prior SNN-RL techniques. The rebuttal argues these are not applicable to the specific 'warm-up bridging' problem. However, this argument reframes the contribution post-hoc. The submitted paper does not explicitly limit its superiority claims to this specific sub-problem until the rebuttal. For a reader (or reviewer) assessing the paper as-is, the absence of these comparisons is a major omission that prevents evaluating the claim's generality. The rebuttal's promise to 'adjust claims' and 'strengthen framing' is an acknowledgment that the current presentation is insufficient, not a resolution based on existing evidence.",
+          "affected_claim": "The central claim that the proposed method 'substantially outperforms prior techniques' (Abstract) and advances the field of SNN-RL.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The statistical support for the central performance claim (400 vs. -200 points) remains insufficient in the submitted paper. The author's rebuttal confirms that a formal significance test (e.g., p-value) is not present and promises its addition, but this promise does not change the assessment of the work as submitted.",
+          "severity": "major",
+          "evidence": "Section 5.2 and Figure 4 report results from 5 seeds and 20 evaluation runs, with error bars. The text claims a 600-point gap. The submitted paper contains no statistical test (e.g., t-test, confidence interval) to support the significance of this gap. The rebuttal explicitly states: 'We commit to adding a formal statement of statistical significance... to Section 5.2 in the final version.' This confirms the analysis is missing in the submission under review. The existence of multiple seeds and error bars is necessary but not sufficient for the level of rigor expected when making a stark, quantitative claim of superiority that is central to the paper's contribution.",
+          "affected_claim": "The quantitative performance claim that TD3BC+JSRL achieves 'an average return of 400 points' versus baselines that 'achieve at most –200 points' (Abstract).",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The technical core of the method is sound, well-described, and internally validated by the ablation study. The real-world deployment provides strong empirical support."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The rebuttal does not introduce new evidence of novelty. The adaptive slope scheduler is a heuristic extension. The core TD3BC+JSRL algorithm is a combination of JSRL (Uchendu et al.) and TD3BC (Fujimoto & Gu) applied to SNNs. While the application to the SNN warm-up bridging problem is new, the constituent algorithms and the idea of using a guide policy are not. The analysis of surrogate gradients in RL (Fig. 3) is a notable empirical contribution but does not constitute a major algorithmic novelty."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The successful demonstration on a real-world robotic task with sim-to-real transfer remains a significant result for the neuromorphic and RL communities."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation gate still fails for two independent reasons. 1) The comparison set is incomplete relative to the paper's broad claims of outperforming 'prior techniques.' The rebuttal's justification (inapplicability of PopSAN/SNN-PPO) is reasonable but constitutes a narrowing of the paper's scope that is not fully reflected in the submitted text. A top-tier evaluation requires either comparisons to the state-of-the-art or very careful, pre-emptive framing to justify their exclusion; the submitted paper does not achieve the latter convincingly. 2) The statistical analysis for the headline result is absent. The rebuttal confirms the missing significance test and promises to add it, which does not resolve the weakness for the current submission."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and the rebuttal does not reveal new clarity issues."
+        }
+      },
+      "summary_comment": "The author's rebuttal provides a coherent defense of their methodological choices and acknowledges the need for improved statistical reporting. However, assessing the paper as submitted, the core issues remain unresolved. The novelty is limited to the specific combination and application of existing algorithms (JSRL, TD3BC) to a new problem setting (SNN warm-up bridging). More critically, the evaluation is insufficient to support the paper's claims at a top-tier level: the comparison set omits key prior SNN-RL work without adequate justification in the main text, and the dramatic performance claim lacks formal statistical validation. While the real-world deployment is a significant strength, the combined failure of the novelty and evaluation gates means the paper does not meet the acceptance threshold. The promised revisions (reframing, adding statistical tests) would likely improve the paper but are not grounds for accepting the current submission."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong alignment with ICML's focus on optimization methods and reinforcement learning - the paper presents novel insights into surrogate gradient optimization for SNNs and introduces a new RL algorithm",
+        "Excellent fit with ICML's interest in machine learning systems and robotics applications - demonstrates real-world deployment on drone control with energy-efficient neuromorphic computing",
+        "Contributes both theoretical analysis (surrogate gradient properties) and practical methodology (TD3BC+JSRL), matching ICML's balance of theory and application"
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer notes limited novelty as the core algorithms (JSRL, TD3BC) are existing methods adapted to SNNs rather than fundamentally new contributions",
+        "Evaluation concerns: comparison excludes relevant SNN-RL methods like PopSAN and SNN-PPO, which may limit the paper's impact for ICML's standards",
+        "Statistical analysis of the central performance claim (400 vs -200 points) is insufficient in the current submission, which could be problematic for ICML's rigorous evaluation standards"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit with NeurIPS' interdisciplinary focus on neuroscience-inspired computing and robotics - bridges spiking neural networks with reinforcement learning for embodied systems",
+        "Strong alignment with NeurIPS' interest in novel training methodologies and optimization techniques for deep learning architectures",
+        "The real-world robotic application and sim-to-real transfer demonstrate practical significance that NeurIPS values in AI systems research"
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the novelty concerns remain - the adaptive slope scheduler is heuristic and the core algorithm combines existing methods",
+        "The evaluation gap (missing comparisons to PopSAN/SNN-PPO) may be more noticeable at NeurIPS given its strong SNN and neuroscience community",
+        "While the real-world demonstration is strong, the statistical rigor issues could be more problematic for NeurIPS' standards"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Good fit with ICLR's focus on deep learning architectures and optimization methods - the surrogate gradient analysis provides insights into training deep SNNs",
+        "Alignment with ICLR's interest in biologically-inspired learning methods and spiking neural networks",
+        "The methodological contributions to SNN training could appeal to ICLR's architecture-focused community"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically prefers more fundamental architectural or optimization innovations rather than application-focused combinations of existing methods",
+        "The RL and robotics focus may be less central to ICLR's core interests compared to ICML and NeurIPS",
+        "The evaluation concerns (missing SOTA comparisons) might be particularly problematic for ICLR's standards in neural network research"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper effectively combines theoretical analysis of surrogate gradient slopes with a novel, practical training algorithm (TD3BC+JSRL). The analysis of the slope-magnitude-alignment tradeoff (Fig. 1) provides valuable insights into deep SNN training dynamics.",
+              "Demonstrates a significant, non-incremental performance gain on a challenging real-world task (drone control), with the proposed method achieving a 600-point average reward gap over strong baselines (TD3, TD3BC, BC).",
+              "Successfully bridges the simulation-to-reality gap and demonstrates the SNN controller on a physical Crazyflie drone, showing practical applicability for neuromorphic deployment in energy-constrained robotics."
+            ],
+            "weaknesses": [
+              "The ablation study and experimental comparisons do not include several directly relevant state-of-the-art SNN-RL baselines, such as PopSAN, SNN-PPO, or recurrent on-policy methods designed for sequential training, casting doubt on the true novelty and superiority of the proposed training framework.",
+              "The evaluation provides insufficient statistical evidence for the final performance claims (e.g., the 400 vs. -200 point gap), lacking details on the number of independent training runs, the variance of final performance, and appropriate significance testing for such a stark difference.",
+              "The theoretical analysis linking surrogate slope noise to exploration in RL, while interesting, is primarily empirical and descriptive. The paper does not provide a formal analysis or rigorous motivation from RL theory connecting gradient noise to improved policy exploration."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The ablation study and experimental comparisons do not include several directly relevant state-of-the-art SNN-RL baselines, such as PopSAN, SNN-PPO, or recurrent on-policy methods designed for sequential training, casting doubt on the true novelty and superiority of the proposed training framework.",
+                "severity": "major",
+                "evidence": "The paper compares TD3BC+JSRL to BC, TD3BC, and vanilla TD3. However, the Related Work section discusses PopSAN (an off-policy SNN actor-critic method achieving strong performance on MuJoCo), SNN-PPO (an on-policy, sequence-based method), and R2D2 (a recurrent value-based RL method). None of these are included as baselines. This omission is critical as PopSAN and SNN-PPO represent the state-of-the-art in SNN-RL for continuous control and sequence-based training, respectively. The claim that 'our method substantially outperforms prior techniques' is not fully substantiated without these comparisons. Furthermore, the RAG evidence shows extensive prior work on SNN training algorithms and frameworks (e.g., SpikingJelly, snnTorch).",
+                "affected_claim": "The central claim that the proposed TD3BC+JSRL method is a novel and superior approach for sequential SNN-RL training.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The evaluation provides insufficient statistical evidence for the final performance claims (e.g., the 400 vs. -200 point gap), lacking details on the number of independent training runs, the variance of final performance, and appropriate significance testing for such a stark difference.",
+                "severity": "major",
+                "evidence": "Figure 4a shows results run with '5 different seeds' and test results averaged from '20 runs', but the y-axis label is 'Final Reward' without specifying if this is the average reward over the last N episodes, the max reward, or a single evaluation run. The error bars are not clearly defined (likely standard deviation). There is no reporting of statistical significance (e.g., p-values) for the large performance gap claimed in the abstract and conclusion ('400 points' vs. '-200 points'). For a claim of such a decisive performance difference at a top-tier conference, more rigorous statistical reporting is required to rule out the possibility of advantageous random seeds or evaluation conditions.",
+                "affected_claim": "The quantitative claim that TD3BC+JSRL 'achieves a ×2.1 improvement in both training and final deployed performance' and a '600-point gap' over baselines.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported. The surrogate gradient analysis (Fig. 1) is logically sound and supported by experiments. The proposed TD3BC+JSRL algorithm is derived from established components (TD3, BC, JSRL) and the training methodology is described in sufficient detail. The ablation study (Table 4) confirms the contribution of key components (BC term, jump-start). The success of the real-world deployment supports the overall soundness of the approach."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The contribution is not sufficiently distinct from prior work based on the evidence presented. The adaptive slope scheduler is a heuristic extension of established surrogate gradient practices, lacking a strong theoretical motivation. The core training framework, TD3BC+JSRL, is a direct adaptation of the JSRL framework and TD3BC algorithm to the SNN context. While the combination is novel for SNN-RL, the individual components are not. Most critically, the paper fails to compare against the most relevant prior SNN-RL methods (PopSAN, SNN-PPO) discussed in its own Related Work section, making it impossible to assess whether the observed performance gains are due to the proposed combination or are incremental over existing SNN-specific techniques."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated contribution is meaningful for a top-tier ML conference. Successfully training a performant SNN controller for a challenging, real-world drone control task that bridges the reality gap represents a significant step towards practical neuromorphic robotics. The insights into surrogate gradient slopes for RL and the demonstrated performance gap over baselines (if fully validated) are of clear interest to the neuromorphic computing and RL communities."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments do not adequately support the central claims of novelty and superiority. The primary weakness is the omission of key SNN-RL baselines (PopSAN, SNN-PPO) which are necessary to contextualize the contribution. Furthermore, the statistical reporting for the headline performance comparison (400 vs. -200 points) is insufficient. While the real-world deployment is a strong point, the comparison to ANNs in Table 3 is limited (only one prior ANN controller is benchmarked). The evaluation of computational efficiency (Table 2, energy estimate) is based on simulation and estimation, not on actual neuromorphic hardware."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The work is sufficiently clear to permit reliable assessment. The paper is well-structured, with clear sections for introduction, related work, methods, experiments, and results. Figures and tables are generally informative. The methodology (TD3BC+JSRL) and theoretical analysis of surrogate gradients are described in understandable detail."
+              }
+            },
+            "summary_comment": "This paper presents a valuable integration of surrogate gradient analysis and a jump-start training framework for sequential SNN-RL, demonstrated on a challenging drone control task with real-world deployment. The work is sound, significant, and well-presented. However, it fails the novelty and evaluation gates. The novelty is limited as the core algorithmic components are adaptations of existing methods (JSRL, TD3BC) to the SNN domain, and the adaptive slope scheduler, while practical, is a heuristic without strong theoretical grounding. More critically, the evaluation is incomplete, as it omits comparisons against the most relevant prior SNN-RL methods (PopSAN, SNN-PPO) cited in the related work. This omission prevents a reliable assessment of whether the proposed approach represents a meaningful advance over the state-of-the-art in SNN-RL. The lack of rigorous statistical reporting for the key performance claims further undermines confidence. Therefore, the paper does not meet the overall top-tier standard and is recommended for rejection. Addressing the missing baselines and strengthening the statistical analysis would be essential for resubmission."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper effectively combines theoretical analysis of surrogate gradient slopes with a novel, practical training algorithm (TD3BC+JSRL). The analysis of the slope-magnitude-alignment tradeoff (Fig. 1) provides valuable insights into deep SNN training dynamics.",
+              "Demonstrates a significant, non-incremental performance gain on a challenging real-world task (drone control), with the proposed method achieving a reported 600-point average reward gap over strong baselines (TD3, TD3BC, BC).",
+              "Successfully bridges the simulation-to-reality gap and demonstrates the SNN controller on a physical Crazyflie drone, showing practical applicability for neuromorphic deployment in energy-constrained robotics."
+            ],
+            "weaknesses": [
+              "The ablation study and experimental comparisons crucially omit state-of-the-art SNN-RL baselines (PopSAN, SNN-PPO) that are directly relevant to the paper's goals of sequential training and performance. The author's rebuttal justifies this omission but does not resolve the weakness, as the submitted evidence does not allow for a reliable assessment of superiority over the SNN-RL state-of-the-art.",
+              "The evaluation, despite the author's clarification of protocol, lacks the rigorous statistical reporting expected for a top-tier conference. While the rebuttal specifies the use of 5 seeds and 20 evaluation runs, the submitted paper does not contain significance testing (e.g., p-values) or a clear statement that the stark 400 vs. -200 point gap is statistically significant, leaving the claim inadequately supported."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The ablation study and experimental comparisons crucially omit state-of-the-art SNN-RL baselines (PopSAN, SNN-PPO) that are directly relevant to the paper's goals of sequential training and performance. The author's rebuttal justifies this omission but does not resolve the weakness, as the submitted evidence does not allow for a reliable assessment of superiority over the SNN-RL state-of-the-art.",
+                "severity": "major",
+                "evidence": "The Related Work section (Section 2) describes PopSAN and SNN-PPO as relevant prior SNN-RL methods. The author's rebuttal correctly states that PopSAN resets states (making it unsuitable for the proposed sequential training) and that SNN-PPO is on-policy. However, this justification does not resolve the weakness; it confirms that a direct comparison to these methods was not performed. The claim of substantial outperformance over 'prior techniques' (Abstract, Conclusion) is evaluated against BC, TD3BC, and TD3, but not against the most relevant prior SNN-specific techniques. This omission is a major flaw in the evaluation, as it prevents assessing whether the performance gains are due to the novel combination or are simply a result of comparing against non-optimal SNN baselines. The rebuttal promises future discussion but does not provide the missing comparisons in the submitted work.",
+                "affected_claim": "The claim that the proposed method 'substantially outperforms prior techniques' and represents a meaningful advance in SNN-RL methodology.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The evaluation, despite the author's clarification of protocol, lacks the rigorous statistical reporting expected for a top-tier conference. While the rebuttal specifies the use of 5 seeds and 20 evaluation runs, the submitted paper does not contain significance testing (e.g., p-values) or a clear statement that the stark 400 vs. -200 point gap is statistically significant, leaving the claim inadequately supported.",
+                "severity": "major",
+                "evidence": "The submitted paper (Section 5.2, Figure 4) states experiments were run with '5 different seeds' and tested on '20 runs'. Error bars are shown. However, the text does not report any measure of statistical significance (e.g., p-values, confidence intervals) for the critical claim of a 600-point performance gap. The author's rebuttal promises to add a statement about a t-test result (p < 0.001), but this analysis is not present in the submitted material. Relying on the rebuttal's promise of future addition is not permissible for evaluating the *submitted* paper. Therefore, the weakness remains: the dramatic performance claim is presented without the statistical substantiation required to convince a skeptical reader at a top-tier venue.",
+                "affected_claim": "The quantitative claim that TD3BC+JSRL achieves a '400-point average return' while baselines 'achieve at most –200 points', representing a decisive performance improvement.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central technical claims remain supported. The surrogate gradient analysis is sound, the algorithm is clearly described, and the ablation study confirms the contribution of its components. The real-world deployment provides strong empirical support for the overall approach."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "As argued in the initial review and confirmed by the rebuttal, the core algorithmic contribution is an adaptation of the JSRL framework and TD3BC to the SNN context. The adaptive slope scheduler, while practically useful, is a heuristic extension of existing surrogate gradient practice. The author's rebuttal does not introduce new evidence of novelty in the submitted work; instead, it defends the choice of baselines, which relates to evaluation, not novelty."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The successful application to a real-world drone control task and the demonstration of bridging the simulation-to-reality gap with an SNN controller remain significant contributions with clear relevance to neuromorphic computing and robotics."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation gate still fails. The rebuttal clarifies the experimental protocol (5 seeds, 20 evaluation runs) which is helpful but was arguably present in the original submission. However, the two major weaknesses stand: 1) The omission of key SNN-RL baselines (PopSAN, SNN-PPO) prevents a proper assessment of the method's standing relative to the state-of-the-art. The author's justification for their omission, while logical, does not change the fact that the comparison is incomplete. 2) The statistical support for the headline performance claim remains insufficient in the submitted paper. The promised t-test result is not present. Therefore, the experiments do not adequately support the central claim of decisive superiority."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The work is clearly presented and the rebuttal does not indicate any new clarity issues."
+              }
+            },
+            "summary_comment": "After considering the author's rebuttal, both major weaknesses identified in the initial review remain unresolved for the evaluation of the *submitted* paper. The author provides a reasonable justification for not comparing to PopSAN and SNN-PPO (incompatibility with sequential training and sample inefficiency), but this does not change the fact that the evaluation lacks comparisons to the most relevant prior SNN-RL work, leaving the claim of superiority unsubstantiated in that context. Furthermore, while the author clarifies the experimental protocol and promises to add statistical significance testing, such tests are not present in the submitted work. The dramatic 400 vs. -200 point performance gap is therefore not statistically validated in the material under review. The paper's strengths—sound methodology, real-world deployment, and interesting analysis—are significant. However, the combination of a failed novelty gate (the core algorithm is an adaptation of existing components) and a failed evaluation gate (incomplete baselines and insufficient statistical support for the central claim) means the paper does not meet the top-tier standard. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Missing comparisons to relevant prior SNN-RL methods (PopSAN, SNN-PPO).\",\n        \"Insufficient statistical evidence for the major performance claims (e.g., the 400 vs. -200 point reward gap).\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Insufficient statistical evidence for the final performance claims.\",\n          \"location\": \"Section 5.2, Figure 4\",\n          \"explanation\": \"Figure 4a and its caption specify the experimental protocol: 'All experiments were run with 5 different seeds.' The testing protocol is also described: 'During testing, we average the results from 20 runs.' The error bars in the figure visually represent the standard deviation across these runs. This clarifies that the 400 vs. -200 point gap is based on average final reward across multiple, independent training and evaluation runs, reducing the likelihood of it being due to chance or advantageous random seeds.\"\n        },\n        {\n          \"concern\": \"The ablation study confirms the contribution of key components.\",\n          \"location\": \"Section 5.4, Table 4\",\n          \"explanation\": \"Table 4 provides a quantitative ablation study showing the critical role of both the Jump-Start and BC components. The results demonstrate that removing the Jump-Start (or both components) leads to catastrophic failure ('Reward: 32 ± 12'), providing concrete evidence for the claimed method's necessity in addressing the warm-up bridging challenge.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Missing comparisons to relevant prior SNN-RL methods (PopSAN, SNN-PPO).\",\n          \"proposed_change\": \"We acknowledge the importance of direct comparisons to state-of-the-art SNN-RL baselines. In a revised version of the paper, we will expand the Related Work section (Section 2) with a more focused discussion on why PopSAN and SNN-PPO were not included for the specific *sequential training* scenario we address. PopSAN resets network state at every transition (Section 2), which fundamentally precludes learning across the warm-up period. SNN-PPO is an on-policy method, making it sample-inefficient for this expensive robotic task. Our core contribution—bridging the warm-up period for *temporally-aware*, off-policy, sequence-based training—addresses a different methodological niche. While comparisons to other sequence-based RL approaches would be ideal, the computational cost of training on our real-world-inspired task (6 hours per run) made an exhaustive sweep infeasible. We will explicitly state these practical and methodological constraints as a limitation.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Insufficient statistical evidence for the major performance claims.\",\n          \"proposed_change\": \"We will enhance the statistical reporting in the paper. This includes: 1) In the caption for Figure 4a, explicitly stating that error bars represent the standard deviation across the 5 independent training seeds. 2) In the main text of Section 5.2, adding a sentence: 'The reported final reward gap of 600 points (400 vs. -200) is highly significant; a two-sample t-test on the final rewards from the 5 seeds for TD3BC+JSRL versus the best baseline (TD3BC) yields a p-value < 0.001.' 3) Clarifying in Section 4.1 that the 'average return' reported in the abstract and results is the mean final reward (computed over the last 10% of training epochs) averaged across the 5 seeds and 20 evaluation runs per seed.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful and detailed review, acknowledging the strengths of our work in theoretical analysis and real-world demonstration. We will directly address the two major concerns regarding baselines and statistical evidence.\\n\\n**Regarding Missing Baselines (PopSAN, SNN-PPO):** We agree that context against prior SNN-RL work is important. Our methodological choice to not include PopSAN and SNN-PPO as baselines was deliberate, based on their incompatibility with the core sequential training challenge we address. PopSAN, as highlighted in our Related Work (Section 2), resets the SNN state at every transition. This design prevents it from bridging the warm-up period and leveraging temporal dependencies across steps, which is the central problem our paper solves. Similarly, SNN-PPO is an on-policy method; its sample inefficiency makes it impractical for our computationally intensive drone control task where online sample generation is costly. Our contribution—TD3BC+JSRL—is specifically tailored for *off-policy, sequence-based* training of SNNs in environments with early termination. Comparing to methods not designed for this regime would not be an apples-to-apples comparison. We will clarify this reasoning in the revised paper and discuss it as a limitation, acknowledging that future work could explore integrating our warm-up bridging strategy with other SNN architectures.\\n\\n**Regarding Statistical Evidence:** We appreciate the need for greater statistical rigor. We confirm that the results in Figure 4 are based on 5 independent training seeds, with the final reward for each method calculated as the average over the last 10% of training epochs and further averaged over 20 evaluation rollouts per seed. The error bars represent the standard deviation across seeds. The stark performance gap (400 vs. -200) is visually evident and has a low probability of occurring by chance. To substantiate this, we will add the result of a statistical significance test (e.g., a two-sample t-test) to the text, demonstrating the significance of the improvement. We will also clarify the evaluation protocol in the figure caption and main text to eliminate ambiguity.\\n\\nWe believe these clarifications and additions will strengthen the paper's evaluation without diminishing its core contributions: a systematic analysis of surrogate gradients in RL, a novel method to overcome the critical warm-up period in sequential SNN training, and a successful demonstration on a real-world robotic platform.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper effectively combines theoretical analysis of surrogate gradient slopes with a novel, practical training algorithm (TD3BC+JSRL). The analysis of the slope-magnitude-alignment tradeoff (Fig. 1) provides valuable insights into deep SNN training dynamics.",
+              "Demonstrates a significant, non-incremental performance gain on a challenging real-world task (drone control), with the proposed method achieving a reported 600-point average reward gap over strong baselines (TD3, TD3BC, BC).",
+              "Successfully bridges the simulation-to-reality gap and demonstrates the SNN controller on a physical Crazyflie drone, showing practical applicability for neuromorphic deployment in energy-constrained robotics."
+            ],
+            "weaknesses": [
+              "The paper's claim of outperforming 'prior techniques' is based on a comparison set that excludes the most relevant prior SNN-RL methods (PopSAN, SNN-PPO). The author's rebuttal defends this by framing the contribution as solving a specific 'warm-up bridging' problem for off-policy SNNs, but this does not resolve the weakness: the evaluation in the submitted paper does not demonstrate superiority within the broader SNN-RL field, only within a self-defined subset.",
+              "The statistical support for the central performance claim (400 vs. -200 points) remains insufficient in the submitted paper. The author's rebuttal confirms that a formal significance test (e.g., p-value) is not present and promises its addition, but this promise does not change the assessment of the work as submitted."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's claim of outperforming 'prior techniques' is based on a comparison set that excludes the most relevant prior SNN-RL methods (PopSAN, SNN-PPO). The author's rebuttal defends this by framing the contribution as solving a specific 'warm-up bridging' problem for off-policy SNNs, but this does not resolve the weakness: the evaluation in the submitted paper does not demonstrate superiority within the broader SNN-RL field, only within a self-defined subset.",
+                "severity": "major",
+                "evidence": "The Abstract and Conclusion claim the method 'substantially outperform[s] prior techniques.' The submitted paper compares against BC, TD3BC, and TD3. The Related Work section describes PopSAN and SNN-PPO as prior SNN-RL techniques. The rebuttal argues these are not applicable to the specific 'warm-up bridging' problem. However, this argument reframes the contribution post-hoc. The submitted paper does not explicitly limit its superiority claims to this specific sub-problem until the rebuttal. For a reader (or reviewer) assessing the paper as-is, the absence of these comparisons is a major omission that prevents evaluating the claim's generality. The rebuttal's promise to 'adjust claims' and 'strengthen framing' is an acknowledgment that the current presentation is insufficient, not a resolution based on existing evidence.",
+                "affected_claim": "The central claim that the proposed method 'substantially outperforms prior techniques' (Abstract) and advances the field of SNN-RL.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The statistical support for the central performance claim (400 vs. -200 points) remains insufficient in the submitted paper. The author's rebuttal confirms that a formal significance test (e.g., p-value) is not present and promises its addition, but this promise does not change the assessment of the work as submitted.",
+                "severity": "major",
+                "evidence": "Section 5.2 and Figure 4 report results from 5 seeds and 20 evaluation runs, with error bars. The text claims a 600-point gap. The submitted paper contains no statistical test (e.g., t-test, confidence interval) to support the significance of this gap. The rebuttal explicitly states: 'We commit to adding a formal statement of statistical significance... to Section 5.2 in the final version.' This confirms the analysis is missing in the submission under review. The existence of multiple seeds and error bars is necessary but not sufficient for the level of rigor expected when making a stark, quantitative claim of superiority that is central to the paper's contribution.",
+                "affected_claim": "The quantitative performance claim that TD3BC+JSRL achieves 'an average return of 400 points' versus baselines that 'achieve at most –200 points' (Abstract).",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The technical core of the method is sound, well-described, and internally validated by the ablation study. The real-world deployment provides strong empirical support."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The rebuttal does not introduce new evidence of novelty. The adaptive slope scheduler is a heuristic extension. The core TD3BC+JSRL algorithm is a combination of JSRL (Uchendu et al.) and TD3BC (Fujimoto & Gu) applied to SNNs. While the application to the SNN warm-up bridging problem is new, the constituent algorithms and the idea of using a guide policy are not. The analysis of surrogate gradients in RL (Fig. 3) is a notable empirical contribution but does not constitute a major algorithmic novelty."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The successful demonstration on a real-world robotic task with sim-to-real transfer remains a significant result for the neuromorphic and RL communities."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation gate still fails for two independent reasons. 1) The comparison set is incomplete relative to the paper's broad claims of outperforming 'prior techniques.' The rebuttal's justification (inapplicability of PopSAN/SNN-PPO) is reasonable but constitutes a narrowing of the paper's scope that is not fully reflected in the submitted text. A top-tier evaluation requires either comparisons to the state-of-the-art or very careful, pre-emptive framing to justify their exclusion; the submitted paper does not achieve the latter convincingly. 2) The statistical analysis for the headline result is absent. The rebuttal confirms the missing significance test and promises to add it, which does not resolve the weakness for the current submission."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and the rebuttal does not reveal new clarity issues."
+              }
+            },
+            "summary_comment": "The author's rebuttal provides a coherent defense of their methodological choices and acknowledges the need for improved statistical reporting. However, assessing the paper as submitted, the core issues remain unresolved. The novelty is limited to the specific combination and application of existing algorithms (JSRL, TD3BC) to a new problem setting (SNN warm-up bridging). More critically, the evaluation is insufficient to support the paper's claims at a top-tier level: the comparison set omits key prior SNN-RL work without adequate justification in the main text, and the dramatic performance claim lacks formal statistical validation. While the real-world deployment is a significant strength, the combined failure of the novelty and evaluation gates means the paper does not meet the acceptance threshold. The promised revisions (reframing, adding statistical tests) would likely improve the paper but are not grounds for accepting the current submission."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Evaluation omits direct comparisons to relevant SNN-RL baselines (PopSAN, SNN-PPO), despite the authors' justification for their omission.\",\n        \"Statistical analysis for the main performance gap claim (400 vs. -200 points) is not rigorously presented in the submitted paper.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The dramatic performance gap is based on averages from multiple seeds and evaluation runs.\",\n          \"location\": \"Section 5.2, Figure 4, Captions and Text\",\n          \"explanation\": \"Figure 4 and its accompanying text explicitly state that results are based on '5 different seeds' and testing averages 'results from 20 runs'. The error bars visually represent the standard deviation across these seeds. The reported gap of 400 vs. -200 points is not a single-run observation but the aggregated result of this rigorous evaluation protocol, strongly suggesting a real and substantial performance difference.\"\n        },\n        {\n          \"concern\": \"The ablation study provides strong internal validation for the method's components.\",\n          \"location\": \"Section 5.4, Table 4\",\n          \"explanation\": \"Table 4 quantitatively demonstrates the failure modes when key components are removed. Removing the Jump-Start component results in catastrophic performance (Reward: 32 +/- 12), empirically proving that bridging the warm-up period is essential. This internal comparison validates the core contribution of the method within the presented experimental framework.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Statistical analysis for the main performance gap claim (400 vs. -200 points) is not rigorously presented in the submitted paper.\",\n          \"proposed_change\": \"We will immediately revise the text in Section 5.2 to include a formal statistical statement. For example: 'The difference in average final reward between TD3BC+JSRL (400) and the best baseline, TD3BC (-200), is statistically significant (two-sample t-test, p < 0.001, based on the 5 independent training seeds).' We will also ensure the caption for Figure 4 explicitly states that error bars represent the standard deviation across seeds.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Evaluation omits direct comparisons to relevant SNN-RL baselines.\",\n          \"proposed_change\": \"We will strengthen the paper's framing to better contextualize the contribution relative to prior SNN-RL work. In the revised introduction and conclusion, we will more clearly define our specific problem setting: *off-policy, sequence-based* training for SNNs where early termination prevents warm-up bridging. We will explicitly state in the experimental setup (Section 4) or limitations (Section 6) that direct comparisons to PopSAN (which resets state) and SNN-PPO (on-policy) are not applicable to this specific problem formulation, as they were not designed to solve the warm-up bridging challenge in off-policy contexts. Our contribution is precisely a novel training framework that makes such sequential, off-policy SNN-RL feasible. We will adjust claims of outperforming 'prior techniques' to be more precise, e.g., 'prior techniques applied to this sequential training setting' or compare against the most suitable adapted baselines as we have done.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We respectfully disagree that the evaluation gate fails and will clarify the logic and evidence present in our submitted work.\\n\\n**On Comparisons to SNN-RL Baselines:** The reviewer is correct that we do not compare to PopSAN or SNN-PPO. However, this is not an omission but a deliberate and justified methodological choice based on the paper's specific contribution. Our contribution is a training framework to enable *sequential*, *off-policy* SNN-RL in environments with early termination. PopSAN, by design, resets the SNN state at every transition (Section 2). Applying it to our task would require modifying its core architecture, turning it into a different method. Similarly, SNN-PPO is inherently on-policy, making it sample-inefficient for our compute-intensive task. Our paper's novelty lies precisely in *solving the warm-up bridging problem* for off-policy SNN training. Comparing against methods that do not address (and cannot be trivially adapted to address) this problem is not a meaningful benchmark for superiority in *this specific domain*. The relevant baselines are those that can, in principle, operate in our regime: offline learning (BC, TD3BC), online RL without warm-up bridging (TD3), and our proposed solution (TD3BC+JSRL). Within this appropriate comparison set, our method demonstrates decisive improvement. We will revise the text to make this problem-specific framing and justification more explicit.\\n\\n**On Statistical Rigor:** We acknowledge that explicitly stating the statistical significance of the performance gap would strengthen the paper. The evidence for the gap is already robust within the submission: the results are averaged over 5 independent seeds, each evaluated over 20 runs, with clear visual separation and error bars in Figure 4. The probability that a 600-point difference arises by chance from 5 independent runs is exceedingly low. We commit to adding a formal statement of statistical significance (e.g., p-value from a t-test) to Section 5.2 in the final version, as described in our proposed revisions.\\n\\n**On Novelty:** We maintain that the systematic analysis of surrogate gradients in the RL context (Figure 3) and the novel integration of JSRL with TD3BC to solve the warm-up bridging problem for SNNs constitute a meaningful advancement. This combination is not a trivial adaptation; it addresses a critical, unsolved barrier to applying SNNs to real-world sequential control tasks, as evidenced by the failure of all baselines and the success of our real-world deployment.\\n\\nWe believe the submitted paper, with the clarifications and minor textual additions we propose, meets the standards for acceptance by demonstrating a sound, significant, and novel solution to a key problem in neuromorphic RL.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_cf10a78bf376",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_045_adaptive_surrogate_gradients_for_sequential_reinforcement_learning_in_spiking_ne.md",
+    "target_paper_summary": {
+      "paper_id": "paper_cf10a78bf376",
+      "title": "Adaptive Surrogate Gradients For Sequential Reinforcement Learning In Spiking Neural Networks",
+      "abstract": "Neuromorphic computing systems are set to revolutionize energy-constrained robotics by achieving orders-of-magnitude efficiency gains, while enabling native temporal processing. Spiking Neural Networks (SNNs) represent a promising algorithmic approach for these systems, yet their application to complex control tasks faces two critical challenges: (1) the non-differentiable nature of spiking neurons necessitates surrogate gradients with unclear optimization properties, and (2) the stateful dynamics of SNNs require training on sequences, which in reinforcement learning (RL) is hindered by limited sequence lengths during early training, preventing the network from bridging its warm-up period.\n\nWe address these challenges by systematically analyzing surrogate gradient slope settings, showing that shallower slopes increase gradient magnitude in deeper layers but reduce alignment with true gradients. In supervised learning, we find no clear preference for fixed or scheduled slopes. The effect is much more pronounced in RL settings, where shallower slopes or scheduled slopes lead to a ×2.1 improvement in both training and final deployed performance. Next, we propose a novel training approach that leverages a privileged guiding policy to bootstrap the learning process, while still exploiting online environment interactions with the spiking policy. Combining our method with an adaptive slope schedule for a real-world drone position control task, we achieve an average return of 400 points, substantially outperforming prior techniques, including Behavioral Cloning and TD3BC, which achieve at most –200 points under the same conditions. This work advances both the theoretical understanding of surrogate gradient learning in SNNs and practical training methodologies for neuromorphic controllers demonstrated in real-world robotic systems.",
+      "topic": "",
+      "claims": [
+        "we propose a novel training approach that leverages a privileged guiding policy to bootstrap the learning process, while still exploiting online environment interactions with the spiking policy.",
+        "our method with an adaptive slope schedule for a real-world drone position control task, we achieve an average return of 400 points, substantially outperforming prior techniques, including Behavioral Cloning and TD3BC, which achieve at most –200 points under the same conditions."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_a53aadefa",
+        "title": "Training Spiking Neural Networks Using Lessons From Deep Learning",
+        "authors": [
+          "Jason K. Eshraghian",
+          "Max Ward",
+          "Emre Neftci",
+          "Xinxin Wang",
+          "Gregor Lenz",
+          "Girish Dwivedi",
+          "Mohammed Bennamoun",
+          "Doo Seok Jeong",
+          "Wei Lü"
+        ],
+        "year": 2023,
+        "publication_date": "2023-09-01",
+        "venue": "Proceedings of the IEEE",
+        "abstract": "The brain is the perfect place to look for inspiration to develop more efficient neural networks. The inner workings of our synapses and neurons provide a glimpse at what the future of deep learning might look like. This article serves as a tutorial and perspective showing how to apply the lessons learned from several decades of research in deep learning, gradient descent, backpropagation, and neuroscience to biologically plausible spiking neural networks (SNNs). We also explore the delicate interplay between encoding data as spikes and the learning process; the challenges and solutions of applying gradient-based learning to SNNs; the subtle link between temporal backpropagation and spike timing-dependent plasticity; and how deep learning might move toward biologically plausible online learning. Some ideas are well accepted and commonly used among the neuromorphic engineering community, while others are presented or justified for the first time here. A series of companion interactive tutorials complementary to this article using our Python package, <italic xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">snnTorch</i> , are also made available: https://snntorch.readthedocs.io/en/latest/tutorials/index.html.",
+        "url": "https://doi.org/10.1109/jproc.2023.3308088",
+        "doi": "https://doi.org/10.1109/jproc.2023.3308088",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3201870057"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 719
+      },
+      {
+        "paper_id": "rw_002_92950a955",
+        "title": "A survey of uncertainty in deep neural networks",
+        "authors": [
+          "Jakob Gawlikowski",
+          "Cedrique Rovile Njieutcheu Tassi",
+          "Mohsin Ali",
+          "Jong‐Seok Lee",
+          "Matthias Humt",
+          "Jianxiang Feng",
+          "Anna Kruspe",
+          "Rudolph Triebel",
+          "Peter Jung",
+          "Ribana Roscher",
+          "Muhammad Shahzad",
+          "Wen Yang",
+          "Richard Bamler",
+          "Xiao Xiang Zhu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-29",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Abstract Over the last decade, neural networks have reached almost every field of science and become a crucial part of various real world applications. Due to the increasing spread, confidence in neural network predictions has become more and more important. However, basic neural networks do not deliver certainty estimates or suffer from over- or under-confidence, i.e. are badly calibrated. To overcome this, many researchers have been working on understanding and quantifying uncertainty in a neural network’s prediction. As a result, different types and sources of uncertainty have been identified and various approaches to measure and quantify uncertainty in neural networks have been proposed. This work gives a comprehensive overview of uncertainty estimation in neural networks, reviews recent advances in the field, highlights current challenges, and identifies potential research opportunities. It is intended to give anyone interested in uncertainty estimation in neural networks a broad overview and introduction, without presupposing prior knowledge in this field. For that, a comprehensive introduction to the most crucial sources of uncertainty is given and their separation into reducible model uncertainty and irreducible data uncertainty is presented. The modeling of these uncertainties based on deterministic neural networks, Bayesian neural networks (BNNs), ensemble of neural networks, and test-time data augmentation approaches is introduced and different branches of these fields as well as the latest developments are discussed. For a practical application, we discuss different measures of uncertainty, approaches for calibrating neural networks, and give an overview of existing baselines and available implementations. Different examples from the wide spectrum of challenges in the fields of medical image analysis, robotics, and earth observation give an idea of the needs and challenges regarding uncertainties in the practical applications of neural networks. Additionally, the practical limitations of uncertainty quantification methods in neural networks for mission- and safety-critical real world applications are discussed and an outlook on the next steps towards a broader usage of such methods is given.",
+        "url": "https://doi.org/10.1007/s10462-023-10562-9",
+        "doi": "https://doi.org/10.1007/s10462-023-10562-9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3183048323"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1216
+      },
+      {
+        "paper_id": "rw_003_245ebd90f",
+        "title": "Decision theory, reinforcement learning, and the brain",
+        "authors": [
+          "Peter Dayan",
+          "Nathaniel D. Daw"
+        ],
+        "year": 2008,
+        "publication_date": "2008-11-25",
+        "venue": "Cognitive Affective & Behavioral Neuroscience",
+        "abstract": "Decision making is a core competence for animals and humans acting and surviving in environments they only partially comprehend, gaining rewards and punishments for their troubles. Decision-theoretic concepts permeate experiments and computational models in ethology, psychology, and neuroscience. Here, we review a well-known, coherent Bayesian approach to decision making, showing how it unifies issues in Markovian decision problems, signal detection psychophysics, sequential sampling, and optimal exploration and discuss paradigmatic psychological and neural examples of each problem. We discuss computational issues concerning what subjects know about their task and how ambitious they are in seeking optimal solutions; we address algorithmic topics concerning model-based and model-free methods for making choices; and we highlight key aspects of the neural implementation of decision making.",
+        "url": "https://doi.org/10.3758/cabn.8.4.429",
+        "doi": "https://doi.org/10.3758/cabn.8.4.429",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2037917209"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 613
+      },
+      {
+        "paper_id": "rw_004_313c3d791",
+        "title": "Accurate and efficient time-domain classification with adaptive spiking recurrent neural networks",
+        "authors": [
+          "Bojian Yin",
+          "Federico Corradi",
+          "Sander M. Bohté"
+        ],
+        "year": 2021,
+        "publication_date": "2021-10-14",
+        "venue": "Nature Machine Intelligence",
+        "abstract": "Inspired by more detailed modeling of biological neurons, Spiking neural networks (SNNs) have been investigated both as more biologically plausible and potentially more powerful models of neural computation, and also with the aim of extracting biological neurons' energy efficiency; the performance of such networks however has remained lacking compared to classical artificial neural networks (ANNs). Here, we demonstrate how a novel surrogate gradient combined with recurrent networks of tunable and adaptive spiking neurons yields state-of-the-art for SNNs on challenging benchmarks in the time-domain, like speech and gesture recognition. This also exceeds the performance of standard classical recurrent neural networks (RNNs) and approaches that of the best modern ANNs. As these SNNs exhibit sparse spiking, we show that they theoretically are one to three orders of magnitude more computationally efficient compared to RNNs with comparable performance. Together, this positions SNNs as an attractive solution for AI hardware implementations.",
+        "url": "https://doi.org/10.1038/s42256-021-00397-w",
+        "doi": "https://doi.org/10.1038/s42256-021-00397-w",
+        "arxiv_id": "2103.12593v1",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3206817059"
+        },
+        "sources": [
+          "OpenAlex",
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 246
+      },
+      {
+        "paper_id": "rw_005_58a9a1ea7",
+        "title": "Deep physical neural networks trained with backpropagation",
+        "authors": [
+          "Logan G. Wright",
+          "Tatsuhiro Onodera",
+          "Martin M. Stein",
+          "Tianyu Wang",
+          "Darren T. Schachter",
+          "Zoey Hu",
+          "Peter L. McMahon"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-26",
+        "venue": "Nature",
+        "abstract": "Abstract Deep-learning models have become pervasive tools in science and engineering. However, their energy requirements now increasingly limit their scalability 1 . Deep-learning accelerators 2–9 aim to perform deep learning energy-efficiently, usually targeting the inference phase and often by exploiting physical substrates beyond conventional electronics. Approaches so far 10–22 have been unable to apply the backpropagation algorithm to train unconventional novel hardware in situ. The advantages of backpropagation have made it the de facto training method for large-scale neural networks, so this deficiency constitutes a major impediment. Here we introduce a hybrid in situ–in silico algorithm, called physics-aware training, that applies backpropagation to train controllable physical systems. Just as deep learning realizes computations with deep neural networks made from layers of mathematical functions, our approach allows us to train deep physical neural networks made from layers of controllable physical systems, even when the physical layers lack any mathematical isomorphism to conventional artificial neural network layers. To demonstrate the universality of our approach, we train diverse physical neural networks based on optics, mechanics and electronics to experimentally perform audio and image classification tasks. Physics-aware training combines the scalability of backpropagation with the automatic mitigation of imperfections and noise achievable with in situ algorithms. Physical neural networks have the potential to perform machine learning faster and more energy-efficiently than conventional electronic processors and, more broadly, can endow physical systems with automatically designed physical functionalities, for example, for robotics 23–26 , materials 27–29 and smart sensors 30–32 .",
+        "url": "https://doi.org/10.1038/s41586-021-04223-6",
+        "doi": "https://doi.org/10.1038/s41586-021-04223-6",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4210678178"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 714
+      },
+      {
+        "paper_id": "rw_006_49ae47ab7",
+        "title": "Memristors—From In‐Memory Computing, Deep Learning Acceleration, and Spiking Neural Networks to the Future of Neuromorphic and Bio‐Inspired Computing",
+        "authors": [
+          "Adnan Mehonić",
+          "Abu Sebastian",
+          "Bipin Rajendran",
+          "Osvaldo Simeone",
+          "Eleni Vasilaki",
+          "Anthony J. Kenyon"
+        ],
+        "year": 2020,
+        "publication_date": "2020-08-02",
+        "venue": "Advanced Intelligent Systems",
+        "abstract": "Machine learning, particularly in the form of deep learning (DL), has driven most of the recent fundamental developments in artificial intelligence (AI). DL is based on computational models that are, to a certain extent, bio‐inspired, as they rely on networks of connected simple computing units operating in parallel. The success of DL is supported by three factors: availability of vast amounts of data, continuous growth in computing power, and algorithmic innovations. The approaching demise of Moore's law, and the consequent expected modest improvements in computing power that can be achieved by scaling, raises the question of whether the progress will be slowed or halted due to hardware limitations. This article reviews the case for a novel beyond‐complementary metal–oxide–semiconductor (CMOS) technology—memristors—as a potential solution for the implementation of power‐efficient in‐memory computing, DL accelerators, and spiking neural networks. Central themes are the reliance on non‐von‐Neumann computing architectures and the need for developing tailored learning and inference algorithms. To argue that lessons from biology can be useful in providing directions for further progress in AI, an example‐based reservoir computing is briefly discussed. At the end, speculation is given on the “big picture” view of future neuromorphic and brain‐inspired computing systems.",
+        "url": "https://doi.org/10.1002/aisy.202000085",
+        "doi": "https://doi.org/10.1002/aisy.202000085",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3047109430"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 322
+      },
+      {
+        "paper_id": "rw_007_0c64ab988",
+        "title": "Exploring Neuromorphic Computing Based on Spiking Neural Networks: Algorithms to Hardware",
+        "authors": [
+          "Nitin Rathi",
+          "Indranil Chakraborty",
+          "Adarsh Kumar Kosta",
+          "Abhronil Sengupta",
+          "Aayush Ankit",
+          "Priyadarshini Panda",
+          "Kaushik Roy"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-17",
+        "venue": "ACM Computing Surveys",
+        "abstract": "Neuromorphic Computing, a concept pioneered in the late 1980s, is receiving a lot of attention lately due to its promise of reducing the computational energy, latency, as well as learning complexity in artificial neural networks. Taking inspiration from neuroscience, this interdisciplinary field performs a multi-stack optimization across devices, circuits, and algorithms by providing an end-to-end approach to achieving brain-like efficiency in machine intelligence. On one side, neuromorphic computing introduces a new algorithmic paradigm, known as Spiking Neural Networks (SNNs), which is a significant shift from standard deep learning and transmits information as spikes (“1” or “0”) rather than analog values. This has opened up novel algorithmic research directions to formulate methods to represent data in spike-trains, develop neuron models that can process information over time, design learning algorithms for event-driven dynamical systems, and engineer network architectures amenable to sparse, asynchronous, event-driven computing to achieve lower power consumption. On the other side, a parallel research thrust focuses on development of efficient computing platforms for new algorithms. Standard accelerators that are amenable to deep learning workloads are not particularly suitable to handle processing across multiple timesteps efficiently. To that effect, researchers have designed neuromorphic hardware that rely on event-driven sparse computations as well as efficient matrix operations. While most large-scale neuromorphic systems have been explored based on CMOS technology, recently, Non-Volatile Memory (NVM) technologies show promise toward implementing bio-mimetic functionalities on single devices. In this article, we outline several strides that neuromorphic computing based on spiking neural networks (SNNs) has taken over the recent past, and we present our outlook on the challenges that this field needs to overcome to make the bio-plausibility route a successful one.",
+        "url": "https://doi.org/10.1145/3571155",
+        "doi": "https://doi.org/10.1145/3571155",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4309618925"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 241
+      },
+      {
+        "paper_id": "rw_008_45f89858e",
+        "title": "SpikingJelly: An open-source machine learning infrastructure platform for spike-based intelligence",
+        "authors": [
+          "Wei Fang",
+          "Yanqi Chen",
+          "Jianhao Ding",
+          "Zhaofei Yu",
+          "Timothée Masquelier",
+          "Ding Chen",
+          "Liwei Huang",
+          "Huihui Zhou",
+          "Guoqi Li",
+          "Yonghong Tian"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-06",
+        "venue": "Science Advances",
+        "abstract": "Spiking neural networks (SNNs) aim to realize brain-inspired intelligence on neuromorphic chips with high energy efficiency by introducing neural dynamics and spike properties. As the emerging spiking deep learning paradigm attracts increasing interest, traditional programming frameworks cannot meet the demands of the automatic differentiation, parallel computation acceleration, and high integration of processing neuromorphic datasets and deployment. In this work, we present the SpikingJelly framework to address the aforementioned dilemma. We contribute a full-stack toolkit for preprocessing neuromorphic datasets, building deep SNNs, optimizing their parameters, and deploying SNNs on neuromorphic chips. Compared to existing methods, the training of deep SNNs can be accelerated 11×, and the superior extensibility and flexibility of SpikingJelly enable users to accelerate custom models at low costs through multilevel inheritance and semiautomatic code generation. SpikingJelly paves the way for synthesizing truly energy-efficient SNN-based machine intelligence systems, which will enrich the ecology of neuromorphic computing.",
+        "url": "https://doi.org/10.1126/sciadv.adi1480",
+        "doi": "https://doi.org/10.1126/sciadv.adi1480",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387409844"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 384
+      },
+      {
+        "paper_id": "rw_009_91a0c522a",
+        "title": "SpykeTorch: Efficient Simulation of Convolutional Spiking Neural Networks With at Most One Spike per Neuron",
+        "authors": [
+          "Milad Mozafari",
+          "‎Mohammad Ganjtabesh",
+          "Abbas Nowzari-Dalini",
+          "Timothée Masquelier"
+        ],
+        "year": 2019,
+        "publication_date": "2019-07-12",
+        "venue": "Frontiers in Neuroscience",
+        "abstract": "Application of deep convolutional spiking neural networks (SNNs) to artificial intelligence (AI) tasks has recently gained a lot of interest since SNNs are hardware-friendly and energy-efficient. Unlike the non-spiking counterparts, most of the existing SNN simulation frameworks are not practically efficient enough for large-scale AI tasks. In this paper, we introduce SpykeTorch, an open-source high-speed simulation framework based on PyTorch. This framework simulates convolutional SNNs with at most one spike per neuron and the rank-order encoding scheme. In terms of learning rules, both spike-timing-dependent plasticity (STDP) and reward-modulated STDP (R-STDP) are implemented, but other rules could be implemented easily. Apart from the aforementioned properties, SpykeTorch is highly generic and capable of reproducing the results of various studies. Computations in the proposed framework are tensor-based and totally done by PyTorch functions, which in turn brings the ability of just-in-time optimization for running on CPUs, GPUs, or Multi-GPU platforms.",
+        "url": "https://doi.org/10.3389/fnins.2019.00625",
+        "doi": "https://doi.org/10.3389/fnins.2019.00625",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2922002199"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 122
+      },
+      {
+        "paper_id": "rw_010_0aedb625e",
+        "title": "An Introduction to Probabilistic Spiking Neural Networks: Probabilistic Models, Learning Rules, and Applications",
+        "authors": [
+          "Hyeryung Jang",
+          "Osvaldo Simeone",
+          "Brian Gardner",
+          "Andre Gruning"
+        ],
+        "year": 2019,
+        "publication_date": "2019-11-01",
+        "venue": "IEEE Signal Processing Magazine",
+        "abstract": "Spiking neural networks (SNNs) are distributed trainable systems whose computing elements, or neurons, are characterized by internal analog dynamics and by digital and sparse synaptic communications. The sparsity of the synaptic spiking inputs and the corresponding event-driven nature of neural processing can be leveraged by energy-efficient hardware implementations, which can offer significant energy reductions as compared to conventional artificial neural networks (ANNs). The design of training algorithms for SNNs, however, lags behind hardware implementations: most existing training algorithms for SNNs have been designed either for biological plausibility or through conversion from pretrained ANNs via rate encoding.",
+        "url": "https://doi.org/10.1109/msp.2019.2935234",
+        "doi": "https://doi.org/10.1109/msp.2019.2935234",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2985873131"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 90
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_a53aadefa",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_method",
+          "same_problem"
+        ],
+        "rationale": "This paper is a tutorial and perspective on applying deep learning lessons to biologically plausible spiking neural networks, directly addressing the use of gradient descent and backpropagation for SNNs which is central to the target's use of surrogate gradients.",
+        "evidence_summary": "In 2023, Eshraghian et al. published 'Training Spiking Neural Networks Using Lessons From Deep Learning' in the Proceedings of the IEEE, serving as a tutorial showing how to apply decades of research in deep learning, gradient descent, and backpropagation to biologically plausible spiking neural networks. They explored the challenges and solutions of applying gradient-based learning to SNNs, the link between temporal backpropagation and spike timing-dependent plasticity, and how deep learning might move toward biologically plausible online learning, making available a Python package, snnTorch, with companion tutorials."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_313c3d791",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_method",
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper demonstrates state-of-the-art SNN performance on time-domain tasks like speech and gesture recognition using a novel surrogate gradient with recurrent networks of tunable spiking neurons, which is directly relevant to the target paper's focus on surrogate gradients and sequential/temporal processing in SNNs for control.",
+        "evidence_summary": "In 2021, Yin et al. published 'Accurate and efficient time-domain classification with adaptive spiking recurrent neural networks' in Nature Machine Intelligence, demonstrating how a novel surrogate gradient combined with recurrent networks of tunable and adaptive spiking neurons yields state-of-the-art performance for SNNs on challenging time-domain benchmarks like speech and gesture recognition. They showed this performance exceeds that of standard recurrent neural networks (RNNs) and approaches the best artificial neural networks (ANNs), with the sparse spiking of these SNNs theoretically making them one to three orders of magnitude more computationally efficient compared to RNNs with comparable performance."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_0c64ab988",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem",
+          "same_constraints"
+        ],
+        "rationale": "This survey provides a comprehensive, end-to-end overview of neuromorphic computing based on SNNs, covering algorithms and hardware for achieving brain-like efficiency, which aligns with the target paper's motivation regarding neuromorphic systems and energy-constrained robotics.",
+        "evidence_summary": "In 2022, Rathi et al. published 'Exploring Neuromorphic Computing Based on Spiking Neural Networks: Algorithms to Hardware' in ACM Computing Surveys, reviewing the multi-stack optimization across devices, circuits, and algorithms to achieve brain-like efficiency. They introduced Spiking Neural Networks (SNNs) as a significant algorithmic shift from deep learning, transmitting information as spikes, and discussed the design of neuromorphic hardware for event-driven sparse computations while noting that large-scale systems have been primarily explored with CMOS technology."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_008_45f89858e",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper presents an open-source machine learning infrastructure platform (SpikingJelly) for spike-based intelligence, contributing tools for building and training deep SNNs, which is a relevant methodological and tooling context for the target's algorithmic work.",
+        "evidence_summary": "In 2023, Fang et al. published 'SpikingJelly: An open-source machine learning infrastructure platform for spike-based intelligence' in Science Advances, contributing a full-stack toolkit for preprocessing neuromorphic datasets, building deep SNNs, optimizing parameters, and deploying them on neuromorphic chips. They reported that compared to existing methods, the training of deep SNNs could be accelerated 11×, and the framework's extensibility allowed users to accelerate custom models through multilevel inheritance and semi-automatic code generation."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_009_91a0c522a",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_method",
+          "same_constraints"
+        ],
+        "rationale": "This work introduces SpykeTorch, an efficient simulation framework for convolutional SNNs using rank-order encoding and implementing learning rules like STDP, which relates to the target's focus on efficient simulation and training methodologies for SNNs.",
+        "evidence_summary": "In 2019, Mozafari et al. published 'SpykeTorch: Efficient Simulation of Convolutional Spiking Neural Networks With at Most One Spike per Neuron' in Frontiers in Neuroscience, introducing an open-source high-speed simulation framework based on PyTorch for convolutional SNNs with at most one spike per neuron and rank-order encoding. The framework implemented spike-timing-dependent plasticity (STDP) and reward-modulated STDP (R-STDP) as learning rules and used tensor-based computations via PyTorch functions for just-in-time optimization on CPUs, GPUs, or Multi-GPU platforms."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_010_0aedb625e",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This introduction to probabilistic SNNs highlights the sparsity and event-driven nature of SNNs for energy efficiency but notes that the design of training algorithms lags behind hardware implementations, a challenge directly acknowledged by the target paper.",
+        "evidence_summary": "In 2019, Jang et al. published 'An Introduction to Probabilistic Spiking Neural Networks: Probabilistic Models, Learning Rules, and Applications' in IEEE Signal Processing Magazine, describing SNNs as distributed trainable systems with internal analog dynamics and digital, sparse synaptic communications enabling energy-efficient, event-driven hardware implementations. They noted that the design of training algorithms for SNNs, however, lags behind hardware implementations, with most existing algorithms designed either for biological plausibility or through conversion from pretrained ANNs via rate encoding."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_006_49ae47ab7",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_problem",
+          "same_constraints"
+        ],
+        "rationale": "This review discusses memristors as a beyond-CMOS technology for power-efficient in-memory computing and SNNs, which is broadly relevant to the neuromorphic and energy-efficient computing context of the target paper.",
+        "evidence_summary": "In 2020, Mehonić et al. published 'Memristors—From In‐Memory Computing, Deep Learning Acceleration, and Spiking Neural Networks to the Future of Neuromorphic and Bio‐Inspired Computing' in Advanced Intelligent Systems, reviewing memristors as a potential solution for power-efficient in-memory computing, deep learning accelerators, and spiking neural networks. They argued for non-von-Neumann computing architectures and the need for tailored learning algorithms, briefly discussing reservoir computing as an example of how lessons from biology could guide AI progress."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_005_58a9a1ea7",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This work introduces physics-aware training to apply backpropagation to train controllable physical systems, which is methodologically related to the target's focus on training unconventional systems but is not specifically about SNNs.",
+        "evidence_summary": "In 2022, Wright et al. published 'Deep physical neural networks trained with backpropagation' in Nature, introducing a hybrid in situ–in silico algorithm called physics-aware training that applies backpropagation to train controllable physical systems. They demonstrated this approach by training diverse physical neural networks based on optics, mechanics, and electronics to experimentally perform audio and image classification tasks, combining the scalability of backpropagation with in situ mitigation of imperfections and noise."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_003_245ebd90f",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This review connects decision theory and reinforcement learning to the brain, which provides general background on RL in neuroscience but is not specific to SNNs or the algorithmic challenges addressed by the target.",
+        "evidence_summary": "In 2008, Dayan and Daw published 'Decision theory, reinforcement learning, and the brain' in Cognitive Affective & Behavioral Neuroscience, reviewing a Bayesian approach to decision making that unified issues in Markovian decision problems, signal detection psychophysics, sequential sampling, and optimal exploration. They discussed computational issues concerning subjects' knowledge and optimality, algorithmic topics concerning model-based and model-free choice methods, and key aspects of the neural implementation of decision making."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_002_92950a955",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This is a broad survey of uncertainty estimation in deep neural networks, which is tangentially related to methodological considerations in neural networks but not specific to SNNs, reinforcement learning, or surrogate gradients.",
+        "evidence_summary": "In 2023, Gawlikowski et al. published 'A survey of uncertainty in deep neural networks' in Artificial Intelligence Review, giving a comprehensive overview of uncertainty estimation, reviewing recent advances, and highlighting challenges. They introduced a separation of uncertainty into reducible model uncertainty and irreducible data uncertainty and discussed modeling based on deterministic neural networks, Bayesian neural networks (BNNs), ensembles of neural networks, and test-time data augmentation approaches."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Eshraghian et al. published 'Training Spiking Neural Networks Using Lessons From Deep Learning,' a tutorial applying deep learning, gradient descent, and backpropagation principles to biologically plausible spiking neural networks, exploring gradient-based learning challenges and providing the snnTorch Python package. In 2021, Yin et al. published 'Accurate and efficient time-domain classification with adaptive spiking recurrent neural networks,' demonstrating state-of-the-art SNN performance on speech and gesture recognition benchmarks using a novel surrogate gradient and reporting theoretical computational efficiency gains of one to three orders of magnitude over RNNs. In 2022, Rathi et al. published 'Exploring Neuromorphic Computing Based on Spiking Neural Networks: Algorithms to Hardware,' surveying the end-to-end optimization for brain-like efficiency and introducing SNNs as an algorithmic shift toward event-driven, sparse computing. In 2023, Fang et al. published 'SpikingJelly: An open-source machine learning infrastructure platform for spike-based intelligence,' contributing a toolkit for building and training deep SNNs that reportedly accelerates training 11× compared to existing methods. In 2019, Mozafari et al. published 'SpykeTorch: Efficient Simulation of Convolutional Spiking Neural Networks With at Most One Spike per Neuron,' introducing a PyTorch-based framework for efficient simulation of convolutional SNNs with STDP and R-STDP learning rules. In 2019, Jang et al. published 'An Introduction to Probabilistic Spiking Neural Networks: Probabilistic Models, Learning Rules, and Applications,' describing the energy-efficient potential of SNNs' event-driven nature while noting that training algorithm design lags behind hardware implementations.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

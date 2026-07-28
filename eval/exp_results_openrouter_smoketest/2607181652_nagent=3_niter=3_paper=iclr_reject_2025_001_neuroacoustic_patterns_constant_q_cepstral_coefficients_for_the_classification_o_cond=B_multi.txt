@@ -1,0 +1,116 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Applying the form-invariance property of the Constant Q Transform (CQT) to model vocal degradation in neurodegenerative disorders is a theoretically sound and highly refreshing departure from basic STFT methods.",
+        "Moving beyond binary healthy-vs-pathological classification to tackle distinction between ALS and Parkinson's is a highly practical and clinically useful setup.",
+        "The post-rebuttal clarification on correct SMOTE application (strictly on training partitions to prevent data leakage) secures the validity of the reported metrics."
+      ],
+      "weaknesses": [
+        "Uploading a manuscript completely lacking Figures 1, 2, and 3 is a major red flag for peer review. Reviewers should not have to take the authors' word on visual layouts, spectrogram contours, and LDA separation spaces.",
+        "Leaving explicit copy-paste artifacts ('infant cry') in a paper targeted at adult neurodegenerative conditions is sloppy and indicates a rushed submission."
+      ],
+      "summary_comment": "The authors have cleared up my major technical concerns regarding the SVM performance variation and, crucially, confirmed that their SMOTE pipeline does not suffer from data leakage. While the paper was submitted with all major figures missing and lazy typos like 'infant cry' left in, the underlying methodology of leveraging CQT's form-invariance for clinical audio tasks is highly valuable. The authors have resolved the technical issues and provided a solid plan to integrate the corrected plots and cleaned-up text; given the novelty and potential impact of this approach, the paper is worth accepting."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 2,
+        "soundness": 2,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "The core signal processing motivation—using the Constant-Q Transform's form-invariance property to track micro-fluctuations in vocal fold vibration—is theoretically solid.",
+        "The authors provided an incredibly thorough and mathematically mature response to the rebuttal, particularly in explaining how nested cross-validation and standard scaling resolved the SVM accuracy jump.",
+        "The clinical setup targeting the multi-class differentiation of Parkinson's, ALS, and Healthy Controls address a highly relevant gap in non-invasive diagnostic tools."
+      ],
+      "weaknesses": [
+        "We must evaluate the submitted manuscript, not a post-hoc revised paper. The PDF submitted for review contained a fatal methodological flaw—data leakage via SMOTE before split—which completely invalidated the primary evaluation and the claimed 99% accuracy.",
+        "Crucial visual assets (Figures 1, 2, and 3) were completely missing from the submission. Expecting reviewers to evaluate a speech classification and visualization paper without being able to see the system block diagram, the comparative spectrograms, or the LDA cluster separations is unacceptable.",
+        "Leaving prominent, recurring text references to 'infant cry characteristics' and 'infant cry classification' in a paper focused on adult neurodegenerative diseases shows a baffling lack of proofreading. It suggests large portions of the text were directly copy-pasted from Patil et al. (2023) without proper validation."
+      ],
+      "summary_comment": "Although the authors have provided an excellent, technically exhaustive rebuttal that correctly addresses the SVM tuning protocol and the corrected leakage-free results, the original submission was simply not ready for prime time. A paper containing severe data leakage, completely missing figures, and unedited copy-paste remnants of old text cannot be accepted based on promises made in a rebuttal. To maintain academic and methodological rigor, these extensive changes—including the newly generated figures and rewritten sections—must undergo a completely fresh, unbiased peer-review cycle."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The revised evaluation pipeline successfully resolves the critical SMOTE data-leakage issue. Isolating the test partition prior to synthesis provides a realistic and rigorous evaluation that practitioners can actually trust.",
+        "The physical justification of using Constant Q Cepstral Coefficients (CQCC) is solid. Its variable time-frequency resolution is theoretically and practically superior for capturing vocal fold instabilities compared to standard MFCCs.",
+        "Evaluating across two distinct, publicly accessible databases (Minsk2019 and Italian Parkinson's) ensures the acoustic findings have some clinical generalizability beyond a single-institution cohort."
+      ],
+      "weaknesses": [
+        "The initial submission was highly unprofessional. Submitting a draft with completely missing figures (1, 2, and 3), raw LaTeX caption remnants (lines 107-109), and broken mathematical equations made proper initial appraisal unnecessarily difficult.",
+        "The baseline SVM was poorly implemented in the original draft. Failing to apply basic z-score normalization on distance-sensitive classifiers when handling high-dimensional acoustic features is a basic oversight that should have been caught before submission."
+      ],
+      "summary_comment": "While the initial draft was exceptionally sloppy—suffering from a classic SMOTE data-leakage flaw, missing visual material, and corrupted equations—the authors have done the hard work necessary to fix their pipeline in the rebuttal. Re-running their classification with a strict split-then-SMOTE protocol and proper z-score scaling for the SVM yields clean, leakage-free accuracies (94.8% for RF, 93.1% for SVM). This proves that the performance of CQCC is genuine and not an artifact of overfitting. Since the technical pipeline is now corrected, reproducible, and robust, the paper presents a valuable practical contribution to the field. I recommend acceptance, but the authors must thoroughly proofread the camera-ready version to ensure no further formatting errors persist."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The paper falls under application-driven machine learning, specifically clinical diagnostics and healthcare (Parkinson's and ALS classification).",
+        "The physical and mathematical justification of the Constant-Q Transform's form-invariance property provides a level of academic rigor and theoretical grounding in signal processing.",
+        "The evaluation uses multiple public datasets (Italian Parkinson's and Minsk2019), which fits the empirical expectations of ICML applied papers."
+      ],
+      "why_it_does_not_fit": [
+        "The machine learning methodology is extremely basic, relying entirely on classical classifiers (Random Forest and SVM) rather than offering novel machine learning algorithms, optimization techniques, or deep learning architectures.",
+        "The focus of the paper is overwhelmingly on acoustic signal processing (CQT, CQCC) rather than addressing core machine learning challenges or advancing the state of the art in ML theory.",
+        "The reviewer feedback details significant presentation failures in the initial submission (completely missing Figures 1-3, raw LaTeX captions, and unedited text mentioning 'infant cry' from a previous paper), which represents a high reviewer risk at a competitive tier-1 venue like ICML.",
+        "The initial submission suffered from a critical data-leakage issue (applying SMOTE before partition), and even though addressed in the rebuttal, such structural flaws make it a high-risk candidate for immediate rejection at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary submissions and has an explicit interest in 'AI/ML for health and biotechnology', where speech-based detection of neurodegenerative diseases fits well.",
+        "The multi-class classification setup (ALS vs. Parkinson's vs. Healthy) addresses a highly practical and clinically relevant gap, aligning with NeurIPS's appreciation for impactful application-driven research.",
+        "The use of standard scaling and properly validated classification after solving the data-leakage-free pipeline shows that the empirical results are sound and practical."
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution is a domain application of standard signal processing features (CQCC was introduced in 2017) using off-the-shelf classifiers, which lacks the algorithmic and conceptual novelty typical of accepted NeurIPS papers.",
+        "Severe submission sloppiness, such as missing all key figures (the system diagram, spectrograms, and LDA plots) and leaving behind copy-pasted text from prior infant-cry papers, would likely trigger an immediate reject from NeurIPS's highly discerning reviewers.",
+        "While the rebuttal addressed the critical data leakage issue, NeurIPS reviewers are generally less forgiving of basic pipeline errors (like leaky SMOTE and unnormalized SVM features) in the original submission."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "The study compares different input features (MFCC vs. CQCC vs. Jitter/Shimmer), which can be broadly viewed as an empirical study of representation choices for pathological audio signals.",
+        "Evaluating representations on audio modalities for pathological classification aligns with the broad domain of audio and healthcare applications."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR is explicitly focused on *representation learning*, with a heavy emphasis on deep learning, neural architectures, and learning representations from raw data. This paper uses hand-crafted, manually engineered signal processing features (CQCC) fed into classical classifiers (RF and SVM).",
+        "There is no neural network, deep representation learning, or modern representation optimization in this paper, making it a severe thematic mismatch for the primary scope of ICLR.",
+        "The technical errors (SMOTE leakage overall evaluation) and highly unprofessional draft presentation (missing figures, corrupted equations, and major copy-paste errors) would lead to very low scores under ICLR's public-review system, leaving no room for acceptance.",
+        "The lack of representation-learning novelty means this paper would likely receive immediate desk rejection or extremely low scores from the standard-track ICLR reviewers."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

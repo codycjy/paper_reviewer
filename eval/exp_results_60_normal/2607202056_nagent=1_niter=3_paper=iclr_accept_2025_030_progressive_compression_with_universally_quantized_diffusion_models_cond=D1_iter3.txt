@@ -1,0 +1,81 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of replacing Gaussian noise with uniform noise in diffusion models for efficient progressive compression is highly novel and addresses a significant practical limitation of prior diffusion-based compression methods (intractability of Gaussian channel simulation).",
+        "The paper demonstrates competitive rate-distortion and rate-realism performance across a wide range of bit-rates with a single model, pushing neural codecs closer to practical deployment for progressive coding.",
+        "The theoretical analysis, including the derivation of the continuous-time limit and the connection to Gaussian diffusion, provides a strong foundation for the proposed UQDM and opens avenues for future research."
+      ],
+      "weaknesses": [
+        "The computational efficiency of the learned reverse-process variance, while acknowledged as an implementation detail, remains a practical bottleneck that needs significant addressing for real-world deployment.",
+        "While the theoretical equivalence to Gaussian diffusion in the continuous-time limit is elegant, the empirical results on toy data still show a performance gap compared to the 'hypothetical' VDM, indicating room for further practical improvement of UQDM.",
+        "The paper's preference for a small T (e.g., <10) for optimal compression in UQDM, contrasting with the theoretical convergence of VDM as T approaches infinity, needs a clearer explanation of this practical trade-off in the main text."
+      ],
+      "summary_comment": "The authors have successfully addressed my concerns. Their clarification that the computational bottleneck for learned reverse-process variance is an artifact of the current implementation and not an intrinsic method limitation is crucial. Furthermore, the explanation of the empirical performance gap with the hypothetical VDM (which serves as an idealistic upper bound) and the nuanced reasons for preferring a smaller T in practical UQDM implementations are well-reasoned and bolster the paper's claims. This work presents a truly novel and significant contribution by making diffusion models practically applicable to progressive compression, and I maintain my strong recommendation for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel adaptation of diffusion models for progressive data compression, a topic highly relevant to 'general machine learning', 'deep learning (generative models)', and 'application-driven machine learning' as listed in ICML's topics. The focus on making diffusion models computationally tractable for a real-world application (compression) aligns well with ICML's interest in 'machine learning systems' and 'optimization'.",
+        "The theoretical analysis, including the derivation of the continuous-time limit and connection to Gaussian diffusion, directly addresses ICML's 'theory of machine learning' criteria. Reviewer 1 explicitly praises the 'strong foundation' provided by this theoretical analysis.",
+        "The work presents competitive empirical results on image compression (CIFAR10, ImageNet 64x64), demonstrating practical deployment potential. This aligns with ICML's focus on 'evaluation (methodology, meta studies, replicability and validity)' and 'application-driven machine learning'.",
+        "The 'core idea of replacing Gaussian noise with uniform noise in diffusion models for efficient progressive compression is highly novel,' as stated by Reviewer 1, which is a strong fit for a top-tier conference like ICML that values cutting-edge research and significant contributions."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper makes an effort to address the practical computational bottleneck of the learned reverse-process variance, Reviewer 1 still identifies it as a 'practical bottleneck that needs significant addressing for real-world deployment.' This could be seen as a minor weakness in the 'machine learning systems' aspect if the practical limitations are not fully resolved.",
+        "Reviewer 1 points out that the 'empirical results on toy data still show a performance gap compared to the 'hypothetical' VDM.' While explained, this might be perceived as a slight imperfection in achieving the full theoretical potential within the current empirical setup, which ICML often expects for highly optimized methods."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core contribution, the Universally Quantized Diffusion Model (UQDM) for progressive compression, falls under 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning' topics at NeurIPS.",
+        "The application to image compression on standard datasets like CIFAR10 and ImageNet aligns with 'Computer vision' and implicitly with 'Data-centric aspects of AI'.",
+        "The discussion of limitations in general-purpose Relative Entropy Coding (REC) and the proposition of UQ as an efficient alternative shows an understanding of 'SysML Infrastructure' aspects by focusing on computational tractability.",
+        "Reviewer 1 highlights the 'highly novel' approach and 'significant contribution by making diffusion models practically applicable to progressive compression,' which are key characteristics of research valued by NeurIPS.",
+        "The paper provides theoretical insights into UQDM's relation to VDM and its continuous-time limit, which aligns with NeurIPS's interest in 'Theory'."
+      ],
+      "why_it_does_not_fit": [
+        "While progressive compression is important, it's not explicitly listed as a primary topic within NeurIPS's enumerated areas, though it fits broadly under general ML and deep learning. Certain NeurIPS tracks might place a higher emphasis on other applications or theoretical advancements.",
+        "Reviewer 1 noted that the 'computational efficiency of the learned reverse-process variance... remains a practical bottleneck.' Although the explanation improved this, NeurIPS often seeks highly optimized and readily deployable solutions, and this persistent bottleneck could be a minor concern.",
+        "The paper's ambition to 'bring neural codecs a step closer to practical deployment' with this 'first step' might align more with applied or systems-focused venues if not accompanied by foundational theoretical breakthroughs on par with NeurIPS's highest standards. While the theory is present, the focus is heavily on the practical application and implementation."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly addresses 'representation learning for computer vision, audio, language, and other modalities' through its application of diffusion models to image compression, a form of representation learning.",
+        "Diffusion models are a type of 'generative model', and their adaptation for compression is a natural extension, aligning well with ICLR's focus on deep learning architectures and applications.",
+        "The method involves probabilistic methods via diffusion models and touches upon optimization as it aims to optimize coding cost. This aligns with ICLR's 'probabilistic methods' and 'optimization' topics.",
+        "The paper evaluates its approach on standard image datasets such as CIFAR10 and ImageNet, demonstrating strong empirical results which are valued by ICLR for advancements in deep learning.",
+        "The discussion around the practical challenges of Relative Entropy Coding and the introduction of a more tractable scheme with Universal Quantization in the context of diffusion models shows innovation in 'infrastructure, software libraries, hardware, etc.' concerns within deep learning."
+      ],
+      "why_it_does_not_fit": [
+        "While diffusion models are deep learning, the primary innovation here is in the compression scheme and its tractability, rather than a novel deep learning architecture or a fundamental theoretical breakthrough in representation learning itself. ICLR often prioritizes novel architectural designs or significant theoretical contributions specifically within deep learning.",
+        "Reviewer 1's comment about the 'computational efficiency of the learned reverse-process variance' highlights a practical limitation that, while explained, could signal that the system-level optimization for deep learning hardware or infrastructure isn't fully mature, which ICLR sometimes expects for 'infrastructure' topics.",
+        "The empirical performance show a 'performance gap compared to the 'hypothetical' VDM' on toy data. Although this is an idealistic comparison, ICLR might seek a clearer path to closing such gaps with the proposed deep learning method, especially since its primary focus is on advancing deep learning techniques.",
+        "The paper's general topic is 'Others', and while compression relates to several areas, it's not a central theme in ICLR unlike, for example, novel neural architectures or new theoretical properties of deep learning."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

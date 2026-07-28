@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of extending eigenvalue ranges to incorporate negative values for improved state-tracking in LRNNs is highly novel and challenges a fundamental, previously unaddressed limitation of these models.",
+        "The theoretical contributions, particularly the proofs in Theorems 1, 2, 3, and 4, provide a solid foundation for the claims and show creative application of concepts like the Krohn-Rhodes Theorem to establish expressivity.",
+        "The paper demonstrates a significant advancement in the capabilities of LRNNs for state-tracking tasks, showing that key limitations (e.g., solving parity) can be overcome without sacrificing efficiency, opening new avenues for research and application.",
+        "The experimental section provides convincing empirical evidence that the proposed modification is effective across various synthetic and real-world language modeling benchmarks, validating the theoretical claims on Mamba and DeltaNet."
+      ],
+      "weaknesses": [
+        "While the theoretical work is strong, the finite precision definitions and their implications could be elaborated further or simplified for clearer understanding, as they are crucial for the negative results.",
+        "The paper acknowledges that the proposed modification is not directly compatible with numerical techniques used by some diagonal LRNNs (e.g., Mamba2) and that large-scale training impact still needs to be assessed. This limits the immediate applicability to all LRNNs and suggests open questions about practical stability at very large scales."
+      ],
+      "summary_comment": "This paper presents a truly innovative and impactful idea that addresses a critical limitation of modern Linear Recurrent Neural Networks: their inability to perform robust state-tracking. The central hypothesis—that restricting eigenvalues to positive values fundamentally limits expressivity—is elegant and well-supported by both theoretical proofs and empirical results. The extension to negative eigenvalues, especially for non-diagonal matrices, is a bold move that unlocks significant capabilities, as demonstrated by the improved performance on parity, modular arithmetic, and S5 group word problems. While there are minor nuances in the finite-precision definitions and acknowledged limitations regarding integration with certain existing LRNN optimizations, these do not overshadow the groundbreaking nature of the work. The paper inspires new directions for LRNN design and pushes the boundaries of what these models can achieve, particularly for tasks requiring sequential reasoning and statefulness. This is exactly the kind of forward-thinking research that drives a field revolution."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides rigorous theoretical proofs (Theorems 1, 2, 3, 4, and Proposition 1) that formally establish the limitations of current LRNN architectures and the enhanced expressivity gained by extending the eigenvalue range. The proofs are well-detailed in the appendix.",
+        "The empirical evaluation is comprehensive, demonstrating the practical impact of the proposed modification on synthetic state-tracking tasks (parity, modular arithmetic, S5 group word problems) and showing the practical benefits, especially for DeltaNet, on certain LM tasks.",
+        "The work directly addresses a known fundamental limitation of modern LRNNs (and Transformers) regarding state-tracking (parity problem), extending prior work (Sarrof et al., 2024) to non-diagonal LRNNs and providing robust empirical validation."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates improved performance on specific state-tracking related language modeling tasks (code, math), the overall language modeling performance (validation perplexity) is sometimes slightly worse or mixed compared to the original models, suggesting a potential trade-off or a need for further optimization in large-scale training.",
+        "The theoretical analysis for DeltaNet's expressivity with multiple layers (Theorem 4) notes that the number of layers and width might be exponential in the number of FSA states in the worst case. This limitation, while acknowledged, could reduce the practical applicability of the theoretical expressivity for very complex regular languages if these worst-case scenarios are frequent or if the constant factors are large."
+      ],
+      "summary_comment": "This paper presents a strong contribution by rigorously proving and empirically verifying that extending the eigenvalue range of state-transition matrices in Linear Recurrent Neural Networks (LRNNs) from [0, 1] to [-1, 1] significantly enhances their state-tracking capabilities. The theoretical results are sound, generalizing previous findings and establishing new expressivity bounds, particularly for non-diagonal LRNNs like DeltaNet. The experimental evaluation convincingly supports these theoretical claims across various synthetic tasks and offers promising insights into language modeling performance for code and mathematical reasoning. Although some language modeling results are mixed, the core argument regarding state-tracking improvement is robust. The work directly addresses a critical limitation of modern LRNNs, making it a significant step forward in understanding and improving their capabilities."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant practical limitation of current LRNNs (and Transformers) concerning state-tracking, which is critical for real-world tasks like code evaluation and complex reasoning.",
+        "The theoretical contributions are well-supported with mathematical proofs (Theorems 1-4 and Proposition 1) that clearly delineate the expressivity limitations of current LRNNs and the enhanced capabilities of the proposed modification. This strong theoretical foundation is a major plus.",
+        "The empirical evaluation is comprehensive, covering both synthetic Chomsky Hierarchy tasks (parity, modular arithmetic) and larger-scale language modeling benchmarks (CodeParrot, Math-Hard, SlimPajama). The results convincingly demonstrate performance improvements and the stability of the proposed changes, especially for DeltaNet.",
+        "The practical impact of the proposed eigenvalue range extension is high, as it unlocks crucial state-tracking abilities without incurring additional computational costs or training instability, making it directly applicable to existing models."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates strong empirical improvement for DeltaNet, the degradation in Mamba's performance on larger language models with the modification is a notable concern. The discussion could delve deeper into why this occurs and potential strategies to mitigate it for diagonal LRNNs.",
+        "The expressivity proofs, especially Theorem 3 and 4, indicate that the number of layers and width might grow exponentially in the worst case for implementing any regular language. While this is acknowledged as future work, a clearer discussion on the practical implications of this scalability (or lack thereof) for complex real-world tasks would be beneficial."
+      ],
+      "summary_comment": "This paper presents a highly significant and practical contribution by identifying and resolving a fundamental limitation in Linear Recurrent Neural Networks (LRNNs) regarding state-tracking. The theoretical framework, building upon prior work, rigorously proves why existing LRNNs struggle with tasks like parity and modular arithmetic, and how extending the eigenvalue range to include negative values can unlock these capabilities. The empirical evaluation is thorough, showing convincing improvements on synthetic benchmarks and, notably for DeltaNet, on real-world language modeling tasks, particularly code and math. The fact that this enhancement comes without additional computational overhead makes it highly relevant for practitioners. While the Mamba degradation and scalability implications of theoretical expressivity are minor concerns, the overall clarity and impact of the work are strong enough to warrant acceptance. This work moves LRNNs closer to being truly robust alternatives to Transformers for long sequences."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' and 'deep learning (architectures, theory, etc.)' by proposing a fundamental modification to LRNNs, a key deep learning architecture. This aligns perfectly with ICML's focus on foundational machine learning research.",
+        "The theoretical contributions, specifically the proofs on expressivity limitations and enhancements (Theorems 1-4, Proposition 1), are a strong fit for ICML, which values 'theory of machine learning' and rigorous mathematical foundations (Reviewer A, B, C praise the theoretical depth).",
+        "The work on state-tracking in LRNNs, including tasks like parity and modular arithmetic, demonstrates an innovative technique addressing core machine learning capabilities, fitting 'application-driven machine learning' in areas like 'machine vision, computational biology, speech recognition, and robotics' that rely on sequence modeling, though the current applications are primarily language-focused.",
+        "The experimental evaluation, covering both synthetic tasks and language modeling benchmarks (CodeParrot, Math-Hard), provides empirical evidence for the proposed method on models like Mamba and DeltaNet, which is highly relevant to ICML's interest in both theoretical and practical advancements.",
+        "The paper provides a 'meta study' on the limitations of existing LRNNs regarding state-tracking and proposes a novel solution recognized as 'highly novel' and 'innovative' by Reviewer A, which is a strong point for ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While Mamba's performance degrades with the modification for some LM tasks, as noted by Reviewer C, this indicates that the solution might not be universally beneficial across all LRNN types and tasks, which could be a minor concern in a broad conference like ICML if interpreted as a lack of generality.",
+        "The acknowledged limitation regarding compatibility with numerical techniques used by Mamba2, GLA, and mLSTM (Appendix E.4) suggests that the proposed change might not be a plug-and-play solution for all prevalent LRNNs, potentially limiting its immediate broad impact, though the authors state it's 'cutting-edge research' that is impactful (Reviewer A)."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper presents 'new and original research' on deep learning architectures, specifically focusing on linear recurrent neural networks (LRNNs), which aligns directly with NeurIPS's core topics.",
+        "The theoretical analyses of LRNN expressivity and limitations, particularly in the context of formal languages and state-tracking, are a strong fit for NeurIPS, which highly values 'theory' in machine learning and 'in-depth analysis of existing methods that provide new insights' (Reviewer B highlights the rigorous proofs).",
+        "The work addresses a fundamental aspect of 'generalization and multi-task learning' by enabling LRNNs to better handle state-tracking, a critical capability for complex reasoning tasks, which is a key interest at NeurIPS.",
+        "The exploration of Mamba and DeltaNet, and their performance on 'Computer vision' and 'Language and multimodal language models' (in the broader context of sequence modeling, though the paper focuses on language), makes it highly relevant to NeurIPS's topical areas.",
+        "The novelty of overcoming long-standing limitations in LRNNs for state-tracking (as noted by Reviewer A, B, and C as 'highly novel' and 'groundbreaking') makes it an excellent fit for NeurIPS, which seeks cutting-edge advancements."
+      ],
+      "why_it_does_not_fit": [
+        "The mention of potential 'trade-off between state-tracking and associative recall' (in future work discussion) could imply that the proposed solution, while effective for state-tracking, might not provide a holistic improvement for all language modeling aspects, which might be scrutinized more closely at NeurIPS, a broad ML conference.",
+        "Although the overall language modeling performance is competitive, the mixed results and slight degradation for Mamba on some LM tasks (Figure 5, Reviewer C) might raise questions about the robustness and general applicability of the approach across all scale and model types, which is a relevant consideration for a conference like NeurIPS focusing on robust solutions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper is centrally focused on 'deep learning' architectures, specifically linear recurrent neural networks (LRNNs) like Mamba and DeltaNet, which are core topics for ICLR.",
+        "The modification of state-transition matrices to enable state-tracking directly enhances 'representation learning' (specifically for sequential data) and explores 'causal reasoning', making it highly relevant to ICLR's focus on how deep learning models learn and represent information.",
+        "The theoretical examination of expressivity, including 'learning theory' and 'optimization' aspects (implicitly through stability considerations), aligns well with ICLR's interest in the fundamental principles behind deep learning.",
+        "The paper also addresses 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' implicitly through its application to language models and state-tracking tasks.",
+        "The experimental validation on benchmarks like CodeParrot and Math-Hard demonstrates novel applications of deep learning to 'language' and 'other modalities', which is consistently featured at ICLR (Reviewer C highlights the practical impact and empirical success)."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's theoretical contributions are strong, the focus on linear RNNs and their mathematical properties, while relevant, might be perceived as slightly less 'deep learning'-specific in methodology compared to papers introducing entirely new deep architectures or training paradigms that might dominate ICLR.",
+        "The acknowledgement that the solution is not directly compatible with certain numerical techniques in specific diagonal LRNNs (Mamba2, GLA, mLSTM) might be a slight detractor for ICLR, which often looks for highly generalizable deep learning innovations.",
+        "The abstract mentions 'others' as the research area, which, while broad, might suggest that the paper doesn't fit into one of the more defined, cutting-edge topics that ICLR often champions, although deep learning is clearly central to the work."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,77 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of combining VAEs with a black-box COP solver and Fenchel-Young loss for structured output generation is highly novel and addresses a significant challenge in learning representations for constrained optimization problems.",
+        "The model's ability to naturally disentangle and sometimes learn multimodal latent spaces without explicit agent labels is a powerful advancement for understanding diverse behaviors and underlying cost structures.",
+        "The qualitative and quantitative evaluations on both synthetic and real-world datasets (ship paths, TSP) effectively demonstrate the interpretability of the latent space and the practical utility of the approach for reconstruction, clustering, and prediction."
+      ],
+      "weaknesses": [
+        "The reliance on a fixed, non-differentiable black-box solver might limit the applicability to problems where suitable solvers are not readily available or are computationally very expensive for large-scale applications, despite the SGD optimization. The CPU bottleneck mentioned is concerning.",
+        "While the paper states the method works for a \"general set of COPs if gradient estimation is available,\" the current implementation focuses on linear objectives. A deeper discussion or exploration of non-linear objectives and how the Fenchel-Young loss generalizes there would strengthen the claim."
+      ],
+      "summary_comment": "This paper presents a truly exciting and novel approach to learning latent representations for constrained optimization problems. The integration of VAE principles with a black-box COP solver via Fenchel-Young loss is a clever way to handle structured outputs and non-differentiability. The ability to implicitly capture multiple agent behaviors and unobserved factors in the latent space, without explicit labels, is a significant leap forward in inverse optimization and latent variable modeling. While there are some practical concerns about solver overhead and the current scope of COPs explored, the foundational idea is extremely strong and opens up numerous avenues for future research. The potential for interpretable latent spaces and robust structured generation outweighs minor methodological imperfections in my view. This work has the potential to inspire a new wave of research at the intersection of deep learning and combinatorial optimization."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The core contribution of IO-LVM, combining VAEs with black-box COP solvers and Fenchel-Young loss to learn latent representations for constrained optimization problems, aligns very well with ICML's focus on general machine learning, deep learning architectures, optimization, and probabilistic methods. Specifically, the paper introduces a novel deep learning technique (modified VAE) for a challenging machine learning problem (structured output generation with constraints).",
+        "The paper explicitly addresses 'optimization (convex and non-convex optimization, matrix/tensor methods, stochastic, online, non-smooth, composite, etc.)' through its gradient estimation technique for non-differentiable solvers, which is a key technical aspect relevant to ICML.",
+        "The application to 'graph-based planning' and 'ship routing data' falls under 'application-driven machine learning' with innovative techniques, showing relevance to real-world problems while advancing core ML methodology.",
+        "The emphasis on learning 'multimodal latent spaces' and disentangling 'different agents' without explicit labels showcases advancements in 'supervised, semi- and self-supervised learning' and 'generative models', fitting ICML's broad scope."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper states the method works for a 'general set of COPs if gradient estimation is available,' Reviewer A notes that the current implementation focuses on 'linear objectives' and lacks a 'deeper discussion or exploration of non-linear objectives,' which could be perceived as a limitation in generalization by some ICML reviewers looking for broader applicability.",
+        "Reviewer A also raises a practical concern about the 'reliance on a fixed, non-differentiable black-box solver' limiting applicability and mentioning a 'CPU bottleneck'. While the novelty is high, ICML often looks for scalable and efficient solutions, so this could be a point of criticism."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on 'Inverse Optimization Latent Variable Models' and learning 'latent representations for COP costs' directly relates to 'General machine learning: core contributions in supervised and unsupervised methods' and 'Probabilistic methods' (via the VAE framework) which are central to NeurIPS.",
+        "The novel approach to handle 'non-differentiable deterministic solver' using Fenchel-Young loss for gradient estimation is a significant methodological contribution in 'Optimization' that aligns well with NeurIPS's interests.",
+        "The applications to 'path-planning on graphs' and 'ship routing data' demonstrate practical relevance in areas like 'Robotics, embodied systems, and engineering' (path planning) and 'AI/ML for physical sciences' (ship routing), which are welcomed interdisciplinary topics at NeurIPS.",
+        "The ability to 'capture underlying COP cost structures and identify solutions likely originating from different agents or conditions, each using distinct cost functions' without labels contributes to 'Generalization and multi-task learning' and offers new insights into inverse problem solving, which NeurIPS encourages."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the point raised by Reviewer A about the current limitation to 'linear objectives' for COPs, despite the claim of generality, might be a point of contention for some NeurIPS reviewers expecting more theoretical depth or broader algorithmic applicability.",
+        "The 'CPU bottleneck' mentioned by Reviewer A, related to the black-box solver, could be a flag for NeurIPS reviewers who often scrutinize the scalability and practical efficiency of proposed algorithms, especially for complex real-world problems.",
+        "While the paper has strong methodological contributions, it is primarily focused on a specific problem type (inverse optimization for structured outputs), which might be slightly less broad in its immediate impact compared to some foundational algorithmic papers often found at NeurIPS, though the interdisciplinary nature is appreciated."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper introduces a 'novel approach for learning latent representations of COP costs' by 'combining variational approximation techniques' and 'COP solver gradient estimation,' directly aligning with ICLR's emphasis on 'deep learning' and 'generative models' (VAEs) as well as 'optimization' challenges in these areas.",
+        "The use of 'Fenchel-Young loss' to estimate gradients through a 'nondifferentiable deterministic solver' is a sophisticated technique in 'optimization' and 'learning theory' (via gradient estimation for structured prediction), which ICLR frequently features.",
+        "The contribution on 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' is relevant as IO-LVM learns disentangled representations without explicit agent labels, facilitating 'visualization or interpretation of learned representations'.",
+        "The applications to 'path planning' and 'Hamiltonian Cycles' involving graph structures are pertinent to 'learning on graphs and other geometries & topologies', a growing area of interest for ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A highlights concerns about the 'reliance on a fixed, non-differentiable black-box solver' and a 'CPU bottleneck'. While ICLR values cutting-edge deep learning, issues with scalability or computational efficiency can sometimes lead to lower scores, especially if the method struggles with larger models or datasets, a common requirement for deep learning research.",
+        "Although the paper's core idea is innovative for deep generative models, ICLR's primary focus leans heavily towards deep learning architectures, novel neural network designs, or foundational theory specifically for deep learning. While IO-LVM uses a VAE, the main contribution is more at the intersection of inverse optimization and learning from structured outputs, which might be slightly less 'deep learning architecture-centric' than some ICLR papers.",
+        "The discussion on 'linear objectives' as a limitation (from Reviewer A) could signal to ICLR reviewers that the deep learning component might not be fully leveraged for more complex or non-linear combinatorial problems."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

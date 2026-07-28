@@ -1,0 +1,111 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of achieving single-step sampling for unnormalized distributions is highly novel and addresses a critical limitation of existing iterative sampling methods. It pushes the boundaries of diffusion models beyond their typical generative applications to a new domain.",
+        "The introduction of SCDS, which removes the dependency on a pre-trained sampler and jointly learns diffusion sampling and self-distillation, is particularly innovative and offers a truly end-to-end solution for efficient sampling.",
+        "The paper demonstrates a significant practical impact by drastically reducing the number of network evaluations (NFE) required, showcasing the potential for substantial computational savings in scientific and machine learning applications."
+      ],
+      "weaknesses": [
+        "The theoretical guarantees (Theorem 1) for CDDS are presented, but similar strong theoretical justifications for the full SCDS training approach, especially concerning the convergence and stability with the combined sampling and self-consistency losses, would strengthen the paper further.",
+        "While the results show substantial improvements in NFE, the absolute sample quality (e.g., Sinkhorn distance and ESS) for single-step SCDS can sometimes be less competitive than multi-step baselines, indicating a trade-off that, while expected, could be explored more deeply in terms of the limits of single-step accuracy."
+      ],
+      "summary_comment": "This paper presents a truly bold and innovative approach to sampling from unnormalized distributions. The idea of 'consistent diffusion samplers' to enable single-step generation is incredibly novel, especially SCDS, which self-learns without needing a pre-trained model. This represents a significant conceptual leap for diffusion models, extending their utility and efficiency. While some methodological details could be more rigorously justified theoretically for SCDS's combined objective, and single-step performance isn't always absolutely superior, the potential impact and forward-thinking nature of this work are undeniable. The trade-off between compute and quality is clearly articulated, and the sheer reduction in NFEs points to a transformative shift for practical applications. This paper is exciting and clearly worthy of acceptance for its pioneering ideas."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces two well-defined methods, CDDS and SCDS, to address the critical issue of computational cost in diffusion sampling by enabling single-step generation, which is a significant practical improvement.",
+        "The theoretical result for CDDS (Theorem 1) provides a formal guarantee for the accuracy of the distilled consistency function, which strengthens the methodological foundation of the approach.",
+        "The experimental evaluation is comprehensive, covering both synthetic and real-world unnormalized distributions, and includes relevant metrics (Wasserstein distance, ESS, ELBO) and comparisons against strong baselines (PIS, DDS, DIS). The cost-benefit analysis of NFEs is particularly insightful."
+      ],
+      "weaknesses": [
+        "While Theorem 1 provides an error bound for CDDS under ideal conditions (loss driven to zero), the practical implications of achieving this in finite training, especially regarding the 'arbitrarily accurate' claim, could be elaborated further.",
+        "The discussion on the 'mild bump' in the Sinkhorn distance for the 10-D Funnel at 32 steps (Figure 3) is a bit vague. A more detailed analysis of why this occurs and its implications for multi-step sampling with SCDS would be beneficial."
+      ],
+      "summary_comment": "This paper presents a rigorous and well-evaluated approach to significantly accelerate diffusion samplers. The proposed CDDS and SCDS methods offer compelling solutions for single-step sampling from unnormalized distributions. The theoretical underpinnings for CDDS are clearly stated, and the empirical results show substantial reductions in computational cost while maintaining competitive sample quality. The comparison against established baselines and the detailed cost-benefit analysis for NFEs are particularly strong points. While some minor clarifications on theoretical implications and empirical anomalies would improve the paper, the overall methodological soundness and strong evaluation warrant acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and significant problem: the high computational cost of diffusion samplers, by enabling single-step or few-step sampling for unnormalized distributions.",
+        "The introduction of SCDS, which eliminates the need for a pretrained sampler, significantly enhances the practical utility and accessibility of single-step sampling, making it applicable from scratch.",
+        "The experimental results clearly demonstrate the drastic reduction in Network Function Evaluations (NFEs) while maintaining competitive sample quality across various synthetic and real-world Bayesian inference tasks, directly highlighting the practical benefits.",
+        "The cost-benefit analysis for SCDS and the ability to trade compute for sample quality (multi-step refinement) offer valuable flexibility for practitioners in resource-constrained environments."
+      ],
+      "weaknesses": [
+        "While the paper claims competitive sample quality, the W2 and ESS metrics for SCDS in single-step mode are often worse than the multi-step baselines, and sometimes CDDS, particularly on higher-dimensional tasks like MW52 and Funnel. A more in-depth discussion on the practical implications of these trade-offs beyond just NFE reduction would be beneficial.",
+        "The ELBO metric for single-step CDDS/SCDS on Ionosphere and LGCP is noted to potentially 'over-estimate evidence' due to the collapse of the RND to boundary likelihood. This is a crucial caveat, and its implications for practitioners relying on ELBO as a primary quality indicator should be highlighted more prominently, perhaps even with an alternative metric comparison where ELBO could be misleading."
+      ],
+      "summary_comment": "This paper presents a highly significant and practically relevant contribution by tackling the computational bottleneck of diffusion samplers for unnormalized distributions. The proposed CDDS and especially SCDS methods offer compelling solutions for generating high-quality samples in a single or few steps, making diffusion samplers much more accessible and efficient for real-world applications. The clear articulation of the problem, well-motivated approaches, and extensive empirical validation demonstrating substantial NFE reductions make this work valuable for practitioners. While there are some nuances in sample quality compared to multi-step baselines and an important caveat regarding ELBO interpretation, the overall practical impact of enabling fast sampling without pre-training is strong. The paper is well-written and easy to follow, making its contributions readily understandable."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' topics, specifically focusing on advanced sampling techniques for unnormalized target distributions, which is a fundamental problem in machine learning and statistics. The proposed methods, CDDS and SCDS, fall under 'deep learning' (architectures, generative models) and 'optimization' (stochastic, online, non-smooth, composite) as they aim to optimize complex SDEs via neural networks.",
+        "The methods contribute to 'trustworthy machine learning' by improving the computational efficiency and practicality of sampling, enabling faster and more resource-efficient probabilistic inference, which can lead to better 'reliability' and broader applicability.",
+        "The paper's focus on improving diffusion-based samplers aligns with 'machine learning systems' by enhancing the 'implementation and scalability' of sampling algorithms. The drastic reduction in Network Function Evaluations (NFEs) is a key systems-level improvement.",
+        "The extensive experimental evaluation on both synthetic and real-world Bayesian inference tasks, including high-dimensional problems like LGCP, demonstrates practical utility, fitting within 'application-driven machine learning', particularly in fields involving probabilistic models like 'computational biology' or 'physical sciences' as alluded in the introduction.",
+        "Reviewer A noted the 'highly novel' core idea and 'conceptual leap for diffusion models', aligning well with ICML's focus on 'cutting-edge research'. Reviewer B highlighted the 'rigorous and well-evaluated approach' and 'theoretical result for CDDS', which speak to ICML's emphasis on strong methodologies.",
+        "The detailed exposition of the methods, theoretical background (Theorem 1), and comprehensive experimental results with various metrics (Sinkhorn distance, ESS, ELBO) demonstrate strong 'rigor' and 'presentation', as praised by Reviewer C for being 'well-written and easy to follow'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper has theoretical results (Theorem 1), Reviewer A points out that 'similar strong theoretical justifications for the full SCDS training approach' are lacking, which could be a minor reservation for a venue that values deep theoretical contributions across all aspects of a method.",
+        "Reviewer C noted that the ELBO metric for single-step CDDS/SCDS could 'over-estimate evidence' and its implications for practitioners should be highlighted more. While not directly a fit issue, it suggests a nuance in empirical interpretation that needs careful consideration.",
+        "Reviewer B mentioned that the 'practical implications of achieving this [arbitrarily accurate] in finite training...could be elaborated further', indicating a potential gap between theoretical ideals and practical implementation details that might be scrutinized more deeply by some ICML reviewers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly aligns with NeurIPS's core interest in 'General machine learning: core contributions in supervised and unsupervised methods' and 'Probabilistic methods'. Sampling from unnormalized distributions is a fundamental problem in probability and machine learning.",
+        "The techniques developed, consistent diffusion samplers (CDDS and SCDS), are directly related to 'Deep learning' and 'Optimization', as they leverage neural networks and optimize stochastic processes to achieve efficient sampling.",
+        "The problem of reducing computational cost in samplers, especially for high-dimensional problems, has significant implications for 'AI/ML for physical sciences' and 'AI/ML for health and biotechnology' (as referenced by the LGCP experiment), fitting NeurIPS's interdisciplinary focus.",
+        "The discussion of 'approximation of the normalization constant' (log Z) is a classical problem in 'Probabilistic methods' and Bayesian inference, an area strongly represented at NeurIPS.",
+        "Reviewer A praised the 'highly novel and addresses a critical limitation of existing iterative sampling methods', while Reviewer B highlighted the 'significant practical improvement' and 'comprehensive' experimental evaluation, which are highly valued at NeurIPS for showing both innovation and robustness.",
+        "The paper's structure, theoretical grounding, and extensive empirical validation, along with a detailed NeurIPS checklist, indicate a comprehensive submission tailored for this conference, adhering to its standards for 'clarity', 'soundness', and 'reproducibility'."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A points out the need for 'more rigorously justified theoretically for SCDS's combined objective'. While NeurIPS is broad, strong theoretical foundations are often sought, and this gap could be a minor point of critique.",
+        "Reviewer C noted that 'W2 and ESS metrics for SCDS in single-step mode are often worse than the multi-step baselines', indicating a trade-off in sample quality for computational speed. While acknowledged as a trade-off, some NeurIPS reviewers might focus heavily on absolute performance benchmarks.",
+        "The 'mild bump' anomaly in the Sinkhorn distance for SCDS at 32 steps, mentioned by Reviewer B, suggests aspects of the empirical behavior that could be explored more deeply. A paper aiming for top-tier NeurIPS might need to fully explain such nuances."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

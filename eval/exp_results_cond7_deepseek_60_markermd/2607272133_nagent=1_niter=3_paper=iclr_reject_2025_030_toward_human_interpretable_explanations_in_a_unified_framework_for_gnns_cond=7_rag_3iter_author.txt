@@ -1,0 +1,715 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper presents a unified framework (UO-Explainer) that provides both model-level and instance-level explanations for GNNs, a combination not commonly addressed by prior work.",
+        "The focus on human-interpretable units (graphlets and orbits) leverages established concepts from network science, allowing domain experts to incorporate prior knowledge.",
+        "The experimental evaluation is extensive, covering eight datasets and multiple baseline methods with both quantitative metrics and a qualitative case study."
+      ],
+      "weaknesses": [
+        "The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.",
+        "The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.",
+        "The presentation and clarity of the paper are hindered by numerous typographical errors, inconsistent notation, and incomplete figure/table references."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.",
+          "severity": "major",
+          "evidence": "The rebuttal points to empirical results (Tables 3, 4) showing performance advantages over MotifExplainer. These results are present in the submitted paper and partially address the differentiation concern by demonstrating quantitative superiority on specific metrics. However, the conceptual novelty claim—that using orbits rather than motifs is a fundamental advance—still relies heavily on the performance figures and case study imagery. The theoretical distinction and its unique explanatory value are not fully developed in the current text.",
+          "affected_claim": "Claim of providing a novel human-interpretable explanation method based on graphlets and orbits.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.",
+          "severity": "major",
+          "evidence": "The rebuttal acknowledges this is a weakness and promises a new subsection and appendix analysis. However, this justification is absent from the submitted paper. Algorithm 2 remains a heuristic with vague stopping criteria and no analysis of error bounds, convergence, or stability. The comparison to Orthogonal Matching Pursuit (OMP) and the empirical error analysis are promised additions, not present evidence.",
+          "affected_claim": "Claim that UO-Explainer correctly decomposes weights to extract class-specific patterns.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The core algorithmic contribution (greedy weight decomposition) still lacks theoretical justification in the submitted manuscript. The rebuttal's promises do not change the assessment of the paper as submitted."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "While the empirical results provide some differentiation, the submitted paper's conceptual framing does not convincingly establish the use of orbits within a unified framework as a significant novel advance over prior motif-based and explanation methods. The contribution is incremental."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The performance improvements are notable but not transformative. The method's constraint to small graphlets is a significant limitation for general applicability, which is acknowledged but not mitigated in the current work."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The experimental evaluation remains a strength, with comprehensive comparisons and results that generally support the paper's claims of competitive performance."
+        },
+        "presentation": {
+          "result": "fail",
+          "justification": "The presentation issues (typos, placeholder text, inconsistent notation) are acknowledged but remain unaddressed in the submitted version, severely impacting readability and professionalism."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal more effectively points to existing empirical evidence (Tables 3, 4) to differentiate UO-Explainer from MotifExplainer. However, the major weaknesses regarding the soundness of the greedy decomposition algorithm and the poor presentation quality remain entirely unresolved in the submitted manuscript, as the rebuttal only promises future fixes. The evaluation gate passes, but the failures in soundness, novelty, significance, and presentation are collectively fatal for a top-tier conference. The paper requires substantial theoretical and presentational revisions before it can be considered acceptable."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper addresses explainability for Graph Neural Networks (GNNs), which aligns well with ICML's focus on trustworthy machine learning and general machine learning topics",
+        "The method proposes a unified framework for both model-level and instance-level explanations, which matches ICML's interest in comprehensive ML systems",
+        "The extensive experimental evaluation across 8 datasets demonstrates rigorous methodology, fitting ICML's emphasis on empirical validation"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical foundation for the greedy decomposition approach is weak, which conflicts with ICML's emphasis on sound theoretical grounding",
+        "The presentation quality issues (typos, inconsistent notation) would be problematic for ICML's high publication standards",
+        "The novelty claim is somewhat incremental compared to existing motif-based methods like MotifExplainer, which may not meet ICML's high bar for novelty"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Explainability and interpretability of deep learning models are core NeurIPS topics, especially for graph neural networks",
+        "The focus on human-interpretable explanations aligns well with NeurIPS' interest in human-AI interaction and socio-technical aspects of AI",
+        "The application to scientific domains (biology, social networks) fits NeurIPS' interdisciplinary nature"
+      ],
+      "why_it_does_not_fit": [
+        "The methodological weaknesses in the greedy decomposition approach may be more scrutinized at NeurIPS given its theoretical orientation",
+        "While the empirical results are strong, the conceptual advance over existing motif methods may not be sufficiently transformative for NeurIPS",
+        "The presentation issues could be particularly problematic for NeurIPS' rigorous review process"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR has strong focus on deep learning explainability and interpretability, making this paper an excellent fit",
+        "The application to graph neural networks directly aligns with ICLR's core interests in representation learning on graphs",
+        "The unified framework approach for explanations matches ICLR's preference for comprehensive deep learning solutions",
+        "The empirical evaluation is extensive and demonstrates practical utility, which is valued at ICLR"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical limitations of the greedy decomposition method may be less concerning at ICLR compared to other venues, but still present a weakness",
+        "The novelty differentiation from existing motif-based methods could be more clearly established for ICLR's standards",
+        "Some presentation issues remain, though ICLR may be more forgiving of these if the core ideas are strong"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 4,
+              "clarity": 3
+            },
+            "strengths": [
+              "The paper presents a unified framework (UO-Explainer) that provides both model-level and instance-level explanations for GNNs, a combination not commonly addressed by prior work.",
+              "The focus on human-interpretable units (graphlets and orbits) leverages established concepts from network science, allowing domain experts to incorporate prior knowledge.",
+              "The experimental evaluation is extensive, covering eight datasets and multiple baseline methods with both quantitative metrics and a qualitative case study."
+            ],
+            "weaknesses": [
+              "The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.",
+              "The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.",
+              "The presentation and clarity of the paper are hindered by numerous typographical errors, inconsistent notation, and incomplete figure/table references."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.",
+                "severity": "major",
+                "evidence": "The paper acknowledges MotifExplainer as a baseline but claims to differ by considering 'the universal importance of specific motifs and the orbit-based isomorphism.' However, the core idea of using predefined subgraph patterns (graphlets/motifs) as explanatory units is not novel, as evidenced by prior work like MotifExplainer (Yu & Gao, 2022) and graphlet-based analysis in domains like bioinformatics (Przulj et al., 2004). The RAG evidence also notes surveys (e.g., Bodria et al., 2023) covering various explanation methods, indicating a crowded field.",
+                "affected_claim": "Claim of providing a novel human-interpretable explanation method based on graphlets and orbits.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.",
+                "severity": "major",
+                "evidence": "Section 3.2 describes decomposing class weights into orbit bases using a greedy algorithm to avoid 'significant amount of randomness' when bases are non-orthogonal. However, the paper provides no theoretical analysis of the approximation error, convergence, or conditions under which the greedy selection is optimal. The objective function (Eq. 5) is heuristic, and the stopping criterion is vague ('when the difference... does not decrease').",
+                "affected_claim": "Claim that UO-Explainer correctly decomposes weights to extract class-specific patterns.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The core algorithmic contribution (greedy weight decomposition) lacks theoretical justification and may produce unreliable explanations. The method relies on heuristics without proven guarantees on approximation quality or robustness."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The use of graphlets/orbits as explanatory units is not novel (e.g., MotifExplainer, prior graphlet analysis in bioinformatics). The unified framework is a incremental contribution but does not represent a significant advance over existing model- or instance-level explainers."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the unified framework is useful, the improvements over baselines (e.g., fidelity gains in Table 4) are modest. The approach is constrained to small graphlets (2-5 nodes), limiting applicability to complex patterns, and the reliance on predefined units may not generalize to domains without strong prior knowledge."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, using synthetic and real-world datasets with multiple metrics (sparsity, fidelity, recall). Comparisons with relevant baselines are fair, and results generally support the claims of competitive performance."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The paper has numerous issues: placeholder text (e.g., '009', '019'), broken references to figures/tables (e.g., '[2](#page-2-1)' points to a diagram label), inconsistent notation (e.g., mixing HTML tags like <sup> with LaTeX), and grammatical errors. These impede understanding and professionalism."
+              }
+            },
+            "summary_comment": "UO-Explainer proposes a unified framework for GNN explanations using graphlets and orbits as interpretable units. While the idea of combining model- and instance-level explanations is appealing, the paper suffers from major weaknesses in novelty (graphlet-based explanations are not new), soundness (heuristic weight decomposition lacks theoretical grounding), and presentation (numerous errors). The evaluation is strong but insufficient to compensate for these flaws. The work does not meet the bar for a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "raw": "{\n  \"reviewer\": \"Reviewer - No Persona\",\n  \"decision\": \"Reject\",\n  \"scores\": {\n    \"novelty\": 3,\n    \"soundness\": 3,\n    \"significance\": 3,\n    \"evaluation\": 4,\n    \"clarity\": 3\n  },\n  \"strengths\": [\n    \"The paper presents a unified framework (UO-Explainer) that provides both model-level and instance-level explanations for GNNs, a combination not commonly addressed by prior work.\",\n    \"The focus on human-interpretable units (graphlets and orbits) leverages established concepts from network science, allowing domain experts to incorporate prior knowledge.\",\n    \"The experimental evaluation is extensive, covering eight datasets and multiple baseline methods with both quantitative metrics and a qualitative case study.\"\n  ],\n  \"weaknesses\": [\n    \"The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.\",\n    \"The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.\",\n    \"The presentation and clarity of the paper are hindered by numerous typographical errors, inconsistent notation, and incomplete figure/table references.\"\n  ],\n  \"weakness_details\": [\n    {\n      \"weakness\": \"The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.\",\n      \"severity\": \"major\",\n      \"evidence\": \"The rebuttal correctly notes that the paper explicitly contrasts UO-Explainer with MotifExplainer, highlighting the use of orbits and the unified framework. However, the submitted paper does not provide a sufficiently deep theoretical or empirical analysis to demonstrate that this combination represents a substantial advance over prior work. The claim that orbits provide a fundamentally different type of explanation than motifs is not strongly validated beyond the synthetic experiments where ground truth orbits are known.\",\n      \"affected_claim\": \"Claim of providing a novel human-interpretable explanation method based on graphlets and orbits.\",\n      \"fixable_without_substantial_new_work\": true\n    },\n    {\n      \"weakness\": \"The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.\",\n      \"severity\": \"major\",\n      \"evidence\": \"The rebuttal acknowledges the heuristic nature of the greedy decomposition and promises to add justification by comparing it to matching pursuit. However, in the submitted paper, Algorithm 2 lacks any theoretical analysis of convergence, error bounds, or conditions for optimality. The stopping criterion ('when the difference... does not decrease') remains vague. The promised discussion of non-negative linear combinations and reconstruction error analysis is not present in the current submission.\",\n      \"affected_claim\": \"Claim that UO-Explainer correctly decomposes weights to extract class-specific patterns.\",\n      \"fixable_without_substantial_new_work\": false\n    }\n  ],\n  \"acceptance_gates\": {\n    \"soundness\": {\n      \"result\": \"fail\",\n      \"justification\": \"The rebuttal acknowledges the heuristic nature of the greedy decomposition but does not provide the missing theoretical justification in the submitted paper. The algorithm remains unsupported by rigorous analysis of its approximation quality or stability.\"\n    },\n    \"novelty\": {\n      \"result\": \"fail\",\n      \"justification\": \"While the rebutval highlights the combination of orbits with a unified framework, the submitted paper does not sufficiently demonstrate that this represents a significant novelty over prior motif-based methods. The differentiation from existing work remains superficial in the current submission.\"\n    },\n    \"significance\": {\n      \"result\": \"fail\",\n      \"justification\": \"The performance improvements, while consistent, are modest in many cases. The limitation to small graphlets (2-5 nodes) constrains the method's applicability to complex real-world patterns, and the submitted paper does not adequately address this limitation.\"\n    },\n    \"evaluation\": {\n      \"result\": \"pass\",\n      \"justification\": \"The experimental evaluation remains comprehensive and well-executed, with fair comparisons across multiple datasets and metrics. The results support the claims of competitive performance.\"\n    },\n    \"presentation\": {\n      \"result\": \"fail\",\n      \"justification\": \"The rebuttal acknowledges the presentation issues but these problems remain in the submitted paper. The numerous typographical errors, placeholder text, and inconsistent notation significantly impair readability.\"\n    }\n  ],\n  \"summary_comment\": \"The authors' rebuttal acknowledges several weaknesses but primarily promises future improvements rather than demonstrating that these issues are resolved in the current submission. The core concerns about novelty (insufficient differentiation from motif-based methods) and soundness (lack of theoretical grounding for the greedy decomposition) remain major weaknesses. While the evaluation is strong, the paper does not meet the bar for a top-tier conference in its current form. The promised revisions would strengthen the work, but they are not yet implemented in the submitted version.\"\n}",
+            "parse_error": true
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited novelty of using graphlets/motifs for explanation, with insufficient differentiation from prior work (e.g., MotifExplainer).\",\n        \"Lack of theoretical grounding/justification for the greedy decomposition algorithm used for class weights.\",\n        \"Presentation and clarity issues: typos, inconsistent notation, broken references.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Differentiation from prior motif-based methods.\",\n          \"location\": \"Introduction, Section 1; Section 4 (Related Work); Section 5.4\",\n          \"explanation\": \"The paper explicitly contrasts UO-Explainer with methods like MotifExplainer (Yu & Gao, 2022) and others. Key differentiators highlighted are: (1) The use of *orbits* (i.e., specific topological positions within graphlets) rather than just motifs, which allows UO-Explainer to identify not just the presence of a subgraph pattern but the specific node role within that pattern. (2) A *unified framework* that provides both model-level (class-specific) and instance-level explanations from the same decomposition of the GNN's weights (Fig. 2, Sec. 3). (3) Formal use of the concept of *graphlet degree distribution* and the standard set of 2-5 node graphlets/0-72 orbits (Fig. 1, App. A, Sec. 2.2), which are recognized universal units for network analysis across domains (e.g., bioinformatics, social networks). This allows users to leverage prior domain knowledge directly. In contrast, many instance-level methods (GNNExplainer, PGExplainer) produce disconnected subgraphs or edge masks that are less intuitive, and MotifExplainer does not consider orbits and does not provide model-level explanations.\"\n        },\n        {\n          \"concern\": \"Novelty of a unified framework (model+instance-level explanations for node classification).\",\n          \"location\": \"Abstract, Introduction (Sec. 1), Section 4\",\n          \"explanation\": \"The paper establishes the need for a unified framework, arguing that most prior work specializes in either model-level or instance-level explanations. As noted in Sec. 4, D4Explainer is the prominent prior method that also aims for unified explanations for node classification, but our method differs significantly in its approach (direct decomposition vs. diffusion models) and interpretable units. Further, the paper claims novelty in allowing users to select *explanation units* (e.g., orbits) that align with their prior knowledge, enabling a user-centric perspective. This combination of unified scope and user-defined units is positioned as the paper's unique contribution.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of theoretical justification for the greedy decomposition (Algorithm 2). The reviewer notes the heuristic nature and potential for approximation errors.\",\n          \"proposed_change\": \"We will expand Section 3.2 to include a more rigorous discussion of the decomposition approach. Specifically, we will: 1) Clarify that the goal is to approximate the class weight vector w_cm in the subspace spanned by the orbit basis vectors. We will reference literature on non-negative linear combination approximations. 2) Explicitly state the conditions and limitations: because orbit bases learned via logistic regression are unlikely to be orthogonal, and d < |O|, the exact decomposition is underdetermined. The greedy selection of the most aligned basis (largest dot product with the residual) is a common heuristic (e.g., matching pursuit). 3) Discuss the stopping criterion more clearly: we stop when adding the next-best orbit basis does not decrease the L2 reconstruction error below a small threshold (e.g., 1e-4). This will be added to the algorithm's description. 4) Add an ablation study in the appendix showing the stability/consistency of the selected orbits across multiple runs and the small magnitude of the final reconstruction error. This would demonstrate the practical reliability of the decomposition.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Presentation and clarity issues: typos, placeholder text (e.g., '009'), broken references, inconsistent notation.\",\n          \"proposed_change\": \"We will thoroughly proofread and edit the manuscript to correct all typographical and grammatical errors. We will ensure all figure and table references are correct and properly linked (e.g., fix '[2](#page-2-1)', ensure Figure 3 reference is correct). We will standardize notation, removing any stray HTML tags (like <sup>) and ensuring consistent use of LaTeX math formatting throughout. We will remove the placeholder text (e.g., line numbers '006', '009') that appears to be an artifact of the submission process.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Need to more strongly highlight the quantitative performance gains and interpretability advantages over baselines like MotifExplainer.\",\n          \"proposed_change\": \"In the results sections (Sec. 5.3, 5.4), we will more explicitly discuss the performance margin. For instance, in Table 3, UO-Explainer achieves significantly higher sub-recall and edge-recall than all baselines, including MotifExplainer, across synthetic datasets. In the PPI results (Table 4), UO-Explainer's fidelity is consistently higher in 5 of 6 tasks. We will add text to emphasize that this superior performance is achieved while providing a single, connected, and human-intelligible subgraph based on a well-defined orbit. We will also contrast the disconnected or noisy subgraphs often produced by edge-masking baselines, as visualized in Fig. 4.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"Thank you for your thorough review and constructive feedback. We appreciate your acknowledgment of the unified framework's appeal and the extensiveness of our evaluation. We address your main concerns below.\\n\\n**1. Novelty and Differentiation:** We agree that using subgraph patterns is not new. However, the core novelty lies in the *specific combination* of: (a) employing **orbits** (distinct topological positions) from the well-established graphlet theory as the fundamental interpretable unit, (b) providing a **unified framework** that yields both model- and instance-level explanations from a single weight decomposition, and (c) enabling a **user-centric** approach where these predefined, domain-relevant units can be selected. While MotifExplainer uses motifs, it does not consider orbits, does not provide model-level explanations, and its motifs are extracted via heuristic rules, not a universal catalog like the 0-72 orbits. This integration for node classification, backed by a decompositional approach, is our key contribution.\\n\\n**2. Soundness of Greedy Decomposition:** We acknowledge the need for a clearer theoretical discussion. The decomposition aims to approximate a class weight vector in a high-dimensional space using a non-negative combination of non-orthogonal basis vectors. The greedy algorithm selects the orbit basis most aligned with the current residual, akin to matching pursuit—a standard heuristic for such underdetermined problems. The stopping criterion ensures adding more bases yields negligible reduction in reconstruction error. Our extensive empirical validation (e.g., perfect sub-recall on Random Graph tasks with GIN in Table 1) demonstrates its effectiveness and stability. In the revised manuscript, we will expand Sec. 3.2 to include this justification, discuss limitations, and report an analysis of reconstruction error stability in the appendix.\\n\\n**3. Presentation and Clarity:** We sincerely apologize for the typographical errors, placeholder text, and formatting inconsistencies. These are artifacts from the anonymized paper generation process and will be fully corrected in the final version. We will ensure all notation is consistent, figures/tables are correctly referenced, and the text is polished for clarity and professionalism.\\n\\n**4. Significance and Performance:** While constrained to patterns within 2-5 node graphlets (a limitation we explicitly discuss in Sec. G), our method shows significant and consistent performance gains in metrics like sub-recall and fidelity (Tables 1, 3, 4) over a wide range of baselines. More importantly, it provides explanations that are inherently connected, correspond to known structural units, and can be directly mapped to domain knowledge (as shown in the Gene dataset case study). We will strengthen the discussion of these quantitative and qualitative advantages in the revision.\\n\\nWe believe addressing these points, particularly the clarification of the decomposition's rationale and fixing presentation issues, will significantly improve the paper's soundness and impact.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 4,
+              "clarity": 3
+            },
+            "strengths": [
+              "The paper presents a unified framework (UO-Explainer) that provides both model-level and instance-level explanations for GNNs, a combination not commonly addressed by prior work.",
+              "The focus on human-interpretable units (graphlets and orbits) leverages established concepts from network science, allowing domain experts to incorporate prior knowledge.",
+              "The experimental evaluation is extensive, covering eight datasets and multiple baseline methods with both quantitative metrics and a qualitative case study."
+            ],
+            "weaknesses": [
+              "The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.",
+              "The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.",
+              "The presentation and clarity of the paper are hindered by numerous typographical errors, inconsistent notation, and incomplete figure/table references."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The novelty of using graphlets for explanation is limited, as similar motif-based approaches (e.g., MotifExplainer) exist, and the paper does not sufficiently differentiate its contribution beyond the unified framework.",
+                "severity": "major",
+                "evidence": "The rebuttal points to empirical results (Tables 3, 4) showing performance advantages over MotifExplainer. These results are present in the submitted paper and partially address the differentiation concern by demonstrating quantitative superiority on specific metrics. However, the conceptual novelty claim—that using orbits rather than motifs is a fundamental advance—still relies heavily on the performance figures and case study imagery. The theoretical distinction and its unique explanatory value are not fully developed in the current text.",
+                "affected_claim": "Claim of providing a novel human-interpretable explanation method based on graphlets and orbits.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The mathematical justification for the greedy decomposition of class weights lacks theoretical grounding and may introduce uncontrolled approximations.",
+                "severity": "major",
+                "evidence": "The rebuttal acknowledges this is a weakness and promises a new subsection and appendix analysis. However, this justification is absent from the submitted paper. Algorithm 2 remains a heuristic with vague stopping criteria and no analysis of error bounds, convergence, or stability. The comparison to Orthogonal Matching Pursuit (OMP) and the empirical error analysis are promised additions, not present evidence.",
+                "affected_claim": "Claim that UO-Explainer correctly decomposes weights to extract class-specific patterns.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The core algorithmic contribution (greedy weight decomposition) still lacks theoretical justification in the submitted manuscript. The rebuttal's promises do not change the assessment of the paper as submitted."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "While the empirical results provide some differentiation, the submitted paper's conceptual framing does not convincingly establish the use of orbits within a unified framework as a significant novel advance over prior motif-based and explanation methods. The contribution is incremental."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The performance improvements are notable but not transformative. The method's constraint to small graphlets is a significant limitation for general applicability, which is acknowledged but not mitigated in the current work."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation remains a strength, with comprehensive comparisons and results that generally support the paper's claims of competitive performance."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The presentation issues (typos, placeholder text, inconsistent notation) are acknowledged but remain unaddressed in the submitted version, severely impacting readability and professionalism."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal more effectively points to existing empirical evidence (Tables 3, 4) to differentiate UO-Explainer from MotifExplainer. However, the major weaknesses regarding the soundness of the greedy decomposition algorithm and the poor presentation quality remain entirely unresolved in the submitted manuscript, as the rebuttal only promises future fixes. The evaluation gate passes, but the failures in soundness, novelty, significance, and presentation are collectively fatal for a top-tier conference. The paper requires substantial theoretical and presentational revisions before it can be considered acceptable."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Insufficient theoretical justification for the greedy decomposition algorithm (Algorithm 2).\",\n        \"Differentiation from prior motif-based methods (e.g., MotifExplainer) remains insufficiently demonstrated beyond synthetic experiments.\",\n        \"Presentation issues (typos, inconsistent notation, placeholder text) remain unaddressed in the submission.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Differentiation from motif-based methods like MotifExplainer.\",\n          \"location\": \"Section 4 (Related Work), Section 5.4 (Results: Instance-level Explanations), Section 5.5 (Case Study on Gene Dataset), Table 3, Table 4\",\n          \"explanation\": \"The paper provides empirical evidence of UO-Explainer's advantages. In Table 3 (synthetic datasets), UO-Explainer achieves significantly higher Sub-recall and Edge-recall than MotifExplainer across all datasets (e.g., 0.948 vs. 0.873 on BA-Shapes; 0.921 vs. 0.423 on BA-Community), demonstrating superior accuracy in identifying ground-truth explanatory structures. In Table 4 (real datasets), UO-Explainer substantially outperforms MotifExplainer in Fidelity on the PPI tasks (e.g., 0.423 vs. 0.070 on Task0; 0.510 vs. 0.129 on Task3). The case study (Fig. 4, Sec. 5.5) qualitatively shows UO-Explainer produces a single, connected, interpretable subgraph corresponding to a known biological pathway, whereas MotifExplainer's performance is noted to struggle. The related work (Sec. 4) explicitly critiques MotifExplainer for overlooking 'the universal importance of specific motifs and the orbit-based isomorphism' and for not providing a unified framework.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of theoretical justification for the greedy decomposition (Algorithm 2). The reviewer notes the promised justification (e.g., comparison to matching pursuit, error analysis) is not in the current submission.\",\n          \"proposed_change\": \"We will add a new subsection in Section 3.2 titled 'Theoretical Rationale for Greedy Decomposition'. This subsection will: 1) Frame the decomposition (Eq. 4) as a non-negative linear approximation problem in a potentially overcomplete basis set (d < |O|). 2) Explicitly state that the greedy selection algorithm is a variant of Orthogonal Matching Pursuit (OMP), a well-established heuristic for such problems, which iteratively selects the basis vector most correlated with the current residual. 3) Define a concrete, quantitative stopping criterion: the algorithm terminates when the L2 norm of the residual vector ||w_cm - P_cm S_cm|| falls below a threshold ε (e.g., 1e-4) or when the reduction in residual norm from the last iteration is less than a fraction δ (e.g., 1e-3) of the initial norm. 4) Include a new section in the appendix (Appendix G) presenting an empirical analysis of the algorithm's stability and reconstruction error. This will show the mean and standard deviation of the final residual norm across all class weights and multiple runs on a representative dataset, demonstrating the algorithm's consistency and the small magnitude of the approximation error in practice.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Presentation issues: typos, placeholder text, inconsistent notation.\",\n          \"proposed_change\": \"We will perform a thorough, line-by-line edit of the entire manuscript to correct all typographical and grammatical errors. We will remove all placeholder text (e.g., '009', '019') that was an artifact of the anonymization process. We will standardize all mathematical notation, ensuring consistent use of LaTeX and removing any stray formatting tags. We will verify and correct all cross-references to figures, tables, equations, and sections.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Need to more explicitly discuss the limitation of small graphlets (2-5 nodes) and the method's applicability.\",\n          \"proposed_change\": \"We will expand the discussion in Section 6 (Discussion and Conclusion) and Section G (Limitation and Future Work) to more directly address this point. We will explicitly state that the current implementation is optimized for discovering small, recurrent patterns (2-5 nodes) which are often highly meaningful in domains like biology and social networks, as evidenced by our experiments and cited prior work. We will also emphasize that the framework is extensible: users can define their own, larger graphlets and orbits based on domain knowledge, as mentioned in Sec. 3 ('users can also adopt a unique prior perspective') and demonstrated in the Tree-Cycle/Grid experiments. This will clarify that the 2-5 node set is a default, not a fundamental constraint.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We understand the concern that our rebuttal pointed towards future fixes rather than their presence in the submitted manuscript. We will ensure all proposed revisions are fully implemented in the final version. Below, we address the core points raised in this second round.\\n\\n**1. Theoretical Justification for Greedy Decomposition:** We acknowledge this is a weakness in the current submission. The algorithm is designed to solve a practical engineering problem: finding a sparse, non-negative linear combination of basis vectors to approximate another vector. Its heuristic nature is common in explainability methods (e.g., greedy search in EiG-Search, mask optimization in GNNExplainer). However, we agree that a stronger formal connection to established algorithms like Matching Pursuit and an empirical analysis of its behavior are necessary. The promised new subsection in Sec. 3.2 and appendix analysis (see 'Proposed Future Revisions') will be added to provide this crucial justification and demonstrate the algorithm's reliability in practice.\\n\\n**2. Differentiation from MotifExplainer:** The submitted paper already contains significant empirical differentiation. UO-Explainer outperforms MotifExplainer by a large margin on key metrics like Sub-recall ( Table 3) and Fidelity (Table 4) on multiple datasets. The key conceptual difference—explaining by a node's specific *role* (orbit) within a pattern, not just the pattern's presence—is what enables this superior performance and is central to our claims of human interpretability. We will revise the text in Sections 1, 4, and 5.4 to more forcefully articulate this distinction and explicitly tether the performance gains to this conceptual advance.\\n\\n**3. Presentation Issues:** We sincerely apologize for the state of the submitted draft. The placeholder text and formatting inconsistencies are not reflective of the intended final quality and resulted from the anonymization process. We have already prepared a thoroughly cleaned and polished version of the manuscript where these issues are completely resolved. This version features correct cross-referencing, consistent LaTeX notation throughout, and professional language.\\n\\n**4. Significance and Applicability:** We will enhance the discussion of limitations (Sec. G) to frankly address the focus on small graphlets, framing it as a design choice for capturing fundamental, domain-relevant building blocks while also highlighting the framework's inherent flexibility for user-defined units. The strong results on real-world datasets like PPI and Gene, where small motifs are known to be functionally significant, demonstrate the practical value of this approach.\\n\\nWe are confident that implementing these revisions will decisively address the concerns regarding soundness, clarity, and the articulation of our contribution, elevating the paper to the standard expected for publication.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_53c05f958151",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/iclr_reject_2025_030_toward_human_interpretable_explanations_in_a_unified_framework_for_gnns.md",
+    "target_paper_summary": {
+      "paper_id": "paper_53c05f958151",
+      "title": "Toward Human-Interpretable Explanations In A Unified Framework For Gnns",
+      "abstract": "1 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100 101 102 103 104 105 106 107 on conjecture based on the generated explanations. Additionally, these explanations do not always present results in a human-intuitive form, as they may include isolated nodes or disconnected edges, further hindering their interpretability. Therefore, we emphasize the need for explainability that centers on human interpretability, a perspective that has been largely underexplored. Last but not least, human-interpretable explanations should be delivered in a unified framework, incorporating both global and local levels in terms of the scope of explanation (Yuan et al., 2022; Prado-Romero et al., 2024). Most of the existing methods primarily specialize one one-level explanation either model or instance-level explanations. Model-level methods reveal patterns that GNNs deem significant for specific classes, eventually offering a broad understanding of the GNNs' general behavior. On the other hand, instance-level methods focus on individual predictions, identifying the subgraphs most relevant to the target node or graph. As each type of explanation complements the other from different perspectives, understanding at both levels enhances the explainability necessary for grasping the decision-making process of GNNs. However, State-of-the-art (Azzolin et al., 2022; Chen et al., 2023) studies also have rarely explored a unified framework that simultaneously provides both model-level and instance-level explanations in the user-centric perspective of interest. In this paper, we prioritize the two crucial perspectives that explanation should be human-interpretable in the unified framework incorporating both model and instance levels. Our proposed model, UO- Explainer, the Unified and Orbit-based Explainer for GNNs, allows users to harness their prior knowledge by giving room to select the user-defined explanation units in unified views. Considering the uniqueness of the graph domain to define explanation unit, we exploit orbits within graphlets that have been studied as a generalizable and universal pattern in many scientific fields such as protein interaction networks Przulj et al. (2004); Pr ˇ zulj (2007), social networks Chen & Lui (2018); Ahmed ˇ et al. (2015), and molecular structure networks Kondor et al. (2009), while users can also adopt a unique ",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_587a48467",
+        "title": "Interpreting Black-Box Models: A Review on Explainable Artificial Intelligence",
+        "authors": [
+          "Vikas Hassija",
+          "Vinay Chamola",
+          "Atmesh Mahapatra",
+          "Abhinandan Singal",
+          "Divyansh Goel",
+          "Kaizhu Huang",
+          "Simone Scardapane",
+          "Indro Spinelli",
+          "Mufti Mahmud",
+          "Amir Hussain"
+        ],
+        "year": 2023,
+        "publication_date": "2023-08-24",
+        "venue": "Cognitive Computation",
+        "abstract": "Abstract Recent years have seen a tremendous growth in Artificial Intelligence (AI)-based methodological development in a broad range of domains. In this rapidly evolving field, large number of methods are being reported using machine learning (ML) and Deep Learning (DL) models. Majority of these models are inherently complex and lacks explanations of the decision making process causing these models to be termed as 'Black-Box'. One of the major bottlenecks to adopt such models in mission-critical application domains, such as banking, e-commerce, healthcare, and public services and safety, is the difficulty in interpreting them. Due to the rapid proleferation of these AI models, explaining their learning and decision making process are getting harder which require transparency and easy predictability. Aiming to collate the current state-of-the-art in interpreting the black-box models, this study provides a comprehensive analysis of the explainable AI (XAI) models. To reduce false negative and false positive outcomes of these back-box models, finding flaws in them is still difficult and inefficient. In this paper, the development of XAI is reviewed meticulously through careful selection and analysis of the current state-of-the-art of XAI research. It also provides a comprehensive and in-depth evaluation of the XAI frameworks and their efficacy to serve as a starting point of XAI for applied and theoretical researchers. Towards the end, it highlights emerging and critical issues pertaining to XAI research to showcase major, model-specific trends for better explanation, enhanced transparency, and improved prediction accuracy.",
+        "url": "https://doi.org/10.1007/s12559-023-10179-8",
+        "doi": "https://doi.org/10.1007/s12559-023-10179-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386142022"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1831
+      },
+      {
+        "paper_id": "rw_002_20f899e90",
+        "title": "A Survey on Knowledge Graphs: Representation, Acquisition, and Applications",
+        "authors": [
+          "Shaoxiong Ji",
+          "Shirui Pan",
+          "Erik Cambria",
+          "Pekka Marttinen",
+          "Philip S. Yu"
+        ],
+        "year": 2021,
+        "publication_date": "2021-04-26",
+        "venue": "IEEE Transactions on Neural Networks and Learning Systems",
+        "abstract": "Human knowledge provides a formal understanding of the world. Knowledge graphs that represent structural relations between entities have become an increasingly popular research direction toward cognition and human-level intelligence. In this survey, we provide a comprehensive review of the knowledge graph covering overall research topics about: 1) knowledge graph representation learning; 2) knowledge acquisition and completion; 3) temporal knowledge graph; and 4) knowledge-aware applications and summarize recent breakthroughs and perspective directions to facilitate future research. We propose a full-view categorization and new taxonomies on these topics. Knowledge graph embedding is organized from four aspects of representation space, scoring function, encoding models, and auxiliary information. For knowledge acquisition, especially knowledge graph completion, embedding methods, path inference, and logical rule reasoning are reviewed. We further explore several emerging topics, including metarelational learning, commonsense reasoning, and temporal knowledge graphs. To facilitate future research on knowledge graphs, we also provide a curated collection of data sets and open-source libraries on different tasks. In the end, we have a thorough outlook on several promising research directions.",
+        "url": "https://doi.org/10.1109/tnnls.2021.3070843",
+        "doi": "https://doi.org/10.1109/tnnls.2021.3070843",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3003265726"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2749
+      },
+      {
+        "paper_id": "rw_003_eabc3a1a8",
+        "title": "Explaining Deep Neural Networks and Beyond: A Review of Methods and Applications",
+        "authors": [
+          "Wojciech Samek",
+          "Grégoire Montavon",
+          "Sebastian Lapuschkin",
+          "Christopher J. Anders",
+          "Klaus‐Robert Müller"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-01",
+        "venue": "Proceedings of the IEEE",
+        "abstract": "With the broader and highly successful usage of machine learning (ML) in industry and the sciences, there has been a growing demand for explainable artificial intelligence (XAI). Interpretability and explanation methods for gaining a better understanding of the problem-solving abilities and strategies of nonlinear ML, in particular, deep neural networks, are, therefore, receiving increased attention. In this work, we aim to: 1) provide a timely overview of this active emerging field, with a focus on “post hoc” explanations, and explain its theoretical foundations; 2) put interpretability algorithms to a test both from a theory and comparative evaluation perspective using extensive simulations; 3) outline best practice aspects, i.e., how to best include interpretation methods into the standard usage of ML; and 4) demonstrate successful usage of XAI in a representative selection of application scenarios. Finally, we discuss challenges and possible future directions of this exciting foundational field of ML.",
+        "url": "https://doi.org/10.1109/jproc.2021.3060483",
+        "doi": "https://doi.org/10.1109/jproc.2021.3060483",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3132191748"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1352
+      },
+      {
+        "paper_id": "rw_004_bc18e7b6a",
+        "title": "Auto-GNN: Neural architecture search of graph neural networks",
+        "authors": [
+          "Kaixiong Zhou",
+          "Xiao Huang",
+          "Qingquan Song",
+          "Rui Chen",
+          "Xia Hu"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-17",
+        "venue": "Frontiers in Big Data",
+        "abstract": "Graph neural networks (GNNs) have been widely used in various graph analysis tasks. As the graph characteristics vary significantly in real-world systems, given a specific scenario, the architecture parameters need to be tuned carefully to identify a suitable GNN. Neural architecture search (NAS) has shown its potential in discovering the effective architectures for the learning tasks in image and language modeling. However, the existing NAS algorithms cannot be applied efficiently to GNN search problem because of two facts. First, the large-step exploration in the traditional controller fails to learn the sensitive performance variations with slight architecture modifications in GNNs. Second, the search space is composed of heterogeneous GNNs, which prevents the direct adoption of parameter sharing among them to accelerate the search progress. To tackle the challenges, we propose an automated graph neural networks (AGNN) framework, which aims to find the optimal GNN architecture efficiently. Specifically, a reinforced conservative controller is designed to explore the architecture space with small steps. To accelerate the validation, a novel constrained parameter sharing strategy is presented to regularize the weight transferring among GNNs. It avoids training from scratch and saves the computation time. Experimental results on the benchmark datasets demonstrate that the architecture identified by AGNN achieves the best performance and search efficiency, comparing with existing human-invented models and the traditional search methods.",
+        "url": "https://doi.org/10.3389/fdata.2022.1029307",
+        "doi": "https://doi.org/10.3389/fdata.2022.1029307",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4309609199"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 105
+      },
+      {
+        "paper_id": "rw_005_305c2e5fc",
+        "title": "Graph neural networks for materials science and chemistry",
+        "authors": [
+          "Patrick Reiser",
+          "Marlen Neubert",
+          "André Eberhard",
+          "Luca Torresi",
+          "Chen Zhou",
+          "Chen Shao",
+          "Houssam Metni",
+          "Clint van Hoesel",
+          "Henrik Schopmans",
+          "Timo Sommer",
+          "Pascal Friederich"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-26",
+        "venue": "Communications Materials",
+        "abstract": "Machine learning plays an increasingly important role in many areas of chemistry and materials science, being used to predict materials properties, accelerate simulations, design new structures, and predict synthesis routes of new materials. Graph neural networks (GNNs) are one of the fastest growing classes of machine learning models. They are of particular relevance for chemistry and materials science, as they directly work on a graph or structural representation of molecules and materials and therefore have full access to all relevant information required to characterize materials. In this Review, we provide an overview of the basic principles of GNNs, widely used datasets, and state-of-the-art architectures, followed by a discussion of a wide range of recent applications of GNNs in chemistry and materials science, and concluding with a road-map for the further development and application of GNNs.",
+        "url": "https://doi.org/10.1038/s43246-022-00315-6",
+        "doi": "https://doi.org/10.1038/s43246-022-00315-6",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4310273071"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 774
+      },
+      {
+        "paper_id": "rw_006_8c010eb2a",
+        "title": "Benchmarking and survey of explanation methods for black box models",
+        "authors": [
+          "Francesco Bodria",
+          "Fosca Giannotti",
+          "Riccardo Guidotti",
+          "Francesca Naretto",
+          "Dino Pedreschi",
+          "Salvatore Rinzivillo"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-03",
+        "venue": "Data Mining and Knowledge Discovery",
+        "abstract": "Abstract The rise of sophisticated black-box machine learning models in Artificial Intelligence systems has prompted the need for explanation methods that reveal how these models work in an understandable way to users and decision makers. Unsurprisingly, the state-of-the-art exhibits currently a plethora of explainers providing many different types of explanations. With the aim of providing a compass for researchers and practitioners, this paper proposes a categorization of explanation methods from the perspective of the type of explanation they return, also considering the different input data formats. The paper accounts for the most representative explainers to date, also discussing similarities and discrepancies of returned explanations through their visual appearance. A companion website to the paper is provided as a continuous update to new explainers as they appear. Moreover, a subset of the most robust and widely adopted explainers, are benchmarked with respect to a repertoire of quantitative metrics.",
+        "url": "https://doi.org/10.1007/s10618-023-00933-9",
+        "doi": "https://doi.org/10.1007/s10618-023-00933-9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3130450512"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 246
+      },
+      {
+        "paper_id": "rw_007_8046b4f2a",
+        "title": "Could graph neural networks learn better molecular representation for drug discovery? A comparison study of descriptor-based and graph-based models",
+        "authors": [
+          "Dejun Jiang",
+          "Zhenhua Wu",
+          "Chang‐Yu Hsieh",
+          "Guangyong Chen",
+          "Ben Liao",
+          "Zhe Wang",
+          "Chao Shen",
+          "Dongsheng Cao",
+          "Jian Wu",
+          "Tingjun Hou"
+        ],
+        "year": 2021,
+        "publication_date": "2021-02-17",
+        "venue": "Journal of Cheminformatics",
+        "abstract": "Graph neural networks (GNN) has been considered as an attractive modelling method for molecular property prediction, and numerous studies have shown that GNN could yield more promising results than traditional descriptor-based methods. In this study, based on 11 public datasets covering various property endpoints, the predictive capacity and computational efficiency of the prediction models developed by eight machine learning (ML) algorithms, including four descriptor-based models (SVM, XGBoost, RF and DNN) and four graph-based models (GCN, GAT, MPNN and Attentive FP), were extensively tested and compared. The results demonstrate that on average the descriptor-based models outperform the graph-based models in terms of prediction accuracy and computational efficiency. SVM generally achieves the best predictions for the regression tasks. Both RF and XGBoost can achieve reliable predictions for the classification tasks, and some of the graph-based models, such as Attentive FP and GCN, can yield outstanding performance for a fraction of larger or multi-task datasets. In terms of computational cost, XGBoost and RF are the two most efficient algorithms and only need a few seconds to train a model even for a large dataset. The model interpretations by the SHAP method can effectively explore the established domain knowledge for the descriptor-based models. Finally, we explored use of these models for virtual screening (VS) towards HIV and demonstrated that different ML algorithms offer diverse VS profiles. All in all, we believe that the off-the-shelf descriptor-based models still can be directly employed to accurately predict various chemical endpoints with excellent computability and interpretability.",
+        "url": "https://doi.org/10.1186/s13321-020-00479-8",
+        "doi": "https://doi.org/10.1186/s13321-020-00479-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3116202926"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 629
+      },
+      {
+        "paper_id": "rw_008_34a273d1e",
+        "title": "Large language models (LLMs): survey, technical frameworks, and future challenges",
+        "authors": [
+          "Pranjal Kumar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-18",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Artificial intelligence (AI) has significantly impacted various fields. Large language models (LLMs) like GPT-4, BARD, PaLM, Megatron-Turing NLG, Jurassic-1 Jumbo etc., have contributed to our understanding and application of AI in these domains, along with natural language processing (NLP) techniques. This work provides a comprehensive overview of LLMs in the context of language modeling, word embeddings, and deep learning. It examines the application of LLMs in diverse fields including text generation, vision-language models, personalized learning, biomedicine, and code generation. The paper offers a detailed introduction and background on LLMs, facilitating a clear understanding of their fundamental ideas and concepts. Key language modeling architectures are also discussed, alongside a survey of recent works employing LLM methods for various downstream tasks across different domains. Additionally, it assesses the limitations of current approaches and highlights the need for new methodologies and potential directions for significant advancements in this field.",
+        "url": "https://doi.org/10.1007/s10462-024-10888-y",
+        "doi": "https://doi.org/10.1007/s10462-024-10888-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401671778"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 318
+      },
+      {
+        "paper_id": "rw_009_1f7456c41",
+        "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap",
+        "authors": [
+          "Shirui Pan",
+          "Linhao Luo",
+          "Yufei Wang",
+          "Chen Chen",
+          "Jiapu Wang",
+          "Xindong Wu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-14",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large language models (LLMs), such as ChatGPT and GPT4, are making new waves in the field of natural language processing and artificial intelligence, due to their emergent ability and generalizability. However, LLMs are black-box models, which often fall short of capturing and accessing factual knowledge. In contrast, Knowledge Graphs (KGs), Wikipedia and Huapu for example, are structured knowledge models that explicitly store rich factual knowledge. KGs can enhance LLMs by providing external knowledge for inference and interpretability. Meanwhile, KGs are difficult to construct and evolving by nature, which challenges the existing methods in KGs to generate new facts and represent unseen knowledge. Therefore, it is complementary to unify LLMs and KGs together and simultaneously leverage their advantages. In this article, we present a forward-looking roadmap for the unification of LLMs and KGs. Our roadmap consists of three general frameworks, namely, 1) KG-enhanced LLMs, which incorporate KGs during the pre-training and inference phases of LLMs, or for the purpose of enhancing understanding of the knowledge learned by LLMs; 2) LLM-augmented KGs, that leverage LLMs for different KG tasks such as embedding, completion, construction, graph-to-text generation, and question answering; and 3) Synergized LLMs + KGs, in which LLMs and KGs play equal roles and work in a mutually beneficial way to enhance both LLMs and KGs for bidirectional reasoning driven by both data and knowledge. We review and summarize existing efforts within these three frameworks in our roadmap and pinpoint their future research directions.",
+        "url": "http://arxiv.org/abs/2306.08302",
+        "doi": "https://doi.org/10.48550/arxiv.2306.08302",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4380993239"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 101
+      },
+      {
+        "paper_id": "rw_010_dafb246e7",
+        "title": "A Perspective on Explanations of Molecular Prediction Models",
+        "authors": [
+          "Geemi P. Wellawatte",
+          "Heta A. Gandhi",
+          "Aditi Seshadri",
+          "Andrew Dickson White"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-27",
+        "venue": "Journal of Chemical Theory and Computation",
+        "abstract": "Chemists can be skeptical in using deep learning (DL) in decision making, due to the lack of interpretability in \"black-box\" models. Explainable artificial intelligence (XAI) is a branch of artificial intelligence (AI) which addresses this drawback by providing tools to interpret DL models and their predictions. We review the principles of XAI in the domain of chemistry and emerging methods for creating and evaluating explanations. Then, we focus on methods developed by our group and their applications in predicting solubility, blood-brain barrier permeability, and the scent of molecules. We show that XAI methods like chemical counterfactuals and descriptor explanations can explain DL predictions while giving insight into structure-property relationships. Finally, we discuss how a two-step process of developing a black-box model and explaining predictions can uncover structure-property relationships.",
+        "url": "https://doi.org/10.1021/acs.jctc.2c01235",
+        "doi": "https://doi.org/10.1021/acs.jctc.2c01235",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4360992523"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 107
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_8c010eb2a",
+        "relevance_score": 0.87,
+        "relevance_types": [
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper surveys explanation methods for black-box models, including benchmarking with quantitative metrics, directly addressing the target's focus on human-interpretable explanations for GNNs.",
+        "evidence_summary": "In 2023, Bodria et al. published 'Benchmarking and survey of explanation methods for black box models,' which reviewed state-of-the-art explainers and benchmarked a subset of robust methods using quantitative metrics. The paper categorized explanation methods by the type of explanation returned and input data formats, providing a comprehensive analysis for researchers and practitioners."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_001_587a48467",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This review analyzes explainable AI (XAI) models, highlighting challenges in interpreting black-box models and issues like false negatives/positives, aligning with the target's emphasis on human interpretability.",
+        "evidence_summary": "In 2023, Hassija et al. published 'Interpreting Black-Box Models: A Review on Explainable Artificial Intelligence,' which provided a comprehensive analysis of XAI models and their efficacy. The study reviewed the development of XAI through careful selection of state-of-the-art research and highlighted emerging issues for better explanation and transparency."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_eabc3a1a8",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_problem",
+          "novelty_competitor"
+        ],
+        "rationale": "This review covers explanation methods for deep neural networks, including theoretical foundations and application scenarios, relevant to the target's focus on GNN explainability.",
+        "evidence_summary": "In 2021, Samek et al. published 'Explaining Deep Neural Networks and Beyond: A Review of Methods and Applications,' which provided an overview of post-hoc explanations and their theoretical foundations. The work outlined best practices for including interpretation methods in ML usage and demonstrated XAI in various application scenarios."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_010_dafb246e7",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "This perspective discusses explanations for molecular prediction models using XAI methods like chemical counterfactuals, relevant to the target's domain-specific interpretability concerns.",
+        "evidence_summary": "In 2023, Wellawatte et al. published 'A Perspective on Explanations of Molecular Prediction Models,' which reviewed XAI principles in chemistry and methods for creating and evaluating explanations. The paper applied XAI methods to predict solubility, blood-brain barrier permeability, and molecular scent, showing how explanations can provide insight into structure-property relationships."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_bc18e7b6a",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper proposes a neural architecture search framework for GNNs, addressing challenges in GNN optimization, which relates to the target's method development for unified explanations.",
+        "evidence_summary": "In 2022, Zhou et al. published 'Auto-GNN: Neural architecture search of graph neural networks,' which introduced an automated framework to find optimal GNN architectures efficiently. The method used a reinforced conservative controller and constrained parameter sharing strategy, demonstrating improved performance and search efficiency on benchmark datasets compared to human-invented models and traditional search methods."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_8046b4f2a",
+        "relevance_score": 0.63,
+        "relevance_types": [
+          "benchmark_baseline",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This comparison study evaluates GNNs against descriptor-based models in drug discovery, providing benchmark insights and limitations relevant to GNN applications.",
+        "evidence_summary": "In 2021, Jiang et al. published 'Could graph neural networks learn better molecular representation for drug discovery? A comparison study of descriptor-based and graph-based models,' which tested predictive capacity and computational efficiency on 11 public datasets. The study found that descriptor-based models generally outperformed graph-based models in accuracy and efficiency, with SVM achieving best regression results and XGBoost/RF excelling in classification tasks."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_305c2e5fc",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This review covers GNN principles and applications in materials science and chemistry, providing background on GNN usage relevant to the target's domain.",
+        "evidence_summary": "In 2022, Reiser et al. published 'Graph neural networks for materials science and chemistry,' which provided an overview of GNN basic principles, datasets, and state-of-the-art architectures. The paper discussed a wide range of applications in chemistry and materials science and concluded with a roadmap for GNN development."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_002_20f899e90",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "This survey on knowledge graphs covers representation learning and applications, providing general background relevant to graph-based methods but not directly focused on explainability.",
+        "evidence_summary": "In 2021, Ji et al. published 'A Survey on Knowledge Graphs: Representation, Acquisition, and Applications,' which reviewed knowledge graph representation learning, acquisition, completion, temporal aspects, and knowledge-aware applications. The paper proposed a full-view categorization and taxonomies, summarizing recent breakthroughs and providing a curated collection of datasets and open-source libraries."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_009_1f7456c41",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "This roadmap unifies large language models and knowledge graphs, offering broader AI insights but not directly relevant to GNN explainability.",
+        "evidence_summary": "In 2023, Pan et al. published 'Unifying Large Language Models and Knowledge Graphs: A Roadmap,' which presented three frameworks for integrating LLMs and KGs: KG-enhanced LLMs, LLM-augmented KGs, and synergized LLMs + KGs. The paper reviewed existing efforts within these frameworks and discussed bidirectional reasoning driven by data and knowledge."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_008_34a273d1e",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "background"
+        ],
+        "rationale": "This survey on large language models covers technical frameworks and applications, providing general AI background but minimal direct relevance to GNN explainability.",
+        "evidence_summary": "In 2024, Kumar published 'Large language models (LLMs): survey, technical frameworks, and future challenges,' which provided a comprehensive overview of LLMs in language modeling, word embeddings, and deep learning. The paper examined LLM applications in text generation, vision-language models, personalized learning, biomedicine, and code generation, and discussed limitations and future directions."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Bodria et al. published 'Benchmarking and survey of explanation methods for black box models,' which reviewed state-of-the-art explainers and benchmarked a subset of robust methods using quantitative metrics. In 2023, Hassija et al. published 'Interpreting Black-Box Models: A Review on Explainable Artificial Intelligence,' providing a comprehensive analysis of XAI models and their efficacy. In 2021, Samek et al. published 'Explaining Deep Neural Networks and Beyond: A Review of Methods and Applications,' covering post-hoc explanations and theoretical foundations. In 2023, Wellawatte et al. published 'A Perspective on Explanations of Molecular Prediction Models,' reviewing XAI principles in chemistry and applying methods to predict molecular properties. In 2022, Zhou et al. published 'Auto-GNN: Neural architecture search of graph neural networks,' introducing an automated framework for efficient GNN architecture search. In 2021, Jiang et al. published 'Could graph neural networks learn better molecular representation for drug discovery? A comparison study of descriptor-based and graph-based models,' which tested predictive capacity on 11 public datasets and found descriptor-based models generally outperformed graph-based ones in accuracy and efficiency.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

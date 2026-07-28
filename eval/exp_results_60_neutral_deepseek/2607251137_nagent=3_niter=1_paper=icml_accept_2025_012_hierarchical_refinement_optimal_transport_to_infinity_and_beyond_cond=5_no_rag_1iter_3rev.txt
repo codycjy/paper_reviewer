@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea is genuinely novel and creative: using low-rank OT to co-cluster Monge pairs as a guarantee for hierarchical refinement, enabling linear-space, log-time computation of the full Monge map. This bridges the gap between low-rank approximations and exact bijective alignments.",
+        "The paper achieves a major practical advance in scalability, demonstrating OT alignments on datasets with over a million points—a scale previously infeasible for full-rank solvers like Sinkhorn. This opens the door for OT in large-scale generative modeling and big-data applications.",
+        "The theoretical foundation (Proposition 3.1) provides a clean, insightful invariant that drives the algorithm, connecting low-rank factorization properties to the structure of the optimal Monge map in a non-obvious way."
+      ],
+      "weaknesses": [
+        "The method currently assumes datasets of equal size and uniform weights, which limits immediate applicability to some problems (e.g., unbalanced or differently sized distributions). The authors acknowledge this but do not provide a clear pathway for extension.",
+        "Optimality guarantees rely on the 'strict r-Monge separability' condition and an optimal low-rank solver black-box. In practice, non-convex low-rank solvers may not reach the global optimum, and the theoretical condition is somewhat abstract—its practical verification or prevalence is not deeply analyzed."
+      ],
+      "summary_comment": "This is an exciting and highly novel paper that fundamentally advances the scalability of optimal transport. The core insight—that low-rank OT factors co-cluster points with their Monge images—is clever and enables a hierarchical refinement algorithm that achieves linear space and log-linear time. While the theory relies on a specific separability condition and practical optimality depends on the low-rank subroutine, the empirical results are compelling: HiRef scales to over a million points and matches or beats Sinkhorn in cost where comparable. The significance for large-scale machine learning is substantial, potentially enabling OT in areas previously limited by quadratic complexity. Minor limitations (equal-sized datasets, idealized assumptions) do not detract from the main contribution's impact and novelty. Accept."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel hierarchical algorithm (HiRef) that achieves linear space complexity and log-linear time complexity for computing optimal transport maps, scaling to datasets with over a million points.",
+        "The theoretical foundation (Proposition 3.1) is rigorous and provides a key invariant that guarantees the algorithm co-clusters points with their Monge map images under strict Monge separability conditions.",
+        "The experimental evaluation is comprehensive, demonstrating superior scalability and competitive performance against state-of-the-art methods across synthetic, transcriptomic, and large-scale vision datasets."
+      ],
+      "weaknesses": [
+        "The algorithm assumes datasets of equal size and uniform measures, which may limit applicability in some practical scenarios where these conditions do not hold.",
+        "The theoretical guarantees rely on strict Monge separability, which may not always be satisfied in practice, and the practical low-rank OT solvers used are non-convex and may not always find the global optimum."
+      ],
+      "summary_comment": "HiRef presents a significant advancement in scalable optimal transport by leveraging low-rank OT in a hierarchical framework. The method is theoretically sound, with rigorous proofs supporting the key co-clustering invariant. Experimental results demonstrate impressive scalability and practical utility, outperforming existing methods on large datasets. While there are assumptions and limitations, the overall contribution is substantial and well-executed."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Presents a highly significant practical contribution: a linear-space, log-linear-time algorithm (Hierarchical Refinement) for full-rank optimal transport (OT) scaling to over a million points, enabling OT applications previously impossible due to quadratic complexity.",
+        "Provides a strong theoretical foundation (Proposition 3.1) linking co-clustering in low-rank OT to the Monge map, and uses this insight directly to design a novel, principled algorithm.",
+        "Comprehensive and convincing evaluation on large-scale real-world datasets (e.g., transcriptomics with >100k points, ImageNet with 1.28M points), demonstrating superior scalability and competitive or lower primal OT cost compared to state-of-the-art methods like Sinkhorn, ProgOT, low-rank OT, and mini-batch OT."
+      ],
+      "weaknesses": [
+        "The method currently assumes equally sized source and target datasets, limiting its immediate applicability to general unbalanced measures, though the authors note this is sufficient for many machine learning pairing tasks.",
+        "Algorithm performance is contingent on the sub-optimality of practical low-rank OT solvers (a non-convex problem). The theoretical guarantee of recovering the Monge map rests on having an optimal low-rank solver, which is a practical limitation acknowledged but not fully resolved."
+      ],
+      "summary_comment": "This paper makes a strong, practical contribution by solving a well-known scalability bottleneck in optimal transport (OT). The proposed Hierarchical Refinement (HiRef) algorithm is novel, combining rigorous theory with practical design to achieve linear space and log-linear time complexity. The significance is outstanding, enabling full-rank bijective OT on datasets with millions of points—a capability that unlocks new applications. The evaluation is comprehensive and convincing, demonstrating state-of-the-art performance on large, challenging real-world datasets. While the requirement for equal-sized datasets is a minor limitation, it does not detract from the paper's core achievement. The work is clearly written, methodologically sound, and represents a major step forward for scalable computational OT. It merits acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper focuses on optimal transport (OT), which is a core machine learning topic well-aligned with ICML's optimization and probabilistic methods tracks",
+        "The work presents a novel algorithmic contribution (HiRef) that improves scalability of OT, addressing a well-known bottleneck in the field",
+        "The paper includes strong theoretical foundations (Proposition 3.1) and comprehensive experimental evaluation, matching ICML's emphasis on both theoretical and empirical rigor"
+      ],
+      "why_it_does_not_fit": [
+        "The work is more algorithmic/theoretical than application-focused, which might fit slightly better at NeurIPS which has stronger theory focus",
+        "While OT is relevant to ICML, the paper's focus on large-scale computational aspects might be more specifically aligned with NeurIPS' systems and optimization tracks",
+        "The assumption of equal-sized datasets limits immediate applicability to some ML scenarios, reducing the broad appeal that ICML typically values"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper addresses a fundamental scalability problem in optimal transport with significant implications for large-scale machine learning applications",
+        "NeurIPS has strong tracks in optimization, theory, and large-scale systems where this work would be highly relevant",
+        "The combination of theoretical innovation (Proposition 3.1) with practical scalability (million-point datasets) aligns perfectly with NeurIPS' emphasis on both theoretical and empirical advances",
+        "The work has direct relevance to several NeurIPS application areas including generative modeling, computer vision, and biological applications"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus is quite specialized on optimal transport rather than broader machine learning topics",
+        "While the theoretical contributions are strong, they are somewhat specific to the OT domain rather than presenting general machine learning insights"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Optimal transport has important applications in deep learning, particularly for generative models and representation learning",
+        "The scalability improvements could benefit neural OT methods and deep learning applications that use OT",
+        "The paper mentions potential applications in training high-quality generative models using OT principles"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR focuses primarily on deep learning and representation learning, while this paper is more about computational optimization and algorithmic innovation",
+        "The work does not involve neural networks or deep learning architectures directly",
+        "The theoretical contributions are more aligned with optimization and computational mathematics than with deep learning theory",
+        "Reviewers noted the method's assumptions (equal dataset sizes) limit immediate applicability to many deep learning scenarios"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

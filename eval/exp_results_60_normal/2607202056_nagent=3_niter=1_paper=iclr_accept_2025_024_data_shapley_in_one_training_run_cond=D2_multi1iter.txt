@@ -1,0 +1,120 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of 'In-Run Data Shapley' is incredibly novel and directly addresses a critical scalability and conceptual issue with traditional Data Shapley, making data attribution feasible for foundation models.",
+        "The introduction of 'ghost dot-product' and 'ghost gradient-Hessian-gradient product' techniques for efficient computation is an ingenious technical contribution, dramatically reducing the runtime overhead to negligible.",
+        "The case studies provide compelling evidence of the method's utility, offering fresh insights into data curation, dynamic data contributions during training, and implications for generative AI copyright, demonstrating significant practical impact."
+      ],
+      "weaknesses": [
+        "While the efficiency gains are impressive, the reliance on (first or second-order) Taylor approximations, even if shown to be good empirically, is still an approximation at its core, and its theoretical guarantees across diverse models and tasks might need further exploration.",
+        "The discussion on extending to other optimizers (like Adam) and handling memory constraints with large batch sizes, while acknowledged as future work, indicates that the current solution is not universally applicable without further development, which could limit immediate widespread adoption for all large models."
+      ],
+      "summary_comment": "This paper presents a truly innovative solution to a major bottleneck in data attribution for large-scale machine learning models. The In-Run Data Shapley concept, coupled with the highly efficient 'ghost' computation techniques, is a game-changer, pushing the boundaries of what's possible in understanding data contributions to complex models like LLMs. The societal and practical implications highlighted in the case studies, particularly for data curation and copyright in generative AI, underscore the significant impact this work could have. While there are inherent approximations and some limitations (like extension to other optimizers), the boldness of the idea and its potential to unlock new research avenues far outweigh these minor concerns. This is exactly the kind of forward-thinking research that needs to be celebrated."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces In-Run Data Shapley, a novel and well-justified definition of data contribution that specifically addresses the practical limitations and conceptual ambiguities of traditional retraining-based Data Shapley, particularly for large-scale models. The theoretical basis leveraging the linearity of Shapley values and iterative model training is sound.",
+        "The proposed \"ghost dot-product\" and \"ghost gradient-Hessian-gradient product\" techniques are significant technical contributions. They dramatically improve the computational efficiency of calculating In-Run Data Shapley scores, making data attribution feasible for foundation models, which was previously a major bottleneck. The empirical runtime evaluations strongly support these claims.",
+        "The empirical case studies provide compelling evidence of the method's utility, showcasing its ability to identify low-quality data for improved curation, analyze the stage-dependent contribution of different data types during training, and offer fresh insights into the complex issue of copyright in generative AI beyond mere memorization."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates strong performance on GPT2 and Pythia-410M, the claim that the approach is applicable to \"larger-scale industrial models with sufficient computing resources\" needs further scrutiny given the memory and runtime complexity. The current evaluation is on relatively smaller foundation models. The generalization to truly massive models (e.g., hundreds of billions of parameters) would still face practical challenges, even with the efficient techniques.",
+        "The current formulation is primarily for SGD-based optimization. While the paper acknowledges the extension to Adam and similar optimizers as future work, this is a notable limitation given the widespread use of adaptive optimizers in modern deep learning. The practical applicability for many current foundation models trained with Adam-like optimizers is thus restricted until this extension is developed and verified."
+      ],
+      "summary_comment": "This paper presents In-Run Data Shapley, a theoretically sound and empirically validated framework for attributing data contributions during a single model training run. The core idea of breaking down data attribution into iterative, per-step calculations and accumulating Shapley values is elegant and addresses both computational and conceptual limitations of prior approaches. The development of \"ghost\" techniques for efficient gradient dot-product and gradient-Hessian-gradient product computations is a significant technical advancement, enabling the practical application of Data Shapley to large-scale models. The efficiency gains are well-demonstrated, and the case studies offer valuable insights into data curation, training dynamics, and the implications for AI copyright. While the current scope is primarily SGD-based and the evaluation is on relatively smaller foundation models, the methodological rigor and the compelling results make this a strong contribution to the field. The proposed method has the potential to profoundly impact how data quality and utility are understood and managed in the context of large-scale machine learning."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly significant and pressing practical problem: the computational infeasibility of Data Shapley for large-scale models, especially foundation models. The proposed In-Run Data Shapley offers a viable path to perform data attribution in real-world scenarios, which is a major leap forward.",
+        "The core technical contribution of 'ghost dot-product' and 'ghost gradient-Hessian-gradient product' techniques is ingenious. It significantly optimizes the computation of Data Shapley by avoiding explicit materialization of per-sample gradients/Hessians, enabling near-negligible overhead for first-order approximation and acceptable overhead for second-order.",
+        "The case studies are compelling and provide genuine insights relevant to practitioners. Demonstrating improved data curation from finding negatively valued data points, understanding the dynamic contribution of data over training stages, and, most importantly, the implications for copyright beyond memorization are highly valuable contributions."
+      ],
+      "weaknesses": [
+        "While the 'ghost' techniques are a major strength, their presentation in Section 4.2 and Appendix D could be made even clearer for practitioners who might not be deep experts in differential privacy gradient computations. A more streamlined explanation or clearer pseudocode might enhance accessibility.",
+        "The paper discusses the limitation of requiring validation data upfront. While valid, I would have liked to see a more robust discussion or preliminary exploration of practical strategies for scenarios where validation data arrives later, beyond just saving checkpoints. This is a common real-world constraint that could impact its applicability for some users."
+      ],
+      "summary_comment": "This paper presents a highly significant and practically relevant contribution to the field of data attribution. The core idea of In-Run Data Shapley, coupled with the efficient 'ghost' computation techniques, directly tackles the computational bottleneck that has severely limited the application of principled Data Shapley in large-scale machine learning, especially for foundation models. The impressive runtime evaluation and the insightful case studies demonstrate the genuine utility and impact of this work. The findings regarding data curation and copyright implications are particularly timely and valuable. While some technical explanations could be slightly more accessible and the validation data limitation warrants further practical consideration, the overall significance and practical impact make this a strong acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces 'In-Run Data Shapley', a novel method for data attribution, which falls under 'general machine learning' and 'trustworthy machine learning' (reliability, interpretability) topics, aligning well with ICML's scope.",
+        "The work presents significant methodological innovations in 'optimization' with the 'ghost dot-product' and 'ghost gradient-Hessian-gradient product' techniques, enabling efficient computation previously deemed infeasible for large models. This strong technical contribution is highly valued by ICML.",
+        "Reviewer comments consistently highlight the novelty ('incredibly novel', 'game-changer') and significance ('major bottleneck', 'significant technical advancement') of the proposed approach, which is a key criterion for ICML publications.",
+        "The empirical evaluation on foundation models (GPT2, Pythia-410M) and its implications for data curation and generative AI copyright demonstrate 'application-driven machine learning' with innovative techniques, a topic explicitly welcomed by ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's efficient techniques are a major strength, its current primary focus on SGD-based optimization, as highlighted by Reviewer B, is a limitation given the widespread use of Adam and similar optimizers in modern deep learning research often presented at ICML. Its full applicability to all state-of-the-art models might be restricted.",
+        "Reviewer A notes that the reliance on Taylor approximations, while empirically strong, might lack theoretical guarantees across diverse models and tasks, which could be a minor point of contention for some theoretically-inclined ICML reviewers.",
+        "Reviewer C points out that the presentation of the 'ghost' techniques could be made more accessible for practitioners, which, though not a major flaw, indicates a slight mismatch for a portion of ICML's broad audience that values clear methodological exposition."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on 'Data Shapley' and 'data attribution' aligns well with NeurIPS topics such as 'General machine learning: core contributions in supervised and unsupervised methods' and 'Data-centric aspects of AI'.",
+        "The technical contributions in efficient computation of Shapley values via 'ghost dot-product' and 'ghost gradient-Hessian-gradient product' relate to 'Optimization' and 'SysML Infrastructure', which are explicitly covered by NeurIPS.",
+        "The case studies on foundation models (GPT2 and Pythia-410M) for data curation and insights into generative AI copyright connect to 'Language and multimodal language models' and 'Socio-technical aspects of AI', and 'Human interaction in AI systems', all key areas for NeurIPS.",
+        "Reviewers praise the novelty and significance of the work, with Reviewer A calling it a 'game-changer' and Reviewer B noting its 'theoretically sound and empirically validated framework', which are strong indicators for NeurIPS acceptance."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the current limitation to SGD-based optimization is a weakness for NeurIPS, where adaptive optimizers are very common in deep learning research, potentially limiting the immediate impact on all current large models.",
+        "While the paper demonstrates strong empirical results, the theoretical guarantees of the Taylor approximations across diverse settings, as noted by Reviewer A, could be an area where some NeurIPS reviewers might seek deeper exploration.",
+        "The scope of the foundation models evaluated, while substantial (GPT2, Pythia-410M), is noted by Reviewer B as 'relatively smaller' compared to 'truly massive models'. This could be a minor point of concern for a conference that often features work on the absolute cutting edge of scale."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core topic of data attribution for deep learning models, particularly foundation models (GPT2, Pythia-410M), is highly relevant to ICLR, which focuses extensively on 'all aspects of deep learning' and 'representation learning for ... language'.",
+        "The technical innovation of 'ghost dot-product' and 'ghost gradient-Hessian-gradient product' directly addresses efficiency in deep learning model training, relevant to ICLR topics like 'optimization' and 'infrastructure, software libraries, hardware'.",
+        "The discussion of implications for generative AI copyright and data curation touches upon 'societal considerations including fairness, safety, privacy' in the context of deep learning, a recognized area at ICLR.",
+        "Reviewer A explicitly states the work 'pushes the boundaries of what's possible in understanding data contributions to complex models like LLMs', aligning with ICLR's emphasis on cutting-edge deep learning research."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's applicability is currently limited to SGD-based optimization, as pointed out by reviewers. Many state-of-the-art deep learning models presented at ICLR rely on adaptive optimizers (e.g., Adam), making this a significant practical limitation for some research presented at this venue.",
+        "While the paper deals with deep learning, Data Shapley is a more general machine learning concept. The deep learning-specific theoretical contributions, especially on the 'ghost' techniques, are strong, but the overall framing might be slightly less 'deep learning centric' than what some ICLR reviewers expect for a top-tier paper.",
+        "The evaluation is on specific foundation models. While sufficient, ICLR often sees work that pushes the boundaries of deep learning architectures, and the primary contribution here is methodological advancement in attribution rather than a new deep learning model or architecture itself."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

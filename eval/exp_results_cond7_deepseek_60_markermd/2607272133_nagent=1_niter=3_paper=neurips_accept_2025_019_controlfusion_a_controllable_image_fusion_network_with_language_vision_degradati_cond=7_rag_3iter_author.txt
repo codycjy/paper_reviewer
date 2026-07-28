@@ -1,0 +1,369 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a comprehensive and novel controllable framework (ControlFusion) for infrared-visible image fusion that integrates language-vision prompts to handle real-world composite degradations.",
+        "Extensive experimental validation across diverse datasets and degradation scenarios, showing clear SOTA performance in both quality metrics (EN, SD, VIF, Qabf) and perception-based scores (CLIP-IQA, MUSIQ, TReS).",
+        "Introduces valuable technical contributions, including a physics-driven multimodal degradation imaging model (DDL-12 dataset), a spatial-frequency collaborative visual adapter (SFVA), and a prompt-modulated restoration/fusion network."
+      ],
+      "weaknesses": [
+        "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+        "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+          "severity": "minor",
+          "evidence": "In the provided paper, Section 5 (Experiments) reports quantitative scores in Tables 1, 2, 3, etc., without standard deviations, error bars, or statistical tests. The authors also explicitly state in the 'Limitations/Question 7' self-checklist: 'This paper does not include error bars or formal statistical significance tests.'",
+          "affected_claim": "The claims of superior performance over SOTA methods are supported by mean metric scores but lack quantification of result variability across runs or test splits.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited.",
+          "severity": "minor",
+          "evidence": "The degradation model in Section 3 uses formulas based on Retinex theory, atmospheric scattering, etc., to simulate degradations for infrared and visible images. While the synthesized DDL-12 dataset is used for training, the paper acknowledges in the 'Discussions and Limitations' section: 'the degradation imaging model is specifically designed for infrared and visible image fusion and is difficult to generalize to other fusion tasks, such as medical image fusion.'",
+          "affected_claim": "The claim of bridging the domain gap between synthetic and real data relies on this model; its completeness and universal applicability are bounded by the modeled physics.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The core technical claims remain well-supported by the submitted paper's methodology, derivations, and ablation studies. The response does not alter this assessment."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The integration of language-vision prompts for controllable infrared-visible fusion represents a novel contribution beyond existing methods. The response reinforces but does not change this assessment."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work addresses important practical limitations in multimodal fusion under degradations and demonstrates substantial improvements. The response confirms the practical focus but doesn't change the significance assessment."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The comprehensive experimental evaluation in the submitted paper, spanning multiple datasets and scenarios, adequately supports the claims. The statistical reporting limitation remains minor and doesn't undermine the overall evaluation strength."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured and clear. The authors acknowledge a minor presentation enhancement but this doesn't change the assessment of the submitted manuscript."
+        }
+      },
+      "summary_comment": "The authors' response acknowledges both weaknesses but does not resolve them with evidence already present in the submitted paper. The statistical significance analysis remains absent from the current submission, and the physics-based model's specialized nature remains an acknowledged limitation. However, these are minor issues that do not materially undermine the central contributions. The paper presents a novel framework for controllable image fusion with comprehensive validation, meeting the standards for acceptance. The promised revisions would enhance but are not required to validate the core contributions."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper addresses a machine learning problem involving multimodal data fusion with degradation handling, which aligns with ICML's interest in application-driven machine learning",
+        "The methodology incorporates deep learning architectures (Transformers, CLIP encoders) and optimization techniques that are core to ICML's scope",
+        "The work includes systematic evaluation on multiple datasets with quantitative metrics, meeting ICML's standards for rigorous methodology"
+      ],
+      "why_it_does_not_fit": [
+        "The application focus on infrared-visible image fusion is quite specialized and may be perceived as too application-specific for ICML's broader machine learning audience",
+        "The paper emphasizes engineering contributions (degradation modeling, fusion techniques) over fundamental machine learning advances",
+        "Reviewer noted lack of statistical significance analysis, which is particularly important for ICML's theoretical rigor standards",
+        "The physics-driven degradation model and fusion task may be too domain-specific compared to ICML's preference for general ML contributions"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The integration of language-vision models (CLIP) for controllable image processing aligns well with NeurIPS's interest in multimodal learning and language-vision integration",
+        "The paper addresses practical challenges in real-world AI applications (degradation handling, user customization) relevant to NeurIPS's broad application scope",
+        "The transformer-based architecture and attention mechanisms are core technologies frequently published at NeurIPS",
+        "The work demonstrates strong empirical results across multiple datasets and scenarios, meeting NeurIPS's standards for thorough evaluation"
+      ],
+      "why_it_does_not_fit": [
+        "The application domain (infrared-visible fusion) is somewhat niche and may have limited appeal to NeurIPS's general AI audience",
+        "While technically sound, the paper may be perceived as more incremental in its ML contributions compared to NeurIPS's preference for groundbreaking methods",
+        "The reviewer's concern about statistical significance, while minor, might be more noticeable in NeurIPS's highly competitive review process"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper focuses heavily on deep learning architectures (Transformers, CLIP encoders) and representation learning, which are core to ICLR's focus",
+        "The integration of vision-language models and prompt engineering aligns perfectly with ICLR's interest in modern deep learning paradigms",
+        "The methodology involves sophisticated neural network design including spatial-frequency feature learning and prompt modulation modules",
+        "The work demonstrates state-of-the-art performance in a challenging multimodal learning task relevant to ICLR's application interests"
+      ],
+      "why_it_does_not_fit": [
+        "The application is relatively specialized (infrared-visible fusion) and may be less mainstream than typical ICLR submissions",
+        "The paper emphasizes practical engineering solutions over deep theoretical analysis of neural network behavior",
+        "While the methodology is strong, the novelty might be perceived as more incremental in the fast-moving deep learning field"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a comprehensive and novel controllable framework (ControlFusion) for infrared-visible image fusion that integrates language-vision prompts to handle real-world composite degradations.",
+              "Extensive experimental validation across diverse datasets and degradation scenarios, showing clear SOTA performance in both quality metrics (EN, SD, VIF, Qabf) and perception-based scores (CLIP-IQA, MUSIQ, TReS).",
+              "Introduces valuable technical contributions, including a physics-driven multimodal degradation imaging model (DDL-12 dataset), a spatial-frequency collaborative visual adapter (SFVA), and a prompt-modulated restoration/fusion network."
+            ],
+            "weaknesses": [
+              "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+              "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+                "severity": "minor",
+                "evidence": "In the provided paper, Section 5 (Experiments) reports quantitative scores in Tables 1, 2, 3, etc., without standard deviations, error bars, or statistical tests. The authors also explicitly state in the 'Limitations/Question 7' self-checklist: 'This paper does not include error bars or formal statistical significance tests.'",
+                "affected_claim": "The claims of superior performance over SOTA methods are supported by mean metric scores but lack quantification of result variability across runs or test splits.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited.",
+                "severity": "minor",
+                "evidence": "The degradation model in Section 3 uses formulas based on Retinex theory, atmospheric scattering, etc., to simulate degradations for infrared and visible images. While the synthesized DDL-12 dataset is used for training, the paper acknowledges in the 'Discussions and Limitations' section: 'the degradation imaging model is specifically designed for infrared and visible image fusion and is difficult to generalize to other fusion tasks, such as medical image fusion.'",
+                "affected_claim": "The claim of bridging the domain gap between synthetic and real data relies on this model; its completeness and universal applicability are bounded by the modeled physics.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The core technical claims (physics-driven model, prompt alignment, network architecture) are well-described and supported by appropriate loss functions, derivations, and ablation studies. No fundamental flaws in reasoning or assumptions are evident."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The integration of language-vision prompts for controllable, degradation-aware infrared-visible fusion is novel. While text-guided image restoration exists, its extension to multimodal fusion with a dedicated visual adapter (SFVA) and a coupled restoration-fusion network represents a clear advance beyond prior degradation-robust or prompt-based fusion methods (e.g., Text-IF, Text-DiFuse)."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses important practical limitations in image fusion: handling composite real-world degradations and providing user controllability. The proposed method demonstrates substantial improvements over SOTA on multiple benchmarks and real-world datasets, contributing a step forward for robust multimodal vision systems."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, spanning multiple datasets (MSRS, LLVIP, RoadScene, FMB, AWMM-100k), diverse degradation types/levels, composite scenarios, real-world tests, object detection downstream task, ablation studies, and computational analysis. Comparisons include strong recent baselines and separate restoration pre-processing."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured, with clear figures, tables, and descriptions of the methodology, dataset construction, and experiments. The flow from problem formulation through two-stage training to results is logical and understandable."
+              }
+            },
+            "summary_comment": "ControlFusion presents a well-executed and novel approach to controllable infrared-visible image fusion under composite degradations. Its strengths lie in the integrated language-vision prompt framework, the physics-informed data synthesis, and the extensive experimental validation showing clear performance gains. The weaknesses are minor (lack of statistical significance reporting, model generalizability limits) and do not undermine the central contribution. The paper meets the standard for a top-tier machine learning conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a comprehensive and novel controllable framework (ControlFusion) for infrared-visible image fusion that integrates language-vision prompts to handle real-world composite degradations.",
+              "Extensive experimental validation across diverse datasets and degradation scenarios, showing clear SOTA performance in both quality metrics (EN, SD, VIF, Qabf) and perception-based scores (CLIP-IQA, MUSIQ, TReS).",
+              "Introduces valuable technical contributions, including a physics-driven multimodal degradation imaging model (DDL-12 dataset), a spatial-frequency collaborative visual adapter (SFVA), and a prompt-modulated restoration/fusion network."
+            ],
+            "weaknesses": [
+              "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+              "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+                "severity": "minor",
+                "evidence": "In the provided paper, Section 5 (Experiments) reports quantitative scores in Tables 1, 2, 3, etc., without standard deviations, error bars, or statistical tests. The authors also explicitly state in the 'Limitations/Question 7' self-checklist: 'This paper does not include error bars or formal statistical significance tests.'",
+                "affected_claim": "The claims of superior performance over SOTA methods are supported by mean metric scores but lack quantification of result variability across runs or test splits.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited.",
+                "severity": "minor",
+                "evidence": "The degradation model in Section 3 uses formulas based on Retinex theory, atmospheric scattering, etc., to simulate degradations for infrared and visible images. While the synthesized DDL-12 dataset is used for training, the paper acknowledges in the 'Discussions and Limitations' section: 'the degradation imaging model is specifically designed for infrared and visible image fusion and is difficult to generalize to other fusion tasks, such as medical image fusion.'",
+                "affected_claim": "The claim of bridging the domain gap between synthetic and real data relies on this model; its completeness and universal applicability are bounded by the modeled physics.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The core technical claims (physics-driven model, prompt alignment, network architecture) are well-described and supported by appropriate loss functions, derivations, and ablation studies. The authors' response confirms the submitted paper's soundness without altering this assessment."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The integration of language-vision prompts for controllable, degradation-aware infrared-visible fusion remains novel. The authors' response does not change the novelty assessment, which is based on the submitted work."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses important practical limitations in image fusion and demonstrates substantial improvements. The response reinforces the practical focus but does not alter the significance of the submitted contribution."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The comprehensive experimental evaluation in the submitted paper, spanning multiple datasets and scenarios, adequately supports the claims. The acknowledged limitation regarding statistical reporting is minor and does not undermine the overall evaluation strength."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clear. The authors' response acknowledges a minor presentation improvement but does not change the assessment of the submitted manuscript."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges the minor weaknesses identified but does not resolve them with evidence already present in the submitted paper. The promised future addition of statistical measures would strengthen the work but does not affect the evaluation of the current submission. The core contributions—a novel controllable fusion framework with language-vision prompts, a physics-driven degradation model, and extensive validation—remain solid and well-supported. The minor weaknesses do not materially undermine the central claims. The paper meets the standard for acceptance."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of formal statistical significance analysis for quantitative results\",\n        \"Limited generalizability of the physics-based degradation model to other fusion tasks\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Acknowledgment of limitation regarding statistical significance analysis\",\n          \"location\": \"Section 7 (Experimental result reproducibility question response)\",\n          \"explanation\": \"The paper explicitly states: 'This paper does not include error bars or formal statistical significance tests,' demonstrating awareness of this limitation.\"\n        },\n        {\n          \"concern\": \"Acknowledgment of limitations regarding the degradation model's generalizability\",\n          \"location\": \"Section 5.4 (Discussions and Limitations)\",\n          \"explanation\": \"The paper honestly discusses that 'the degradation imaging model is specifically designed for infrared and visible image fusion and is difficult to generalize to other fusion tasks, such as medical image fusion.'\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of formal statistical significance analysis\",\n          \"proposed_change\": \"We will add standard deviations or confidence intervals for key quantitative results in Tables 1-3 to provide better insight into result variability. We will also include a note explaining that all results are reported as means over the test sets.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We sincerely thank the reviewer for their positive assessment and constructive feedback. Regarding the statistical significance concern, we acknowledge that including error bars or confidence intervals would indeed strengthen the quantitative claims. While the current results show consistent superiority across multiple metrics and datasets, we will address this by adding variability measures (standard deviations) to the key tables in the revised version. This will provide better insight into the consistency of our method's performance.\\n\\nConcerning the physics-based degradation model's generalizability, we appreciate the reviewer's accurate observation. The degradation model is indeed specialized for infrared-visible fusion scenarios, as different modalities (e.g., medical imaging) involve distinct physical degradation processes. We have been transparent about this limitation in our discussion section, and we believe this specialization is appropriate given our focus on solving the specific challenges of infrared-visible fusion under realistic conditions. The model's effectiveness is demonstrated through strong performance on both synthetic and real-world infrared-visible datasets, including the challenging AWMM-100k benchmark.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a comprehensive and novel controllable framework (ControlFusion) for infrared-visible image fusion that integrates language-vision prompts to handle real-world composite degradations.",
+              "Extensive experimental validation across diverse datasets and degradation scenarios, showing clear SOTA performance in both quality metrics (EN, SD, VIF, Qabf) and perception-based scores (CLIP-IQA, MUSIQ, TReS).",
+              "Introduces valuable technical contributions, including a physics-driven multimodal degradation imaging model (DDL-12 dataset), a spatial-frequency collaborative visual adapter (SFVA), and a prompt-modulated restoration/fusion network."
+            ],
+            "weaknesses": [
+              "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+              "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The evaluation lacks formal statistical significance analysis (e.g., error bars, confidence intervals) for the reported quantitative results, which is common in the field but would strengthen the claims.",
+                "severity": "minor",
+                "evidence": "In the provided paper, Section 5 (Experiments) reports quantitative scores in Tables 1, 2, 3, etc., without standard deviations, error bars, or statistical tests. The authors also explicitly state in the 'Limitations/Question 7' self-checklist: 'This paper does not include error bars or formal statistical significance tests.'",
+                "affected_claim": "The claims of superior performance over SOTA methods are supported by mean metric scores but lack quantification of result variability across runs or test splits.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The physics-based degradation model, while detailed, may not fully capture all complexities of real-world imaging degradations, and its generalizability to other fusion tasks (e.g., medical) is acknowledged as limited.",
+                "severity": "minor",
+                "evidence": "The degradation model in Section 3 uses formulas based on Retinex theory, atmospheric scattering, etc., to simulate degradations for infrared and visible images. While the synthesized DDL-12 dataset is used for training, the paper acknowledges in the 'Discussions and Limitations' section: 'the degradation imaging model is specifically designed for infrared and visible image fusion and is difficult to generalize to other fusion tasks, such as medical image fusion.'",
+                "affected_claim": "The claim of bridging the domain gap between synthetic and real data relies on this model; its completeness and universal applicability are bounded by the modeled physics.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The core technical claims remain well-supported by the submitted paper's methodology, derivations, and ablation studies. The response does not alter this assessment."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The integration of language-vision prompts for controllable infrared-visible fusion represents a novel contribution beyond existing methods. The response reinforces but does not change this assessment."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses important practical limitations in multimodal fusion under degradations and demonstrates substantial improvements. The response confirms the practical focus but doesn't change the significance assessment."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The comprehensive experimental evaluation in the submitted paper, spanning multiple datasets and scenarios, adequately supports the claims. The statistical reporting limitation remains minor and doesn't undermine the overall evaluation strength."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clear. The authors acknowledge a minor presentation enhancement but this doesn't change the assessment of the submitted manuscript."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges both weaknesses but does not resolve them with evidence already present in the submitted paper. The statistical significance analysis remains absent from the current submission, and the physics-based model's specialized nature remains an acknowledged limitation. However, these are minor issues that do not materially undermine the central contributions. The paper presents a novel framework for controllable image fusion with comprehensive validation, meeting the standards for acceptance. The promised revisions would enhance but are not required to validate the core contributions."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of formal statistical significance analysis in the submitted work\",\n        \"Specialized nature of the physics-based degradation model\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Specialized nature and acknowledged limitation of the degradation model\",\n          \"location\": \"Section 5.4 (Discussions and Limitations)\",\n          \"explanation\": \"The paper explicitly states the degradation imaging model is designed for infrared-visible fusion tasks and acknowledges difficulty in generalizing to other fusion modalities like medical imaging, demonstrating a balanced and transparent assessment of the model's scope.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of statistical significance analysis in current submission\",\n          \"proposed_change\": \"In the rebuttal we acknowledge this limitation and commit to adding standard deviations or confidence intervals to key quantitative tables (Tables 1-3) in the final version. We note this will strengthen the presentation by providing insight into result variability.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"Thank you for the positive assessment and for noting that the core contributions remain solid. We appreciate your recognition that the identified weaknesses are minor and do not undermine the central claims.\\n\\nRegarding the statistical significance analysis, we agree that including variability measures would enhance the quantitative presentation. In the revision, we will add standard deviations to the reported metrics in Tables 1-3, providing readers with a clearer understanding of performance consistency. We acknowledge this enhancement was not present in the submitted version.\\n\\nConcerning the physics-based degradation model, we accept that it is specialized for infrared-visible fusion, as stated in our limitations section. This specialization is appropriate given our research focus, and the model's effectiveness is validated through strong experimental results on both synthetic and real-world infrared-visible benchmarks. We believe this scope definition is reasonable and does not detract from the contributions within the infrared-visible fusion domain.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_ec0163984995",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_019_controlfusion_a_controllable_image_fusion_network_with_language_vision_degradati.md",
+    "target_paper_summary": {
+      "paper_id": "paper_ec0163984995",
+      "title": "Controlfusion: A Controllable Image Fusion Network With Language-Vision Degradation Prompts",
+      "abstract": "Current image fusion methods struggle with real-world composite degradations and lack the flexibility to accommodate user-specific needs. To address this, we propose ControlFusion, a controllable fusion network guided by language-vision prompts that adaptively mitigates composite degradations. On the one hand, we construct a degraded imaging model based on physical mechanisms, such as the Retinex theory and atmospheric scattering principle, to simulate composite degradations and provide a data foundation for addressing realistic degradations. On the other hand, we devise a prompt-modulated restoration and fusion network that dynamically enhances features according to degradation prompts, enabling adaptability to varying degradation levels. To support user-specific preferences in visual quality, a text encoder is incorporated to embed user-defined degradation types and levels as degradation prompts. Moreover, a spatial-frequency collaborative visual adapter is designed to autonomously perceive degradations from source images, thereby reducing complete reliance on user instructions. Extensive experiments demonstrate that Control- Fusion outperforms SOTA fusion methods in fusion quality and degradation handling, particularly under real-world and compound degradations. The source code is publicly available at https://github.com/Linfeng-Tang/ControlFusion.",
+      "topic": "",
+      "claims": [
+        "we propose ControlFusion, a controllable fusion network guided by language-vision prompts that adaptively mitigates composite degradations."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 7,
+      "num_removed_post_cutoff": 7,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 7,
+    "num_removed_post_cutoff": 7,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

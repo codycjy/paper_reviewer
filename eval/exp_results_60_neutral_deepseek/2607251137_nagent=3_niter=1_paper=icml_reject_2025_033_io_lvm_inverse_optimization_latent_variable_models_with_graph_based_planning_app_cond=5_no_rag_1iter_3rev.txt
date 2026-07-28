@@ -1,0 +1,121 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel approach combining variational inference with constrained optimization solvers to learn latent representations of COP costs, addressing a gap in modeling multiple agents with distinct cost functions",
+        "Successfully demonstrates disentanglement of latent space to capture different agent behaviors without supervision, validated on both synthetic and real-world datasets",
+        "Provides a practical solution to the non-differentiability challenge in combinatorial solvers through perturbed Fenchel-Young loss and gradient estimation"
+      ],
+      "weaknesses": [
+        "The method relies on the assumption that observed solutions are optimal, which may not hold in real-world scenarios with suboptimal agent behavior",
+        "Computational cost is high due to multiple solver calls during training, limiting scalability to very large graphs or complex COPs",
+        "Evaluation on real-world data shows high variance in performance metrics, indicating potential instability in certain applications"
+      ],
+      "summary_comment": "IO-LVM presents a highly novel and significant contribution by integrating latent variable models with black-box optimization solvers to learn interpretable cost representations from observed solutions. The approach effectively addresses the challenge of modeling multiple agents with distinct cost functions without supervision, demonstrated through compelling experiments on path and cycle problems. While computational costs and optimality assumptions are concerns, the core idea is innovative and has strong potential to inspire future work in inverse optimization and structured prediction."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Methodological soundness: The paper presents a technically rigorous approach by integrating amortized inference with gradient estimation through a non-differentiable solver, addressing a well-known challenge of learning with combinatorial outputs.",
+        "Comprehensive evaluation: The evaluation is thorough, using multiple datasets (synthetic and real-world), multiple COP problems (paths and cycles), and both qualitative and quantitative metrics to assess reconstruction, prediction, and latent structure.",
+        "Interpretability and practical utility: The work convincingly demonstrates that the learned latent space is interpretable (e.g., disentangling different agents, correlating with ship width) and enables practical tasks like clustering, denoising, and structured prediction."
+      ],
+      "weaknesses": [
+        "Assumption of optimality: The core assumption that observed solutions are optimal with respect to some underlying cost function (Sec. 3.3) may be restrictive for noisy real-world data, and the method's sensitivity to sub-optimal demonstrations is not analyzed.",
+        "Scalability and computational cost: While addressed briefly, the reliance on running a combinatorial solver (e.g., Dijkstra, TSP) in the inner loop for each training sample and perturbation raises concerns about scalability to very large graphs or complex COPs, and training time is not quantified."
+      ],
+      "summary_comment": "This paper proposes a methodologically sound and empirically well-supported approach for learning latent representations of costs in constrained optimization problems. It successfully integrates variational inference with gradient estimation via perturbed Fenchel-Young losses, ensuring feasible structured outputs. The experiments are convincing, demonstrating clear advantages over baselines like VAEs in maintaining feasibility and capturing multimodal cost structures. The work provides a solid technical contribution with practical value. While the assumption of optimal observations and computational cost are noted concerns, they do not outweigh the paper's strengths in soundness and evaluation."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper solves a clear, practical problem: learning latent representations of cost functions from observed structured solutions (e.g., paths) without assuming a single underlying cost. This is directly useful for analyzing multi-agent behavior from unlabeled data.",
+        "The method is sound and well-motivated, combining proven concepts (VAE framework, Fenchel-Young loss, perturbed optimization) to address the non-differentiable solver problem in a novel, integrated architecture. The use of a black-box solver in the loop guarantees constraint satisfaction, a major practical advantage.",
+        "The evaluation is comprehensive, using synthetic and real-world datasets (ship routing) to demonstrate key capabilities: latent space interpretability, multi-agent disentanglement, structured reconstruction, and distribution prediction. The comparison to baselines (VAE, PO) is fair and shows clear advantages."
+      ],
+      "weaknesses": [
+        "The computational cost of running the black-box solver (e.g., TSP solver) in the training loop for each forward/backward pass is acknowledged but not deeply analyzed. This could be a scalability bottleneck for very large graphs or complex COPs.",
+        "The assumption that observed solutions are optimal with respect to the underlying cost (Sec. 3.3) is strong for real-world data (like ship paths). While the method includes noise during training, the paper does not thoroughly discuss the impact of significant sub-optimality or systematic deviations in the observations."
+      ],
+      "summary_comment": "This paper presents a well-executed, practically valuable contribution. IO-LVM effectively addresses the challenge of learning from structured, constrained outputs by integrating a solver into a latent variable model, enabling representation learning for multi-agent cost functions. The approach is technically sound, the experiments are convincing and demonstrate clear benefits over baselines in terms of constraint satisfaction and latent space interpretability. The real-world ship routing application adds significant practical relevance. The paper is clearly written. The weaknesses are manageable and discussed in the context. It merits acceptance for its solid methodology, clear practical impact, and thorough evaluation."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's optimization and probabilistic methods tracks - paper combines variational inference with optimization techniques",
+        "Addresses core machine learning challenge of learning with non-differentiable constraints through innovative gradient estimation methods",
+        "Methodological contributions in differentiable optimization and latent variable modeling fit ICML's technical focus",
+        "Comprehensive evaluation with both synthetic and real-world datasets demonstrates rigorous experimental practice"
+      ],
+      "why_it_does_not_fit": [
+        "Application focus on graph-based planning is somewhat specialized and may not appeal to ICML's broad ML audience",
+        "While technically sound, the work sits at intersection of optimization and ML rather than core ML methodology",
+        "Reviewers noted computational cost concerns which might limit practical adoption in large-scale ML applications"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' interest in optimization, reinforcement learning, and structured prediction",
+        "Addresses inverse reinforcement learning challenges with novel approach to multi-agent cost learning",
+        "Strong emphasis on interpretable latent representations aligns with NeurIPS' focus on explainable AI",
+        "Real-world applications in robotics and planning fit NeurIPS' applied tracks"
+      ],
+      "why_it_does_not_fit": [
+        "Methodology is more optimization-focused than core machine learning, potentially better suited for optimization-specific venues",
+        "Application domain (graph paths/cycles) is somewhat narrow compared to NeurIPS' broader scope",
+        "Reviewers noted assumption of optimal observations may limit real-world applicability"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Uses variational autoencoder framework which aligns with ICLR's deep learning focus",
+        "Addresses representation learning challenges in structured output spaces",
+        "Latent space interpretability and disentanglement are relevant to ICLR's interests"
+      ],
+      "why_it_does_not_fit": [
+        "Primary contribution is in optimization and inverse optimization rather than deep learning per se",
+        "Limited focus on neural network architectures or deep learning methodology",
+        "Black-box solver integration differs from typical differentiable approaches at ICLR",
+        "Application domains (graph planning) are outside ICLR's core focus areas"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

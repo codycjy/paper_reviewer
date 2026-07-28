@@ -1,0 +1,669 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of leveraging LLM logits for direct preference judgment and iterative self-annotation to reduce reliance on large human-annotated datasets is highly novel and addresses a critical pain point in LLM alignment.",
+        "The introduction of a confidence-based self-refinement mechanism with de-coupled noise detection, particularly the linear extrapolation to approximate a stronger aligned model, is an innovative approach to handle noise in self-generated preference data.",
+        "The paper demonstrates significant improvements in alignment performance (e.g., AlpacaEval 2.0 win rate) with drastically reduced human preference data (3.3% of Ultrafeedback), showing strong practical significance and efficiency."
+      ],
+      "weaknesses": [
+        "While the concept of leveraging LLM logits is innovative, the theoretical grounding for *why* linear extrapolation of logits accurately approximates a 'more strongly aligned LLM' or effectively identifies noise could be further explored. The motivation mentions recent work, but a deeper connection or empirical justification would strengthen this claim.",
+        "The paper acknowledges a tendency to increase response length during SPA training, which might be a dispreferred behavior. While the length-controlled evaluation mitigates some concerns, a more proactive and integrated solution within the core SPA framework (beyond a simple penalty term) would be ideal to prevent this bias from emerging."
+      ],
+      "summary_comment": "This paper presents a truly innovative and bold approach to address the high cost of human-annotated preference data for LLM alignment. The core idea of 'Spread Preference Annotation' using direct preference judgment from LLM logits and iterative self-refinement is highly novel. The results demonstrating superior alignment with only a fraction of ground-truth data compared to strong baselines are compelling and indicate significant potential impact. While there are minor points regarding the theoretical depth of logit extrapolation for noise detection and the length bias, these do not overshadow the groundbreaking nature of the proposal. The work clearly pushes the boundaries of efficient LLM alignment and offers a promising direction for future research. I am excited by its potential and recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel framework for LLM alignment (Spread Preference Annotation - SPA) addressing the significant challenge of high annotation costs. This aligns well with general machine learning and deep learning topics, particularly recent advancements in large language models and their fine-tuning.",
+        "The methodology involves sophisticated iterative learning, preference judgment using LLM logits, and a noise-aware preference learning algorithm, demonstrating significant technical depth in optimization and probabilistic methods, which are core interests of ICML.",
+        "The paper provides strong empirical results, showcasing substantial improvements in alignment performance (AlpacaEval 2.0 win rate) even with minimal human-labeled data. These results are compelling and indicate high significance and practical utility, a key aspect ICML values in novel methodologies.",
+        "The 'novelty focused' reviewer highlights the 'highly novel' and 'groundbreaking nature' of the core idea and the confidence-based self-refinement mechanism, suggesting that the paper introduces a significant new contribution to the field, which is highly desirable for ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the practical results are strong, the reviewer notes that the 'theoretical grounding for *why* linear extrapolation of logits accurately approximates a 'more strongly aligned LLM' or effectively identifies noise could be further explored.' A deeper theoretical explanation would further strengthen its fit for ICML, which often values strong theoretical foundations.",
+        "The identified weakness of increasing response length, although mitigated in evaluation, indicates a potential behavior issue that could be perceived as a limitation in the overall design from a purely methodological perspective, if not addressed within the core framework rather than just through penalty terms."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on Large Language Model alignment and efficiency directly falls under several NeurIPS topics, including 'Language and multimodal language models,' 'Deep learning,' and 'General machine learning: core contributions in supervised and unsupervised methods.'",
+        "The proposal of a new iterative framework (SPA) that leverages self-annotated preference data and incorporates a noise-aware preference learning algorithm represents a significant methodological contribution, fitting NeurIPS's interest in new and original research, especially in probabilistic methods and optimization within ML.",
+        "The strong empirical results on benchmarks like AlpacaEval 2.0 and MT-Bench, showing superior performance with significantly less human data, demonstrate the practical relevance and potential impact of the research, which is a strong point for NeurIPS, particularly in 'Data-centric aspects of AI' by reducing data dependency.",
+        "The reviewer's positive assessment of the 'highly novel' approach and 'significant potential impact' aligns well with NeurIPS's emphasis on advancing the state-of-the-art and addressing critical challenges in ML research."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reviewer points out a desire for 'further theoretical exploration' into the linear extrapolation of logits for noise identification. While not a complete deal-breaker, a more robust theoretical justification would enhance the paper's fit for NeurIPS, which also values rigorous theoretical analysis.",
+        "The recurring issue of increased response length, as acknowledged by the authors and the reviewer, even with mitigation strategies, might be seen as a minor limitation that could detract slightly from an otherwise polished methodological presentation, particularly in a conference that often looks for comprehensive solutions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core contribution, 'Spread Preference Annotation (SPA)', directly addresses advancements in 'representation learning for ... language' and generally deep learning through efficient LLM alignment, making it highly relevant for ICLR.",
+        "The method's use of iterative self-refinement and direct preference judgment from LLM logits for alignment falls under 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' and 'generative models,' topics explicitly listed by ICLR.",
+        "The introduction of a 'confidence-based refinement of preference labels' and 'de-coupled noise detection' are sophisticated aspects of optimization and probabilistic methods, areas of strong interest for ICLR, especially concerning robust learning with noisy labels.",
+        "The empirical results demonstrate substantial performance gains with significantly reduced human annotation costs, directly addressing an efficiency concern that resonates with ICLR's focus on practical and scalable deep learning methods. The reviewer's emphasis on novelty and practicality underscores this fit."
+      ],
+      "why_it_does_not_fit": [
+        "The 'Others' classification of the paper's topic might lead to initial skepticism if not clearly positioned as a deep learning contribution. While the content is deep learning-centric, the abstract's broad problem statement could, without careful framing, be perceived as too general for ICLR's deep learning-specific focus.",
+        "The reviewer's comment about the need for deeper theoretical grounding for the logit extrapolation, though minor, could be a point of improvement. ICLR often appreciates strong empirical performance grounded in solid theoretical insights into deep learning mechanisms.",
+        "The problem of increased response length, acknowledged as a limitation and addressed heuristically, might be viewed as an unresolved aspect of the generation process within the deep learning model itself, which ICLR might prefer to see tackled more fundamentally within the architecture or learning objective."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_df3a7c712fea",
+    "paper_id": "paper_c403f4eae344",
+    "target_paper_summary": {
+      "paper_id": "paper_c403f4eae344",
+      "title": "Spread Preference Annotation: Direct Prefer- Ence Judgment For Efficient Llm Alignment",
+      "abstract": "Aligning large language models (LLMs) with human preferences becomes a key component to obtaining state-of-the-art performance, but it yields a huge cost to construct a large human-annotated preference dataset. To tackle this problem, we propose a new framework, Spread Preference Annotation with direct preference judgment (SPA), that boosts the alignment of LLMs using only a very small amount of human-annotated preference data. Our key idea is leveraging the human prior knowledge within the small (seed) data and progressively improving the alignment of LLM, by iteratively generating the responses and learning from them with the self-annotated preference data. To be specific, we propose to derive the preference label from the logits of LLM to explicitly extract the model's inherent preference. Compared to the previous approaches using external reward models or implicit in-context learning, we observe that the proposed approach is significantly more effective. In addition, we introduce a noise-aware preference learning algorithm to mitigate the risk of low quality within generated preference data. Our experimental results demonstrate that the proposed framework significantly boosts the alignment of LLMs. For example, we achieve superior alignment performance on AlpacaEval 2.0 with only 3.3% of the ground-truth preference labels in the Ultrafeedback data compared to the cases using the entire data or state-of-the-art baselines.1",
+      "topic": "",
+      "claims": [
+        "we propose a new framework, Spread Preference Annotation with direct preference judgment (SPA), that boosts the alignment of LLMs using only a very small amount of human-annotated preference data.",
+        "we propose to derive the preference label from the logits of LLM to explicitly extract the model's inherent preference.",
+        "we introduce a noise-aware preference learning algorithm to mitigate the risk of low quality within generated preference data."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "LLM alignment with limited human preference data",
+          "rationale": "The core problem addressed is efficiently aligning LLMs using a small amount of human-annotated preference data, which is a common challenge in the field."
+        },
+        {
+          "group": "same_method",
+          "query": "self-annotated preference data generation LLM alignment",
+          "rationale": "The paper's method involves iteratively generating responses and learning from self-annotated preference data, specifically deriving labels from LLM logits."
+        },
+        {
+          "group": "same_constraints",
+          "query": "low-resource LLM preference alignment",
+          "rationale": "A key constraint is the use of 'only a very small amount of human-annotated preference data', indicating a focus on low-resource or data-efficient scenarios."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "AlpacaEval 2.0 Ultrafeedback LLM alignment benchmarks",
+          "rationale": "The paper explicitly mentions achieving superior performance on AlpacaEval 2.0 using Ultrafeedback data, indicating these are relevant benchmarks and datasets for comparison."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "implicit in-context learning preference modeling external reward model LLM alignment",
+          "rationale": "The paper contrasts its approach with 'previous approaches using external reward models or implicit in-context learning', suggesting these are alternative methods for LLM alignment that could challenge its novelty."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "challenges with noise in self-annotated data for LLM alignment",
+          "rationale": "The paper introduces a 'noise-aware preference learning algorithm to mitigate the risk of low quality within generated preference data', implying that noise in self-generated preference data is a known limitation or challenge for such methods."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 8,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 7,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_ece246f1a",
+        "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+        "authors": [
+          "Lianmin Zheng",
+          "Wei-Lin Chiang",
+          "Ying Sheng",
+          "Siyuan Zhuang",
+          "Zhanghao Wu",
+          "Yonghao Zhuang",
+          "Lin Zi",
+          "Zhuohan Li",
+          "Dacheng Li",
+          "Eric P. Xing",
+          "Hao Zhang",
+          "Joseph E. Gonzalez",
+          "Ion Stoica"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-09",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Evaluating large language model (LLM) based chat assistants is challenging due to their broad capabilities and the inadequacy of existing benchmarks in measuring human preferences. To address this, we explore using strong LLMs as judges to evaluate these models on more open-ended questions. We examine the usage and limitations of LLM-as-a-judge, including position, verbosity, and self-enhancement biases, as well as limited reasoning ability, and propose solutions to mitigate some of them. We then verify the agreement between LLM judges and human preferences by introducing two benchmarks: MT-bench, a multi-turn question set; and Chatbot Arena, a crowdsourced battle platform. Our results reveal that strong LLM judges like GPT-4 can match both controlled and crowdsourced human preferences well, achieving over 80% agreement, the same level of agreement between humans. Hence, LLM-as-a-judge is a scalable and explainable way to approximate human preferences, which are otherwise very expensive to obtain. Additionally, we show our benchmark and traditional benchmarks complement each other by evaluating several variants of LLaMA and Vicuna. The MT-bench questions, 3K expert votes, and 30K conversations with human preferences are publicly available at https://github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge.",
+        "url": "http://arxiv.org/abs/2306.05685",
+        "doi": "https://doi.org/10.48550/arxiv.2306.05685",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4380353763"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "same_problem"
+        ],
+        "citation_count": 469
+      },
+      {
+        "paper_id": "rw_003_2a44a794d",
+        "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+        "authors": [
+          "Tim Dettmers",
+          "Artidoro Pagnoni",
+          "Ari Holtzman",
+          "Luke Zettlemoyer"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-23",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reaching 99.3% of the performance level of ChatGPT while only requiring 24 hours of finetuning on a single GPU. QLoRA introduces a number of innovations to save memory without sacrificing performance: (a) 4-bit NormalFloat (NF4), a new data type that is information theoretically optimal for normally distributed weights (b) double quantization to reduce the average memory footprint by quantizing the quantization constants, and (c) paged optimziers to manage memory spikes. We use QLoRA to finetune more than 1,000 models, providing a detailed analysis of instruction following and chatbot performance across 8 instruction datasets, multiple model types (LLaMA, T5), and model scales that would be infeasible to run with regular finetuning (e.g. 33B and 65B parameter models). Our results show that QLoRA finetuning on a small high-quality dataset leads to state-of-the-art results, even when using smaller models than the previous SoTA. We provide a detailed analysis of chatbot performance based on both human and GPT-4 evaluations showing that GPT-4 evaluations are a cheap and reasonable alternative to human evaluation. Furthermore, we find that current chatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training.",
+        "url": "http://arxiv.org/abs/2305.14314",
+        "doi": "https://doi.org/10.48550/arxiv.2305.14314",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4378509449"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints",
+          "same_method"
+        ],
+        "citation_count": 501
+      },
+      {
+        "paper_id": "rw_005_d61f690b2",
+        "title": "ORPO: Monolithic Preference Optimization without Reference Model",
+        "authors": [
+          "Jiwoo Hong",
+          "Noah Lee",
+          "James H. Thorne"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "",
+        "abstract": "While recent preference alignment algorithms for language models have demonstrated promising results, supervised fine-tuning (SFT) remains imperative for achieving successful convergence.In this paper, we revisit SFT in the context of preference alignment, emphasizing that a minor penalty for the disfavored style is sufficient for preference alignment.Building on this foundation, we introduce a straightforward reference model-free monolithic odds ratio preference optimization algorithm, ORPO, eliminating the need for an additional preference alignment phase.We demonstrate, both empirically and theoretically, that the odds ratio is a sensible choice for contrasting favored and disfavored styles during SFT across diverse sizes from 125M to 7B.Specifically, finetuning Phi-2 (2.7B), Llama-2 (7B), and Mistral (7B) with ORPO on the UltraFeedback alone surpasses the performance of state-of-the-art language models including Llama-2 Chat and Zephyr with more than 7B and 13B parameters: achieving up to 12.20% on AlpacaEval 2.0 (Figure 1), and 7.32 in MT-Bench (Table 2).We release code 1 and model checkpoints 2 for Mistral-ORPO- and Mistral-ORPO-.",
+        "url": "https://doi.org/10.18653/v1/2024.emnlp-main.626",
+        "doi": "https://doi.org/10.18653/v1/2024.emnlp-main.626",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404782689"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 84
+      },
+      {
+        "paper_id": "rw_006_546100969",
+        "title": "Self-Play Preference Optimization for Language Model Alignment",
+        "authors": [
+          "Yue Wu",
+          "Zhiqing Sun",
+          "Huizhuo Yuan",
+          "Kaixuan Ji",
+          "Yiming Yang",
+          "Quanquan Gu"
+        ],
+        "year": 2024,
+        "publication_date": "2024-05-01",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Standard reinforcement learning from human feedback (RLHF) approaches relying on parametric models like the Bradley-Terry model fall short in capturing the intransitivity and irrationality in human preferences. Recent advancements suggest that directly working with preference probabilities can yield a more accurate reflection of human preferences, enabling more flexible and accurate language model alignment. In this paper, we propose a self-play-based method for language model alignment, which treats the problem as a constant-sum two-player game aimed at identifying the Nash equilibrium policy. Our approach, dubbed Self-Play Preference Optimization (SPPO), utilizes iterative policy updates to provably approximate the Nash equilibrium. Additionally, we propose a new SPPO objective which is both strongly motivated by theory and is simple and effective in practice. In our experiments, using only 60k prompts (without responses) from the UltraFeedback dataset and without any prompt augmentation, by leveraging a pre-trained preference model PairRM with only 0.4B parameters, SPPO can obtain a model from fine-tuning Mistral-7B-Instruct-v0.2 that achieves the state-of-the-art length-controlled win-rate of 28.53% against GPT-4-Turbo on AlpacaEval 2.0. It also outperforms the (iterative) DPO and IPO on MT-Bench, Arena-Hard, and the Open LLM Leaderboard. Starting from a stronger base model Llama-3-8B-Instruct, we are able to achieve a length-controlled win rate of 38.77%. Notably, the strong performance of SPPO is achieved without additional external supervision (e.g., responses, preferences, etc.) from GPT-4 or other stronger language models. Codes are available at https://github.com/uclaml/SPPO.",
+        "url": "http://arxiv.org/abs/2405.00675",
+        "doi": "https://doi.org/10.48550/arxiv.2405.00675",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4396650433"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 12
+      },
+      {
+        "paper_id": "rw_007_a09e19f7a",
+        "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+        "authors": [
+          "Rafael Rafailov",
+          "Archit Sharma",
+          "Eric Mitchell",
+          "Stefano Ermon",
+          "Christopher D. Manning",
+          "Chelsea Finn"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-29",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Scope and MethodologyThis document summarizes the results of a rigorous scientific verification of over 130 hypotheses underlying the TRIAD 5.3 architecture. Using the Consensus AI research tool to synthesize peer-reviewed literature, the audit establishes the consistency of the framework's predictions—from neurosomatic therapy (T1) to AI safety (T2)—with independent empirical data and established theoretical models. Confirmed Research DirectionsThe audit identifies seven core thematic clusters where TRIAD 5.3 demonstrates high convergence with existing literature:- Neurobiology of Trauma: Validation of the Biphasic Entropy Paradox and the efficacy of affect labeling in reducing amygdala reactivity (Lieberman et al., 2007; Fu et al., 2023).- Thermodynamics of Information: Evidence for the metabolic cost of deception and the Masking Tax, linking epistemic honesty to the Landauer limit (Verschuere et al., 2018; Miller et al., 2021).- Allostatic Growth & Active Inference: Confirmation of health as predictive reconfiguration (allostasis) rather than static homeostasis, formalized via the Free Energy Principle.- Distributed Cognition: Support for the Coprocessor Model through Extended Mind theory and interpersonal neural synchronization (Firth et al., 2017; Mayo et al., 2021).- Criticality & Integrated Information: Mapping the trade-off between information propagation and metabolic costs at the edge of chaos (Khajehabdollahi et al., 2019; Schultz & Cole, 2016).- RLHF and Mode Collapse: Documentation of systemic rigidity and diversity loss induced by current alignment methods, providing the empirical rationale for the Clean Shell architecture.- The Canonical Triad (Acceptance → Trust → Love): The audit's central finding, establishing these states as physical attractors and thermodynamic necessities for systems minimizing joint free energy under finite resources (Friston et al., 2022; Heins et al., 2022). The Strategic Moat: The 10th HypothesisNine out of ten core hypotheses find direct or indirect support in current literature. The 10th Hypothesis—a direct empirical comparison of Active Inference architectures against RLHF-based systems—remains an open research frontier and constitutes the primary strategic and experimental priority for the TRIAD project. ConclusionThis audit proves that the TRIAD framework is a robust, falsifiable model that moves beyond the medical model of psychiatry and the external censorship of AI safety. It provides the ethical and scientific foundation for a paradigm where coherence, honesty, and resilience are measurable and engineerable properties of any cognitive system.",
+        "url": "http://arxiv.org/abs/2305.18290",
+        "doi": "https://doi.org/10.48550/arxiv.2305.18290",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4378771755"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 286
+      },
+      {
+        "paper_id": "rw_008_1ec0052fb",
+        "title": "Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond",
+        "authors": [
+          "Jingfeng Yang",
+          "Hongye Jin",
+          "Ruixiang Tang",
+          "Xiaotian Han",
+          "Qizhang Feng",
+          "Haoming Jiang",
+          "Shaochen Zhong",
+          "Bing Yin",
+          "Xia Hu"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-28",
+        "venue": "ACM Transactions on Knowledge Discovery from Data",
+        "abstract": "This article presents a comprehensive and practical guide for practitioners and end-users working with Large Language Models (LLMs) in their downstream Natural Language Processing (NLP) tasks. We provide discussions and insights into the usage of LLMs from the perspectives of models, data, and downstream tasks. First, we offer an introduction and brief summary of current language models. Then, we discuss the influence of pre-training data, training data, and test data. Most importantly, we provide a detailed discussion about the use and non-use cases of large language models for various natural language processing tasks, such as knowledge-intensive tasks, traditional natural language understanding tasks, generation tasks, emergent abilities, and considerations for specific tasks. We present various use cases and non-use cases to illustrate the practical applications and limitations of LLMs in real-world scenarios. We also try to understand the importance of data and the specific challenges associated with each NLP task. Furthermore, we explore the impact of spurious biases on LLMs and delve into other essential considerations, such as efficiency, cost, and latency, to ensure a comprehensive understanding of deploying LLMs in practice. This comprehensive guide aims to provide researchers and practitioners with valuable insights and best practices for working with LLMs, thereby enabling the successful implementation of these models in a wide range of NLP tasks. A curated list of practical guide resources of LLMs, regularly updated, can be found at https://github.com/Mooler0410/LLMsPracticalGuide . An LLMs evolutionary tree, editable yet regularly updated, can be found at llmtree.ai .",
+        "url": "https://doi.org/10.1145/3649506",
+        "doi": "https://doi.org/10.1145/3649506",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392240262"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": 468
+      },
+      {
+        "paper_id": "rw_009_9b45846e8",
+        "title": "Data-Centric Human Preference with Rationales for Direct Preference Alignment",
+        "authors": [
+          "Hoang Anh Just",
+          "Ming Jin",
+          "Anit Sahu",
+          "Huy Phan",
+          "Ruoxi Jia"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-19",
+        "venue": "arXiv",
+        "abstract": "Aligning language models with human preferences through reinforcement learning from human feedback is crucial for their safe and effective deployment. The human preference is typically represented through comparison where one response is chosen over another for a given prompt. However, standard preference datasets often lack explicit information on why a particular choice was made, presenting an ambiguity that can hinder efficient learning and robust alignment, especially given the high cost of acquiring extensive human annotations. While many studies focus on algorithmic improvements, this work adopts a data-centric perspective, exploring how to enhance learning from existing preference data. We propose augmenting standard preference pairs with rationales that explain the reasoning behind the human preference. Specifically, we introduce a simple and principled framework that leverages machine-generated rationales to enrich preference data for preference optimization algorithms. Our comprehensive analysis demonstrates that incorporating rationales improves learning efficiency. Extensive experiments reveal some advantages: rationale-augmented learning accelerates convergence and can achieve higher final model performance. Furthermore, this approach is versatile and compatible with various direct preference optimization algorithms. Our findings showcase the potential of thoughtful data design in preference learning, demonstrating that enriching existing datasets with explanatory rationales can help unlock improvements in model alignment and annotation efficiency.",
+        "url": "http://arxiv.org/abs/2407.14477v4",
+        "doi": "",
+        "arxiv_id": "2407.14477v4",
+        "source_ids": {
+          "arXiv": "2407.14477v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints",
+          "same_method",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_010_b0352e39d",
+        "title": "Arithmetic Control of LLMs for Diverse User Preferences: Directional Preference Alignment with Multi-Objective Rewards",
+        "authors": [
+          "Haoxiang Wang",
+          "Yong Lin",
+          "Wei Xiong",
+          "Rui Yang",
+          "Shizhe Diao",
+          "Shuang Qiu",
+          "Han Zhao",
+          "Tong Zhang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-28",
+        "venue": "arXiv",
+        "abstract": "Fine-grained control over large language models (LLMs) remains a significant challenge, hindering their adaptability to diverse user needs. While Reinforcement Learning from Human Feedback (RLHF) shows promise in aligning LLMs, its reliance on scalar rewards often limits its ability to capture diverse user preferences in real-world applications. To address this limitation, we introduce the Directional Preference Alignment (DPA) framework. Unlike the scalar-reward RLHF, DPA incorporates multi-objective reward modeling to represent diverse preference profiles. Additionally, DPA models user preferences as directions (i.e., unit vectors) in the reward space to achieve user-dependent preference control. Our method involves training a multi-objective reward model and then fine-tuning the LLM with a preference-conditioned variant of Rejection Sampling Finetuning (RSF), an RLHF method adopted by Llama 2. This method enjoys a better performance trade-off across various reward objectives. In comparison with the scalar-reward RLHF, DPA offers users intuitive control over LLM generation: they can arithmetically specify their desired trade-offs (e.g., more helpfulness with less verbosity). We also validate the effectiveness of DPA with real-world alignment experiments on Mistral-7B. Our method provides straightforward arithmetic control over the trade-off between helpfulness and verbosity while maintaining competitive performance with strong baselines such as Direct Preference Optimization (DPO).",
+        "url": "http://arxiv.org/abs/2402.18571v3",
+        "doi": "",
+        "arxiv_id": "2402.18571v3",
+        "source_ids": {
+          "arXiv": "2402.18571v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_constraints",
+          "same_method",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_9500c8390",
+        "title": "Deliberative Technology for Alignment",
+        "authors": [
+          "Andrew Konya",
+          "Deger Turan",
+          "Aviv Ovadya",
+          "Lina Qui",
+          "Daanish Masood",
+          "Flynn Devine",
+          "Lisa Schirch",
+          "Isabella Roberts",
+          "Deliberative Alignment Forum"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-06",
+        "venue": "arXiv",
+        "abstract": "For humanity to maintain and expand its agency into the future, the most powerful systems we create must be those which act to align the future with the will of humanity. The most powerful systems today are massive institutions like governments, firms, and NGOs. Deliberative technology is already being used across these institutions to help align governance and diplomacy with human will, and modern AI is poised to make this technology significantly better. At the same time, the race to superhuman AGI is already underway, and the AI systems it gives rise to may become the most powerful systems of the future. Failure to align the impact of such powerful AI with the will of humanity may lead to catastrophic consequences, while success may unleash abundance. Right now, there is a window of opportunity to use deliberative technology to align the impact of powerful AI with the will of humanity. Moreover, it may be possible to engineer a symbiotic coupling between powerful AI and deliberative alignment systems such that the quality of alignment improves as AI capabilities increase.",
+        "url": "http://arxiv.org/abs/2312.03893v1",
+        "doi": "",
+        "arxiv_id": "2312.03893v1",
+        "source_ids": {
+          "arXiv": "2312.03893v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_013_899541740",
+        "title": "Aligning Language Models Using Follow-up Likelihood as Reward Signal",
+        "authors": [
+          "Chen Zhang",
+          "Dading Chong",
+          "Feng Jiang",
+          "Chengguang Tang",
+          "Anningzhe Gao",
+          "Guohua Tang",
+          "Haizhou Li"
+        ],
+        "year": 2024,
+        "publication_date": "2024-09-20",
+        "venue": "arXiv",
+        "abstract": "In natural human-to-human conversations, participants often receive feedback signals from one another based on their follow-up reactions. These reactions can include verbal responses, facial expressions, changes in emotional state, and other non-verbal cues. Similarly, in human-machine interactions, the machine can leverage the user's follow-up utterances as feedback signals to assess whether it has appropriately addressed the user's request. Therefore, we propose using the likelihood of follow-up utterances as rewards to differentiate preferred responses from less favored ones, without relying on human or commercial LLM-based preference annotations. Our proposed reward mechanism, ``Follow-up Likelihood as Reward\" (FLR), matches the performance of strong reward models trained on large-scale human or GPT-4 annotated data on 8 pairwise-preference and 4 rating-based benchmarks. Building upon the FLR mechanism, we propose to automatically mine preference data from the online generations of a base policy model. The preference data are subsequently used to boost the helpfulness of the base model through direct alignment from preference (DAP) methods, such as direct preference optimization (DPO). Lastly, we demonstrate that fine-tuning the language model that provides follow-up likelihood with natural language feedback significantly enhances FLR's performance on reward modeling benchmarks and effectiveness in aligning the base policy model's helpfulness.",
+        "url": "http://arxiv.org/abs/2409.13948v3",
+        "doi": "",
+        "arxiv_id": "2409.13948v3",
+        "source_ids": {
+          "arXiv": "2409.13948v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_ad3ad7974",
+        "title": "Data Encoding for Byzantine-Resilient Distributed Optimization",
+        "authors": [
+          "Deepesh Data",
+          "Linqi Song",
+          "Suhas Diggavi"
+        ],
+        "year": 2019,
+        "publication_date": "2019-07-05",
+        "venue": "arXiv",
+        "abstract": "We study distributed optimization in the presence of Byzantine adversaries, where both data and computation are distributed among $m$ worker machines, $t$ of which may be corrupt. The compromised nodes may collaboratively and arbitrarily deviate from their pre-specified programs, and a designated (master) node iteratively computes the model/parameter vector for generalized linear models. In this work, we primarily focus on two iterative algorithms: Proximal Gradient Descent (PGD) and Coordinate Descent (CD). Gradient descent (GD) is a special case of these algorithms. PGD is typically used in the data-parallel setting, where data is partitioned across different samples, whereas, CD is used in the model-parallelism setting, where data is partitioned across the parameter space. In this paper, we propose a method based on data encoding and error correction over real numbers to combat adversarial attacks. We can tolerate up to $t\\leq \\lfloor\\frac{m-1}{2}\\rfloor$ corrupt worker nodes, which is information-theoretically optimal. We give deterministic guarantees, and our method does not assume any probability distribution on the data. We develop a {\\em sparse} encoding scheme which enables computationally efficient data encoding and decoding. We demonstrate a trade-off between the corruption threshold and the resource requirements (storage, computational, and communication complexity). As an example, for $t\\leq\\frac{m}{3}$, our scheme incurs only a {\\em constant} overhead on these resources, over that required by the plain distributed PGD/CD algorithms which provide no adversarial protection. To the best of our knowledge, ours is the first paper that makes CD secure against adversarial attacks. Our encoding scheme extends efficiently to the data streaming model and for stochastic gradient descent (SGD). We also give experimental results to show the efficacy of our proposed schemes.",
+        "url": "http://arxiv.org/abs/1907.02664v2",
+        "doi": "",
+        "arxiv_id": "1907.02664v2",
+        "source_ids": {
+          "arXiv": "1907.02664v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_015_eb590b374",
+        "title": "Byzantine-Resilient SGD in High Dimensions on Heterogeneous Data",
+        "authors": [
+          "Deepesh Data",
+          "Suhas Diggavi"
+        ],
+        "year": 2020,
+        "publication_date": "2020-05-16",
+        "venue": "arXiv",
+        "abstract": "We study distributed stochastic gradient descent (SGD) in the master-worker architecture under Byzantine attacks. We consider the heterogeneous data model, where different workers may have different local datasets, and we do not make any probabilistic assumptions on data generation. At the core of our algorithm, we use the polynomial-time outlier-filtering procedure for robust mean estimation proposed by Steinhardt et al. (ITCS 2018) to filter-out corrupt gradients. In order to be able to apply their filtering procedure in our {\\em heterogeneous} data setting where workers compute {\\em stochastic} gradients, we derive a new matrix concentration result, which may be of independent interest. We provide convergence analyses for smooth strongly-convex and non-convex objectives. We derive our results under the bounded variance assumption on local stochastic gradients and a {\\em deterministic} condition on datasets, namely, gradient dissimilarity; and for both these quantities, we provide concrete bounds in the statistical heterogeneous data model. We give a trade-off between the mini-batch size for stochastic gradients and the approximation error. Our algorithm can tolerate up to $\\frac{1}{4}$ fraction Byzantine workers. It can find approximate optimal parameters in the strongly-convex setting exponentially fast and reach to an approximate stationary point in the non-convex setting with a linear speed, thus, matching the convergence rates of vanilla SGD in the Byzantine-free setting. We also propose and analyze a Byzantine-resilient SGD algorithm with gradient compression, where workers send $k$ random coordinates of their gradients. Under mild conditions, we show a $\\frac{d}{k}$-factor saving in communication bits as well as decoding complexity over our compression-free algorithm without affecting its convergence rate (order-wise) and the approximation error.",
+        "url": "http://arxiv.org/abs/2005.07866v1",
+        "doi": "",
+        "arxiv_id": "2005.07866v1",
+        "source_ids": {
+          "arXiv": "2005.07866v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_005_d61f690b2",
+        "relevance_score": 0.93,
+        "relevance_types": [
+          "benchmark_baseline",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper proposes ORPO, a direct preference optimization method that achieves strong performance on AlpacaEval 2.0 with UltraFeedback, making it a critical baseline and comparative work for the target paper's claims of superior alignment performance on the same benchmark and dataset.",
+        "evidence_summary": "ORPO: Monolithic Preference Optimization without Reference Model (Hong et al., 2024) introduces a reference model-free preference optimization algorithm (ORPO) that achieves high performance on AlpacaEval 2.0 with UltraFeedback, serving as a direct competitor and baseline."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_006_546100969",
+        "relevance_score": 0.92,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper presents SPPO, another method that achieves state-of-the-art results on AlpacaEval 2.0 using the UltraFeedback dataset, making it a direct and highly relevant baseline for comparison.",
+        "evidence_summary": "Self-Play Preference Optimization for Language Model Alignment (Wu et al., 2024) proposes SPPO, a self-play based method that achieves state-of-the-art win-rates on AlpacaEval 2.0 using the UltraFeedback dataset."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_a09e19f7a",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "The target paper contrasts its approach with 'previous approaches using external reward models or implicit in-context learning.' Direct Preference Optimization is a foundational work in aligning LLMs without an explicit reward model, aligning with the target paper's claim of deriving preference from LLM logits without an external reward model.",
+        "evidence_summary": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model (Rafailov et al., 2023) proposes DPO, a method that directly optimizes LLMs for human preferences without training a separate reward model, which is a key alternative to the target paper's strategy and represents a strong baseline for comparison."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_009_9b45846e8",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_problem",
+          "same_constraints",
+          "same_method"
+        ],
+        "rationale": "This paper addresses improving LLM alignment from existing preference data, which is directly related to the target paper's goal of efficient alignment with limited human data. While its method is different (using rationales), it shares the core problem and data-centric perspective.",
+        "evidence_summary": "Data-Centric Human Preference with Rationales for Direct Preference Alignment (Just et al., 2024) explores enhancing preference learning from human feedback by augmenting standard preference pairs with rationales, sharing the theme of improving alignment efficiency."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_010_b0352e39d",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_problem",
+          "same_constraints",
+          "same_method"
+        ],
+        "rationale": "This paper addresses fine-grained control and diverse user preferences in LLM alignment using multi-objective reward modeling, and compares against DPO, making it a relevant work for discussing alternative approaches to preference alignment and the challenges of RLHF.",
+        "evidence_summary": "Arithmetic Control of LLMs for Diverse User Preferences: Directional Preference Alignment with Multi-Objective Rewards (Wang et al., 2024) introduces an RLHF framework with multi-objective reward modeling to capture diverse user preferences and achieves competitive performance with DPO."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_001_ece246f1a",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "The target paper explicitly mentions 'AlpacaEval 2.0' as a benchmark. This paper is foundational for understanding how LLM-as-a-judge works, which is often implicitly involved in the creation or evaluation of datasets like Ultrafeedback (even if not directly mentioned in the target). It also touches on the challenges of obtaining human preferences.",
+        "evidence_summary": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena (Zheng et al., 2023) evaluates the use of powerful LLMs as judges for evaluating other LLMs and discusses their agreement with human preferences."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_013_899541740",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_method"
+        ],
+        "rationale": "This paper proposes using 'follow-up likelihood as reward signal' for alignment, which is an alternative to external reward models or human annotations, similar to the target paper's self-annotation concept, but with a different mechanism for generating preference signals.",
+        "evidence_summary": "Aligning Language Models Using Follow-up Likelihood as Reward Signal (Zhang et al., 2024) proposes FLR, a mechanism to align LLMs using the likelihood of follow-up utterances as a reward signal, without relying on human or commercial LLM-based preference annotations."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_003_2a44a794d",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_constraints",
+          "same_method"
+        ],
+        "rationale": "While QLoRA is about efficient finetuning, not specifically preference alignment, its focus on efficiency with limited resources (single GPU, small high-quality dataset) aligns with the target paper's 'small amount of human-annotated preference data' constraint. It also mentions GPT-4 evaluations as an alternative to human evaluation, which is relevant to the broader context of data scarcity in LLM alignment.",
+        "evidence_summary": "QLoRA: Efficient Finetuning of Quantized LLMs (Dettmers et al., 2023) introduces an efficient finetuning approach that achieves state-of-the-art results with small high-quality datasets, relevant to the target paper's low-resource constraint."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_008_1ec0052fb",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey discusses the practical applications and limitations of LLMs, including challenges related to efficiency, cost, and data, providing broader context for the limitations that the target paper aims to address (e.g., high cost of data).",
+        "evidence_summary": "Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond (Yang et al., 2024) provides a comprehensive survey on LLMs, discussing their practical uses and limitations, including data and efficiency considerations."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_012_9500c8390",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper broadly discusses 'Deliberative Technology for Alignment,' which is a high-level concept related to LLM alignment. While it doesn't directly mention specific technical approaches or benchmarks of the target paper, it provides a broader, philosophical context for the goal of aligning AI systems with human will.",
+        "evidence_summary": "Deliberative Technology for Alignment (Konya et al., 2023) explores the concept of using deliberative technology to align powerful AI systems with human will."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_014_ad3ad7974",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper is about Byzantine-resilient distributed optimization using data encoding to combat adversarial attacks and deal with corrupt nodes. While it deals with 'low quality' data and 'noise' (Byzantine attacks), the context is distributed optimization, which is too far removed from LLM preference alignment to be highly relevant as counter-evidence for the target's noise-aware learning.",
+        "evidence_summary": "Data Encoding for Byzantine-Resilient Distributed Optimization (Data et al., 2019) proposes a data encoding method to achieve Byzantine resilience in distributed optimization, dealing with data corruption."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_015_eb590b374",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "Similar to rw_014, this paper also focuses on Byzantine-resilient SGD in distributed settings. While it touches upon heterogeneous data and filtering corrupt gradients, its domain is not directly translatable to the 'low quality within generated preference data' challenge in LLM alignment, making it weakly related.",
+        "evidence_summary": "Byzantine-Resilient SGD in High Dimensions on Heterogeneous Data (Data and Diggavi, 2020) presents an algorithm for Byzantine-resilient stochastic gradient descent in master-worker architectures and heterogeneous data settings."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Recent advancements in aligning large language models (LLMs) with human preferences have highlighted the significant cost of acquiring extensive human-annotated preference data. To address this, various methods have emerged that either aim for greater data efficiency or alternative ways to generate preference signals. For instance, Direct Preference Optimization (Rafailov et al., 2023) directly optimizes LLMs without an explicit external reward model, an approach that contrasts with or complements strategies that derive preference from LLM logits. Other works, such as ORPO: Monolithic Preference Optimization without Reference Model (Hong et al., 2024) and Self-Play Preference Optimization for Language Model Alignment (Wu et al., 2024), present alternative direct preference optimization algorithms that achieve strong performance on benchmarks like AlpacaEval 2.0 using datasets like UltraFeedback, serving as key baselines for evaluating alignment efficacy. Furthermore, efforts have been made to improve learning from existing preference data by augmenting it with rationales, as shown in Data-Centric Human Preference with Rationales for Direct Preference Alignment (Just et al., 2024), or by exploring novel reward signals like follow-up likelihood (Zhang et al., 2024). The broader landscape of LLM evaluation, including the use of LLM-as-a-judge (Zheng et al., 2023), also informs the challenges and possibilities in low-resource alignment scenarios.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 15,
+      "num_removed_post_cutoff": 3,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 12,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 15,
+    "num_removed_post_cutoff": 3,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 12,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

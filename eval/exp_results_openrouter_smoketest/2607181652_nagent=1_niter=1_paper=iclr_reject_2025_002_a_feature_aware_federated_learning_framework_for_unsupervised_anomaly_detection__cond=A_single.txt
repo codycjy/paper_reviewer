@@ -1,0 +1,71 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 1,
+        "significance": 1,
+        "evaluation": 1,
+        "clarity": 2
+      },
+      "strengths": [
+        "Intriguing Core Concept: The integration of Integrated Gradients (IG) to calculate local unsupervised feature importance and using it to guide federated aggregation is a creative and conceptually interesting idea for anomaly detection.",
+        "Focus on Practical 5G Challenges: The paper tackles a highly significant, real-world application area—unsupervised anomaly detection in 5G networks—which is characterized by dynamic environments and data heterogeneity.",
+        "Multi-faceted Framework: The combination of feature-importance weighting, differential privacy, and dynamic adaptation (DFIA) targets a comprehensive set of challenges (utility, privacy, and adaptability) in a single federated learning framework."
+      ],
+      "weaknesses": [
+        "Mathematically Nonsensical Aggregation Weight Formulation: In Equation 10, the local client weight is defined as $w_k = \\frac{n_k}{n} \\cdot \\left(\\sum_{i=1}^d a_i \\cdot \\frac{\\partial L_k}{\\partial \\theta_k}\\right)$. This formula contains severe dimensional and mathematical errors. The term $\\frac{\\partial L_k}{\\partial \\theta_k}$ (the gradient of the loss with respect to the network parameters) is a high-dimensional vector/tensor of the same size as $\\theta_k$, whereas $a_i$ is a feature attention weight of dimension $d$ (the input feature dimension). There is no dimensional compatibility to sum these over $i=1 \\dots d$. If $w_k$ becomes a parameter-sized tensor, multiplying it by $\\theta_k$ coordinate-wise during parameter aggregation (Equation 9) has no theoretical basis and would severely distort the parameter scales, leading to training collapse.",
+        "Flawed Differential Privacy and Normalization: In Equation 8, the attention weights are normalized as $a_i = \\frac{\\widetilde{\\mathrm{FI}}_i}{\\sum_j \\widetilde{\\mathrm{FI}}_j}$. Because Gaussian noise is added to the aggregated feature importance (Equation 6), elements of $\\widetilde{\\mathrm{FI}}$ can easily be negative. If some elements are negative, the normalization in Equation 8 can yield negative weights, or even lead to division by zero if the denominator sums to near zero, making the attention mechanism highly unstable. Furthermore, assuming that sensitivity $\\Delta$ is 1 just because of normalization is theoretically incorrect for differential privacy; without explicit bounding/clipping of the local importances, the DP guarantees do not hold.",
+        "Incomplete Manuscript and Missing Figures: The paper is missing all actual plots and visualization figures, leaving behind raw text caption placeholders (e.g., '(a) FedProx (b) FedAvg (c) Feature-Aware FL' printed multiple times in the text), which makes the experimental evaluation impossible to qualitatively verify.",
+        "Highly Questionable Experimental Settings: The entire FL model is trained for only 5 communication rounds. It is highly improbable for an autoencoder to converge and achieve $98\\%$ accuracy in just 5 rounds. Furthermore, Table 4 shows almost identical ROC-AUC scores for privacy budgets of $\\epsilon = 0.1, 0.5,$ and $1.0$, which is highly unusual since a smaller $\\epsilon$ (meaning more noise) typically degrades model performance. This suggests substantial issues with the experimental implementation."
+      ],
+      "summary_comment": "Although the paper introduces an interesting idea of leveraging local feature importance (via Integrated Gradients) to guide federated aggregation in unsupervised 5G anomaly detection, the execution is severely flawed. The core equations governing the model parameter aggregation are mathematically nonsensical due to dimensional mismatches, and the implementation of differential privacy does not follow mathematically sound principles (such as proper sensitivity bounds). Additionally, the missing figures and the highly questionable experimental setup (training for only 5 rounds, invariant performance across vastly different privacy budgets) prevent this paper from meeting the standards for scientific publication."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "The paper targets federated learning, differential privacy, and unsupervised anomaly detection, which are key core areas of interest for the ICML community.",
+        "The use of attribution-based methods (Integrated Gradients) to guide client parameter aggregation is conceptually aligned with ICML's interest in explainable and robust machine learning methods."
+      ],
+      "why_it_does_not_fit": [
+        "ICML demands exceptional mathematical rigor. The paper's core aggregation formula (Equation 10) is mathematically nonsensical due to a critical dimensional mismatch, where a feature attention vector of dimension d is summed across gradient parameters of an entirely different size.",
+        "The implementation of Differential Privacy (DP) assumes a global sensitivity of 1 without any clipping or bounding of local feature importances, causing the DP guarantees to collapse.",
+        "The empirical evaluation is highly questionable for an ICML-level paper, showing identical ROC-AUC scores for vastly different privacy budgets (epsilon = 0.1, 0.5, 1.0) and claiming a neural network autoencoder converged fully in only 5 communication rounds."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The interdisciplinary nature of the paper (applying federated learning, integrated gradients, and privacy to 5G network core attacks) aligns with the NeurIPS mission to foster diverse ML applications and security.",
+        "The framework integrates multiple facets of trustworthy ML—privacy, interpretability, and dynamic distribution shift."
+      ],
+      "why_it_does_not_fit": [
+        "The submission is physically incomplete. It contains raw text bracket placeholders instead of actual plotted figures (e.g., '(a) FedProx (b) FedAvg (c) Feature-Aware FL'), making it unsuitable for a top-tier peer-reviewed venue like NeurIPS.",
+        "NeurIPS reviewers expect highly sound and robust methodology. The mathematically broken weight aggregation scheme undermines the entire optimization approach.",
+        "The lack of validation on standard non-IID benchmarks or standard tabular detection benchmarks fails to prove the system-level significance required for NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "The paper utilizes deep learning components, specifically an Autoencoder architecture, for representation learning to detect anomalous features in network traffic.",
+        "The attempt to optimize learning paradigms using gradient information (Integrated Gradients) fits ICLR's focus on gradient-based learning dynamics."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR places supreme emphasis on representation learning and optimization. The dimensional mismatch of multiplying local gradient tensors with input feature dimension vectors fundamentally breaks the optimization dynamics.",
+        "The deep learning metrics and experimental settings are highly implausible; training a multi-layer autoencoder for only 5 epochs total across 5 communication rounds is insufficient to learn robust representations, yet it claims a nearly perfect 0.98 accuracy.",
+        "Missing all core visualization figures leaves the deep representation and feature attribution results unverified and incomplete."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

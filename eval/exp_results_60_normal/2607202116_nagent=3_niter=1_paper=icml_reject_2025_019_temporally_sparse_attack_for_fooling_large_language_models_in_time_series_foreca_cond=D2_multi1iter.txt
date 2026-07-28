@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of a Temporally Sparse Attack (TSA) on LLM-based time series forecasting is highly novel and addresses a critical, under-explored vulnerability. The formulation as a Cardinality-Constrained Optimization Problem (CCOP) and the use of Subspace Pursuit (SP) are innovative adaptations to this domain.",
+        "The paper demonstrates significant impact by showing that even small, sparse perturbations (10% of input) can drastically degrade leading LLM-based forecasting models (LLMTime, TimeGPT, TimeLLM) across diverse real-world datasets. This highlights a serious real-world concern for trustworthy AI.",
+        "The threat model is highly practical and realistic, assuming black-box access, no future ground truth, and limited manipulation capabilities. The comparison against conventional full-series attacks and the failure of filter-based defenses further underscore the practical implications and severity of TSA."
+      ],
+      "weaknesses": [
+        "While the proposed approach is effective, the specific details of the CCOP solution (Algorithm 1) might benefit from further elaboration or pseudo-code to ensure full clarity for all readers. For instance, step 7's 'Update the support set S as the index set of the τ largest losses of f(Xt(1 + wi)) for all i ∈ S' seems to imply re-evaluating individual element losses within the current support, which could be made more explicit in its interaction with the broader 'while not converged' loop.",
+        "The 'Mitigation' section is brief and acknowledges the difficulty of existing defenses. While a full defense mechanism is out of scope, a slightly more detailed initial exploration (e.g., initial quantitative results for the proposed 'autocorrelation-based detection') could strengthen the paper's overall contribution by hinting at promising future directions for robustness, rather than just highlighting vulnerability."
+      ],
+      "summary_comment": "This paper presents a truly novel and impactful contribution by introducing the concept of Temporally Sparse Attacks (TSA) on LLM-based time series forecasting models. The formulation of the attack as a Cardinality-Constrained Optimization Problem (CCOP) and its solution using an adapted Subspace Pursuit (SP) method is a creative and appropriate mathematical framework for this challenging problem. The results are striking, demonstrating that even minimal, sparse perturbations can severely cripple state-of-the-art LLM-based forecasters. This work is highly significant as it uncovers a crucial vulnerability for trustworthy AI in critical applications and pushes the boundaries of adversarial research in the time series domain. While minor improvements could be made to the algorithm's clarity and the mitigation discussion, these do not overshadow the bold and forward-thinking nature of the core idea and its potential to spark future research in robust time series forecasting."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously formulates the attack generation as a Cardinality-Constrained Optimization Problem (CCOP), which is well-suited for sparse attacks and contributes to the methodological soundness.",
+        "The proposed Subspace Pursuit (SP)-based algorithm for solving the CCOP is well-adapted for black-box settings, leveraging zero optimization techniques, which is a practical and efficient approach for adversarial attacks on LLMs.",
+        "The evaluation is comprehensive, testing the proposed TSA across multiple advanced LLM-based time series forecasters (and one non-LLM baseline), on diverse real-world datasets, and under challenging black-box conditions.",
+        "The analysis of attack effectiveness against defense mechanisms provides crucial insights into the vulnerabilities of current LLM-based forecasters to sparse perturbations and highlights the limitations of common filtering methods."
+      ],
+      "weaknesses": [
+        "The mitigation strategy proposed in Section 7 is very briefly discussed and presented as a 'simple but novel autocorrelation-based detection method' with the promise of future work. While it's noted as future work, a slightly more detailed preliminary exploration or justification of its theoretical basis would strengthen this section.",
+        "The paper mentions the use of 'zero optimization' in Section 5.1 but does not provide specific details on the number of queries or computational cost per iteration for this component, which is crucial for evaluating the overall efficiency of the SP-based method, especially when T is large."
+      ],
+      "summary_comment": "This paper presents a strong contribution to the field of trustworthy AI for time series forecasting. The formulation of a Temporally Sparse Attack (TSA) as a CCOP and its solution using an adapted Subspace Pursuit method addresses a significant practical limitation of existing adversarial attacks by focusing on sparse, imperceptible perturbations. The black-box setting and avoidance of future ground truth make the attack highly realistic. The evaluation is thorough, demonstrating the effectiveness of TSA across various state-of-the-art LLM-based models and real-world datasets. The finding that sparse attacks can bypass conventional filter-based defenses is particularly impactful. While the proposed mitigation strategy is preliminary, it opens avenues for future research. Overall, the methodology is sound, the experiments are convincing, and the findings are significant for improving the robustness of LLM-based time series forecasters."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and significant problem: the vulnerability of LLM-based time series forecasting models to sparse, real-world adversarial attacks. This is crucial for the deployment of trustworthy AI systems in critical domains.",
+        "The proposed Temporally Sparse Attack (TSA) and its formulation as a Cardinality-Constrained Optimization Problem (CCOP) solved using a Subspace Pursuit (SP)-based method is a clever and effective approach that aligns well with real-world attacker constraints (limited modifications, black-box access, no future data).",
+        "The experimental evaluation is comprehensive, testing the TSA against multiple prominent LLM-based forecasting models (LLMTime variants, TimeGPT, TimeLLM) and also including a non-LLM baseline (TimesNet) across diverse real-world datasets. The results clearly demonstrate the effectiveness of TSA, even against filter-based defenses.",
+        "The discussion on the ineffectiveness of common filter-based defenses against TSA is particularly insightful and highlights the unique challenge posed by sparse attacks, informing future defense strategies."
+      ],
+      "weaknesses": [
+        "While the paper briefly introduces an \"autocorrelation-based detection method\" in the mitigation section, the description is very high-level and lacks detailed experimental validation. Since the paper explicitly states filter-based defenses fail, a more robust and evaluated defense mechanism would significantly strengthen the practical impact of the work.",
+        "The computational cost analysis (Figure 5(b)) shows a linear scaling with sparsity level τ, which is good, but it would be beneficial to provide absolute numbers or a comparison with other attack methods' computational costs to give practitioners a better sense of the overhead."
+      ],
+      "summary_comment": "This paper presents a highly relevant and practical contribution to the field of trustworthy AI, specifically concerning the robustness of LLM-based time series forecasting. The Temporally Sparse Attack (TSA) is well-motivated by real-world constraints and effectively demonstrates vulnerabilities in these advanced models. The use of CCOP and SP for generating sparse perturbations under black-box conditions is sound. The comprehensive evaluation across multiple models and datasets solidifies the findings. The clear demonstration that traditional defenses fall short against TSA is a critical insight for practitioners. My main concern is the limited practical insight into effective mitigation strategies, though the authors do acknowledge this is future work. Overall, the significance and clarity of the work are strong, making it a valuable addition to the literature."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'trustworthy machine learning' topics such as 'robustness' and 'reliability', which are explicitly listed under ICML's interests.",
+        "The work involves 'deep learning' (LLM-based models) and 'time series analysis', both of which fall under ICML's general machine learning and application-driven machine learning categories.",
+        "The core methodology, involving the formulation of a Cardinality-Constrained Optimization Problem (CCOP) and a Subspace Pursuit (SP)-based method, aligns with ICML's interest in 'optimization' and 'theory of machine learning' as adaptations for adversarial attacks.",
+        "Reviewers uniformly highlight the 'novelty' and 'significance' of the Temporally Sparse Attack (TSA), stating it is 'highly novel' (Reviewer A) and a 'strong contribution' (Reviewer B). This aligns with ICML's focus on cutting-edge research.",
+        "The comprehensive empirical evaluation across diverse LLM-based forecasters and real-world datasets demonstrates the practical impact and thoroughness often valued by ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the optimization part is relevant, the paper's primary focus leans heavily towards empirical demonstration of vulnerabilities rather than novel theoretical advancements in optimization itself (Reviewer A: 'might benefit from further elaboration' on CCOP solution).",
+        "Reviewer concerns about the brevity of the 'Mitigation' section and lack of detailed quantitative results for the proposed defense could be seen as slightly under-developing a crucial aspect for robustness, which ICML often emphasizes.",
+        "The paper's specific application area (time series forecasting with LLMs) is quite specialized, though still broadly relevant to machine learning. Some ICML papers might have a broader algorithmic or theoretical appeal."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper investigates the 'robustness' of 'Large Language Models' in a specific application ('time series forecasting'), directly connecting several key NeurIPS topics.",
+        "The work highlights a vulnerability in 'AI/ML for physical sciences' (e.g., energy management, climate science through ETTh1 and Weather datasets) and 'AI/ML for social sciences' (e.g., finance through Exchange Rates dataset), which are explicit NeurIPS interest areas.",
+        "The inclusion of general machine learning concepts like 'optimization' (CCOP, SP) and 'deep learning' (LLMs, transformer models) fits well within the general scope of NeurIPS.",
+        "Reviewers emphasize the 'significant impact' (Reviewer A), 'rigorous formulation' (Reviewer B), and 'highly practical and significant problem' (Reviewer C) addressed by the paper, aligning with NeurIPS's focus on impactful and rigorous research.",
+        "The black-box attack setting and testing against various state-of-the-art LLMs (TimeGPT, LLMTime, TimeLLM) demonstrate a realistic and comprehensive evaluation, which NeurIPS values."
+      ],
+      "why_it_does_not_fit": [
+        "The discussion on the mitigation strategies, albeit acknowledged as future work, is quite high-level, which might be a slight weakness for NeurIPS papers that increasingly expect broader contributions beyond just identifying problems.",
+        "Reviewer B mentions that the paper 'does not provide specific details on the number of queries or computational cost per iteration' for the zero-optimization, which could be seen as a minor gap in rigor for a NeurIPS submission where efficiency is often scrutinized."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper focuses on 'deep learning' techniques (LLMs, transformers) applied to 'time series' data, which is a strong fit for ICLR's core topics.",
+        "It specifically addresses 'societal considerations including fairness, safety, privacy' through the lens of 'robustness' and 'trustworthy AI', aligning with ICLR's interest in these areas.",
+        "The use of 'optimization' (CCOP, Subspace Pursuit) as a method to develop adversarial attacks, particularly for learning representations (implicit in LLMs), fits within ICLR's topic scope.",
+        "The paper evaluates 'generative models' (LLMs, though used for forecasting) and assesses their 'robustness', which connects to various ICLR themes.",
+        "Reviewers commend the 'novelty' of the attack method and its implications for deep learning models, which aligns with ICLR's emphasis on cutting-edge research in representation learning."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central, the paper's main contribution is an adversarial attack methodology, rather than a novel deep learning architecture or a fundamental theoretical insight into representation learning, which are often ICLR's primary focus. (Reviewer A: 'might benefit from further elaboration' on CCOP solution detail).",
+        "The 'Mitigation' section is brief, and the lack of a fully developed defense mechanism might be a point of concern for ICLR, which often looks for complete cycles of problem identification, analysis, and proposed solutions (even if initial).",
+        "Reviewer C points out that a more detailed comparison of computational costs with other attack methods would benefit practitioners, which is a practical consideration that ICLR often considers but might not be its absolute top priority compared to fundamental deep learning insights.",
+        "The 'Others' classification for the paper topic suggests it might not perfectly align with any single ICLR main track, even though related topics are present."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

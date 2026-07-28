@@ -1,0 +1,868 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper proposes a highly novel use of Sequential Monte Carlo (SMC) for controlled LM generation. This framework allows for flexible integration of diverse, incremental, and costly constraints, which is a significant advance over existing methods like local decoding or sample-rerank.",
+        "The empirical evaluation is highly comprehensive and compelling. The authors test their approach across four challenging and distinct domains, demonstrating that small open-source models can outperform much larger or fine-tuned proprietary models, which is a significant and exciting result.",
+        "The paper rigorously validates its probabilistic perspective by linking improved downstream performance to better approximation of the global product of experts distribution and stronger correlation between predicted probabilities and actual task performance. This provides strong theoretical grounding for their practical gains."
+      ],
+      "weaknesses": [
+        "While the paper clearly explains when potentials are 'expensive' versus 'efficient', the trade-offs and design considerations for classifying constraints into these categories, and how this impacts overall system design and performance, could be explored in more detail.",
+        "The computational overhead is discussed, but a more detailed breakdown or analysis of the factors contributing to the 'negligible' cost of resampling versus the 'more significant' cost of expensive potentials would further strengthen the paper, especially for practitioners considering implementation."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach to constrained language model generation using Sequential Monte Carlo. The core idea of framing constraint satisfaction as probabilistic conditioning and using SMC to tackle the intractability of the resulting distribution is highly novel and has broad implications. The empirical results are incredibly strong, demonstrating that this method allows smaller LMs to achieve superior performance compared to significantly larger and fine-tuned models across diverse and challenging downstream tasks like code generation and molecular synthesis. The thorough ablation studies and probabilistic validation further elevate the work. While some minor details on constraint classification trade-offs and computational costs could be expanded, these do not detract from the overall bold and impactful nature of this research. This work pushes the boundaries of controlled generation and offers a promising new direction for the field."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel architecture for controlled LM generation based on Sequential Monte Carlo (SMC), directly aligning with ICML's interest in 'general machine learning' (active learning, supervised learning, etc.) and 'deep learning' (generative models, theory).",
+        "The framing of constrained generation as 'probabilistic conditioning' and the use of SMC for intractable distributions aligns well with ICML's focus on 'probabilistic methods' (Bayesian methods, Monte Carlo methods).",
+        "The rigorous empirical evaluation across four challenging domains (Python code generation, text-to-SQL, goal inference, molecule synthesis) and the demonstration that small open-source models can outperform much larger or fine-tuned proprietary models are significant contributions, fitting ICML's emphasis on strong empirical results and practical applications in areas like computational biology and robotics (as proxy for code generation/planning).",
+        "The paper's thorough ablation studies and probabilistic validation, linking performance gains to better approximation of the global product of experts distribution and stronger correlation between predicted probabilities and actual task performance, demonstrate a deep understanding of 'theory of machine learning' and 'evaluation methodology', which are core to ICML.",
+        "The work builds on existing frameworks and integrates with a probabilistic programming language, touching upon 'machine learning systems' through improved implementation and distributed methods for inference."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, the 'weaknesses' noted by Reviewer A regarding more detailed exploration of trade-offs in classifying constraints (expensive vs. efficient) and a more granular breakdown of computational overhead could be areas for marginal improvement to appeal to a broader audience of system implementers within ICML, though these are minor concerns.",
+        "The paper's focus is on inference-time methods rather than learning new model architectures or training paradigms, which, while valuable, might be perceived as a slightly narrower scope by some ICML reviewers solely focused on model development."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core contribution of using Sequential Monte Carlo for syntactic and semantic control of LLMs directly aligns with NeurIPS's stated topics such as 'General machine learning: core contributions in supervised and unsupervised methods', 'Deep learning', and particularly 'Probabilistic methods'.",
+        "The application domains, including Python code generation, text-to-SQL, goal inference (planning for embodied agents/robotics), and molecule synthesis (AI/ML for physical sciences, health and biotechnology), directly map to NeurIPS's interdisciplinary focus areas like 'Robotics, embodied systems, and engineering', 'AI/ML for physical sciences', and 'AI/ML for health and biotechnology'.",
+        "The paper's rigorous validation of the probabilistic perspective, demonstrating that performance improvements are driven by better approximation of posterior distributions and linking probabilities to downstream performance, strongly resonates with NeurIPS's emphasis on theoretical grounding and in-depth analysis of existing methods.",
+        "The finding that smaller models can outperform significantly larger ones using this method is a significant practical and scientific contribution, addressing efficiency and resource utilization, which is of broad interest to the NeurIPS community.",
+        "Reviewer A highlights the 'highly novel use of Sequential Monte Carlo' and 'significant advance over existing methods', which fits NeurIPS's value for new and original research.",
+        "The work's integration with a language model probabilistic programming language (building on Lew et al. 2023) also touches on 'SysML Infrastructure' aspects, which NeurIPS welcomes."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A mentioned that 'a more detailed breakdown or analysis of the factors contributing to the 'negligible' cost of resampling versus the 'more significant' cost of expensive potentials' would be beneficial. While not a strong detractor, a slightly deeper practical analysis of system performance might enhance its appeal for NeurIPS attendees interested in 'SysML Infrastructure' beyond the core ML innovation.",
+        "The paper is strong in its technical depth and empirical results, but some NeurIPS papers lean heavily into novel theoretical breakthroughs or entirely new model paradigms. This work, while theoretically grounded, is more focused on an inference mechanism for existing LLMs. This is a minor distinction, however, given the broad scope of NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper focuses on 'controlled generation' from Large Language Models (LLMs), which is directly relevant to ICLR's interest in 'all aspects of deep learning', and particularly 'representation learning for computer vision, audio, language, and other modalities'.",
+        "The method, Sequential Monte Carlo (SMC), is a 'probabilistic method' which ICLR explicitly lists as a relevant topic (Bayesian methods, variational inference, sampling, UQ).",
+        "The application to tasks like Python code generation, text-to-SQL, and molecule synthesis falls under ICLR's umbrella of 'applications to robotics, autonomy, planning' and 'applications to physical sciences (physics, chemistry, biology, etc.)', demonstrating the practical utility of the proposed deep learning-based approach.",
+        "Reviewer A acknowledges the 'highly novel use of Sequential Monte Carlo (SMC) for controlled LM generation' which 'allows for flexible integration of diverse, incremental, and costly constraints'. This emphasis on novelty and flexible constraint integration is highly valued by ICLR, especially in the context of improving deep learning systems.",
+        "The paper demonstrates that 'small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones', which is a compelling result for ICLR's community, as it speaks to efficiency and the power of advanced inference techniques over brute-force model scaling.",
+        "The work discusses generative models and issues regarding large-scale learning, as well as the 'interpretable' aspect of probabilistic explanations for performance, aligning with ICLR's relevant topics."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's focus on inference-time control for LLMs is relevant, some ICLR papers might highlight entirely new deep learning architectures or fundamental advancements in learning paradigms more directly. This paper builds on existing LLMs and enhances their inference capabilities.",
+        "Reviewer A's minor suggestions for more detailed breakdown of computational overhead and design considerations for classifying constraints, although not critical, could be areas where ICLR audiences, particularly those interested in 'infrastructure, software libraries, hardware, etc.', might seek more depth.",
+        "The paper, while technically strong, doesn't introduce a new representation learning technique or a novel deep learning model architecture per se. Its primary innovation is in the probabilistic inference mechanism applied to existing language models, which might be perceived as less 'core' deep learning innovation by some ICLR reviewers compared to, for example, a new Transformer variant."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_eeeae4e260ea",
+    "paper_id": "paper_ccb797b502b4",
+    "target_paper_summary": {
+      "paper_id": "paper_ccb797b502b4",
+      "title": "Syntactic And Semantic Control Of Large Language Models Via Sequential Monte Carlo",
+      "abstract": "A wide range of LM applications require generating text that conforms to syntactic or semantic constraints. Imposing such constraints can be naturally framed as *probabilistic conditioning*, but exact generation from the resulting distribution—which can differ substantially from the LM's base distribution—is generally intractable. In this work, we develop an architecture for controlled LM generation based on sequential Monte Carlo (SMC). Our SMC framework allows us to flexibly incorporate domain- and problem-specific constraints at inference time, and efficiently reallocate computational resources in light of new information during the course of generation. By comparing to a number of alternatives and ablations on four challenging domains—Python code generation for data science, text-to-SQL, goal inference, and molecule synthesis—we demonstrate that, with little overhead, our approach allows small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones. In support of the probabilistic perspective, we show that these performance improvements are driven by better approximation to the posterior distribution. Our system builds on the framework of Lew et al. (2023) and integrates with its language model probabilistic programming language, giving users a simple, programmable way to apply SMC to a broad variety of controlled generation problems.\n\nhttps://github.com/probcomp/genlm-control",
+      "topic": "",
+      "claims": [
+        "we develop an architecture for controlled LM generation based on sequential Monte Carlo (SMC).",
+        "we demonstrate that, with little overhead, our approach allows small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones.",
+        "we show that these performance improvements are driven by better approximation to the posterior distribution.",
+        "our approach allows small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "constrained text generation language models syntactic semantic control",
+          "rationale": "The paper addresses the problem of generating text that conforms to syntactic or semantic constraints using language models, framing it as probabilistic conditioning."
+        },
+        {
+          "group": "same_method",
+          "query": "sequential Monte Carlo text generation language models",
+          "rationale": "The core method is Sequential Monte Carlo (SMC) for controlled LM generation. Searching for this specific method in conjunction with text generation should find similar approaches."
+        },
+        {
+          "group": "same_constraints",
+          "query": "inference time constraints large language models controlled generation",
+          "rationale": "The paper highlights flexible incorporation of domain- and problem-specific constraints at inference time for controlled LM generation. This captures the temporal and flexible nature of their constraint handling."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "benchmarking controlled language model generation code generation text-to-SQL molecule synthesis",
+          "rationale": "The paper uses four challenging domains (Python code generation, text-to-SQL, goal inference, molecule synthesis) for evaluation and makes comparisons against alternatives and ablations, implying these domains could also be used for benchmarking."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "probabilistic programming language controlled language model generation",
+          "rationale": "The paper states it builds on Lew et al. (2023) and integrates with its language model probabilistic programming language. This connection to a pre-existing framework suggests potential competitors or predecessors that use similar underlying ideas for controlled generation."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "challenges sequential Monte Carlo large language models computational overhead controlled generation",
+          "rationale": "While the paper claims 'little overhead' for SMC, exploring papers that discuss the *challenges* or *computational cost* of Sequential Monte Carlo in complex generation tasks, especially with large language models, could provide counterevidence or highlight limitations."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_36514a404",
+        "title": "The Proposition Bank: An Annotated Corpus of Semantic Roles",
+        "authors": [
+          "Martha Palmer",
+          "Daniel Gildea",
+          "Paul Kingsbury"
+        ],
+        "year": 2005,
+        "publication_date": "2005-03-01",
+        "venue": "Computational Linguistics",
+        "abstract": "The Proposition Bank project takes a practical approach to semantic representation, adding a layer of predicate-argument information, or semantic role labels, to the syntactic structures of the Penn Treebank. The resulting resource can be thought of as shallow, in that it does not represent coreference, quantification, and many other higher-order phenomena, but also broad, in that it covers every instance of every verb in the corpus and allows representative statistics to be calculated. We discuss the criteria used to define the sets of semantic roles used in the annotation process and to analyze the frequency of syntactic/semantic alternations in the corpus. We describe an automatic system for semantic role tagging trained on the corpus and discuss the effect on its performance of various types of information, including a comparison of full syntactic parsing with a flat representation and the contribution of the empty “trace” categories of the treebank.",
+        "url": "https://doi.org/10.1162/0891201053630264",
+        "doi": "https://doi.org/10.1162/0891201053630264",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2158847908"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 2308
+      },
+      {
+        "paper_id": "rw_002_d0bedd43b",
+        "title": "Semantically Conditioned LSTM-based Natural Language Generation for Spoken Dialogue Systems",
+        "authors": [
+          "Tsung-Hsien Wen",
+          "Milica Gašić",
+          "Nikola Mrkšić",
+          "Pei-Hao Su",
+          "David Vandyke",
+          "Steve Young"
+        ],
+        "year": 2015,
+        "publication_date": "2015-01-01",
+        "venue": "",
+        "abstract": "Natural language generation (NLG) is a critical component of spoken dialogue and it has a significant impact both on usability and perceived quality. Most NLG systems in common use employ rules and heuristics and tend to generate rigid and stylised responses without the natural variation of human language. They are also not easily scaled to systems covering multiple domains and languages. This paper presents a statistical language generator based on a semantically controlled Long Short-term Memory (LSTM) structure. The LSTM generator can learn from unaligned data by jointly optimising sentence planning and surface realisation using a simple cross entropy training criterion, and language variation can be easily achieved by sampling from output candidates. With fewer heuristics, an objective evaluation in two differing test domains showed the proposed method improved performance compared to previous methods. Human judges scored the LSTM system higher on informativeness and naturalness and overall preferred it to the other systems.",
+        "url": "https://doi.org/10.18653/v1/d15-1199",
+        "doi": "https://doi.org/10.18653/v1/d15-1199",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1948566616"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 846
+      },
+      {
+        "paper_id": "rw_003_a52d09e1e",
+        "title": "Language Models as Knowledge Bases?",
+        "authors": [
+          "Fabio Petroni",
+          "Tim Rocktäschel",
+          "Sebastian Riedel",
+          "Patrick Lewis",
+          "Anton Bakhtin",
+          "Yuxiang Wu",
+          "Alexander Miller"
+        ],
+        "year": 2019,
+        "publication_date": "2019-01-01",
+        "venue": "",
+        "abstract": "Fabio Petroni, Tim Rocktäschel, Sebastian Riedel, Patrick Lewis, Anton Bakhtin, Yuxiang Wu, Alexander Miller. Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP). 2019.",
+        "url": "https://doi.org/10.18653/v1/d19-1250",
+        "doi": "https://doi.org/10.18653/v1/d19-1250",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2970476646"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 1770
+      },
+      {
+        "paper_id": "rw_005_2319dad38",
+        "title": "AI-Assisted Pipeline for Dynamic Generation of Trustworthy Health Supplement Content at Scale",
+        "authors": [
+          "Kefallinos, Dionysios",
+          "Alexandris, Georgios",
+          "Kenton Lee",
+          "Kristina Toutanova",
+          "Gomony, Manil Dev",
+          "Corporaal, Henk",
+          "Soudris, Dimitrios",
+          "Xydis, Sotirios"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-11",
+        "venue": "DROPS (Schloss Dagstuhl – Leibniz Center for Informatics)",
+        "abstract": "Although geospatial question answering systems have received increasing attention in recent years, existing prototype systems struggle to properly answer qualitative spatial questions. In this work, we propose a unique framework for answering qualitative spatial questions, which comprises three main components: a geoparser that takes the input questions and extracts place semantic information from text, a reasoning system which is embedded with a crisp reasoner, and finally, answer extraction, which refines the solution space and generates final answers. We present an experimental design to evaluate our framework for point-based cardinal direction calculus (CDC) relations by developing an automated approach for generating three types of synthetic qualitative spatial questions. The initial evaluations of generated answers in our system are promising because a high proportion of answers were labelled correct.",
+        "url": "https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.LDK.2019.21",
+        "doi": "https://doi.org/10.4230/lipics.cosit.2022.18",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2896457183"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 45744
+      },
+      {
+        "paper_id": "rw_006_7816a3455",
+        "title": "ChatGPT for good? On opportunities and challenges of large language models for education",
+        "authors": [
+          "Enkelejda Kasneci",
+          "Kathrin Seßler",
+          "Stefan Küchemann",
+          "Maria Bannert",
+          "Daryna Dementieva",
+          "Frank Fischer",
+          "Urs Gasser",
+          "Georg Groh",
+          "Stephan Günnemann",
+          "Eyke Hüllermeier",
+          "Stephan Krusche",
+          "Gitta Kutyniok",
+          "Tilman Michaeli",
+          "Claudia Nerdel",
+          "Jürgen Pfeffer",
+          "Oleksandra Poquet",
+          "Michael Sailer",
+          "Albrecht Schmidt",
+          "Tina Seidel",
+          "Matthias Stadler",
+          "J. Weller",
+          "Jochen Kühn",
+          "Gjergji Kasneci"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-09",
+        "venue": "Learning and Individual Differences",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.lindif.2023.102274",
+        "doi": "https://doi.org/10.1016/j.lindif.2023.102274",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4323655724"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 5484
+      },
+      {
+        "paper_id": "rw_007_dd7d56781",
+        "title": "GPT-4 Technical Report",
+        "authors": [
+          "OpenAI",
+          "Achiam, Josh",
+          "Adler, Steven",
+          "Agarwal, Sandhini",
+          "Ahmad, Lama",
+          "Akkaya, Ilge",
+          "Aleman, Florencia Leoni",
+          "Almeida, Diogo",
+          "Altenschmidt, Janko",
+          "Altman, Sam",
+          "Anadkat, Shyamal",
+          "Avila, Red",
+          "Babuschkin, Igor",
+          "Balaji, Suchir",
+          "Balcom, Valerie",
+          "Baltescu, Paul",
+          "Bao, Haiming",
+          "Bavarian, Mohammad",
+          "Belgum, Jeff",
+          "Bello, Irwan",
+          "Berdine, Jake",
+          "Bernadett-Shapiro, Gabriel",
+          "Berner, Christopher",
+          "Bogdonoff, Lenny",
+          "Boiko, Oleg",
+          "Boyd, Madelaine",
+          "Brakman, Anna-Luisa",
+          "Brockman, Greg",
+          "Brooks, Tim",
+          "Brundage, Miles",
+          "Button, Kevin",
+          "Cai, Trevor",
+          "Campbell, Rosie",
+          "Cann, Andrew",
+          "Carey, Brittany",
+          "Carlson, Chelsea",
+          "Carmichael, Rory",
+          "Chan, Brooke",
+          "Chang, Che",
+          "Chantzis, Fotis",
+          "Chen, Derek",
+          "Chen, Sully",
+          "Chen, Ruby",
+          "Chen, Jason",
+          "Chen, Mark",
+          "Chess, Ben",
+          "Cho, Chester",
+          "Chu, Casey",
+          "Chung, Hyung Won",
+          "Cummings, Dave",
+          "Currier, Jeremiah",
+          "Dai, Yunxing",
+          "Decareaux, Cory",
+          "Degry, Thomas",
+          "Deutsch, Noah",
+          "Deville, Damien",
+          "Dhar, Arka",
+          "Dohan, David",
+          "Dowling, Steve",
+          "Dunning, Sheila",
+          "Ecoffet, Adrien",
+          "Eleti, Atty",
+          "Eloundou, Tyna",
+          "Farhi, David",
+          "Fedus, Liam",
+          "Felix, Niko",
+          "Fishman, Simón Posada",
+          "Forte, Juston",
+          "Fulford, Isabella",
+          "Gao, Leo",
+          "Georges, Elie",
+          "Gibson, Christian",
+          "Goel, Vik",
+          "Gogineni, Tarun",
+          "Goh, Gabriel",
+          "Gontijo-Lopes, Rapha",
+          "Gordon, Jonathan",
+          "Grafstein, Morgan",
+          "Gray, Scott",
+          "Greene, Ryan",
+          "Gross, Joshua",
+          "Gu, Shixiang Shane",
+          "Guo, Yufei",
+          "Hallacy, Chris",
+          "Han, Jesse",
+          "Harris, Jeff",
+          "He, Yuchen",
+          "Heaton, Mike",
+          "Heidecke, Johannes",
+          "Hesse, Chris",
+          "Hickey, Alan",
+          "Hickey, Wade",
+          "Hoeschele, Peter",
+          "Houghton, Brandon",
+          "Hsu, Kenny",
+          "Hu, Shengli",
+          "Hu, Xin",
+          "Huizinga, Joost",
+          "Jain, Shantanu",
+          "Jain, Shawn"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-15",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Abstract—Large Language Models (LLMs) suffer from inherent stochasticity, limiting their utility in high-stakes enterprise environments where determinism and auditability are required. This paper introduces the MFOUR Vibe Framework (MVF), a platform-agnostic architectural standard that transforms probabilistic natural language intent into deterministic software artifacts. We define a five-layer topology, comprising the Kernel Identity, Synaptic Routing, Interface Contracts, Context Anchoring, and the Mirror Test. Furthermore, we introduce The Vibe Integrity Score (VIS), a quantitative metric for evaluating the structural adherence of generative outputs. This specification provides the foundational schema and logic protocols for building \"Glass Box\" AI systems that are observable, secure, and commercially viable.",
+        "url": "http://arxiv.org/abs/2303.08774",
+        "doi": "https://doi.org/10.4230/lipics.cosit.2024.11",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4327810158"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 2409
+      },
+      {
+        "paper_id": "rw_008_b8b301966",
+        "title": "Retrieval-Augmented Generation for AI-Generated Content: A Survey",
+        "authors": [
+          "Penghao Zhao",
+          "Hailin Zhang",
+          "Qinhan Yu",
+          "Zhengren Wang",
+          "Yunteng Geng",
+          "Fangcheng Fu",
+          "L. Yang",
+          "Wentao Zhang",
+          "Jiang, Jie",
+          "Cui, Bin"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-29",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Advancements in model algorithms, the growth of foundational models, and access to high-quality datasets have propelled the evolution of Artificial Intelligence Generated Content (AIGC). Despite its notable successes, AIGC still faces hurdles such as updating knowledge, handling long-tail data, mitigating data leakage, and managing high training and inference costs. Retrieval-Augmented Generation (RAG) has recently emerged as a paradigm to address such challenges. In particular, RAG introduces the information retrieval process, which enhances the generation process by retrieving relevant objects from available data stores, leading to higher accuracy and better robustness. In this paper, we comprehensively review existing efforts that integrate RAG technique into AIGC scenarios. We first classify RAG foundations according to how the retriever augments the generator, distilling the fundamental abstractions of the augmentation methodologies for various retrievers and generators. This unified perspective encompasses all RAG scenarios, illuminating advancements and pivotal technologies that help with potential future progress. We also summarize additional enhancements methods for RAG, facilitating effective engineering and implementation of RAG systems. Then from another view, we survey on practical applications of RAG across different modalities and tasks, offering valuable references for researchers and practitioners. Furthermore, we introduce the benchmarks for RAG, discuss the limitations of current RAG systems, and suggest potential directions for future research. Github: https://github.com/PKU-DAIR/RAG-Survey.",
+        "url": "http://arxiv.org/abs/2402.19473",
+        "doi": "https://doi.org/10.48550/arxiv.2402.19473",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4393299232"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 82
+      },
+      {
+        "paper_id": "rw_009_8c08cab91",
+        "title": "LLaMA: Open and Efficient Foundation Language Models",
+        "authors": [
+          "Hugo Touvron",
+          "Thibaut Lavril",
+          "Gautier Izacard",
+          "Xavier Martinet",
+          "Marie-Anne Lachaux",
+          "Timothée Lacroix",
+          "Baptiste Rozière",
+          "Naman Goyal",
+          "Eric Hambro",
+          "Faisal Azhar",
+          "Aurelien Rodriguez",
+          "Armand Joulin",
+          "Édouard Grave",
+          "Guillaume Lample"
+        ],
+        "year": 2023,
+        "publication_date": "2023-02-27",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "We introduce LLaMA, a collection of foundation language models ranging from 7B to 65B parameters. We train our models on trillions of tokens, and show that it is possible to train state-of-the-art models using publicly available datasets exclusively, without resorting to proprietary and inaccessible datasets. In particular, LLaMA-13B outperforms GPT-3 (175B) on most benchmarks, and LLaMA-65B is competitive with the best models, Chinchilla-70B and PaLM-540B. We release all our models to the research community.",
+        "url": "http://arxiv.org/abs/2302.13971",
+        "doi": "https://doi.org/10.48550/arxiv.2302.13971",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4322718191"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 3926
+      },
+      {
+        "paper_id": "rw_010_1424b778d",
+        "title": "SciPy 1.0: fundamental algorithms for scientific computing in Python",
+        "authors": [
+          "Pauli Virtanen",
+          "Ralf Gommers",
+          "Travis E. Oliphant",
+          "Matt Haberland",
+          "Tyler Reddy",
+          "David Cournapeau",
+          "Evgeni Burovski",
+          "Pearu Peterson",
+          "Warren Weckesser",
+          "Jonathan Bright",
+          "Stéfan J. van der Walt",
+          "Matthew Brett",
+          "Joshua Wilson",
+          "K. Jarrod Millman",
+          "Nikolay Mayorov",
+          "Andrew R. J. Nelson",
+          "Eric Jones",
+          "Robert Kern",
+          "Eric Larson",
+          "C J Carey",
+          "İlhan Polat",
+          "Yu Feng",
+          "Eric W. Moore",
+          "Jake VanderPlas",
+          "Denis Laxalde",
+          "Josef Perktold",
+          "Robert Cimrman",
+          "Ian Henriksen",
+          "E. A. Quintero",
+          "Charles R. Harris",
+          "Anne M. Archibald",
+          "Antônio H. Ribeiro",
+          "Fabian Pedregosa",
+          "Paul van Mulbregt",
+          "SciPy 1.0 Contributors",
+          "Aditya Vijaykumar",
+          "Alessandro Pietro Bardelli",
+          "Alex Rothberg",
+          "Andreas Hilboll",
+          "Andreas Kloeckner",
+          "Anthony Scopatz",
+          "Antony Lee",
+          "Ariel Rokem",
+          "C. Nathan Woods",
+          "Chad Fulton",
+          "Charles Masson",
+          "Christian Häggström",
+          "Clark Fitzgerald",
+          "David A. Nicholson",
+          "David R. Hagen",
+          "Dmitrii V. Pasechnik",
+          "Emanuele Olivetti",
+          "Eric Martin",
+          "Eric Wieser",
+          "Fabrice Silva",
+          "Felix Lenders",
+          "Florian Wilhelm",
+          "G. Young",
+          "Gavin A. Price",
+          "Gert-Ludwig Ingold",
+          "Gregory E. Allen",
+          "Gregory R. Lee",
+          "Hervé Audren",
+          "Irvin Probst",
+          "Jörg P. Dietrich",
+          "Jacob Silterra",
+          "James T Webber",
+          "Janko Slavič",
+          "Joel Nothman",
+          "Johannes Buchner",
+          "Johannes Kulick",
+          "Johannes L. Schönberger",
+          "José Vinícius de Miranda Cardoso",
+          "Joscha Reimer",
+          "Joseph Harrington",
+          "Juan Luis Cano Rodríguez",
+          "Juan Nunez-Iglesias",
+          "Justin Kuczynski",
+          "Kevin Tritz",
+          "Martin Thoma",
+          "Matthew Newville",
+          "Matthias Kümmerer",
+          "Maximilian Bolingbroke",
+          "Michael Tartre",
+          "Mikhail Pak",
+          "Nathaniel J. Smith",
+          "Nikolai Nowaczyk",
+          "Nikolay Shebanov",
+          "Oleksandr Pavlyk",
+          "Per A. Brodtkorb",
+          "Perry Lee",
+          "Robert T. McGibbon",
+          "Roman Feldbauer",
+          "Sam Lewis",
+          "Sam Tygier",
+          "Scott Sievert",
+          "Sebastiano Vigna",
+          "Stefan Peterson",
+          "Surhud More",
+          "Tadeusz Pudlik"
+        ],
+        "year": 2020,
+        "publication_date": "2020-02-03",
+        "venue": "Nature Methods",
+        "abstract": "SciPy is an open-source scientific computing library for the Python programming language. Since its initial release in 2001, SciPy has become a de facto standard for leveraging scientific algorithms in Python, with over 600 unique code contributors, thousands of dependent packages, over 100,000 dependent repositories and millions of downloads per year. In this work, we provide an overview of the capabilities and development practices of SciPy 1.0 and highlight some recent technical developments.",
+        "url": "https://doi.org/10.1038/s41592-019-0686-2",
+        "doi": "https://doi.org/10.1038/s41592-019-0686-2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3003257820"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 38492
+      },
+      {
+        "paper_id": "rw_011_0e39fcbb0",
+        "title": "Why is constrained neural language generation particularly challenging?",
+        "authors": [
+          "Cristina Garbacea",
+          "Qiaozhu Mei"
+        ],
+        "year": 2022,
+        "publication_date": "2022-06-11",
+        "venue": "arXiv",
+        "abstract": "Recent advances in deep neural language models combined with the capacity of large scale datasets have accelerated the development of natural language generation systems that produce fluent and coherent texts (to various degrees of success) in a multitude of tasks and application contexts. However, controlling the output of these models for desired user and task needs is still an open challenge. This is crucial not only to customizing the content and style of the generated language, but also to their safe and reliable deployment in the real world. We present an extensive survey on the emerging topic of constrained neural language generation in which we formally define and categorize the problems of natural language generation by distinguishing between conditions and constraints (the latter being testable conditions on the output text instead of the input), present constrained text generation tasks, and review existing methods and evaluation metrics for constrained text generation. Our aim is to highlight recent progress and trends in this emerging field, informing on the most promising directions and limitations towards advancing the state-of-the-art of constrained neural language generation research.",
+        "url": "http://arxiv.org/abs/2206.05395v2",
+        "doi": "",
+        "arxiv_id": "2206.05395v2",
+        "source_ids": {
+          "arXiv": "2206.05395v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_43f3f3c98",
+        "title": "A Comprehensive Review of State-of-The-Art Methods for Java Code Generation from Natural Language Text",
+        "authors": [
+          "Jessica López Espejel",
+          "Mahaman Sanoussi Yahaya Alassan",
+          "El Mehdi Chouham",
+          "Walid Dahhane",
+          "El Hassane Ettifouri"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-10",
+        "venue": "arXiv",
+        "abstract": "Java Code Generation consists in generating automatically Java code from a Natural Language Text. This NLP task helps in increasing programmers' productivity by providing them with immediate solutions to the simplest and most repetitive tasks. Code generation is a challenging task because of the hard syntactic rules and the necessity of a deep understanding of the semantic aspect of the programming language. Many works tried to tackle this task using either RNN-based, or Transformer-based models. The latter achieved remarkable advancement in the domain and they can be divided into three groups: (1) encoder-only models, (2) decoder-only models, and (3) encoder-decoder models. In this paper, we provide a comprehensive review of the evolution and progress of deep learning models in Java code generation task. We focus on the most important methods and present their merits and limitations, as well as the objective functions used by the community. In addition, we provide a detailed description of datasets and evaluation metrics used in the literature. Finally, we discuss results of different models on CONCODE dataset, then propose some future directions.",
+        "url": "http://arxiv.org/abs/2306.06371v1",
+        "doi": "",
+        "arxiv_id": "2306.06371v1",
+        "source_ids": {
+          "arXiv": "2306.06371v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_013_4d4a5ab1d",
+        "title": "A Multilevel Monte Carlo Asymptotic-Preserving Particle Method for Kinetic Equations in the Diffusion Limit",
+        "authors": [
+          "Emil Løvbak",
+          "Giovanni Samaey",
+          "Stefan Vandewalle"
+        ],
+        "year": 2019,
+        "publication_date": "2019-02-12",
+        "venue": "arXiv",
+        "abstract": "We propose a multilevel Monte Carlo method for a particle-based asymptotic-preserving scheme for kinetic equations. Kinetic equations model transport and collision of particles in a position-velocity phase-space. With a diffusive scaling, the kinetic equation converges to an advection-diffusion equation in the limit of zero mean free path. Classical particle-based techniques suffer from a strict time-step restriction to maintain stability in this limit. Asymptotic-preserving schemes provide a solution to this time step restriction, but introduce a first-order error in the time step size. We demonstrate how the multilevel Monte Carlo method can be used as a bias reduction technique to perform accurate simulations in the diffusive regime, while leveraging the reduced simulation cost given by the asymptotic-preserving scheme. We describe how to achieve the necessary correlation between simulation paths at different levels and demonstrate the potential of the approach via numerical experiments.",
+        "url": "http://arxiv.org/abs/1902.04347v4",
+        "doi": "",
+        "arxiv_id": "1902.04347v4",
+        "source_ids": {
+          "arXiv": "1902.04347v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "same_method"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_011_0e39fcbb0",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper directly addresses the problem of constrained neural language generation, which is central to the target paper's objective. It provides a comprehensive survey, defining challenges and reviewing methods, which makes it an excellent direct comparison for the problem space the target paper aims to solve.",
+        "evidence_summary": "Garbacea and Mei (2022) provide an extensive survey on constrained neural language generation, formally defining and categorizing problems, distinguishing between conditions and constraints, and reviewing existing methods and evaluation metrics."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_d0bedd43b",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper presents a statistical language generator using an LSTM that is semantically conditioned, directly relating to the target paper's goal of semantic control in generation. It offers a strong baseline for approaches that aim to impose semantic constraints.",
+        "evidence_summary": "Wen et al. (2015) present a statistical language generator based on a semantically controlled Long Short-term Memory (LSTM) structure that can learn from unaligned data and generate varied language."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_012_43f3f3c98",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_problem"
+        ],
+        "rationale": "This paper reviews state-of-the-art methods for Java code generation, one of the challenging domains used for evaluation in the target paper (Python code generation). This provides context for the 'code generation' benchmark and potential alternative approaches.",
+        "evidence_summary": "Espejel et al. (2023) provide a comprehensive review of state-of-the-art methods for Java code generation from natural language text, discussing deep learning models, datasets, and evaluation metrics."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_007_dd7d56781",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "The target paper claims to outperform models over 8x larger and closed-source, fine-tuned ones, and GPT-4 represents a significant state-of-the-art large language model. While not a direct baseline of *constrained* generation in the same way, it's a prominent closed-source model that sets a performance bar in general language generation.",
+        "evidence_summary": "The GPT-4 Technical Report (OpenAI et al., 2023) describes the architecture and capabilities of GPT-4, a large language model that can be considered a benchmark for advanced language generation."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_009_8c08cab91",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "The target paper states its approach allows small open-source LMs to outperform models over 8x larger. LLaMA is a collection of open and efficient foundation models, providing a direct competitor in the 'open-source' and 'model size' comparison the target paper makes.",
+        "evidence_summary": "Touvron et al. (2023) introduce LLaMA, a collection of open foundation language models ranging from 7B to 65B parameters, trained on publicly available datasets and demonstrating competitive performance against larger models."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_003_a52d09e1e",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "While not directly about SMC, this paper discusses how language models can act as knowledge bases. Understanding how LMs encode and utilize knowledge is relevant background for controlling their output and for understanding their base distributions, which the target paper aims to modify.",
+        "evidence_summary": "Petroni et al. (2019) explore whether language models can serve as knowledge bases, investigating their ability to store and retrieve factual information without explicit training for this purpose."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_013_4d4a5ab1d",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "same_method"
+        ],
+        "rationale": "This paper presents a Multilevel Monte Carlo method, which is a variant of Monte Carlo methods. While applied to kinetic equations, it discusses aspects like bias reduction and computational cost, which can provide insights into potential limitations or variations of Monte Carlo methods generally, even if the application differs.",
+        "evidence_summary": "Lvbak et al. (2019) propose a multilevel Monte Carlo asymptotic-preserving particle method for kinetic equations, addressing issues like time-step restrictions and using bias reduction techniques."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_b8b301966",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Retrieval-Augmented Generation (RAG) is a prominent method for improving AIGC, including addressing challenges like updating knowledge and reducing costs. While not directly using SMC for constraint satisfaction, it represents an alternative paradigm for achieving more controlled or informed generation, and could be a high-performing baseline for some tasks that the target paper tackles.",
+        "evidence_summary": "Zhao et al. (2024) provide a survey on Retrieval-Augmented Generation (RAG) for AI-Generated Content, discussing how it addresses challenges like knowledge updating and data leakage by integrating information retrieval."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_36514a404",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "The Proposition Bank is a foundational work on semantic roles, which is relevant to the target paper's goal of 'semantic control'. It provides background on how semantic constraints have been formalized and annotated.",
+        "evidence_summary": "Palmer et al. (2005) introduce The Proposition Bank, an annotated corpus of semantic roles added to the Penn Treebank, which provides a practical approach to semantic representation for linguistic analysis."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_005_2319dad38",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper discusses an AI-assisted pipeline for content generation with 'trustworthy' health supplement content. While the methods are likely different, the concept of dynamically generating content that adheres to quality or truthfulness constraints is related to the idea of problem-specific constraints.",
+        "evidence_summary": "Kefallinos et al. (2018) describe an AI-assisted pipeline for the dynamic generation of trustworthy health supplement content, focusing on creating accurate and reliable information at scale."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_006_7816a3455",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper broadly discusses opportunities and challenges of large language models. While relevant to the general field, it doesn't directly address controlled generation or Sequential Monte Carlo, making it more general background than directly comparable work.",
+        "evidence_summary": "Kasneci et al. (2023) explore the opportunities and challenges presented by large language models, such as ChatGPT, in the context of education."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_010_1424b778d",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "SciPy is a fundamental library for scientific computing in Python. While Python code generation is one of the target paper's domains, SciPy itself is a tool used in scientific computing, not a method for constrained text generation. It's too tangential here.",
+        "evidence_summary": "Virtanen et al. (2020) present SciPy 1.0, outlining its capabilities as an open-source library for fundamental algorithms in scientific computing within the Python programming language."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "The literature around Syntactic And Semantic Control Of Large Language Models Via Sequential Monte Carlo sits within a broader effort to replace or augment quadratic self-attention with more efficient token-mixing mechanisms. Why is constrained neural language generation particularly challenging? (Garbacea and Mei, 2022) contributes adjacent evidence on efficient sequence modeling. Semantically Conditioned LSTM-based Natural Language Generation for Spoken Dialogue Systems (Wen et al., 2015) contributes adjacent evidence on efficient sequence modeling. A Comprehensive Review of State-of-The-Art Methods for Java Code Generation from Natural Language Text (Espejel et al., 2023) contributes adjacent evidence on efficient sequence modeling. GPT-4 Technical Report (OpenAI et al., 2023) provides benchmark or baseline context for evaluating efficient long-sequence models.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 20,
+      "num_removed_post_cutoff": 3,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 17,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 5
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 20,
+    "num_removed_post_cutoff": 3,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 17,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 5
+  }
+}

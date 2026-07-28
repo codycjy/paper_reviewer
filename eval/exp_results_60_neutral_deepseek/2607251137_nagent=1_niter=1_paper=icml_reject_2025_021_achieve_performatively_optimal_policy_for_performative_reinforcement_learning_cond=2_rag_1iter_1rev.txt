@@ -1,0 +1,467 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "This is the first work to propose an algorithm that converges to a Performatively Optimal (PO) policy in performative RL, directly addressing a known gap where previous methods only found suboptimal Performatively Stable (PS) policies, representing a significant theoretical advancement.",
+        "The theoretical analysis is rigorous and deep, establishing key properties (gradient dominance, policy lower bound, Lipschitz smoothness) of the entropy-regularized objective under mild conditions, enabling the use of a zeroth-order optimization algorithm with convergence guarantees.",
+        "The algorithm design is clever, combining a carefully constructed zeroth-order policy gradient estimator with a Frank-Wolfe update to handle the policy simplex constraints and the non-convex nature of the performative value function, all while ensuring feasibility.",
+        "The paper clearly articulates the limitations of existing repeated retraining methods and provides a comprehensive comparison, justifying the need for and novelty of the proposed approach."
+      ],
+      "weaknesses": [
+        "The evaluation is purely theoretical; there are no empirical experiments or simulations to validate the algorithm's practical performance, convergence speed in realistic scenarios, or robustness to violations of the stated assumptions (e.g., Assumption 3 on state occupancy).",
+        "The algorithm's sample complexity is high (O(epsilon^{-4}) policy evaluations), and its reliance on a policy search within a bounded subspace (Pi_Delta) may limit its applicability to problems where maintaining a constant lower bound on the policy probability significantly hampers exploration or optimal performance.",
+        "While the paper mentions applicability to existing quadratic regularizers in the appendix, the core analysis and algorithm are tailored to the entropy regularizer. The theoretical conditions required for convergence (e.g., regularizer dominance condition µ >= 0) are derived in detail for entropy regularization but their generalizability and stringency for other regularizers are not fully analyzed."
+      ],
+      "summary_comment": "This paper makes a significant and timely theoretical contribution to the emerging field of performative reinforcement learning. It directly addresses the core limitation of prior work—convergence only to a suboptimal Performatively Stable policy—and provides the first algorithm with provable convergence guarantees to the desired Performatively Optimal policy under mild conditions. The theoretical machinery involving gradient dominance, policy lower bounds, and zeroth-order optimization on a policy subspace is sophisticated and sound. The primary weakness is the lack of empirical validation, which leaves the practical efficacy and sample efficiency of the proposed method an open question. However, given the clear novelty and strong theoretical significance of overcoming the PO vs. PS gap, the paper is a strong candidate for acceptance, with the expectation that future work will provide the needed experimental validation. The related work evidence, particularly on nonconvex optimization and policy gradient methods, supports the novelty of addressing the performative setting's specific challenges."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem (performative RL) with strong theoretical contributions, aligning with ICML's focus on rigorous algorithmic and theoretical advances in ML.",
+        "The work makes significant contributions to reinforcement learning theory, particularly in policy optimization under non-stationary environments, which is a key ICML topic area.",
+        "The technical approach combines reinforcement learning, optimization theory, and sensitivity analysis - all core competencies valued at ICML.",
+        "The paper establishes important theoretical properties (gradient dominance, policy bounds) that advance our understanding of performative systems."
+      ],
+      "why_it_does_not_fit": [
+        "The complete lack of empirical validation may be a concern for ICML, which typically expects some experimental verification even for theoretical papers.",
+        "The high sample complexity (O(ε⁻⁴)) might raise questions about practical applicability, which ICML reviewers sometimes scrutinize.",
+        "The focus is purely theoretical without connections to real-world applications or datasets, which could limit appeal to ICML's broad audience."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS strongly values theoretical breakthroughs in ML fundamentals, especially when they address known gaps in existing literature - this paper's solution to the PO vs PS gap fits perfectly.",
+        "The work bridges reinforcement learning, optimization, and game-theoretic concepts, aligning well with NeurIPS's interdisciplinary nature.",
+        "The paper's focus on performative systems connects to important societal applications (recommender systems, autonomous vehicles) mentioned in the introduction, relevant to NeurIPS's applied interests.",
+        "NeurIPS has historically accepted papers on performative prediction and related topics, making this a natural fit for the venue."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the absence of empirical results might be a minor concern, though NeurIPS is generally more receptive to purely theoretical contributions.",
+        "The technical density and specialized RL focus might limit accessibility to NeurIPS's broader audience spanning neuroscience and cognitive science."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper contributes to deep theoretical understanding of RL optimization, which aligns with ICLR's focus on deep learning and representation learning foundations.",
+        "The entropy regularization approach connects to common techniques in deep RL (e.g., maximum entropy RL), making it relevant to ICLR's audience.",
+        "The convergence analysis and gradient-based methods are central topics at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly emphasizes empirical validation and reproducibility - the complete lack of experiments is a significant weakness for this venue.",
+        "The paper focuses on tabular RL with theoretical guarantees rather than deep RL architectures or large-scale applications that dominate ICLR.",
+        "While relevant, performative RL is somewhat peripheral to ICLR's core focus on deep learning representations and architectures.",
+        "The mathematical style is more aligned with optimization conferences than ICLR's typical deep learning emphasis."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_53b89081aa75",
+    "paper_id": "paper_9381a750c57c",
+    "target_paper_summary": {
+      "paper_id": "paper_9381a750c57c",
+      "title": "Achieve Performatively Optimal Policy For Performative Reinforcement Learning",
+      "abstract": "Performative reinforcement learning is an emerging dynamical decision making framework, which extends reinforcement learning to the common applications where the agent's policy can change the environmental dynamics. Existing works on performative reinforcement learning only aim at a performatively stable (PS) policy that maximizes an approximate value function. However, there is a provably positive constant gap between the PS policy and the desired performatively optimal (PO) policy that maximizes the original value function. In contrast, this work proposes a zerothorder performative policy gradient (0-PPG) algorithm that **for the first time converges to the** desired PO policy with polynomial computation complexity under mild conditions. For the convergence analysis, we prove two important properties of the nonconvex value function. First, when the policy regularizer dominates the environmental shift, the value function satisfies a certain gradient dominance property, so that any stationary point of the value function is a desired PO.\n\nSecond, though the value function has unbounded gradient, we prove that all the sufficiently stationary points lie in a convex and compact policy subspace Π∆, where the policy value has a constant lower bound ∆ > 0 and thus the gradient becomes bounded and Lipschitz continuous.",
+      "topic": "",
+      "claims": [
+        "we prove two important properties of the nonconvex value function.",
+        "we prove that all the sufficiently stationary points lie in a convex and compact policy subspace Π∆, where the policy value has a constant lower bound ∆ > 0 and thus the gradient becomes bounded and Lipschitz continuous."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "performative reinforcement learning policy optimization",
+          "rationale": "The core problem is optimizing policies in performative RL settings where policies influence environment dynamics"
+        },
+        {
+          "group": "same_method",
+          "query": "zeroth-order policy gradient reinforcement learning convergence",
+          "rationale": "The paper uses a zeroth-order policy gradient method with convergence guarantees"
+        },
+        {
+          "group": "same_constraints",
+          "query": "performative RL policy regularizer environmental shift bounded gradient",
+          "rationale": "The analysis assumes policy regularizer dominates environmental shift and works in bounded gradient regions"
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "performatively stable vs performatively optimal reinforcement learning comparison",
+          "rationale": "The paper contrasts PS (performatively stable) and PO (performatively optimal) policies as benchmarks"
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "performative reinforcement learning convergence algorithm before 2023",
+          "rationale": "The paper claims to be the first to converge to PO policy, so pre-existing convergence algorithms challenge this"
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "performative RL unbounded gradient nonconvex optimization failure cases",
+          "rationale": "The paper mentions unbounded gradient issues, so papers showing failures in such settings provide counterevidence"
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 2,
+        "warnings": [
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 9,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_3bcf05696",
+        "title": "Diagnosing Non-Intermittent Anomalies in Reinforcement Learning Policy Executions (Short Paper)",
+        "authors": [
+          "Esper, Khalil",
+          "Spieck, Jan",
+          "Sixdenier, Pierre-Louis",
+          "Wildermann, Stefan",
+          "Teich, Jürgen"
+        ],
+        "year": 2017,
+        "publication_date": "2017-07-20",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Due to the safety risks and training sample inefficiency, it is often preferred to develop controllers in simulation. However, minor differences between the simulation and the real world can cause a significant sim-to-real gap. This gap can reduce the effectiveness of the developed controller. In this paper, we examine a case study of transferring an octorotor reinforcement learning controller from simulation to the real world. First, we quantify the effectiveness of the real-world transfer by examining safety metrics. We find that although there is a noticeable (around 100%) increase in deviation in real flights, this deviation may not be considered unsafe, as it will be within > 2m safety corridors. Then, we estimate the densities of the measurement distributions and compare the Jensen-Shannon divergences of simulated and real measurements. From this, we show that the vehicle’s orientation is significantly different between simulated and real flights. We attribute this to a different flight mode in real flights where the vehicle turns to face the next waypoint. We also find that the reinforcement learning controller actions appear to correctly counteract disturbance forces. Then, we analyze the errors of a measurement autoencoder and state transition model neural network applied to real data. We find that these models further reinforce the difference between the simulated and real attitude control, showing the errors directly on the flight paths. Finally, we discuss important lessons learned in the sim-to-real transfer of our controller.",
+        "url": "http://arxiv.org/abs/1707.06347",
+        "doi": "https://doi.org/10.4230/oasics.dx.2024.16",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2736601468"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 11350
+      },
+      {
+        "paper_id": "rw_002_f9e45fc13",
+        "title": "Reinforcement Learning: A Survey",
+        "authors": [
+          "Leslie Pack Kaelbling",
+          "Michael L. Littman",
+          "Andrew Moore"
+        ],
+        "year": 1996,
+        "publication_date": "1996-05-01",
+        "venue": "Journal of Artificial Intelligence Research",
+        "abstract": "This paper surveys the field of reinforcement learning from a computer-science perspective. It is written to be accessible to researchers familiar with machine learning. Both the historical basis of the field and a broad selection of current work are summarized. Reinforcement learning is the problem faced by an agent that learns behavior through trial-and-error interactions with a dynamic environment. The work described here has a resemblance to work in psychology, but differs considerably in the details and in the use of the word ``reinforcement.'' The paper discusses central issues of reinforcement learning, including trading off exploration and exploitation, establishing the foundations of the field via Markov decision theory, learning from delayed reinforcement, constructing empirical models to accelerate learning, making use of generalization and hierarchy, and coping with hidden state. It concludes with a survey of some implemented systems and an assessment of the practical utility of current methods for reinforcement learning.",
+        "url": "https://doi.org/10.1613/jair.301",
+        "doi": "https://doi.org/10.1613/jair.301",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2107726111"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 8876
+      },
+      {
+        "paper_id": "rw_003_07944df2e",
+        "title": "On Connections between Constrained Optimization and Reinforcement Learning",
+        "authors": [
+          "Nino Vieillard",
+          "Olivier Pietquin",
+          "Matthieu Geist"
+        ],
+        "year": 2019,
+        "publication_date": "2019-10-18",
+        "venue": "arXiv",
+        "abstract": "Dynamic Programming (DP) provides standard algorithms to solve Markov Decision Processes. However, these algorithms generally do not optimize a scalar objective function. In this paper, we draw connections between DP and (constrained) convex optimization. Specifically, we show clear links in the algorithmic structure between three DP schemes and optimization algorithms. We link Conservative Policy Iteration to Frank-Wolfe, Mirror-Descent Modified Policy Iteration to Mirror Descent, and Politex (Policy Iteration Using Expert Prediction) to Dual Averaging. These abstract DP schemes are representative of a number of (deep) Reinforcement Learning (RL) algorithms. By highlighting these connections (most of which have been noticed earlier, but in a scattered way), we would like to encourage further studies linking RL and convex optimization, that could lead to the design of new, more efficient, and better understood RL algorithms.",
+        "url": "http://arxiv.org/abs/1910.08476v2",
+        "doi": "",
+        "arxiv_id": "1910.08476v2",
+        "source_ids": {
+          "arXiv": "1910.08476v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_005_61ea2dd3c",
+        "title": "Conjectures on Convergence and Scalar Curvature",
+        "authors": [
+          "Christina Sormani",
+          "Participants at the IAS Emerging Topics Workshop on Scalar Curvature",
+          "Convergence"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-18",
+        "venue": "arXiv",
+        "abstract": "Here we survey the compactness and geometric stability conjectures formulated by the participants at the 2018 IAS Emerging Topics Workshop on {\\em Scalar Curvature and Convergence}. We have tried to survey all the progress towards these conjectures as well as related examples, although it is impossible to cover everything. We focus primarily on sequences of compact Riemannian manifolds with nonnegative scalar curvature and their limit spaces. Christina Sormani is grateful to have had the opportunity to write up our ideas and has done her best to credit everyone involved within the paper even though she is the only author listed above. In truth we are a team of over thirty people working together and apart on these deep questions and we welcome everyone who is interested in these conjectures to join us.",
+        "url": "http://arxiv.org/abs/2103.10093v1",
+        "doi": "",
+        "arxiv_id": "2103.10093v1",
+        "source_ids": {
+          "arXiv": "2103.10093v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_007_b3db6f535",
+        "title": "Explainable Machine Learning for Public Policy: Use Cases, Gaps, and Research Directions",
+        "authors": [
+          "Kasun Amarasinghe",
+          "Kit Rodolfa",
+          "Hemank Lamba",
+          "Rayid Ghani"
+        ],
+        "year": 2020,
+        "publication_date": "2020-10-27",
+        "venue": "arXiv",
+        "abstract": "Explainability is highly-desired in Machine Learning (ML) systems supporting high-stakes policy decisions in areas such as health, criminal justice, education, and employment. While the field of explainable ML has expanded in recent years, much of this work has not taken real-world needs into account. A majority of proposed methods are designed with \\textit{generic} explainability goals without well-defined use-cases or intended end-users and evaluated on simplified tasks, benchmark problems/datasets, or with proxy users (e.g., AMT). We argue that these simplified evaluation settings do not capture the nuances and complexities of real-world applications. As a result, the applicability and effectiveness of this large body of theoretical and methodological work in real-world applications are unclear. In this work, we take steps toward addressing this gap for the domain of public policy. First, we identify the primary use-cases of explainable ML within public policy problems. For each use case, we define the end-users of explanations and the specific goals the explanations have to fulfill. Finally, we map existing work in explainable ML to these use-cases, identify gaps in established capabilities, and propose research directions to fill those gaps to have a practical societal impact through ML. The contribution is 1) a methodology for explainable ML researchers to identify use cases and develop methods targeted at them and 2) using that methodology for the domain of public policy and giving an example for the researchers on developing explainable ML methods that result in real-world impact.",
+        "url": "http://arxiv.org/abs/2010.14374v3",
+        "doi": "",
+        "arxiv_id": "2010.14374v3",
+        "source_ids": {
+          "arXiv": "2010.14374v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_dad496470",
+        "title": "Diversity Policy Gradient for Sample Efficient Quality-Diversity Optimization",
+        "authors": [
+          "Thomas Pierrot",
+          "Valentin Macé",
+          "Félix Chalumeau",
+          "Arthur Flajolet",
+          "Geoffrey Cideron",
+          "Karim Beguir",
+          "Antoine Cully",
+          "Olivier Sigaud",
+          "Nicolas Perrin-Gilbert"
+        ],
+        "year": 2020,
+        "publication_date": "2020-06-15",
+        "venue": "arXiv",
+        "abstract": "A fascinating aspect of nature lies in its ability to produce a large and diverse collection of organisms that are all high-performing in their niche. By contrast, most AI algorithms focus on finding a single efficient solution to a given problem. Aiming for diversity in addition to performance is a convenient way to deal with the exploration-exploitation trade-off that plays a central role in learning. It also allows for increased robustness when the returned collection contains several working solutions to the considered problem, making it well-suited for real applications such as robotics. Quality-Diversity (QD) methods are evolutionary algorithms designed for this purpose. This paper proposes a novel algorithm, QDPG, which combines the strength of Policy Gradient algorithms and Quality Diversity approaches to produce a collection of diverse and high-performing neural policies in continuous control environments. The main contribution of this work is the introduction of a Diversity Policy Gradient (DPG) that exploits information at the time-step level to drive policies towards more diversity in a sample-efficient manner. Specifically, QDPG selects neural controllers from a MAP-Elites grid and uses two gradient-based mutation operators to improve both quality and diversity. Our results demonstrate that QDPG is significantly more sample-efficient than its evolutionary competitors.",
+        "url": "http://arxiv.org/abs/2006.08505v5",
+        "doi": "",
+        "arxiv_id": "2006.08505v5",
+        "source_ids": {
+          "arXiv": "2006.08505v5"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_011_ea0260170",
+        "title": "A Cubic Regularization Approach for Finding Local Minimax Points in Nonconvex Minimax Optimization",
+        "authors": [
+          "Ziyi Chen",
+          "Zhengyang Hu",
+          "Qunwei Li",
+          "Zhe Wang",
+          "Yi Zhou"
+        ],
+        "year": 2021,
+        "publication_date": "2021-10-14",
+        "venue": "arXiv",
+        "abstract": "Gradient descent-ascent (GDA) is a widely used algorithm for minimax optimization. However, GDA has been proved to converge to stationary points for nonconvex minimax optimization, which are suboptimal compared with local minimax points. In this work, we develop cubic regularization (CR) type algorithms that globally converge to local minimax points in nonconvex-strongly-concave minimax optimization. We first show that local minimax points are equivalent to second-order stationary points of a certain envelope function. Then, inspired by the classic cubic regularization algorithm, we propose an algorithm named Cubic-LocalMinimax for finding local minimax points, and provide a comprehensive convergence analysis by leveraging its intrinsic potential function. Specifically, we establish the global convergence of Cubic-LocalMinimax to a local minimax point at a sublinear convergence rate and characterize its iteration complexity. Also, we propose a GDA-based solver for solving the cubic subproblem involved in Cubic-LocalMinimax up to certain pre-defined accuracy, and analyze the overall gradient and Hessian-vector product computation complexities of such an inexact Cubic-LocalMinimax algorithm. Moreover, we propose a stochastic variant of Cubic-LocalMinimax for large-scale minimax optimization, and characterize its sample complexity under stochastic sub-sampling. Experimental results demonstrate faster convergence of our stochastic Cubic-LocalMinimax than some existing algorithms.",
+        "url": "http://arxiv.org/abs/2110.07098v5",
+        "doi": "",
+        "arxiv_id": "2110.07098v5",
+        "source_ids": {
+          "arXiv": "2110.07098v5"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_011_ea0260170",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "Directly addresses challenges of nonconvex optimization with unbounded gradients, providing counterevidence and methods for handling stationary points in nonconvex minimax settings similar to performative RL.",
+        "evidence_summary": "This paper develops cubic regularization algorithms for finding local minimax points in nonconvex-strongly-concave optimization, addressing convergence to second-order stationary points when gradient descent-ascent converges to suboptimal stationary points."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_008_dad496470",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Addresses policy gradient methods with regularization and diversity constraints, relevant to understanding policy regularizer effects mentioned in the target paper's assumptions.",
+        "evidence_summary": "This work introduces Diversity Policy Gradient for sample-efficient quality-diversity optimization, combining policy gradient algorithms with diversity approaches using gradient-based mutation operators."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_07944df2e",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Connects constrained optimization and reinforcement learning, providing relevant background for understanding optimization approaches in RL policy search.",
+        "evidence_summary": "This paper draws connections between dynamic programming algorithms and constrained convex optimization methods, linking policy iteration variants to optimization algorithms like Frank-Wolfe and Mirror Descent."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_61ea2dd3c",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_method"
+        ],
+        "rationale": "Discusses convergence conjectures and scalar curvature but is only tangentially related through mathematical convergence concepts, not specific to performative RL.",
+        "evidence_summary": "This survey examines compactness and geometric stability conjectures related to scalar curvature and convergence, focusing on Riemannian manifolds rather than RL optimization."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_007_b3db6f535",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Discusses policy applications and constraints but in public policy context rather than RL policy optimization, providing only conceptual overlap.",
+        "evidence_summary": "This paper examines explainable machine learning for public policy applications, identifying use cases and research gaps for interpretable policy decisions."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_002_f9e45fc13",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "General RL survey provides foundational background but doesn't address performative aspects or policy optimization methods specific to the target paper.",
+        "evidence_summary": "This survey paper provides a comprehensive overview of reinforcement learning fundamentals, including exploration-exploitation tradeoffs and Markov decision processes."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_3bcf05696",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Addresses RL policy execution anomalies and sim-to-real transfer but focuses on diagnostics rather than policy optimization or performative aspects.",
+        "evidence_summary": "This paper examines non-intermittent anomalies in reinforcement learning policy executions during sim-to-real transfer, quantifying effectiveness through safety metrics and distribution analysis."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Recent work has explored optimization approaches in reinforcement learning, with On Connections between Constrained Optimization and Reinforcement Learning (Vieillard et al., 2019) linking policy iteration methods to convex optimization algorithms. For policy gradient methods with constraints, Diversity Policy Gradient for Sample Efficient Quality-Diversity Optimization (Pierrot et al., 2020) demonstrates gradient-based approaches to diversity optimization. The challenges of nonconvex optimization with potentially unbounded gradients have been addressed in minimax settings by A Cubic Regularization Approach for Finding Local Minimax Points in Nonconvex Minimax Optimization (Chen et al., 2021), which develops algorithms for converging to second-order stationary points. Foundational reinforcement learning concepts are covered in Reinforcement Learning: A Survey (Kaelbling et al., 1996).",
+    "warnings": [
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 11,
+      "num_removed_post_cutoff": 4,
+      "num_removed_undated": 0,
+      "num_used": 7,
+      "num_cutoff_valid": 7,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 11,
+    "num_removed_post_cutoff": 4,
+    "num_removed_undated": 0,
+    "num_used": 7,
+    "num_cutoff_valid": 7,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

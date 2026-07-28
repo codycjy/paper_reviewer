@@ -1,0 +1,744 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Focuses on a practical and relevant attack constraint: sparse, temporally constrained perturbations are a more realistic threat model for time-series forecasting applications.",
+        "Proposes a clear algorithmic framework: adapting Subspace Pursuit for a cardinality-constrained optimization problem is a well-defined and logical approach for generating sparse attacks.",
+        "Evaluates a wide range of models and datasets: thorough empirical tests on multiple LLM-based forecasters (e.g., TimeGPT, LLMTime variants, TimeLLM) across several real-world datasets (ETTh1, IstanbulTraffic, Weather, Exchange Rates) provide solid breadth of coverage."
+      ],
+      "weaknesses": [
+        "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+        "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+          "severity": "major",
+          "evidence": "The paper introduces a temporally sparse adversarial attack (TSA) based on Subspace Pursuit but primarily compares it only to Gaussian White Noise (GWN). The RAG evidence cites research on adversarial attacks and evasion in domains like intrusion detection (Azam et al., 2023) and cybersecurity (Landauer et al., 2024). The paper does not situate its sparse attack within the extensive literature on sparse adversarial attacks (e.g., in computer vision or other domains using L0 constraints) or gradient-free black-box optimization methods designed for sparsity. This omission makes it difficult to assess the contribution's novelty and effectiveness relative to existing techniques. The author's second response acknowledges this gap but continues to rely primarily on the GWN comparison, stating it 'provides meaningful evidence' despite being an insufficient baseline for a top-tier publication.",
+          "affected_claim": "The central claim that the proposed TSA method is a novel and effective approach for generating sparse adversarial attacks in time-series forecasting.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning.",
+          "severity": "major",
+          "evidence": "The paper frames its contribution as introducing Cardinality-Constrained Optimization Problem (CCOP) and Subspace Pursuit (SP) techniques into adversarial study. However, the core idea of applying sparsity (L0) constraints to adversarial perturbations is not new in machine learning. The paper's related work section is narrowly focused on attacks for LLMs and time-series forecasting, missing the connection to the broader, well-established literature on sparse adversarial examples and attacks. The RAG evidence includes surveys on model risks (Weidinger et al., 2022) and factuality (Wang et al., 2023), indicating a rich context for discussing LLM vulnerabilities beyond the specific forecasting domain. While the author's second response emphasizes the 'unique confluence of constraints' in LLM-based time series forecasting, the submitted manuscript does not sufficiently demonstrate that these constraints lead to fundamentally different attack mechanisms or vulnerabilities compared to established sparse attack paradigms in other domains.",
+          "affected_claim": "The claim that the work 'introduces CCOP and SP techniques into adversarial study' and reveals a 'critical vulnerability' specific to current LLM-based forecasters.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The author's second response acknowledges the comparison deficit but does not provide evidence from the submitted paper that addresses this fundamental weakness. The evaluation against only Gaussian White Noise remains insufficient to demonstrate the technical soundness and superiority of the proposed method relative to established sparse attack techniques. The core algorithm may be logically sound, but its empirical validation against relevant prior work is missing from the submission."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The author emphasizes the application-specific constraints (no future ground truth, black-box setting, temporal coherence), but the submitted manuscript does not sufficiently demonstrate that these constraints necessitate fundamentally novel algorithmic approaches beyond adapting existing sparse optimization techniques. The connection to the broader literature on sparse adversarial attacks remains underdeveloped, and the response does not identify new evidence in the paper that would change this assessment."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "While the practical constraints of the threat model are well-motivated, the submitted evaluation does not establish that the demonstrated vulnerability is uniquely severe or qualitatively different from what is known about sparse adversarial attacks in other domains. The comparison between LLM and non-LLM models (TimesNet) shows some differential vulnerability, but this analysis is not deep enough to strongly support the claim of LLM-specific critical vulnerability. The author's response does not provide new evidence from the paper to alter this assessment."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The author continues to acknowledge that additional baselines are needed but maintains that the GWN comparison provides 'meaningful evidence.' For a top-tier conference, comparison against only a random noise baseline is insufficient to convincingly demonstrate the effectiveness and novelty of a proposed adversarial attack method. The defense evaluation in Section 6.6 is valuable but does not compensate for the missing comparison to state-of-the-art sparse attack methods."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains clearly written and well-structured. The author's responses do not change this assessment."
+        }
+      },
+      "summary_comment": "The author's second response continues to acknowledge the key weaknesses but does not identify specific evidence in the submitted paper that would resolve them. The response emphasizes the practical constraints of the threat model and the application domain specificity, which are present in the paper, but these do not sufficiently address the fundamental issues of missing comparisons to relevant sparse attack baselines and insufficient engagement with the broader adversarial ML literature. While the work addresses an interesting and practical problem, the submitted manuscript does not meet the standard for a top-tier conference due to these major weaknesses in evaluation and positioning. The decision remains Reject."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The topic sits at the intersection of 'trustworthy machine learning' (adversarial robustness), 'deep learning' (LLMs), and 'application-driven machine learning' (time series forecasting for critical domains) which aligns well with ICML's broad scope.",
+        "The work proposes a novel algorithmic formulation (CCOP) and adaptation of Subspace Pursuit (SP) to solve it, demonstrating a solid optimization-centric methodology that fits ICML's appreciation for algorithmic and theoretical contributions.",
+        "The empirical evaluation is extensive, covering multiple models and datasets, which meets ICML's high standards for experimental rigor and reproducibility."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 strongly critiques the paper's lack of comparison to state-of-the-art sparse adversarial attack methods, a major issue for a venue focused on methodological advancement. The primary baseline (Gaussian White Noise) is considered insufficient. This 'soundness' failure directly undermines the paper's fit for ICML.",
+        "Reviewer 1 questions the novelty claim, stating the core 'idea of applying sparsity (L0) constraints to adversarial perturbations is not new,' and that the paper does not sufficiently connect to the broader adversarial ML literature. This 'novelty' failure is a significant risk for ICML reviewers.",
+        "Reviewer 1 argues the 'significance' is not convincingly established. The finding that sparse attacks can fool LLM-based forecasters may not be seen as a fundamentally new insight beyond known adversarial vulnerabilities, weakening its impact for ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper investigates vulnerabilities in foundation models (LLMs) applied to non-standard modalities (time series), which falls squarely under NeurIPS's interest in 'AI/ML for physical sciences' (e.g., weather, traffic) and 'socio-technical aspects of AI' / 'trustworthy ML.'",
+        "The study examines the practical security implications of deploying LLMs in high-stakes forecasting applications (finance, traffic, energy), fitting NeurIPS's emphasis on real-world impact and the reliability of AI systems.",
+        "The evaluation against multiple prominent LLM-based models (TimeGPT, LLaMA, GPT-4, etc.) and analysis of defense failures makes it relevant to the NeurIPS community focused on large-scale models and their risks."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1's major critiques on evaluation and novelty remain. NeurIPS reviewers also expect strong comparisons to SOTA baselines, especially in the mature field of adversarial attacks. Relying on a GWN baseline would be a major red flag.",
+        "The problem formulation, while applied to LLMs, is rooted in time-series modeling and gradient-free optimization. The theoretical/algorithmic contribution (SP adaptation) is modest, and the paper's narrative may not align as strongly with NeurIPS's appetite for high-impact conceptual or theoretical breakthroughs compared to other areas.",
+        "Reviewer 1's assessment that the work does not prove a 'qualitatively different' vulnerability from known sparse attacks in other domains suggests its findings might be seen as an incremental validation in a new application area, which can be a tough sell at NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The core subject is the reliability and adversarial robustness of deep learning models, specifically LLMs. ICLR has a strong and growing track record in 'societal considerations including fairness, safety, privacy' which includes adversarial robustness research.",
+        "The target models (LLMs like LLaMA, GPT variants) and the broader theme of 'foundation model' vulnerabilities are central to ICLR's research community."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's primary contribution is an attack method applied to LLMs, but it makes minimal to no contribution to the core ICLR themes of representation learning, novel deep learning architectures, or the fundamental understanding of neural networks. ICLR tends to favor papers that advance the science of deep learning itself.",
+        "The application domain (time series forecasting) and methodology (gradient-free optimization, SP) are peripheral to ICLR's central focus. The paper is more about applied security for a specific task than about principles of deep representation learning.",
+        "Reviewer 1's harsh criticisms on novelty and evaluation would be particularly damaging at ICLR, which places an extremely high premium on both. A paper that fails key acceptance gates on novelty and significance is extremely unlikely to succeed."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Focuses on a practical and relevant attack constraint: sparse, temporally constrained perturbations are a more realistic threat model for time-series forecasting applications.",
+              "Proposes a clear algorithmic framework: adapting Subspace Pursuit for a cardinality-constrained optimization problem is a well-defined and logical approach for generating sparse attacks.",
+              "Evaluates a wide range of models and datasets: thorough empirical tests on multiple LLM-based forecasters (e.g., TimeGPT, LLMTime variants, TimeLLM) across several real-world datasets (ETTh1, IstanbulTraffic, Weather, Exchange Rates) provide solid breadth of coverage."
+            ],
+            "weaknesses": [
+              "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+              "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+                "severity": "major",
+                "evidence": "The paper introduces a temporally sparse adversarial attack (TSA) based on Subspace Pursuit but primarily compares it only to Gaussian White Noise (GWN). The RAG evidence cites research on adversarial attacks and evasion in domains like intrusion detection (Azam et al., 2023) and cybersecurity (Landauer et al., 2024). The paper does not situate its sparse attack within the extensive literature on sparse adversarial attacks (e.g., in computer vision or other domains using L0 constraints) or gradient-free black-box optimization methods designed for sparsity. This omission makes it difficult to assess the contribution's novelty and effectiveness relative to existing techniques.",
+                "affected_claim": "The central claim that the proposed TSA method is a novel and effective approach for generating sparse adversarial attacks in time-series forecasting.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning.",
+                "severity": "major",
+                "evidence": "The paper frames its contribution as introducing Cardinality-Constrained Optimization Problem (CCOP) and Subspace Pursuit (SP) techniques into adversarial study. However, the core idea of applying sparsity (L0) constraints to adversarial perturbations is not new in machine learning. The paper's related work section is narrowly focused on attacks for LLMs and time-series forecasting, missing the connection to the broader, well-established literature on sparse adversarial examples and attacks. The RAG evidence includes surveys on model risks (Weidinger et al., 2022) and factuality (Wang et al., 2023), indicating a rich context for discussing LLM vulnerabilities beyond the specific forecasting domain. The significance of demonstrating that LLM-based forecasters are vulnerable to sparse attacks is somewhat diminished without a clear baseline showing this is a unique or particularly severe vulnerability compared to other model types or attack modalities.",
+                "affected_claim": "The claim that the work 'introduces CCOP and SP techniques into adversarial study' and reveals a 'critical vulnerability' specific to current LLM-based forecasters.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The paper's core technical approach lacks a proper baseline comparison to established sparse adversarial attack methods, making the technical results difficult to evaluate fairly. The proposed algorithm adapts Subspace Pursuit and appears sound, but its evaluation against GWN alone is insufficient to demonstrate its superiority or unique value. The empirical evaluation is broad but not deep; the claim of effectiveness is undercut by incomplete comparison."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "While applying a sparsity constraint to adversarial attacks on LLMs for time-series forecasting is a specific combination, the core concepts (cardinality-constrained adversarial optimization, Subspace Pursuit for sparsity) are not novel. The paper does not sufficiently differentiate its contribution from prior work on sparse adversarial attacks across machine learning. The RAG evidence confirms the existence of extensive literature on attacks, risks, and time-series analysis that provides context the paper does not fully engage with."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution—that LLM-based forecasters are vulnerable to sparse perturbations—is incremental. It shows a vulnerability but does not establish it as a more severe or unique threat compared to known vulnerabilities of deep learning models (including non-LLM models like TimesNet, which the paper also shows is somewhat affected). The impact statement mentions high-stakes domains, but the paper does not provide evidence that the discovered vulnerability is a critical barrier to deployment or that addressing it meaningfully advances the field of robust time-series AI."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experimental setup uses appropriate metrics (MSE, MAE) and diverse models/datasets, which is a strength. However, the evaluation fails to include critical comparisons to modern baselines for sparse adversarial attacks. The defense evaluation is interesting but preliminary. The hyperparameter analysis is basic. Overall, the experimental evaluation is not convincing enough to strongly support the claims of the attack's distinctive effectiveness and the model's unique vulnerability."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly structured and written. The methodology (CCOP, Algorithm 1) is described logically. Figures and tables are helpful. The presentation is sufficient to permit reliable assessment of the work's content."
+              }
+            },
+            "summary_comment": "This paper investigates a practically motivated problem: generating sparse adversarial attacks against LLM-based time-series forecasters. It proposes an algorithm based on Subspace Pursuit to solve a cardinality-constrained optimization problem. The empirical evaluation is extensive in terms of models and datasets. However, the paper has major weaknesses that prevent it from meeting top-tier conference standards. The most significant issue is the lack of proper comparison to relevant state-of-the-art sparse attack methods, making the claimed novelty and effectiveness difficult to assess. The significance of the finding—that these models are vulnerable to sparse attacks—is not convincingly established as a major advance over known vulnerabilities of deep learning models. While the presentation is clear and the problem is relevant, the insufficient technical comparison and incremental core contribution lead to a rejection recommendation."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Focuses on a practical and relevant attack constraint: sparse, temporally constrained perturbations are a more realistic threat model for time-series forecasting applications.",
+              "Proposes a clear algorithmic framework: adapting Subspace Pursuit for a cardinality-constrained optimization problem is a well-defined and logical approach for generating sparse attacks.",
+              "Evaluates a wide range of models and datasets: thorough empirical tests on multiple LLM-based forecasters (e.g., TimeGPT, LLMTime variants, TimeLLM) across several real-world datasets (ETTh1, IstanbulTraffic, Weather, Exchange Rates) provide solid breadth of coverage."
+            ],
+            "weaknesses": [
+              "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+              "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+                "severity": "major",
+                "evidence": "The paper introduces a temporally sparse adversarial attack (TSA) based on Subspace Pursuit but primarily compares it only to Gaussian White Noise (GWN). The RAG evidence cites research on adversarial attacks and evasion in domains like intrusion detection (Azam et al., 2023) and cybersecurity (Landauer et al., 2024). The paper does not situate its sparse attack within the extensive literature on sparse adversarial attacks (e.g., in computer vision or other domains using L0 constraints) or gradient-free black-box optimization methods designed for sparsity. This omission makes it difficult to assess the contribution's novelty and effectiveness relative to existing techniques. The author's response acknowledges this gap and proposes future comparisons, but does not provide evidence that such comparisons exist in the submitted manuscript.",
+                "affected_claim": "The central claim that the proposed TSA method is a novel and effective approach for generating sparse adversarial attacks in time-series forecasting.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning.",
+                "severity": "major",
+                "evidence": "The paper frames its contribution as introducing Cardinality-Constrained Optimization Problem (CCOP) and Subspace Pursuit (SP) techniques into adversarial study. However, the core idea of applying sparsity (L0) constraints to adversarial perturbations is not new in machine learning. The paper's related work section is narrowly focused on attacks for LLMs and time-series forecasting, missing the connection to the broader, well-established literature on sparse adversarial examples and attacks. The RAG evidence includes surveys on model risks (Weidinger et al., 2022) and factuality (Wang et al., 2023), indicating a rich context for discussing LLM vulnerabilities beyond the specific forecasting domain. The significance of demonstrating that LLM-based forecasters are vulnerable to sparse attacks is somewhat diminished without a clear baseline showing this is a unique or particularly severe vulnerability compared to other model types or attack modalities. The author's response emphasizes the practical constraints of the threat model, which are present in the paper, but does not demonstrate with evidence from the submitted manuscript that the novelty extends beyond the application domain.",
+                "affected_claim": "The claim that the work 'introduces CCOP and SP techniques into adversarial study' and reveals a 'critical vulnerability' specific to current LLM-based forecasters.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author's response acknowledges the weakness regarding comparison to sparse adversarial attack baselines and promises to add them, but this does not resolve the issue for the submitted paper. The evaluation as submitted compares TSA only to Gaussian White Noise, which is an insufficient baseline to demonstrate technical soundness and superiority of the proposed method. The core algorithm may be logically sound, but its empirical validation against relevant prior work is missing."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The author clarifies that the novelty lies in adapting techniques to the specific constraints of LLM-based time series forecasting (no future ground truth, black-box). While this is a specific application, the rebuttal does not present new evidence from the paper to demonstrate that the core algorithmic idea (using SP for cardinality-constrained adversarial optimization) is itself novel relative to applying similar techniques from sparse signal recovery or adversarial ML to new domains. The connection to the broader literature remains underdeveloped in the submitted manuscript."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The author argues for the practical significance of the constrained threat model, which is present in the paper. However, demonstrating vulnerability under a constrained model is not, by itself, a major advance if it does not reveal a qualitatively new or more severe weakness compared to what is known about model vulnerabilities in general. The submitted evaluation does not establish that LLM-based forecasters are uniquely or disproportionately vulnerable to sparse attacks compared to other deep learning models (e.g., the included TimesNet model also shows some degradation). The promised future analysis does not alter the assessment of the submitted work."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The rebuttal agrees that additional baselines are needed. Since those baselines are not included in the submitted work, the evaluation remains insufficient to convincingly support the claims of the attack's effectiveness and the model's specific vulnerability. The defense evaluation in Section 6.6 is a positive element, but the overall experimental evaluation is not complete enough for a top-tier publication."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured. The author's response does not change this assessment."
+              }
+            },
+            "summary_comment": "The author's response is constructive and acknowledges key weaknesses, particularly the lack of comparison to established sparse adversarial attack methods from other domains. However, the response largely promises future revisions and new experiments. According to the rebuttal assessment rules, these promises do not resolve the concerns for the submitted paper. The central issues remain: the empirical evaluation lacks crucial comparisons, and the novelty argument is not sufficiently substantiated against the broader adversarial ML literature. While the work addresses a relevant practical constraint and is clearly presented, the submitted manuscript does not meet the standard for a top-tier conference due to these major weaknesses in evaluation and positioning. Therefore, the decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of comparison to relevant state-of-the-art sparse adversarial attack methods\",\n        \"Insufficient justification for the attack's significance and novelty relative to broader adversarial ML literature\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Justification for temporal sparsity as a practical constraint\",\n          \"location\": \"Introduction and Section 4\",\n          \"explanation\": \"The paper extensively justifies the practical relevance of temporal sparsity constraints in real-world attack scenarios where modifying the entire time series is infeasible. Section 4 explicitly states: 'In this study, we impose strict limitations on the attacker's capabilities, allowing them to pollute only τ time steps within the input time series.' This addresses the practical significance of our constrained threat model.\"\n        },\n        {\n          \"concern\": \"Novelty in applying CCOP and SP to time series forecasting LLMs\",\n          \"location\": \"Sections 1, 4 and 5\",\n          \"explanation\": \"While the reviewer notes that sparse adversarial attacks exist in other domains, our contribution lies in adapting these techniques to the unique constraints of time series forecasting with LLMs, particularly addressing the inability to use future ground truth values (Section 4) and the black-box nature of LLM APIs. Section 5 details our specific adaptations of SP for this domain.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of comparison to state-of-the-art sparse adversarial attack methods\",\n          \"proposed_change\": \"We will add comparisons to established sparse adversarial attack baselines such as One Pixel Attack variants, gradient-based sparse attack methods adapted for black-box settings, and other cardinality-constrained optimization approaches from computer vision and other domains. This will help better situate our method within the broader literature.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Insufficient connection to broader adversarial ML literature\",\n          \"proposed_change\": \"We will expand the Related Work section to include a more comprehensive discussion of sparse adversarial attacks across machine learning domains, explicitly highlighting how our work adapts these concepts to the unique constraints of LLM-based time series forecasting.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Better justification of significance relative to non-LLM models\",\n          \"proposed_change\": \"We will strengthen the analysis comparing vulnerability patterns between LLM-based models and traditional models like TimesNet, providing more nuanced discussion of why LLM-specific vulnerabilities matter for real-world deployment scenarios.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and constructive feedback. We acknowledge the importance of situating our work within the broader adversarial machine learning literature and will address these concerns comprehensively.\\n\\nRegarding the comparison to sparse adversarial attack methods: We agree that including additional baselines would strengthen our evaluation. Our current comparison with Gaussian White Noise was chosen to demonstrate that targeted sparse perturbations are more effective than random noise. However, we recognize the value of comparing against established sparse attack methods from other domains, and we will include these comparisons in the revised manuscript.\\n\\nConcerning novelty and significance: Our primary contribution lies in addressing the specific constraints of LLM-based time series forecasting, including the inability to use future ground truth values and the black-box nature of commercial LLM APIs. While sparse adversarial attacks exist in other domains, our work specifically addresses the temporal sparsity constraint in the context of sequential forecasting tasks, which presents unique challenges not present in static classification problems. The adaptation of Subspace Pursuit for this constrained optimization problem represents a novel application to this specific problem domain.\\n\\nWe believe the vulnerability we demonstrate is significant because LLM-based forecasters are increasingly being deployed in critical applications, and our results show they are susceptible to attacks that require minimal perturbation of the input—a realistic threat model. The fact that traditional filter-based defenses are ineffective against our attack (as shown in Section 6.6) further underscores the practical significance of this vulnerability.\\n\\nWe will revise the paper to provide better context within the broader adversarial ML literature while maintaining focus on the unique challenges and constraints of LLM-based time series forecasting.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Focuses on a practical and relevant attack constraint: sparse, temporally constrained perturbations are a more realistic threat model for time-series forecasting applications.",
+              "Proposes a clear algorithmic framework: adapting Subspace Pursuit for a cardinality-constrained optimization problem is a well-defined and logical approach for generating sparse attacks.",
+              "Evaluates a wide range of models and datasets: thorough empirical tests on multiple LLM-based forecasters (e.g., TimeGPT, LLMTime variants, TimeLLM) across several real-world datasets (ETTh1, IstanbulTraffic, Weather, Exchange Rates) provide solid breadth of coverage."
+            ],
+            "weaknesses": [
+              "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+              "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of comparison to relevant state-of-the-art sparse adversarial attack methods.",
+                "severity": "major",
+                "evidence": "The paper introduces a temporally sparse adversarial attack (TSA) based on Subspace Pursuit but primarily compares it only to Gaussian White Noise (GWN). The RAG evidence cites research on adversarial attacks and evasion in domains like intrusion detection (Azam et al., 2023) and cybersecurity (Landauer et al., 2024). The paper does not situate its sparse attack within the extensive literature on sparse adversarial attacks (e.g., in computer vision or other domains using L0 constraints) or gradient-free black-box optimization methods designed for sparsity. This omission makes it difficult to assess the contribution's novelty and effectiveness relative to existing techniques. The author's second response acknowledges this gap but continues to rely primarily on the GWN comparison, stating it 'provides meaningful evidence' despite being an insufficient baseline for a top-tier publication.",
+                "affected_claim": "The central claim that the proposed TSA method is a novel and effective approach for generating sparse adversarial attacks in time-series forecasting.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Insufficient justification for the attack's significance and novelty relative to the broader field of adversarial machine learning.",
+                "severity": "major",
+                "evidence": "The paper frames its contribution as introducing Cardinality-Constrained Optimization Problem (CCOP) and Subspace Pursuit (SP) techniques into adversarial study. However, the core idea of applying sparsity (L0) constraints to adversarial perturbations is not new in machine learning. The paper's related work section is narrowly focused on attacks for LLMs and time-series forecasting, missing the connection to the broader, well-established literature on sparse adversarial examples and attacks. The RAG evidence includes surveys on model risks (Weidinger et al., 2022) and factuality (Wang et al., 2023), indicating a rich context for discussing LLM vulnerabilities beyond the specific forecasting domain. While the author's second response emphasizes the 'unique confluence of constraints' in LLM-based time series forecasting, the submitted manuscript does not sufficiently demonstrate that these constraints lead to fundamentally different attack mechanisms or vulnerabilities compared to established sparse attack paradigms in other domains.",
+                "affected_claim": "The claim that the work 'introduces CCOP and SP techniques into adversarial study' and reveals a 'critical vulnerability' specific to current LLM-based forecasters.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author's second response acknowledges the comparison deficit but does not provide evidence from the submitted paper that addresses this fundamental weakness. The evaluation against only Gaussian White Noise remains insufficient to demonstrate the technical soundness and superiority of the proposed method relative to established sparse attack techniques. The core algorithm may be logically sound, but its empirical validation against relevant prior work is missing from the submission."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The author emphasizes the application-specific constraints (no future ground truth, black-box setting, temporal coherence), but the submitted manuscript does not sufficiently demonstrate that these constraints necessitate fundamentally novel algorithmic approaches beyond adapting existing sparse optimization techniques. The connection to the broader literature on sparse adversarial attacks remains underdeveloped, and the response does not identify new evidence in the paper that would change this assessment."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the practical constraints of the threat model are well-motivated, the submitted evaluation does not establish that the demonstrated vulnerability is uniquely severe or qualitatively different from what is known about sparse adversarial attacks in other domains. The comparison between LLM and non-LLM models (TimesNet) shows some differential vulnerability, but this analysis is not deep enough to strongly support the claim of LLM-specific critical vulnerability. The author's response does not provide new evidence from the paper to alter this assessment."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The author continues to acknowledge that additional baselines are needed but maintains that the GWN comparison provides 'meaningful evidence.' For a top-tier conference, comparison against only a random noise baseline is insufficient to convincingly demonstrate the effectiveness and novelty of a proposed adversarial attack method. The defense evaluation in Section 6.6 is valuable but does not compensate for the missing comparison to state-of-the-art sparse attack methods."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured. The author's responses do not change this assessment."
+              }
+            },
+            "summary_comment": "The author's second response continues to acknowledge the key weaknesses but does not identify specific evidence in the submitted paper that would resolve them. The response emphasizes the practical constraints of the threat model and the application domain specificity, which are present in the paper, but these do not sufficiently address the fundamental issues of missing comparisons to relevant sparse attack baselines and insufficient engagement with the broader adversarial ML literature. While the work addresses an interesting and practical problem, the submitted manuscript does not meet the standard for a top-tier conference due to these major weaknesses in evaluation and positioning. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of comparison to relevant state-of-the-art sparse adversarial attack methods remains a fundamental issue\",\n        \"Significance and novelty claims are not sufficiently substantiated relative to broader adversarial ML literature\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Practical significance of the constrained threat model\",\n          \"location\": \"Abstract, Introduction, and Section 4\",\n          \"explanation\": \"Our paper explicitly establishes the practical significance of temporal sparsity constraints by demonstrating attacks with only 10% perturbation across diverse real-world datasets (energy, traffic, weather, finance). Section 4 details the realistic threat model where full-series manipulation is impractical.\"\n        },\n        {\n          \"concern\": \"Novelty in applying SP to time series adversarial attacks\",\n          \"location\": \"Sections 4 and 5\",\n          \"explanation\": \"While sparse attacks exist in other domains, our adaptation of Subspace Pursuit specifically addresses the unique challenges of time series forecasting: (1) no future ground truth available, (2) black-box LLM constraints, and (3) temporal coherence requirements. Section 5 details our algorithmic innovations tailored to these constraints.\"\n        },\n        {\n          \"concern\": \"Evidence of LLM-specific vulnerability\",\n          \"location\": \"Table 1 and Section 6.4\",\n          \"explanation\": \"Our results show consistent vulnerability across all LLM variants (GPT-3.5, GPT-4, LLaMa, Mistral) while also demonstrating differences in attack effectiveness between LLM and non-LLM models (TimesNet), suggesting architecture-specific vulnerabilities.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Comprehensive comparison to sparse adversarial attack baselines\",\n          \"proposed_change\": \"We will include comparisons to established sparse attack methods such as One-Pixel Attack variants, SparseFool, and gradient-based sparse attack adaptations for black-box settings to provide proper benchmarking.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Enhanced connection to broader adversarial ML literature\",\n          \"proposed_change\": \"We will expand Section 2 to include a dedicated discussion of sparse adversarial attacks across machine learning domains, explicitly positioning our work's contributions relative to this broader context.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Stronger analysis of LLM-specific vulnerabilities\",\n          \"proposed_change\": \"We will add deeper analysis comparing the attack patterns and effectiveness across LLM architectures versus traditional models, highlighting the distinctive vulnerabilities introduced by LLM-based forecasting approaches.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement and acknowledge that the revised assessment maintains fundamental concerns about our work's evaluation and positioning. We understand that promised revisions cannot serve as evidence for the current submission.\\n\\nRegarding the comparison deficit: We acknowledge that additional sparse attack baselines would strengthen our evaluation. However, we believe our current comparison with Gaussian White Noise provides meaningful evidence because it demonstrates that our targeted sparse attack significantly outperforms random noise perturbation - a critical distinction for establishing the intelligent design of our approach. The fact that perturbing only 10% of time steps causes more damage than perturbing 100% with random noise is a substantial result.\\n\\nConcerning novelty and significance: Our primary contribution lies in addressing the unique confluence of constraints in LLM-based time series forecasting that differentiates it from other domains: (1) the impossibility of using future ground truth, which necessitates the substitution with predicted values in our optimization; (2) the strictly black-box nature of commercial LLM APIs; and (3) the temporal coherence requirements that distinguish time series from static data. These constraints fundamentally alter how sparse attacks must be formulated and executed.\\n\\nThe significance of our findings is demonstrated through comprehensive evaluation across multiple LLM architectures and real-world domains. The consistent vulnerability patterns we observe, coupled with the ineffectiveness of standard filter-based defenses (Section 6.6), highlight a critical security concern for deploying LLM-based forecasters in practical applications.\\n\\nWhile we understand the reviewer's perspective, we believe our work makes a meaningful contribution by identifying and addressing a specific, realistic threat vector for an increasingly important class of AI systems. We will work to strengthen the comparative analysis and broader context in our revision.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_8c1974251259",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/icml_reject_2025_019_temporally_sparse_attack_for_fooling_large_language_models_in_time_series_foreca.md",
+    "target_paper_summary": {
+      "paper_id": "paper_8c1974251259",
+      "title": "Temporally Sparse Attack For Fooling Large Language Models In Time Series Forecasting",
+      "abstract": "## Anonymous Authors1 Abstract",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_ecfee9605",
+        "title": "Taxonomy of Risks posed by Language Models",
+        "authors": [
+          "Laura Weidinger",
+          "Jonathan Uesato",
+          "Maribeth Rauh",
+          "Conor Griffin",
+          "Po-Sen Huang",
+          "John Mellor",
+          "Amelia Glaese",
+          "Myra Cheng",
+          "Borja Balle",
+          "Atoosa Kasirzadeh",
+          "Courtney Biles",
+          "Sasha Brown",
+          "Zac Kenton",
+          "Will Hawkins",
+          "Tom Stepleton",
+          "Abeba Birhane",
+          "Lisa Anne Hendricks",
+          "Laura Rimell",
+          "William Isaac",
+          "Julia Haas",
+          "Sean Legassick",
+          "Geoffrey Irving",
+          "Iason Gabriel"
+        ],
+        "year": 2022,
+        "publication_date": "2022-06-20",
+        "venue": "2022 ACM Conference on Fairness, Accountability, and Transparency",
+        "abstract": "Responsible innovation on large-scale Language Models (LMs) requires foresight into and in-depth understanding of the risks these models may pose. This paper develops a comprehensive taxonomy of ethical and social risks associated with LMs. We identify twenty-one risks, drawing on expertise and literature from computer science, linguistics, and the social sciences. We situate these risks in our taxonomy of six risk areas: I. Discrimination, Hate speech and Exclusion, II. Information Hazards, III. Misinformation Harms, IV. Malicious Uses, V. Human-Computer Interaction Harms, and VI. Environmental and Socioeconomic harms. For risks that have already been observed in LMs, the causal mechanism leading to harm, evidence of the risk, and approaches to risk mitigation are discussed. We further describe and analyse risks that have not yet been observed but are anticipated based on assessments of other language technologies, and situate these in the same taxonomy. We underscore that it is the responsibility of organizations to engage with the mitigations we discuss throughout the paper. We close by highlighting challenges and directions for further research on risk evaluation and mitigation with the goal of ensuring that language models are developed responsibly.",
+        "url": "https://doi.org/10.1145/3531146.3533088",
+        "doi": "https://doi.org/10.1145/3531146.3533088",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4283170666"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 644
+      },
+      {
+        "paper_id": "rw_002_587a48467",
+        "title": "Interpreting Black-Box Models: A Review on Explainable Artificial Intelligence",
+        "authors": [
+          "Vikas Hassija",
+          "Vinay Chamola",
+          "Atmesh Mahapatra",
+          "Abhinandan Singal",
+          "Divyansh Goel",
+          "Kaizhu Huang",
+          "Simone Scardapane",
+          "Indro Spinelli",
+          "Mufti Mahmud",
+          "Amir Hussain"
+        ],
+        "year": 2023,
+        "publication_date": "2023-08-24",
+        "venue": "Cognitive Computation",
+        "abstract": "Abstract Recent years have seen a tremendous growth in Artificial Intelligence (AI)-based methodological development in a broad range of domains. In this rapidly evolving field, large number of methods are being reported using machine learning (ML) and Deep Learning (DL) models. Majority of these models are inherently complex and lacks explanations of the decision making process causing these models to be termed as 'Black-Box'. One of the major bottlenecks to adopt such models in mission-critical application domains, such as banking, e-commerce, healthcare, and public services and safety, is the difficulty in interpreting them. Due to the rapid proleferation of these AI models, explaining their learning and decision making process are getting harder which require transparency and easy predictability. Aiming to collate the current state-of-the-art in interpreting the black-box models, this study provides a comprehensive analysis of the explainable AI (XAI) models. To reduce false negative and false positive outcomes of these back-box models, finding flaws in them is still difficult and inefficient. In this paper, the development of XAI is reviewed meticulously through careful selection and analysis of the current state-of-the-art of XAI research. It also provides a comprehensive and in-depth evaluation of the XAI frameworks and their efficacy to serve as a starting point of XAI for applied and theoretical researchers. Towards the end, it highlights emerging and critical issues pertaining to XAI research to showcase major, model-specific trends for better explanation, enhanced transparency, and improved prediction accuracy.",
+        "url": "https://doi.org/10.1007/s12559-023-10179-8",
+        "doi": "https://doi.org/10.1007/s12559-023-10179-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386142022"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1831
+      },
+      {
+        "paper_id": "rw_003_06ef2fbca",
+        "title": "Data Augmentation techniques in time series domain: a survey and taxonomy",
+        "authors": [
+          "Guillermo Iglesias",
+          "Edgar Talavera",
+          "Ángel González-Prieto",
+          "Alberto Mozó",
+          "Sandra Gómez-Canaval"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-24",
+        "venue": "Neural Computing and Applications",
+        "abstract": "Abstract With the latest advances in deep learning-based generative models, it has not taken long to take advantage of their remarkable performance in the area of time series. Deep neural networks used to work with time series heavily depend on the size and consistency of the datasets used in training. These features are not usually abundant in the real world, where they are usually limited and often have constraints that must be guaranteed. Therefore, an effective way to increase the amount of data is by using data augmentation techniques, either by adding noise or permutations and by generating new synthetic data. This work systematically reviews the current state of the art in the area to provide an overview of all available algorithms and proposes a taxonomy of the most relevant research. The efficiency of the different variants will be evaluated as a central part of the process, as well as the different metrics to evaluate the performance and the main problems concerning each model will be analysed. The ultimate aim of this study is to provide a summary of the evolution and performance of areas that produce better results to guide future researchers in this field.",
+        "url": "https://doi.org/10.1007/s00521-023-08459-3",
+        "doi": "https://doi.org/10.1007/s00521-023-08459-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4360860566"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 318
+      },
+      {
+        "paper_id": "rw_004_3c46fbe4b",
+        "title": "Deep learning modelling techniques: current progress, applications, advantages, and challenges",
+        "authors": [
+          "Shams Forruque Ahmed",
+          "Md. Sakib Bin Alam",
+          "Maruf Hassan",
+          "Mahtabin Rodela Rozbu",
+          "Taoseef Ishtiak",
+          "Nazifa Rafa",
+          "M. Mofijur",
+          "A. B. M. Shawkat Ali",
+          "Amir H. Gandomi"
+        ],
+        "year": 2023,
+        "publication_date": "2023-04-17",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Abstract Deep learning (DL) is revolutionizing evidence-based decision-making techniques that can be applied across various sectors. Specifically, it possesses the ability to utilize two or more levels of non-linear feature transformation of the given data via representation learning in order to overcome limitations posed by large datasets. As a multidisciplinary field that is still in its nascent phase, articles that survey DL architectures encompassing the full scope of the field are rather limited. Thus, this paper comprehensively reviews the state-of-art DL modelling techniques and provides insights into their advantages and challenges. It was found that many of the models exhibit a highly domain-specific efficiency and could be trained by two or more methods. However, training DL models can be very time-consuming, expensive, and requires huge samples for better accuracy. Since DL is also susceptible to deception and misclassification and tends to get stuck on local minima, improved optimization of parameters is required to create more robust models. Regardless, DL has already been leading to groundbreaking results in the healthcare, education, security, commercial, industrial, as well as government sectors. Some models, like the convolutional neural network (CNN), generative adversarial networks (GAN), recurrent neural network (RNN), recursive neural networks, and autoencoders, are frequently used, while the potential of other models remains widely unexplored. Pertinently, hybrid conventional DL architectures have the capacity to overcome the challenges experienced by conventional models. Considering that capsule architectures may dominate future DL models, this work aimed to compile information for stakeholders involved in the development and use of DL models in the contemporary world.",
+        "url": "https://doi.org/10.1007/s10462-023-10466-8",
+        "doi": "https://doi.org/10.1007/s10462-023-10466-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4366091323"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 997
+      },
+      {
+        "paper_id": "rw_005_a21da2f4b",
+        "title": "Deep Learning: A Comprehensive Overview on Techniques, Taxonomy, Applications and Research Directions",
+        "authors": [
+          "Iqbal H. Sarker"
+        ],
+        "year": 2021,
+        "publication_date": "2021-08-18",
+        "venue": "SN Computer Science",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s42979-021-00815-1",
+        "doi": "https://doi.org/10.1007/s42979-021-00815-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3194730353"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2473
+      },
+      {
+        "paper_id": "rw_007_4a3e045ae",
+        "title": "Explainable AI for clinical and remote health applications: a survey on tabular and time series data",
+        "authors": [
+          "Flavio Di Martino",
+          "Franca Delmastro"
+        ],
+        "year": 2022,
+        "publication_date": "2022-10-26",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Nowadays Artificial Intelligence (AI) has become a fundamental component of healthcare applications, both clinical and remote, but the best performing AI systems are often too complex to be self-explaining. Explainable AI (XAI) techniques are defined to unveil the reasoning behind the system's predictions and decisions, and they become even more critical when dealing with sensitive and personal health data. It is worth noting that XAI has not gathered the same attention across different research areas and data types, especially in healthcare. In particular, many clinical and remote health applications are based on tabular and time series data, respectively, and XAI is not commonly analysed on these data types, while computer vision and Natural Language Processing (NLP) are the reference applications. To provide an overview of XAI methods that are most suitable for tabular and time series data in the healthcare domain, this paper provides a review of the literature in the last 5 years, illustrating the type of generated explanations and the efforts provided to evaluate their relevance and quality. Specifically, we identify clinical validation, consistency assessment, objective and standardised quality evaluation, and human-centered quality assessment as key features to ensure effective explanations for the end users. Finally, we highlight the main research challenges in the field as well as the limitations of existing XAI methods.",
+        "url": "https://doi.org/10.1007/s10462-022-10304-3",
+        "doi": "https://doi.org/10.1007/s10462-022-10304-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4307572272"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 193
+      },
+      {
+        "paper_id": "rw_008_fa1679b20",
+        "title": "Survey on Factuality in Large Language Models: Knowledge, Retrieval and Domain-Specificity",
+        "authors": [
+          "Cunxiang Wang",
+          "Xiaoze Liu",
+          "Yuanhao Yue",
+          "Xiangru Tang",
+          "Tianhang Zhang",
+          "Jiayang, Cheng",
+          "Yunzhi Yao",
+          "Wen‐Yang Gao",
+          "Xuming Hu",
+          "Zehan Qi",
+          "Yidong Wang",
+          "Linyi Yang",
+          "Jindong Wang",
+          "Xing Xie",
+          "Zheng Zhang",
+          "Yue Zhang"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-11",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "This survey addresses the crucial issue of factuality in Large Language Models (LLMs). As LLMs find applications across diverse domains, the reliability and accuracy of their outputs become vital. We define the Factuality Issue as the probability of LLMs to produce content inconsistent with established facts. We first delve into the implications of these inaccuracies, highlighting the potential consequences and challenges posed by factual errors in LLM outputs. Subsequently, we analyze the mechanisms through which LLMs store and process facts, seeking the primary causes of factual errors. Our discussion then transitions to methodologies for evaluating LLM factuality, emphasizing key metrics, benchmarks, and studies. We further explore strategies for enhancing LLM factuality, including approaches tailored for specific domains. We focus two primary LLM configurations standalone LLMs and Retrieval-Augmented LLMs that utilizes external data, we detail their unique challenges and potential enhancements. Our survey offers a structured guide for researchers aiming to fortify the factual reliability of LLMs.",
+        "url": "http://arxiv.org/abs/2310.07521",
+        "doi": "https://doi.org/10.48550/arxiv.2310.07521",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387596421"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 55
+      },
+      {
+        "paper_id": "rw_009_572f17b27",
+        "title": "Comparative Analysis of Intrusion Detection Systems and Machine Learning-Based Model Analysis Through Decision Tree",
+        "authors": [
+          "Zahedi Azam",
+          "Md. Motaharul Islam",
+          "Mohammad Nurul Huda"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Cyber-attacks pose increasing challenges in precisely detecting intrusions, risking data confidentiality, integrity, and availability. This review paper presents recent IDS taxonomy, a comprehensive review of intrusion detection techniques, and commonly used datasets for evaluation. It discusses evasion techniques employed by attackers and the challenges in combating them to enhance network security. Researchers strive to improve IDS by accurately detecting intruders, reducing false positives, and identifying new threats. Machine learning (ML) and deep learning (DL) techniques are adopted in IDS systems, showing potential in efficiently detecting intruders across networks. The paper explores the latest trends and advancements in ML and DL-based network intrusion detection systems (NIDS), including methodology, evaluation metrics, and dataset selection. It emphasizes research obstacles and proposes a future research model to address weaknesses in the methodologies. The decision tree, known for its speed and user-friendliness, is proposed as a model for detecting result anomalies, combining findings from a comparative survey. This research aims to provide insights into building an effective decision tree-based detection framework.",
+        "url": "https://doi.org/10.1109/access.2023.3296444",
+        "doi": "https://doi.org/10.1109/access.2023.3296444",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4384787750"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 239
+      },
+      {
+        "paper_id": "rw_010_10decc94f",
+        "title": "A review of time-series analysis for cyber security analytics: from intrusion detection to attack prediction",
+        "authors": [
+          "Max Landauer",
+          "Florian Skopik",
+          "Branka Stojanović",
+          "Andreas Flatscher",
+          "Torsten Ullrich"
+        ],
+        "year": 2024,
+        "publication_date": "2024-10-30",
+        "venue": "International Journal of Information Security",
+        "abstract": "Abstract Understanding the current threat landscape as well as timely detection of imminent attacks are primary objectives of cyber security. Through time-series modeling of security data, such as event logs, alerts, or incidents, analysts take a step towards these goals. On the one hand, extrapolating time-series to predict future occurrences of attacks and vulnerabilities is able to support decision-making and preparation against threats. On the other hand, detection of model deviations as anomalies can point to suspicious outliers and thereby disclose cyber attacks. However, since the set of available techniques for time-series analysis is just as diverse as the research domains in the area of cyber security analytics, it can be difficult for analysts to understand which approaches fit the properties of security data at hand. This paper therefore conducts a broad literature review in research domains that leverage time-series analysis for cyber security analytics, with focus on available techniques, data sets, and challenges imposed by applications or feature properties. The results of our study indicate that relevant approaches range from detective systems ingesting short-term and low-level events to models that produce long-term forecasts of high-level attack cases.",
+        "url": "https://doi.org/10.1007/s10207-024-00921-0",
+        "doi": "https://doi.org/10.1007/s10207-024-00921-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4403887247"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 30
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_010_10decc94f",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "Addresses time-series analysis in cyber security, including intrusion detection and attack prediction, which relates to adversarial attacks on time-series forecasting models.",
+        "evidence_summary": "In 2024, Landauer et al. published 'A review of time-series analysis for cyber security analytics: from intrusion detection to attack prediction,' which surveyed techniques for modeling security data like event logs and alerts to detect anomalies and predict attacks. The paper discussed approaches ranging from short-term event detection to long-term forecast models, highlighting challenges in handling diverse security data properties."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_009_572f17b27",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Focuses on intrusion detection systems using machine learning, including evasion techniques and challenges, relevant to adversarial attacks on models.",
+        "evidence_summary": "In 2023, Azam et al. published 'Comparative Analysis of Intrusion Detection Systems and Machine Learning-Based Model Analysis Through Decision Tree,' which reviewed ML and DL techniques for detecting intruders, reducing false positives, and identifying new threats. The paper discussed evasion techniques used by attackers and proposed a decision tree model for anomaly detection, addressing weaknesses in methodologies."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_06ef2fbca",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "Surveys data augmentation techniques in time series, including generative models, which could relate to adversarial data manipulation in forecasting.",
+        "evidence_summary": "In 2023, Iglesias et al. published 'Data Augmentation techniques in time series domain: a survey and taxonomy,' which reviewed deep learning-based generative models for increasing dataset size through noise addition or synthetic data generation. The paper evaluated the efficiency of different variants, analyzed performance metrics, and proposed a taxonomy to guide future research."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_007_4a3e045ae",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Discusses explainable AI for time series data in healthcare, including challenges in interpreting complex models, relevant to understanding model vulnerabilities.",
+        "evidence_summary": "In 2022, Martino and Delmastro published 'Explainable AI for clinical and remote health applications: a survey on tabular and time series data,' which reviewed XAI methods for healthcare applications, focusing on explanations for tabular and time series data. The paper highlighted key features for effective explanations, such as clinical validation and human-centered assessment, and discussed limitations of existing XAI methods."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_001_ecfee9605",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Provides a taxonomy of risks in language models, including malicious uses and information hazards, which encompasses adversarial attacks.",
+        "evidence_summary": "In 2022, Weidinger et al. published 'Taxonomy of Risks posed by Language Models,' which identified twenty-one ethical and social risks associated with LMs across six areas, including malicious uses and misinformation harms. The paper discussed causal mechanisms, evidence of risks, and mitigation approaches, emphasizing organizational responsibility for risk management."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_008_fa1679b20",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Surveys factuality issues in large language models, including inaccuracies and enhancement strategies, relevant to model reliability under attack.",
+        "evidence_summary": "In 2023, Wang et al. published 'Survey on Factuality in Large Language Models: Knowledge, Retrieval and Domain-Specificity,' which addressed the issue of LLMs producing content inconsistent with facts and analyzed mechanisms behind factual errors. The paper discussed evaluation methodologies, strategies for enhancing factuality, and challenges in standalone and retrieval-augmented LLMs."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_002_587a48467",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Reviews explainable AI for interpreting black-box models, including challenges in transparency, which relates to understanding model decisions under attack.",
+        "evidence_summary": "In 2023, Hassija et al. published 'Interpreting Black-Box Models: A Review on Explainable Artificial Intelligence,' which provided a comprehensive analysis of XAI models to reduce false outcomes in complex ML and DL systems. The paper evaluated XAI frameworks and highlighted emerging issues for better explanation and transparency."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_004_3c46fbe4b",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Reviews deep learning techniques, including advantages and challenges like susceptibility to deception, relevant to model vulnerabilities.",
+        "evidence_summary": "In 2023, Ahmed et al. published 'Deep learning modelling techniques: current progress, applications, advantages, and challenges,' which reviewed state-of-art DL architectures and their applications across sectors. The paper found that training DL models can be time-consuming and expensive, with susceptibility to deception and local minima, and discussed hybrid architectures to overcome challenges."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_005_a21da2f4b",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Provides an overview of deep learning techniques and applications, offering general background on model capabilities.",
+        "evidence_summary": "In 2021, Sarker published 'Deep Learning: A Comprehensive Overview on Techniques, Taxonomy, Applications and Research Directions,' which reviewed DL techniques, taxonomies, applications, and research directions. The paper did not provide specific details on methods or results in the abstract."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, Landauer et al. published 'A review of time-series analysis for cyber security analytics: from intrusion detection to attack prediction,' surveying techniques for modeling security data like event logs to detect anomalies and predict attacks, with a focus on diverse approaches and data properties. In 2023, Azam et al. published 'Comparative Analysis of Intrusion Detection Systems and Machine Learning-Based Model Analysis Through Decision Tree,' reviewing ML and DL techniques for intrusion detection, discussing evasion methods and proposing a decision tree model for anomaly detection. In 2023, Iglesias et al. published 'Data Augmentation techniques in time series domain: a survey and taxonomy,' examining generative models for data augmentation in time series, evaluating efficiency, and proposing a taxonomy. In 2022, Martino and Delmastro published 'Explainable AI for clinical and remote health applications: a survey on tabular and time series data,' reviewing XAI methods for healthcare, emphasizing validation and human-centered assessment while noting limitations. In 2022, Weidinger et al. published 'Taxonomy of Risks posed by Language Models,' identifying risks like malicious uses and misinformation, discussing mechanisms and mitigations. In 2023, Wang et al. published 'Survey on Factuality in Large Language Models: Knowledge, Retrieval and Domain-Specificity,' addressing factual inaccuracies in LLMs, analyzing error mechanisms, and discussing enhancement strategies.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

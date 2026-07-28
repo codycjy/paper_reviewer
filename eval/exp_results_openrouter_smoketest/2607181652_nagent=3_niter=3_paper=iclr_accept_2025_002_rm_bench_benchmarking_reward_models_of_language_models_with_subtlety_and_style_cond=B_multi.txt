@@ -1,0 +1,113 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Identifies a major, unresolved flaw in reward model testing: prior benchmarks allow models to cheat by preferring the style of 'smarter' models rather than evaluating actual factuality or reasoning.",
+        "The 3x3 Style-Substance Evaluation Matrix offers a practical and clean methodology to separate substance from stylistic cues like length and markdown.",
+        "Provides a rare and highly needed empirical link showing that reward model scores on RM-BENCH actually correlate with downstream PPO training success."
+      ],
+      "weaknesses": [
+        "Initial reliance on GPT-4o for generation and stylistic rewriting leaves some risk of OpenAI-specific bias, though the authors' cross-architecture results suggest the style trap is general.",
+        "The evaluated stylistic dimensions are currently limited to length and formatting, which misses other subtle style biases like apologetic hedging or varying degrees of structure."
+      ],
+      "summary_comment": "RM-BENCH is a timely and valuable contribution that addresses a major bottleneck in reinforcement learning for alignment. In isolating style from substance by using identical generator models with surgical, targeted errors, it prevents reward models from leveraging simple stylistic shortcuts. The authors' plan to integrate additional source models like Claude 3.5 and Llama 3.1 405B, along with expanding the evaluation to tone shifts and JSON formatting, covers my main conceptual concerns. These expansions will make this benchmark a robust, standard-setting tool for the field.",
+      "final_decision": "Accept"
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The 3x3 Style-Substance Evaluation Matrix provides a highly practical framework to isolate writing style (length and markdown complexity) from actual semantic correctness. This addresses a major confounding variable in current human and LLM-as-a-judge preference evaluations.",
+        "The paper is highly grounded in practical utility. Instead of evaluating reward models in a vacuum, the authors map RM-BENCH performance directly to downstream PPO-aligned policy models and Best-of-N selection performance, showing significantly stronger correlation (r=0.55) than older benchmarks like RewardBench (r=0.21).",
+        "In the rebuttals, the authors provided concrete empirical validation rather than simple hand-waving. Running pilot evaluations using Claude 3.5 Sonnet and providing experimental proof that scaling their sample sizes drops the correlation p-value below 0.05 shows strong scientific thoroughness."
+      ],
+      "weaknesses": [
+        "The initial publication draft contained minor but irritating clerical discrepancies between the text and Table 2 (e.g., 183 vs. 129 chat samples). While the authors have clarified that 129 is the audited count and promised a full audit, the final version must be strictly verified.",
+        "Although the authors have promised to scale the benchmark to over 500 samples per domain, the baseline evaluations in the paper are still based on relatively small test splits. Keeping the prompt distribution diverse during this scaling phase is critical to prevent reward models from simply memorizing the prompt formats."
+      ],
+      "summary_comment": "This paper presents a much-needed, methodologically sound framework for reward model benchmarking. Current benchmarks are heavily polluted by length and formatting biases, which RM-BENCH successfully decouples using their style-substance matrix. The authors have systematically resolved my concerns regarding structural typos, generator bias, and statistical power in their responses. The empirical proof of correlation with actual downstream policy performance makes this a highly significant contribution to the alignment community."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The 3x3 evaluation matrix is a highly practical way to expose how reward models get tricked by stylistic fluff. In real-world RLHF pipelines, we constantly see models drift toward verbose, over-formatted outputs. This benchmark is one of the few that systematically measures if an RM actually prefers substance over shallow style cues by forcing difficult cross-style comparisons.",
+        "The downstream PPO and Best-of-N validations are incredibly valuable. Too many benchmark papers evaluate model performance in a vacuum, but the authors actually shut down the loop and checked if a better reward model produces a better policy model. Showing a 0.55 Pearson correlation compared to RewardBench's near-zero correlation provides a strong engineering justification for using this benchmark.",
+        "Evaluating nearly 40 different models—including sequence classifiers, multi-objective RMs, and chat models under DPO—gives practitioners a highly useful and immediate lookup table of which open-source models are robust enough to use in their own alignment workflows."
+      ],
+      "weaknesses": [
+        "The dataset size in key categories like Chat (129) and Code (228) is quite small. Relying on manually verified data is a good trade-off initially, but tiny test sets are highly vulnerable to overfitting as soon as the community starts target-optimizing their RMs against RM-BENCH.",
+        "The style interventions are still quite narrow, focusing almost exclusively on text length and markdown formatting. In practice, RMs also get heavily biased by conversational boilerplate (like 'Sure, let's think step by step') and specific formatting schemas (like raw JSON or YAML boundaries) which aren't yet captured here."
+      ],
+      "summary_comment": "RM-BENCH tackles a very real, painful practical problem: how to select a reward model that won't just encourage policy models to generate long, beautifully-formatted garbage. The methodology is sound, and the empirical correlation to actual downstream policy performance is a major improvement over existing benchmarks. While the dataset sizes are a bit lean and the style dimensions could be expanded, the authors' commitment to doubling the dataset sizes and introducing additional style boundaries (such as template and structured outputs) makes this a highly valuable, action-oriented contribution. It's a clear accept."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper introduces a systematic 3x3 Style-Substance Evaluation Matrix, addressing the 'evaluation methodology, replicability, and validity' topic under ICML's guidelines.",
+        "It tackles Reinforcement Learning from Human Feedback (RLHF), analyzing reward models and policy alignment, which aligns with ICML's strong interest in reinforcement learning and decision-making.",
+        "The empirical validation linking reward model scores directly to downstream PPO training success aligns with ICML's interest in grounded, reproducible empirical studies."
+      ],
+      "why_it_does_not_fit": [
+        "ICML heavily prioritizes foundational, algorithmic, or mathematical/theoretical innovations. This paper focuses primarily on dataset curation, engineering Benchmarks, and empirical audits, which may be seen as having low theoretical novelty.",
+        "With novelty scores as low as 3 and 5 from the reviewers, the core scientific advancement may be perceived as too incremental or engineering-focused for ICML's core tracks.",
+        "The benchmark is currently limited to narrow stylistic dimensions (length and markdown) and relatively small sample sizes in specific areas (such as 129 chat prompts), which falls short of the massive scale or highly generalizable evaluations expected at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "It fits exceptionally well under the NeurIPS 'Data-centric aspects of AI' and 'Deep learning' topics, particularly suited for the dedicated Datasets and Benchmarks Track.",
+        "Evaluating nearly 40 diverse reward models (sequence classifiers, DPO, multi-objective RMs) provides an immediate, actionable lookup table of great value to the broader NeurIPS community.",
+        "The study establishes a scientific link detailing a high Pearson correlation (r=0.55) with downstream policy performance, addressing the NeurIPS expectation for rigorous behavioral analysis."
+      ],
+      "why_it_does_not_fit": [
+        "Because the core conceptual novelty is modest (as emphasized by Reviewer B's score of 3), the paper would face steep competition in the highly selective NeurIPS main portal unless routed to the Datasets & Benchmarks track.",
+        "Reviewers raised minor but irritating clerical discrepancies (e.g., 183 vs. 129 chat samples) and highlighted the small test sets, which could present a risk regarding the rigorous auditing standards for NeurIPS-published datasets."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR is highly welcoming of empirical studies exploring representations of preferences, LLM alignment paradigms (DPO vs. PPO), and benchmarking of deep models.",
+        "The paper's focus on practical utility—such as evaluating how reward models prevent policy models from drifting toward verbose, formatted, but incorrect 'garbage'—deeply resonates with ICLR's focus on the behavior of representation learning systems.",
+        "The downstream Best-of-N and PPO fine-tuning experiments demonstrate the exact type of empirical rigor and engineering-actionable insights that ICLR reviewers look for."
+      ],
+      "why_it_does_not_fit": [
+        "The initial reliance on GPT-4o for generation and stylistic rewriting carries a risk of OpenAI-specific bias, which deep learning/representation learning purists at ICLR might challenge as lack of model diversity.",
+        "The simplicity of style variables (only length/markdown) might be seen as too narrow to capture the complex, high-dimensional representation drift that occurs in practical LLM instruction tuning."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

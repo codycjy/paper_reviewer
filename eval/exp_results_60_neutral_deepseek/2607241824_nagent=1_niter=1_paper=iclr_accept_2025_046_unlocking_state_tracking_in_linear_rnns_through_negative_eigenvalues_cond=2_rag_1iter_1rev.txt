@@ -1,0 +1,214 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Provides rigorous theoretical analysis extending previous work on LRNN limitations to non-diagonal matrices and proving expressivity results for extended eigenvalue ranges.",
+        "Comprehensive experimental validation across synthetic tasks (parity, modular counting, group word problems) and large-scale language modeling (up to 1.3B parameters).",
+        "Demonstrates practical improvements in state-tracking capabilities without computational overhead, showing stable training and competitive performance on code and math tasks."
+      ],
+      "weaknesses": [
+        "The modification is not directly compatible with log-space cumulative product techniques used in some diagonal LRNNs (e.g., Mamba2, GLA), which may limit applicability.",
+        "Theoretical expressivity of multi-layer DeltaNet with extended eigenvalues for complex groups (e.g., S_n with n>=3) remains unclear and is not fully characterized."
+      ],
+      "summary_comment": "This paper makes significant contributions by theoretically and empirically showing that extending the eigenvalue range of state-transition matrices to [-1,1] enhances LRNN expressivity for state-tracking tasks. The proofs are sound, experiments are thorough, and the practical impact is demonstrated at scale. While some compatibility issues and open theoretical questions remain, the work advances the field and offers a simple yet effective modification."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper aligns well with ICML's focus on machine learning theory, with strong theoretical contributions on the expressivity of Linear RNNs and their state-tracking capabilities.",
+        "The theoretical analysis extends previous work (Sarrof et al., 2024) to non-diagonal LRNNs, providing new proofs about eigenvalue constraints and expressivity bounds, which fits ICML's interest in theoretical foundations.",
+        "Experimental validation includes both synthetic tasks (parity, modular arithmetic) and large-scale language modeling, demonstrating practical impact alongside theoretical insights."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus on recurrent architectures and state-tracking may be somewhat niche compared to ICML's broader ML scope, which includes more emphasis on deep learning, optimization, and probabilistic methods.",
+        "Reviewer notes that the modification is incompatible with log-space cumulative product techniques used in some LRNNs, which may limit the practical applicability and alignment with ICML's systems-oriented contributions."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS has a strong focus on neuroscience-inspired models and theoretical understanding of neural networks, making the paper's analysis of LRNN expressivity and state-tracking highly relevant.",
+        "The work bridges theory and practice, with rigorous proofs complemented by large-scale experiments (1.3B parameters), aligning with NeurIPS' interest in scalable ML and foundational insights.",
+        "The paper's interdisciplinary nature—connecting formal language theory, linear algebra, and deep learning—fits NeurIPS' broad, interdisciplinary scope."
+      ],
+      "why_it_does_not_fit": [
+        "While the theoretical contributions are strong, the experimental focus on synthetic tasks and language modeling may overlap less with NeurIPS' growing emphasis on AI safety, ethics, and societal impact.",
+        "The reviewer's concern about unresolved theoretical questions (e.g., expressivity for complex groups) may slightly reduce the paper's perceived completeness for NeurIPS' high standards."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR's focus on deep learning and representation learning aligns well with the paper's core topic of Linear RNNs (e.g., Mamba, DeltaNet) and their architectural improvements.",
+        "The paper includes large-scale pretraining experiments (1.3B parameters) and evaluations on language modeling, code, and math tasks, which are central to ICLR's interests.",
+        "The modification proposed (extending eigenvalue ranges) is simple yet impactful, fitting ICLR's appreciation for elegant architectural innovations."
+      ],
+      "why_it_does_not_fits": [
+        "ICLR emphasizes empirical results in deep learning, but the paper's heavy theoretical component (e.g., proofs on finite-state automata and eigenvalue constraints) may be less aligned with ICLR's typical focus.",
+        "The reviewer notes that the proposed change is incompatible with techniques used in popular LRNNs like Mamba2, which could limit its immediate relevance to ICLR's practitioner audience."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_561464b539be",
+    "paper_id": "paper_f409b2b36b9f",
+    "target_paper_summary": {
+      "paper_id": "paper_f409b2b36b9f",
+      "title": "Unlocking State-Tracking In Linear Rnns Through Negative Eigenvalues",
+      "abstract": "Linear Recurrent Neural Networks (LRNNs) such as Mamba, RWKV, GLA, mL-\nSTM, and DeltaNet have emerged as efficient alternatives to Transformers for long sequences. However, both Transformers and LRNNs struggle to perform state-tracking, which may impair performance in tasks such as code evaluation. In one forward pass, current architectures are unable to solve even parity, the simplest state-tracking task, which non-linear RNNs can handle effectively. Recently, Sarrof et al. (2024) demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to [0, 1] and that incorporating negative values can resolve this issue. We extend this result to non-diagonal LRNNs such as DeltaNet. We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo 3. Notably, we also prove that LRNNs can learn any regular language when their state-transition matrices are products of identity minus vector outer product matrices, each with eigenvalues in the range [−1, 1]. Our experiments confirm that extending the eigenvalue range of Mamba and DeltaNet to include negative values not only enables them to solve parity but consistently improves their performance on state-tracking tasks. We also show that state-tracking enabled LRNNs can be pretrained stably and efficiently at scale (1.3B parameters), achieving competitive performance on language modeling and showing promise on code and math tasks.",
+      "topic": "",
+      "claims": [
+        "We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo 3."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "state-tracking linear recurrent neural networks parity task code evaluation",
+          "rationale": "The paper focuses on state-tracking problems in linear RNNs, specifically mentioning parity and code evaluation tasks as key applications"
+        },
+        {
+          "group": "same_method",
+          "query": "linear RNN Mamba RWKV GLA mL-STM DeltaNet eigenvalues state-transition matrix",
+          "rationale": "The paper builds on specific linear RNN architectures (Mamba, RWKV, GLA, mL-STM, DeltaNet) and focuses on eigenvalue properties of state-transition matrices"
+        },
+        {
+          "group": "same_constraints",
+          "query": "finite precision linear RNNs state-transition matrix eigenvalues mathematical analysis",
+          "rationale": "The work involves theoretical proofs under finite precision constraints and focuses on eigenvalue properties of RNN state matrices"
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "parity task benchmark regular language learning RNN evaluation state-tracking datasets",
+          "rationale": "The paper uses parity tasks and regular language learning as benchmarks for evaluating state-tracking capability"
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "Sarrof et al. 2024 Mamba parity negative eigenvalues diagonal matrices linear RNN limitations",
+          "rationale": "Directly references Sarrof et al. (2024) as prior work showing negative eigenvalues help with parity, which this paper extends to non-diagonal LRNNs"
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "positive eigenvalues cannot solve parity linear RNN limitations state-tracking failures theoretical bounds",
+          "rationale": "The paper itself identifies limitations of LRNNs with only positive eigenvalues and provides theoretical proofs of what they cannot solve"
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: The read operation timed out",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+          "arXiv query failed for benchmark_baseline: The read operation timed out",
+          "arXiv query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      }
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: The read operation timed out",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+      "arXiv query failed for benchmark_baseline: The read operation timed out",
+      "arXiv query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: The read operation timed out",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+    "arXiv query failed for benchmark_baseline: The read operation timed out",
+    "arXiv query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

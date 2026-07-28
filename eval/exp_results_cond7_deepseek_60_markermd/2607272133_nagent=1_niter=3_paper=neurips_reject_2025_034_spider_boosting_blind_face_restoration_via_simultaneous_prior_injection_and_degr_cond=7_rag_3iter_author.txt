@@ -1,0 +1,455 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a novel learning paradigm for blind face restoration by injecting semantic prior before degradation removal, a clear departure from sequential approaches.",
+        "Achieves strong quantitative results on challenging real-world benchmarks, particularly on the SCface surveillance dataset with extreme degradations.",
+        "Provides comprehensive ablation studies that effectively demonstrate the contribution of individual components like the DRM module and the importance of module ordering."
+      ],
+      "weaknesses": [
+        "The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.",
+        "Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.",
+        "The proposed method requires significant computational resources and a complex two-stage training pipeline, limiting its practical applicability."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.",
+          "severity": "major",
+          "evidence": "The paper acknowledges FaithDiff, DiffBIR, and other prior works that use VLMs and diffusion models. The DRM module's cross-modal mapping is similar to concepts in TextualDegRemoval and Elite. The primary novelty is the specific ordering of prior injection before removal.",
+          "affected_claim": "Central claim of introducing a fundamentally new learning paradigm.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.",
+          "severity": "minor",
+          "evidence": "Section 4.1 and the checklist (Q7) state that statistical tests were not performed due to computational constraints. The limitations section is deferred to the appendix and not discussed in the main text.",
+          "affected_claim": "Claims of superiority and robustness on real-world datasets.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The methodology is well-described with appropriate loss functions and a logical two-stage training procedure. Ablation studies support the design choices."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "While the specific ordering of prior injection before degradation removal represents a contribution, the core components (diffusion models, VLMs, two-stage pipelines, cross-modal mapping) are heavily built upon prior art. The paradigm shift claim is overstated given the incremental nature of the advance."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The performance improvements, while notable on specific metrics and datasets, are not consistently transformative across all benchmarks. The work demonstrates solid engineering but lacks the conceptual breakthrough expected for top-tier publication."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Experiments are comprehensive, comparing against numerous SOTA methods on multiple datasets using standard metrics. Ablations validate key design decisions, though statistical validation is lacking."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written, well-structured, and the figures effectively illustrate the proposed method and results."
+        }
+      },
+      "summary_comment": "The author response effectively highlights SPIDER's strong performance on challenging benchmarks and emphasizes the paradigm shift aspect of simultaneous prior injection. However, the response does not materially change the assessment of the submitted work. The core concern remains that while the specific module ordering represents a contribution, the overall approach builds heavily on established components (diffusion models, VLMs, cross-modal mapping) without introducing fundamentally new technical innovations. The performance gains, while solid, are not sufficiently transformative to overcome the incremental nature of the advance for a top-tier conference. The lack of statistical validation and limited discussion of limitations in the current submission further weaken the case for acceptance. The reject decision stands based on the incremental nature of the contribution relative to the state of the art."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper presents a well-engineered method for blind face restoration with strong empirical results on multiple benchmarks, which aligns with ICML's focus on high-quality machine learning research.",
+        "The comprehensive ablation studies and methodical evaluation using standard metrics demonstrate rigorous experimental practice valued at ICML.",
+        "The integration of diffusion models and vision-language models falls under ICML's topics in deep learning and generative models."
+      ],
+      "why_it_does_not_fit": [
+        "ICML typically favors papers with stronger theoretical contributions or more fundamental algorithmic innovations, whereas this work is primarily an engineering improvement on existing components.",
+        "The reviewer notes the novelty is 'incremental' and 'builds heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks' - a concern for ICML's standards.",
+        "The application domain (computer vision/face restoration) is somewhat specialized and may be better suited to vision-focused venues."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "NeurIPS has strong representation in computer vision, generative models, and diffusion research, making this topic highly relevant.",
+        "The paper's focus on cross-modal learning (vision-language integration) and semantic understanding aligns with NeurIPS's interdisciplinary interests.",
+        "The paradigm of 'simultaneous prior injection and degradation removal' presents a conceptual contribution that fits NeurIPS's emphasis on novel learning approaches."
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer's concern about incremental novelty ('the core components are heavily built upon prior art') may be problematic for NeurIPS's high standards.",
+        "The lack of statistical significance testing and limited discussion of limitations could be viewed unfavorably by NeurIPS reviewers expecting rigorous evaluation.",
+        "While the performance gains are solid, they may not represent the transformative advance typically sought by NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR is the premier venue for deep learning research, and this paper's focus on diffusion models, vision-language models, and representation learning aligns perfectly with ICLR's scope.",
+        "The technical approach involving semantic priors, cross-modal mapping, and diffusion-based generation falls squarely within ICLR's expertise areas.",
+        "ICLR values well-executed empirical work with strong benchmarks, which this paper demonstrates through comprehensive comparisons and ablations."
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer's assessment that the novelty is 'incremental' rather than fundamental could still be a concern even at ICLR.",
+        "The computational intensity and complex two-stage training pipeline might be viewed as engineering-heavy rather than conceptual innovation.",
+        "While face restoration is an application area, ICLR might prefer more generalizable methods rather than domain-specific applications."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "raw": "{\n  \"reviewer\": \"Reviewer - No Persona\",\n  \"decision\": \"Reject\",\n  \"scores\": {\n    \"novelty\": 3,\n    \"soundness\": 4,\n    \"significance\": 3,\n    \"evaluation\": 3,\n    \"clarity\": 4\n  },\n  \"strengths\": [\n    \"Proposes a novel learning paradigm for blind face restoration by injecting semantic prior before degradation removal, a clear departure from sequential approaches.\",\n    \"Achieves strong quantitative results on challenging real-world benchmarks, particularly on the SCface surveillance dataset with extreme degradations.\",\n    \"Provides comprehensive ablation studies that effectively demonstrate the contribution of individual components like the DRM module and the importance of module ordering.\"\n  ],\n  \"weaknesses\": [\n    \"The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.\",\n    \"Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.\",\n    \"The proposed method requires significant computational resources and a complex two-stage training pipeline, limiting its practical applicability.\"\n  ],\n  \"weakness_details\": [\n    {\n      \"weakness\": \"The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.\",\n      \"severity\": \"major\",\n      \"evidence\": \"The paper acknowledges FaithDiff, DiffBIR, and other prior works that use VLMs and diffusion models. The DRM module's cross-modal mapping is similar to concepts in TextualDegRemoval and Elite. The primary novelty is the specific ordering of prior injection before removal.\",\n      \"affected_claim\": \"Central claim of introducing a fundamentally new learning paradigm.\",\n      \"fixable_without_substantial_new_work\": false\n    },\n    {\n      \"weakness\": \"Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.\",\n      \"severity\": \"minor\",\n      \"evidence\": \"Section 4.1 and the checklist (Q7) state that statistical tests were not performed due to computational constraints. The limitations section is deferred to the appendix and not discussed in the main text.\",\n      \"affected_claim\": \"Claims of superiority and robustness on real-world datasets.\",\n      \"fixable_without_substantial_new_work\": true\n    }\n  ],\n  \"acceptance_gates\": {\n    \"soundness\": {\n      \"result\": \"pass\",\n      \"justification\": \"The methodology is well-described with appropriate loss functions and a logical two-stage training procedure. Ablation studies support the design choices.\"\n    },\n    \"novelty\": {\n      \"result\": \"fail\",\n      \"justification\": \"While the specific interleaving of prior injection and degradation removal is a contribution, the core components (diffusion models, VLMs, two-stage pipelines) are heavily built upon prior art. The advance appears incremental rather than a significant paradigm shift.\"\n    },\n    \"significance\": {\n      \"result\": \"fail\",\n      \"justification\": \"The performance improvements, while notable on some metrics, are not consistently state-of-the-art across all benchmarks. The general applicability of the 'prior-before-removal' paradigm to other tasks is suggested but not demonstrated.\"\n    },\n    \"evaluation\": {\n      \"result\": \"pass\",\n      \"justification\": \"Experiments are comprehensive, comparing against numerous SOTA methods on multiple datasets using standard metrics. Ablations validate key design decisions.\"\n    },\n    \"presentation\": {\n      \"result\": \"pass\",\n      \"justification\": \"The paper is clearly written, well-structured, and the figures effectively illustrate the proposed method and results.\"\n    }\n  ],\n  \"summary_comment\": \"SPIDER presents a well-executed technical contribution that effectively combines diffusion models and vision-language guidance for blind face restoration. The proposed interleaving of prior injection and degradation removal shows promise, particularly for severe degradations. However, the work builds heavily on existing components and paradigms, and the performance gains, while solid, are not consistently transformative across all benchmarks. The lack of statistical significance testing and limited discussion of limitations further temper the contribution. For a top-tier conference, the incremental nature of the advancement relative to the established state of the art is a major weakness, leading to a reject decision.\"\n}",
+            "parse_error": true
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "raw": "{\n  \"reviewer\": \"Reviewer - No Persona\",\n  \"decision\": \"Reject\",\n  \"scores\": {\n    \"novelty\": 3,\n    \"soundness\": 4,\n    \"significance\": 3,\n    \"evaluation\": 3,\n    \"clarity\": 4\n  },\n  \"strengths\": [\n    \"Proposes a novel learning paradigm for blind face restoration by injecting semantic prior before degradation removal, a clear departure from sequential approaches.\",\n    \"Achieves strong quantitative results on challenging real-world benchmarks, particularly on the SCface surveillance dataset with extreme degradations.\",\n    \"Provides comprehensive ablation studies that effectively demonstrate the contribution of individual components like the DRM module and the importance of module ordering.\"\n  ],\n  \"weaknesses\": [\n    \"The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.\",\n    \"Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.\",\n    \"The proposed method requires significant computational resources and a complex two-stage training pipeline, limiting its practical applicability.\"\n  ],\n  \"weakness_details\": [\n    {\n      \"weakness\": \"The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.\",\n      \"severity\": \"major\",\n      \"evidence\": \"The paper acknowledges FaithDiff, DiffBIR, and other prior works that use VLMs and diffusion models. The DRM module's cross-modal mapping is similar to concepts in TextualDegRemoval and Elite. The primary novelty is the specific ordering of prior injection before removal.\",\n      \"affected_claim\": \"Central claim of introducing a fundamentally new learning paradigm.\",\n      \"fixable_without_substantial_new_work\": false\n    },\n    {\n      \"weakness\": \"Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.\",\n      \"severity\": \"minor\",\n      \"evidence\": \"Section 4.1 and the checklist (Q7) state that statistical tests were not performed due to computational constraints. The limitations section is deferred to the appendix and not discussed in the main text.\",\n      \"affected_claim\": \"Claims of superiority and robustness on real-world datasets.\",\n      \"fixable_without_substantial_new_work\": true\n    }\n  ],\n  \"acceptance_gates\": {\n    \"soundness\": {\n      \"result\": \"pass\",\n      \"justification\": \"The methodology is well-described with appropriate loss functions and a logical two-stage training procedure. Ablation studies support the design choices.\"\n    },\n    \"novelty\": {\n      \"result\": \"fail\",\n      \"justification\": \"While the specific interleaving of prior injection and degradation removal is a contribution, the core components (diffusion models, VLMs, two-stage pipelines) are heavily built upon prior art. The advance appears incremental rather than a significant paradigm shift.\"\n    },\n    \"significance\": {\n      \"result\": \"fail\",\n      \"justification\": \"The performance improvements, while notable on some metrics, are not consistently state-of-the-art across all benchmarks. The general applicability of the 'prior-before-removal' paradigm to other tasks is suggested but not demonstrated.\"\n    },\n    \"evaluation\": {\n      \"result\": \"pass\",\n      \"justification\": \"Experiments are comprehensive, comparing against numerous SOTA methods on multiple datasets using standard metrics. Ablations validate key design decisions.\"\n    },\n    \"presentation\": {\n      \"result\": \"pass\",\n      \"justification\": \"The paper is clearly written, well-structured, and the figures effectively illustrate the proposed method and results.\"\n    }\n  ],\n  \"summary_comment\": \"The author response acknowledges the computational constraints preventing statistical significance testing and promises to expand limitations discussion, but these promises do not address the current submission's weaknesses. While the authors correctly note that SPIDER achieves strong performance on specific metrics, the core novelty concern remains: the work builds heavily on established components (diffusion models, VLMs) with the primary contribution being the specific ordering of operations. For a top-tier conference, this represents an incremental advance rather than the substantial paradigm shift claimed. The evaluation remains limited by the absence of statistical validation. Therefore, the reject decision stands.\"\n}",
+            "parse_error": true
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Incremental novelty relative to existing diffusion/VLM-based restoration frameworks\",\n        \"Lack of statistical significance testing and limited discussion of limitations\",\n        \"High computational requirements and complex training pipeline\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Performance improvements are not consistently state-of-the-art across all benchmarks\",\n          \"location\": \"Section 4.2, Tables 1 and 2\",\n          \"explanation\": \"Our method achieves state-of-the-art or near-state-of-the-art performance across multiple metrics, ranking 1st in PSNR/SSIM on synthetic data and achieving best FID scores on LFW/WIDER while excelling on extreme degradations (SCface)\"\n        },\n        {\n          \"concern\": \"Core components build on existing frameworks\",\n          \"location\": \"Section 3, Figures 1 and 3\",\n          \"explanation\": \"While we build on diffusion models and VLMs, our key contribution is the novel simultaneous paradigm of prior injection before degradation removal, which fundamentally differs from sequential approaches and demonstrates clear performance advantages\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of statistical significance testing\",\n          \"proposed_change\": \"Add discussion in limitations section acknowledging this constraint and suggesting future work with multiple runs when computational resources permit\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limited discussion of failure cases and limitations\",\n          \"proposed_change\": \"Expand limitations section in main paper to discuss specific failure modes, computational requirements, and boundary conditions of our approach\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. Regarding the novelty concern, while SPIDER builds on established components like diffusion models and VLMs, our core contribution is the fundamentally different paradigm of simultaneous prior injection and degradation removal. Unlike sequential approaches (FaithDiff, DiffBIR) that risk losing crucial cues from degraded inputs, SPIDER's interleaved architecture amplifies both signal and noise before removal, enabling more effective discrimination - a conceptual advance demonstrated by our ablation studies showing the critical importance of module ordering (Table 4).\\n\\nFor evaluation robustness, we acknowledge the computational constraints preventing statistical significance testing and will expand our limitations discussion in the main paper. However, our comprehensive evaluation across multiple datasets and metrics consistently shows SPIDER's superiority, particularly on challenging real-world degradations where existing methods struggle.\\n\\nThe two-stage training, while complex, is necessary to learn effective cross-modal degradation removal before full restoration. We will better justify this design choice and discuss computational requirements in the revised manuscript.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel learning paradigm for blind face restoration by injecting semantic prior before degradation removal, a clear departure from sequential approaches.",
+              "Achieves strong quantitative results on challenging real-world benchmarks, particularly on the SCface surveillance dataset with extreme degradations.",
+              "Provides comprehensive ablation studies that effectively demonstrate the contribution of individual components like the DRM module and the importance of module ordering."
+            ],
+            "weaknesses": [
+              "The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.",
+              "Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.",
+              "The proposed method requires significant computational resources and a complex two-stage training pipeline, limiting its practical applicability."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The novelty of the core components is incremental, building heavily on existing diffusion models, vision-language models, and two-stage restoration frameworks.",
+                "severity": "major",
+                "evidence": "The paper acknowledges FaithDiff, DiffBIR, and other prior works that use VLMs and diffusion models. The DRM module's cross-modal mapping is similar to concepts in TextualDegRemoval and Elite. The primary novelty is the specific ordering of prior injection before removal.",
+                "affected_claim": "Central claim of introducing a fundamentally new learning paradigm.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Lack of statistical significance testing and limited discussion of failure cases or limitations undermines the robustness of the evaluation.",
+                "severity": "minor",
+                "evidence": "Section 4.1 and the checklist (Q7) state that statistical tests were not performed due to computational constraints. The limitations section is deferred to the appendix and not discussed in the main text.",
+                "affected_claim": "Claims of superiority and robustness on real-world datasets.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The methodology is well-described with appropriate loss functions and a logical two-stage training procedure. Ablation studies support the design choices."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "While the specific ordering of prior injection before degradation removal represents a contribution, the core components (diffusion models, VLMs, two-stage pipelines, cross-modal mapping) are heavily built upon prior art. The paradigm shift claim is overstated given the incremental nature of the advance."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The performance improvements, while notable on specific metrics and datasets, are not consistently transformative across all benchmarks. The work demonstrates solid engineering but lacks the conceptual breakthrough expected for top-tier publication."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, comparing against numerous SOTA methods on multiple datasets using standard metrics. Ablations validate key design decisions, though statistical validation is lacking."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written, well-structured, and the figures effectively illustrate the proposed method and results."
+              }
+            },
+            "summary_comment": "The author response effectively highlights SPIDER's strong performance on challenging benchmarks and emphasizes the paradigm shift aspect of simultaneous prior injection. However, the response does not materially change the assessment of the submitted work. The core concern remains that while the specific module ordering represents a contribution, the overall approach builds heavily on established components (diffusion models, VLMs, cross-modal mapping) without introducing fundamentally new technical innovations. The performance gains, while solid, are not sufficiently transformative to overcome the incremental nature of the advance for a top-tier conference. The lack of statistical validation and limited discussion of limitations in the current submission further weaken the case for acceptance. The reject decision stands based on the incremental nature of the contribution relative to the state of the art."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Incremental novelty relative to existing frameworks\",\n        \"Lack of statistical significance testing\",\n        \"Limited discussion of limitations in main text\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Performance improvements demonstrate practical significance\",\n          \"location\": \"Section 4.2, Tables 1 and 2\",\n          \"explanation\": \"Our method achieves state-of-the-art performance on multiple metrics: 1st in PSNR/SSIM on synthetic data, best FID on LFW/WIDER, and superior performance on extreme degradations (SCface) where existing methods fail\"\n        },\n        {\n          \"concern\": \"Novelty lies in paradigm shift rather than component invention\",\n          \"location\": \"Section 1, Figure 1\",\n          \"explanation\": \"While building on established components, our simultaneous paradigm fundamentally differs from sequential approaches by preserving crucial cues from degraded inputs through prior injection before removal\"\n        },\n        {\n          \"concern\": \"Ablation studies validate design choices\",\n          \"location\": \"Section 4.3, Tables 3-5\",\n          \"explanation\": \"Our comprehensive ablations demonstrate the critical importance of module ordering (Table 4) and the effectiveness of our DRM module (Table 3), validating our novel approach\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Statistical significance testing\",\n          \"proposed_change\": \"Add acknowledgment of this limitation and discussion of how performance differences are substantial despite single-run evaluation\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limitations discussion\",\n          \"proposed_change\": \"Move limitations from appendix to main paper with expanded discussion of failure cases, computational requirements, and boundary conditions\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement. While we acknowledge building on established components, we respectfully emphasize that SPIDER's core contribution is the paradigm shift to simultaneous prior injection and degradation removal - not merely component invention. This represents a fundamental departure from sequential approaches that risk losing crucial information from degraded inputs.\\n\\nOur comprehensive evaluation demonstrates this paradigm's effectiveness: SPIDER achieves state-of-the-art performance across multiple challenging benchmarks, particularly excelling where existing methods struggle (extreme degradations in SCface). The performance differences are substantial and consistent across metrics, providing strong evidence of our approach's superiority despite computational constraints preventing statistical testing.\\n\\nWe will strengthen the paper by moving the limitations discussion to the main text and more clearly articulating how our simultaneous paradigm differs conceptually from prior work. The ablation studies (Tables 3-5) already provide compelling evidence for our design choices, particularly showing the critical importance of module ordering that defines our novel approach.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_67d9b2510239",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/neurips_reject_2025_034_spider_boosting_blind_face_restoration_via_simultaneous_prior_injection_and_degr.md",
+    "target_paper_summary": {
+      "paper_id": "paper_67d9b2510239",
+      "title": "Spider: Boosting Blind Face Restoration Via Simultaneous Prior Injection And Degradation Removal",
+      "abstract": "1 Existing blind face restoration (BFR) methods suffer from drastic performance drop 2 under severe degradations. A common strategy is to first remove degradations and 3 then restore the face by fully harnessing generative prior. However, this sequential 4 pipeline risks discarding subtle but crucial cues from already limited low-quality 5 (LQ) inputs. To address this, we ingeniously introduce a new learning paradigm: 6 simultaneous prior injection and degradation removal (SPIDER). Unlike existing 7 approaches, SPIDER injects semantic prior before degradation removal, thereby 8 preserving identity-relevant features and mitigating the impact of corrupted LQ 9 features. SPIDER consists of two key modules: (1) a prior injection module that 10 distills purified degradation-unaware semantic control tokens from vision-language 11 models, and (2) a degradation removal module equipped with an image-to-text 12 degradation mapper and a degradation remover that refines distorted features into 13 robust representations. Extensive experiments on both synthetic and real-world 14 datasets, including challenging surveillance scenarios, demonstrate SPIDER's clear 15 superiority over state-of-the-art BFR methods. 17 Blind Face Restoration (BFR) is a challenging task that aims to recover high-quality (HQ) face 18 images from low-quality (LQ) ones that suffer from unknown and complex degradations such as low 19 resolution [3, 6], blur [48], noise [13, 28], and JPEG compression [5]. This is an inherently ill-posed 20 problem as the information loss caused by the degradations leads to an overwhelming number of 21 plausible HQ solutions consistent with the same LQ input. To mitigate the ill-posedness, recent 22 studies have explored various prior-based methods to produce high-fidelity outputs. 23 As illustrated in Figure 1, existing prior-based BFR methods fall into three main paradigms: 1) 24 Continuous generative prior (e.g., GFPGAN [36], which learns accurate latent codes via GAN inver25 sion to reconstruct HQ faces with high fidelity; 2) Discrete generative prior (e.g., Codeformer [52], 26 DAEFR [30]), which uses vector quantization to map degraded inputs into semantic tokens and 27 harness a fixed HQ codebook for high-quality restoration; and 3) Diffusion-based conditional genera28 tion (e.g., DiffBIR [18], FaithDiff [2]), which reframes the restoration into conditional generation 29 employing the powerful expressiveness of diffusion prior to achieve significant improvement",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_a56372552",
+        "title": "Overview of Therapeutic Ultrasound Applications and Safety Considerations: 2024 Update",
+        "authors": [
+          "Kenneth B. Bader",
+          "Frédéric Padilla",
+          "Kevin J. Haworth",
+          "Nicholas Ellens",
+          "Diane Dalecki",
+          "Douglas L. Miller",
+          "Keith A. Wear"
+        ],
+        "year": 2024,
+        "publication_date": "2024-11-11",
+        "venue": "Journal of Ultrasound in Medicine",
+        "abstract": "A 2012 review of therapeutic ultrasound was published to educate researchers and physicians on potential applications and concerns for unintended bioeffects (doi: 10.7863/jum.2012.31.4.623). This review serves as an update to the parent article, highlighting advances in therapeutic ultrasound over the past 12 years. In addition to general mechanisms for bioeffects produced by therapeutic ultrasound, current applications, and the pre-clinical and clinical stages are outlined. An overview is provided for image guidance methods to monitor and assess treatment progress. Finally, other topics relevant for the translation of therapeutic ultrasound are discussed, including computational modeling, tissue-mimicking phantoms, and quality assurance protocols.",
+        "url": "https://doi.org/10.1002/jum.16611",
+        "doi": "https://doi.org/10.1002/jum.16611",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404247264"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 43
+      },
+      {
+        "paper_id": "rw_002_6ba2a614c",
+        "title": "Biohacking Nerve Repair: Novel Biomaterials, Local Drug Delivery, Electrical Stimulation, and Allografts to Aid Surgical Repair",
+        "authors": [
+          "Jordan R. Crabtree",
+          "Chilando M. Mulenga",
+          "Khoa Tran",
+          "Konstantin Feinberg",
+          "J. Paul Santerre",
+          "Gregory H. Borschel"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-31",
+        "venue": "Bioengineering",
+        "abstract": "The regenerative capacity of the peripheral nervous system is limited, and peripheral nerve injuries often result in incomplete healing and poor outcomes even after repair. Transection injuries that induce a nerve gap necessitate microsurgical intervention; however, even the current gold standard of repair, autologous nerve graft, frequently results in poor functional recovery. Several interventions have been developed to augment the surgical repair of peripheral nerves, and the application of functional biomaterials, local delivery of bioactive substances, electrical stimulation, and allografts are among the most promising approaches to enhance innate healing across a nerve gap. Biocompatible polymers with optimized degradation rates, topographic features, and other functions provided by their composition have been incorporated into novel nerve conduits (NCs). Many of these allow for the delivery of drugs, neurotrophic factors, and whole cells locally to nerve repair sites, mitigating adverse effects that limit their systemic use. The electrical stimulation of repaired nerves in the perioperative period has shown benefits to healing and recovery in human trials, and novel biomaterials to enhance these effects show promise in preclinical models. The use of acellular nerve allografts (ANAs) circumvents the morbidity of donor nerve harvest necessitated by the use of autografts, and improvements in tissue-processing techniques may allow for more readily available and cost-effective options. Each of these interventions aid in neural regeneration after repair when applied independently, and their differing forms, benefits, and methods of application present ample opportunity for synergistic effects when applied in combination.",
+        "url": "https://doi.org/10.3390/bioengineering11080776",
+        "doi": "https://doi.org/10.3390/bioengineering11080776",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401161005"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 15
+      },
+      {
+        "paper_id": "rw_004_1278e1aaf",
+        "title": "Biomaterial and Therapeutic Applications",
+        "authors": [
+          "Veda Eswarappa",
+          "Sujata K. Bhatia"
+        ],
+        "year": 2012,
+        "publication_date": "2012-09-10",
+        "venue": "SpringerBriefs in public health",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/978-1-4614-5386-4_3",
+        "doi": "https://doi.org/10.1007/978-1-4614-5386-4_3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W132034579"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_005_a743cbb75",
+        "title": "Study of collagen organization in cell-laden hydrogels and animal tissue samples for effective tissue engineering scaffolds",
+        "authors": [
+          "Anuraag Boddupalli"
+        ],
+        "year": 2018,
+        "publication_date": "2018-01-01",
+        "venue": "Iowa State University Digital Repository (Iowa State University)",
+        "abstract": "The interaction of biomaterials with biological systems is a complex process, that is triggered in response to implants and wounds. It is essential to understand the phases of wound healing response, particularly the interactions of immune cells such as macrophages and fibroblasts, with the local extracellular matrix which can influence implant acceptance or the restoration of the damaged wound site. Materials properties such as compressive modulus, surface geometry, functionalization, and topology can be tuned to modulate the inflammatory and fibrotic responses to wounds and implants. Naturally derived materials, such as alginate, are widely used biomaterials owing to their biocompatibility and the diverse crosslinking strategies that can be used for fabrication. Soft alginate gels can be synthesized after methacrylation to be relatively stable under physiological conditions, while retaining pH sensitivity, which can be useful in the treatment of chronic wounds. Studying the collagen response to NIH/3T3 fibroblasts encapsulated in these soft hydrogels can develop wound healing strategies to promote faster wound healing. The transition of collagen organization from aligned to isotropic states in the dually crosslinked stiffer methacrylated alginate (ALGMA) hydrogels shows promise towards the development of topical gels for wound care. Modifying the surface properties using arginine-like derivatives is effective in modulating the fibroblast response to implanted glass beads in SKH1-E mice. Collagen response to modified glass beads using SHG microscopy was evaluated using several factors such as collagen amount, secretion of collagen III, and organization of collagen. The albizziin modification showed both isotropic collagen organization as well similar collagen type III as unwounded skin. Furthermore, statistical analysis uncovered correlations between SHG derived parameters and the materials properties of the chemical modifiers. Collagen type III was correlated with the surface tension of the modifier, and an empirical equation was derived relating materials parameters with the observed collagen measurements. The effectiveness of diverse wound care strategies on shallow and deep wounds on porcine subjects was conducted using SHG microscopy. Treatment duration, as well as scaffold preparation were instrumental in reducing a scarring response and accelerating wound closure rates. By combining the understanding of wound healing in diverse tissue environments, with environmentally responsive wound dressings, it is possible to improve the quality of life for millions of patients across the world.",
+        "url": "https://lib.dr.iastate.edu/etd/17147",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2965373639"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 0
+      },
+      {
+        "paper_id": "rw_006_7a22f70b5",
+        "title": "Abstracts of the 57th Annual Meeting of the German Society of Biomedical Engineering 26 – 28 September 2023, Duisburg, including: The Artificial Vision Symposium – The International Symposium on Visual Prosthetics",
+        "authors": [
+          "L. Leander Schaberg",
+          "Tobias Kubiczek",
+          "Sabisan Santhakumaran",
+          "Roman Burkard",
+          "W. Mertin",
+          "Franziska Muckel",
+          "G. Bacher",
+          "Anna Lena Schall-Giesecke",
+          "D. Neumaier",
+          "Jan C. Balzer",
+          "Elsa Andrea Kirchner",
+          "Niels Benson"
+        ],
+        "year": 2023,
+        "publication_date": "2023-09-01",
+        "venue": "Biomedizinische Technik/Biomedical Engineering",
+        "abstract": "Article Abstracts of the 57th Annual Meeting of the German Society of Biomedical Engineering 26 – 28 September 2023, Duisburg, including: The Artificial Vision Symposium – The International Symposium on Visual Prosthetics was published on September 1, 2023 in the journal Biomedical Engineering / Biomedizinische Technik (volume 68, issue s1).",
+        "url": "http://dx.doi.org/10.1515/bmte-2023-2001",
+        "doi": "https://doi.org/10.1515/bmte-2023-2001",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386509050"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 0
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_6ba2a614c",
+        "relevance_score": 0.047,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Several interventions have been developed to augment the surgical repair of peripheral nerves, and the application of functional biomaterials, local delivery of bioactive substances, electrical stimulation, and allografts are among the most promising approaches to enhance innate healing across a nerve gap. The regenerative capacity of the peripheral nervous system is limited, and peripheral nerve injuries often result in incomplete healing and poor outcomes even after repair."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_001_a56372552",
+        "relevance_score": 0.04,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "In addition to general mechanisms for bioeffects produced by therapeutic ultrasound, current applications, and the pre-clinical and clinical stages are outlined. A 2012 review of therapeutic ultrasound was published to educate researchers and physicians on potential applications and concerns for unintended bioeffects (doi: 10.7863/jum.2012.31.4.623)."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_005_a743cbb75",
+        "relevance_score": 0.038,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Studying the collagen response to NIH/3T3 fibroblasts encapsulated in these soft hydrogels can develop wound healing strategies to promote faster wound healing. The transition of collagen organization from aligned to isotropic states in the dually crosslinked stiffer methacrylated alginate (ALGMA) hydrogels shows promise towards the development of topical gels for wound care."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_7a22f70b5",
+        "relevance_score": 0.014,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "Article Abstracts of the 57th Annual Meeting of the German Society of Biomedical Engineering 26 – 28 September 2023, Duisburg, including: The Artificial Vision Symposium – The International Symposium on Visual Prosthetics was published on September 1, 2023 in the journal Biomedical Engineering / Biomedizinische Technik (volume 68, issue s1)."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_1278e1aaf",
+        "relevance_score": 0.005,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "Fallback lexical overlap ranking because LLM reranking was unavailable.",
+        "evidence_summary": "The available metadata does not include an abstract with contribution, dataset, or result details."
+      }
+    ],
+    "reranking": {
+      "source": "fallback"
+    },
+    "related_work_summary": "In 2024, Jordan R. Crabtree et al. published \"Biohacking Nerve Repair: Novel Biomaterials, Local Drug Delivery, Electrical Stimulation, and Allografts to Aid Surgical Repair\" in Bioengineering. Several interventions have been developed to augment the surgical repair of peripheral nerves, and the application of functional biomaterials, local delivery of bioactive substances, electrical stimulation, and allografts are among the most promising approaches to enhance innate healing across a nerve gap. The regenerative capacity of the peripheral nervous system is limited, and peripheral nerve injuries often result in incomplete healing and poor outcomes even after repair. Transection injuries that induce a nerve gap necessitate microsurgical intervention; however, even the current gold standard of repair, autologous nerve graft, frequently results in poor functional recovery. In 2024, Kenneth B. Bader et al. published \"Overview of Therapeutic Ultrasound Applications and Safety Considerations: 2024 Update\" in Journal of Ultrasound in Medicine. In addition to general mechanisms for bioeffects produced by therapeutic ultrasound, current applications, and the pre-clinical and clinical stages are outlined. A 2012 review of therapeutic ultrasound was published to educate researchers and physicians on potential applications and concerns for unintended bioeffects (doi: 10.7863/jum.2012.31.4.623). An overview is provided for image guidance methods to monitor and assess treatment progress. In 2018, Anuraag Boddupalli published \"Study of collagen organization in cell-laden hydrogels and animal tissue samples for effective tissue engineering scaffolds\" in Iowa State University Digital Repository (Iowa State University). Studying the collagen response to NIH/3T3 fibroblasts encapsulated in these soft hydrogels can develop wound healing strategies to promote faster wound healing. The transition of collagen organization from aligned to isotropic states in the dually crosslinked stiffer methacrylated alginate (ALGMA) hydrogels shows promise towards the development of topical gels for wound care. By combining the understanding of wound healing in diverse tissue environments, with environmentally responsive wound dressings, it is possible to improve the quality of life for millions of patients across the world. In 2023, L. Leander Schaberg et al. published \"Abstracts of the 57th Annual Meeting of the German Society of Biomedical Engineering 26 – 28 September 2023, Duisburg, including: The Artificial Vision Symposium – The International Symposium on Visual Prosthetics\" in Biomedizinische Technik/Biomedical Engineering. Article Abstracts of the 57th Annual Meeting of the German Society of Biomedical Engineering 26 – 28 September 2023, Duisburg, including: The Artificial Vision Symposium – The International Symposium on Visual Prosthetics was published on September 1, 2023 in the journal Biomedical Engineering / Biomedizinische Technik (volume 68, issue s1). In 2012, Veda Eswarappa and Sujata K. Bhatia published \"Biomaterial and Therapeutic Applications\" in SpringerBriefs in public health. The available metadata does not include an abstract with contribution, dataset, or result details.",
+    "warnings": [
+      "Related-work rerank LLM returned no valid paper IDs; using lexical fallback reranking."
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 7,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 5,
+      "num_cutoff_valid": 5,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [
+    "Related-work rerank LLM returned no valid paper IDs; using lexical fallback reranking."
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 7,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 5,
+    "num_cutoff_valid": 5,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

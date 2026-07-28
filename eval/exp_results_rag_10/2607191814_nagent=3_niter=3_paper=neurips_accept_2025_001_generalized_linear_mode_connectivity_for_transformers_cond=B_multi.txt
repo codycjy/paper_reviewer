@@ -1,0 +1,696 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and ambitious unified framework for understanding network symmetries, going beyond traditional permutations to include semi-permutations, orthogonal transformations, and general invertible maps. This is a significant conceptual leap for Linear Mode Connectivity (LMC).",
+        "The empirical demonstration of low- and zero-barrier LMC in Transformers (Vision Transformers and GPT-2), including multi-model and width-heterogeneous scenarios, is groundbreaking. This strongly suggests a more connected loss landscape than previously thought for these complex architectures, which was considered challenging with prior methods.",
+        "The 'learned matching' approach, which optimizes symmetry transformations end-to-end based on task loss, is a creative and effective way to leverage the broader symmetry classes identified, and the ablation studies provide insights into its efficacy compared to 'weight matching'."
+      ],
+      "weaknesses": [
+        "While the theoretical framework for 'general invertible maps' is established, their practical application and explicit optimization as alignment transformations in the authors' proposed method remain somewhat implicit, focusing on QK/OV circuit invariance rather than direct manipulation of arbitrary invertible matrices. Further exploration on how to operationalize and optimize these broader invertible mappings could enhance the framework's direct utility.",
+        "The empirical evaluation, especially for language models, uses smaller GPT-2 variants due to resource constraints. While this demonstrates the concept effectively, it limits the direct generalizability of the 'zero-barrier' claims to larger, state-of-the-art Transformer models that are more representative of current research and application."
+      ],
+      "summary_comment": "This paper presents a bold and innovative approach to understanding the loss landscape of neural networks, particularly Transformers. The generalization of symmetry classes beyond simple permutations to include semi-permutations, orthogonal transformations, and general invertible maps is a significant conceptual advancement. The empirical results showing low- and zero-barrier linear mode connectivity in Vision Transformers and GPT-2 models for the first time are highly impactful and challenge existing notions of their loss landscape geometry. The authors have effectively clarified their current implicit use of general invertible maps and acknowledged the future opportunities for direct optimization, which I find satisfactory. Similarly, the use of smaller models due to resource constraints is understood, and the authors' justification that the *conceptual* breakthrough holds regardless of scale is persuasive. The work proves the concept of generalized LMC in Transformers, which is a major step forward. The potential for this work to inspire new directions in deep learning research is very high, aligning perfectly with my preference for forward-looking and unconventional ideas. Minor imperfections are well worth the potential impact, and the authors' responses affirm the paper's strong contribution."
+    },
+    {
+      "raw": "```json\n{\n  \"reviewer\": \"Reviewer B - Rigor Focused\",\n  \"decision\": \"Accept\",\n  \"scores\": {\n    \"novelty\": 4,\n    \"soundness\": 5,\n    \"significance\": 4,\n    \"evaluation\": 5,\n    \"clarity\": 4\n  },\n  \"strengths\": [\n    \"The paper introduces a theoretically sound and well-justified generalized framework for understanding symmetries in neural networks, extending beyond simple permutations to include semi-permutations, orthogonal transformations, and general invertible maps. This formalization is crucial for modern architectures like Transformers.\",\n    \"The work provides compelling empirical evidence, demonstrating for the first time low- and zero-loss linear connections between independently trained Vision Transformers and GPT-2 models. This significantly advances the understanding of mode connectivity in complex, contemporary architectures, which was previously a challenge.\",\n    \"The evaluation is thorough and meticulous, comparing various alignment methods (vanilla averaging, activation matching, weight matching, learned matching) and performing ablation studies on critical components like initialization and coefficient sampling. The results consistently highlight the effectiveness of their proposed methods.\",\n    \"The method clearly demonstrates the ability to align models in multi-model and width-heterogeneous settings, which is a practical and challenging problem in model merging and transfer learning.\"\n  ],\n  \"weaknesses\": [\n    \"The distinction between *exact* functional equivalence for primary alignment methods and *approximate* equivalence for soft symmetries, while clarified by the authors, remains a nuanced point. Ensuring this distinction is perfectly clear and consistently applied throughout the entire manuscript is important for theoretical rigor.\",\n    \"The discussion around the higher barriers in BookCorpus, while framed appropriately as a hypothesis for future work, still leaves a gap in the current paper's comprehensive understanding of LMC across all modalities tested. Further investigation into the root causes would strengthen the universality argument.\",\n    \"While the authors acknowledge the use of smaller GPT-2 models and the potential new complexities with larger state-of-the-art LLMs, the paper could benefit from explicitly outlining\nwhat these potential complexities might be, even speculatively, to guide future research more effectively.\"\n  ],\n  \"summary_comment\": \"The authors have consistently and actively engaged with the feedback, enhancing the clarity and precision of the manuscript. The concerns regarding the distinction between exact and approximate functional equivalence, the interpretation of higher barriers in language models, and the scalability to larger models have been addressed with thoughtful refinements in the text and a clear articulation of future work. The theoretical foundation remains robust, and the empirical results are compelling, showcasing a significant advancement in understanding linear mode connectivity in complex Transformer architectures. The paper's contribution is substantial, and the authors' responsiveness further strengthens its quality.\",\n  \"decision\": \"Accept\"\n}\n```",
+      "parse_error": true
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant challenge in understanding neural network generalization and optimization by extending Linear Mode Connectivity (LMC) to complex architectures like Transformers, which is highly relevant for practitioners working with these models.",
+        "The proposed unified framework for symmetry classes (permutations, semi-permutations, orthogonal transformations, and general invertible maps) is a clear and well-motivated generalization that subsumes prior work and demonstrably improves alignment results.",
+        "The empirical results are convincing, demonstrating for the first time low- and zero-barrier LMC for independently trained Vision Transformers and GPT-2 models. The method also extends to multi-model and width-heterogeneous settings, showcasing its practical utility."
+      ],
+      "weaknesses": [
+        "While the theoretical framework for symmetries is well-defined, the practical implementation of `general invertible maps` in the context of learned matching could benefit from more detailed discussion beyond just the QK/OV circuits, especially concerning how they are constrained during optimization to preserve functional equivalence more broadly. (Mitigated, but still a point of nuance)",
+        "The evaluation, while strong, is limited by the use of smaller-scale GPT-2 models due to resource constraints. This raises questions about the generalizability of the 'near-zero barrier' findings to much larger, state-of-the-art LLMs, which are of paramount interest to many practitioners."
+      ],
+      "summary_comment": "The authors have adequately addressed my concerns. Regarding the implementation of 'general invertible maps', their clarification that the method implicitly leverages these symmetries where they are well-structured (e.g., QK/OV circuits) and that explicit optimization for arbitrary GL(d,R) transformations is complex, is reasonable. It's a pragmatic choice given the current state of research and computational constraints. The authors acknowledge the limitation concerning smaller-scale GPT-2 models and confirm this is a direction for future work, which is a fair response for a foundational paper. The core contribution - enabling LMC in Transformers through a generalized symmetry framework - is robustly demonstrated and highly significant for understanding and manipulating these critical models. The paper remains a strong 'Accept'."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' topics, specifically 'theory of machine learning' regarding loss landscape geometry and 'deep learning' (architectures, theory) as it applies to Transformers. This aligns perfectly with ICML's stated interests.",
+        "The introduction of a 'unified symmetry framework' that includes permutations, semi-permutations, orthogonal transformations, and general invertible maps for model alignment and linear mode connectivity (LMC) represents a significant theoretical contribution in understanding neural network generalization and optimization, which ICML highly values.",
+        "The empirical results on Vision Transformers and GPT-2 models demonstrating, for the first time, low- and zero-barrier LMC, including multi-model and width-heterogeneous scenarios, show a strong application of theoretical advancements to modern deep learning architectures, a common theme at ICML. Reviewer A highlights this as \"groundbreaking.\" ",
+        "The methodologies, including 'weight matching' and 'learned matching' are contributions to 'optimization' and 'general machine learning' techniques for model merging and understanding, which are relevant to ICML's scope. Reviewer B praises the 'thorough and meticulous' evaluation of these methods.",
+        "The paper's focus on understanding fundamental properties of neural networks (loss landscapes, generalization, optimization) through a novel theoretical lens and strong empirical validation makes it an excellent fit for ICML, which values both foundational research and its practical implications."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A noted that the practical application and explicit optimization of 'general invertible maps' could be further explored, suggesting a slight implicit aspect in the current framework, which might be seen as a minor limitation in some theoretical contexts.",
+        "While the paper advances the theory, the empirical evaluation for language models uses smaller GPT-2 variants due to resource constraints. This may lead some to question the direct generalizability to larger, state-of-the-art models often preferred for empirical submissions at top-tier conferences, as pointed out by Reviewer C."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic of 'General machine learning: core contributions in supervised and unsupervised methods' is a direct match, as it deepens the understanding of neural network loss landscapes and mode connectivity, critical for supervised learning. Reviewer A explicitly states this work challenges existing notions of loss landscape geometry.",
+        "The application to 'Computer vision' (Vision Transformers) and 'Language and multimodal language models' (GPT-2) directly aligns with NeurIPS's listed topics, covering significant contemporary ML domains.",
+        "The theoretical formalization of a 'unified symmetry framework' for model alignment directly contributes to the 'Theory' aspect of machine learning, which is a major focus for NeurIPS. Reviewer B praises the 'theoretically sound and well-justified generalized framework'.",
+        "The contribution on 'Decision-making, reinforcement learning, and control' can be seen indirectly through its implications for ensembling and federated learning (mentioned in Appendix F), areas that are relevant to NeurIPS.",
+        "The paper provides an 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior beyond the scope of the original work' by generalizing LMC, which NeurIPS explicitly encourages. Reviewer C notes this addresses a 'significant challenge in understanding neural network generalization and optimization'."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reliance on smaller GPT-2 models for experiments due to computational constraints, as highlighted by Reviewers A, B, and C, could be perceived as a limitation for a conference that often showcases results on the largest possible models, especially for language tasks.",
+        "Reviewer B mentioned that the discussion around higher barriers in BookCorpus leaves a gap in understanding LMC across all modalities tested. While acknowledged as future work, this could be seen as a partial comprehensive understanding of the phenomenon within the current scope of the paper, potentially slightly impacting its 'universality argument' at NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'all aspects of deep learning', specifically 'representation learning for computer vision, audio, language, and other modalities', by examining the underlying representations and their symmetries in Transformers.",
+        "The topic of 'optimization' is central, as the paper analyzes and proposes methods for understanding and navigating the loss landscape of deep neural networks, including the optimization of alignment parameters within the 'learned matching' approach. Reviewer B highlights the meticulous evaluation of alignment methods.",
+        "The work explicitly discusses 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' in the context of how different models find similar solutions, which is a key aspect of representation learning.",
+        "The extension to 'societal considerations including fairness, safety, privacy' is mentioned in the future implications (Appendix F), showing awareness of broader impact, which ICLR values.",
+        "The method introduces a 'unified symmetry framework' and empirical findings on Transformers, which fits ICLR's reputation for cutting-edge research in deep learning, as noted by Reviewer A who found the work to be 'groundbreaking' for Transformers."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is fundamentally about deep learning, its focus is more on the theoretical underpinnings of loss landscape geometry and model alignment rather than novel deep learning architectures or explicit application domains (e.g., new vision models, new NLP models). While applicable, it's not a direct 'applications to robotics' or 'applications to vision' paper, which are often prominent at ICLR.",
+        "Reviewer C's concern about the generalizability of 'near-zero barrier' findings to much larger, state-of-the-art LLMs is particularly relevant for ICLR, which often features papers pushing the boundaries with large-scale deep learning models. The smaller GPT-2 models might be a slight disadvantage here.",
+        "The primary conceptual contribution revolves around generalizing symmetry classes, which is more theoretical. While ICLR does embrace theory, the emphasis can sometimes lean more heavily towards empirical advancements in deep learning models or architectures themselves, compared to NeurIPS or ICML which have broader theory tracks."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_3d85a007ef3e",
+    "paper_id": "paper_dd4e29c76e40",
+    "target_paper_summary": {
+      "paper_id": "paper_dd4e29c76e40",
+      "title": "Generalized Linear Mode Connectivity For Transformers",
+      "abstract": "Understanding the geometry of neural network loss landscapes is a central question in deep learning, with implications for generalization and optimization. A striking phenomenon is *linear mode connectivity* (LMC), where independently trained models can be connected by low- or zero-barrier paths, despite appearing to lie in separate loss basins. However, this is often obscured by symmetries in parameter space—such as neuron permutations—which make functionally equivalent models appear dissimilar. Prior work has predominantly focused on neuron reordering through permutations, but such approaches are limited in scope and fail to capture the richer symmetries exhibited by modern architectures such as Transformers. In this work, we introduce a unified framework that captures four symmetry classes—permutations, semi-permutations, orthogonal transformations, and general invertible maps—broadening the set of valid reparameterizations and subsuming many previous approaches as special cases. Crucially, this generalization enables, for the first time, the discovery of low- and zero-barrier linear interpolation paths between independently trained Vision Transformers and GPT-2 models. Furthermore, our framework extends beyond pairwise alignment, to multi-model and width-heterogeneous settings, enabling alignment across architectures of different sizes. These results reveal deeper structure in the loss landscape and underscore the importance of symmetry-aware analysis for understanding model space geometry. Our code is available here.",
+      "topic": "",
+      "claims": [
+        "we introduce a unified framework that captures four symmetry classes—permutations, semi-permutations, orthogonal transformations, and general invertible maps—broadening the set of valid reparameterizations and subsuming many previous approaches as special cases.",
+        "our framework extends beyond pairwise alignment, to multi-model and width-heterogeneous settings, enabling alignment across architectures of different sizes."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "linear mode connectivity neural networks loss landscape symmetries",
+          "rationale": "The abstract explicitly states 'linear mode connectivity (LMC)' and discusses its implications for 'neural network loss landscapes', emphasizing the issue of 'symmetries in parameter space'."
+        },
+        {
+          "group": "same_method",
+          "query": "reparameterization symmetries neural network alignment invertible maps",
+          "rationale": "The paper introduces a 'unified framework that captures four symmetry classes—permutations, semi-permutations, orthogonal transformations, and general invertible maps—broadening the set of valid reparameterizations'."
+        },
+        {
+          "group": "same_constraints",
+          "query": "transformer model loss landscape analysis deep learning",
+          "rationale": "The paper specifically applies its framework to 'Vision Transformers and GPT-2 models' and the title is 'Generalized Linear Mode Connectivity For Transformers', indicating a focus on Transformer architectures within deep learning."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "linear mode connectivity evaluation metrics low-barrier paths neural networks",
+          "rationale": "The paper aims to discover 'low- and zero-barrier linear interpolation paths', suggesting that prior work likely established methods or metrics for evaluating such connectivity."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "neural network permutation symmetries model alignment",
+          "rationale": "The abstract states 'Prior work has predominantly focused on neuron reordering through permutations', implying that permutation-based alignment methods are a closely related but less general approach that the current work aims to supersede."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "failure of linear mode connectivity non-convex loss landscapes",
+          "rationale": "While the paper finds LMC, it discusses challenging aspects like 'symmetries in parameter space' obscuring it. Research highlighting specific scenarios or model types where LMC fails, or where these symmetry-aware approaches are insufficient, would be counterevidence."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 9,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_89c0be962",
+        "title": "The ITensor Software Library for Tensor Network Calculations",
+        "authors": [
+          "Matthew Fishman",
+          "Steven R. White",
+          "E. Miles Stoudenmire"
+        ],
+        "year": 2022,
+        "publication_date": "2022-08-23",
+        "venue": "SciPost Physics Codebases",
+        "abstract": "ITensor is a system for programming tensor network calculations with an interface modeled on tensor diagrams, allowing users to focus on the connectivity of a tensor network without manually bookkeeping tensor indices. The ITensor interface rules out common programming errors and enables rapid prototyping of algorithms. After discussing the philosophy behind the ITensor approach, we show examples of each part of the interface including Index objects, the ITensor product operator, tensor factorizations, tensor storage types, algorithms for matrix product state (MPS) and matrix product operator (MPO) tensor networks, quantum number conserving block sparse tensors, and the NDTensors library. We also review publications that have used ITensor for quantum many-body physics and for other areas where tensor networks are increasingly applied. To conclude we discuss promising features and optimizations to be added in the future.",
+        "url": "https://doi.org/10.21468/scipostphyscodeb.4",
+        "doi": "https://doi.org/10.21468/scipostphyscodeb.4",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3045710579"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 1005
+      },
+      {
+        "paper_id": "rw_002_3d24d2b28",
+        "title": "Deep neural networks in the cloud: Review, applications, challenges and research directions",
+        "authors": [
+          "Kit Yan Chan",
+          "Bilal Abu-Salih",
+          "Raneem Qaddoura",
+          "Ala’ M. Al-Zoubi",
+          "Vasile Palade",
+          "Duc-Son Pham",
+          "Javier Del Ser",
+          "Khan Muhammad"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-15",
+        "venue": "Neurocomputing",
+        "abstract": "Deep neural networks (DNNs) are currently being deployed as machine learning technology in a wide range of important real-world applications. DNNs consist of a huge number of parameters that require millions of floating-point operations (FLOPs) to be executed both in learning and prediction modes. A more effective method is to implement DNNs in a cloud computing system equipped with centralized servers and data storage sub-systems with high-speed and high-performance computing capabilities. This paper presents an up-to-date survey on current state-of-the-art deployed DNNs for cloud computing. Various DNN complexities associated with different architectures are presented and discussed alongside the necessities of using cloud computing. We also present an extensive overview of different cloud computing platforms for the deployment of DNNs and discuss them in detail. Moreover, DNN applications already deployed in cloud computing systems are reviewed to demonstrate the advantages of using cloud computing for DNNs. The paper emphasizes the challenges of deploying DNNs in cloud computing systems and provides guidance on enhancing current and new deployments.",
+        "url": "https://doi.org/10.1016/j.neucom.2023.126327",
+        "doi": "https://doi.org/10.1016/j.neucom.2023.126327",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4376613177"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 185
+      },
+      {
+        "paper_id": "rw_003_4e8a3357b",
+        "title": "BayesFlow: Learning complex stochastic models with invertible neural networks",
+        "authors": [
+          "Stefan T. Radev",
+          "Ulf K. Mertens",
+          "Andreass Voss",
+          "Lynton Ardizzone",
+          "Ullrich Köthe"
+        ],
+        "year": 2020,
+        "publication_date": "2020-03-13",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Estimating the parameters of mathematical models is a common problem in almost all branches of science. However, this problem can prove notably difficult when processes and model descriptions become increasingly complex and an explicit likelihood function is not available. With this work, we propose a novel method for globally amortized Bayesian inference based on invertible neural networks which we call BayesFlow. The method uses simulation to learn a global estimator for the probabilistic mapping from observed data to underlying model parameters. A neural network pre-trained in this way can then, without additional training or optimization, infer full posteriors on arbitrary many real datasets involving the same model family. In addition, our method incorporates a summary network trained to embed the observed data into maximally informative summary statistics. Learning summary statistics from data makes the method applicable to modeling scenarios where standard inference techniques with hand-crafted summary statistics fail. We demonstrate the utility of BayesFlow on challenging intractable models from population dynamics, epidemiology, cognitive science and ecology. We argue that BayesFlow provides a general framework for building amortized Bayesian parameter estimation machines for any forward model from which data can be simulated.",
+        "url": "http://arxiv.org/abs/2003.06281",
+        "doi": "https://doi.org/10.48550/arxiv.2003.06281",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4287826976"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 10
+      },
+      {
+        "paper_id": "rw_004_88e549a18",
+        "title": "An Overview of Artificial Intelligence Applications for Power Electronics",
+        "authors": [
+          "Shuai Zhao",
+          "Frede Blaabjerg",
+          "Huai Wang"
+        ],
+        "year": 2020,
+        "publication_date": "2020-09-18",
+        "venue": "IEEE Transactions on Power Electronics",
+        "abstract": "This article gives an overview of the artificial intelligence (AI) applications for power electronic systems. The three distinctive life-cycle phases, design, control, and maintenance are correlated with one or more tasks to be addressed by AI, including optimization, classification, regression, and data structure exploration. The applications of four categories of AI are discussed, which are expert system, fuzzy logic, metaheuristic method, and machine learning. More than 500 publications have been reviewed to identify the common understandings, practical implementation challenges, and research opportunities in the application of AI for power electronics. This article is accompanied by an Excel file listing the relevant publications for statistical analytics.",
+        "url": "https://doi.org/10.1109/tpel.2020.3024914",
+        "doi": "https://doi.org/10.1109/tpel.2020.3024914",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3033928040"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 853
+      },
+      {
+        "paper_id": "rw_005_32b64b8c5",
+        "title": "Physics-informed machine learning",
+        "authors": [
+          "George Em Karniadakis",
+          "Ioannis G. Kevrekidis",
+          "Lu Lu",
+          "Paris Perdikaris",
+          "Sifan Wang",
+          "Liu Yang"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-24",
+        "venue": "Nature Reviews Physics",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/s42254-021-00314-5",
+        "doi": "https://doi.org/10.1038/s42254-021-00314-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3163993681"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 6927
+      },
+      {
+        "paper_id": "rw_006_ea524cfe1",
+        "title": "Multimodal Learning With Transformers: A Survey",
+        "authors": [
+          "Peng Xu",
+          "Xiatian Zhu",
+          "David A. Clifton"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-11",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "Transformer is a promising neural network learner, and has achieved great success in various machine learning tasks. Thanks to the recent prevalence of multimodal applications and Big Data, Transformer-based multimodal learning has become a hot topic in AI research. This paper presents a comprehensive survey of Transformer techniques oriented at multimodal data. The main contents of this survey include: (1) a background of multimodal learning, Transformer ecosystem, and the multimodal Big Data era, (2) a systematic review of Vanilla Transformer, Vision Transformer, and multimodal Transformers, from a geometrically topological perspective, (3) a review of multimodal Transformer applications, via two important paradigms, i.e., for multimodal pretraining and for specific multimodal tasks, (4) a summary of the common challenges and designs shared by the multimodal Transformer models and applications, and (5) a discussion of open problems and potential research directions for the community.",
+        "url": "https://doi.org/10.1109/tpami.2023.3275156",
+        "doi": "https://doi.org/10.1109/tpami.2023.3275156",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4376226279"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 892
+      },
+      {
+        "paper_id": "rw_007_c91c63721",
+        "title": "Classification of Skin Disease Using Deep Learning Neural Networks with MobileNet V2 and LSTM",
+        "authors": [
+          "Parvathaneni Naga Srinivasu",
+          "Jalluri Gnana SivaSai",
+          "Muhammad Fazal Ijaz",
+          "Akash Kumar Bhoi",
+          "Wonjoon Kim",
+          "James Jin Kang"
+        ],
+        "year": 2021,
+        "publication_date": "2021-04-18",
+        "venue": "Sensors",
+        "abstract": "Deep learning models are efficient in learning the features that assist in understanding complex patterns precisely. This study proposed a computerized process of classifying skin disease through deep learning based MobileNet V2 and Long Short Term Memory (LSTM). The MobileNet V2 model proved to be efficient with a better accuracy that can work on lightweight computational devices. The proposed model is efficient in maintaining stateful information for precise predictions. A grey-level co-occurrence matrix is used for assessing the progress of diseased growth. The performance has been compared against other state-of-the-art models such as Fine-Tuned Neural Networks (FTNN), Convolutional Neural Network (CNN), Very Deep Convolutional Networks for Large-Scale Image Recognition developed by Visual Geometry Group (VGG), and convolutional neural network architecture that expanded with few changes. The HAM10000 dataset is used and the proposed method has outperformed other methods with more than 85% accuracy. Its robustness in recognizing the affected region much faster with almost 2× lesser computations than the conventional MobileNet model results in minimal computational efforts. Furthermore, a mobile application is designed for instant and proper action. It helps the patient and dermatologists identify the type of disease from the affected region's image at the initial stage of the skin disease. These findings suggest that the proposed system can help general practitioners efficiently and effectively diagnose skin conditions, thereby reducing further complications and morbidity.",
+        "url": "https://doi.org/10.3390/s21082852",
+        "doi": "https://doi.org/10.3390/s21082852",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3156313549"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 749
+      },
+      {
+        "paper_id": "rw_008_e66bccf81",
+        "title": "CHARMM: The biomolecular simulation program",
+        "authors": [
+          "Bernard R. Brooks",
+          "Charles L. Brooks",
+          "Alexander D. MacKerell",
+          "Lennart Nilsson",
+          "Robert J. Petrella",
+          "Benoı̂t Roux",
+          "Youngdo Won",
+          "Georgios Archontis",
+          "Christian Bartels",
+          "Stefan Boresch",
+          "Amedeo Caflisch",
+          "Leo S. D. Caves",
+          "Qiang Cui",
+          "Aaron R. Dinner",
+          "Michael Feig",
+          "Stefan Fischer",
+          "Jun Gao",
+          "Milan Hodošček",
+          "Wonpil Im",
+          "Krzysztof Kuczera",
+          "Themis Lazaridis",
+          "Jianpeng Ma",
+          "Victor Ovchinnikov",
+          "Emanuele Paci",
+          "Richard W. Pastor",
+          "Carol Beth Post",
+          "Jingzhi Pu",
+          "Michael Schaefer",
+          "Bruce Tidor",
+          "Richard M. Venable",
+          "H. Lee Woodcock",
+          "Xiaojing Wu",
+          "Wei Yang",
+          "Darrin M. York",
+          "Martin Karplus"
+        ],
+        "year": 2009,
+        "publication_date": "2009-05-14",
+        "venue": "Journal of Computational Chemistry",
+        "abstract": "CHARMM (Chemistry at HARvard Molecular Mechanics) is a highly versatile and widely used molecular simulation program. It has been developed over the last three decades with a primary focus on molecules of biological interest, including proteins, peptides, lipids, nucleic acids, carbohydrates, and small molecule ligands, as they occur in solution, crystals, and membrane environments. For the study of such systems, the program provides a large suite of computational tools that include numerous conformational and path sampling methods, free energy estimators, molecular minimization, dynamics, and analysis techniques, and model-building capabilities. The CHARMM program is applicable to problems involving a much broader class of many-particle systems. Calculations with CHARMM can be performed using a number of different energy functions and models, from mixed quantum mechanical-molecular mechanical force fields, to all-atom classical potential energy functions with explicit solvent and various boundary conditions, to implicit solvent and membrane models. The program has been ported to numerous platforms in both serial and parallel architectures. This article provides an overview of the program as it exists today with an emphasis on developments since the publication of the original CHARMM article in 1983.",
+        "url": "https://doi.org/10.1002/jcc.21287",
+        "doi": "https://doi.org/10.1002/jcc.21287",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2132262459"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 9174
+      },
+      {
+        "paper_id": "rw_009_f3b172fc3",
+        "title": "PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation",
+        "authors": [
+          "Charles R. Qi",
+          "Hao Su",
+          "Kaichun Mo",
+          "Leonidas Guibas"
+        ],
+        "year": 2016,
+        "publication_date": "2016-12-02",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Point cloud is an important type of geometric data structure. Due to its irregular format, most researchers transform such data to regular 3D voxel grids or collections of images. This, however, renders data unnecessarily voluminous and causes issues. In this paper, we design a novel type of neural network that directly consumes point clouds and well respects the permutation invariance of points in the input. Our network, named PointNet, provides a unified architecture for applications ranging from object classification, part segmentation, to scene semantic parsing. Though simple, PointNet is highly efficient and effective. Empirically, it shows strong performance on par or even better than state of the art. Theoretically, we provide analysis towards understanding of what the network has learnt and why the network is robust with respect to input perturbation and corruption.",
+        "url": "http://arxiv.org/abs/1612.00593",
+        "doi": "https://doi.org/10.48550/arxiv.1612.00593",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2950642167"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 2880
+      },
+      {
+        "paper_id": "rw_010_36fea5b8a",
+        "title": "A review of graph neural networks: concepts, architectures, techniques, challenges, datasets, applications, and future directions",
+        "authors": [
+          "Bharti Khemani",
+          "Shruti Patil",
+          "Ketan Kotecha",
+          "Sudeep Tanwar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-16",
+        "venue": "Journal Of Big Data",
+        "abstract": "Abstract Deep learning has seen significant growth recently and is now applied to a wide range of conventional use cases, including graphs. Graph data provides relational information between elements and is a standard data format for various machine learning and deep learning tasks. Models that can learn from such inputs are essential for working with graph data effectively. This paper identifies nodes and edges within specific applications, such as text, entities, and relations, to create graph structures. Different applications may require various graph neural network (GNN) models. GNNs facilitate the exchange of information between nodes in a graph, enabling them to understand dependencies within the nodes and edges. The paper delves into specific GNN models like graph convolution networks (GCNs), GraphSAGE, and graph attention networks (GATs), which are widely used in various applications today. It also discusses the message-passing mechanism employed by GNN models and examines the strengths and limitations of these models in different domains. Furthermore, the paper explores the diverse applications of GNNs, the datasets commonly used with them, and the Python libraries that support GNN models. It offers an extensive overview of the landscape of GNN research and its practical implementations.",
+        "url": "https://doi.org/10.1186/s40537-023-00876-4",
+        "doi": "https://doi.org/10.1186/s40537-023-00876-4",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390906246"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 518
+      },
+      {
+        "paper_id": "rw_011_326e8daa0",
+        "title": "The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory",
+        "authors": [
+          "Sergey Oladyshkin",
+          "Timothy Praditia",
+          "Ilja Kröker",
+          "Farid Mohammadi",
+          "Wolfgang Nowak",
+          "Sebastian Otte"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-26",
+        "venue": "arXiv",
+        "abstract": "Artificial Intelligence and Machine learning have been widely used in various fields of mathematical computing, physical modeling, computational science, communication science, and stochastic analysis. Approaches based on Deep Artificial Neural Networks (DANN) are very popular in our days. Depending on the learning task, the exact form of DANNs is determined via their multi-layer architecture, activation functions and the so-called loss function. However, for a majority of deep learning approaches based on DANNs, the kernel structure of neural signal processing remains the same, where the node response is encoded as a linear superposition of neural activity, while the non-linearity is triggered by the activation functions. In the current paper, we suggest to analyze the neural signal processing in DANNs from the point of view of homogeneous chaos theory as known from polynomial chaos expansion (PCE). From the PCE perspective, the (linear) response on each node of a DANN could be seen as a $1^{st}$ degree multi-variate polynomial of single neurons from the previous layer, i.e. linear weighted sum of monomials. From this point of view, the conventional DANN structure relies implicitly (but erroneously) on a Gaussian distribution of neural signals. Additionally, this view revels that by design DANNs do not necessarily fulfill any orthogonality or orthonormality condition for a majority of data-driven applications. Therefore, the prevailing handling of neural signals in DANNs could lead to redundant representation as any neural signal could contain some partial information from other neural signals. To tackle that challenge, we suggest to employ the data-driven generalization of PCE theory known as arbitrary polynomial chaos (aPC) to construct a corresponding multi-variate orthonormal representations on each node of a DANN to obtain Deep arbitrary polynomial chaos neural networks.",
+        "url": "http://arxiv.org/abs/2306.14753v1",
+        "doi": "",
+        "arxiv_id": "2306.14753v1",
+        "source_ids": {
+          "arXiv": "2306.14753v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_7038ed854",
+        "title": "Percolation Approach to Study Connectivity in Living Neural Networks",
+        "authors": [
+          "Jordi Soriano",
+          "Ilan Breskin",
+          "Elisha Moses",
+          "Tsvi Tlusty"
+        ],
+        "year": 2010,
+        "publication_date": "2010-07-28",
+        "venue": "arXiv",
+        "abstract": "We study neural connectivity in cultures of rat hippocampal neurons. We measure the neurons' response to an electric stimulation for gradual lower connectivity, and characterize the size of the giant cluster in the network. The connectivity undergoes a percolation transition described by the critical exponent $β\\simeq 0.65$. We use a theoretic approach based on bond.percolation on a graph to describe the process of disintegration of the network and extract its statistical properties. Together with numerical simulations we show that the connectivity in the neural culture is local, characterized by a gaussian degree distribution and not a power law on",
+        "url": "http://arxiv.org/abs/1007.5016v1",
+        "doi": "",
+        "arxiv_id": "1007.5016v1",
+        "source_ids": {
+          "arXiv": "1007.5016v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "same_problem"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_4e8a3357b",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper directly addresses the method of using invertible neural networks, which is a core component of the target paper's proposed framework, particularly `general invertible maps` for reparameterization.",
+        "evidence_summary": "BayesFlow proposes learning complex stochastic models using invertible neural networks, leveraging their properties for Bayesian inference."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_006_ea524cfe1",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This survey provides a comprehensive overview of Transformers, the architecture class that the target paper specifically focuses on, making it highly relevant for understanding the context and challenges the target paper is addressing within Transformers.",
+        "evidence_summary": "Multimodal Learning With Transformers: A Survey by Xu et al. (2023) reviews Transformer techniques for multimodal data, including Vanilla Transformer, Vision Transformer, and multimodal Transformers, along with their applications and challenges."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_009_f3b172fc3",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper discusses permutation invariance in neural networks, a crucial concept related to the 'neuron permutations' mentioned as a prevalent prior approach that the target paper aims to generalize beyond.",
+        "evidence_summary": "PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation (Qi et al., 2016) introduces a neural network that directly processes point clouds, respecting permutation invariance of points in the input."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_011_326e8daa0",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_problem"
+        ],
+        "rationale": "This paper addresses the underlying mathematical and theoretical aspects of neural network signal processing and non-linearity, which are foundational to understanding loss landscapes and connectivity, even if it doesn't directly discuss LMC. It offers a different theoretical lens (homogeneous chaos theory) on DANNs, which could provide a baseline for theoretical understanding.",
+        "evidence_summary": "The Deep Arbitrary Polynomial Chaos Neural Network (Oladyshkin et al., 2023) analyzes neural signal processing in Deep Artificial Neural Networks from the perspective of homogeneous chaos theory, questioning conventional DANN structure assumptions."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_012_7038ed854",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_problem"
+        ],
+        "rationale": "While not directly about deep learning, this paper's study of 'connectivity in living neural networks' using 'percolation approach' provides a biological analogue and a general method (percolation) for analyzing network connectivity, which can be useful for benchmarking or drawing parallels in the context of LMC in artificial networks. It highlights the general 'connectivity' problem.",
+        "evidence_summary": "Percolation Approach to Study Connectivity in Living Neural Networks (Soriano et al., 2010) uses a percolation approach to study and characterize connectivity and disintegration in cultures of rat hippocampal neurons."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_010_36fea5b8a",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "While focusing on Graph Neural Networks, this paper broadly discusses 'concepts, architectures, techniques, challenges' in deep learning, which might provide a broader theoretical competitor or context for understanding architectural symmetries and learning mechanisms.",
+        "evidence_summary": "A review of graph neural networks (Khemani et al., 2024) provides an extensive overview of GNN concepts, architectures, techniques, challenges, and applications, examining models like GCNs, GraphSAGE, and GATs."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_32b64b8c5",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper discusses 'Physics-informed machine learning,' which represents a broad area of applying machine learning with specific constraints or prior knowledge. While not directly on LMC, it relates to the idea of incorporating structured information (like symmetries discussed in the target paper) into machine learning approaches.",
+        "evidence_summary": "Physics-informed machine learning (Karniadakis et al., 2021) discusses the integration of physical laws into machine learning models, representing a class of constrained learning approaches."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_007_c91c63721",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper uses 'MobileNet V2 and LSTM' in deep learning for classification, presenting an example of model evaluation and comparison ('performance has been compared against other state-of-the-art models'). This could represent a general baseline strategy for evaluating deep learning models, though not specifically LMC.",
+        "evidence_summary": "Classification of Skin Disease Using Deep Learning Neural Networks with MobileNet V2 and LSTM (Srinivasu et al., 2021) proposes a deep learning approach for skin disease classification, demonstrating performance benchmarks against other models."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_004_88e549a18",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper surveys AI applications, including fuzzy logic and metaheuristic methods, which represent different classes of AI approaches. While not directly related to LMC or invertible maps, it broadly discusses 'AI applications' and 'challenges' which could be tangentially relevant as a different 'method' approach to complex problems, though less directly aligned.",
+        "evidence_summary": "An Overview of Artificial Intelligence Applications for Power Electronics (Zhao et al., 2020) surveys various AI applications, including expert systems, fuzzy logic, metaheuristic methods, and machine learning, for power electronic systems."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_001_89c0be962",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper focuses on 'tensor network calculations' using a specific software library. While 'tensor networks' can describe parameter spaces and thus relate abstractly to 'geometry of neural network loss landscapes,' the connection to linear mode connectivity or symmetries in deep learning is distant.",
+        "evidence_summary": "The ITensor Software Library for Tensor Network Calculations (Fishman et al., 2022) describes a system for programming tensor network calculations, emphasizing its interface for managing tensor indices and its use in quantum many-body physics."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_002_3d24d2b28",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper is a review of deploying deep neural networks in cloud computing. While it generally concerns 'Deep neural networks (DNNs),' its focus on cloud deployment, scalability, and specific infrastructure is orthogonal to the target paper's core problem of loss landscape geometry and linear mode connectivity.",
+        "evidence_summary": "Deep neural networks in the cloud: Review, applications, challenges and research directions (Chan et al., 2023) provides a survey on deploying deep neural networks within cloud computing systems, discussing complexities, platforms, and applications."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_008_e66bccf81",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper describes CHARMM, a biomolecular simulation program. The context is entirely different (molecular dynamics, biology) and offers no direct connection to linear mode connectivity, loss landscapes, or symmetries in artificial neural networks, making it weakly related.",
+        "evidence_summary": "CHARMM: The biomolecular simulation program (Brooks et al., 2009) is a widely used molecular simulation program focused on biomolecules, providing tools for conformational sampling, free energy estimation, and dynamics."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Our work builds upon the understanding of neural network loss landscape geometry and linear mode connectivity (LMC), which is often obscured by parameter space symmetries, particularly neuron permutations (Qi et al., 2016). While prior work has predominantly focused on such reordering, we introduce a unified framework that significantly broadens the range of symmetric reparameterizations to include general invertible maps, a concept also explored in a different context by BayesFlow (Radev et al., 2020) for learning complex stochastic models. We specifically apply and extend this framework to Transformer architectures, as surveyed by Xu et al. (2023), which are known for their intricate structures, enabling LMC discovery within Vision Transformers and GPT-2 models. This extends beyond simplistic symmetry considerations and offers a more robust analytical tool for dissecting the loss landscape geometry of modern deep neural networks, building on theoretical underpinnings that consider the behavior of neural networks and their connectivity (Oladyshkin et al., 2023; Soriano et al., 2010).",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 19,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 18,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 6
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 19,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 18,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 6
+  }
+}

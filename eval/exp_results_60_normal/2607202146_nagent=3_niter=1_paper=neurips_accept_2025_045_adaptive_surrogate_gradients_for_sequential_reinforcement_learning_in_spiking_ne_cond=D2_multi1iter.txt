@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel training methodology (TD3BC+JSRL) that cleverly addresses the critical warm-up period issue in SNNs for RL, especially in challenging, real-world robotic tasks. The concept of using a privileged guiding policy to bootstrap learning for SNNs and then shifting to online RL is a significant and creative step forward.",
+        "The systematic analysis of surrogate gradients, particularly the trade-off between slope, gradient magnitude, and alignment, provides valuable theoretical insights that are crucial for advancing SNN training. The discovery that shallower slopes act as a beneficial form of gradient noise in RL is a compelling and non-obvious finding.",
+        "The empirical results on real-world drone control are exceptionally strong. The method's ability to achieve a 600-point reward gap over baselines and successfully transfer to a physical quadrotor without action history is a powerful demonstration of its practical significance and robustness.",
+        "The proposed adaptive slope scheduling is an innovative approach to dynamically manage the exploration-exploitation trade-off during SNN training, providing a practical solution to a known challenge with surrogate gradients."
+      ],
+      "weaknesses": [
+        "While the theoretical analysis of surrogate gradients is insightful, the explanation in Section 3.3 and the supplementary material could be more rigorously formalized, particularly regarding the 'truthfulness' of steep slopes and the exact relationship between surrogate gradient noise and exploration. Some approximations are made (e.g., fast sigmoid derivative normalized by k) that could be further elaborated or justified beyond computational efficiency.",
+        "The reliance on a 'privileged guiding policy' as a prerequisite for TD3BC+JSRL could be a limitation in scenarios where such a policy is difficult or impossible to obtain. While the paper acknowledges this, further discussion on methods to acquire or alleviate the need for such a guide would strengthen the generalizability of the approach."
+      ],
+      "summary_comment": "This paper presents a truly exciting and innovative contribution to the field of Spiking Neural Networks and Reinforcement Learning. The dual attack on inherent SNN challenges—non-differentiability and stateful dynamics in RL—is exceptionally well-conceived. The systematic analysis of surrogate gradient slopes, particularly the insight into how shallower slopes introduce beneficial gradient noise for exploration, is a bold and novel theoretical finding. Furthermore, the TD3BC+JSRL framework, with its use of a jump-starting privileged policy, is a creative solution to the warm-up period problem, which is a major hurdle for SNNs in real-world sequential tasks. The results on drone control are highly significant, demonstrating a substantial performance improvement over existing methods and successful sim-to-real transfer. While there are minor areas for more rigorous theoretical formulation, the core ideas are strong, the potential impact is enormous, and the experimental validation is convincing for a paper pushing such innovative boundaries. This work pushes the field forward significantly and has strong potential to inspire future research."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a thorough and systematic analysis of surrogate gradient slopes in SNNs, investigating their impact on gradient magnitude and alignment in deep networks for both supervised and reinforcement learning contexts. This is a crucial, often overlooked, aspect of SNN training.",
+        "The proposed TD3BC+JSRL method effectively addresses the critical challenge of limited sequence lengths and warm-up periods in SNN-based RL for robotic control, particularly through the clever use of a privileged guiding policy and a decaying BC term. This significantly improves training stability and performance.",
+        "The experimental evaluation is exceptionally strong, demonstrating the practical efficacy of the proposed methods on a challenging real-world drone control task. The comparison against relevant baselines (BC, TD3BC, TD3) and the ablation study provide convincing evidence for the contributions of each component. The sim-to-real transfer and energy efficiency analysis further bolster the practical relevance."
+      ],
+      "weaknesses": [
+        "While the paper analyzes adaptive slope scheduling, the adaptive schedule itself (Equation 7) appears somewhat heuristic. A more theoretically grounded derivation or a detailed sensitivity analysis of its parameters would strengthen this aspect.",
+        "The claim that the surrogate gradient choice 'barely affects supervised learning' while strongly influencing RL (Section 5.1) is intriguing but warrants further mechanistic explanation. What specific properties of the RL objective or training dynamics make it more sensitive to gradient noise compared to supervised learning? A deeper analysis would improve the theoretical understanding."
+      ],
+      "summary_comment": "This paper presents a strong contribution to the field of Spiking Neural Networks for Reinforcement Learning. The systematic analysis of surrogate gradient slopes is rigorous and sheds important light on their behavior in deep SNNs. The proposed TD3BC+JSRL method is a well-designed solution to a practical and significant problem in SNN-based robotic control, allowing for effective sequential learning in environments with high failure rates. The experimental validation is comprehensive, including comparisons with strong baselines, ablation studies, and a real-world deployment, all of which convincingly support the claims. While some aspects of the adaptive slope schedule could benefit from further theoretical underpinning and the mechanistic differences observed between supervised and RL sensitivity to gradient noise could be explored more deeply, these are minor points compared to the overall methodological soundness and impactful evaluation. The work makes a clear advance in both theoretical understanding and practical application of SNNs in real-world control tasks."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper tackles a critical practical problem in SNN training for robotics: enabling effective sequential learning in environments with unstable initial policies (e.g., drone crashes). The proposed TD3BC+JSRL method directly addresses this by combining a privileged guiding policy with online RL and adaptive surrogate gradients.",
+        "The comprehensive analysis of surrogate gradient slopes and their impact on gradient magnitude and alignment in deep SNNs is highly valuable. The finding that shallower slopes introduce noise that aids RL exploration, and the subsequent proposal of adaptive slope scheduling, provides concrete guidance for practitioners.",
+        "The experimental evaluation is robust and convincing, demonstrating significant performance gains (400 points vs -200 points) on a real-world drone control task. The ablation studies clearly highlight the contribution of each component (BC-term and Jump-Start), providing strong evidence for their necessity and effectiveness. The sim-to-real transfer and NeuroBench comparison further solidify the practical relevance and energy efficiency claims."
+      ],
+      "weaknesses": [
+        "While the paper successfully demonstrates the utility of the approach for drone control, the dependency on a `privileged guiding policy` that must produce `stable behavior early in training` is a non-trivial assumption. More discussion on how practitioners might obtain or train such a guiding policy in different complex robotic scenarios would enhance the practical applicability.",
+        "The explanation of the adaptive slope scheduler (Equation 7) and its components (rt-i and r't-i) could be clearer. Specifically, how r't-i (first order derivative of reward) is calculated and what properties it's intended to capture is not explicitly detailed, which could impact reproducibility or understanding for those wanting to implement it."
+      ],
+      "summary_comment": "This paper presents a strong contribution to the field of Spiking Neural Networks for Reinforcement Learning, particularly in robotic control. It directly addresses two significant practical challenges: the impact of surrogate gradients in deep SNNs and the difficulty of sequential RL training in high-risk, unstable environments. The analysis of surrogate gradient slopes is insightful and directly leads to the practical solution of adaptive slope scheduling. The proposed TD3BC+JSRL approach, combining jump-starting with behavioral cloning, offers a robust framework for overcoming early episode termination in complex tasks like drone control. The empirical results on a real-world drone platform are highly compelling, showing substantial performance improvements over baselines and demonstrating successful sim-to-real transfer. The commitment to reproducibility with publicly available code is also a significant plus. While there are minor areas for clarification regarding the guiding policy and adaptive scheduler details, the overall significance, sound evaluation, and clear presentation make this paper highly valuable for practitioners and researchers alike."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic of Spiking Neural Networks (SNNs) and their application to Reinforcement Learning (RL) aligns directly with ICML's stated interest in 'general machine learning', 'deep learning architectures', and 'reinforcement learning (decision and control, planning, robotics, etc.)'.",
+        "The paper provides a systematic analysis of surrogate gradients in SNNs, which falls under 'theory of machine learning' and 'deep learning theory'. Reviewers highlight this as a 'valuable theoretical insight' (Reviewer A) and a 'thorough and systematic analysis' (Reviewer B).",
+        "The proposed TD3BC+JSRL method for SNN-based RL addresses significant challenges in robotic control, which is explicitly mentioned as an 'application-driven machine learning' area in the ICML topics.",
+        "The empirical results demonstrating robust control of a real-world drone and successful sim-to-real transfer resonate strongly with ICML's focus on 'important application areas such as machine vision, computational biology, speech recognition, and robotics'. Reviewers consistently praise the 'exceptionally strong' experimental evaluation (Reviewer B) and 'highly compelling' results (Reviewer C).",
+        "The paper's contribution to 'improved implementation and scalability' and 'distributed methods' through energy-efficient neuromorphic computing, as shown by the NeuroBench comparison, fits ICML's interest in 'machine learning systems'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper has theoretical components, Reviewer A notes that the theoretical analysis of surrogate gradients 'could be more rigorously formalized', suggesting a slight potential mismatch with ICML's highest theoretical rigor standards for some contributions.",
+        "Reviewer B points out that the adaptive slope schedule (Equation 7) 'appears somewhat heuristic', indicating a minor gap in theoretical grounding for one of the proposed solutions, which might be scrutinized more heavily by ICML's theoretically inclined audience.",
+        "The reliance on a 'privileged guiding policy' (Reviewer A, C) could be seen as a practical constraint rather than a fundamental algorithmic limitation, which might be a point of minor critique for contributions aiming for broad theoretical applicability."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on Spiking Neural Networks and Reinforcement Learning for robotic control strongly aligns with NeurIPS topics such as 'Robotics, embodied systems, and engineering', 'Decision-making, reinforcement learning, and control', and 'Deep learning'.",
+        "The systematic analysis of surrogate gradients and their impact on SNN training provides novel insights into deep learning methods, fitting NeurIPS's interest in 'Deep learning' and 'in-depth analysis of existing methods that provide new insights'. Reviewers comment on the 'valuable theoretical insights' (Reviewer A) and 'rigorous' analysis (Reviewer B).",
+        "The practical application to 'drone control' is a clear fit for 'Robotics, embodied systems, and engineering', and the successful sim-to-real transfer with energy efficiency considerations ('orders-of-magnitude efficiency gains') aligns with the interdisciplinary nature of NeurIPS and its interest in practical implementations.",
+        "The problem of 'warm-up period' and 'limited sequence lengths' in SNN-based RL, and the proposed TD3BC+JSRL solution, represent a significant 'General machine learning: core contribution in supervised and unsupervised methods', particularly in addressing challenges specific to SNNs.",
+        "The paper's discussion of limitations, reproducibility, and code availability (as per the NeurIPS checklist provided by the authors) indicates a strong adherence to NeurIPS's ethical and transparency guidelines, which contributes to a good fit."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B notes that the adaptive slope schedule's heuristic nature could benefit from a 'more theoretically grounded derivation', which, while not a strong detractor, might face questions given NeurIPS's strong emphasis on methodological rigor.",
+        "While the novelty is high, Reviewer B gives a '3' for novelty, suggesting that some aspects, particularly the RL framework, might build more heavily on existing components (TD3BC, JSRL) than being entirely de novo, which could be a point of discussion for some NeurIPS reviewers.",
+        "The discussion on the mechanistic differences between supervised learning and RL sensitivity to gradient noise could be deepened (Reviewer B), potentially missing an opportunity for a more profound theoretical contribution that would be highly valued by NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR is explicitly 'renowned for presenting and publishing cutting-edge research on all aspects of deep learning'. This paper's focus on Spiking Neural Networks (SNNs), which are an alternative deep learning architecture, and its work on deep RL, directly aligns.",
+        "The paper deeply investigates 'representation learning' through SNNs, particularly 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' and their temporal dynamics given the sequential nature of SNNs.",
+        "The core contribution involves 'reinforcement learning' and 'optimization' challenges unique to SNNs, such as surrogate gradients and warm-up periods, which are listed as relevant topics for ICLR.",
+        "The analysis of surrogate gradients and their impact on training SNNs contributes to fundamental understanding of 'learning theory' and 'probabilistic methods' in the context of SNNs (e.g., how gradient noise aids exploration).",
+        "The application to 'robotics, autonomy, planning' specifically for drone control, with demonstrations of sim-to-real transfer, directly aligns with ICLR's interest in application areas.",
+        "Reviewer A highlights the 'highly novel training methodology' and the 'significant and creative step forward', which fits ICLR's emphasis on 'cutting-edge research' and novelty in deep learning."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper discusses theoretical aspects of surrogate gradients, Reviewer A mentions that the explanation 'could be more rigorously formalized', potentially falling slightly short of the highest theoretical bar sometimes set by ICLR for purely theoretical contributions.",
+        "The 'Others' paper topic might imply a broader scope, but ICLR heavily prioritizes deep learning. While SNNs are a type of deep learning, some reviewers might scrutinize the novelty or direct applicability to mainstream deep learning unless clearly positioned.",
+        "The reliance on a 'privileged guiding policy' (Reviewer A, C) could be perceived as a practical engineering solution rather than a purely deep learning architectural or theoretical innovation, which might reduce its 'fit' slightly for a conference heavily focused on novel deep learning methodologies themselves."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

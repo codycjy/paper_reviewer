@@ -1,0 +1,369 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel algorithm (Hierarchical Refinement) that achieves linear space and log-linear time complexity for computing full-rank optimal transport maps, scaling to over a million points.",
+        "Provides a strong theoretical foundation with Proposition 3.1 showing that low-rank OT factors co-cluster points with their Monge map images, enabling hierarchical refinement to optimality.",
+        "Comprehensive experimental validation across synthetic datasets, transcriptomics, brain atlas alignment, and ImageNet, demonstrating superior scalability and performance compared to Sinkhorn, ProgOT, mini-batch OT, and low-rank methods."
+      ],
+      "weaknesses": [
+        "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+        "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+          "severity": "minor",
+          "evidence": "The paper states: 'We currently assume that the datasets X and Y have the same number of samples.'",
+          "affected_claim": "General applicability of HiRef to unbalanced OT problems.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality.",
+          "severity": "minor",
+          "evidence": "The paper notes: 'the low-rank solvers used in practice are not necessarily optimal, owing to the nonconvexity of low-rank problems.'",
+          "affected_claim": "Practical optimality of HiRef depends on the quality of the low-rank solver.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are technically supported by Proposition 3.1 and extensive experiments. The reliance on a potentially suboptimal low-rank solver is acknowledged but does not materially undermine the results, as empirical performance remains strong across diverse datasets."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "HiRef's hierarchical refinement using low-rank OT to dynamically construct multiscale partitions is distinct from prior multiscale OT methods that require pre-defined partitions."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "Enables OT on million-point datasets, overcoming Sinkhorn's quadratic barrier, with broad implications for machine learning applications where OT is used but scalability is limited."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Comprehensive experiments on synthetic data, transcriptomics, brain atlas, and ImageNet show HiRef matches or outperforms baselines in cost, achieves bijective maps, and scales linearly. Comparisons to mini-batch, low-rank, and multiscale methods are thorough."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured with clear algorithms, theoretical results, and figures. Minor limitations are acknowledged in the Discussion."
+        }
+      },
+      "summary_comment": "The author response acknowledges the limitations but does not provide new evidence or clarifications that change the substantive assessment of the submitted paper. The equal-size assumption and reliance on a low-rank solver remain minor weaknesses, but they do not materially undermine the central contribution. HiRef is a novel and significant advancement in scalable optimal transport, with strong theoretical foundations and empirical validation across multiple large-scale datasets. It clearly meets top-tier conference standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper focuses on optimization and computational aspects of machine learning, which is a core focus area for ICML.",
+        "The work presents a novel algorithm with strong theoretical foundations (Proposition 3.1) and comprehensive experiments, matching ICML's emphasis on both theory and empirical validation.",
+        "Optimal transport has broad applications in ML (domain adaptation, generative modeling, etc.), making the scalability contribution highly relevant to ICML's audience.",
+        "The linear space and log-linear time complexity results align with ICML's interest in scalable machine learning algorithms."
+      ],
+      "why_it_does_not_fit": [
+        "The paper is more algorithmic/theoretical than many ICML submissions, potentially fitting better in theory-focused venues, though ICML does publish such work.",
+        "While OT has ML applications, the core contribution is algorithmic rather than a direct ML model or learning method, which might be slightly less central to ICML's main focus.",
+        "The extensive biological applications (transcriptomics) might appeal more to interdisciplinary venues, though ICML does publish applied work."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS has strong representation in optimization, algorithms, and scalable machine learning, all central to this paper.",
+        "The interdisciplinary nature (connecting ML with computational biology, neuroscience) matches NeurIPS's broad scope and interest in ML applications across sciences.",
+        "Optimal transport is a rapidly growing area in ML with connections to neuroscience and AI systems, making it highly relevant to NeurIPS.",
+        "The scale of experiments (million-point datasets) and emphasis on practical scalability align with NeurIPS's focus on large-scale machine learning."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's theoretical depth (Proposition 3.1, Monge separability conditions) might be more detailed than typical NeurIPS submissions, though certainly within scope.",
+        "The application focus on biological data might be somewhat specialized compared to NeurIPS's broader ML focus, but the core algorithmic contribution is clearly ML-relevant."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Optimal transport has become increasingly important in deep learning, particularly for generative models, flow matching, and representation learning—all core ICLR topics.",
+        "The connection to neural OT methods and potential applications in training generative models (mentioned in Discussion) align well with ICLR's focus.",
+        "The scalability improvements could enable new deep learning applications of OT that were previously infeasible."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR is heavily focused on deep learning and neural networks, whereas this paper presents a general algorithmic contribution without specific neural network components.",
+        "The theoretical machinery (low-rank OT, Monge maps) is more mathematical/optimization-focused than the typical ICLR submission.",
+        "While applications to deep learning are discussed, the current experiments are on traditional OT benchmarks rather than deep learning tasks."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel algorithm (Hierarchical Refinement) that achieves linear space and log-linear time complexity for computing full-rank optimal transport maps, scaling to over a million points.",
+              "Provides a strong theoretical foundation with Proposition 3.1 showing that low-rank OT factors co-cluster points with their Monge map images, enabling hierarchical refinement to optimality.",
+              "Comprehensive experimental validation across synthetic datasets, transcriptomics, brain atlas alignment, and ImageNet, demonstrating superior scalability and performance compared to Sinkhorn, ProgOT, mini-batch OT, and low-rank methods."
+            ],
+            "weaknesses": [
+              "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+              "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality.",
+              "The theoretical analysis requires strict r-Monge separability conditions which may not always hold in practice, though empirical results remain strong."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+                "severity": "minor",
+                "evidence": "The paper states: 'We currently assume that the datasets X and Y have the same number of samples.'",
+                "affected_claim": "General applicability of HiRef to unbalanced OT problems.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality.",
+                "severity": "minor",
+                "evidence": "The paper notes: 'the low-rank solvers used in practice are not necessarily optimal, owing to the nonconvexity of low-rank problems.'",
+                "affected_claim": "Practical optimality of HiRef depends on the quality of the low-rank solver.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim—that HiRef computes the Monge map efficiently—is supported by Proposition 3.1 and extensive experiments showing competitive primal costs and scalability. Theoretical guarantees hold under stated assumptions."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "HiRef introduces a hierarchical refinement approach using low-rank OT subproblems to construct multiscale partitions dynamically, differing from prior multiscale OT methods that require pre-defined partitions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Enables OT on million-point datasets, overcoming Sinkhorn's quadratic barrier. Has broad implications for machine learning (e.g., generative modeling, transcriptomics) where OT is used but scalability is limited."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments on synthetic data, transcriptomics, brain atlas, and ImageNet show HiRef matches or outperforms Sinkhorn/ProgOT in cost, achieves bijective maps, and scales linearly. Comparisons to mini-batch, low-rank, and multiscale methods are thorough."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear algorithms, theoretical results, and figures. Some sections (e.g., proof details) are dense but overall accessible."
+              }
+            },
+            "summary_comment": "Hierarchical Refinement is a novel and significant contribution to scalable optimal transport. It theoretically and empirically demonstrates linear-space, log-time computation of Monge maps, enabling applications previously infeasible. While it has minor limitations (equal dataset size assumption, reliance on low-rank solver optimality), its strengths in scalability, theoretical foundation, and extensive experiments make it clearly meet top-tier conference standards."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel algorithm (Hierarchical Refinement) that achieves linear space and log-linear time complexity for computing full-rank optimal transport maps, scaling to over a million points.",
+              "Provides a strong theoretical foundation with Proposition 3.1 showing that low-rank OT factors co-cluster points with their Monge map images, enabling hierarchical refinement to optimality.",
+              "Comprehensive experimental validation across synthetic datasets, transcriptomics, brain atlas alignment, and ImageNet, demonstrating superior scalability and performance compared to Sinkhorn, ProgOT, mini-batch OT, and low-rank methods."
+            ],
+            "weaknesses": [
+              "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+              "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+                "severity": "minor",
+                "evidence": "The paper states: 'We currently assume that the datasets X and Y have the same number of samples.'",
+                "affected_claim": "General applicability of HiRef to unbalanced OT problems.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality.",
+                "severity": "minor",
+                "evidence": "The paper notes: 'the low-rank solvers used in practice are not necessarily optimal, owing to the nonconvexity of low-rank problems.'",
+                "affected_claim": "Practical optimality of HiRef depends on the quality of the low-rank solver.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported by Proposition 3.1 and extensive experiments. The reliance on a potentially suboptimal low-rank solver is acknowledged but does not materially undermine the results, as empirical performance remains strong across diverse datasets."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "HiRef's hierarchical refinement using low-rank OT to dynamically construct multiscale partitions is distinct from prior multiscale OT methods that require pre-defined partitions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Enables OT on million-point datasets, overcoming Sinkhorn's quadratic barrier, with broad implications for machine learning applications where OT is used but scalability is limited."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on synthetic data, transcriptomics, brain atlas, and ImageNet show HiRef matches or outperforms baselines in cost, achieves bijective maps, and scales linearly. Comparisons to mini-batch, low-rank, and multiscale methods are thorough."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear algorithms, theoretical results, and figures. Minor limitations are acknowledged in the Discussion."
+              }
+            },
+            "summary_comment": "The author response acknowledges the limitations but does not provide new evidence or clarifications that change the substantive assessment of the submitted paper. The equal-size assumption and reliance on a low-rank solver remain minor weaknesses, but they do not materially undermine the central contribution. HiRef is a novel and significant advancement in scalable optimal transport, with strong theoretical foundations and empirical validation across multiple large-scale datasets. It clearly meets top-tier conference standards."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"The method assumes datasets of equal size, limiting applicability to unbalanced OT problems.\",\n        \"The theoretical guarantees depend on a black-box low-rank OT solver, which in practice may not be optimal due to nonconvexity.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The method's applicability is limited to balanced datasets.\",\n          \"location\": \"Section 5 (Discussion), first paragraph\",\n          \"explanation\": \"The paper explicitly acknowledges the limitation: 'We currently assume that the datasets X and Y have the same number of samples.' This is a practical limitation and the first point listed in the Discussion section.\"\n        },\n        {\n          \"concern\": \"The practical optimality of HiRef depends on the low-rank OT subroutine.\",\n          \"location\": \"Section 5 (Discussion), third paragraph\",\n          \"explanation\": \"The paper states: '... the low-rank solvers [Scetbon et al., 2022; Halmos et al., 2024] used in practice are not necessarily optimal, owing to the nonconvexity of low-rank problems.' This is acknowledged as a practical limitation of the current implementation.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"The equal-dataset-size assumption limits applicability.\",\n          \"proposed_change\": \"We will add a discussion on potential extensions to the unbalanced setting. A straightforward extension is to first use unbalanced low-rank OT or a standard OT solver at the coarsest scale to match the total masses, followed by HiRef on matched subsets. We will outline this as a direction for future work in the revised manuscript.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"The reliance on a potentially sub-optimal low-rank subroutine.\",\n          \"proposed_change\": \"We will strengthen the presentation to clearly delineate the theoretical guarantee (which assumes an optimal low-rank solver) from the empirical results (which use state-of-the-art but potentially approximate solvers). We will also clarify that the empirical success, even with approximate solvers, demonstrates the practical robustness of the HiRef framework. The limitation will be discussed more prominently.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"Thank you for the positive and constructive review. We agree with and acknowledge both points raised. Regarding the assumption of equal-sized datasets: this is a limitation of the current algorithm, which we clearly state in the Discussion (Section 5). As noted, this is often not a limiting factor in alignment tasks where one seeks a bijection, but it does preclude direct application to unbalanced OT. In the revised version, we will elaborate on potential extensions (e.g., using an initial unbalanced low-rank step) as a clear direction for future work.\\n\\nConcerning the reliance on the low-rank OT solver: Proposition 3.1 and the optimality guarantee (Prop. 3.2/Prop. B.6) indeed assume an optimal black-box solver for the nonconvex subproblem (7). We recognize this is a limitation of the theory but note that our empirical results use state-of-the-art, approximate low-rank OT solvers (FRLC, LOT). The strong empirical performance across diverse datasets suggests the HiRef framework is robust to suboptimality in the low-rank subroutine. We will clarify this distinction more explicitly in the theoretical sections and the discussion of limitations. The core contribution – a novel, hierarchical framework that scales OT to million-point datasets – remains fully supported by the theoretical insight of Proposition 3.1 and the comprehensive experimental validation.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel algorithm (Hierarchical Refinement) that achieves linear space and log-linear time complexity for computing full-rank optimal transport maps, scaling to over a million points.",
+              "Provides a strong theoretical foundation with Proposition 3.1 showing that low-rank OT factors co-cluster points with their Monge map images, enabling hierarchical refinement to optimality.",
+              "Comprehensive experimental validation across synthetic datasets, transcriptomics, brain atlas alignment, and ImageNet, demonstrating superior scalability and performance compared to Sinkhorn, ProgOT, mini-batch OT, and low-rank methods."
+            ],
+            "weaknesses": [
+              "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+              "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems.",
+                "severity": "minor",
+                "evidence": "The paper states: 'We currently assume that the datasets X and Y have the same number of samples.'",
+                "affected_claim": "General applicability of HiRef to unbalanced OT problems.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity, though theoretical guarantees hold under optimality.",
+                "severity": "minor",
+                "evidence": "The paper notes: 'the low-rank solvers used in practice are not necessarily optimal, owing to the nonconvexity of low-rank problems.'",
+                "affected_claim": "Practical optimality of HiRef depends on the quality of the low-rank solver.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported by Proposition 3.1 and extensive experiments. The reliance on a potentially suboptimal low-rank solver is acknowledged but does not materially undermine the results, as empirical performance remains strong across diverse datasets."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "HiRef's hierarchical refinement using low-rank OT to dynamically construct multiscale partitions is distinct from prior multiscale OT methods that require pre-defined partitions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Enables OT on million-point datasets, overcoming Sinkhorn's quadratic barrier, with broad implications for machine learning applications where OT is used but scalability is limited."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on synthetic data, transcriptomics, brain atlas, and ImageNet show HiRef matches or outperforms baselines in cost, achieves bijective maps, and scales linearly. Comparisons to mini-batch, low-rank, and multiscale methods are thorough."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear algorithms, theoretical results, and figures. Minor limitations are acknowledged in the Discussion."
+              }
+            },
+            "summary_comment": "The author response acknowledges the limitations but does not provide new evidence or clarifications that change the substantive assessment of the submitted paper. The equal-size assumption and reliance on a low-rank solver remain minor weaknesses, but they do not materially undermine the central contribution. HiRef is a novel and significant advancement in scalable optimal transport, with strong theoretical foundations and empirical validation across multiple large-scale datasets. It clearly meets top-tier conference standards."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Assumes datasets have equal size (n = m), limiting applicability to unbalanced OT problems\",\n        \"Relies on a black-box low-rank OT solver which may not be optimal in practice due to nonconvexity\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Equal dataset size assumption\",\n          \"location\": \"Section 5 (Discussion), first paragraph\",\n          \"explanation\": \"The paper explicitly acknowledges this limitation: 'We currently assume that the datasets X and Y have the same number of samples.'\"\n        },\n        {\n          \"concern\": \"Reliance on potentially suboptimal low-rank solver\",\n          \"location\": \"Section 5 (Discussion), third paragraph\",\n          \"explanation\": \"The paper notes: 'the low-rank solvers used in practice are not necessarily optimal, owing to the nonconvexity of low-rank problems.'\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Equal dataset size assumption limits applicability\",\n          \"proposed_change\": \"We will add a discussion in Section 5 about potential extensions to unbalanced OT settings, such as using an initial mass-matching step at the coarsest scale followed by HiRef refinement on matched subsets. This would broaden the method's applicability while maintaining its core contributions.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Theoretical guarantees depend on optimal low-rank solver\",\n          \"proposed_change\": \"We will clarify in Sections 3.1-3.2 that the theoretical guarantees (Proposition 3.1-3.2) assume an optimal solver, while the empirical results demonstrate practical performance with state-of-the-art approximate solvers. We will also add a sentence in the experimental section noting that the strong empirical results suggest robustness to suboptimality in the low-rank subroutine.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and constructive feedback. We acknowledge both limitations raised. Regarding the equal dataset size assumption: this is indeed a current limitation that we explicitly note in our Discussion (Section 5). For the revised version, we will expand this discussion to outline potential extensions to unbalanced settings, such as using an initial mass-matching step at the coarsest scale before applying HiRef refinement. This would broaden applicability while preserving the core contributions.\\n\\nRegarding the reliance on the low-rank OT solver: we agree that the theoretical guarantees require an optimal solver for the nonconvex subproblems. However, we note that our empirical results demonstrate strong performance even with state-of-the-art approximate solvers (FRLC, LOT), suggesting practical robustness. We will clarify this distinction more explicitly in Sections 3.1-3.2, emphasizing that the theoretical analysis provides the foundation for why the hierarchical approach works, while the experiments show it works well in practice with existing solvers. The core contribution - a novel hierarchical framework that enables OT at unprecedented scales - remains fully supported by both the theoretical insight and comprehensive experimental validation.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_452b18e9bb91",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/icml_accept_2025_012_hierarchical_refinement_optimal_transport_to_infinity_and_beyond.md",
+    "target_paper_summary": {
+      "paper_id": "paper_452b18e9bb91",
+      "title": "Peter Halmos 1 Julian Gold 1 2 Xinhao Liu 1 Benjamin J. Raphael 1",
+      "abstract": "Optimal transport (OT) has enjoyed great success in machine learning as a principled way to align datasets via a least-cost correspondence, driven in large part by the runtime efficiency of the Sinkhorn algorithm (Cuturi, 2013). However, Sinkhorn has quadratic space and time complexity in the number of points, limiting scalability to larger datasets. Low-rank OT achieves linear complexity, but by definition, cannot compute a oneto-one correspondence between points. When the optimal transport problem is an assignment problem between datasets then an optimal mapping, known as the *Monge map*, is guaranteed to be a bijection. In this setting, we show that the factors of an optimal low-rank coupling co-cluster each point with its image under the Monge map. We leverage this invariant to derive an algorithm, Hierarchical Refinement (HiRef), that dynamically constructs a multiscale partition of each dataset using low-rank OT subproblems, culminating in the bijective Monge map. Hierarchical Refinement runs in log-linear time and linear space, retaining the advantages of low-rank OT while overcoming its limited resolution. We demonstrate the advantages of Hierarchical Refinement on several datasets, including ones containing over a million points, scaling full-rank OT to problems previously beyond Sinkhorn's reach.",
+      "topic": "",
+      "claims": [
+        "we show that the factors of an optimal low-rank coupling co-cluster each point with its image under the Monge map.",
+        "We demonstrate the advantages of Hierarchical Refinement on several datasets, including ones containing over a million points, scaling full-rank OT to problems previously beyond Sinkhorn's reach."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 5,
+      "num_removed_post_cutoff": 5,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 5,
+    "num_removed_post_cutoff": 5,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

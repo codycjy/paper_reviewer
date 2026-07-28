@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of integrating LTL with differentiable simulators to address sparse reward issues in formal methods-based RL is highly novel and innovative. This is a significant conceptual leap.",
+        "The introduction of 'soft labeling' and probabilistic automaton transitions for differentiability is a clever and effective technical contribution that directly tackles the main challenge.",
+        "The experimental results clearly demonstrate the practical benefits of the proposed approach, showing significant improvements in learning speed and performance compared to non-differentiable baselines, especially in complex environments."
+      ],
+      "weaknesses": [
+        "While the paper states that the method is compatible with all differentiable RL techniques, the evaluation is limited to SHAC and AHAC. A broader comparison or a deeper theoretical analysis of compatibility would strengthen the claim.",
+        "The definition of the APs (atomic propositions) as 'g(s) > 0' and the use of the sigmoid function for their probabilities, while sound, might be a simplification that could hinder expressiveness or lead to non-intuitive behavior in more complex scenarios. Further exploration of different differentiable CDFs or alternative AP definitions could be beneficial."
+      ],
+      "summary_comment": "This paper presents a truly exciting and novel approach to a critical problem in reinforcement learning: efficiently learning from formally specified (LTL) objectives in complex robotic systems. The idea of leveraging differentiable simulators to enable gradient-based learning directly from LTL specifications, particularly through the clever use of 'soft labeling' to achieve differentiable rewards and states, is a significant breakthrough. While there might be minor aspects of the methodology that could be further refined (e.g., exploring diverse differentiable CDFs or broader RL differentiability comparisons), the core concept is bold, innovative, and holds immense potential to push the field forward. The empirical results strongly support the claims, demonstrating clear advantages over existing methods. This work represents a considerable step towards more robust and verifiable AI systems."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel approach to address the sparse reward problem in LTL-guided reinforcement learning by leveraging differentiable simulators and soft labeling, which is a significant methodological advancement.",
+        "The theoretical underpinnings are solid, clearly explaining how continuous probabilistic labels and epsilon-actions are integrated into the product MDP framework to ensure differentiability of rewards and state transitions, while maintaining the correctness of LTL objectives.",
+        "The experimental evaluation is comprehensive and convincing, demonstrating substantial improvements in learning speed and reward attainment across various robotic control tasks compared to both non-differentiable and non-LTL differentiable baselines. The ablation study further strengthens these claims."
+      ],
+      "weaknesses": [
+        "The discussion on the impact of the choice of CDF (e.g., sigmoid) is brief, and the sensitivity of the overall performance to this hyperparameter is mentioned but not thoroughly analyzed, which could be a limitation when applying the method to new tasks.",
+        "While the paper states that 'all hyperparameters were adopted' from existing work for baselines, it would be beneficial to explicitly list the hyperparameters and confirm their fine-tuning for the specific LTL tasks, as this could influence the comparison fairness for non-differentiable methods."
+      ],
+      "summary_comment": "This paper presents a strong methodological contribution by integrating Linear Temporal Logic (LTL) with differentiable simulators for accelerated reinforcement learning. The core idea of using soft labeling to achieve differentiable rewards and state transitions for LTL-derived automata effectively tackles the long-standing sparse reward problem in LTL-guided RL. The theoretical formulation is sound, meticulously detailing how differentiability is maintained throughout the product MDP construction. The empirical evaluation is robust, showcasing significant performance gains over state-of-the-art non-differentiable and differentiable RL methods on challenging robotic control tasks. The ablation study provides compelling evidence that the observed improvements are indeed due to the differentiability of LTL rewards. While the discussion on the choice of CDF and the precision of hyperparameter tuning for baselines could be expanded, these are minor points that do not detract from the overall rigor and impact of the work. This paper represents a substantial step forward in formal verification and control for autonomous systems."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant practical challenge in RL: making formal LTL specifications compatible with gradient-based learning to overcome sparse reward issues in real-world robotic systems. This has high practical relevance for reliable AI deployment.",
+        "The proposed 'soft labeling' technique for probabilistic LTL automaton transitions is a clever and sound approach to introduce differentiability while preserving the correctness of the logical objective. This is a key technical contribution enabling the overall method.",
+        "The experimental evaluation is thorough, comparing against strong differentiable and non-differentiable baselines across multiple robotic environments (CartPole, Hopper, Cheetah, Ant) and demonstrating substantial performance improvements in both reward attainment and training time. The ablation study further strengthens the claims.",
+        "The paper is well-written and easy to follow, clearly introducing necessary background concepts and detailing the proposed method. The motivation for the work is exceptionally clear."
+      ],
+      "weaknesses": [
+        "The reliance on specific differentiable physics simulators (dFlex, PyTorch) limits direct applicability to environments outside this ecosystem. While the concept is general, the practical implementation shown is tied to these specific tools, which might not always be available or suitable for all deployment scenarios.",
+        "The scalability of LTL-derived automata can become a bottleneck for very complex specifications or environments with many atomic propositions, despite the differentiable approach. While the paper mentions complexity, it doesn't deeply explore the practical limits of automaton size on memory/computation for 'soft' transitions, which could be relevant for larger, more intricate real-world tasks."
+      ],
+      "summary_comment": "This paper presents an innovative and highly practical approach to address the long-standing problem of sparse rewards when combining formal LTL specifications with reinforcement learning, particularly in robotic control. By introducing soft labeling and differentiable automaton transitions, the authors enable gradient-based optimization directly from LTL objectives, significantly accelerating learning. The thorough experimental validation across a range of robotic systems provides strong evidence of the method's effectiveness. The clear exposition of the problem, proposed solution, and empirical results makes this a valuable contribution for practitioners aiming to deploy reliable AI systems. While there are some practical dependencies on specific differentiable simulators and potential scalability considerations for extremely complex LTL, the core idea and its demonstrated impact are compelling."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic of accelerating reinforcement learning with Linear Temporal Logic (LTL) using differentiable simulation falls squarely within 'general machine learning' (supervised, semi- and self-supervised learning, etc.) and 'reinforcement learning' (decision and control, planning, robotics, etc.) which are explicit topics of interest for ICML. The problem of sparse rewards in RL is a fundamental challenge.",
+        "The contribution involves a novel methodological advancement in integrating formal methods (LTL) with differentiable simulation for RL, which aligns well with ICML's focus on 'innovative techniques' and 'theory of machine learning' through its rigorous mathematical formulation.",
+        "Reviewers consistently highlight the high novelty of the approach ('highly novel and innovative', 'significant breakthrough', 'strong methodological contribution'). Reviewer A states, 'The core idea of integrating LTL with differentiable simulators... is highly novel and innovative. This is a significant conceptual leap.' This level of novelty is highly valued at ICML.",
+        "The methodology is thoroughly explained and validated with strong empirical results in robotic systems ('significant improvements in both reward attainment and training time'). Reviewer B notes, 'The theoretical underpinnings are solid, clearly explaining how continuous probabilistic labels and epsilon-actions are integrated... while maintaining the correctness of LTL objectives.' This demonstrates strong rigor suitable for ICML.",
+        "The paper is well-structured and clear, with reviewers consistently praising its clarity ('well-written and easy to follow', 'clearly introducing necessary background concepts'). This indicates a strong 'Presentation Fit' for a top-tier conference like ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While applicable to robotics, the paper's main contribution is methodological rather than purely application-driven. ICML does cover 'application-driven machine learning', but the emphasis here is more on the underlying ML technique than a novel application domain specific to ICML.",
+        "Reviewer A points out that 'the evaluation is limited to SHAC and AHAC,' suggesting that a broader comparison with other differentiable RL techniques could strengthen the claim, which might be perceived as a minor scope limitation for a comprehensive ICML paper.",
+        "Reviewer C notes that 'The reliance on specific differentiable physics simulators (dFlex, PyTorch) limits direct applicability to environments outside this ecosystem,' which, while common, could be a minor concern regarding the generality of practical deployment for some ICML reviewers interested in broader system applicability."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on 'Decision-making, reinforcement learning, and control' and 'AI/ML for physical sciences' (specifically robotics) makes it an excellent fit for NeurIPS. The problem of safe and reliable RL for autonomous systems is a key area of interest.",
+        "The innovative integration of LTL with differentiable simulators to address sparse rewards in RL is a significant 'core contribution' to 'General machine learning' (unsupervised methods) and 'Reinforcement Learning', which NeurIPS explicitly welcomes.",
+        "Reviewers uniformly praise the novelty and significance of the work ('highly novel and innovative', 'significant breakthrough', 'strong methodological contribution'). Reviewer B highlights, 'The paper introduces a novel approach to address the sparse reward problem in LTL-guided reinforcement learning by leveraging differentiable simulators and soft labeling, which is a significant methodological advancement.' This aligns perfectly with NeurIPS's pursuit of new and original research.",
+        "The theoretical soundness and comprehensive experimental evaluation ('solid theoretical underpinnings', 'robust empirical evaluation') demonstrate a high level of rigor expected by NeurIPS. The use of 'differentiable simulators' directly relates to the 'SysML Infrastructure' topic.",
+        "The authors clearly articulate the problem, propose a detailed solution, and present compelling results. Reviewer C states, 'The paper is well-written and easy to follow, clearly introducing necessary background concepts and detailing the proposed method. The motivation for the work is exceptionally clear.' This strong presentation enhances its suitability for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "The paper directly addresses safety and reliability requirements in AI, which could implicitly touch upon 'Socio-technical aspects of AI' or 'Human interaction in AI systems' in a broader sense of trustworthy AI, but it doesn't explicitly focus on the human or societal dimension, making it less of a direct fit for these specific NeurIPS sub-topics.",
+        "Reviewer B mentions that 'the discussion on the impact of the choice of CDF... is brief, and the sensitivity... is mentioned but not thoroughly analyzed.' While minor, NeurIPS reviewers often value deep theoretical understanding of hyperparameter choices, especially for novel components.",
+        "Reviewer C raises a point about the practical scalability of LTL-derived automata for 'very complex specifications'. While the paper demonstrates effectiveness, a more in-depth exploration of the computational limits could be a minor area for improvement for NeurIPS reviewers valuing scalability considerations."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly leverages 'deep learning' (implicitly, through its use in RL algorithms like PPO/SAC with neural networks) and focuses on 'reinforcement learning' and 'optimization', which are central themes for ICLR. The use of differentiable simulators and gradient-based learning directly speaks to these areas.",
+        "The integration of formal logic (LTL) for 'safety' and 'reliability' in ML, particularly in robotics applications, aligns with ICLR's interest in 'societal considerations including fairness, safety, privacy' and 'applications to robotics, autonomy, planning'.",
+        "Reviewers emphasize the innovation and cleverness of 'soft labeling' to achieve differentiability for LTL, which is a novel methodological contribution focusing on 'representation learning' implicitly (how LTL is represented for learning) and 'optimization' (enabling gradient-based optimization).",
+        "The paper presents robust empirical evaluations across robotic environments that are typically relevant to ICLR, demonstrating 'significant improvements' in 'learning speed' and 'performance'. Reviewer A notes, 'The experimental results clearly demonstrate the practical benefits of the proposed approach'.",
+        "The clear explanation of how the differentiable components are constructed within the product MDP, and the pseudo-code provided, indicate a good presentation fit for ICLR's technical audience."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper uses RL algorithms that typically employ deep learning, the conceptual novelty is more in the integration of LTL and differentiable simulation with RL, rather than a novel deep learning architecture or theory itself. ICLR is 'globally renowned for presenting and publishing cutting-edge research on ALL aspects of deep learning'.",
+        "The theoretical developments, while sound, are more about formalizing differentiability for LTL in the context of RL rather than fundamental 'learning theory' in a broad sense, which ICLR also covers.",
+        "Reviewer A noted that the evaluation was 'limited to SHAC and AHAC', which are differentiable RL techniques but not necessarily the latest or most advanced deep learning architectures, slightly limiting the fit for ICLR's deep learning-centric focus.",
+        "The paper's explicit paper topic was 'Others', which, while allowed, suggests it might not perfectly align with the typical deep learning focus of ICLR compared to its broader ML scope. The application of deep learning techniques, while present, isn't the primary novelty."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

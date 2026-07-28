@@ -1,0 +1,632 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper introduces a novel and systematic investigation of inference scaling for long-context RAG, proposing a valuable computation allocation model for optimal test-time compute allocation.",
+        "The proposed methods (DRAG and IterDRAG) demonstrate significant performance gains (up to 58.9%) on benchmark datasets, outperforming standard RAG and other baselines.",
+        "The work provides extensive experimental results across multiple datasets and scaling budgets, empirically validating the proposed inference scaling laws and the computation allocation model."
+      ],
+      "weaknesses": [
+        "The clarity of the paper could be improved, particularly in the presentation of mathematical formulations and the explanation of certain experimental details, which may hinder full reproducibility.",
+        "The evaluation, while comprehensive, relies on a sampled subset of datasets (1.2k examples per dataset) and could benefit from full dataset evaluations to strengthen generalizability claims."
+      ],
+      "summary_comment": "This paper makes a strong contribution by systematically exploring inference scaling in long-context RAG, introducing effective strategies (DRAG and IterDRAG) and a novel computation allocation model. The methods achieve state-of-the-art performance and demonstrate nearly linear scaling with compute. While the presentation could be clearer and evaluations more extensive, the novelty, soundness, and significance of the work are high, warranting acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core topic is \"inference scaling for retrieval augmented generation,\" which directly aligns with ICML's focus on \"machine learning systems\" (scalability, distributed methods) and \"optimization\" (optimal compute allocation).",
+        "The contribution involves rigorous empirical evaluation and modeling (the computation allocation model), matching ICML's strong emphasis on empirical and methodological contributions backed by extensive experiments.",
+        "The work studies scaling laws—a central theme in ML research—and applies them to RAG, fitting within ICML's interest in \"general machine learning\" and \"evaluation (methodology, meta studies).\""
+      ],
+      "why_it_does_not_fit": [
+        "The paper is highly empirical and applied, with a focus on engineering strategies (DRAG, IterDRAG) for a specific application (RAG for QA). ICML values theoretical depth, and while the paper has a model, it's more empirical/predictive than fundamental theoretical advance.",
+        "Reviewer 1 notes clarity issues in mathematical presentation, which could be a concern for ICML's typically rigorous standards for technical exposition.",
+        "The work is situated in NLP/LLM applications (QA datasets). While ICML does publish applied ML, the paper's narrow focus on RAG for QA might be seen as less broad than typical ICML contributions that emphasize generalizable principles."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS has a strong track record in large language models, retrieval-augmented generation, and scaling laws. The paper's focus on \"inference scaling\" for long-context LLMs fits perfectly under \"Language and multimodal language models\" and \"General machine learning.\"",
+        "The study combines empirical scaling experiments with a predictive model (computation allocation model), aligning with NeurIPS's appreciation for both empirical breakthroughs and modeling insights.",
+        "The work addresses a timely and significant problem (efficiently leveraging long-context LLMs) with demonstrated substantial gains (up to 58.9%), matching NeurIPS's focus on high-impact, novel research.",
+        "Reviewer 1 highlights high novelty and significance, which are key criteria for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's methodology, while extensive, is largely empirical and engineering-focused. NeurIPS, especially in recent years, also highly values theoretical contributions or foundational insights, which this paper provides less of.",
+        "Reviewer 1's concern about evaluation on sampled subsets (rather than full datasets) could be a minor point against the paper's rigor at a highly selective venue like NeurIPS.",
+        "The \"computation allocation model\" is a pragmatic performance predictor rather than a deep theoretical advance into scaling laws, which might be seen as less transformative than some NeurIPS contributions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR's core focus is deep learning, especially representation learning and generative models. The paper's use of long-context LLMs (Gemini 1.5) for RAG fits under \"representation learning for language\" and \"applications.\"",
+        "The iterative prompting strategy (IterDRAG) involves in-context learning and multi-step generation, which aligns with ICLR's interest in \"unsupervised, self-supervised, and semi-supervised representation learning\" and \"reasoning.\"",
+        "RAG is a major topic in the LLM community, and ICLR regularly features work on improving RAG methods."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR emphasizes architectural innovations, novel training methods, or deep theoretical insights into deep learning. This paper is more about inference-time strategies and compute allocation—a systems/optimization focus—rather than core deep learning model design.",
+        "The paper does not propose a new model architecture, training algorithm, or fundamental representation learning technique. It uses off-the-shelf LLMs (Gemini) and focuses on how to use them better at test time.",
+        "Reviewer 1's clarity critique could be relevant, as ICLR places high value on clear, accessible presentations of deep learning ideas."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_f35cdec8ef24",
+    "paper_id": "paper_925d27a9c038",
+    "target_paper_summary": {
+      "paper_id": "paper_925d27a9c038",
+      "title": "Inference Scaling For Long-Context Retrieval Augmented Generation",
+      "abstract": "The scaling of inference computation has unlocked the potential of long-context large language models (LLMs) across diverse settings. For knowledge-intensive tasks, the increased compute is often allocated to incorporate more external knowledge. However, without effectively utilizing such knowledge, solely expanding context does not always enhance performance. In this work, we investigate inference scaling for retrieval augmented generation (RAG), exploring the combination of multiple strategies beyond simply increasing the quantity of knowledge, including in-context learning and iterative prompting. These strategies provide additional flexibility to scale test-time computation (e.g., by increasing retrieved documents or generation steps), thereby enhancing LLMs' ability to effectively acquire and utilize contextual information. We address two key questions: (1) How does RAG\nperformance benefit from the *scaling of inference computation* when optimally configured? (2) Can we predict the optimal *test-time compute allocation* for a given budget by modeling the relationship between RAG performance and inference parameters? Our observations reveal that increasing inference computation leads to nearly linear gains in RAG performance when optimally allocated, a relationship we describe as the *inference scaling laws for RAG*. Building on this, we further develop the *computation allocation model* to estimate RAG performance across different inference configurations. The model predicts optimal inference parameters under various computation constraints, which align closely with the experimental results. By applying these optimal configurations, we demonstrate that scaling inference compute on long-context LLMs achieves up to 58.9% gains on benchmark datasets compared to standard RAG.",
+      "topic": "",
+      "claims": [
+        "we demonstrate that scaling inference compute on long-context LLMs achieves up to 58."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "retrieval augmented generation long-context LLMs",
+          "rationale": "This query targets papers addressing RAG with long-context LLMs, matching the core problem of effectively utilizing external knowledge in knowledge-intensive tasks."
+        },
+        {
+          "group": "same_method",
+          "query": "in-context learning iterative prompting RAG",
+          "rationale": "This focuses on papers using similar methods like in-context learning and iterative prompting to enhance RAG, as described in the target's approach."
+        },
+        {
+          "group": "same_constraints",
+          "query": "test-time computation allocation retrieval augmented generation",
+          "rationale": "This query aims for papers sharing constraints on optimizing inference computation under budget or deployment settings, aligning with the target's focus on compute allocation."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "RAG benchmark datasets metrics",
+          "rationale": "This retrieves papers that define or use benchmarks, datasets, or metrics for RAG evaluation, relevant to the target's comparison on benchmark datasets."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "inference scaling laws large language models",
+          "rationale": "This searches for prior work on scaling laws or compute optimization in LLMs that might challenge the novelty of 'inference scaling laws for RAG'."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "RAG limitations negative results context expansion",
+          "rationale": "This query targets papers that expose limitations or counterevidence related to ineffective knowledge utilization or context expansion in RAG, addressing potential weaknesses."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 8,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_a667ca3ce",
+        "title": "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach",
+        "authors": [
+          "Zhuowan Li",
+          "Cheng Li",
+          "Mingyang Zhang",
+          "Qiaozhu Mei",
+          "Michael Bendersky"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "",
+        "abstract": "Retrieval Augmented Generation (RAG) has been a powerful tool for Large Language Models (LLMs) to efficiently process overly lengthy contexts.However, recent LLMs like Gemini-1.5 and GPT-4 show exceptional capabilities to understand long contexts directly.We conduct a comprehensive comparison between RAG and long-context (LC) LLMs, aiming to leverage the strengths of both.We benchmark RAG and LC across various public datasets using three latest LLMs.Results reveal that when resourced sufficiently, LC consistently outperforms RAG in terms of average performance.However, RAG's significantly lower cost remains a distinct advantage.Based on this observation, we propose SELF-ROUTE, a simple yet effective method that routes queries to RAG or LC based on model self-reflection.SELF-ROUTE significantly reduces the computation cost while maintaining a comparable performance to LC.Our findings provide a guideline for long-context applications of LLMs using RAG and LC.* Visiting researcher to Google DeepMind.performance",
+        "url": "https://doi.org/10.18653/v1/2024.emnlp-industry.66",
+        "doi": "https://doi.org/10.18653/v1/2024.emnlp-industry.66",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404783788"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 35
+      },
+      {
+        "paper_id": "rw_002_acb87e3bd",
+        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+        "authors": [
+          "Yunfan Gao",
+          "Yun Xiong",
+          "Xinyu Gao",
+          "Kangxiang Jia",
+          "Jinliu Pan",
+          "Yuxi Bi",
+          "Yi Dai",
+          "Jiawei Sun",
+          "Wang, Meng",
+          "Wang, Haofen"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-18",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large Language Models (LLMs) showcase impressive capabilities but encounter challenges like hallucination, outdated knowledge, and non-transparent, untraceable reasoning processes. Retrieval-Augmented Generation (RAG) has emerged as a promising solution by incorporating knowledge from external databases. This enhances the accuracy and credibility of the generation, particularly for knowledge-intensive tasks, and allows for continuous knowledge updates and integration of domain-specific information. RAG synergistically merges LLMs' intrinsic knowledge with the vast, dynamic repositories of external databases. This comprehensive review paper offers a detailed examination of the progression of RAG paradigms, encompassing the Naive RAG, the Advanced RAG, and the Modular RAG. It meticulously scrutinizes the tripartite foundation of RAG frameworks, which includes the retrieval, the generation and the augmentation techniques. The paper highlights the state-of-the-art technologies embedded in each of these critical components, providing a profound understanding of the advancements in RAG systems. Furthermore, this paper introduces up-to-date evaluation framework and benchmark. At the end, this article delineates the challenges currently faced and points out prospective avenues for research and development.",
+        "url": "http://arxiv.org/abs/2312.10997",
+        "doi": "https://doi.org/10.48550/arxiv.2312.10997",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4389984066"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "same_problem"
+        ],
+        "citation_count": 686
+      },
+      {
+        "paper_id": "rw_003_ecb1593a1",
+        "title": "Text Data Augmentation for Deep Learning",
+        "authors": [
+          "Connor Shorten",
+          "Taghi M. Khoshgoftaar",
+          "Borko Furht"
+        ],
+        "year": 2021,
+        "publication_date": "2021-07-19",
+        "venue": "Journal Of Big Data",
+        "abstract": "Natural Language Processing (NLP) is one of the most captivating applications of Deep Learning. In this survey, we consider how the Data Augmentation training strategy can aid in its development. We begin with the major motifs of Data Augmentation summarized into strengthening local decision boundaries, brute force training, causality and counterfactual examples, and the distinction between meaning and form. We follow these motifs with a concrete list of augmentation frameworks that have been developed for text data. Deep Learning generally struggles with the measurement of generalization and characterization of overfitting. We highlight studies that cover how augmentations can construct test sets for generalization. NLP is at an early stage in applying Data Augmentation compared to Computer Vision. We highlight the key differences and promising ideas that have yet to be tested in NLP. For the sake of practical implementation, we describe tools that facilitate Data Augmentation such as the use of consistency regularization, controllers, and offline and online augmentation pipelines, to preview a few. Finally, we discuss interesting topics around Data Augmentation in NLP such as task-specific augmentations, the use of prior knowledge in self-supervised learning versus Data Augmentation, intersections with transfer and multi-task learning, and ideas for AI-GAs (AI-Generating Algorithms). We hope this paper inspires further research interest in Text Data Augmentation.",
+        "url": "https://doi.org/10.1186/s40537-021-00492-0",
+        "doi": "https://doi.org/10.1186/s40537-021-00492-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3176923149"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 1685
+      },
+      {
+        "paper_id": "rw_004_2ef4bb348",
+        "title": "The Power of Noise: Redefining Retrieval for RAG Systems",
+        "authors": [
+          "Florin Cuconasu",
+          "Giovanni Trappolini",
+          "Federico Siciliano",
+          "Simone Filice",
+          "Cesare Campagnano",
+          "Yoelle Maarek",
+          "Nicola Tonellotto",
+          "Fabrizio Silvestri"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-10",
+        "venue": "",
+        "abstract": "Retrieval-Augmented Generation (RAG) has recently emerged as a method to extend beyond the pre-trained knowledge of Large Language Models by augmenting the original prompt with relevant passages or documents retrieved by an Information Retrieval (IR) system. RAG has become increasingly important for Generative AI solutions, especially in enterprise settings or in any domain in which knowledge is constantly refreshed and cannot be memorized in the LLM. We argue here that the retrieval component of RAG systems, be it dense or sparse, deserves increased attention from the research community, and accordingly, we conduct the first comprehensive and systematic examination of the retrieval strategy of RAG systems. We focus, in particular, on the type of passages IR systems within a RAG solution should retrieve. Our analysis considers multiple factors, such as the relevance of the passages included in the prompt context, their position, and their number. One counter-intuitive finding of this work is that the retriever's highest-scoring documents that are not directly relevant to the query (e.g., do not contain the answer) negatively impact the effectiveness of the LLM. Even more surprising, we discovered that adding random documents in the prompt improves the LLM accuracy by up to 35%. These results highlight the need to investigate the appropriate strategies when integrating retrieval with LLMs, thereby laying the groundwork for future research in this area.",
+        "url": "https://doi.org/10.1145/3626772.3657834",
+        "doi": "https://doi.org/10.1145/3626772.3657834",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4391376033"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 189
+      },
+      {
+        "paper_id": "rw_005_0f247028b",
+        "title": "Findings of the Association for Computational Linguistics: EMNLP 2021",
+        "authors": [],
+        "year": 2021,
+        "publication_date": "2021-01-01",
+        "venue": "",
+        "abstract": "",
+        "url": "https://doi.org/10.18653/v1/2021.findings-emnlp",
+        "doi": "https://doi.org/10.18653/v1/2021.findings-emnlp",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3101118213"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 896
+      },
+      {
+        "paper_id": "rw_006_89f2d6cd1",
+        "title": "Joint Optimization of Radio and Computational Resources for Multicell Mobile-Edge Computing",
+        "authors": [
+          "Stefania Sardellitti",
+          "Gesualdo Scutari",
+          "Sergio Barbarossa"
+        ],
+        "year": 2015,
+        "publication_date": "2015-06-01",
+        "venue": "IEEE Transactions on Signal and Information Processing over Networks",
+        "abstract": "Migrating computational intensive tasks from mobile devices to more resourceful cloud servers is a promising technique to increase the computational capacity of mobile devices while saving their battery energy. In this paper, we consider an MIMO multicell system where multiple mobile users (MUs) ask for computation offloading to a common cloud server. We formulate the offloading problem as the joint optimization of the radio resources-the transmit precoding matrices of the MUs-and the computational resources-the CPU cycles/second assigned by the cloud to each MU-in order to minimize the overall users' energy consumption, while meeting latency constraints. The resulting optimization problem is nonconvex (in the objective function and constraints). Nevertheless, in the single-user case, we are able to compute the global optimal solution in closed form. In the more challenging multiuser scenario, we propose an iterative algorithm, based on a novel successive convex approximation technique, converging to a local optimal solution of the original nonconvex problem. We then show that the proposed algorithmic framework naturally leads to a distributed and parallel implementation across the radio access points, requiring only a limited coordination/signaling with the cloud. Numerical results show that the proposed schemes outperform disjoint optimization algorithms.",
+        "url": "https://doi.org/10.1109/tsipn.2015.2448520",
+        "doi": "https://doi.org/10.1109/tsipn.2015.2448520",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1904504745"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 919
+      },
+      {
+        "paper_id": "rw_007_76108f292",
+        "title": "Benchmarking Retrieval-Augmented Generation for Medicine",
+        "authors": [
+          "Guangzhi Xiong",
+          "Qiao Jin",
+          "Zhiyong Lu",
+          "Aidong Zhang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "",
+        "abstract": "While large language models (LLMs) have achieved state-of-the-art performance on a wide range of medical question answering (QA) tasks, they still face challenges with hallucinations and outdated knowledge.Retrievalaugmented generation (RAG) is a promising solution and has been widely adopted.However, a RAG system can involve multiple flexible components, and there is a lack of best practices regarding the optimal RAG setting for various medical purposes.To systematically evaluate such systems, we propose the Medical Information Retrieval-Augmented Generation Evaluation (MIRAGE), a first-of-its-kind benchmark including 7,663 questions from five medical QA datasets.Using MIRAGE, we conducted large-scale experiments with over 1.8 trillion prompt tokens on 41 combinations of different corpora, retrievers, and backbone LLMs through the MEDRAG toolkit introduced in this work.Overall, MEDRAG improves the accuracy of six different LLMs by up to 18% over chain-of-thought prompting, elevating the performance of GPT-3.5 and Mixtral to GPT-4level.Our results show that the combination of various medical corpora and retrievers achieves the best performance.In addition, we discovered a log-linear scaling property and the \"lostin-the-middle\" effects in medical RAG.We believe our comprehensive evaluations can serve as practical guidelines for implementing RAG systems for medicine 1 .",
+        "url": "https://doi.org/10.18653/v1/2024.findings-acl.372",
+        "doi": "https://doi.org/10.18653/v1/2024.findings-acl.372",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4402670290"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 230
+      },
+      {
+        "paper_id": "rw_009_2319dad38",
+        "title": "AI-Assisted Pipeline for Dynamic Generation of Trustworthy Health Supplement Content at Scale",
+        "authors": [
+          "Kefallinos, Dionysios",
+          "Alexandris, Georgios",
+          "Maras, Alexis",
+          "Chaidos, Panagiotis",
+          "Gomony, Manil Dev",
+          "Corporaal, Henk",
+          "Soudris, Dimitrios",
+          "Xydis, Sotirios"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-11",
+        "venue": "DROPS (Schloss Dagstuhl – Leibniz Center for Informatics)",
+        "abstract": "Although geospatial question answering systems have received increasing attention in recent years, existing prototype systems struggle to properly answer qualitative spatial questions. In this work, we propose a unique framework for answering qualitative spatial questions, which comprises three main components: a geoparser that takes the input questions and extracts place semantic information from text, a reasoning system which is embedded with a crisp reasoner, and finally, answer extraction, which refines the solution space and generates final answers. We present an experimental design to evaluate our framework for point-based cardinal direction calculus (CDC) relations by developing an automated approach for generating three types of synthetic qualitative spatial questions. The initial evaluations of generated answers in our system are promising because a high proportion of answers were labelled correct.",
+        "url": "https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.LDK.2019.21",
+        "doi": "https://doi.org/10.4230/lipics.cosit.2022.18",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2896457183"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 45755
+      },
+      {
+        "paper_id": "rw_010_c17029118",
+        "title": "SCANPY: large-scale single-cell gene expression data analysis",
+        "authors": [
+          "F. Alexander Wolf",
+          "Philipp Angerer",
+          "Fabian J. Theis"
+        ],
+        "year": 2018,
+        "publication_date": "2018-02-06",
+        "venue": "Genome biology",
+        "abstract": "Scanpy is a scalable toolkit for analyzing single-cell gene expression data. It includes methods for preprocessing, visualization, clustering, pseudotime and trajectory inference, differential expression testing, and simulation of gene regulatory networks. Its Python-based implementation efficiently deals with data sets of more than one million cells ( https://github.com/theislab/Scanpy ). Along with Scanpy, we present AnnData, a generic class for handling annotated data matrices ( https://github.com/theislab/anndata ).",
+        "url": "https://doi.org/10.1186/s13059-017-1382-0",
+        "doi": "https://doi.org/10.1186/s13059-017-1382-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2800392236"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 9511
+      },
+      {
+        "paper_id": "rw_014_a8f8de0d2",
+        "title": "Metalic: Meta-Learning In-Context with Protein Language Models",
+        "authors": [
+          "Jacob Beck",
+          "Shikha Surana",
+          "Manus McAuliffe",
+          "Oliver Bent",
+          "Thomas D. Barrett",
+          "Juan Jose Garau Luis",
+          "Paul Duckworth"
+        ],
+        "year": 2024,
+        "publication_date": "2024-10-10",
+        "venue": "arXiv",
+        "abstract": "Predicting the biophysical and functional properties of proteins is essential for in silico protein design. Machine learning has emerged as a promising technique for such prediction tasks. However, the relative scarcity of in vitro annotations means that these models often have little, or no, specific data on the desired fitness prediction task. As a result of limited data, protein language models (PLMs) are typically trained on general protein sequence modeling tasks, and then fine-tuned, or applied zero-shot, to protein fitness prediction. When no task data is available, the models make strong assumptions about the correlation between the protein sequence likelihood and fitness scores. In contrast, we propose meta-learning over a distribution of standard fitness prediction tasks, and demonstrate positive transfer to unseen fitness prediction tasks. Our method, called Metalic (Meta-Learning In-Context), uses in-context learning and fine-tuning, when data is available, to adapt to new tasks. Crucially, fine-tuning enables considerable generalization, even though it is not accounted for during meta-training. Our fine-tuned models achieve strong results with 18 times fewer parameters than state-of-the-art models. Moreover, our method sets a new state-of-the-art in low-data settings on ProteinGym, an established fitness-prediction benchmark. Due to data scarcity, we believe meta-learning will play a pivotal role in advancing protein engineering.",
+        "url": "http://arxiv.org/abs/2410.08355v3",
+        "doi": "",
+        "arxiv_id": "2410.08355v3",
+        "source_ids": {
+          "arXiv": "2410.08355v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_015_34240b8be",
+        "title": "MultiHop-RAG: Benchmarking Retrieval-Augmented Generation for Multi-Hop Queries",
+        "authors": [
+          "Yixuan Tang",
+          "Yi Yang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-27",
+        "venue": "arXiv",
+        "abstract": "Retrieval-augmented generation (RAG) augments large language models (LLM) by retrieving relevant knowledge, showing promising potential in mitigating LLM hallucinations and enhancing response quality, thereby facilitating the great adoption of LLMs in practice. However, we find that existing RAG systems are inadequate in answering multi-hop queries, which require retrieving and reasoning over multiple pieces of supporting evidence. Furthermore, to our knowledge, no existing RAG benchmarking dataset focuses on multi-hop queries. In this paper, we develop a novel dataset, MultiHop-RAG, which consists of a knowledge base, a large collection of multi-hop queries, their ground-truth answers, and the associated supporting evidence. We detail the procedure of building the dataset, utilizing an English news article dataset as the underlying RAG knowledge base. We demonstrate the benchmarking utility of MultiHop-RAG in two experiments. The first experiment compares different embedding models for retrieving evidence for multi-hop queries. In the second experiment, we examine the capabilities of various state-of-the-art LLMs, including GPT-4, PaLM, and Llama2-70B, in reasoning and answering multi-hop queries given the evidence. Both experiments reveal that existing RAG methods perform unsatisfactorily in retrieving and answering multi-hop queries. We hope MultiHop-RAG will be a valuable resource for the community in developing effective RAG systems, thereby facilitating greater adoption of LLMs in practice. The MultiHop-RAG and implemented RAG system is publicly available at https://github.com/yixuantt/MultiHop-RAG/.",
+        "url": "http://arxiv.org/abs/2401.15391v1",
+        "doi": "",
+        "arxiv_id": "2401.15391v1",
+        "source_ids": {
+          "arXiv": "2401.15391v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_016_86ab3b544",
+        "title": "Scaling Behavior of Machine Translation with Large Language Models under Prompt Injection Attacks",
+        "authors": [
+          "Zhifan Sun",
+          "Antonio Valerio Miceli-Barone"
+        ],
+        "year": 2024,
+        "publication_date": "2024-03-14",
+        "venue": "arXiv",
+        "abstract": "Large Language Models (LLMs) are increasingly becoming the preferred foundation platforms for many Natural Language Processing tasks such as Machine Translation, owing to their quality often comparable to or better than task-specific models, and the simplicity of specifying the task through natural language instructions or in-context examples. Their generality, however, opens them up to subversion by end users who may embed into their requests instructions that cause the model to behave in unauthorized and possibly unsafe ways. In this work we study these Prompt Injection Attacks (PIAs) on multiple families of LLMs on a Machine Translation task, focusing on the effects of model size on the attack success rates. We introduce a new benchmark data set and we discover that on multiple language pairs and injected prompts written in English, larger models under certain conditions may become more susceptible to successful attacks, an instance of the Inverse Scaling phenomenon (McKenzie et al., 2023). To our knowledge, this is the first work to study non-trivial LLM scaling behaviour in a multi-lingual setting.",
+        "url": "http://arxiv.org/abs/2403.09832v1",
+        "doi": "",
+        "arxiv_id": "2403.09832v1",
+        "source_ids": {
+          "arXiv": "2403.09832v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_acb87e3bd",
+        "relevance_score": 0.91,
+        "relevance_types": [
+          "limitations_counterevidence",
+          "same_problem"
+        ],
+        "rationale": "This comprehensive survey on RAG provides essential background, directly addresses the core problem of knowledge-intensive tasks, and discusses limitations/hallucinations that motivate the target's investigation into effective knowledge utilization via inference scaling.",
+        "evidence_summary": "This survey provides a detailed examination of RAG approaches for LLMs, highlighting challenges like hallucination and the need for accurate, credible generation for knowledge-intensive tasks, which aligns with the target's motivation."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_001_a667ca3ce",
+        "relevance_score": 0.87,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Directly addresses the comparative performance and cost trade-offs between RAG and long-context LLMs, a core problem for the target paper, and provides benchmark results which serve as an important baseline.",
+        "evidence_summary": "This paper comprehensively compares RAG and long-context LLMs, benchmarking them on public datasets and showing that long-context models can outperform RAG when resourced sufficiently, though RAG has cost advantages."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_004_2ef4bb348",
+        "relevance_score": 0.79,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Investigates retrieval strategies within RAG systems, focusing on how the type and composition of retrieved passages affect LLM effectiveness, which is methodologically relevant to the target's exploration of optimizing inference configuration.",
+        "evidence_summary": "This work systematically examines retrieval strategies for RAG, finding that the relevance, position, and number of retrieved passages significantly impact LLM effectiveness, including counter-intuitive results about non-relevant documents."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_007_76108f292",
+        "relevance_score": 0.77,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Proposes a benchmark and toolkit for evaluating RAG in a specific domain, demonstrating performance improvements and scaling properties, directly relevant to the target's evaluation on benchmark datasets and discussion of gains.",
+        "evidence_summary": "This paper introduces MIRAGE, a benchmark for medical RAG, and shows through large-scale experiments that RAG can improve LLM accuracy by up to 18%, also observing a log-linear scaling property."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_015_34240b8be",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Introduces a benchmark specifically for multi-hop queries in RAG, highlighting limitations of existing systems, which provides a relevant evaluation context and baseline for the target's performance claims.",
+        "evidence_summary": "This paper develops the MultiHop-RAG dataset for benchmarking RAG on multi-hop queries and finds that existing methods perform unsatisfactorily in retrieving and answering such queries."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_014_a8f8de0d2",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Utilizes in-context learning and fine-tuning for adaptation in a different domain (protein fitness), demonstrating the method's flexibility which is conceptually aligned with the target's use of in-context learning as a strategy within inference scaling.",
+        "evidence_summary": "This paper proposes Metalic, which uses meta-learning, in-context learning, and fine-tuning for protein fitness prediction, achieving strong results with fewer parameters and in low-data settings."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_016_86ab3b544",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Studies scaling behavior of LLMs in a different task (machine translation) under adversarial conditions, exploring how model size affects performance, which provides a contrasting perspective on scaling laws relevant to the target's 'inference scaling laws for RAG'.",
+        "evidence_summary": "This paper studies scaling behavior in LLMs for machine translation under prompt injection attacks, discovering that larger models may become more susceptible to attacks, an instance of inverse scaling."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_006_89f2d6cd1",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Addresses joint optimization of computational and radio resources under latency constraints in mobile-edge computing, providing a conceptual parallel for the target's focus on optimal test-time compute allocation under budget constraints.",
+        "evidence_summary": "This paper formulates and solves an optimization problem for the joint allocation of radio and computational resources in mobile-edge computing to minimize energy consumption while meeting latency constraints."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_003_ecb1593a1",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "A broad survey on text data augmentation for deep learning, which touches on in-context learning as a motif and discusses generalization; it provides general background on a method used by the target but is not specific to RAG or inference scaling.",
+        "evidence_summary": "This survey considers how data augmentation, including motifs related to in-context learning, can aid in the development of NLP models and discusses measuring generalization."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_010_c17029118",
+        "relevance_score": 0.18,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Describes a toolkit for single-cell gene expression analysis; it is unrelated to RAG, LLMs, inference scaling, or compute allocation, making it only very weakly related via the broad concept of 'scaling' (large-scale data analysis).",
+        "evidence_summary": "This paper presents Scanpy, a scalable toolkit for analyzing single-cell gene expression data, including methods for preprocessing, visualization, and clustering."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_009_2319dad38",
+        "relevance_score": 0.15,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Describes a system for generating geospatial question answers using qualitative spatial reasoning; it is unrelated to RAG, LLMs, inference scaling, or compute optimization, making it almost entirely irrelevant.",
+        "evidence_summary": "This paper proposes a framework for answering qualitative spatial questions using a geoparser and a reasoning system, evaluated on synthetic questions."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_005_0f247028b",
+        "relevance_score": 0.1,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This is a conference proceedings volume entry with no abstract or specific technical content related to the target's topic; it provides no useful information for reviewing the target paper.",
+        "evidence_summary": "This is the proceedings entry for the Findings of the Association for Computational Linguistics: EMNLP 2021, containing no specific technical abstract."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "The investigation of inference scaling for RAG builds upon extensive prior work on retrieval-augmented generation itself, such as the comprehensive survey by Gao et al., 2023. Recent studies have directly compared RAG with long-context LLMs, with Li et al., 2024 showing performance trade-offs and cost advantages. Methodological innovations for enhancing RAG include examining retrieval strategies, as in Cuconasu et al., 2024, and applying in-context learning in domains like protein engineering, as seen in Metalic by Beck et al., 2024. Benchmarks for evaluating RAG performance continue to be developed, including domain-specific efforts like MIRAGE for medicine by Xiong et al., 2024 and MultiHop-RAG for complex queries by Tang and Yang, 2024. The optimal allocation of computational resources, a core constraint for the present work, finds a conceptual parallel in resource optimization problems from other fields, such as mobile-edge computing by Sardellitti et al., 2015. Furthermore, studies on scaling behavior in LLMs for other tasks, like the inverse scaling observed under adversarial conditions by Sun and Miceli-Barone, 2024, provide a contrasting context for the proposed inference scaling laws.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 18,
+      "num_removed_post_cutoff": 5,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 13,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 1
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 18,
+    "num_removed_post_cutoff": 5,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 13,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 1
+  }
+}

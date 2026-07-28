@@ -1,0 +1,117 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "I really like the shift from snippet-to-text translation to realistic repository-level merge request analysis.",
+        "AST-based code slicing (especially Left Flow) effectively keeps the LLM's context window clean without losing key dependencies.",
+        "Validating on historical, multi-million dollar production failures gives this work the kind of industrial credibility that is missing in most SE papers.",
+        "Moving from BLEU/ROUGE to KBI and FAR puts the focus exactly where developers actually care—bug catching and noise reduction."
+      ],
+      "weaknesses": [
+        "The validator's tendency to throw out almost a third of real bugs is a major worry. While the new CEB bypass helps claw back some KBI, the precision-recall trade-off is still pretty harsh.",
+        "Comparing repository-aware methods to purely snippet-level baselines is still an apples-to-oranges matching, though I appreciate the authors adding text to clear this up.",
+        "Using a hardcoded 1-7 heuristic scoring scale feels a bit arbitrary, even if it worked well in their Java pilot test."
+      ],
+      "summary_comment": "I appreciated the authors' thoroughly detailed response. Their newly proposed Critical-Escape Bypass (CEB) goes a long way in fixing the validator's recall drop, and the updated baseline framing clears up my concerns about comparison fairness. While there is still a noticeable trade-off when filtering reviews, the bold scope and practical focus of this work are exactly what the automated code review field needs. I am happy to recommend a strong Accept.",
+      "reasoning_summary": "The authors thoroughly addressed the primary concerns regarding evaluation baseline fairness and the validator's high false-rejection rate. By adding the Critical-Escape Bypass mechanism and updating the text to properly frame baseline paradigms, the revised manuscript now presents a much more balanced and practically applicable system while preserving its highly novel core contribution."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Testing the framework on 45 genuine high-severity production failures rather than synthetic bug injections is a major win for industrial relevance, and the bootstrapping analysis they added (N=1,000, p < 0.01) completely resolves my worry about the sample size.",
+        "The AST-based code slicing (especially Left Flow) is a highly logical way to restrict context size and stop the LLM from losing track of variables when navigating massive C++ repositories.",
+        "The inclusion of heterogeneous model splits in the experiments (evaluating combinations of 70B and 405B models) provides a very practical blueprint for companies restricted by local hardware budgets.",
+        "Great attention to ablation detail, including sensitivity sweeps on rating thresholds (confirming that the threshold of 4 represents a balanced inflection point between KBI and FAR)."
+      ],
+      "weaknesses": [
+        "As the author's response notes, running the Validator pass requires massive model capacity (100B+ params) to avoid model timidity where smaller models fail to flag complex bugs due to high score variance. Organizations running sub-100B models on-premise will still face a tough precision-recall tradeoff if they try to use the full pipeline.",
+        "The pipeline still relies, at this stage, on heuristic 1-7 scoring scales and hardcoded Top-k cutoffs. Although the authors provide a reasonable future roadmap for task-specific classifiers and telemetry data collection, the current system remains slightly rigid as presented."
+      ],
+      "summary_comment": "The authors have provided logical and mathematically grounded responses to my concerns. The addition of bootstrapping to mathematically justify the 45-incident evaluation and the extra sensitivity sweep on the filtering thresholds are exactly the kind of rigor I hoped for. The clarification on line localization also makes complete sense, as KBI already strictly binds semantic correctness. While the hardware footprint of the validator role remains a bottleneck for mid-sized teams, the empirical foundation of this research is rock-solid. I strongly support acceptance.",
+      "reviewer_rebuttal_satisfaction": "Extremely satisfied. The authors addressed statistical significance, heuristic sensitivity, and hardware constraints with concrete data and logical workarounds."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper targets real-world production outages and core dumps with severe financial impact ($350k+ losses) rather than relying on synthetic tests or toy benchmarks.",
+        "It addresses the industry-wide misalignment of text-similarity metrics (like BLEU/ROUGE) for code reviews, replacing them with developer-focused metrics: Key Bug Inclusion (KBI) and False Alarm Rate (FAR).",
+        "The system architecture effectively combines AST-guided code slicing with multi-agent consensus and multi-stage filtering to tackle context limits and false positive noise in real CI/CD pipelines.",
+        "The authors provided strong, practical evidence in their rebuttal, including concrete pilot telemetry from a 4-week deployment (68.2% developer acceptance rate) and an empirical Java evaluation showing 7/10 target bugs caught."
+      ],
+      "weaknesses": [
+        "While the new Java evaluation (Section 5.6) is a necessary step to prove cross-language portability, the main paper still skews heavily toward C++ repositories.",
+        "The risk-adaptive filtering thresholds and the newly proposed drift monitoring protocol are solid, but in practice, these static thresholds require ongoing manual tuning as the developer group's codebase and risk tolerance evolve."
+      ],
+      "summary_comment": "This paper offers a practical solution to a major bottleneck in automated software engineering. Moving code review automation up to repository/merge-request granularity directly aligns with what developers actually need in production. In the rebuttal cycles, the authors systematically resolved my pragmatical concerns by including real-world deployment telemetry, outlining a protocol to monitor drift on automated reviews, and verifying the AST-slicing engine on a second popular language (Java). These updates demonstrate that the system is ready for real engineering environments. I strongly recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "The paper falls under 'application-driven machine learning', exploring the deployment of LLMs to solve a high-impact, real-world task.",
+        "The evaluation is highly rigorous, featuring bootstrapping (N=1000, p < 0.01) and validation against actual multi-million dollar industrial code failures, aligning with ICML's demand for thorough empirical standards."
+      ],
+      "why_it_does_not_fit": [
+        "ICML is heavily focused on core machine learning theory, novel learning algorithms, optimization, and statistical guarantees. The paper features no new ML methodology, optimization theories, or statistical learning proofs.",
+        "The primary innovations—AST-based code slicing, multi-role prompting pipelines, and DevOps integrations—are software engineering and developer-centric contributions rather than ML research.",
+        "The paper is built entirely on top of off-the-shelf, open-source models (e.g., LLaMA, Qwen) and relies heavily on heuristic-based thresholding (like the 1-7 scoring scale), which ICML reviewers would likely criticize as lacking algorithmic novelty."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary AI applications, and research on LLM-based multi-agent collaboration (such as AgentVerse, which the authors cite) has historically found a home here.",
+        "The paper's focus on human workflow integration, user notifications, and minimizing developer cognitive load fits under the 'socio-technical aspects of AI' and 'human-interaction in AI systems' topics."
+      ],
+      "why_it_does_not_fit": [
+        "While NeurIPS is interdisciplinary, it still strongly prioritizes foundational ML advancements. This paper does not propose any novel model architectures, training paradigms, or fine-tuning techniques.",
+        "The reviewer feedback heavily highlights the paper's strength in 'industrial software engineering' and resolving 'the mismatch of BLEU/ROUGE for code reviews'. These concerns are highly central to Software Engineering (SE) venues (like ICSE or FSE) but are of marginal interest to the core NeurIPS audience.",
+        "Implementing static analysis AST techniques (Left Flow / Full Flow) to prune prompt contexts is a standard compiler/SE technique, rather than a novel representation learning contribution."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "ICLR focuses on representation learning and is highly receptive to papers analyzing LLM prompting, reasoning, and context optimization.",
+        "The integration of a symbolic system (static AST analysis) with LLM agents (Reviewer, Validator, Meta-Reviewer) fits within ICLR's interest in 'neurosymbolic & hybrid AI systems' and code-representation learning."
+      ],
+      "why_it_does_not_fit": [
+        "No representation learning occurs; the pipeline leverages pre-trained LLMs to run inference over custom-structured prompt templates.",
+        "The key performance enhancements (like the Critical-Escape Bypass and the line-localization layout) are engineering solutions rather than learning-representation solutions.",
+        "There is a major risk that ICLR reviewers would find the 100B+ parameter hardware bottleneck of the validator role too restrictive to serve as a generally applicable ML framework contribution."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

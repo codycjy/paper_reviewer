@@ -1,0 +1,725 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper establishes a rigorous theoretical connection between attention mechanisms and associative memory networks through the novel in-context denoising framework",
+        "Provides analytical derivations of Bayes optimal predictors for three distinct denoising tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) with mathematical proofs",
+        "Demonstrates empirically that single-layer transformers can learn to approximate these optimal predictors with scaled identity weights, validating the theoretical insights"
+      ],
+      "weaknesses": [
+        "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+        "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+          "severity": "minor",
+          "evidence": "The paper focuses exclusively on one-layer transformers with either linear or softmax attention, while practical transformers typically use multi-layer architectures with more complex attention mechanisms",
+          "affected_claim": "The generalizability of the findings to practical transformer architectures",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems",
+          "severity": "minor",
+          "evidence": "The three tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) are carefully constructed synthetic problems designed to be solvable by one-layer transformers, which may not capture the full complexity of real-world data distributions",
+          "affected_claim": "The relevance of the findings to practical in-context learning scenarios",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The paper provides rigorous mathematical proofs for Bayes optimal predictors and demonstrates empirical convergence to these optima. The theoretical connections between attention and associative memory are well-supported."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The introduction of in-context denoising as a framework connecting transformers to associative memory beyond simple retrieval is novel. While building on Ramsauer et al.'s work, it extends the connection to denoising tasks and provides new insights."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work provides meaningful theoretical insights into transformer mechanisms and their connection to associative memory models, which could inform both theoretical understanding and practical architecture design."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Comprehensive empirical evaluation across three distinct tasks with proper baselines and convergence studies. The experiments convincingly demonstrate that trained transformers approach Bayes optimal performance."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is exceptionally well-written with clear explanations, thorough mathematical derivations, and well-designed figures that illustrate the key concepts and results."
+        }
+      },
+      "summary_comment": "This paper makes a significant contribution to understanding the connection between transformer attention mechanisms and associative memory networks. The introduction of in-context denoising provides a novel framework that extends beyond simple memory retrieval. The theoretical analysis is rigorous, with complete derivations of Bayes optimal predictors for three distinct tasks. Empirical results convincingly demonstrate that single-layer transformers can learn to approximate these optimal solutions. While the tasks are synthetic and the architectures simplified, the work provides fundamental insights that could inform both theoretical understanding and practical design of transformer architectures. The paper is exceptionally well-written and makes a strong case for the relevance of associative memory models in studying in-context learning."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's focus on theoretical machine learning foundations, particularly in optimization and probabilistic methods",
+        "Provides rigorous mathematical analysis of transformer architectures, including proofs of Bayes optimal predictors and convergence results",
+        "Connects to core ML topics like in-context learning, energy-based models, and theoretical understanding of neural architectures",
+        "Empirical validation on synthetic tasks with proper baselines demonstrates sound methodology"
+      ],
+      "why_it_does_not_fit": [
+        "Primarily theoretical/analytical focus may be more niche than typical ICML empirical ML papers",
+        "Simplified one-layer transformer setting lacks the scale and complexity often seen in ICML systems papers",
+        "While innovative, the connection to associative memory is somewhat specialized relative to ICML's broader ML focus"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS's interdisciplinary focus bridging neuroscience-inspired models and deep learning",
+        "Directly extends the Ramsauer et al. line of work on Hopfield networks and transformers that has been prominent at NeurIPS",
+        "Strong theoretical foundation combined with empirical validation matches NeurIPS preferences",
+        "Addresses fundamental questions about attention mechanisms and in-context learning that are highly relevant to NeurIPS audience",
+        "Well-positioned within the growing literature on mechanistic interpretability of transformers"
+      ],
+      "why_it_does_not_fit": [
+        "Synthetic tasks lack the complexity of real-world benchmarks often emphasized at NeurIPS",
+        "While mathematically rigorous, the paper's scope is relatively narrow compared to broader-impact NeurIPS contributions"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong focus on deep learning architectures and attention mechanisms aligns with ICLR's core interests",
+        "Direct relevance to understanding transformer representations and their learning dynamics",
+        "Connections to energy-based models and generative modeling approaches are well-suited for ICLR",
+        "Provides insights into optimization dynamics of attention layers, relevant to ICLR's DL theory focus"
+      ],
+      "why_it_does_not_fit": [
+        "More theoretical/analytical emphasis may be less aligned with ICLR's strong empirical DL focus",
+        "Limited experimentation with modern transformer architectures or large-scale benchmarks",
+        "The associative memory connection, while interesting, is not as central to ICLR as deep learning applications"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "The paper establishes a rigorous theoretical connection between attention mechanisms and associative memory networks through the novel in-context denoising framework",
+              "Provides analytical derivations of Bayes optimal predictors for three distinct denoising tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) with mathematical proofs",
+              "Demonstrates empirically that single-layer transformers can learn to approximate these optimal predictors with scaled identity weights, validating the theoretical insights"
+            ],
+            "weaknesses": [
+              "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+              "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+                "severity": "minor",
+                "evidence": "The paper focuses exclusively on one-layer transformers with either linear or softmax attention, while practical transformers typically use multi-layer architectures with more complex attention mechanisms",
+                "affected_claim": "The generalizability of the findings to practical transformer architectures",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems",
+                "severity": "minor",
+                "evidence": "The three tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) are carefully constructed synthetic problems designed to be solvable by one-layer transformers, which may not capture the full complexity of real-world data distributions",
+                "affected_claim": "The relevance of the findings to practical in-context learning scenarios",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The paper provides rigorous mathematical proofs for Bayes optimal predictors and demonstrates empirical convergence to these optima. The theoretical connections between attention and associative memory are well-supported."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The introduction of in-context denoising as a framework connecting transformers to associative memory beyond simple retrieval is novel. While building on Ramsauer et al.'s work, it extends the connection to denoising tasks and provides new insights."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides meaningful theoretical insights into transformer mechanisms and their connection to associative memory models, which could inform both theoretical understanding and practical architecture design."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive empirical evaluation across three distinct tasks with proper baselines and convergence studies. The experiments convincingly demonstrate that trained transformers approach Bayes optimal performance."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is exceptionally well-written with clear explanations, thorough mathematical derivations, and well-designed figures that illustrate the key concepts and results."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution to understanding the connection between transformer attention mechanisms and associative memory networks. The introduction of in-context denoising provides a novel framework that extends beyond simple memory retrieval. The theoretical analysis is rigorous, with complete derivations of Bayes optimal predictors for three distinct tasks. Empirical results convincingly demonstrate that single-layer transformers can learn to approximate these optimal solutions. While the tasks are synthetic and the architectures simplified, the work provides fundamental insights that could inform both theoretical understanding and practical design of transformer architectures. The paper is exceptionally well-written and makes a strong case for the relevance of associative memory models in studying in-context learning."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "The paper establishes a rigorous theoretical connection between attention mechanisms and associative memory networks through the novel in-context denoising framework",
+              "Provides analytical derivations of Bayes optimal predictors for three distinct denoising tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) with mathematical proofs",
+              "Demonstrates empirically that single-layer transformers can learn to approximate these optimal predictors with scaled identity weights, validating the theoretical insights"
+            ],
+            "weaknesses": [
+              "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+              "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+                "severity": "minor",
+                "evidence": "The paper focuses exclusively on one-layer transformers with either linear or softmax attention, while practical transformers typically use multi-layer architectures with more complex attention mechanisms",
+                "affected_claim": "The generalizability of the findings to practical transformer architectures",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems",
+                "severity": "minor",
+                "evidence": "The three tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) are carefully constructed synthetic problems designed to be solvable by one-layer transformers, which may not capture the full complexity of real-world data distributions",
+                "affected_claim": "The relevance of the findings to practical in-context learning scenarios",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The paper provides rigorous mathematical proofs for Bayes optimal predictors and demonstrates empirical convergence to these optima. The theoretical connections between attention and associative memory are well-supported."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The introduction of in-context denoising as a framework connecting transformers to associative memory beyond simple retrieval is novel. While building on Ramsauer et al.'s work, it extends the connection to denoising tasks and provides new insights."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides meaningful theoretical insights into transformer mechanisms and their connection to associative memory models, which could inform both theoretical understanding and practical architecture design."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive empirical evaluation across three distinct tasks with proper baselines and convergence studies. The experiments convincingly demonstrate that trained transformers approach Bayes optimal performance."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is exceptionally well-written with clear explanations, thorough mathematical derivations, and well-designed figures that illustrate the key concepts and results."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution to understanding the connection between transformer attention mechanisms and associative memory networks. The introduction of in-context denoising provides a novel framework that extends beyond simple memory retrieval. The theoretical analysis is rigorous, with complete derivations of Bayes optimal predictors for three distinct tasks. Empirical results convincingly demonstrate that single-layer transformers can learn to approximate these optimal solutions. While the tasks are synthetic and the architectures simplified, the work provides fundamental insights that could inform both theoretical understanding and practical design of transformer architectures. The paper is exceptionally well-written and makes a strong case for the relevance of associative memory models in studying in-context learning."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited analysis to simplified one-layer transformers, potentially not capturing multi-layer architectures\",\n        \"Synthetic tasks may not represent real-world in-context learning complexity\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited analysis to simplified one-layer transformers\",\n          \"location\": \"Sections 3.1-3.4, Abstract, and throughout paper\",\n          \"explanation\": \"The paper explicitly states its focus on one-layer transformers as a simplifying assumption to study fundamental connections: 'We demonstrate that a trained attention layer... by a single-layer transformer' (Abstract), 'one-layer transformers using either softmax or linearized self-attention are expressive enough' (Section 3). This limitation is acknowledged as a deliberate choice to enable theoretical analysis.\"\n        },\n        {\n          \"concern\": \"Synthetic tasks may not represent real-world complexity\",\n          \"location\": \"Section 2.2 (Task-specific token distributions)\",\n          \"explanation\": \"The paper transparently describes the synthetic nature of the tasks: 'These tasks are of course structured so that a one-layer transformer has the expressivity to capture a solution' (Section 2.1). The tasks are designed as controlled testbeds to study fundamental mechanisms rather than claiming to capture full real-world complexity.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited analysis to simplified one-layer transformers\",\n          \"proposed_change\": \"Add explicit discussion in Section 5 (Discussion) about how these one-layer insights might extend to multi-layer architectures, referencing recent work on transformers emulating gradient descent (Von Oswald et al., 2023; Dai et al., 2023) and noting this as an important direction for future research\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Synthetic tasks may not represent real-world complexity\",\n          \"proposed_change\": \"Add clarifying language in the introduction and discussion emphasizing that these synthetic tasks serve as foundational test cases to establish clear theoretical connections, while acknowledging that real-world applications involve more complex distributions\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful assessment and appreciate the recognition of our paper's theoretical rigor and empirical validation. We address the concerns about architectural simplification and task syntheticity below.\\n\\nRegarding the focus on one-layer transformers: This simplification was deliberate to enable rigorous theoretical analysis and clear mechanistic interpretation. As noted in Section 5, our findings provide fundamental insights that \\\"could inform both theoretical understanding and practical design of transformer architectures.\\\" We will add explicit discussion about how these one-layer insights might extend to multi-layer architectures, particularly referencing recent work suggesting transformers may emulate multi-step gradient descent (Von Oswald et al., 2023; Dai et al., 2023), making this connection clearer in our discussion. \\n\\nRegarding the synthetic tasks: The three carefully constructed tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) were designed as controlled testbeds where Bayes optimal solutions can be derived analytically and transformer behavior can be precisely characterized. As stated in Section 2.1, these tasks are \\\"structured so that a one-layer transformer has the expressivity to capture a solution.\\\" We acknowledge that real-world in-context learning involves more complex distributions, but these simplified settings allow us to establish clean theoretical connections between attention mechanisms and associative memory retrieval. We will add clarifying language emphasizing that these serve as foundational test cases while noting the importance of extending to more complex scenarios in future work.\\n\\nWe believe these targeted revisions will strengthen the paper while maintaining its core contributions: establishing rigorous connections between attention mechanisms and associative memory through the novel in-context denoising framework, with both theoretical derivations and empirical validation.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "The paper establishes a rigorous theoretical connection between attention mechanisms and associative memory networks through the novel in-context denoising framework",
+              "Provides analytical derivations of Bayes optimal predictors for three distinct denoising tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) with mathematical proofs",
+              "Demonstrates empirically that single-layer transformers can learn to approximate these optimal predictors with scaled identity weights, validating the theoretical insights"
+            ],
+            "weaknesses": [
+              "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+              "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The analysis is limited to simplified one-layer transformers and may not fully capture the behavior of multi-layer architectures used in practice",
+                "severity": "minor",
+                "evidence": "The paper focuses exclusively on one-layer transformers with either linear or softmax attention, while practical transformers typically use multi-layer architectures with more complex attention mechanisms",
+                "affected_claim": "The generalizability of the findings to practical transformer architectures",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The tasks considered are synthetic and may not represent the complexity of real-world in-context learning problems",
+                "severity": "minor",
+                "evidence": "The three tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) are carefully constructed synthetic problems designed to be solvable by one-layer transformers, which may not capture the full complexity of real-world data distributions",
+                "affected_claim": "The relevance of the findings to practical in-context learning scenarios",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The paper provides rigorous mathematical proofs for Bayes optimal predictors and demonstrates empirical convergence to these optima. The theoretical connections between attention and associative memory are well-supported."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The introduction of in-context denoising as a framework connecting transformers to associative memory beyond simple retrieval is novel. While building on Ramsauer et al.'s work, it extends the connection to denoising tasks and provides new insights."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides meaningful theoretical insights into transformer mechanisms and their connection to associative memory models, which could inform both theoretical understanding and practical architecture design."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive empirical evaluation across three distinct tasks with proper baselines and convergence studies. The experiments convincingly demonstrate that trained transformers approach Bayes optimal performance."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is exceptionally well-written with clear explanations, thorough mathematical derivations, and well-designed figures that illustrate the key concepts and results."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution to understanding the connection between transformer attention mechanisms and associative memory networks. The introduction of in-context denoising provides a novel framework that extends beyond simple memory retrieval. The theoretical analysis is rigorous, with complete derivations of Bayes optimal predictors for three distinct tasks. Empirical results convincingly demonstrate that single-layer transformers can learn to approximate these optimal solutions. While the tasks are synthetic and the architectures simplified, the work provides fundamental insights that could inform both theoretical understanding and practical design of transformer architectures. The paper is exceptionally well-written and makes a strong case for the relevance of associative memory models in studying in-context learning."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited to one-layer transformers, generalization to multi-layer architectures\",\n        \"Synthetic tasks may lack real-world complexity\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited to one-layer transformers\",\n          \"location\": \"Sections 3.1, 3.2, 3.3, 3.4; Abstract\",\n          \"explanation\": \"The paper explicitly focuses on one-layer transformers as a deliberate simplification to enable clear theoretical analysis and mechanistic interpretation. The Abstract states: 'Using a Bayesian framework, we show theoretically and empirically that certain restricted denoising problems can be solved optimally even by a single-layer transformer.' This limitation is acknowledged as a choice to study fundamental mechanisms.\"\n        },\n        {\n          \"concern\": \"Synthetic tasks may lack real-world complexity\",\n          \"location\": \"Section 2.1, 2.2\",\n          \"explanation\": \"The paper transparently describes the synthetic nature of the tasks: 'These tasks are of course structured so that a one-layer transformer has the expressivity to capture a solution' (Section 2.1). The tasks are designed as controlled testbeds to establish clear theoretical connections rather than claiming to capture full real-world complexity.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited to one-layer transformers\",\n          \"proposed_change\": \"Add discussion in Section 5 (Discussion) about potential extensions to multi-layer architectures, connecting to recent work on transformers emulating gradient descent (e.g., Von Oswald et al., 2023) and noting that multiple layers could perform iterative energy minimization steps\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Synthetic tasks may lack real-world complexity\",\n          \"proposed_change\": \"Add clarifying language emphasizing that these tasks serve as foundational test cases to establish theoretical connections, while acknowledging the importance of extending to more complex scenarios in future work\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and insightful feedback. We address both concerns about architectural simplification and task syntheticity.\\n\\nRegarding the focus on one-layer transformers: This was a deliberate choice to enable rigorous theoretical analysis and clear mechanistic interpretation. As noted in Section 5, our one-layer analysis provides fundamental insights into how attention layers can implement gradient descent on associative memory energy landscapes. We agree that extending these insights to multi-layer architectures is an important direction, and we will enhance our discussion to connect our findings to recent work suggesting that deeper transformers may implement multi-step optimization (Von Oswald et al., 2023; Dai et al., 2023).\\n\\nRegarding the synthetic tasks: The three carefully designed tasks (linear manifolds, nonlinear manifolds, Gaussian mixtures) serve as controlled testbeds where Bayes optimal solutions can be derived analytically and transformer behavior can be precisely characterized. Their simplicity allows us to establish clean theoretical connections between attention mechanisms and associative memory retrieval. We will add clarifying language to emphasize that these tasks are intended as foundational cases that capture essential aspects of in-context learning while acknowledging that real-world applications involve more complex distributions.\\n\\nThese revisions will strengthen the paper's contextualization while maintaining its core contributions: establishing rigorous connections between attention and associative memory through the novel in-context denoising framework with both theoretical derivations and empirical validation.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_c96f48169898",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/icml_accept_2025_057_in_context_denoising_with_one_layer_transformers_connections_between_attention_a.md",
+    "target_paper_summary": {
+      "paper_id": "paper_c96f48169898",
+      "title": "In-Context Denoising With One-Layer Transformers: Connections Between Attention And Associative Memory Retrieval",
+      "abstract": "We introduce in-context denoising, a task that refines the connection between attention-based architectures and dense associative memory (DAM) networks, also known as modern Hopfield networks. Using a Bayesian framework, we show theoretically and empirically that certain restricted denoising problems can be solved optimally even by a single-layer transformer. We demonstrate that a trained attention layer processes each denoising prompt by performing a single gradient descent update on a context-aware DAM energy landscape, where context tokens serve as associative memories and the query token acts as an initial state. This one-step update yields better solutions than exact retrieval of either a context token or a spurious local minimum, providing a concrete example of DAM networks extending beyond the standard retrieval paradigm. Overall, this work solidifies the link between associative memory and attention mechanisms first identified by Ramsauer et al., and demonstrates the relevance of associative memory models in the study of in-context learning.",
+      "topic": "",
+      "claims": [
+        "We introduce in-context denoising, a task that refines the connection between attention-based architectures and dense associative memory (DAM) networks, also known as modern Hopfield networks.",
+        "we show theoretically and empirically that certain restricted denoising problems can be solved optimally even by a single-layer transformer.",
+        "We demonstrate that a trained attention layer processes each denoising prompt by performing a single gradient descent update on a context-aware DAM energy landscape, where context tokens serve as associative memories and the query token acts as an initial state."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_ea524cfe1",
+        "title": "Multimodal Learning With Transformers: A Survey",
+        "authors": [
+          "Peng Xu",
+          "Xiatian Zhu",
+          "David A. Clifton"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-11",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "Transformer is a promising neural network learner, and has achieved great success in various machine learning tasks. Thanks to the recent prevalence of multimodal applications and Big Data, Transformer-based multimodal learning has become a hot topic in AI research. This paper presents a comprehensive survey of Transformer techniques oriented at multimodal data. The main contents of this survey include: (1) a background of multimodal learning, Transformer ecosystem, and the multimodal Big Data era, (2) a systematic review of Vanilla Transformer, Vision Transformer, and multimodal Transformers, from a geometrically topological perspective, (3) a review of multimodal Transformer applications, via two important paradigms, i.e., for multimodal pretraining and for specific multimodal tasks, (4) a summary of the common challenges and designs shared by the multimodal Transformer models and applications, and (5) a discussion of open problems and potential research directions for the community.",
+        "url": "https://doi.org/10.1109/tpami.2023.3275156",
+        "doi": "https://doi.org/10.1109/tpami.2023.3275156",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4376226279"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 897
+      },
+      {
+        "paper_id": "rw_002_4f56be447",
+        "title": "Dynamic Graph CNN for Learning on Point Clouds",
+        "authors": [
+          "Yue Wang",
+          "Yongbin Sun",
+          "Ziwei Liu",
+          "Sanjay E. Sarma",
+          "Michael M. Bronstein",
+          "Justin Solomon"
+        ],
+        "year": 2019,
+        "publication_date": "2019-10-10",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "Point clouds provide a flexible geometric representation suitable for countless applications in computer graphics; they also comprise the raw output of most 3D data acquisition devices. While hand-designed features on point clouds have long been proposed in graphics and vision, however, the recent overwhelming success of convolutional neural networks (CNNs) for image analysis suggests the value of adapting insight from CNN to the point cloud world. Point clouds inherently lack topological information, so designing a model to recover topology can enrich the representation power of point clouds. To this end, we propose a new neural network module dubbed EdgeConv suitable for CNN-based high-level tasks on point clouds, including classification and segmentation. EdgeConv acts on graphs dynamically computed in each layer of the network. It is differentiable and can be plugged into existing architectures. Compared to existing modules operating in extrinsic space or treating each point independently, EdgeConv has several appealing properties: It incorporates local neighborhood information; it can be stacked applied to learn global shape properties; and in multi-layer systems affinity in feature space captures semantic characteristics over potentially long distances in the original embedding. We show the performance of our model on standard benchmarks, including ModelNet40, ShapeNetPart, and S3DIS.",
+        "url": "https://doi.org/10.1145/3326362",
+        "doi": "https://doi.org/10.1145/3326362",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2979750740"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 6816
+      },
+      {
+        "paper_id": "rw_003_f64604081",
+        "title": "Explainable Artificial Intelligence (XAI): Concepts, taxonomies, opportunities and challenges toward responsible AI",
+        "authors": [
+          "Alejandro Barredo Arrieta",
+          "Natalia Díaz-Rodríguez",
+          "Javier Del Ser",
+          "Adrien Bennetot",
+          "Siham Tabik",
+          "Alberto Barbado",
+          "Salvador García",
+          "Sergio Gil-López",
+          "Daniel Molina",
+          "Richard Benjamins",
+          "Raja Chatila",
+          "Francisco Herrera"
+        ],
+        "year": 2019,
+        "publication_date": "2019-12-26",
+        "venue": "Information Fusion",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.inffus.2019.12.012",
+        "doi": "https://doi.org/10.1016/j.inffus.2019.12.012",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2981731882"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 9278
+      },
+      {
+        "paper_id": "rw_004_004332773",
+        "title": "A Tale of Two Graphs: Freezing and Denoising Graph Structures for Multimodal Recommendation",
+        "authors": [
+          "Xin Zhou",
+          "Zhiqi Shen"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-26",
+        "venue": "",
+        "abstract": "Multimodal recommender systems utilizing multimodal features (e.g., images and textual descriptions) typically show better recommendation accuracy than general recommendation models based solely on user-item interactions. Generally, prior work fuses multimodal features into item ID embeddings to enrich item representations, thus failing to capture the latent semantic item-item structures. In this context, LATTICE proposes to learn the latent structure between items explicitly and achieves state-of-the-art performance for multimodal recommendations. However, we argue the latent graph structure learning of LATTICE is both inefficient and unnecessary. Experimentally, we demonstrate that freezing its item-item structure before training can also achieve competitive performance. Based on this finding, we propose a simple yet effective model, dubbed as FREEDOM, that FREEzes the item-item graph and DenOises the user-item interaction graph simultaneously for Multimodal recommendation. Theoretically, we examine the design of FREEDOM through a graph spectral perspective and demonstrate that it possesses a tighter upper bound on the graph spectrum. In denoising the user-item interaction graph, we devise a degree-sensitive edge pruning method, which rejects possibly noisy edges with a high probability when sampling the graph. We evaluate the proposed model on three real-world datasets and show that FREEDOM can significantly outperform the strongest baselines. Compared with LATTICE, FREEDOM achieves an average improvement of 19.07% in recommendation accuracy while reducing its memory cost up to 6x on large graphs. The source code is available at: https://github.com/enoche/FREEDOM.",
+        "url": "https://doi.org/10.1145/3581783.3611943",
+        "doi": "https://doi.org/10.1145/3581783.3611943",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4309185982"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 208
+      },
+      {
+        "paper_id": "rw_005_6bebec907",
+        "title": "Nyströmformer: A Nyström-based Algorithm for Approximating Self-Attention",
+        "authors": [
+          "Yunyang Xiong",
+          "Zhanpeng Zeng",
+          "Rudrasis Chakraborty",
+          "Mingxing Tan",
+          "Glenn Fung",
+          "Yin Li",
+          "Vikas Singh"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-18",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "Transformers have emerged as a powerful tool for a broad range of natural language processing tasks. A key component that drives the impressive performance of Transformers is the self-attention mechanism that encodes the influence or dependence of other tokens on each specific token. While beneficial, the quadratic complexity of self-attention on the input sequence length has limited its application to longer sequences - a topic being actively studied in the community. To address this limitation, we propose Nyströmformer - a model that exhibits favorable scalability as a function of sequence length. Our idea is based on adapting the Nyström method to approximate standard self-attention with O(n) complexity. The scalability of Nyströmformer enables application to longer sequences with thousands of tokens. We perform evaluations on multiple downstream tasks on the GLUE benchmark and IMDB reviews with standard sequence length, and find that our Nyströmformer performs comparably, or in a few cases, even slightly better, than standard self-attention. On longer sequence tasks in the Long Range Arena (LRA) benchmark, Nyströmformer performs favorably relative to other efficient self-attention methods. Our code is available at https://github.com/mlpen/Nystromformer.",
+        "url": "https://doi.org/10.1609/aaai.v35i16.17664",
+        "doi": "https://doi.org/10.1609/aaai.v35i16.17664",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3173365702"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 321
+      },
+      {
+        "paper_id": "rw_006_a7641d069",
+        "title": "Listen, Denoise, Action! Audio-Driven Motion Synthesis with Diffusion Models",
+        "authors": [
+          "Simon Alexanderson",
+          "Rajmund Nagy",
+          "Jonas Beskow",
+          "Gustav Eje Henter"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-26",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "Diffusion models have experienced a surge of interest as highly expressive yet efficiently trainable probabilistic models. We show that these models are an excellent fit for synthesising human motion that co-occurs with audio, e.g., dancing and co-speech gesticulation, since motion is complex and highly ambiguous given audio, calling for a probabilistic description. Specifically, we adapt the DiffWave architecture to model 3D pose sequences, putting Conformers in place of dilated convolutions for improved modelling power. We also demonstrate control over motion style, using classifier-free guidance to adjust the strength of the stylistic expression. Experiments on gesture and dance generation confirm that the proposed method achieves top-of-the-line motion quality, with distinctive styles whose expression can be made more or less pronounced. We also synthesise path-driven locomotion using the same model architecture. Finally, we generalise the guidance procedure to obtain product-of-expert ensembles of diffusion models and demonstrate how these may be used for, e.g., style interpolation, a contribution we believe is of independent interest.",
+        "url": "https://doi.org/10.1145/3592458",
+        "doi": "https://doi.org/10.1145/3592458",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4377010269"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 173
+      },
+      {
+        "paper_id": "rw_007_be3d34397",
+        "title": "Self-Supervised Pretraining of Transformers for Satellite Image Time Series Classification",
+        "authors": [
+          "Yuan Yuan",
+          "Lei Lin"
+        ],
+        "year": 2020,
+        "publication_date": "2020-11-09",
+        "venue": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+        "abstract": "Satellite image time series (SITS) classification is a major research topic in remote sensing and is relevant for a wide range of applications. Deep learning approaches have been commonly employed for the SITS classification and have provided state-of-the-art performance. However, deep learning methods suffer from overfitting when labeled data are scarce. To address this problem, we propose a novel self-supervised pretraining scheme to initialize a transformer-based network by utilizing large-scale unlabeled data. In detail, the model is asked to predict randomly contaminated observations given an entire time series of a pixel. The main idea of our proposal is to leverage the inherent temporal structure of satellite time series to learn general-purpose spectral-temporal representations related to land cover semantics. Once pretraining is completed, the pretrained network can be further adapted to various SITS classification tasks by fine-tuning all the model parameters on small-scale task-related labeled data. In this way, the general knowledge and representations about SITS can be transferred to a label-scarce task, thereby improving the generalization performance of the model as well as reducing the risk of overfitting. Comprehensive experiments have been carried out on three benchmark datasets over large study areas. Experimental results demonstrate the effectiveness of the proposed pretraining scheme, leading to substantial improvements in classification accuracy using transformer, 1-D convolutional neural network, and bidirectional long short-term memory network. The code and the pretrained model will be available at https://github.com/linlei1214/SITS-BERT upon publication.",
+        "url": "https://doi.org/10.1109/jstars.2020.3036602",
+        "doi": "https://doi.org/10.1109/jstars.2020.3036602",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3095867871"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 188
+      },
+      {
+        "paper_id": "rw_009_1175d11c3",
+        "title": "Transformers in computational visual media: A survey",
+        "authors": [
+          "Yifan Xu",
+          "Huapeng Wei",
+          "Minxuan Lin",
+          "Yingying Deng",
+          "Kekai Sheng",
+          "Mengdan Zhang",
+          "Fan Tang",
+          "Weiming Dong",
+          "Feiyue Huang",
+          "Changsheng Xu"
+        ],
+        "year": 2021,
+        "publication_date": "2021-10-27",
+        "venue": "Computational Visual Media",
+        "abstract": "Transformers, the dominant architecture for natural language processing, have also recently attracted much attention from computational visual media researchers due to their capacity for long-range representation and high performance. Transformers are sequence-to-sequence models, which use a self-attention mechanism rather than the RNN sequential structure. Thus, such models can be trained in parallel and can represent global information. This study comprehensively surveys recent visual transformer works. We categorize them according to task scenario: backbone design, high-level vision, low-level vision and generation, and multimodal learning. Their key ideas are also analyzed. Differing from previous surveys, we mainly focus on visual transformer methods in low-level vision and generation. The latest works on backbone design are also reviewed in detail. For ease of understanding, we precisely describe the main contributions of the latest works in the form of tables. As well as giving quantitative comparisons, we also present image results for low-level vision and generation tasks. Computational costs and source code links for various important works are also given in this survey to assist further development.",
+        "url": "https://doi.org/10.1007/s41095-021-0247-3",
+        "doi": "https://doi.org/10.1007/s41095-021-0247-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3209859545"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 134
+      },
+      {
+        "paper_id": "rw_010_971ff71f1",
+        "title": "Survey of transformers and towards ensemble learning using transformers for natural language processing",
+        "authors": [
+          "Hongzhi Zhang",
+          "M. Omair Shafiq"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-04",
+        "venue": "Journal Of Big Data",
+        "abstract": "The transformer model is a famous natural language processing model proposed by Google in 2017. Now, with the extensive development of deep learning, many natural language processing tasks can be solved by deep learning methods. After the BERT model was proposed, many pre-trained models such as the XLNet model, the RoBERTa model, and the ALBERT model were also proposed in the research community. These models perform very well in various natural language processing tasks. In this paper, we describe and compare these well-known models. In addition, we also apply several types of existing and well-known models which are the BERT model, the XLNet model, the RoBERTa model, the GPT2 model, and the ALBERT model to different existing and well-known natural language processing tasks, and analyze each model based on their performance. There are a few papers that comprehensively compare various transformer models. In our paper, we use six types of well-known tasks, such as sentiment analysis, question answering, text generation, text summarization, name entity recognition, and topic modeling tasks to compare the performance of various transformer models. In addition, using the existing models, we also propose ensemble learning models for the different natural language processing tasks. The results show that our ensemble learning models perform better than a single classifier on specific tasks.",
+        "url": "https://doi.org/10.1186/s40537-023-00842-0",
+        "doi": "https://doi.org/10.1186/s40537-023-00842-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4391520039"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 117
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_004_004332773",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_method",
+          "same_constraints"
+        ],
+        "rationale": "The metadata includes the keyword 'denoising' and addresses efficient graph structure learning and denoising, which connects to the target's focus on denoising as a mechanism in transformer-attention associative memory.",
+        "evidence_summary": "In 2023, Zhou and Shen published 'A Tale of Two Graphs: Freezing and Denoising Graph Structures for Multimodal Recommendation,' which introduced FREEDOM, a model that freezes item-item graphs and denoises user-item interaction graphs for improved recommendation accuracy. The work proposed a degree-sensitive edge pruning method to reject noisy edges during graph sampling and demonstrated performance on three real-world datasets, achieving a 19.07% average improvement over baseline LATTICE."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_006_a7641d069",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The metadata centers on denoising via diffusion models, which contrasts with the target's single-layer transformer approach, providing an alternative denoising method and constraints.",
+        "evidence_summary": "In 2023, Alexanderson et al. published 'Listen, Denoise, Action! Audio-Driven Motion Synthesis with Diffusion Models,' which adapted the DiffWave architecture to 3D pose sequences using Conformers for improved modeling. The model incorporated classifier-free guidance for style control and was evaluated on gesture and dance generation, achieving top-of-the-line motion quality and enabling style interpolation."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_005_6bebec907",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_method",
+          "same_constraints"
+        ],
+        "rationale": "The metadata describes an efficient approximation of self-attention in transformers, which aligns with the target's investigation into attention mechanisms and their computational constraints.",
+        "evidence_summary": "In 2021, Xiong et al. published 'Nyströmformer: A Nyström-based Algorithm for Approximating Self-Attention,' which proposed an O(n) complexity method using the Nyström technique to scale self-attention to longer sequences. Evaluations on the GLUE benchmark and Long Range Arena showed comparable or slightly better performance than standard self-attention, with favorable results on tasks involving thousands of tokens."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_007_be3d34397",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The metadata details self-supervised pretraining of transformers for time-series data, which relates to the target's use of transformers and addresses overfitting limitations.",
+        "evidence_summary": "In 2020, Yuan and Lin published 'Self-Supervised Pretraining of Transformers for Satellite Image Time Series Classification,' which introduced a pretraining scheme predicting contaminated observations to learn spectral-temporal representations. The method was evaluated on three benchmark datasets and improved classification accuracy for transformer, 1-D CNN, and bidirectional LSTM networks, reducing overfitting on label-scarce tasks."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_001_ea524cfe1",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "novelty_competitor",
+          "benchmark_baseline"
+        ],
+        "rationale": "The metadata surveys transformer applications in multimodal learning, providing background on attention mechanisms and their use in various tasks, which contextualizes the target's focus.",
+        "evidence_summary": "In 2023, Xu et al. published 'Multimodal Learning With Transformers: A Survey' in IEEE Transactions on Pattern Analysis and Machine Intelligence, which reviewed Vanilla Transformer, Vision Transformer, and multimodal Transformers from a geometric-topological perspective. The survey covered multimodal pretraining, task-specific applications, common challenges, and open problems in the transformer ecosystem."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_009_1175d11c3",
+        "relevance_score": 0.53,
+        "relevance_types": [
+          "novelty_competitor",
+          "benchmark_baseline"
+        ],
+        "rationale": "The metadata surveys transformers in visual media, including low-level vision tasks, offering broader context on transformer architectures relevant to the target's method.",
+        "evidence_summary": "In 2021, Xu et al. published 'Transformers in computational visual media: A survey' in Computational Visual Media, categorizing works by backbone design, high-level vision, low-level vision, generation, and multimodal learning. The survey analyzed key ideas, provided quantitative comparisons and image results for low-level tasks, and included computational costs and source code links."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_010_971ff71f1",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "novelty_competitor",
+          "benchmark_baseline"
+        ],
+        "rationale": "The metadata surveys transformer models and ensemble learning in NLP, which provides general transformer background but lacks direct denoising or associative memory focus.",
+        "evidence_summary": "In 2024, Zhang and Shafiq published 'Survey of transformers and towards ensemble learning using transformers for natural language processing' in Journal Of Big Data, comparing BERT, XLNet, RoBERTa, GPT2, and ALBERT on sentiment analysis, question answering, text generation, summarization, name entity recognition, and topic modeling. The authors proposed ensemble models that outperformed single classifiers on specific tasks."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_002_4f56be447",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The metadata describes graph CNN methods for point clouds, which is tangentially related to neural architectures but not directly to transformers or denoising.",
+        "evidence_summary": "In 2019, Wang et al. published 'Dynamic Graph CNN for Learning on Point Clouds' in ACM Transactions on Graphics, proposing the EdgeConv module that acts on dynamically computed graphs for classification and segmentation. The model was evaluated on ModelNet40, ShapeNetPart, and S3DIS benchmarks, incorporating local neighborhood information and feature-space affinity."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_003_f64604081",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "The metadata addresses explainable AI concepts, which is only weakly related to the target's technical focus on denoising and associative memory.",
+        "evidence_summary": "In 2019, Arrieta et al. published 'Explainable Artificial Intelligence (XAI): Concepts, taxonomies, opportunities and challenges toward responsible AI' in Information Fusion, discussing XAI frameworks and their role in responsible AI development."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Zhou and Shen published 'A Tale of Two Graphs: Freezing and Denoising Graph Structures for Multimodal Recommendation,' introducing a model that denoises user-item graphs with degree-sensitive edge pruning, tested on three real-world datasets. In 2023, Alexanderson et al. published 'Listen, Denoise, Action! Audio-Driven Motion Synthesis with Diffusion Models,' adapting DiffWave with Conformers for 3D pose denoising and style control in gesture and dance generation. In 2021, Xiong et al. published 'Nyströmformer: A Nyström-based Algorithm for Approximating Self-Attention,' achieving O(n) complexity and comparable performance on GLUE and Long Range Arena benchmarks. In 2020, Yuan and Lin published 'Self-Supervised Pretraining of Transformers for Satellite Image Time Series Classification,' using contamination prediction to reduce overfitting on three benchmark datasets. In 2023, Xu et al. published 'Multimodal Learning With Transformers: A Survey,' reviewing transformer architectures and applications in multimodal pretraining and tasks. In 2021, Xu et al. published 'Transformers in computational visual media: A survey,' categorizing transformer works in vision tasks and providing quantitative comparisons and computational costs.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

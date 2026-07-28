@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper addresses a crucial and overlooked problem in Performative RL: achieving performative optimality (PO) rather than just performative stability (PS). This is a significant conceptual leap.",
+        "The introduction of an entropy regulator and the subsequent derivation of gradient dominance and policy lower bound properties are highly innovative. These theoretical contributions enable the core algorithmic development.",
+        "The proposed 0-PPG algorithm, particularly its novel zeroth-order gradient estimation method adapted to the policy space, addresses a fundamental technical challenge effectively and is a creative solution."
+      ],
+      "weaknesses": [
+        "The paper is highly theoretical with no experimental evaluation. While I prioritize novelty, the lack of empirical evidence to demonstrate the practical performance and robustness of 0-PPG, especially in comparison to existing PS-seeking methods, is a noticeable gap.",
+        "The mathematical derivations and the proofs, especially in the appendix, are extremely dense and difficult to follow without significant effort. This could hinder the reproducibility and broader understanding of the work."
+      ],
+      "summary_comment": "This paper presents a truly novel and significant contribution to the burgeoning field of Performative Reinforcement Learning. For the first time, it proposes an algorithm that theoretically converges to a performatively optimal policy, which is a major advancement over prior work that only targeted performative stability. The core theoretical insights, such as gradient dominance with entropy regularization and the refined policy lower bound, are genuinely innovative and underpin the entire approach. While the paper suffers from a lack of experimental validation and presents extremely dense mathematical proofs, its bold and forward-thinking address of a fundamental problem in a complex domain outweighs these limitations from my perspective. The methodological imperfections (lack of experiments) are acceptable given the high novelty and potential for inspiring future research. This work pushes the field forward significantly."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously proves several fundamental theoretical properties of the entropy-regularized performative value function, including a gradient dominance property, a policy lower bound, and Lipschitz properties. These theoretical underpinnings are crucial for ensuring the convergence and stability of the proposed algorithm.",
+        "The development of the zeroth-order performative policy gradient (0-PPG) algorithm is well-justified given the challenges of analytical gradient forms and stochastic samples. The innovative techniques for adapting two-point estimation to the constrained policy space (e.g., using orthogonal transformations and projecting onto the linear subspace L0) demonstrate strong methodological rigor.",
+        "The main theoretical result, Theorem 4, provides a comprehensive convergence guarantee for the 0-PPG algorithm to a performatively optimal (PO) policy with polynomial computation complexity. This is a significant advancement over existing works that only converge to a sub-optimal performatively stable (PS) policy."
+      ],
+      "weaknesses": [
+        "While the theoretical bounds for hyperparameters (e.g., ϵ, δ, ϵV, N, T) are provided, the abstract and main body only state them as O(·) expressions, with detailed expressions pushed to Appendix J. While this is common practice, the practical implications of these complexities (e.g., how large N needs to be for realistic problems) are not discussed, which might make it harder for practitioners to implement or understand the actual computational burden.",
+        "The paper assumes a tabular setting (finite state and action spaces). While the theoretical contributions are substantial, the direct applicability of the proposed algorithm and its convergence guarantees to large-scale, continuous state/action spaces (a common challenge in current RL) remains an open question, as acknowledged in the conclusion. Discussing potential challenges or extensions for these settings would enhance the paper's scope."
+      ],
+      "summary_comment": "This paper presents a highly rigorous and theoretically sound approach to achieving performatively optimal policies in performative reinforcement learning. The authors meticulously derive critical properties of the value function and propose a novel zeroth-order algorithm with strong convergence guarantees. The work addresses a significant gap in the existing literature by aiming for PO rather than PS policies. The mathematical proofs appear robust, and the adaptation of zeroth-order methods to the constrained policy space is commendably detailed. While the practical implications of the derived complexities could be more explicitly discussed and its extension to larger state/action spaces is left for future work, the fundamental theoretical contributions and the methodical development of the algorithm make this a strong paper for acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a highly significant practical problem: existing performative RL methods converge to a suboptimal 'performatively stable' policy, while this work proposes the first algorithm to achieve the truly 'performatively optimal' policy. This closing of a known gap is very important.",
+        "The theoretical contributions are well-developed and provide strong guarantees. The gradient dominance, policy lower bound, and Lipschitz properties are crucial for the proposed algorithm's convergence, and the detailed proofs in the appendix demonstrate thoroughness.",
+        "The proposed 0-PPG algorithm relies on practical components (zeroth-order gradient estimation, Frank-Wolfe) that only require policy evaluations. This makes the method potentially applicable in scenarios where model dynamics are complex or unknown, which is common in real-world deployments."
+      ],
+      "weaknesses": [
+        "The paper lacks an empirical evaluation. While the theoretical guarantees are strong, demonstrating the practical performance of 0-PPG on a representative performative RL task would significantly strengthen the paper's claims and appeal to practitioners.",
+        "The hyperparameters required for the algorithm (e.g., ∆, β, δ, ϵV, N, T) are described as functions of ϵ and various problem constants. While theoretically sound, practitioners would need more guidance on how to set these in real-world scenarios where these constants might be unknown or hard to estimate."
+      ],
+      "summary_comment": "This paper tackles a very important limitation in the emerging field of performative reinforcement learning: the inability of existing methods to converge to the true performatively optimal (PO) policy. The authors introduce a novel zeroth-order performative policy gradient (0-PPG) algorithm that, for the first time, offers theoretical guarantees to converge to the PO policy. The theoretical development is rigorous, establishing crucial properties like gradient dominance and Lipschitz continuity, which are essential for the algorithm's convergence. The use of zeroth-order estimation is practical for real-world scenarios where analytical gradients might be unavailable. My main concern is the complete lack of empirical evaluation. While theory is foundational, demonstrating the algorithm's performance on a concrete task would greatly enhance its impact and convince practitioners of its utility. Despite this, the significance of solving the PO policy convergence problem and the robustness of the theoretical framework make this a strong contribution to the field. I recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' and 'reinforcement learning', specifically extending RL to performative settings where the environment changes with policy, which is a significant theoretical advance in this core area. This aligns perfectly with ICML's focus on fundamental ML advances.",
+        "The theoretical contributions, including gradient dominance, policy lower bound, and Lipschitz properties of the value function, align well with ICML's emphasis on 'theory of machine learning' and 'optimization' (stochastic, non-convex optimization are mentioned).",
+        "The algorithm itself (0-PPG) is a novel 'reinforcement learning' approach to achieve Performative Optimality, building upon and significantly improving existing Performative RL methods. This demonstrates an 'innovative technique' in RL.",
+        "Reviewers consistently highlight the 'truly novel and significant contribution to the burgeoning field of Performative Reinforcement Learning' (Reviewer A) and the 'rigorously proven fundamental theoretical properties' (Reviewer B). This level of theoretical depth and novelty is highly valued at ICML.",
+        "The paper explicitly references several ICML papers (Mandal et al., 2023; Mnih et al., 2016; Chen and Huang, 2024; Wang et al., 2023) in the context of performative RL, entropy regularization, and policy gradient methods, indicating a direct engagement with research typically published at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The lack of experimental evaluation is a significant weakness, as noted by all reviewers. While ICML values theoretical contributions, many accepted papers often include some empirical validation, especially for algorithmic contributions.",
+        "The proofs and mathematical derivations are described as 'extremely dense and difficult to follow' (Reviewer A), which could pose a challenge for a broad audience, even for a highly theoretical conference like ICML.",
+        "Reviewer B notes that the practical implications of computational complexity for hyperparameters are not fully discussed, which could reduce immediate practical appeal, however, ICML typically understands that theoretical work often precedes practical deployment."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's topic of 'Performative Reinforcement Learning' falls squarely within 'Decision-making, reinforcement learning, and control' and 'General machine learning: core contributions in supervised and unsupervised methods' at NeurIPS.",
+        "The theoretical depth and rigorous convergence analysis, particularly the development of the 0-PPG algorithm for Performative Optimality, demonstrates a 'new and original research' contribution, which is a key criterion for NeurIPS.",
+        "The paper makes substantial contributions to the 'Theory' of machine learning by proving gradient dominance, policy lower bounds, and Lipschitz properties for a dynamic RL setting. This strong theoretical foundation is highly valued by NeurIPS.",
+        "Reviewer A acknowledges the 'significant conceptual leap' and 'highly innovative' theoretical contributions, while Reviewer B praises the 'meticulously derived critical properties' and 'strong convergence guarantees', all of which are aligned with NeurIPS's focus on foundational advances.",
+        "The paper's focus on overcoming a 'suboptimal' solution (PS policy) to achieve the 'optimal' (PO policy) represents an 'in-depth analysis of existing methods that provide new insights in terms of their limitations' (NeurIPS topic description)."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the complete absence of empirical validation could be a drawback for NeurIPS, which, while highly theoretical, often expects some level of empirical demonstration, especially for algorithmic papers.",
+        "The highly dense and complex mathematical derivations, as highlighted by Reviewer A, might make the paper less accessible to the broader interdisciplinary audience often found at NeurIPS compared to a purely theoretical sub-community.",
+        "Reviewer B points out the limitation to a tabular setting and the lack of discussion for large-scale or continuous spaces. While this is explicitly a future direction, NeurIPS often values work with a clear path or discussion towards scalability in practical applications, even if not fully realized."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper deals with 'reinforcement learning' and 'optimization', which are listed as relevant topics for ICLR.",
+        "The use of an entropy regularizer in the value function could be loosely related to 'probabilistic methods (Bayesian methods, variational inference, sampling, UQ, etc.)' or methods that encourage exploration, though it's not the primary focus.",
+        "Reviewers highlight the 'novelty' of the approach and the 'significant conceptual leap' in performative RL. ICLR values cutting-edge research and innovation, particularly in areas intersecting deep learning, which this work implies for future applications of RL.",
+        "The methodology for zeroth-order gradient estimation (0-PPG) leverages mathematical tools applicable to understanding and enhancing learning algorithms, which aligns with ICLR's interest in 'learning theory' and 'optimization'."
+      ],
+      "why_it_does_not_fit": [
+        "The primary focus on 'deep learning' at ICLR is not directly met by this paper. While Performative RL is relevant to modern AI, the paper's theoretical framework is presented in a general RL context and does not specifically involve neural networks or deep learning architectures.",
+        "The paper is highly theoretical and lacks any mention of 'architectures', 'generative models', 'representation learning for computer vision, audio, language', or other common ICLR deep learning sub-topics.",
+        "The absence of empirical evaluation is a significant concern for ICLR, which tends to be more empirically driven than ICML or NeurIPS, often expecting strong benchmark results, even for theoretical contributions, especially if they are not explicitly about architectures or foundational deep learning theory.",
+        "The complexity and density of the theoretical proofs, without any accompanying practical instantiation on deep RL or representation learning tasks, might be a weaker fit for an ICLR audience that often values practical algorithmic insights and empirical demonstrations alongside theory."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

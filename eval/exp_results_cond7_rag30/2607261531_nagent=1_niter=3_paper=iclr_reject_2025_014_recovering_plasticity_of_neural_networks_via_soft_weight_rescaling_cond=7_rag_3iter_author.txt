@@ -1,0 +1,738 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel weight rescaling method (SWR) that addresses plasticity loss by preventing unbounded weight growth without losing learned information",
+        "Provides theoretical analysis proving SWR bounds weight magnitude and improves layer-wise balancedness",
+        "Comprehensive experimental evaluation across multiple settings (warm-start, continual learning, generalization) and models"
+      ],
+      "weaknesses": [
+        "Theoretical boundedness assumption remains unverified and not resolved by the rebuttal",
+        "Limited comparison with state-of-the-art plasticity methods persists in the current submission",
+        "Empirical improvements, while positive on VGG-16, are not consistently decisive across all settings"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Theoretical boundedness assumption remains unverified and not resolved by the rebuttal",
+          "severity": "major",
+          "evidence": "The rebuttal acknowledges the theoretical assumption may not hold universally but provides no new evidence from the submitted paper to validate it. The promise of future refinement does not address the current theoretical weakness.",
+          "affected_claim": "Boundedness of weight magnitude under SWR",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Limited comparison with state-of-the-art plasticity methods persists in the current submission",
+          "severity": "minor",
+          "evidence": "The rebuttal acknowledges the lack of comparisons with methods like regenerative regularization but provides no such comparisons in the current submission. The promise of future experiments does not resolve this weakness for the submitted work.",
+          "affected_claim": "Superiority of SWR over existing approaches",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The central theoretical claim of boundedness remains unsound as it relies on an unproven assumption about gradient updates. The rebuttal acknowledges this limitation but provides no additional evidence from the submitted paper to support the assumption's validity."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "SWR presents a distinct approach combining weight rescaling with proportionality preservation, differentiating it from prior methods."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "While the VGG-16 results are notable, the overall improvements are incremental rather than groundbreaking. The work does not demonstrate a substantial advance over existing methods that would warrant top-tier acceptance."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The experimental evaluation is comprehensive across multiple scenarios and models, providing solid empirical support for the method's benefits despite theoretical limitations."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains clearly written and well-structured, with adequate presentation of methods and results."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal acknowledges the theoretical limitations but does not provide any new evidence from the submitted paper to address them. While the empirical results are promising, particularly on VGG-16, the theoretical foundation remains unsound due to the unverified boundedness assumption. The lack of comparison with state-of-the-art methods further limits the paper's contribution. The work does not meet the high standards required for acceptance at a top-tier conference in its current form."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses plasticity loss and weight growth in neural networks, which aligns with ICML's focus on optimization and deep learning theory",
+        "Provides theoretical analysis of weight boundedness and layer balancing, matching ICML's emphasis on theoretical foundations",
+        "Comprehensive experimental evaluation across multiple learning scenarios (warm-start, continual, single-task) demonstrates methodological rigor"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer noted theoretical limitations regarding unverified boundedness assumption, which is problematic for ICML's high theoretical standards",
+        "Limited comparisons with state-of-the-art plasticity methods may not meet ICML's expectation for thorough benchmarking",
+        "While empirical results are positive, the incremental nature of improvements may not stand out in ICML's competitive environment"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Addresses plasticity loss in neural networks, relevant to NeurIPS' focus on deep learning and optimization",
+        "Applications to continual learning scenarios align with NeurIPS' interest in sequential and non-stationary learning",
+        "Empirical evaluation across multiple benchmarks and models provides solid experimental validation"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about theoretical soundness (unverified boundedness assumption) are significant for NeurIPS' standards",
+        "Limited novelty compared to existing weight regularization methods may not meet NeurIPS' high bar for innovation",
+        "The paper's focus is more narrowly on weight regularization rather than broader AI/ML themes that NeurIPS often emphasizes"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong focus on deep learning optimization and weight regularization aligns perfectly with ICLR's core topics",
+        "Theoretical analysis of proportionality and weight balancing matches ICLR's interest in deep learning theory",
+        "Comprehensive experiments on image classification benchmarks using standard architectures (VGG-16, CNNs) fit ICLR's empirical focus",
+        "Addresses practical deep learning issues (plasticity loss, weight growth) that are highly relevant to ICLR audience"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about theoretical assumptions and limited SOTA comparisons remain relevant for ICLR",
+        "The work may be considered incremental compared to more transformative deep learning research at ICLR",
+        "While strong empirically, the theoretical limitations noted by reviewers could be problematic for ICLR's standards"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel weight rescaling method (SWR) that addresses plasticity loss by preventing unbounded weight growth without losing learned information",
+              "Provides theoretical analysis proving SWR bounds weight magnitude and improves layer-wise balancedness",
+              "Comprehensive experimental evaluation across multiple settings (warm-start, continual learning, generalization) and models (MLP, CNN, VGG-16)"
+            ],
+            "weaknesses": [
+              "Theoretical assumptions (bounded gradient updates) may not hold in practice for all optimization scenarios",
+              "Limited comparison with state-of-the-art plasticity methods beyond basic baselines",
+              "Experimental results show mixed performance compared to L2 regularization in some settings"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Theoretical assumptions (bounded gradient updates) may not hold in practice for all optimization scenarios",
+                "severity": "major",
+                "evidence": "Theorem 2 assumes the change in squared Frobenius norm from a single gradient update is bounded by a constant B for all weight matrices, but this may not be true for all optimization methods or loss landscapes",
+                "affected_claim": "Boundedness of weight magnitude under SWR",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited comparison with state-of-the-art plasticity methods beyond basic baselines",
+                "severity": "minor",
+                "evidence": "Compared mainly against L2 regularization, L2 Init, S&P, and head reset, but lacks comparison with recent advanced methods for plasticity (e.g., from RAG evidence: regenerative regularization, criticality-based methods)",
+                "affected_claim": "Superiority of SWR over existing approaches",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "Theoretical soundness is questioned due to potentially unrealistic assumptions about bounded gradient updates (Theorem 2), though empirical results provide some support"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "SWR introduces a new approach to weight rescaling that preserves proportionality and balances layers, distinct from prior regularization and re-initialization methods"
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While addressing plasticity loss is important, the improvement over existing methods (e.g., L2) is not consistently substantial across all settings, and the approach may not represent a major advance for top-tier conferences"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive across multiple datasets and tasks, but results are mixed (e.g., L2 sometimes outperforms SWR), and comparison with state-of-the-art is limited"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Paper is generally well-written with clear explanations of method, theory, and experiments, though some figures and algorithms could be more polished"
+              }
+            },
+            "summary_comment": "The paper proposes SWR, a novel weight rescaling method to combat plasticity loss. While the idea is interesting and the evaluation is thorough, the theoretical foundations rely on assumptions that may not hold broadly, and the empirical gains over simple baselines like L2 are not consistently compelling. The work falls short of the bar for top-tier conferences due to these limitations in soundness and significance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel weight rescaling method (SWR) that addresses plasticity loss by preventing unbounded weight growth without losing learned information",
+              "Provides theoretical analysis proving SWR bounds weight magnitude and improves layer-wise balancedness",
+              "Comprehensive experimental evaluation across multiple settings (warm-start, continual learning, generalization) and models"
+            ],
+            "weaknesses": [
+              "Theoretical assumptions (bounded gradient updates) remain a significant concern not fully resolved by the rebuttal",
+              "Limited comparison with state-of-the-art plasticity methods; rebuttal acknowledges this as a limitation to address in revision",
+              "Empirical improvements while positive, are not consistently decisive over strong baselines like L2, especially for smaller models"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Theoretical assumptions (bounded gradient updates) remain a significant concern not fully resolved by the rebuttal",
+                "severity": "major",
+                "evidence": "The rebuttal cites Merrill et al. (2020) observing O(√t) growth, but this does not prove the boundedness assumption (existence of constant B) required by Theorem 2 for all optimization scenarios. The paper's theoretical guarantee thus remains conditional on an unverified assumption.",
+                "affected_claim": "Boundedness of weight magnitude under SWR",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited comparison with state-of-the-art plasticity methods; rebuttal acknowledges this as a limitation to address in revision",
+                "severity": "minor",
+                "evidence": "The author response acknowledges the lack of comparison with methods like regenerative regularization (Kumar et al., 2023) and criticality-based approaches, stating these will be added in revision. This does not resolve the concern for the current submission.",
+                "affected_claim": "Superiority of SWR over existing approaches",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central theoretical claim of boundedness relies on an assumption (bounded gradient updates) that is not proven or universally validated. The rebuttal's reference to empirical O(√t) growth does not substantiate the existence of the constant B required by Theorem 2. While empirical results are supportive, the theoretical foundation is insufficiently rigorous for top-tier acceptance."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "SWR presents a distinct approach combining weight rescaling with proportionality preservation and layer-wise balancing, differentiating it from prior regularization and re-initialization methods."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated improvements, while positive, are incremental in many cases (e.g., mixed results vs. L2 on smaller models). The +4.36% improvement on VGG-16 is notable but not a breakthrough result. The work does not clearly establish a major advance for the field."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are thorough across multiple datasets, tasks, and model sizes, providing solid empirical support for the method's benefits, even if comparisons with the latest methods are lacking."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured, with figures and algorithms aiding comprehension."
+              }
+            },
+            "summary_comment": "The authors' rebuttal addresses some points but does not resolve the core weakness: the theoretical soundness of SWR's boundedness guarantee depends on an unproven assumption about gradient updates. While the empirical evaluation is comprehensive and shows promising results, the methodological contribution is not sufficiently robust or groundbreaking to meet the high bar of a top-tier conference. The promise of future comparisons with state-of-the-art methods does not affect the assessment of the submitted work."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Theoretical assumptions about bounded gradient updates may not hold in practice\",\n        \"Limited comparison with state-of-the-art plasticity methods\",\n        \"Mixed performance compared to L2 regularization in some settings\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Mixed performance compared to L2 regularization\",\n          \"location\": \"Section 4.3, Table 1\",\n          \"explanation\": \"Our results show that SWR outperforms L2 regularization across most datasets and models, with particularly strong improvements on larger models like VGG-16 (+4.36% improvement). While L2 performs well on some smaller models, SWR demonstrates consistent advantages, especially in complex scenarios.\"\n        },\n        {\n          \"concern\": \"Comprehensive experimental evaluation\",\n          \"location\": \"Sections 4.1-4.3\",\n          \"explanation\": \"We evaluated SWR across multiple learning scenarios (warm-start, continual learning, generalization) and model architectures (MLP, CNN, CNN-BN, VGG-16), demonstrating its broad applicability and advantages over baseline methods.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Theoretical assumptions about bounded gradient updates\",\n          \"proposed_change\": \"We will add discussion about the practical validity of the bounded gradient assumption, citing empirical evidence from Merrill et al. (2020) who observed weight magnitude growth follows O(√t) in transformer training, supporting our theoretical framework.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limited comparison with state-of-the-art plasticity methods\",\n          \"proposed_change\": \"We will include comparisons with additional recent methods such as regenerative regularization (Kumar et al., 2023) and criticality-based approaches in the revision, though these were beyond the scope of our initial evaluation due to computational constraints.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback. Regarding the theoretical assumptions: while Theorem 2 assumes bounded gradient updates, this assumption is supported by empirical observations in the literature (Merrill et al., 2020) and our own experimental results demonstrate that SWR effectively bounds weight growth in practice. The mixed performance compared to L2 is primarily observed in smaller models, while SWR shows substantial improvements (+4.36%) on larger models like VGG-16 where plasticity loss is more pronounced. We acknowledge that comparisons with additional state-of-the-art methods would strengthen the paper and will include these in the revision. Our comprehensive evaluation across multiple scenarios (warm-start, continual learning, generalization) demonstrates SWR's consistent advantages, particularly in maintaining plasticity without losing learned information—a key limitation of re-initialization approaches.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel weight rescaling method (SWR) that addresses plasticity loss by preventing unbounded weight growth without losing learned information",
+              "Provides theoretical analysis proving SWR bounds weight magnitude and improves layer-wise balancedness",
+              "Comprehensive experimental evaluation across multiple settings (warm-start, continual learning, generalization) and models"
+            ],
+            "weaknesses": [
+              "Theoretical boundedness assumption remains unverified and not resolved by the rebuttal",
+              "Limited comparison with state-of-the-art plasticity methods persists in the current submission",
+              "Empirical improvements, while positive on VGG-16, are not consistently decisive across all settings"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Theoretical boundedness assumption remains unverified and not resolved by the rebuttal",
+                "severity": "major",
+                "evidence": "The rebuttal acknowledges the theoretical assumption may not hold universally but provides no new evidence from the submitted paper to validate it. The promise of future refinement does not address the current theoretical weakness.",
+                "affected_claim": "Boundedness of weight magnitude under SWR",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited comparison with state-of-the-art plasticity methods persists in the current submission",
+                "severity": "minor",
+                "evidence": "The rebuttal acknowledges the lack of comparisons with methods like regenerative regularization but provides no such comparisons in the current submission. The promise of future experiments does not resolve this weakness for the submitted work.",
+                "affected_claim": "Superiority of SWR over existing approaches",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central theoretical claim of boundedness remains unsound as it relies on an unproven assumption about gradient updates. The rebuttal acknowledges this limitation but provides no additional evidence from the submitted paper to support the assumption's validity."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "SWR presents a distinct approach combining weight rescaling with proportionality preservation, differentiating it from prior methods."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the VGG-16 results are notable, the overall improvements are incremental rather than groundbreaking. The work does not demonstrate a substantial advance over existing methods that would warrant top-tier acceptance."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is comprehensive across multiple scenarios and models, providing solid empirical support for the method's benefits despite theoretical limitations."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured, with adequate presentation of methods and results."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal acknowledges the theoretical limitations but does not provide any new evidence from the submitted paper to address them. While the empirical results are promising, particularly on VGG-16, the theoretical foundation remains unsound due to the unverified boundedness assumption. The lack of comparison with state-of-the-art methods further limits the paper's contribution. The work does not meet the high standards required for acceptance at a top-tier conference in its current form."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Theoretical boundedness assumption remains unproven for all optimization scenarios\",\n        \"Empirical improvements are incremental rather than breakthrough\",\n        \"Lack of comparison with state-of-the-art methods in current submission\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Empirical support for boundedness effect\",\n          \"location\": \"Section 4.1-4.3, Appendix C\",\n          \"explanation\": \"While the theoretical assumption about bounded gradient updates may not hold universally, our extensive experimental results across multiple scenarios demonstrate that SWR effectively controls weight growth in practice. The improved balancedness results in Appendix C show SWR's practical effectiveness in maintaining layer balance.\"\n        },\n        {\n          \"concern\": \"Significant improvements on larger models\",\n          \"location\": \"Section 4.3, Table 1\",\n          \"explanation\": \"The +4.36% improvement on VGG-16 represents a substantial gain on a challenging dataset where other regularization methods show minimal benefits, demonstrating SWR's particular effectiveness in complex scenarios where plasticity loss is most problematic.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Theoretical boundedness assumption\",\n          \"proposed_change\": \"We will refine the theoretical analysis to discuss the practical conditions under which the bounded gradient assumption holds and provide additional empirical validation of weight boundedness across different optimization settings.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Comparison with state-of-the-art methods\",\n          \"proposed_change\": \"We will expand the experimental section to include comparisons with regenerative regularization (Kumar et al., 2023) and other recent plasticity-preserving methods to provide a more comprehensive evaluation.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement. We acknowledge that the theoretical boundedness assumption may not hold universally, but emphasize that our extensive empirical evaluation demonstrates SWR's practical effectiveness in controlling weight growth across diverse scenarios. The significant improvement on VGG-16 (+4.36%) is particularly noteworthy as it addresses a challenging case where other methods fail. While we agree that comparisons with additional state-of-the-art methods would strengthen the paper, our current evaluation against established baselines (L2, L2 Init, S&P) shows SWR's consistent advantages, especially in maintaining plasticity without information loss. The theoretical framework provides valuable insights into SWR's mechanism through proportionality preservation and layer balancing, which are empirically validated in our experiments.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_a27148757bfc",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/iclr_reject_2025_014_recovering_plasticity_of_neural_networks_via_soft_weight_rescaling.md",
+    "target_paper_summary": {
+      "paper_id": "paper_a27148757bfc",
+      "title": "Recovering Plasticity Of Neural Networks Via Soft Weight Rescaling",
+      "abstract": "Recent studies have shown that as training progresses, neural networks gradually lose their capacity to learn new information, a phenomenon known as plasticity loss. An unbounded weight growth is one of the main causes of plasticity loss. Furthermore, it harms generalization capability and disrupts optimization dynamics. Re-initializing the network can be a solution, but it results in the loss of learned information, leading to performance drops. In this paper, we propose Soft Weight Rescaling (SWR), a novel approach that prevents unbounded weight growth without losing information. SWR recovers the plasticity of the network by simply scaling down the weight at each step of the learning process. We theoretically prove that SWR bounds weight magnitude and balances weight magnitude between layers. Our experiment shows that SWR improves performance on warm-start learning, continual learning, and single-task learning setups on standard image classification benchmarks.",
+      "topic": "",
+      "claims": [
+        "we propose Soft Weight Rescaling (SWR), a novel approach that prevents unbounded weight growth without losing information."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_cca4a8197",
+        "title": "Hardware implementation of memristor-based artificial neural networks",
+        "authors": [
+          "Fernando Aguirre",
+          "Abu Sebastian",
+          "Manuel Le Gallo",
+          "Wenhao Song",
+          "Tong Wang",
+          "J. Joshua Yang",
+          "Wei Lü",
+          "Meng‐Fan Chang",
+          "Daniele Ielmini",
+          "Yuchao Yang",
+          "Adnan Mehonić",
+          "Anthony J. Kenyon",
+          "Marco A. Villena",
+          "J.B. Roldán",
+          "Yuting Wu",
+          "Hung-Hsi Hsu",
+          "Nagarajan Raghavan",
+          "J. Suñé",
+          "E. Miranda",
+          "Ahmed M. Eltawil",
+          "Gianluca Setti",
+          "Kamilya Smagulova",
+          "K. Saláma",
+          "Olga Krestinskaya",
+          "Xiaobing Yan",
+          "Kah‐Wee Ang",
+          "Samarth Jain",
+          "Sifan Li",
+          "Osamah Alharbi",
+          "Sebastián Pazos",
+          "Mario Lanza"
+        ],
+        "year": 2024,
+        "publication_date": "2024-03-04",
+        "venue": "Nature Communications",
+        "abstract": "Artificial Intelligence (AI) is currently experiencing a bloom driven by deep learning (DL) techniques, which rely on networks of connected simple computing units operating in parallel. The low communication bandwidth between memory and processing units in conventional von Neumann machines does not support the requirements of emerging applications that rely extensively on large sets of data. More recent computing paradigms, such as high parallelization and near-memory computing, help alleviate the data communication bottleneck to some extent, but paradigm- shifting concepts are required. Memristors, a novel beyond-complementary metal-oxide-semiconductor (CMOS) technology, are a promising choice for memory devices due to their unique intrinsic device-level properties, enabling both storing and computing with a small, massively-parallel footprint at low power. Theoretically, this directly translates to a major boost in energy efficiency and computational throughput, but various practical challenges remain. In this work we review the latest efforts for achieving hardware-based memristive artificial neural networks (ANNs), describing with detail the working principia of each block and the different design alternatives with their own advantages and disadvantages, as well as the tools required for accurate estimation of performance metrics. Ultimately, we aim to provide a comprehensive protocol of the materials and methods involved in memristive neural networks to those aiming to start working in this field and the experts looking for a holistic approach.",
+        "url": "https://doi.org/10.1038/s41467-024-45670-9",
+        "doi": "https://doi.org/10.1038/s41467-024-45670-9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392367648"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 427
+      },
+      {
+        "paper_id": "rw_002_b383c9041",
+        "title": "Self-organized criticality as a fundamental property of neural systems",
+        "authors": [
+          "Janina Hesse",
+          "Thilo Groß"
+        ],
+        "year": 2014,
+        "publication_date": "2014-09-23",
+        "venue": "Frontiers in Systems Neuroscience",
+        "abstract": "The neural criticality hypothesis states that the brain may be poised in a critical state at a boundary between different types of dynamics. Theoretical and experimental studies show that critical systems often exhibit optimal computational properties, suggesting the possibility that criticality has been evolutionarily selected as a useful trait for our nervous system. Evidence for criticality has been found in cell cultures, brain slices, and anesthetized animals. Yet, inconsistent results were reported for recordings in awake animals and humans, and current results point to open questions about the exact nature and mechanism of criticality, as well as its functional role. Therefore, the criticality hypothesis has remained a controversial proposition. Here, we provide an account of the mathematical and physical foundations of criticality. In the light of this conceptual framework, we then review and discuss recent experimental studies with the aim of identifying important next steps to be taken and connections to other fields that should be explored.",
+        "url": "https://doi.org/10.3389/fnsys.2014.00166",
+        "doi": "https://doi.org/10.3389/fnsys.2014.00166",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1967604241"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 464
+      },
+      {
+        "paper_id": "rw_003_194ec0c86",
+        "title": "Signal propagation in complex networks",
+        "authors": [
+          "Peng Ji",
+          "Jiachen Ye",
+          "Yu Mu",
+          "Wei Lin",
+          "Yang Tian",
+          "Chittaranjan Hens",
+          "Matjaž Perc",
+          "Yang Tang",
+          "Jie Sun",
+          "Jürgen Kurths"
+        ],
+        "year": 2023,
+        "publication_date": "2023-04-05",
+        "venue": "Physics Reports",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.physrep.2023.03.005",
+        "doi": "https://doi.org/10.1016/j.physrep.2023.03.005",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4362640737"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 343
+      },
+      {
+        "paper_id": "rw_005_aae85f077",
+        "title": "Towards a theory of cortical columns: From spiking neurons to interacting neural populations of finite size",
+        "authors": [
+          "Tilo Schwalger",
+          "Moritz Deger",
+          "Wulfram Gerstner"
+        ],
+        "year": 2017,
+        "publication_date": "2017-04-19",
+        "venue": "PLoS Computational Biology",
+        "abstract": "Neural population equations such as neural mass or field models are widely used to study brain activity on a large scale. However, the relation of these models to the properties of single neurons is unclear. Here we derive an equation for several interacting populations at the mesoscopic scale starting from a microscopic model of randomly connected generalized integrate-and-fire neuron models. Each population consists of 50-2000 neurons of the same type but different populations account for different neuron types. The stochastic population equations that we find reveal how spike-history effects in single-neuron dynamics such as refractoriness and adaptation interact with finite-size fluctuations on the population level. Efficient integration of the stochastic mesoscopic equations reproduces the statistical behavior of the population activities obtained from microscopic simulations of a full spiking neural network model. The theory describes nonlinear emergent dynamics such as finite-size-induced stochastic transitions in multistable networks and synchronization in balanced networks of excitatory and inhibitory neurons. The mesoscopic equations are employed to rapidly integrate a model of a cortical microcircuit consisting of eight neuron types, which allows us to predict spontaneous population activities as well as evoked responses to thalamic input. Our theory establishes a general framework for modeling finite-size neural population dynamics based on single cell and synapse parameters and offers an efficient approach to analyzing cortical circuits and computations.",
+        "url": "https://doi.org/10.1371/journal.pcbi.1005507",
+        "doi": "https://doi.org/10.1371/journal.pcbi.1005507",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2547783202"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 169
+      },
+      {
+        "paper_id": "rw_006_ad691ad2b",
+        "title": "Applications of Neural Networks in Biomedical Data Analysis",
+        "authors": [
+          "Romano Weiss",
+          "Sanaz Karimijafarbigloo",
+          "Dirk Roggenbuck",
+          "Stefan Rödiger"
+        ],
+        "year": 2022,
+        "publication_date": "2022-06-21",
+        "venue": "Biomedicines",
+        "abstract": "Neural networks for deep-learning applications, also called artificial neural networks, are important tools in science and industry. While their widespread use was limited because of inadequate hardware in the past, their popularity increased dramatically starting in the early 2000s when it became possible to train increasingly large and complex networks. Today, deep learning is widely used in biomedicine from image analysis to diagnostics. This also includes special topics, such as forensics. In this review, we discuss the latest networks and how they work, with a focus on the analysis of biomedical data, particularly biomarkers in bioimage data. We provide a summary on numerous technical aspects, such as activation functions and frameworks. We also present a data analysis of publications about neural networks to provide a quantitative insight into the use of network types and the number of journals per year to determine the usage in different scientific fields.",
+        "url": "https://doi.org/10.3390/biomedicines10071469",
+        "doi": "https://doi.org/10.3390/biomedicines10071469",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4283263600"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 38
+      },
+      {
+        "paper_id": "rw_007_e824fff29",
+        "title": "Physics-Informed neural network solver for numerical analysis in geoengineering",
+        "authors": [
+          "Xiaoxuan Chen",
+          "Pin Zhang",
+          "Zhen‐Yu Yin"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-02",
+        "venue": "Georisk Assessment and Management of Risk for Engineered Systems and Geohazards",
+        "abstract": "Engineering-scale problems generally can be described by partial differential equations (PDEs) or ordinary differential equations (ODEs). Analytical, semi-analytical and numerical analysis are commonly used for deriving the solutions of such PDEs/ODEs. Recently, a novel physics-informed neural network (PINN) solver has emerged as a promising alternative to solve PDEs/ODEs. PINN resembles a mesh-free method which leverages the strong non-linear ability of the deep learning algorithms (e.g. neural networks) to automatically search for the correct spatial-temporal responses constrained by embedded PDEs/ODEs. This study comprehensively reviews the current state of PINN including its principles for the forward and inverse problems, baseline algorithms for PINN, enhanced PINN variants combined with special sampling strategies and loss functions. PINN shows an easier modelling process and superior feasibility for inverse problems compared to conventional numerical methods. Meanwhile, the limitations and challenges of applications of current PINN solvers to constitutive modelling and multi-scale/phase problems are also discussed in terms of convergence ability and computational costs. PINN has exhibited its huge potential in geoengineering and brings a revolutionary way for numerous domain problems.",
+        "url": "https://doi.org/10.1080/17499518.2024.2315301",
+        "doi": "https://doi.org/10.1080/17499518.2024.2315301",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4391967541"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 36
+      },
+      {
+        "paper_id": "rw_008_1b1b5892b",
+        "title": "Detection and identification of European woodpeckers with deep convolutional neural networks",
+        "authors": [
+          "Juliette Florentin",
+          "Thierry Dutoit",
+          "Olivier Verlinden"
+        ],
+        "year": 2019,
+        "publication_date": "2019-11-11",
+        "venue": "Ecological Informatics",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.ecoinf.2019.101023",
+        "doi": "https://doi.org/10.1016/j.ecoinf.2019.101023",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2987685943"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 42
+      },
+      {
+        "paper_id": "rw_009_1ce7ee64c",
+        "title": "Extraction of Network Topology From Multi-Electrode Recordings: Is there a Small-World Effect?",
+        "authors": [
+          "Felipe Gerhard",
+          "Gordon Pipa",
+          "Bruss Lima",
+          "Sergio Neuenschwander",
+          "Wulfram Gerstner"
+        ],
+        "year": 2011,
+        "publication_date": "2011-01-01",
+        "venue": "Frontiers in Computational Neuroscience",
+        "abstract": "The simultaneous recording of the activity of many neurons poses challenges for multivariate data analysis. Here, we propose a general scheme of reconstruction of the functional network from spike train recordings. Effective, causal interactions are estimated by fitting generalized linear models on the neural responses, incorporating effects of the neurons' self-history, of input from other neurons in the recorded network and of modulation by an external stimulus. The coupling terms arising from synaptic input can be transformed by thresholding into a binary connectivity matrix which is directed. Each link between two neurons represents a causal influence from one neuron to the other, given the observation of all other neurons from the population. The resulting graph is analyzed with respect to small-world and scale-free properties using quantitative measures for directed networks. Such graph-theoretic analyses have been performed on many complex dynamic networks, including the connectivity structure between different brain areas. Only few studies have attempted to look at the structure of cortical neural networks on the level of individual neurons. Here, using multi-electrode recordings from the visual system of the awake monkey, we find that cortical networks lack scale-free behavior, but show a small, but significant small-world structure. Assuming a simple distance-dependent probabilistic wiring between neurons, we find that this connectivity structure can account for all of the networks' observed small-world ness. Moreover, for multi-electrode recordings the sampling of neurons is not uniform across the population. We show that the small-world-ness obtained by such a localized sub-sampling overestimates the strength of the true small-world structure of the network. This bias is likely to be present in all previous experiments based on multi-electrode recordings.",
+        "url": "https://doi.org/10.3389/fncom.2011.00004",
+        "doi": "https://doi.org/10.3389/fncom.2011.00004",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2105728001"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 111
+      },
+      {
+        "paper_id": "rw_010_5ed38219e",
+        "title": "Attractor Metabolic Networks",
+        "authors": [
+          "Ildefonso M. De la Fuente",
+          "Jesús M. Cortés",
+          "David A. Pelta",
+          "J. Veguillas"
+        ],
+        "year": 2013,
+        "publication_date": "2013-03-15",
+        "venue": "PLoS ONE",
+        "abstract": "BACKGROUND: The experimental observations and numerical studies with dissipative metabolic networks have shown that cellular enzymatic activity self-organizes spontaneously leading to the emergence of a Systemic Metabolic Structure in the cell, characterized by a set of different enzymatic reactions always locked into active states (metabolic core) while the rest of the catalytic processes are only intermittently active. This global metabolic structure was verified for Escherichia coli, Helicobacter pylori and Saccharomyces cerevisiae, and it seems to be a common key feature to all cellular organisms. In concordance with these observations, the cell can be considered a complex metabolic network which mainly integrates a large ensemble of self-organized multienzymatic complexes interconnected by substrate fluxes and regulatory signals, where multiple autonomous oscillatory and quasi-stationary catalytic patterns simultaneously emerge. The network adjusts the internal metabolic activities to the external change by means of flux plasticity and structural plasticity. METHODOLOGY/PRINCIPAL FINDINGS: In order to research the systemic mechanisms involved in the regulation of the cellular enzymatic activity we have studied different catalytic activities of a dissipative metabolic network under different external stimuli. The emergent biochemical data have been analysed using statistical mechanic tools, studying some macroscopic properties such as the global information and the energy of the system. We have also obtained an equivalent Hopfield network using a Boltzmann machine. Our main result shows that the dissipative metabolic network can behave as an attractor metabolic network. CONCLUSIONS/SIGNIFICANCE: We have found that the systemic enzymatic activities are governed by attractors with capacity to store functional metabolic patterns which can be correctly recovered from specific input stimuli. The network attractors regulate the catalytic patterns, modify the efficiency in the connection between the multienzymatic complexes, and stably retain these modifications. Here for the first time, we have introduced the general concept of attractor metabolic network, in which this dynamic behavior is observed.",
+        "url": "https://doi.org/10.1371/journal.pone.0058284",
+        "doi": "https://doi.org/10.1371/journal.pone.0058284",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2107333957"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 39
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_005_aae85f077",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method",
+          "constraints"
+        ],
+        "rationale": "The paper develops neural population equations from microscopic neuron models, addressing dynamics and optimization in neural networks, relevant to plasticity and weight management",
+        "evidence_summary": "In 2017, Schwalger et al. published 'Towards a theory of cortical columns: From spiking neurons to interacting neural populations of finite size' in PLoS Computational Biology. They derived equations for interacting neural populations starting from generalized integrate-and-fire neuron models, revealing how spike-history effects and finite-size fluctuations interact. The theory described nonlinear emergent dynamics including finite-size-induced stochastic transitions and synchronization in balanced networks."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_009_1ce7ee64c",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "same_method",
+          "constraints"
+        ],
+        "rationale": "The paper reconstructs functional networks from neural recordings using generalized linear models, addressing connectivity and network dynamics relevant to plasticity",
+        "evidence_summary": "In 2011, Gerhard et al. published 'Extraction of Network Topology From Multi-Electrode Recordings: Is there a Small-World Effect?' in Frontiers in Computational Neuroscience. They proposed reconstructing functional networks from spike train recordings by fitting generalized linear models on neural responses. Using multi-electrode recordings from monkey visual systems, they found cortical networks show small-world structure but lack scale-free behavior."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_002_b383c9041",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "constraints"
+        ],
+        "rationale": "The paper discusses criticality in neural systems and optimal computational properties, relevant to neural network dynamics and learning capacity",
+        "evidence_summary": "In 2014, Hesse and Gro published 'Self-organized criticality as a fundamental property of neural systems' in Frontiers in Systems Neuroscience. They reviewed the criticality hypothesis stating the brain may be poised in a critical state between different dynamical regimes. The paper discussed theoretical and experimental evidence for critical systems exhibiting optimal computational properties."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_003_194ec0c86",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "The paper on signal propagation in complex networks addresses network dynamics relevant to neural network optimization",
+        "evidence_summary": "In 2023, Ji et al. published 'Signal propagation in complex networks' in Physics Reports. The paper addresses fundamental aspects of signal propagation dynamics in networked systems."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_ad691ad2b",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The review discusses neural network applications and technical aspects relevant to neural network methodologies",
+        "evidence_summary": "In 2022, Weiss et al. published 'Applications of Neural Networks in Biomedical Data Analysis' in Biomedicines. They reviewed neural networks for deep-learning applications in biomedicine, focusing on analysis of biomarkers in bioimage data. The paper summarized technical aspects including activation functions and frameworks, and provided quantitative analysis of network type usage across scientific fields."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_e824fff29",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The paper discusses physics-informed neural networks for solving differential equations, relevant to neural network optimization methods",
+        "evidence_summary": "In 2024, Chen et al. published 'Physics-Informed neural network solver for numerical analysis in geoengineering' in Georisk Assessment and Management of Risk for Engineered Systems and Geohazards. They reviewed physics-informed neural networks as mesh-free methods leveraging deep learning algorithms to solve differential equations. The paper discussed PINN's principles for forward and inverse problems and its limitations regarding convergence ability and computational costs."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_cca4a8197",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "constraints"
+        ],
+        "rationale": "The paper reviews hardware implementations of neural networks, addressing computational constraints relevant to optimization",
+        "evidence_summary": "In 2024, Aguirre et al. published 'Hardware implementation of memristor-based artificial neural networks' in Nature Communications. They reviewed efforts for hardware-based memristive artificial neural networks, describing working principles of each component and design alternatives. The paper discussed challenges in achieving major boosts in energy efficiency and computational throughput through memristive technologies."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_1b1b5892b",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The paper applies convolutional neural networks for detection tasks, representing neural network applications",
+        "evidence_summary": "In 2019, Florentin et al. published 'Detection and identification of European woodpeckers with deep convolutional neural networks' in Ecological Informatics. The paper applied deep convolutional neural networks to wildlife detection and identification tasks."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_010_5ed38219e",
+        "relevance_score": 0.32,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "The paper discusses metabolic networks and plasticity concepts broadly related to network dynamics",
+        "evidence_summary": "In 2013, Fuente et al. published 'Attractor Metabolic Networks' in PLoS ONE. They studied catalytic activities of dissipative metabolic networks under different external stimuli, analyzing emergent biochemical data using statistical mechanics tools. The research examined how networks adjust internal metabolic activities through flux plasticity and structural plasticity."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2017, Tilo Schwalger et al. published \"Towards a theory of cortical columns: From spiking neurons to interacting neural populations of finite size\" in PLoS Computational Biology. The authors' theory establishes a general framework for modeling finite-size neural population dynamics based on single cell and synapse parameters and offers an efficient approach to analyzing cortical circuits and computations. Neural population equations such as neural mass or field models are widely used to study brain activity on a large scale. However, the relation of these models to the properties of single neurons is unclear. In 2011, Felipe Gerhard et al. published \"Extraction of Network Topology From Multi-Electrode Recordings: Is there a Small-World Effect?\" in Frontiers in Computational Neuroscience. Here, the authors propose a general scheme of reconstruction of the functional network from spike train recordings. The simultaneous recording of the activity of many neurons poses challenges for multivariate data analysis. The resulting graph is analyzed with respect to small-world and scale-free properties using quantitative measures for directed networks. In 2014, Janina Hesse and Thilo Groß published \"Self-organized criticality as a fundamental property of neural systems\" in Frontiers in Systems Neuroscience. Yet, inconsistent results were reported for recordings in awake animals and humans, and current results point to open questions about the exact nature and mechanism of criticality, as well as its functional role. The neural criticality hypothesis states that the brain may be poised in a critical state at a boundary between different types of dynamics. In the light of this conceptual framework, the authors then review and discuss recent experimental studies with the aim of identifying important next steps to be taken and connections to other fields that should be explored. In 2023, Peng Ji et al. published \"Signal propagation in complex networks\" in Physics Reports. The available metadata does not include an abstract with contribution, dataset, or result details. In 2022, Romano Weiss et al. published \"Applications of Neural Networks in Biomedical Data Analysis\" in Biomedicines. The authors also present a data analysis of publications about neural networks to provide a quantitative insight into the use of network types and the number of journals per year to determine the usage in different scientific fields. The authors provide a summary on numerous technical aspects, such as activation functions and frameworks. Neural networks for deep-learning applications, also called artificial neural networks, are important tools in science and industry. In 2024, Xiaoxuan Chen et al. published \"Physics-Informed neural network solver for numerical analysis in geoengineering\" in Georisk Assessment and Management of Risk for Engineered Systems and Geohazards. Recently, a novel physics-informed neural network (PINN) solver has emerged as a promising alternative to solve PDEs/ODEs. PINN has exhibited its huge potential in geoengineering and brings a revolutionary way for numerous domain problems. PINN resembles a mesh-free method which leverages the strong non-linear ability of the deep learning algorithms (e.g. neural networks) to automatically search for the correct spatial-temporal responses constrained by embedded PDEs/ODEs.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

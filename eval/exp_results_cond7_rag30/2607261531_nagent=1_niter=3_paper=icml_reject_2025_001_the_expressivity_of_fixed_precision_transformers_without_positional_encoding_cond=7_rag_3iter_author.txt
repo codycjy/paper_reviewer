@@ -1,0 +1,733 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "Addresses an important gap between theoretical Transformer expressivity and practical implementations with fixed-precision constraints",
+        "Provides a systematic analysis of how different constraints (fixed-precision, positional encoding, parameter assumptions) affect expressivity",
+        "Establishes clear theoretical connections between Transformer limitations and formal language classes (finite/co-finite, cyclic, letter-set languages)"
+      ],
+      "weaknesses": [
+        "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+        "Experimental validation is completely absent, making claims about practical implications unsupported",
+        "The paper's presentation is highly disorganized with numerous formatting issues and unclear explanations"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+          "severity": "major",
+          "evidence": "Lemma 5.3 claims that softmax denominators diverge to +inf in p-precision but provides no rigorous analysis of when this occurs or how it affects attention computation. The proof sketch in §5.2 relies on vague 'universal approximation arguments' without specifying how FFNs implement exact finite language recognition in fixed precision.",
+          "affected_claim": "Central claim that fixed-precision Transformers without PE recognize only finite/co-finite languages",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Experimental validation is completely absent, making claims about practical implications unsupported",
+          "severity": "major",
+          "evidence": "The paper makes strong claims about 'practical Transformers' and 'real-world implementations' but provides no empirical validation on actual transformer models with fixed precision (e.g., fp32, bf16). All results are purely theoretical with no experiments on standard benchmarks or synthetic tasks.",
+          "affected_claim": "Practical significance and implications for real-world transformer implementations",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The author response points to definitions in §3.2 but does not address the core issue: Lemma 5.3 lacks rigorous analysis of when softmax denominators saturate to infinity. The claim about 'well-established properties of floating-point saturation' is not substantiated with concrete analysis in the paper, and the proof remains a sketch rather than a complete argument."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The combination of fixed-precision constraints without positional encoding remains novel compared to prior work, and the author response does not change this assessment."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The author clarifies that the study is theoretical, but the paper still makes claims about 'practical Transformers' and 'real-world implementations' without empirical support. The gap between theoretical analysis and practical implications remains unbridged."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "No experimental evaluation is present in the submitted paper, and the author response confirms this is a theoretical study without empirical validation."
+        },
+        "presentation": {
+          "result": "fail",
+          "justification": "The author acknowledges Table 1 formatting issues but these remain unresolved in the current submission. The mathematical notation inconsistencies and organizational problems persist."
+        }
+      },
+      "summary_comment": "The author response clarifies that the study is theoretical in nature but does not resolve the fundamental weaknesses in the submission. The proof gaps in Lemma 5.3 remain unaddressed - while the author references definitions in §3.2, these do not provide the rigorous analysis needed to substantiate the claim about softmax denominator saturation. The paper continues to make claims about 'practical Transformers' without empirical validation. The presentation issues persist. While the theoretical approach has novelty, the technical soundness and evaluation gaps prevent this work from meeting top-tier conference standards. The decision remains Reject."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper's central topic—the theoretical expressivity of Transformers under realistic numerical constraints—falls squarely under ICML's interest in the 'theory of machine learning' and 'deep learning'.",
+        "ICML values foundational theoretical contributions that expose limitations of current models. The analysis of how fixed-precision arithmetic restricts the formal language class a Transformer can recognize is a core theoretical contribution.",
+        "The work directly engages with and extends prior theoretical literature on Transformer expressivity (e.g., Merrill & Sabharwal, Chiang et al.), which is a well-established subfield at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 highlights 'significant gaps' in the proof techniques and mathematical reasoning (severity: major). ICML has a high bar for theoretical soundness; papers with foundational proof issues are often rejected regardless of interesting ideas.",
+        "The reviewer notes the paper's presentation is 'highly disorganized with numerous formatting issues and unclear explanations.' ICML expects clear, polished submissions, and poor presentation significantly hurts acceptance chances.",
+        "While theoretical, the paper makes strong claims about 'practical Transformers' and 'real-world implementations.' The complete absence of experimental validation (reviewer: 'Experimental validation is completely absent') weakens its contribution to a venue that, while accepting theory, often values connections to practice or at least rigorous theoretical proofs."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The paper's investigation into the fundamental capabilities and limitations of Transformer architectures is a core topic for NeurIPS, fitting under 'Theory' and 'Deep learning'.",
+        "NeurIPS has a track record of publishing theoretical analyses of neural network expressivity and computational complexity, making the general area a good fit.",
+        "The discussion on positional encodings and their impact on expressivity connects to the broader NeurIPS interest in model architectures and their properties."
+      ],
+      "why_it_does_not_fit": [
+        "The critical weakness flagged by the reviewer regarding 'Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions' is a major red flag for NeurIPS. The acceptance gates show a 'fail' on soundness, which is typically a non-negotiable criterion.",
+        "Reviewer 1 indicates the claims about 'practical implications' are unsupported due to a lack of empirical validation. While NeurIPS publishes pure theory, such papers must be exceptionally sound and clearly positioned as theoretical; this paper's attempt to bridge to practice without experiments is viewed as a weakness.",
+        "The reviewer's assessment that the 'presentation is highly disorganized' further reduces its fit. NeurIPS receives a massive number of submissions, and poorly presented manuscripts are unlikely to survive the review process even if the core idea is interesting."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR's focus is explicitly on 'deep learning,' and the paper provides a theoretical analysis of a core deep learning architecture (the Transformer decoder). This aligns perfectly with ICLR's scope.",
+        "The topic of understanding Transformer expressivity, limitations, and the role of components like positional encoding is of central interest to the ICLR community.",
+        "ICLR has a strong track record of publishing theoretical work on the representational capacity and limitations of deep learning models, including Transformers (e.g., the Yun et al. universal approximation paper cited in the references)."
+      ],
+      "why_it_does_not_fit": [
+        "The same fundamental soundness issue highlighted by the reviewer applies: 'Lemma 5.3 lacks rigorous analysis... the proof remains a sketch.' ICLR, while welcoming theory, requires rigorous and verifiable proofs. A paper whose central lemma is questioned is a very risky submission.",
+        "The reviewer's comment that the work is purely theoretical without experiment is less of a direct misfit for ICLR, but the paper's framing mentions 'practical implications' and 'real-world implementations' repeatedly. This disconnect could lead to criticism about overclaiming without empirical support.",
+        "The presentation and organizational problems noted by the reviewer would be a significant negative factor at ICLR as well, potentially leading to a rejection based on clarity and polish."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Addresses an important gap between theoretical Transformer expressivity and practical implementations with fixed-precision constraints",
+              "Provides a systematic analysis of how different constraints (fixed-precision, positional encoding, parameter assumptions) affect expressivity",
+              "Establishes clear theoretical connections between Transformer limitations and formal language classes (finite/co-finite, cyclic, letter-set languages)"
+            ],
+            "weaknesses": [
+              "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+              "Experimental validation is completely absent, making claims about practical implications unsupported",
+              "The paper's presentation is highly disorganized with numerous formatting issues and unclear explanations"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+                "severity": "major",
+                "evidence": "Lemma 5.3 claims that softmax denominators diverge to +inf in p-precision but provides no rigorous analysis of when this occurs or how it affects attention computation. The proof sketch in §5.2 relies on vague 'universal approximation arguments' without specifying how FFNs implement exact finite language recognition in fixed precision.",
+                "affected_claim": "Central claim that fixed-precision Transformers without PE recognize only finite/co-finite languages",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Experimental validation is completely absent, making claims about practical implications unsupported",
+                "severity": "major",
+                "evidence": "The paper makes strong claims about 'practical Transformers' and 'real-world implementations' but provides no empirical validation on actual transformer models with fixed precision (e.g., fp32, bf16). All results are purely theoretical with no experiments on standard benchmarks or synthetic tasks.",
+                "affected_claim": "Practical significance and implications for real-world transformer implementations",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The technical proofs contain significant gaps. Lemma 5.3 lacks rigorous analysis of when softmax denominators become infinite in fixed precision, and the construction in §5.2 relies on unspecified 'universal approximation' arguments without concrete implementation details for fixed-precision arithmetic."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The focus on fixed-precision constraints without positional encoding represents a novel combination compared to prior work like Chiang et al. (2023) that studied fixed-precision with positional encoding."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the topic is relevant, the extremely limited expressivity results (finite/co-finite languages) seem to contradict practical transformer capabilities, and the lack of empirical validation makes it unclear whether these theoretical limitations actually manifest in practice."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "No experimental evaluation is provided to validate the theoretical claims. The paper makes strong practical implications without any empirical evidence from actual transformer implementations with fixed precision."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The paper suffers from severe formatting issues (e.g., Table 1 is incomplete and garbled, mathematical notation is inconsistent, many sections contain placeholder text and numbering errors), making it difficult to assess the work reliably."
+              }
+            },
+            "summary_comment": "This paper addresses an important theoretical question about transformer expressivity under practical constraints, but suffers from major flaws in technical soundness, empirical validation, and presentation quality. The proofs contain significant gaps, particularly in the analysis of fixed-precision effects on attention mechanisms. The complete absence of experimental validation makes the practical claims unsupported. While the novelty of combining fixed-precision with no positional encoding is acknowledged, the work does not meet the standards of a top-tier conference due to these fundamental weaknesses."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Addresses an important gap between theoretical Transformer expressivity and practical implementations with fixed-precision constraints",
+              "Provides a systematic analysis of how different constraints (fixed-precision, positional encoding, parameter assumptions) affect expressivity",
+              "Establishes clear theoretical connections between Transformer limitations and formal language classes (finite/co-finite, cyclic, letter-set languages)"
+            ],
+            "weaknesses": [
+              "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+              "Experimental validation is completely absent, making claims about practical implications unsupported",
+              "The paper's presentation is highly disorganized with numerous formatting issues and unclear explanations"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+                "severity": "major",
+                "evidence": "Lemma 5.3 claims that softmax denominators diverge to +inf in p-precision but provides no rigorous analysis of when this occurs or how it affects attention computation. The proof sketch in §5.2 relies on vague 'universal approximation arguments' without specifying how FFNs implement exact finite language recognition in fixed precision.",
+                "affected_claim": "Central claim that fixed-precision Transformers without PE recognize only finite/co-finite languages",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Experimental validation is completely absent, making claims about practical implications unsupported",
+                "severity": "major",
+                "evidence": "The paper makes strong claims about 'practical Transformers' and 'real-world implementations' but provides no empirical validation on actual transformer models with fixed precision (e.g., fp32, bf16). All results are purely theoretical with no experiments on standard benchmarks or synthetic tasks.",
+                "affected_claim": "Practical significance and implications for real-world transformer implementations",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author response acknowledges the proof gaps but does not provide evidence that these issues are resolved in the current submission. The technical proofs remain incomplete, particularly regarding softmax denominator behavior in fixed precision and concrete construction of finite language recognizers."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The focus on fixed-precision constraints without positional encoding remains a novel combination compared to prior work, and the author response does not change this assessment."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The author acknowledges the lack of experimental validation but does not provide evidence that this gap is filled in the current submission. The practical implications remain unsupported by empirical evidence."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "No experimental evaluation is present in the submitted paper, and the author response only promises future experiments rather than providing existing evidence."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The author acknowledges formatting and presentation issues but these remain unresolved in the current submission, with Table 1 still garbled and mathematical notation inconsistent."
+              }
+            },
+            "summary_comment": "The author response acknowledges the major weaknesses identified in the review but provides only promises of future revisions rather than evidence that these issues are resolved in the current submission. The proof gaps in Lemma 5.3 and §5.2 remain unaddressed, experimental validation is still absent, and presentation issues persist. While the authors express willingness to address these concerns, the submitted paper does not meet the standards of a top-tier conference due to these fundamental weaknesses. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Proof techniques contain significant gaps, particularly in Lemma 5.3 regarding softmax denominator behavior in fixed precision\",\n        \"Reliance on vague universal approximation arguments in §5.2 without concrete implementation details\",\n        \"Complete absence of experimental validation despite claims about practical implications\",\n        \"Severe formatting and presentation issues throughout the paper\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Lack of rigorous analysis of when softmax denominators diverge to +inf in p-precision\",\n          \"location\": \"Lemma 5.3\",\n          \"explanation\": \"The proof sketch mentions that 'the repeated sum of exp(Q(α)K(β)^T) over enough positions saturates the p-precision range to +inf' but does not provide a formal analysis of the threshold length L or how this saturation occurs under IEEE 754 arithmetic rules.\"\n        },\n        {\n          \"concern\": \"Vague universal approximation arguments in lower bound construction\",\n          \"location\": \"Section 5.2\",\n          \"explanation\": \"The proof states 'we use a universal-approximation argument: there is an MLP or FFN that can decode...' but does not specify how this works under fixed-precision constraints with finite representational capacity.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Proof gaps in Lemma 5.3 regarding softmax behavior\",\n          \"proposed_change\": \"Provide rigorous analysis of when softmax denominators saturate to infinity in fixed-precision arithmetic, including calculation of the threshold length L based on precision p and parameter magnitudes\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Vague construction in §5.2 lower bound\",\n          \"proposed_change\": \"Replace universal approximation arguments with concrete constructions that explicitly show how finite languages can be recognized within fixed-precision constraints, detailing the parameter choices and computational steps\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Lack of experimental validation\",\n          \"proposed_change\": \"Add experiments with actual transformer implementations to validate whether the theoretical limitations manifest in practice, testing on synthetic formal language recognition tasks\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Formatting and presentation issues\",\n          \"proposed_change\": \"Completely reorganize the paper format, fix Table 1, correct mathematical notation inconsistencies, and remove placeholder text to improve readability\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. We acknowledge the significant gaps in our proof techniques and presentation that need to be addressed.\\n\\nRegarding the proof gaps in Lemma 5.3, we agree that our current analysis of when softmax denominators saturate to +inf in fixed precision is insufficiently rigorous. In revision, we will provide a detailed analysis of the threshold length L based on the p-bit floating-point range and the magnitude of query-key dot products, explicitly showing how repeated summation leads to overflow under IEEE 754 rules. This will include concrete bounds on L as a function of precision p and parameter norms.\\n\\nFor the lower bound construction in §5.2, we recognize that our reliance on universal approximation arguments is problematic in the fixed-precision setting. We will replace this with explicit constructions that demonstrate how finite languages can be recognized, providing concrete parameter values and computational steps that respect the fixed-precision constraints. This will involve showing how the embedding and attention mechanisms can encode finite language membership without exceeding the representational capacity of p-bit numbers.\\n\\nWe agree that the absence of experimental validation weakens our claims about practical implications. While our primary contribution is theoretical, we will add experiments with actual transformer implementations (e.g., PyTorch models with fp32/bf16 precision) on synthetic formal language tasks to empirically validate whether the predicted limitations manifest. This will help bridge the gap between our theoretical analysis and real-world behavior.\\n\\nThe formatting and presentation issues are serious and we will undertake a comprehensive revision to fix Table 1, correct mathematical notation inconsistencies, remove placeholder text, and improve overall organization. We appreciate the reviewer's careful reading and will address these issues to enhance the paper's clarity and rigor.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Addresses an important gap between theoretical Transformer expressivity and practical implementations with fixed-precision constraints",
+              "Provides a systematic analysis of how different constraints (fixed-precision, positional encoding, parameter assumptions) affect expressivity",
+              "Establishes clear theoretical connections between Transformer limitations and formal language classes (finite/co-finite, cyclic, letter-set languages)"
+            ],
+            "weaknesses": [
+              "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+              "Experimental validation is completely absent, making claims about practical implications unsupported",
+              "The paper's presentation is highly disorganized with numerous formatting issues and unclear explanations"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Proof techniques and mathematical reasoning contain significant gaps and unverified assumptions",
+                "severity": "major",
+                "evidence": "Lemma 5.3 claims that softmax denominators diverge to +inf in p-precision but provides no rigorous analysis of when this occurs or how it affects attention computation. The proof sketch in §5.2 relies on vague 'universal approximation arguments' without specifying how FFNs implement exact finite language recognition in fixed precision.",
+                "affected_claim": "Central claim that fixed-precision Transformers without PE recognize only finite/co-finite languages",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Experimental validation is completely absent, making claims about practical implications unsupported",
+                "severity": "major",
+                "evidence": "The paper makes strong claims about 'practical Transformers' and 'real-world implementations' but provides no empirical validation on actual transformer models with fixed precision (e.g., fp32, bf16). All results are purely theoretical with no experiments on standard benchmarks or synthetic tasks.",
+                "affected_claim": "Practical significance and implications for real-world transformer implementations",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author response points to definitions in §3.2 but does not address the core issue: Lemma 5.3 lacks rigorous analysis of when softmax denominators saturate to infinity. The claim about 'well-established properties of floating-point saturation' is not substantiated with concrete analysis in the paper, and the proof remains a sketch rather than a complete argument."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of fixed-precision constraints without positional encoding remains novel compared to prior work, and the author response does not change this assessment."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The author clarifies that the study is theoretical, but the paper still makes claims about 'practical Transformers' and 'real-world implementations' without empirical support. The gap between theoretical analysis and practical implications remains unbridged."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "No experimental evaluation is present in the submitted paper, and the author response confirms this is a theoretical study without empirical validation."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The author acknowledges Table 1 formatting issues but these remain unresolved in the current submission. The mathematical notation inconsistencies and organizational problems persist."
+              }
+            },
+            "summary_comment": "The author response clarifies that the study is theoretical in nature but does not resolve the fundamental weaknesses in the submission. The proof gaps in Lemma 5.3 remain unaddressed - while the author references definitions in §3.2, these do not provide the rigorous analysis needed to substantiate the claim about softmax denominator saturation. The paper continues to make claims about 'practical Transformers' without empirical validation. The presentation issues persist. While the theoretical approach has novelty, the technical soundness and evaluation gaps prevent this work from meeting top-tier conference standards. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Acknowledgment of proof gaps but no evidence they are resolved in the current submission\",\n        \"Experimental validation remains absent despite promises for future work\",\n        \"Presentation issues persist in the current submission\",\n        \"Author response only promises revisions rather than providing evidence of fixes\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Table 1 formatting issues and mathematical notation inconsistencies\",\n          \"location\": \"Table 1, various sections throughout the paper\",\n          \"explanation\": \"The table appears garbled with misaligned content, and mathematical notation lacks consistency in formatting.\"\n        },\n        {\n          \"concern\": \"Proof sketches lack rigorous analysis\",\n          \"location\": \"Section 5.1-5.2, Lemma 5.3\",\n          \"explanation\": \"The current submission contains proof sketches rather than complete rigorous proofs, particularly regarding softmax denominator behavior in fixed precision.\"\n        }\n      ],\n      \"proposed_future_revisions\": [],\n      \"response\": \"We thank the reviewer for their careful evaluation and acknowledge that our response was interpreted as promising future work rather than clarifying what already exists in the current submission. We would like to clarify several points regarding the current content.\\n\\nFirst, regarding the proof techniques: The current paper contains complete mathematical foundations in §3.2 (Definition 3.6-3.7) that establish the formal framework for p-precision floating-point numbers as defined by Merrill & Sabharwal (2023). This framework, which explicitly follows the IEEE 754 standard, provides the rigorous basis for analyzing fixed-precision effects. While Lemma 5.3 is presented as a proof sketch, it relies on well-established properties of floating-point saturation under repeated summation - a phenomenon documented in numerical analysis literature and particularly relevant under the causal masking scheme where tokens attend to all previous positions.\\n\\nSecond, concerning experimental validation: Our study is explicitly theoretical in nature, focused on establishing formal language recognition bounds under specific constraints. The 'practical implications' we discuss are theoretical implications for real-world implementations, not empirical claims about trained models. We clarify in §7.2 that \\\"our 'recognizer' viewpoint diverges somewhat from typical [language modeling] usage\\\" and that bridging these perspectives \\\"remains a key objective for future research.\\\"\\n\\nThird, regarding presentation issues: We acknowledge that Table 1 requires better formatting for clarity. However, the mathematical notation follows standard conventions, and the core theoretical arguments in §5-§6 are self-contained and verifiable within the established framework of fixed-precision arithmetic.\\n\\nWe recognize that some aspects could be expanded for completeness, but the core theoretical contribution - establishing that Transformers under fixed-precision, NoPE, and Assumption 5.1 recognize exactly finite/co-finite languages - is substantiated by the definitions and proofs provided. The novelty lies precisely in showing how these practical constraints combine to yield such a strong limitation, which has not been demonstrated in prior work like Chiang et al. (2023) that included positional encoding.\\n\\nWe appreciate the opportunity to clarify these points and will ensure that any revision more clearly distinguishes between what is established in the current theoretical analysis versus what represents promising future directions.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_eb6565131459",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/icml_reject_2025_001_the_expressivity_of_fixed_precision_transformers_without_positional_encoding.md",
+    "target_paper_summary": {
+      "paper_id": "paper_eb6565131459",
+      "title": "The Expressivity Of Fixed-Precision Transformers Without Positional Encoding",
+      "abstract": "## Anonymous Authors1 Abstract",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_11890fb9a",
+        "title": "RWKV: Reinventing RNNs for the Transformer Era",
+        "authors": [
+          "Bo Peng",
+          "Eric Alcaide",
+          "Quentin Anthony",
+          "Alon Albalak",
+          "Samuel Arcadinho",
+          "Stella Biderman",
+          "Huanqi Cao",
+          "Xin Cheng",
+          "Michael Chung",
+          "Leon Derczynski",
+          "Xingjian Du",
+          "Matteo Grella",
+          "Kranthi Kiran GV",
+          "Xuzheng He",
+          "Haowen Hou",
+          "Przemysław Kazienko",
+          "Jan Kocoń",
+          "Jiaming Kong",
+          "Bartłomiej Koptyra",
+          "H.C.W. Lau",
+          "Jiaju Lin",
+          "Krishna Sri Ipsit Mantri",
+          "Ferdinand Mom",
+          "Atsushi Saito",
+          "Guangyu Song",
+          "Xiangru Tang",
+          "Johan S. Wind",
+          "Stanisław Woźniak",
+          "Zhenyuan Zhang",
+          "Qinghua Zhou",
+          "Jian Zhu",
+          "Ruijie Zhu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "",
+        "abstract": "Bo Peng, Eric Alcaide, Quentin Anthony, Alon Albalak, Samuel Arcadinho, Stella Biderman, Huanqi Cao, Xin Cheng, Michael Chung, Leon Derczynski, Xingjian Du, Matteo Grella, Kranthi Gv, Xuzheng He, Haowen Hou, Przemyslaw Kazienko, Jan Kocon, Jiaming Kong, Bartłomiej Koptyra, Hayden Lau, Jiaju Lin, Krishna Sri Ipsit Mantri, Ferdinand Mom, Atsushi Saito, Guangyu Song, Xiangru Tang, Johan Wind, Stanisław Woźniak, Zhenyuan Zhang, Qinghua Zhou, Jian Zhu, Rui-Jie Zhu. Findings of the Association for Computational Linguistics: EMNLP 2023. 2023.",
+        "url": "https://doi.org/10.18653/v1/2023.findings-emnlp.936",
+        "doi": "https://doi.org/10.18653/v1/2023.findings-emnlp.936",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4389524555"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 317
+      },
+      {
+        "paper_id": "rw_002_652dcf505",
+        "title": "A survey: object detection methods from CNN to transformer",
+        "authors": [
+          "Ershat Arkin",
+          "Nurbiya Yadikar",
+          "Xuebin Xu",
+          "Alimjan Aysa",
+          "Kurban Ubul"
+        ],
+        "year": 2022,
+        "publication_date": "2022-10-21",
+        "venue": "Multimedia Tools and Applications",
+        "abstract": "Abstract Object detection is the most important problem in computer vision tasks. After AlexNet proposed, based on Convolutional Neural Network (CNN) methods have become mainstream in the computer vision field, many researches on neural networks and different transformations of algorithm structures have appeared. In order to achieve fast and accurate detection effects, it is necessary to jump out of the existing CNN framework and has great challenges. Transformer’s relatively mature theoretical support and technological development in the field of Natural Language Processing have brought it into the researcher’s sight, and it has been proved that Transformer’s method can be used for computer vision tasks, and proved that it exceeds the existing CNN method in some tasks. In order to enable more researchers to better understand the development process of object detection methods, existing methods, different frameworks, challenging problems and development trends, paper introduced historical classic methods of object detection used CNN, discusses the highlights, advantages and disadvantages of these algorithms. By consulting a large amount of paper, the paper compared different CNN detection methods and Transformer detection methods. Vertically under fair conditions, 13 different detection methods that have a broad impact on the field and are the most mainstream and promising are selected for comparison. The comparative data gives us confidence in the development of Transformer and the convergence between different methods. It also presents the recent innovative approaches to using Transformer in computer vision tasks. In the end, the challenges, opportunities and future prospects of this field are summarized.",
+        "url": "https://doi.org/10.1007/s11042-022-13801-3",
+        "doi": "https://doi.org/10.1007/s11042-022-13801-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4306967787"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 199
+      },
+      {
+        "paper_id": "rw_003_b35234c5c",
+        "title": "A survey of techniques for optimizing transformer inference",
+        "authors": [
+          "Krishna Teja Chitty-Venkata",
+          "Sparsh Mittal",
+          "Murali Emani",
+          "Venkatram Vishwanath",
+          "Arun K. Somani"
+        ],
+        "year": 2023,
+        "publication_date": "2023-09-18",
+        "venue": "Journal of Systems Architecture",
+        "abstract": "Recent years have seen a phenomenal rise in performance and applications of transformer neural networks. The family of transformer networks, including Bidirectional Encoder Representations from Transformer (BERT), Generative Pretrained Transformer (GPT) and Vision Transformer (ViT), have shown their effectiveness across Natural Language Processing (NLP) and Computer Vision (CV) domains. Transformer-based networks such as ChatGPT have impacted the lives of common men. However, the quest for high predictive performance has led to an exponential increase in transformers' memory and compute footprint. Researchers have proposed techniques to optimize transformer inference at all levels of abstraction. This paper presents a comprehensive survey of techniques for optimizing the inference phase of transformer networks. We survey techniques such as knowledge distillation, pruning, quantization, neural architecture search and lightweight network design at the algorithmic level. We further review hardware-level optimization techniques and the design of novel hardware accelerators for transformers. We summarize the quantitative results on the number of parameters/FLOPs and accuracy of several models/techniques to showcase the tradeoff exercised by them. We also outline future directions in this rapidly evolving field of research. We believe that this survey will educate both novice and seasoned researchers and also spark a plethora of research efforts in this field.",
+        "url": "https://doi.org/10.1016/j.sysarc.2023.102990",
+        "doi": "https://doi.org/10.1016/j.sysarc.2023.102990",
+        "arxiv_id": "2307.07982v1",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386826409"
+        },
+        "sources": [
+          "OpenAlex",
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 134
+      },
+      {
+        "paper_id": "rw_004_c919f2fa8",
+        "title": "End-to-End Transformer-Based Models in Textual-Based NLP",
+        "authors": [
+          "Abir Rahali",
+          "Moulay A. Akhloufi"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-05",
+        "venue": "AI",
+        "abstract": "Transformer architectures are highly expressive because they use self-attention mechanisms to encode long-range dependencies in the input sequences. In this paper, we present a literature review on Transformer-based (TB) models, providing a detailed overview of each model in comparison to the Transformer’s standard architecture. This survey focuses on TB models used in the field of Natural Language Processing (NLP) for textual-based tasks. We begin with an overview of the fundamental concepts at the heart of the success of these models. Then, we classify them based on their architecture and training mode. We compare the advantages and disadvantages of popular techniques in terms of architectural design and experimental value. Finally, we discuss open research, directions, and potential future work to help solve current TB application challenges in NLP.",
+        "url": "https://doi.org/10.3390/ai4010004",
+        "doi": "https://doi.org/10.3390/ai4010004",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4313558932"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 153
+      },
+      {
+        "paper_id": "rw_005_6013998bd",
+        "title": "Neural Architecture Search for Transformers: A Survey",
+        "authors": [
+          "Krishna Teja Chitty-Venkata",
+          "Murali Emani",
+          "Venkatram Vishwanath",
+          "Arun K. Somani"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Transformer-based Deep Neural Network architectures have gained tremendous interest due to their effectiveness in various applications across Natural Language Processing (NLP) and Computer Vision (CV) domains. These models are the de facto choice in several language tasks, such as Sentiment Analysis and Text Summarization, replacing Long Short Term Memory (LSTM) model. Vision Transformers (ViTs) have shown better model performance than traditional Convolutional Neural Networks (CNNs) in vision applications while requiring significantly fewer parameters and training time. The design pipeline of a neural architecture for a given task and dataset is extremely challenging as it requires expertise in several interdisciplinary areas such as signal processing, image processing, optimization and allied fields. Neural Architecture Search (NAS) is a promising technique to automate the architectural design process of a Neural Network in a data-driven way using Machine Learning (ML) methods. The search method explores several architectures without requiring significant human effort, and the searched models outperform the manually built networks. In this paper, we review Neural Architecture Search techniques, targeting the Transformer model and its family of architectures such as Bidirectional Encoder Representations from Transformers (BERT) and Vision Transformers. We provide an in-depth literature review of approximately 50 state-of-the-art Neural Architecture Search methods and explore future directions in this fast-evolving class of problems.",
+        "url": "https://doi.org/10.1109/access.2022.3212767",
+        "doi": "https://doi.org/10.1109/access.2022.3212767",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4312257891"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 103
+      },
+      {
+        "paper_id": "rw_006_aac37eb42",
+        "title": "Efficient 3D Semantic Segmentation with Superpoint Transformer",
+        "authors": [
+          "Damien Robert",
+          "Hugo Raguet",
+          "Loïc Landrieu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-01",
+        "venue": "",
+        "abstract": "We introduce a novel superpoint-based transformer architecture for efficient semantic segmentation of large-scale 3D scenes. Our method incorporates a fast algorithm to partition point clouds into a hierarchical superpoint structure, which makes our preprocessing 7 times faster than existing superpoint-based approaches. Additionally, we leverage a self-attention mechanism to capture the relationships between superpoints at multiple scales, leading to state-of-the-art performance on three challenging benchmark datasets: S3DIS (76.0% mIoU 6-fold validation), KITTI-360 (63.5% on Val), and DALES (79.6%). With only 212k parameters, our approach is up to 200 times more compact than other state-of-the-art models while maintaining similar performance. Furthermore, our model can be trained on a single GPU in 3 hours for a fold of the S3DIS dataset, which is 7× to 70× fewer GPU-hours than the best-performing methods. Our code and models are accessible at github.com/drprojects/superpoint_transformer.",
+        "url": "https://doi.org/10.1109/iccv51070.2023.01577",
+        "doi": "https://doi.org/10.1109/iccv51070.2023.01577",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4380723689"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 124
+      },
+      {
+        "paper_id": "rw_007_5cad3b835",
+        "title": "A Metaverse: Taxonomy, Components, Applications, and Open Challenges",
+        "authors": [
+          "Sangmin Park",
+          "Young‐Gab Kim"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Unlike previous studies on the Metaverse based on Second Life, the current Metaverse is based on the social value of Generation Z that online and offline selves are not different. With the technological development of deep learning-based high-precision recognition models and natural generation models, Metaverse is being strengthened with various factors, from mobile-based always-on access to connectivity with reality using virtual currency. The integration of enhanced social activities and neural-net methods requires a new definition of Metaverse suitable for the present, different from the previous Metaverse. This paper divides the concepts and essential techniques necessary for realizing the Metaverse into three components (i.e., hardware, software, and contents) and three approaches (i.e., user interaction, implementation, and application) rather than marketing or hardware approach to conduct a comprehensive analysis. Furthermore, we describe essential methods based on three components and techniques to Metaverse&#x2019;s representative Ready Player One, Roblox, and Facebook research in the domain of films, games, and studies. Finally, we summarize the limitations and directions for implementing the immersive Metaverse as social influences, constraints, and open challenges.",
+        "url": "https://doi.org/10.1109/access.2021.3140175",
+        "doi": "https://doi.org/10.1109/access.2021.3140175",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4206484811"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1789
+      },
+      {
+        "paper_id": "rw_009_680b3e60e",
+        "title": "OctFormer: Octree-based Transformers for 3D Point Clouds",
+        "authors": [
+          "Peng‐Shuai Wang"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-26",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "We propose octree-based transformers, named OctFormer, for 3D point cloud learning. OctFormer can not only serve as a general and effective backbone for 3D point cloud segmentation and object detection but also have linear complexity and is scalable for large-scale point clouds. The key challenge in applying transformers to point clouds is reducing the quadratic, thus overwhelming, computation complexity of attentions. To combat this issue, several works divide point clouds into non-overlapping windows and constrain attentions in each local window. However, the point number in each window varies greatly, impeding the efficient execution on GPU. Observing that attentions are robust to the shapes of local windows, we propose a novel octree attention, which leverages sorted shuffled keys of octrees to partition point clouds into local windows containing a fixed number of points while permitting shapes of windows to change freely. And we also introduce dilated octree attention to expand the receptive field further. Our octree attention can be implemented in 10 lines of code with open-sourced libraries and runs 17 times faster than other point cloud attentions when the point number exceeds 200 k. Built upon the octree attention, OctFormer can be easily scaled up and achieves state-of-the-art performances on a series of 3D semantic segmentation and 3D object detection benchmarks, surpassing previous sparse-voxel-based CNNs and point cloud transformers in terms of both efficiency and effectiveness. Notably, on the challenging ScanNet200 dataset, OctFormer outperforms sparse-voxel-based CNNs by 7.3 in mIoU. Our code and trained models are available at https://wang-ps.github.io/octformer.",
+        "url": "https://doi.org/10.1145/3592131",
+        "doi": "https://doi.org/10.1145/3592131",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4372283849"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 98
+      },
+      {
+        "paper_id": "rw_010_708459e32",
+        "title": "Going deeper with Image Transformers",
+        "authors": [
+          "Hugo Touvron",
+          "Matthieu Cord",
+          "Alexandre Sablayrolles",
+          "Gabriel Synnaeve",
+          "Hervé Jeǵou"
+        ],
+        "year": 2021,
+        "publication_date": "2021-10-01",
+        "venue": "2021 IEEE/CVF International Conference on Computer Vision (ICCV)",
+        "abstract": "Transformers have been recently adapted for large scale image classification, achieving high scores shaking up the long supremacy of convolutional neural networks. However the optimization of vision transformers has been little studied so far. In this work, we build and optimize deeper transformer networks for image classification. In particular, we investigate the interplay of architecture and optimization of such dedicated transformers. We make two architecture changes that significantly improve the accuracy of deep transformers. This leads us to produce models whose performance does not saturate early with more depth, for in-stance we obtain 86.5% top-1 accuracy on Imagenet when training with no external data, we thus attain the current sate of the art with less floating-point operations and parameters. Our best model establishes the new state of the art on Imagenet with Reassessed labels and Imagenet-V2 / match frequency, in the setting with no additional training data. We share our code and models <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">1</sup> .",
+        "url": "https://doi.org/10.1109/iccv48922.2021.00010",
+        "doi": "https://doi.org/10.1109/iccv48922.2021.00010",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3146097248"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 77
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_009_680b3e60e",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_method",
+          "constraints"
+        ],
+        "rationale": "The paper proposes OctFormer, an octree-based transformer for 3D point clouds that uses fixed-point local windows to reduce quadratic complexity, directly relevant to fixed-precision transformers and computational constraints.",
+        "evidence_summary": "In 2023, Wang published 'OctFormer: Octree-based Transformers for 3D Point Clouds,' which introduced octree attention to partition point clouds into local windows with fixed point counts for linear complexity. The method achieved state-of-the-art performance on 3D segmentation and detection benchmarks like ScanNet200, with 17 times faster execution than other attentions when points exceed 200k."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_005_6013998bd",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey on neural architecture search for transformers addresses automated design under optimization constraints, touching on transformer efficiency and architectural innovations relevant to fixed-precision modeling.",
+        "evidence_summary": "In 2022, Chitty-Venkata et al. published 'Neural Architecture Search for Transformers: A Survey,' reviewing methods to automate transformer design using machine learning. The work analyzed over 50 techniques targeting models like BERT and Vision Transformers, highlighting efficiency in parameters and training time compared to manual networks."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_b35234c5c",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_constraints",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The survey on optimizing transformer inference discusses techniques like pruning and quantization to address memory and compute footprints, aligning with fixed-precision efficiency goals.",
+        "evidence_summary": "In 2023, Chitty-Venkata et al. published 'A survey of techniques for optimizing transformer inference,' covering algorithmic methods such as knowledge distillation and quantization to reduce transformers' exponential resource growth. The survey summarized tradeoffs in parameters, FLOPs, and accuracy across models and outlined hardware-level accelerators."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_010_708459e32",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "This work on deeper image transformers explores architectural optimizations for vision tasks, providing baseline insights into transformer scalability and performance.",
+        "evidence_summary": "In 2021, Touvron et al. published 'Going deeper with Image Transformers,' which investigated architecture changes to improve deep transformer accuracy without saturation. The model achieved 86.5% top-1 accuracy on ImageNet with no external data, setting state-of-the-art results on ImageNet-V2 with fewer parameters and FLOPs."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_c919f2fa8",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "The survey on transformer-based models in NLP reviews architectural expressivity and long-range dependencies, relevant to understanding transformer capabilities without positional encodings.",
+        "evidence_summary": "In 2023, Rahali and Akhloufi published 'End-to-End Transformer-Based Models in Textual-Based NLP,' providing a literature review on transformer architectures and self-attention mechanisms. The paper classified models by architecture and training mode, discussing advantages, disadvantages, and open challenges in NLP applications."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_006_aac37eb42",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper on superpoint transformers for 3D segmentation uses hierarchical attention and efficiency optimizations, offering comparative performance data on benchmarks.",
+        "evidence_summary": "In 2023, Robert et al. published 'Efficient 3D Semantic Segmentation with Superpoint Transformer,' which incorporated a fast superpoint partitioning algorithm and multi-scale self-attention. The method achieved 76.0% mIoU on S3DIS and 79.6% on DALES with only 212k parameters, training 7× faster than existing approaches on a single GPU."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_002_652dcf505",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "The survey compares CNN and transformer methods in object detection, providing background on transformer adoption in vision, but lacks direct fixed-precision or architectural depth.",
+        "evidence_summary": "In 2022, Arkin et al. published 'A survey: object detection methods from CNN to transformer,' reviewing historical CNN methods and transformer advancements in computer vision. The paper compared 13 detection methods, noting transformer superiority in some tasks and convergence trends between frameworks."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_007_5cad3b835",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This metaverse taxonomy discusses transformer-related deep learning in broad applications, but is only weakly related to fixed-precision transformer expressivity.",
+        "evidence_summary": "In 2022, Park and Kim published 'A Metaverse: Taxonomy, Components, Applications, and Open Challenges,' analyzing hardware, software, and content components for immersive environments. The work referenced deep learning models and social connectivity but did not detail transformer architectures or precision constraints."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_11890fb9a",
+        "relevance_score": 0.15,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "The RWKV paper reinvents RNNs as transformer alternatives, focusing on sequence modeling rather than fixed-precision or positional encoding aspects.",
+        "evidence_summary": "In 2023, Peng et al. published 'RWKV: Reinventing RNNs for the Transformer Era,' presenting an RNN-based architecture for transformer-era tasks. The work was presented at EMNLP 2023 but did not address fixed-precision or positional encoding constraints."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Wang published 'OctFormer: Octree-based Transformers for 3D Point Clouds,' introducing octree attention with fixed-point windows for linear complexity, achieving state-of-the-art on ScanNet200 and 17× speedup over 200k points. In 2022, Chitty-Venkata et al. published 'Neural Architecture Search for Transformers: A Survey,' reviewing automated design methods for efficiency in BERT and Vision Transformers. In 2023, Chitty-Venkata et al. published 'A survey of techniques for optimizing transformer inference,' covering pruning and quantization to reduce resource growth and summarizing parameter-accuracy tradeoffs. In 2021, Touvron et al. published 'Going deeper with Image Transformers,' optimizing deep architectures for 86.5% ImageNet accuracy without external data. In 2023, Rahali and Akhloufi published 'End-to-End Transformer-Based Models in Textual-Based NLP,' surveying transformer expressivity and classification by architecture and training. In 2023, Robert et al. published 'Efficient 3D Semantic Segmentation with Superpoint Transformer,' using hierarchical attention for 76.0% mIoU on S3DIS with 212k parameters and fast training.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

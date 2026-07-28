@@ -1,0 +1,207 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel and bold theoretical perspective, analyzing Transformer expressivity under highly practical constraints like fixed-precision arithmetic and a specific parameter assumption (Assumption 5.1).",
+        "The result that fixed-precision Transformers without positional encoding are fundamentally limited to finite/co-finite languages is striking and directly challenges the conventional understanding of their capabilities.",
+        "The work bridges a significant gap between theoretical infinite-precision models and real-world implementations, offering a fresh and impactful critique of practical model limitations.",
+        "The exploration of how positional encoding and relaxing assumptions modify these limits provides a nuanced and insightful analysis."
+      ],
+      "weaknesses": [
+        "The soundness of the core proofs (e.g., Lemma 5.3 and Lemma 5.4) is not fully convincing. The argument about sums saturating to +inf in p-precision and its implications for indistinguishability lacks rigorous formalization and relies on a sketch.",
+        "The empirical evaluation is limited to theoretical proofs; there is no experimental validation or demonstration on synthetic or real data to support the theoretical claims about practical models.",
+        "The connection between the formal language recognition setting and actual language modeling/generation tasks is underdeveloped, limiting the direct practical interpretation of the results."
+      ],
+      "summary_comment": "This paper presents a provocative and highly novel theoretical analysis, claiming that under strict but realistic fixed-precision constraints, Transformer decoders are limited to recognizing only finite or co-finite languages. This is a significant and bold contribution that challenges prevailing assumptions about Transformer expressivity. While the technical proofs could be more rigorous and the evaluation is purely theoretical, the core idea is innovative, well-motivated, and has the potential to inspire considerable follow-up work. The clarity of presentation is strong, making the argument accessible. Given my strong prioritization of novelty and significance, I recommend acceptance despite the methodological imperfections, as the paper opens a crucial new direction for examining the practical limits of foundational models."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 2,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 1
+      },
+      "strengths": [
+        "The paper tackles a practically relevant problem: connecting theoretical Transformer expressivity to real-world implementation constraints like fixed precision and no positional encoding.",
+        "It provides a clear statement of results, organizing them around the impact of specific constraints (APE, NoPE, Assumption 5.1).",
+        "The ambition to map the formal language class recognized under different practical configurations is a worthwhile theoretical goal."
+      ],
+      "weaknesses": [
+        "The methodological soundness is low. The main proof sketches (e.g., Lemma 5.3, Lemma 5.4) are severely underdeveloped and contain unconvincing or incorrect leaps. For example, Lemma 5.3's claim that a sum of exponentials leads to a '+inf sum' and causes the model's behavior to collapse is not properly justified for p-bit floating-point arithmetic. The constructive lower bound proof (Lemma 5.4) is only a rough sketch that relies on vague 'universal approximation' arguments within fixed precision without concrete constructions, failing to meet the standard for a theoretical claim.",
+        "The presentation and clarity are very poor. The paper has numerous formatting errors, malformed LaTeX, unreadable tables, and incoherent text fragments (e.g., lines with random numbers, symbols like '$\\left({\\mathcal{A}}\\right)$' and '${\\boldsymbol{5}}$'). This makes a rigorous evaluation of the technical content impossible and suggests the manuscript is not ready for review."
+      ],
+      "summary_comment": "The paper's central goal is valuable, but the execution is critically flawed. The theoretical claims are not backed by rigorous, sound proofs; the arguments are presented as unconvincing sketches. Furthermore, the manuscript's formatting is severely broken, containing garbled text and code, which obstructs understanding and indicates a lack of careful preparation. As a reviewer focused on methodological rigor, I cannot accept a paper where the core proofs are unsupported and the presentation is unacceptable. The work requires a complete rewrite with proper proofs and presentation before it can be seriously evaluated."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "Addresses a highly relevant practical question by analyzing Transformers under realistic fixed-precision constraints, bridging a gap between theoretical models and real-world implementations.",
+        "Provides a clear theoretical framework, rigorously defining fixed-precision arithmetic and formal language classes relevant to the analysis.",
+        "The core finding—that fixed-precision Transformers without positional encodings are limited to finite/co-finite languages—is an important and stark result for practitioners to consider."
+      ],
+      "weaknesses": [
+        "The analysis is highly idealized and simplified, using a two-layer, single-head model without layer normalization, which deviates significantly from practical architectures, limiting the real-world applicability of the results.",
+        "The 'proofs' are largely sketch-based and lack the rigorous mathematical detail needed to fully judge their soundness; the argument relies heavily on assertions about precision saturation and parameter construction without complete formal proof."
+      ],
+      "summary_comment": "The paper addresses a topic of significant practical importance by exploring expressivity under fixed-precision conditions. However, the analysis is conducted on a model so simplified that its relevance to modern, complex Transformer architectures is questionable. The theoretical arguments are presented as sketches rather than rigorous proofs, undermining confidence in the soundness of the claims. While the core limitation is thought-provoking, the idealized setup and lack of concrete, rigorous proof prevent the results from having the convincing practical impact required for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Topic aligns with ICML's focus on theoretical machine learning and computational learning theory, specifically analyzing expressivity of neural architectures under practical constraints.",
+        "Addresses foundational questions about Transformer limitations that are relevant to ICML's interests in theoretical understanding of ML models.",
+        "Builds directly on ICML-relevant literature (Merrill & Sabharwal 2023, Chiang et al. 2023) on Transformer expressivity and complexity."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about proof rigor (Reviewer 2) and idealized model setup (Reviewer 3) may not meet ICML's high standards for theoretical soundness.",
+        "Purely theoretical analysis without empirical validation might be seen as insufficient for ICML's preference for papers with strong empirical components.",
+        "Focus on formal language recognition rather than typical ML tasks makes the connection to mainstream ICML topics somewhat indirect."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "NeurIPS values theoretical analysis of neural network architectures, especially Transformers, and this paper contributes to understanding their fundamental limitations.",
+        "The paper's connection to practical constraints (fixed-precision arithmetic) aligns with NeurIPS' interest in real-world ML implementations.",
+        "Addresses interdisciplinary topics spanning ML theory, formal languages, and computational complexity that fit NeurIPS' broad scope."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about methodological rigor (Reviewer 2: 'severely underdeveloped proofs') and presentation quality pose significant risks for NeurIPS acceptance.",
+        "The highly theoretical nature without experimental validation may not match NeurIPS' increasing emphasis on empirical results alongside theory.",
+        "Focus on idealized model configurations (2-layer, single-head) limits immediate practical relevance for NeurIPS audience."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent topic fit for ICLR's focus on deep learning theory and Transformer architectures specifically.",
+        "Directly addresses ICLR's interests in understanding representation learning capabilities and limitations of Transformers.",
+        "Builds on recent ICLR-relevant literature on Transformer expressivity and connects to ongoing debates about positional encodings and model capacity.",
+        "ICLR traditionally welcomes theoretical contributions even without extensive empirical validation."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about proof completeness and presentation issues (Reviewer 2) could still be problematic for ICLR's standards.",
+        "The paper's focus on formal language recognition rather than typical deep learning tasks might be seen as less directly applicable to ICLR's core interests.",
+        "Simplified model architecture (2-layer, single-head) deviates from practical Transformer implementations studied at ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Novelty)",
+          "review": {
+            "reviewer": "Reviewer A - Novelty Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 3,
+              "significance": 4,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a novel and bold theoretical perspective, analyzing Transformer expressivity under highly practical constraints like fixed-precision arithmetic and a specific parameter assumption (Assumption 5.1).",
+              "The result that fixed-precision Transformers without positional encoding are fundamentally limited to finite/co-finite languages is striking and directly challenges the conventional understanding of their capabilities.",
+              "The work bridges a significant gap between theoretical infinite-precision models and real-world implementations, offering a fresh and impactful critique of practical model limitations.",
+              "The exploration of how positional encoding and relaxing assumptions modify these limits provides a nuanced and insightful analysis."
+            ],
+            "weaknesses": [
+              "The soundness of the core proofs (e.g., Lemma 5.3 and Lemma 5.4) is not fully convincing. The argument about sums saturating to +inf in p-precision and its implications for indistinguishability lacks rigorous formalization and relies on a sketch.",
+              "The empirical evaluation is limited to theoretical proofs; there is no experimental validation or demonstration on synthetic or real data to support the theoretical claims about practical models.",
+              "The connection between the formal language recognition setting and actual language modeling/generation tasks is underdeveloped, limiting the direct practical interpretation of the results."
+            ],
+            "summary_comment": "This paper presents a provocative and highly novel theoretical analysis, claiming that under strict but realistic fixed-precision constraints, Transformer decoders are limited to recognizing only finite or co-finite languages. This is a significant and bold contribution that challenges prevailing assumptions about Transformer expressivity. While the technical proofs could be more rigorous and the evaluation is purely theoretical, the core idea is innovative, well-motivated, and has the potential to inspire considerable follow-up work. The clarity of presentation is strong, making the argument accessible. Given my strong prioritization of novelty and significance, I recommend acceptance despite the methodological imperfections, as the paper opens a crucial new direction for examining the practical limits of foundational models."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 2 (Rigor)",
+          "review": {
+            "reviewer": "Reviewer B - Rigor Focused",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 2,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 1
+            },
+            "strengths": [
+              "The paper tackles a practically relevant problem: connecting theoretical Transformer expressivity to real-world implementation constraints like fixed precision and no positional encoding.",
+              "It provides a clear statement of results, organizing them around the impact of specific constraints (APE, NoPE, Assumption 5.1).",
+              "The ambition to map the formal language class recognized under different practical configurations is a worthwhile theoretical goal."
+            ],
+            "weaknesses": [
+              "The methodological soundness is low. The main proof sketches (e.g., Lemma 5.3, Lemma 5.4) are severely underdeveloped and contain unconvincing or incorrect leaps. For example, Lemma 5.3's claim that a sum of exponentials leads to a '+inf sum' and causes the model's behavior to collapse is not properly justified for p-bit floating-point arithmetic. The constructive lower bound proof (Lemma 5.4) is only a rough sketch that relies on vague 'universal approximation' arguments within fixed precision without concrete constructions, failing to meet the standard for a theoretical claim.",
+              "The presentation and clarity are very poor. The paper has numerous formatting errors, malformed LaTeX, unreadable tables, and incoherent text fragments (e.g., lines with random numbers, symbols like '$\\left({\\mathcal{A}}\\right)$' and '${\\boldsymbol{5}}$'). This makes a rigorous evaluation of the technical content impossible and suggests the manuscript is not ready for review."
+            ],
+            "summary_comment": "The paper's central goal is valuable, but the execution is critically flawed. The theoretical claims are not backed by rigorous, sound proofs; the arguments are presented as unconvincing sketches. Furthermore, the manuscript's formatting is severely broken, containing garbled text and code, which obstructs understanding and indicates a lack of careful preparation. As a reviewer focused on methodological rigor, I cannot accept a paper where the core proofs are unsupported and the presentation is unacceptable. The work requires a complete rewrite with proper proofs and presentation before it can be seriously evaluated."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 3 (Practical)",
+          "review": {
+            "reviewer": "Reviewer C - Practicality Focused",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "Addresses a highly relevant practical question by analyzing Transformers under realistic fixed-precision constraints, bridging a gap between theoretical models and real-world implementations.",
+              "Provides a clear theoretical framework, rigorously defining fixed-precision arithmetic and formal language classes relevant to the analysis.",
+              "The core finding—that fixed-precision Transformers without positional encodings are limited to finite/co-finite languages—is an important and stark result for practitioners to consider."
+            ],
+            "weaknesses": [
+              "The analysis is highly idealized and simplified, using a two-layer, single-head model without layer normalization, which deviates significantly from practical architectures, limiting the real-world applicability of the results.",
+              "The 'proofs' are largely sketch-based and lack the rigorous mathematical detail needed to fully judge their soundness; the argument relies heavily on assertions about precision saturation and parameter construction without complete formal proof."
+            ],
+            "summary_comment": "The paper addresses a topic of significant practical importance by exploring expressivity under fixed-precision conditions. However, the analysis is conducted on a model so simplified that its relevance to modern, complex Transformer architectures is questionable. The theoretical arguments are presented as sketches rather than rigorous proofs, undermining confidence in the soundness of the claims. While the core limitation is thought-provoking, the idealized setup and lack of concrete, rigorous proof prevent the results from having the convincing practical impact required for acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

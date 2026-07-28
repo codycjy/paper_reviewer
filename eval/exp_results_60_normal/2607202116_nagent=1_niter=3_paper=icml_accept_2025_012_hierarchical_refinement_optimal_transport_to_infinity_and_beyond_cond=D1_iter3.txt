@@ -1,0 +1,76 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of recursively refining low-rank OT subproblems to construct a bijective Monge map is highly novel and addresses a fundamental scalability bottleneck in OT.",
+        "The theoretical foundation, particularly Proposition 3.1 about optimal low-rank factors co-clustering Monge pairs, is a significant and elegant insight that underpins the algorithm's validity and novelty.",
+        "The empirical results are very convincing, demonstrating that HiRef scales to previously unreachable datasets (millions of points) while maintaining competitive or superior primal costs compared to existing methods, especially full-rank solvers."
+      ],
+      "weaknesses": [
+        "The reliance on an 'optimal black-box low-rank solver' (LROT) for theoretical guarantees introduces a potential gap between theory and practice. While the authors address this by highlighting empirical robustness, a formal analysis of sensitivity to sub-optimal LROT solutions remains an open and important future direction.",
+        "The practical implications of the strict r-Monge separability assumption or methods to verify its holding for arbitrary datasets are not fully explored. Concrete guidelines or heuristics for rank schedule selection in the absence of perfect r-Monge separability would enhance practical applicability."
+      ],
+      "summary_comment": "The authors have been transparent and engaged with the points raised about the practical implications of the r-Monge separability and the use of non-optimal LROT solvers. Their response acknowledges these as valid areas for future research and deeper theoretical exploration, which is an appropriate stance for a paper pushing into novel territory. They correctly point out that the empirical success suggests the robustness and pragmatic utility of HiRef even under these conditions. My initial assessment of the paper's novelty and significance as excellent remains unchanged. The proposed Hierarchical Refinement is an exciting, innovative approach that addresses a critical limitation in Optimal Transport, opening up avenues for large-scale applications. The ambition and forward-looking nature of this work, despite the acknowledged theoretical challenges that will undoubtedly spur future research, make it a strong candidate for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel algorithm, Hierarchical Refinement (HiRef), for Optimal Transport (OT) which directly addresses the scalability limitations (quadratic space/time complexity) of existing methods like Sinkhorn. This falls directly under 'general machine learning' and 'optimization' topics, as it presents an improved implementation and scalability for a core ML problem.",
+        "The core contribution is methodological, proposing a new algorithm with strong theoretical foundations (Proposition 3.1) and rigorous complexity analysis. This aligns well with ICML's focus on 'general machine learning' and 'optimization' with a good balance of theory and empirical evaluation.",
+        "The paper demonstrates significant empirical advantages, scaling OT to datasets with over a million points, which is a major leap compared to prior art. This high-impact result, enabling new applications in machine learning (e.g., generative models, computational biology, large language models), is highly valued by ICML.",
+        "Reviewer A highlights the 'highly novel' core idea and 'significant and elegant insight' of Proposition 3.1, indicating a strong fit for ICML's emphasis on cutting-edge research and theoretical advancements in machine learning."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper acknowledges limitations regarding the optimal low-rank solver's black-box nature and the practical implications of strict r-Monge separability, these are noted as areas for future work rather than being fully addressed in the current submission. Reviewer A raises this as a weakness, suggesting potential avenues for deeper theoretical exploration that could enhance the paper's theoretical completeness.",
+        "The experimental evaluation, while strong in demonstrating scalability, could be expanded to include more diverse application settings beyond computational biology and ImageNet alignment to further solidify its general applicability across various ML domains, although the existing applications are impactful."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on improving Optimal Transport scalability and efficiency aligns perfectly with NeurIPS's interests in 'General machine learning: core contributions in supervised and unsupervised methods' and 'Optimization'. OT is a fundamental tool in machine learning, and making it applicable to 'massive datasets' is a significant advancement.",
+        "The practical impact of HiRef, enabling OT for 'millions of points' for applications like generative models, computational biology, and large language models (as discussed in Section 5), resonates with NeurIPS's broad scope, including 'AI/ML for physical sciences', 'AI/ML for health and biotechnology', and 'Socio-technical aspects of AI' (via discussions of generative models).",
+        "The interdisciplinary nature of the work, combining mathematical optimization with practical machine learning challenges, is a strong fit for NeurIPS, which 'welcomes interdisciplinary submissions that do not fit neatly into existing categories'.",
+        "The theoretical contribution, specifically Proposition 3.1 and the complexity analysis, alongside the strong empirical results, represents the kind of 'new and original research' and 'in-depth analysis of existing methods' that NeurIPS seeks."
+      ],
+      "why_it_does_not_fit": [
+        "The paper notes that the LROT (Low-Rank Optimal Transport) subroutine used in HiRef is not always 'optimal owing to the non-convexity of low-rank problems'. While the paper justifies this empirically, a more robust theoretical guarantee or a discussion of how to mitigate the sub-optimality of LROT could strengthen the theoretical contribution for a venue that values rigor.",
+        "Although the paper mentions applications in deep learning frameworks (Section 5), it does not delve deeply into specific contributions to 'Computer vision', 'Language and multimodal language models', or 'Deep learning' architectures themselves, but rather the underlying OT methodology. While this is a foundational contribution, some NeurIPS papers focus more directly on advances within these specific sub-fields."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper tackles a crucial problem of scaling Optimal Transport, a technique widely applied in deep learning and generative models. This aligns with ICLR's focus on 'cutting-edge research on all aspects of deep learning' and applications in 'vision, audio, speech, language, music, robotics, games, healthcare, biology, sustainability, economics, ethical considerations in ML, and others'.",
+        "The method offers a significant improvement in the scalability of optimal transport, which is highly relevant for 'large-scale learning and non-convex optimization'. The discussion in Section 5 about applying HiRef to precompute globally aligned pairs for training generative models is a direct link to deep learning applications.",
+        "The paper's emphasis on algorithmic innovation and addressing a practical bottleneck in a core machine learning technique makes it a good fit for ICLR's interest in foundational algorithmic advancements relevant to deep learning practitioners.",
+        "Reviewer A acknowledges the 'novelty' and 'significant insight' of the theoretical underpinnings, which is generally appreciated by ICLR for algorithmic contributions."
+      ],
+      "why_it_does_not_fit": [
+        "While HiRef impacts deep learning applications by making OT scalable, the core technical contribution is not an advancement in deep learning architectures, representation learning, or specific deep learning models. It's more about the underlying mathematical and algorithmic foundation of OT, which is a bit removed from ICLR's primary focus on 'deep learning' itself.",
+        "The paper uses a 'black-box low-rank solver' for its subproblems, and while its empirical success is clear, the theoretical guarantees around the sub-optimality of these non-convex low-rank problems are not fully resolved. ICLR often favors strong theoretical backing for methods, especially when concerning optimization and learning theory.",
+        "The paper does not explore 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' or 'transfer learning, meta learning, and lifelong learning' as direct contributions, though it enables new applications in these areas. The focus is more on the transport problem itself rather than how representations are learned."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

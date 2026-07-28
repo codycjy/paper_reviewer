@@ -1,0 +1,614 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of combining semantic and transitional phase diffusion within a periodic latent space for compositional motion generation is highly novel and addresses a critical problem in the field: smooth transitions with semantic alignment.",
+        "The modular design of ACT-PAE, SPDM, and TPDM is elegant and allows for flexible application to various tasks (compositional generation, inbetweening, long-term generation), showcasing excellent scalability.",
+        "The experimental results demonstrate state-of-the-art performance across multiple challenging tasks, particularly in long-term and compositional motion generation, which has substantial practical implications for animation and robotics."
+      ],
+      "weaknesses": [
+        "While the concept of \"phase mixing\" is introduced, the fixed parameter `r = (k/K)^3` for semantic conditioning and `r = 1` otherwise, combined with a linear blending approach, seems somewhat heuristic. Further justification or a more adaptive mechanism could strengthen this aspect.",
+        "The paper acknowledges that the models were run only once due to limited computational resources (as stated in the checklist item 7). This limits the statistical robustness of the reported results, especially for claims of superior performance."
+      ],
+      "summary_comment": "The authors have adequately addressed my concerns. Their explanation of the heuristic nature of the phase mixing parameter, clarifying its empirical basis and future work potential, is reasonable for a novel approach. Similarly, the transparency regarding computational constraints limiting statistical robustness is understood given the ambitious scope of the work. The paper's core novelty and significant advancements in compositional motion generation remain exceptionally strong, making it a valuable contribution despite these minor methodological imperfections."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a well-thought-out compositional diffusion framework that effectively addresses the known challenge of maintaining continuity during transitions in long motion sequences, which is a significant problem in motion generation. The use of phase diffusion, building upon existing methods like DeepPhase, is a theoretically sound approach to this.",
+        "The proposed ACT-PAE, SPDM, and TPDM modules are logically interconnected and designed to collaboratively denoise motion representations by preserving semantic phase and aligning transitional dynamics. The idea of exchanging phase dynamics information bidirectionally during denoising is a strong methodological contribution.",
+        "The experimental evaluation is comprehensive, covering compositional motion pair generation, long-term motion generation, and motion inbetweening. The use of BABEL-TEACH and established metrics (FID, MMD, L2-Vel, L2-Rot6D, RMS-Jerk, NPSS) demonstrates thoroughness. Superior performance across various tasks and comparisons with strong baselines substantiate the claims effectively.",
+        "The qualitative results (Fig. 5 and 6) visually support the quantitative findings, clearly showing the superior smoothness and realism of the generated motions compared to baselines, especially in transition regions."
+      ],
+      "weaknesses": [
+        "While the paper generally presents a sound approach, the specific details regarding the training procedure for SPDM and TPDM are largely deferred to the Appendix. Although the authors committed to revising Section 3.1.3 to include a concise summary in the main text, its current absence means a minor lack of immediate clarity on this point in the main body.",
+        "The paper acknowledges a limitation regarding computational resources, stating that experiments were conducted only once, leading to the absence of error bars or statistical significance reporting. While understandable given the complexity and computational cost, this inherently reduces the statistical robustness of the reported results. This remains a valid weakness, but the authors' transparent acknowledgement and explanation provide appropriate context."
+      ],
+      "summary_comment": "This paper presents a strong and well-motivated approach to compositional motion generation, tackling the crucial issue of smooth transitions in long motion sequences. The proposed Compositional Phase Diffusion framework, particularly the Semantic Phase Diffusion Module (SPDM) and Transitional Phase Diffusion Module (TPDM) operating within an action-centric periodic autoencoder (ACT-PAE), demonstrates sound theoretical grounding. The evaluation is rigorous and comprehensive, showing significant improvements across multiple tasks (compositional generation, long-term generation, motion inbetweening) and against competitive baselines. The qualitative examples strongly support the quantitative metrics. The authors' commitment to revising the main text to include more details on the SPDM and TPDM training is appreciated and expected to fully address that concern. The limitation regarding statistical robustness due to single experimental runs is transparently acknowledged. Overall, the methodological soundness and impressive experimental results outweigh these minor weaknesses, making this a solid contribution to the field."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and significant problem in motion generation: maintaining smooth and semantically coherent transitions between multiple motion segments. This is a common pain point for animators and game developers, making the work very relevant.",
+        "The proposed Compositional Phase Diffusion framework, particularly the Semantic Phase Diffusion Module (SPDM) and Transitional Phase Diffusion Module (TPDM) operating within a latent phase domain, offers a sound technical approach to address the problem. Leveraging phase information for continuity is a well-motivated design choice.",
+        "The experimental evaluation is comprehensive, covering compositional motion pair generation, long-term motion generation, and motion inbetweening. The quantitative results demonstrate competitive performance against relevant baselines, and the qualitative examples in Figure 5 effectively showcase the advantages of the proposed method."
+      ],
+      "weaknesses": [
+        "While the concept of phase dynamics propagation is central, the exact mechanism of how 'phase dynamics information from adjacent segments' is mixed and exchanged during the diffusion process could be explained with more intuitive detail, beyond just the Phase Mixing Equation. The authors have committed to addressing this in the final version.",
+        "The limitations section is quite brief, mentioning computational resources as a reason for not conducting multiple runs with error bars. A more thorough discussion of other potential limitations, such as constraints on motion complexity, generalization to highly diverse or unseen motion types, or potential failure cases of the phase encoding, would be beneficial for practitioners. The authors have committed to addressing this in the final version."
+      ],
+      "summary_comment": "This paper presents a strong practical contribution to the field of motion generation. The focus on compositional motion and addressing the crucial problem of smooth transitions between segments is highly significant for real-world applications in animation and robotics. The proposed Compositional Phase Diffusion framework, utilizing specialized diffusion modules in a phase latent space, is a sound technical approach. The extensive evaluation across various tasks, showing competitive results, particularly in long-term and compositional scenarios, reinforces its practical utility. The authors have constructively engaged with the feedback, committing to providing a more intuitive explanation of the phase mixing and expanding the discussion on limitations, which will further improve the clarity and completeness of the paper. This strengthens my decision to accept the paper, pending these promised refinements."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces a novel deep learning framework, Compositional Phase Diffusion, for generating long motion sequences with smooth transitions and semantic alignment. This aligns well with ICML's interest in 'deep learning (architectures, generative models, theory, etc.)' and 'general machine learning (supervised, semi-, and self-supervised learning, etc.)'.",
+        "The core components, ACT-PAE, SPDM, and TPDM, demonstrate an innovative approach to modeling phase dynamics and semantic conditioning in a latent space, which fits within ICML's emphasis on new 'architectures' and 'probabilistic methods (Bayesian methods, graphical models, Monte Carlo methods, etc.)' given the diffusion model aspect.",
+        "The application domain of motion generation for virtual humanoid animations and robotics falls under 'application-driven machine learning' as it presents 'innovative techniques, problems, and datasets that are of interest to the machine learning community'.",
+        "The quantitative and qualitative experimental results across various challenging tasks (compositional motion pair generation, long-term motion generation, and motion inbetweening) and comparison with strong baselines demonstrate both strong empirical validation and methodological rigor, which ICML values.",
+        "Reviewer A highlights the 'highly novel' core idea and 'elegant' modular design as strengths, which is a good fit for ICML's focus on cutting-edge research. Reviewer B mentions the 'theoretically sound approach' and 'logically interconnected' modules, aligning with ICML's rigor expectations."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A notes that the fixed parameter for 'phase mixing' seems 'somewhat heuristic', suggesting a potential lack of deeper theoretical justification for a key component, which might be scrutinized more heavily by ICML's theory-focused tracks.",
+        "The acknowledged limitation that experiments were run only once due to computational resources, leading to a lack of statistical significance measures (error bars), is a weakness highlighted by Reviewer A and B. While transparent, this could be a point of concern for a conference that values robust experimental validation.",
+        "While the paper's application in motion generation is relevant, the primary contribution leans heavily towards an applied deep learning solution to a specific computer graphics/vision problem rather than foundational machine learning theory or general-purpose methodological advancements that might be a higher priority for some ICML reviewers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on deep learning for motion generation, specifically addressing problems in 'robotics, embodied systems, and engineering' (for animation and robotics applications) and 'optimization' (through the diffusion process) makes it a strong candidate for NeurIPS.",
+        "The use of diffusion models, latent space representations, and autoencoders aligns with 'deep learning' and 'probabilistic methods' topics listed by NeurIPS.",
+        "The challenge of generating long, semantically coherent motion sequences with smooth transitions is a significant interdisciplinary problem. NeurIPS welcomes 'interdisciplinary submissions that do not fit neatly into existing categories' and 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior'.",
+        "The thorough experimental evaluation (FID, MMD, L2-Vel, L2-Rot6D, RMS-Jerk, NPSS) on standard datasets (BABEL-TEACH) is a good match for NeurIPS's expectation for empirical rigor. Reviewer B specifically praised the 'comprehensive' and 'rigorous' evaluation.",
+        "The paper transparently discusses limitations, including computational resources and the heuristic nature of some parameters, and provides a NeurIPS checklist. This commitment to good scientific practice is highly valued by NeurIPS reviewers (as evidenced by the positive comments from all reviewers regarding the transparency on limitations)."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is technically sound and innovative, it might not push the boundaries of fundamental machine learning theory as much as some top-tier NeurIPS papers do. Its primary contribution is a novel architecture and application for a specific domain. However, this is largely mitigated by NeurIPS's broad scope.",
+        "The noted absence of error bars or statistical significance tests, due to computational constraints, could be viewed as a point of weakness for NeurIPS, where statistical robustness is often emphasized. Reviewer A and B both pointed this out as a minor but present weakness.",
+        "The 'Others' classification for the paper topic is broad. While motion generation fits several NeurIPS sub-topics, some reviewers might prefer a clearer categorization within established fields like Computer Vision or Robotics for a more direct fit, though NeurIPS explicitly allows for interdisciplinary work."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR is renowned for cutting-edge research on 'all aspects of deep learning'. This paper introduces a 'Deep Compositional Phase Diffusion' framework, which is fundamentally a deep learning architecture, making it a direct fit.",
+        "The framework utilizes 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' through the ACT-PAE, which encodes motion into a 'phase latent space'. This is a core topic for ICLR.",
+        "The use of diffusion models for generative tasks, specifically 'generative models' in motion, aligns perfectly with ICLR's listed topics. The integration of semantic guidance and phase details via SPDM and TPDM is an innovative approach to diffusion models.",
+        "The experimental results demonstrate state-of-the-art performance in long-term compositional motion generation and motion inbetweening, which are practical applications of deep learning often featured at ICLR.",
+        "Reviewer A and B highlight the 'novelty' of combining semantic and transitional phase diffusion within a periodic latent space, and the 'sound theoretical grounding' of using phase diffusion, which aligns well with ICLR's emphasis on foundational deep learning research."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper presents novel architecture and application, its primary focus is on a specific application domain (human motion generation) rather than foundational advances in neural networks or representation learning that are independent of a specific modality, which often form the cornerstone of ICLR papers.",
+        "The 'heuristic' nature of the phase mixing parameter, as noted by Reviewer A, could be a point of minor weakness for ICLR, which often probes the theoretical underpinnings and justifications of architectural choices more deeply.",
+        "The admitted lack of statistical robustness due to single experimental runs, mentioned by all reviewers, is a common concern across top-tier conferences, and ICLR is no exception. This could slightly detract from the paper's rigor in comparison to other submissions."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_a17be3f16891",
+    "paper_id": "paper_f42484f27658",
+    "target_paper_summary": {
+      "paper_id": "paper_f42484f27658",
+      "title": "Deep Compositional Phase Diffusion For Long Motion Sequence Generation",
+      "abstract": "Recent research on motion generation has shown significant progress in generating semantically aligned motion with singular semantics. However, when employing these models to create composite sequences containing multiple semantically generated motion clips, they often struggle to preserve the continuity of motion dynamics at the transition boundaries between clips, resulting in awkward transitions and abrupt artifacts. To address these challenges, we present Compositional Phase Diffusion, which leverages the Semantic Phase Diffusion Module (SPDM)\nand Transitional Phase Diffusion Module (TPDM) to progressively incorporate semantic guidance and phase details from adjacent motion clips into the diffusion process. Specifically, SPDM and TPDM operate within the latent motion frequency domain established by the pre-trained Action-Centric Motion Phase Autoencoder\n∗Corresponding Author\n(ACT-PAE). This allows them to learn semantically important and transition-aware phase information from variable-length motion clips during training. Experimental results demonstrate the competitive performance of our proposed framework in generating compositional motion sequences that align semantically with the input conditions, while preserving phase transitional continuity between preceding and succeeding motion clips. Additionally, motion inbetweening task is made possible by keeping the phase parameter of the input motion sequences fixed throughout the diffusion process, showcasing the potential for extending the proposed framework to accommodate various application scenarios. Codes are available at https://github.com/asdryau/TransPhase.",
+      "topic": "",
+      "claims": [
+        "we present Compositional Phase Diffusion, which leverages the Semantic Phase Diffusion Module (SPDM) and Transitional Phase Diffusion Module (TPDM) to progressively incorporate semantic guidance and phase details from adjacent motion clips into the diffusion process."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "motion sequence generation transition continuity",
+          "rationale": "The paper addresses the problem of preserving motion dynamics continuity at transition boundaries when generating composite motion sequences, a core challenge in the field."
+        },
+        {
+          "group": "same_method",
+          "query": "motion generation diffusion models phase information",
+          "rationale": "The paper proposes a method called 'Compositional Phase Diffusion' which utilizes 'Semantic Phase Diffusion Module (SPDM)' and 'Transitional Phase Diffusion Module (TPDM)' operating within a 'latent motion frequency domain'."
+        },
+        {
+          "group": "same_constraints",
+          "query": "variable-length motion clip generation semantic guidance",
+          "rationale": "The method learns from 'variable-length motion clips' and incorporates 'semantic guidance' and 'phase details from adjacent motion clips', indicating specific constraints on input and output formats and required information."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "compositional motion generation evaluation metrics",
+          "rationale": "The paper claims 'competitive performance' and focuses on 'generating compositional motion sequences that align semantically' and 'preserving phase transitional continuity', suggesting a need for benchmarks and metrics evaluating these specific aspects."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "motion diffusion models phase-aware transitions",
+          "rationale": "The paper introduces 'Compositional Phase Diffusion' leveraging 'Semantic Phase Diffusion Module (SPDM)' and 'Transitional Phase Diffusion Module (TPDM)' for phase-aware continuity. Prior work might have used diffusion models for motion or incorporated phase in other ways, challenging the specific novelty of this compositional and phase-diffusion approach."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "diffusion model limitations long sequence motion generation",
+          "rationale": "The abstract mentions 'when employing these models to create composite sequences...they often struggle to preserve the continuity', implying existing general diffusion models or motion generation techniques have limitations in this specific area that this paper aims to solve. Counterevidence would show these existing models already handle this elegantly."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 4,
+        "warnings": [
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_0053fcf2b",
+        "title": "A deep learning framework for character motion synthesis and editing",
+        "authors": [
+          "Daniel Holden",
+          "Jun Saito",
+          "Taku Komura"
+        ],
+        "year": 2016,
+        "publication_date": "2016-07-11",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "We present a framework to synthesize character movements based on high level parameters, such that the produced movements respect the manifold of human motion, trained on a large motion capture dataset. The learned motion manifold, which is represented by the hidden units of a convolutional autoencoder, represents motion data in sparse components which can be combined to produce a wide range of complex movements. To map from high level parameters to the motion manifold, we stack a deep feedforward neural network on top of the trained autoencoder. This network is trained to produce realistic motion sequences from parameters such as a curve over the terrain that the character should follow, or a target location for punching and kicking. The feedforward control network and the motion manifold are trained independently, allowing the user to easily switch between feedforward networks according to the desired interface, without re-training the motion manifold. Once motion is generated it can be edited by performing optimization in the space of the motion manifold. This allows for imposing kinematic constraints, or transforming the style of the motion, while ensuring the edited motion remains natural. As a result, the system can produce smooth, high quality motion sequences without any manual pre-processing of the training data.",
+        "url": "https://doi.org/10.1145/2897824.2925975",
+        "doi": "https://doi.org/10.1145/2897824.2925975",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2469134594"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 646
+      },
+      {
+        "paper_id": "rw_002_6b0a062c1",
+        "title": "Dynamical quantum phase transitions: a review",
+        "authors": [
+          "Markus Heyl"
+        ],
+        "year": 2018,
+        "publication_date": "2018-02-15",
+        "venue": "Reports on Progress in Physics",
+        "abstract": "Quantum theory provides an extensive framework for the description of the equilibrium properties of quantum matter. Yet experiments in quantum simulators have now opened up a route towards the generation of quantum states beyond this equilibrium paradigm. While these states promise to show properties not constrained by equilibrium principles, such as the equal a priori probability of the microcanonical ensemble, identifying the general properties of nonequilibrium quantum dynamics remains a major challenge, especially in view of the lack of conventional concepts such as free energies. The theory of dynamical quantum phase transitions attempts to identify such general principles by lifting the concept of phase transitions to coherent quantum real-time evolution. This review provides a pedagogical introduction to this field. Starting from the general setting of nonequilibrium dynamics in closed quantum many-body systems, we give the definition of dynamical quantum phase transitions as phase transitions in time with physical quantities becoming nonanalytic at critical times. We summarize the achieved theoretical advances as well as the first experimental observations, and furthermore provide an outlook to major open questions as well as future directions of research.",
+        "url": "https://doi.org/10.1088/1361-6633/aaaf9a",
+        "doi": "https://doi.org/10.1088/1361-6633/aaaf9a",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2757497522"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 668
+      },
+      {
+        "paper_id": "rw_003_5e383ab38",
+        "title": "Theory of high-harmonic generation by low-frequency laser fields",
+        "authors": [
+          "Maciej Lewenstein",
+          "Ph. Balcou",
+          "Misha Ivanov",
+          "A. L’Huillier",
+          "P. B. Corkum"
+        ],
+        "year": 1994,
+        "publication_date": "1994-03-01",
+        "venue": "Physical Review A",
+        "abstract": "We present a simple, analytic, and fully quantum theory of high-harmonic generation by low-frequency laser fields. The theory recovers the classical interpretation of Kulander et al. in Proceedings of the SILAP III Works hop, edited by B. Piraux (Plenum, New York, 1993) and Corkum [Phys. Rev. Lett. 71, 1994 (1993)] and clearly explains why the single-atom harmonic-generation spectra fall off at an energy approximately equal to the ionization energy plus about three times the oscillation energy of a free electron in the field. The theory is valid for arbitrary atomic potentials and can be generalized to describe laser fields of arbitrary ellipticity and spectrum. We discuss the role of atomic dipole matrix elements, electron rescattering processes, and of depletion of the ground state. We present the exact quantum-mechanical formula for the harmonic cutoff that differs from the phenomenological law ${\\mathit{I}}_{\\mathit{p}}$+3.17${\\mathit{U}}_{\\mathit{p}}$, where ${\\mathit{I}}_{\\mathit{p}}$ is the atomic ionization potential and ${\\mathit{U}}_{\\mathit{p}}$ is the ponderomotive energy, due to the account for quantum tunneling and diffusion effects.",
+        "url": "https://doi.org/10.1103/physreva.49.2117",
+        "doi": "https://doi.org/10.1103/physreva.49.2117",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2061382044"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 4099
+      },
+      {
+        "paper_id": "rw_004_cffb70548",
+        "title": "Anomalous diffusion models and their properties: non-stationarity, non-ergodicity, and ageing at the centenary of single particle tracking",
+        "authors": [
+          "Ralf Metzler",
+          "Jae‐Hyung Jeon",
+          "Andrey G. Cherstvy",
+          "Eli Barkai"
+        ],
+        "year": 2014,
+        "publication_date": "2014-01-01",
+        "venue": "Physical Chemistry Chemical Physics",
+        "abstract": "Modern microscopic techniques following the stochastic motion of labelled tracer particles have uncovered significant deviations from the laws of Brownian motion in a variety of animate and inanimate systems. Such anomalous diffusion can have different physical origins, which can be identified from careful data analysis. In particular, single particle tracking provides the entire trajectory of the traced particle, which allows one to evaluate different observables to quantify the dynamics of the system under observation. We here provide an extensive overview over different popular anomalous diffusion models and their properties. We pay special attention to their ergodic properties, highlighting the fact that in several of these models the long time averaged mean squared displacement shows a distinct disparity to the regular, ensemble averaged mean squared displacement. In these cases, data obtained from time averages cannot be interpreted by the standard theoretical results for the ensemble averages. Here we therefore provide a comparison of the main properties of the time averaged mean squared displacement and its statistical behaviour in terms of the scatter of the amplitudes between the time averages obtained from different trajectories. We especially demonstrate how anomalous dynamics may be identified for systems, which, on first sight, appear to be Brownian. Moreover, we discuss the ergodicity breaking parameters for the different anomalous stochastic processes and showcase the physical origins for the various behaviours. This Perspective is intended as a guidebook for both experimentalists and theorists working on systems, which exhibit anomalous diffusion.",
+        "url": "https://doi.org/10.1039/c4cp03465a",
+        "doi": "https://doi.org/10.1039/c4cp03465a",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2016533177"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 1812
+      },
+      {
+        "paper_id": "rw_006_49a4ea932",
+        "title": "A study on ideal ward continuity",
+        "authors": [
+          "Huseyin Cakalli"
+        ],
+        "year": 2013,
+        "publication_date": "2013-05-11",
+        "venue": "arXiv",
+        "abstract": "In this paper, we prove that any ideal ward continuous function is uniformly continuous either on an interval or on an ideal ward compact subset of $\\textbf{R}$. A characterization of uniform continuity is also given via ideal quasi-Cauchy sequences.",
+        "url": "http://arxiv.org/abs/1305.3227v2",
+        "doi": "",
+        "arxiv_id": "1305.3227v2",
+        "source_ids": {
+          "arXiv": "1305.3227v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_007_e8b363ccf",
+        "title": "Controllable Generation with Text-to-Image Diffusion Models: A Survey",
+        "authors": [
+          "Pu Cao",
+          "Feng Zhou",
+          "Qing Song",
+          "Lu Yang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-03-07",
+        "venue": "arXiv",
+        "abstract": "In the rapidly advancing realm of visual generation, diffusion models have revolutionized the landscape, marking a significant shift in capabilities with their impressive text-guided generative functions. However, relying solely on text for conditioning these models does not fully cater to the varied and complex requirements of different applications and scenarios. Acknowledging this shortfall, a variety of studies aim to control pre-trained text-to-image (T2I) models to support novel conditions. In this survey, we undertake a thorough review of the literature on controllable generation with T2I diffusion models, covering both the theoretical foundations and practical advancements in this domain. Our review begins with a brief introduction to the basics of denoising diffusion probabilistic models (DDPMs) and widely used T2I diffusion models. We then reveal the controlling mechanisms of diffusion models, theoretically analyzing how novel conditions are introduced into the denoising process for conditional generation. Additionally, we offer a detailed overview of research in this area, organizing it into distinct categories from the condition perspective: generation with specific conditions, generation with multiple conditions, and universal controllable generation. For an exhaustive list of the controllable generation literature surveyed, please refer to our curated repository at https://github.com/PRIV-Creation/Awesome-Controllable-T2I-Diffusion-Models.",
+        "url": "http://arxiv.org/abs/2403.04279v2",
+        "doi": "",
+        "arxiv_id": "2403.04279v2",
+        "source_ids": {
+          "arXiv": "2403.04279v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_574cd982b",
+        "title": "Space-Time Diffusion Features for Zero-Shot Text-Driven Motion Transfer",
+        "authors": [
+          "Danah Yatim",
+          "Rafail Fridman",
+          "Omer Bar-Tal",
+          "Yoni Kasten",
+          "Tali Dekel"
+        ],
+        "year": 2023,
+        "publication_date": "2023-11-28",
+        "venue": "arXiv",
+        "abstract": "We present a new method for text-driven motion transfer - synthesizing a video that complies with an input text prompt describing the target objects and scene while maintaining an input video's motion and scene layout. Prior methods are confined to transferring motion across two subjects within the same or closely related object categories and are applicable for limited domains (e.g., humans). In this work, we consider a significantly more challenging setting in which the target and source objects differ drastically in shape and fine-grained motion characteristics (e.g., translating a jumping dog into a dolphin). To this end, we leverage a pre-trained and fixed text-to-video diffusion model, which provides us with generative and motion priors. The pillar of our method is a new space-time feature loss derived directly from the model. This loss guides the generation process to preserve the overall motion of the input video while complying with the target object in terms of shape and fine-grained motion traits.",
+        "url": "http://arxiv.org/abs/2311.17009v2",
+        "doi": "",
+        "arxiv_id": "2311.17009v2",
+        "source_ids": {
+          "arXiv": "2311.17009v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_009_4c6044887",
+        "title": "VAR-CLIP: Text-to-Image Generator with Visual Auto-Regressive Modeling",
+        "authors": [
+          "Qian Zhang",
+          "Xiangzi Dai",
+          "Ninghua Yang",
+          "Xiang An",
+          "Ziyong Feng",
+          "Xingyu Ren"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-02",
+        "venue": "arXiv",
+        "abstract": "VAR is a new generation paradigm that employs 'next-scale prediction' as opposed to 'next-token prediction'. This innovative transformation enables auto-regressive (AR) transformers to rapidly learn visual distributions and achieve robust generalization. However, the original VAR model is constrained to class-conditioned synthesis, relying solely on textual captions for guidance. In this paper, we introduce VAR-CLIP, a novel text-to-image model that integrates Visual Auto-Regressive techniques with the capabilities of CLIP. The VAR-CLIP framework encodes captions into text embeddings, which are then utilized as textual conditions for image generation. To facilitate training on extensive datasets, such as ImageNet, we have constructed a substantial image-text dataset leveraging BLIP2. Furthermore, we delve into the significance of word positioning within CLIP for the purpose of caption guidance. Extensive experiments confirm VAR-CLIP's proficiency in generating fantasy images with high fidelity, textual congruence, and aesthetic excellence. Our project page are https://github.com/daixiangzi/VAR-CLIP",
+        "url": "http://arxiv.org/abs/2408.01181v1",
+        "doi": "",
+        "arxiv_id": "2408.01181v1",
+        "source_ids": {
+          "arXiv": "2408.01181v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_011_f70c03300",
+        "title": "Compositional Visual Generation and Inference with Energy Based Models",
+        "authors": [
+          "Yilun Du",
+          "Shuang Li",
+          "Igor Mordatch"
+        ],
+        "year": 2020,
+        "publication_date": "2020-04-13",
+        "venue": "arXiv",
+        "abstract": "A vital aspect of human intelligence is the ability to compose increasingly complex concepts out of simpler ideas, enabling both rapid learning and adaptation of knowledge. In this paper we show that energy-based models can exhibit this ability by directly combining probability distributions. Samples from the combined distribution correspond to compositions of concepts. For example, given a distribution for smiling faces, and another for male faces, we can combine them to generate smiling male faces. This allows us to generate natural images that simultaneously satisfy conjunctions, disjunctions, and negations of concepts. We evaluate compositional generation abilities of our model on the CelebA dataset of natural faces and synthetic 3D scene images. We also demonstrate other unique advantages of our model, such as the ability to continually learn and incorporate new concepts, or infer compositions of concept properties underlying an image.",
+        "url": "http://arxiv.org/abs/2004.06030v3",
+        "doi": "",
+        "arxiv_id": "2004.06030v3",
+        "source_ids": {
+          "arXiv": "2004.06030v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_013_4cdc7ec03",
+        "title": "DiscDiff: Latent Diffusion Model for DNA Sequence Generation",
+        "authors": [
+          "Zehui Li",
+          "Yuhao Ni",
+          "William A V Beardall",
+          "Guoxuan Xia",
+          "Akashaditya Das",
+          "Guy-Bart Stan",
+          "Yiren Zhao"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-08",
+        "venue": "arXiv",
+        "abstract": "This paper introduces a novel framework for DNA sequence generation, comprising two key components: DiscDiff, a Latent Diffusion Model (LDM) tailored for generating discrete DNA sequences, and Absorb-Escape, a post-training algorithm designed to refine these sequences. Absorb-Escape enhances the realism of the generated sequences by correcting `round errors' inherent in the conversion process between latent and input spaces. Our approach not only sets new standards in DNA sequence generation but also demonstrates superior performance over existing diffusion models, in generating both short and long DNA sequences. Additionally, we introduce EPD-GenDNA, the first comprehensive, multi-species dataset for DNA generation, encompassing 160,000 unique sequences from 15 species. We hope this study will advance the generative modelling of DNA, with potential implications for gene therapy and protein production.",
+        "url": "http://arxiv.org/abs/2402.06079v2",
+        "doi": "",
+        "arxiv_id": "2402.06079v2",
+        "source_ids": {
+          "arXiv": "2402.06079v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_008_574cd982b",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_method"
+        ],
+        "rationale": "This paper uses diffusion models for motion transfer, specifically space-time diffusion features, which aligns closely with the target paper's use of diffusion for motion generation and its emphasis on continuity. It provides a direct comparison point for methodologies involving diffusion in motion.",
+        "evidence_summary": "Yatim et al. (2023) introduce a method for zero-shot text-driven motion transfer using space-time diffusion features from a pre-trained text-to-video diffusion model."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_e8b363ccf",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This survey provides a comprehensive overview of controllable generation with text-to-image diffusion models, which is highly relevant to the target paper's use of diffusion models and semantic guidance. While not directly motion, the underlying diffusion principles and control mechanisms are foundational.",
+        "evidence_summary": "Cao et al. (2024) provide a survey on controllable generation with text-to-image diffusion models, covering theoretical foundations and practical advancements in incorporating novel conditions into the denoising process."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_011_f70c03300",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "The concept of 'compositional visual generation' is directly analogous to the target paper's 'compositional motion sequence generation.' This paper might offer insights into common problems or evaluation strategies for compositional tasks, even if in a different domain.",
+        "evidence_summary": "Du et al. (2020) explore compositional visual generation and inference using Energy Based Models, allowing for the combination of concepts to generate images that satisfy conjunctions, disjunctions, and negations."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_001_0053fcf2b",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper addresses motion synthesis and editing, aiming to produce smooth, high-quality motion sequences, which is a general problem underlying the target paper's more specific focus on transition continuity in compositional sequences. It represents an earlier approach to motion generation.",
+        "evidence_summary": "Holden et al. (2016) present a deep learning framework for character motion synthesis and editing that generates movements respecting the manifold of human motion and allows for smooth editing."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_013_4cdc7ec03",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper uses latent diffusion models for sequence generation (DNA), and discusses how to refine 'round errors' in the conversion process. This highlights potential challenges and solutions in general diffusion model applications for sequences, which could have parallels in motion sequence generation, particularly around maintaining fidelity during latent space operations.",
+        "evidence_summary": "Li et al. (2024) introduce DiscDiff, a latent diffusion model for DNA sequence generation, and Absorb-Escape, a post-training algorithm to refine sequences by correcting 'round errors' inherent in the conversion process."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_009_4c6044887",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper deals with text-to-image generation and leverages CLIP for textual conditioning, which relates to the target paper's use of 'semantic guidance' in its diffusion process. While different domains, the challenges and solutions for incorporating semantic information could be relevant.",
+        "evidence_summary": "Zhang et al. (2024) introduce VAR-CLIP, a text-to-image model that integrates Visual Auto-Regressive techniques with CLIP to use text embeddings as textual conditions for image generation."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_004_cffb70548",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper discusses anomalous diffusion models and their properties. While in a different field (physics/chemistry), the theoretical underpinnings of diffusion processes and their behavior (e.g., non-stationarity, non-ergodicity) could provide foundational context for understanding or analyzing the diffusion process used in the target paper.",
+        "evidence_summary": "Metzler et al. (2014) provide an overview of anomalous diffusion models, their properties, and the distinction between time-averaged and ensemble-averaged mean squared displacement."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_006_49a4ea932",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "The paper discusses 'continuity' but in a purely mathematical context ('ideal ward continuity'). While the concept of continuity is central to the target paper's problem, the specific mathematical domain of this paper is distant from motion generation, making it broadly related but not directly applicable for comparison.",
+        "evidence_summary": "Cakalli (2013) investigates ideal ward continuity, proving that any ideal ward continuous function is uniformly continuous either on an interval or on an ideal ward compact subset of R."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_003_5e383ab38",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper discusses 'high-harmonic generation' in physics, involving 'laser fields' and their effects. While it uses the term 'diffusion' in its abstract ('quantum tunneling and diffusion effects'), the context is entirely different from motion generation, making the methodological connection very weak.",
+        "evidence_summary": "Lewenstein et al. (1994) present a quantum theory of high-harmonic generation by low-frequency laser fields, explaining the single-atom harmonic-generation spectra and discussing various physical effects."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_002_6b0a062c1",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper discusses 'Dynamical quantum phase transitions', which uses 'phase' in a quantum mechanics context. While the target paper uses 'phase' in 'phase diffusion' and 'phase details', the technical definition and application are completely different, making this highly tangential.",
+        "evidence_summary": "Heyl (2018) reviews dynamical quantum phase transitions, defining them as phase transitions in time with physical quantities becoming nonanalytic at critical times in nonequilibrium quantum dynamics."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Motion sequence generation has seen significant progress, yet challenges persist, particularly in maintaining continuity at transition boundaries when composing multiple motion clips. Earlier works, such as the deep learning framework for character motion synthesis and editing by Holden et al. (2016), focused on general motion generation and editing. More recently, diffusion models have revolutionized various generative tasks. For instance, Cao et al. (2024) provide a comprehensive survey on controllable generation with text-to-image diffusion models, highlighting advancements in incorporating diverse conditions. For motion-specific applications, Yatim et al. (2023) explored text-driven motion transfer using space-time diffusion features, demonstrating the potential of diffusion models in complex motion tasks. The concept of compositional generation has also been explored, as seen in the work by Du et al. (2020) on compositional visual generation with Energy Based Models, which aims to combine concepts to form complex outputs. However, diffusion models, when applied to sequential data, can face issues, including 'round errors' as discussed by Li et al. (2024) in the context of DNA sequence generation, which suggests potential pitfalls in maintaining fidelity during latent space operations. Our work addresses the specific problem of preserving phase transitional continuity in compositional motion sequences, leveraging semantic and transitional phase diffusion within a latent frequency domain to overcome limitations observed in existing models.",
+    "warnings": [
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 14,
+      "num_removed_post_cutoff": 4,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 14,
+    "num_removed_post_cutoff": 4,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

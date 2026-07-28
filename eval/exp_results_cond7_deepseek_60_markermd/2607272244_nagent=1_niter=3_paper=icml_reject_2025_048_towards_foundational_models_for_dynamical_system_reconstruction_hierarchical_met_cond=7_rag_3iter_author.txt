@@ -1,0 +1,713 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses an important problem in dynamical system reconstruction by proposing hierarchical meta-learning across loosely related families",
+        "Introduces a novel gating mechanism combining K-means clustering with least squares optimization for expert routing",
+        "Provides comprehensive experimental evaluation across multiple datasets including synthetic ODEs and real-world neuroscientific data"
+      ],
+      "weaknesses": [
+        "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+        "Limited evaluation of the proposed method's scalability and computational efficiency",
+        "Theoretical justification for the proposed gating mechanism is insufficient"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+          "severity": "major",
+          "evidence": "Table 4 shows MixER variants performing worse than baseline meta-learners (NCF*, CoDA*, CAVIA) across LV, GO, and SM problems. Table 3 shows MixER-10 underperforming MixER-10† (naive MoE) and MixER-1 on ODEBench-10B.",
+          "affected_claim": "The claim that MixER enables efficient learning across dynamical system families",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Limited evaluation of the proposed method's scalability and computational efficiency",
+          "severity": "minor",
+          "evidence": "The paper mentions computational demands exceed individually trained meta-learners but provides no quantitative analysis of training time, memory usage, or scaling properties.",
+          "affected_claim": "The claim that MixER offers efficient training and scalability",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are technically supported through experiments on multiple datasets, though performance varies across scenarios"
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The combination of K-means clustering with least squares for MoE gating in dynamical system reconstruction is novel, though MoE approaches themselves are established"
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "While the authors reframe the underperformance as delineating a method's operational regime, the submitted results show the method is outperformed by simpler alternatives in important, data-rich scenarios common in practice. This limits its demonstrated impact."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "Experiments document significant performance degradation in high-data regimes; the rebuttal confirms these results are central findings but does not present new evidence to alter this assessment. The missing computational analysis remains a gap in the evaluation of the submitted work."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured with clear figures and explanations, though some technical details could be more thoroughly explained"
+        }
+      },
+      "summary_comment": "The authors' rebuttal effectively clarifies that the performance limitations in high-data regimes are a documented finding, not an oversight. However, this does not resolve the concern; it reinforces it as a core result of the paper. The method's advantage is confined to a specific, data-scarce, heterogeneous regime, while it is outperformed by simpler baselines in more standard, data-rich settings. The novelty of the gating mechanism is acknowledged, but its practical benefit and significance relative to the state-of-the-art are not convincingly demonstrated. The promised additions (computational analysis, theoretical justification) are not present in the submitted work and thus do not affect the evaluation. Therefore, the paper does not meet the bar for acceptance at a top-tier conference based on the submitted material."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper tackles a core machine learning problem—meta-learning across families of dynamical systems—which aligns with ICML's focus on general machine learning and meta-learning.",
+        "The proposed method combines mixture of experts with a novel, optimization-based gating mechanism (K-means + least squares), fitting ICML's emphasis on novel algorithmic contributions in optimization and deep learning.",
+        "The evaluation spans synthetic and real-world datasets (ODEs, EEG time series), resonating with ICML's interest in application-driven machine learning and trustworthy ML (e.g., interpretability, robustness).",
+        "Reviewer feedback acknowledges the novelty of the gating mechanism and the comprehensive experimental evaluation, which are strengths for ICML's empirical rigor standards."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 notes that MixER underperforms baseline meta-learners in high-data regimes (Table 3, Table 4), which may limit its impact and significance—a key criterion for ICML acceptance.",
+        "The theoretical justification for the gating mechanism is deemed insufficient by reviewers; ICML often values strong theoretical grounding alongside empirical results.",
+        "The paper's focus on dynamical system reconstruction is somewhat niche; while ICML covers applications, the core contribution may seem incremental relative to broader meta-learning or MoE advances.",
+        "Reviewer concerns about scalability and computational efficiency (missing quantitative analysis) could hinder fit, as ICML emphasizes efficient and scalable ML systems."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The work intersects several NeurIPS themes: generalization and multi-task learning (hierarchical meta-learning), decision-making and control (dynamical systems), and deep learning (MoE architectures).",
+        "The application to neuroscientific EEG data (Epilepsy2) aligns with NeurIPS's tracks on AI/ML for health and neuroscience/cognitive science.",
+        "The exploration of foundational models for scientific discovery resonates with NeurIPS's interest in AI for physical sciences and impactful interdisciplinary research.",
+        "Reviewers highlight the importance of the problem (learning across loosely related families) and novel gating mechanism, which suit NeurIPS's appetite for innovative methods."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's underperformance in data-rich, closely related settings (per reviewer) may limit its appeal, as NeurIPS often seeks methods with broad applicability and state-of-the-art results.",
+        "Limited theoretical analysis and scalability evaluation (reviewer weaknesses) could be drawbacks, as NeurIPS values rigorous evaluation and scalability for real-world impact.",
+        "The framing as 'Towards Foundational Models' might be aspirational compared to the incremental advance demonstrated; NeurIPS reviewers might expect more transformative results.",
+        "While the interdisciplinary angle fits, the paper might be seen as too applied or niche compared to more general advancements in meta-learning or MoEs typically featured at NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper heavily employs deep learning components: mixture of experts (a core deep learning architecture) and meta-learning with neural networks, fitting ICLR's focus on deep learning.",
+        "Applications include representation learning for time series and generative modeling (via dynamical systems), aligning with ICLR's topics in unsupervised/self-supervised learning and generative models.",
+        "The use of Neural ODEs and related frameworks (e.g., NCF) connects to ICLR's interest in neural differential equations and structured prediction.",
+        "The method's adaption capabilities via context vectors relate to ICLR's themes in transfer learning and meta-learning."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly emphasizes novel deep learning architectures and scalability, but the paper's MoE variant underperforms baselines in key scenarios (per reviewer), potentially reducing its appeal as a architectural advance.",
+        "Theoretical depth is lacking (reviewer concern); ICLR often expects more rigorous analysis of deep learning models, especially for MoE routing mechanisms.",
+        "The focus on dynamical systems is somewhat specific; while ICLR covers applications, the core contribution may not be perceived as a foundational deep learning breakthrough.",
+        "Reviewer criticism on evaluation (degradation in high-data regimes) and significance could hinder acceptance, as ICLR seeks highly impactful and empirically superior deep learning methods."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses an important problem in dynamical system reconstruction by proposing hierarchical meta-learning across loosely related families",
+              "Introduces a novel gating mechanism combining K-means clustering with least squares optimization for expert routing",
+              "Provides comprehensive experimental evaluation across multiple datasets including synthetic ODEs and real-world neuroscientific data"
+            ],
+            "weaknesses": [
+              "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+              "Limited evaluation of the proposed method's scalability and computational efficiency",
+              "Theoretical justification for the proposed gating mechanism is insufficient"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+                "severity": "major",
+                "evidence": "Table 4 shows MixER variants performing worse than baseline meta-learners (NCF*, CoDA*, CAVIA) across LV, GO, and SM problems. Table 3 shows MixER-10 underperforming MixER-10† (naive MoE) and MixER-1 on ODEBench-10B.",
+                "affected_claim": "The claim that MixER enables efficient learning across dynamical system families",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited evaluation of the proposed method's scalability and computational efficiency",
+                "severity": "minor",
+                "evidence": "The paper mentions computational demands exceed individually trained meta-learners but provides no quantitative analysis of training time, memory usage, or scaling properties.",
+                "affected_claim": "The claim that MixER offers efficient training and scalability",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through experiments on multiple datasets, though performance varies across scenarios"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of K-means clustering with least squares for MoE gating in dynamical system reconstruction is novel, though MoE approaches themselves are established"
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While addressing hierarchical learning is important, the method underperforms baselines in key scenarios and doesn't demonstrate clear advancement over state-of-the-art"
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Experiments show mixed results with performance degradation in important cases (high-data regimes); comparisons lack statistical rigor and comprehensive ablation studies"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear figures and explanations, though some technical details could be more thoroughly explained"
+              }
+            },
+            "summary_comment": "The paper presents an interesting approach to hierarchical meta-learning for dynamical system reconstruction using mixture of experts. While the problem is important and the proposed gating mechanism is novel, the evaluation shows concerning performance limitations. MixER underperforms baseline meta-learners in high-data regimes with closely related environments, which limits its practical utility. The technical approach is sound but lacks comprehensive theoretical justification. The work would benefit from more rigorous comparisons, better statistical analysis, and addressing the performance degradation issues before meeting top-tier conference standards."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses an important problem in dynamical system reconstruction by proposing hierarchical meta-learning across loosely related families",
+              "Introduces a novel gating mechanism combining K-means clustering with least squares optimization for expert routing",
+              "Provides comprehensive experimental evaluation across multiple datasets including synthetic ODEs and real-world neuroscientific data"
+            ],
+            "weaknesses": [
+              "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+              "Limited evaluation of the proposed method's scalability and computational efficiency",
+              "Theoretical justification for the proposed gating mechanism is insufficient"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+                "severity": "major",
+                "evidence": "Table 4 shows MixER variants performing worse than baseline meta-learners (NCF*, CoDA*, CAVIA) across LV, GO, and SM problems. Table 3 shows MixER-10 underperforming MixER-10† (naive MoE) and MixER-1 on ODEBench-10B.",
+                "affected_claim": "The claim that MixER enables efficient learning across dynamical system families",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited evaluation of the proposed method's scalability and computational efficiency",
+                "severity": "minor",
+                "evidence": "The paper mentions computational demands exceed individually trained meta-learners but provides no quantitative analysis of training time, memory usage, or scaling properties.",
+                "affected_claim": "The claim that MixER offers efficient training and scalability",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through experiments on multiple datasets, though performance varies across scenarios"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of K-means clustering with least squares for MoE gating in dynamical system reconstruction is novel, though MoE approaches themselves are established"
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While addressing hierarchical learning is important, the method underperforms baselines in key scenarios and doesn't demonstrate clear advancement over state-of-the-art"
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Experiments show mixed results with performance degradation in important cases (high-data regimes); comparisons lack statistical rigor and comprehensive ablation studies"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear figures and explanations, though some technical details could be more thoroughly explained"
+              }
+            },
+            "summary_comment": "The authors acknowledge the performance limitations of MixER in high-data regimes but argue this is a documented finding rather than a flaw. However, this acknowledgment does not resolve the fundamental issue that the method underperforms baselines in important scenarios. The rebuttal promises future additions (computational metrics, theoretical justification) but these are not present in the submitted work. The paper presents an interesting approach but fails to demonstrate clear advantages over existing methods across the evaluated scenarios. The performance degradation in high-data regimes remains a major weakness that limits the method's practical utility and significance for top-tier conferences."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments.\",\n        \"Limited evaluation of scalability and computational efficiency.\",\n        \"Insufficient theoretical justification for the proposed gating mechanism.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments.\",\n          \"location\": \"Sections 4.1 and 4.2, Tables 3, 4, and the Abstract.\",\n          \"explanation\": \"The submission explicitly documents and discusses this crucial limitation. The abstract states 'our layer underperforms state-of-the-art meta-learners in high-data regimes...' Table 3 shows MixER-10 underperforming the naive MoE (†) and single meta-learner on ODEBench-10B. Table 4 systematically compares MixER variants with baseline implementations (NCF*, CoDA*) on LV, GO, and SM problems, showing higher MSEs. The text in Sections 4.1 and 4.2 analyzes these results, attributing the underperformance to the partitioning of closely related data among experts, which limits each expert's exposure.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited evaluation of scalability and computational efficiency.\",\n          \"proposed_change\": \"In the revision, we will add a dedicated subsection (e.g., in Section 6, Limitations) quantifying the computational trade-offs. We will report wall-clock training times and memory footprints for key experiments (e.g., ODEBench-10B) comparing MixER with M experts against training M individual meta-learners sequentially.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Insufficient theoretical justification for the proposed gating mechanism.\",\n          \"proposed_change\": \"We will expand the discussion in Section 3.1 and 3.2 to provide a stronger theoretical rationale. We will formalize the claim that gradient-based gating updates are ineffective for DSR due to the indirect relationship between router outputs and the reconstruction loss, and argue that our alternating minimization with explicit clustering provides a more direct, stable optimization path for the routing matrix W.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their constructive feedback and for acknowledging the novelty and soundness of our approach. We address the key points below.\\n\\n**1. Performance in High-Data Regimes:** The reviewer correctly notes that MixER underperforms baseline meta-learners on datasets composed of closely related environments (e.g., LV, GO, SM). This is a central finding of our work, not an oversight. We explicitly state this limitation in the Abstract and analyze it in Sections 4.1 and 4.2. The core insight is that MixER's strength—partitioning data into distinct expert clusters—becomes a weakness when the data is highly related and plentiful. In such cases, a single, powerful meta-learner exposed to the entire dataset outperforms multiple specialists, each seeing only a fraction. Tables 3 and 4 provide the empirical evidence for this trade-off. Our contribution is precisely in characterizing the regimes where hierarchical learning via MoE is beneficial (loosely related, data-scarce families) versus where it is not (closely related, data-rich environments).\\n\\n**2. Scalability and Efficiency Evaluation:** We acknowledge that the current submission lacks quantitative metrics on training time and memory. In the revised manuscript, we will add these details. Our pilot measurements align with the reviewer's expectation: for a fixed total parameter budget, training a MixER with M experts is more computationally intensive per iteration than training a single meta-learner, as all M expert networks are active in the forward/backward pass. However, the critical comparison is against the alternative of training M separate meta-learners (one per family) *sequentially*, which would require M times the total training time. MixER offers a parallelized, joint training scheme. We will quantify this trade-off in the revised Section 6 (Limitations).\\n\\n**3. Theoretical Justification:** The motivation for our custom gating update is presented in Section 2.2 and Figure 2/8, showing the failure of gradient-based gating. We will strengthen the theoretical rationale in the revision. The key argument is that in a standard MoE, the gating network's gradient flows through a weighted sum of expert outputs. In DSR, where experts are complex meta-learners, this signal is extremely indirect and noisy, leading to slow and conflicted updates (Figure 8, top). Our method decouples the routing optimization from the expert training via proximal alternating minimization. The K-means step directly clusters environments based on their emergent context representations, and the least-squares step finds a linear projection that recovers these clusters, providing a clear, low-variance update direction for W. We will elaborate on this justification in Sections 3.1 and 3.2.\\n\\n**Overall Significance:** We believe the work's significance lies in rigorously exploring a promising paradigm (MoE-enhanced meta-learning) for a critical problem (hierarchical DSR) and mapping its boundaries. We successfully demonstrate its advantage in the heterogeneous, few-shot setting (ODEBench-10A, SCCTS) and provide a clear explanation for its limitations elsewhere. This careful analysis provides a valuable foundation for future work aiming to build truly general foundational models for dynamical systems.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses an important problem in dynamical system reconstruction by proposing hierarchical meta-learning across loosely related families",
+              "Introduces a novel gating mechanism combining K-means clustering with least squares optimization for expert routing",
+              "Provides comprehensive experimental evaluation across multiple datasets including synthetic ODEs and real-world neuroscientific data"
+            ],
+            "weaknesses": [
+              "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+              "Limited evaluation of the proposed method's scalability and computational efficiency",
+              "Theoretical justification for the proposed gating mechanism is insufficient"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "MixER underperforms compared to baseline meta-learners in high-data regimes with closely related environments",
+                "severity": "major",
+                "evidence": "Table 4 shows MixER variants performing worse than baseline meta-learners (NCF*, CoDA*, CAVIA) across LV, GO, and SM problems. Table 3 shows MixER-10 underperforming MixER-10† (naive MoE) and MixER-1 on ODEBench-10B.",
+                "affected_claim": "The claim that MixER enables efficient learning across dynamical system families",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited evaluation of the proposed method's scalability and computational efficiency",
+                "severity": "minor",
+                "evidence": "The paper mentions computational demands exceed individually trained meta-learners but provides no quantitative analysis of training time, memory usage, or scaling properties.",
+                "affected_claim": "The claim that MixER offers efficient training and scalability",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through experiments on multiple datasets, though performance varies across scenarios"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of K-means clustering with least squares for MoE gating in dynamical system reconstruction is novel, though MoE approaches themselves are established"
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the authors reframe the underperformance as delineating a method's operational regime, the submitted results show the method is outperformed by simpler alternatives in important, data-rich scenarios common in practice. This limits its demonstrated impact."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Experiments document significant performance degradation in high-data regimes; the rebuttal confirms these results are central findings but does not present new evidence to alter this assessment. The missing computational analysis remains a gap in the evaluation of the submitted work."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear figures and explanations, though some technical details could be more thoroughly explained"
+              }
+            },
+            "summary_comment": "The authors' rebuttal effectively clarifies that the performance limitations in high-data regimes are a documented finding, not an oversight. However, this does not resolve the concern; it reinforces it as a core result of the paper. The method's advantage is confined to a specific, data-scarce, heterogeneous regime, while it is outperformed by simpler baselines in more standard, data-rich settings. The novelty of the gating mechanism is acknowledged, but its practical benefit and significance relative to the state-of-the-art are not convincingly demonstrated. The promised additions (computational analysis, theoretical justification) are not present in the submitted work and thus do not affect the evaluation. Therefore, the paper does not meet the bar for acceptance at a top-tier conference based on the submitted material."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"MixER underperforms baselines in high-data regimes, which limits its practical utility and significance.\",\n        \"The rebuttal's commitments (computational metrics, stronger theory) are not in the submitted work.\",\n        \"Without clear advantages over existing methods, the significance is in question.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"MixER's performance trade-off is a documented finding.\",\n          \"location\": \"Abstract, Sections 4.1, 4.2, 4.3, and Conclusion.\",\n          \"explanation\": \"The paper does not hide its limitations. The abstract clearly states: 'our layer underperforms state-of-the-art meta-learners in high-data regimes...' This sets the expectation. Sections 4.1-4.3 and the Conclusion provide deep analysis, linking underperformance to data relatedness (e.g., 'This routing pattern... challenging downstream classification' in Sect. 4.3). This is presented as a critical characterization of the method's operating regime, not an unexpected failure.\"\n        },\n        {\n          \"concern\": \"The method demonstrates a clear advantage in its target regime.\",\n          \"location\": \"Section 4.1 (Tables 2, 3), Section 4.3 (Figure 6), and Figure 2.\",\n          \"explanation\": \"The paper provides evidence of MixER's advantage where it matters: learning across loosely related families with limited data. In Table 2 (ODEBench-10A), MixER-10 improves training MSE for NCF and CoDA. In Figure 2 (ODEBench-2), MixER solves a problem where single meta-learners and naive MoE fail. In Figure 6 (SCCTS), MixER enables clean, interpretable clustering of six time-series classes into three expert-defined families, outperforming single-expert and standard K-means. These are the scenarios the method was designed for.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Missing quantitative computational analysis.\",\n          \"proposed_change\": \"We will integrate the promised computational analysis into the main body. Specifically, we will add a new row in Table 3 (or a new small table) reporting the total wall-clock training time (relative to a single expert) and peak GPU memory for key ODEBench-10B configurations (MixER-1, MixER-10, MixER-10†). This will substantiate the scalability discussion in Section 6.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Theoretical justification requires elaboration.\",\n          \"proposed_change\": \"We will substantially expand Section 3.2 ('Gating Network Update') to provide a more formal justification. We will: (1) Frame the failure of gradient-based gating as a credit assignment problem in a deep, sparse architecture. (2) Position our alternating minimization as a block coordinate descent on a bi-level objective, separating clustering (of contexts) from regression (for W). (3) Reference the convergence properties of proximal alternating minimization [Li et al., 2019] cited in our paper.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for the second round of feedback. We understand the concern that a method's limitations may affect its perceived significance. We contend that a method's value is defined not just by outperforming baselines universally, but by solving a specific, unsolved problem well and rigorously defining its scope of applicability.\\n\\n**1. On Significance and Practical Utility:** The significance of MixER lies in enabling *unsupervised hierarchical meta-learning* across *arbitrarily related* dynamical families, a problem not addressed by prior work. The baselines (NCF, CoDA, GEPS) are designed for a single family or assume pre-clustered data. In the target regime–data-scarce, heterogeneous families (simulating real-world scientific data aggregation)–MixER provides a functional solution where single meta-learners fail (Fig. 2) and offers superior interpretable features (Fig. 6). The observed performance trade-off is a fundamental, informative result about the MoE architecture for DSR, not a bug. It tells practitioners: *use MoE for heterogeneous, few-shot hierarchies; use a single powerful meta-learner for homogeneous, data-rich problems.* Delineating this boundary is a valuable contribution.\\n\\n**2. On Commitments vs. Submitted Work:** We agree the submitted version lacks the computational metrics and deep theoretical rationale. These are valid critiques of the current manuscript. Our proposed revisions directly address them. The computational analysis (new experiment) will provide the missing empirical evidence for the claims in Section 6. The expanded theoretical section will strengthen the motivation for our novel gating algorithm beyond the empirical demonstration in Figure 8.\\n\\n**3. On Evaluation Rigor:** We respectfully disagree that comparisons lack statistical rigor. Tables 2, 3, and 4 report means and standard deviations across multiple runs (3 seeds for ODEBench, standard for LV/GO/SM). The evaluation spans diverse datasets (synthetic ODEs, classical DSR benchmarks, real-world time series) and tasks (reconstruction, classification, clustering). The ablation is inherent in the design: comparing MixER-1 (single expert), MixER-10† (naive gating), and MixER-10 (our method) isolates the contribution of our routing algorithm.\\n\\nIn summary, we acknowledge the manuscript can be improved by adding computational metrics and theoretical depth, and we commit to these revisions. However, we believe the core contribution–a working method for a new problem class, with an honest analysis of its strengths and weaknesses–is significant and meets the bar for publication. The work opens a new research direction at the intersection of MoEs and scientific meta-learning.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_6858ebf1f948",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/icml_reject_2025_048_towards_foundational_models_for_dynamical_system_reconstruction_hierarchical_met.md",
+    "target_paper_summary": {
+      "paper_id": "paper_6858ebf1f948",
+      "title": "Towards Foundational Models For Dynamical System Reconstruction: Hierarchical Meta-Learning Via Mixture Of Experts",
+      "abstract": "## 1. Introduction",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_7b694fe61",
+        "title": "An Introduction to Deep Reinforcement Learning",
+        "authors": [
+          "Vincent François-Lavet",
+          "Peter Henderson",
+          "Riashat Islam",
+          "Marc G. Bellemare",
+          "Joëlle Pineau"
+        ],
+        "year": 2018,
+        "publication_date": "2018-12-20",
+        "venue": "Foundations and Trends® in Machine Learning",
+        "abstract": "Deep reinforcement learning is the combination of reinforcement learning (RL) and deep learning. This field of research has been able to solve a wide range of complex decision making tasks that were previously out of reach for a machine. Thus, deep RL opens up many new applications in domains such as healthcare, robotics, smart grids, finance, and many more. This manuscript provides an introduction to deep reinforcement learning models, algorithms and techniques. Particular focus is on the aspects related to generalization and how deep RL can be used for practical applications. We assume the reader is familiar with basic machine learning concepts.",
+        "url": "https://doi.org/10.1561/2200000071",
+        "doi": "https://doi.org/10.1561/2200000071",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3100366369"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1269
+      },
+      {
+        "paper_id": "rw_003_4aba735cc",
+        "title": "Federated Learning: A Survey on Enabling Technologies, Protocols, and Applications",
+        "authors": [
+          "Mohammed Aledhari",
+          "Rehma Razzak",
+          "Reza M. Parizi",
+          "Fahad Saeed"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-01",
+        "venue": "IEEE Access",
+        "abstract": "This paper provides a comprehensive study of Federated Learning (FL) with an emphasis on enabling software and hardware platforms, protocols, real-life applications and use-cases. FL can be applicable to multiple domains but applying it to different industries has its own set of obstacles. FL is known as collaborative learning, where algorithm(s) get trained across multiple devices or servers with decentralized data samples without having to exchange the actual data. This approach is radically different from other more established techniques such as getting the data samples uploaded to servers or having data in some form of distributed infrastructure. FL on the other hand generates more robust models without sharing data, leading to privacy-preserved solutions with higher security and access privileges to data. This paper starts by providing an overview of FL. Then, it gives an overview of technical details that pertain to FL enabling technologies, protocols, and applications. Compared to other survey papers in the field, our objective is to provide a more thorough summary of the most relevant protocols, platforms, and real-life use-cases of FL to enable data scientists to build better privacy-preserving solutions for industries in critical need of FL. We also provide an overview of key challenges presented in the recent literature and provide a summary of related research work. Moreover, we explore both the challenges and advantages of FL and present detailed service use-cases to illustrate how different architectures and protocols that use FL can fit together to deliver desired results.",
+        "url": "https://doi.org/10.1109/access.2020.3013541",
+        "doi": "https://doi.org/10.1109/access.2020.3013541",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3046653923"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 714
+      },
+      {
+        "paper_id": "rw_004_572f17b27",
+        "title": "Comparative Analysis of Intrusion Detection Systems and Machine Learning-Based Model Analysis Through Decision Tree",
+        "authors": [
+          "Zahedi Azam",
+          "Md. Motaharul Islam",
+          "Mohammad Nurul Huda"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Cyber-attacks pose increasing challenges in precisely detecting intrusions, risking data confidentiality, integrity, and availability. This review paper presents recent IDS taxonomy, a comprehensive review of intrusion detection techniques, and commonly used datasets for evaluation. It discusses evasion techniques employed by attackers and the challenges in combating them to enhance network security. Researchers strive to improve IDS by accurately detecting intruders, reducing false positives, and identifying new threats. Machine learning (ML) and deep learning (DL) techniques are adopted in IDS systems, showing potential in efficiently detecting intruders across networks. The paper explores the latest trends and advancements in ML and DL-based network intrusion detection systems (NIDS), including methodology, evaluation metrics, and dataset selection. It emphasizes research obstacles and proposes a future research model to address weaknesses in the methodologies. The decision tree, known for its speed and user-friendliness, is proposed as a model for detecting result anomalies, combining findings from a comparative survey. This research aims to provide insights into building an effective decision tree-based detection framework.",
+        "url": "https://doi.org/10.1109/access.2023.3296444",
+        "doi": "https://doi.org/10.1109/access.2023.3296444",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4384787750"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 239
+      },
+      {
+        "paper_id": "rw_005_9bbd5b550",
+        "title": "The psychology of passion: A meta-analytical review of a decade of research on intrapersonal outcomes",
+        "authors": [
+          "Thomas Curran",
+          "Andrew P. Hill",
+          "Paul R. Appleton",
+          "Robert J. Vallerand",
+          "Martyn Standage"
+        ],
+        "year": 2015,
+        "publication_date": "2015-06-06",
+        "venue": "Motivation and Emotion",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s11031-015-9503-0",
+        "doi": "https://doi.org/10.1007/s11031-015-9503-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W594590477"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 490
+      },
+      {
+        "paper_id": "rw_006_6c4ed8d3b",
+        "title": "A Survey of Graph Neural Networks for Recommender Systems: Challenges, Methods, and Directions",
+        "authors": [
+          "Chen Gao",
+          "Yu Zheng",
+          "Nian Li",
+          "Yinfeng Li",
+          "Yingrong Qin",
+          "Jinghua Piao",
+          "Yuhan Quan",
+          "Jianxin Chang",
+          "Depeng Jin",
+          "Xiangnan He",
+          "Yong Li"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-14",
+        "venue": "ACM Transactions on Recommender Systems",
+        "abstract": "Recommender system is one of the most important information services on today’s Internet. Recently, graph neural networks have become the new state-of-the-art approach to recommender systems. In this survey, we conduct a comprehensive review of the literature on graph neural network-based recommender systems. We first introduce the background and the history of the development of both recommender systems and graph neural networks. For recommender systems, in general, there are four aspects for categorizing existing works: stage, scenario, objective, and application. For graph neural networks, the existing methods consist of two categories: spectral models and spatial ones. We then discuss the motivation of applying graph neural networks into recommender systems, mainly consisting of the high-order connectivity, the structural property of data and the enhanced supervision signal. We then systematically analyze the challenges in graph construction, embedding propagation/aggregation, model optimization, and computation efficiency. Afterward and primarily, we provide a comprehensive overview of a multitude of existing works of graph neural network-based recommender systems, following the taxonomy above. Finally, we raise discussions on the open problems and promising future directions in this area. We summarize the representative papers along with their code repositories in https://github.com/tsinghua-fib-lab/GNN-Recommender-Systems .",
+        "url": "https://doi.org/10.1145/3568022",
+        "doi": "https://doi.org/10.1145/3568022",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4315977496"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 694
+      },
+      {
+        "paper_id": "rw_007_ffcb470a9",
+        "title": "When Gaussian Process Meets Big Data: A Review of Scalable GPs",
+        "authors": [
+          "Haitao Liu",
+          "Yew-Soon Ong",
+          "Xiaobo Shen",
+          "Jianfei Cai"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-07",
+        "venue": "IEEE Transactions on Neural Networks and Learning Systems",
+        "abstract": "The vast quantity of information brought by big data as well as the evolving computer hardware encourages success stories in the machine learning community. In the meanwhile, it poses challenges for the Gaussian process regression (GPR), a well-known nonparametric, and interpretable Bayesian model, which suffers from cubic complexity to data size. To improve the scalability while retaining desirable prediction quality, a variety of scalable GPs have been presented. However, they have not yet been comprehensively reviewed and analyzed to be well understood by both academia and industry. The review of scalable GPs in the GP community is timely and important due to the explosion of data size. To this end, this article is devoted to reviewing state-of-the-art scalable GPs involving two main categories: global approximations that distillate the entire data and local approximations that divide the data for subspace learning. Particularly, for global approximations, we mainly focus on sparse approximations comprising prior approximations that modify the prior but perform exact inference, posterior approximations that retain exact prior but perform approximate inference, and structured sparse approximations that exploit specific structures in kernel matrix; for local approximations, we highlight the mixture/product of experts that conducts model averaging from multiple local experts to boost predictions. To present a complete review, recent advances for improving the scalability and capability of scalable GPs are reviewed. Finally, the extensions and open issues of scalable GPs in various scenarios are reviewed and discussed to inspire novel ideas for future research avenues.",
+        "url": "https://doi.org/10.1109/tnnls.2019.2957109",
+        "doi": "https://doi.org/10.1109/tnnls.2019.2957109",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3000508506"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 816
+      },
+      {
+        "paper_id": "rw_008_ae5fbb007",
+        "title": "Emerging materials intelligence ecosystems propelled by machine learning",
+        "authors": [
+          "Rohit Batra",
+          "Le Song",
+          "Rampi Ramprasad"
+        ],
+        "year": 2020,
+        "publication_date": "2020-11-09",
+        "venue": "Nature Reviews Materials",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/s41578-020-00255-y",
+        "doi": "https://doi.org/10.1038/s41578-020-00255-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3100445615"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 406
+      },
+      {
+        "paper_id": "rw_009_5cad3b835",
+        "title": "A Metaverse: Taxonomy, Components, Applications, and Open Challenges",
+        "authors": [
+          "Sangmin Park",
+          "Young‐Gab Kim"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Unlike previous studies on the Metaverse based on Second Life, the current Metaverse is based on the social value of Generation Z that online and offline selves are not different. With the technological development of deep learning-based high-precision recognition models and natural generation models, Metaverse is being strengthened with various factors, from mobile-based always-on access to connectivity with reality using virtual currency. The integration of enhanced social activities and neural-net methods requires a new definition of Metaverse suitable for the present, different from the previous Metaverse. This paper divides the concepts and essential techniques necessary for realizing the Metaverse into three components (i.e., hardware, software, and contents) and three approaches (i.e., user interaction, implementation, and application) rather than marketing or hardware approach to conduct a comprehensive analysis. Furthermore, we describe essential methods based on three components and techniques to Metaverse&#x2019;s representative Ready Player One, Roblox, and Facebook research in the domain of films, games, and studies. Finally, we summarize the limitations and directions for implementing the immersive Metaverse as social influences, constraints, and open challenges.",
+        "url": "https://doi.org/10.1109/access.2021.3140175",
+        "doi": "https://doi.org/10.1109/access.2021.3140175",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4206484811"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1789
+      },
+      {
+        "paper_id": "rw_010_ee2f1e957",
+        "title": "The Science of Mind Wandering: Empirically Navigating the Stream of Consciousness",
+        "authors": [
+          "Jonathan Smallwood",
+          "Jonathan W. Schooler"
+        ],
+        "year": 2014,
+        "publication_date": "2014-10-08",
+        "venue": "Annual Review of Psychology",
+        "abstract": "Conscious experience is fluid; it rarely remains on one topic for an extended period without deviation. Its dynamic nature is illustrated by the experience of mind wandering, in which attention switches from a current task to unrelated thoughts and feelings. Studies exploring the phenomenology of mind wandering highlight the importance of its content and relation to meta-cognition in determining its functional outcomes. Examination of the information-processing demands of the mind-wandering state suggests that it involves perceptual decoupling to escape the constraints of the moment, its content arises from episodic and affective processes, and its regulation relies on executive control. Mind wandering also involves a complex balance of costs and benefits: Its association with various kinds of error underlines its cost, whereas its relationship to creativity and future planning suggest its potential value. Although essential to the stream of consciousness, various strategies may minimize the downsides of mind wandering while maintaining its productive aspects.",
+        "url": "https://doi.org/10.1146/annurev-psych-010814-015331",
+        "doi": "https://doi.org/10.1146/annurev-psych-010814-015331",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2117194251"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1735
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_007_ffcb470a9",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper reviews scalable Gaussian processes using mixture of experts, directly aligning with the target's hierarchical meta-learning via mixture of experts approach for dynamical systems.",
+        "evidence_summary": "In 2020, Liu et al. published 'When Gaussian Process Meets Big Data: A Review of Scalable GPs,' which surveyed global and local approximations for Gaussian process regression, including mixture of experts for subspace learning to handle large datasets. The review covered sparse approximations, posterior approximations, and structured methods, emphasizing scalability improvements while retaining prediction quality."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_001_7b694fe61",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Provides foundational background on deep reinforcement learning, which may inform meta-learning approaches in dynamical systems, though not directly method-specific.",
+        "evidence_summary": "In 2018, François-Lavet et al. published 'An Introduction to Deep Reinforcement Learning,' which combined reinforcement learning and deep learning for complex decision-making tasks. The manuscript focused on generalization aspects and applications in domains like healthcare and robotics, assuming reader familiarity with basic machine learning concepts."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_006_6c4ed8d3b",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Surveys graph neural networks for recommender systems, offering insights on neural network architectures and high-order connectivity, which may relate to hierarchical modeling.",
+        "evidence_summary": "In 2023, Gao et al. published 'A Survey of Graph Neural Networks for Recommender Systems: Challenges, Methods, and Directions,' which reviewed GNN-based approaches, emphasizing high-order connectivity and structural properties. The survey categorized works by stage, scenario, objective, and application, and discussed challenges in graph construction and model optimization."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_003_4aba735cc",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Discusses federated learning with decentralized data, which may provide context for distributed or meta-learning scenarios, though not directly on dynamical systems.",
+        "evidence_summary": "In 2020, Aledhari et al. published 'Federated Learning: A Survey on Enabling Technologies, Protocols, and Applications,' which studied collaborative learning across decentralized devices without data exchange. The paper covered enabling technologies, protocols, and real-life applications, highlighting privacy-preserved solutions and challenges in different industries."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_572f17b27",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Focuses on intrusion detection with machine learning, offering general ML/DL insights but not directly relevant to dynamical system reconstruction or meta-learning.",
+        "evidence_summary": "In 2023, Azam et al. published 'Comparative Analysis of Intrusion Detection Systems and Machine Learning-Based Model Analysis Through Decision Tree,' which reviewed IDS techniques, ML/DL adoption, and datasets for network security. The paper discussed evasion techniques, challenges in reducing false positives, and proposed a decision tree model for anomaly detection."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_008_ae5fbb007",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "Covers machine learning in materials science, providing broad ML context but no direct connection to dynamical systems or meta-learning methods.",
+        "evidence_summary": "In 2020, Batra et al. published 'Emerging materials intelligence ecosystems propelled by machine learning,' which explored ML-driven advancements in materials research, though specific details on methods or results were not provided in the metadata."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_009_5cad3b835",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "Discusses Metaverse technologies and neural-net methods, which are tangentially related to AI but not specific to dynamical systems or meta-learning.",
+        "evidence_summary": "In 2022, Park and Kim published 'A Metaverse: Taxonomy, Components, Applications, and Open Challenges,' which analyzed Metaverse concepts based on hardware, software, and contents, integrating deep learning for social activities. The paper described methods in films, games, and studies, and summarized limitations for immersive implementation."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_010_ee2f1e957",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "Focuses on psychology of mind wandering, with no relevance to machine learning, dynamical systems, or meta-learning methods.",
+        "evidence_summary": "In 2014, Smallwood and Schooler published 'The Science of Mind Wandering: Empirically Navigating the Stream of Consciousness,' which examined the phenomenology and regulation of mind wandering, involving perceptual decoupling and executive control, with costs and benefits related to creativity and error."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_005_9bbd5b550",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "A meta-analysis on psychology of passion, entirely unrelated to machine learning, dynamical systems, or technical methods.",
+        "evidence_summary": "In 2015, Curran et al. published 'The psychology of passion: A meta-analytical review of a decade of research on intrapersonal outcomes,' though no abstract or technical details were provided in the metadata to assess relevance."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2020, Liu et al. published 'When Gaussian Process Meets Big Data: A Review of Scalable GPs,' which surveyed global approximations like sparse methods and local approximations including mixture of experts for scalable Gaussian process regression, addressing cubic complexity challenges. In 2018, François-Lavet et al. published 'An Introduction to Deep Reinforcement Learning,' covering the combination of RL and deep learning for decision-making tasks, with focus on generalization and applications in robotics and healthcare. In 2023, Gao et al. published 'A Survey of Graph Neural Networks for Recommender Systems: Challenges, Methods, and Directions,' reviewing GNN-based approaches, high-order connectivity, and challenges in graph construction and optimization for recommender systems. In 2020, Aledhari et al. published 'Federated Learning: A Survey on Enabling Technologies, Protocols, and Applications,' discussing collaborative learning without data exchange, enabling technologies, and privacy-preserved solutions across industries. In 2023, Azam et al. published 'Comparative Analysis of Intrusion Detection Systems and Machine Learning-Based Model Analysis Through Decision Tree,' reviewing IDS techniques, ML/DL adoption, datasets, and a decision tree model for network security anomaly detection. In 2020, Batra et al. published 'Emerging materials intelligence ecosystems propelled by machine learning,' exploring ML applications in materials science, though specific methodological details were not provided.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

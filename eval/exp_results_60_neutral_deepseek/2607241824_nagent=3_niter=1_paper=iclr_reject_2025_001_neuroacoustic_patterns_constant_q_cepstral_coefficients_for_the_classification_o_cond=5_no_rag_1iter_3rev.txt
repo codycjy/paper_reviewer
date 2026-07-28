@@ -1,0 +1,119 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Presents a highly novel application of Constant Q Cepstral Coefficients (CQCC) to neurodegenerative disease classification from speech, a domain where this feature set is under-explored.",
+        "Demonstrates a clear and significant performance improvement (e.g., 5.6-7.7% absolute gains) over the standard MFCC baseline on two distinct neurodegenerative disorders (Parkinson's and ALS).",
+        "Provides a strong theoretical foundation by introducing and explaining the 'form-invariance' property of the CQT, linking it to the problem's domain and justifying its potential superiority."
+      ],
+      "weaknesses": [
+        "The experimental setup lacks detail; the exact composition of the datasets (D1, D2, D3) and the data splitting procedure are not fully clear, making reproducibility and assessment of statistical significance difficult.",
+        "The paper claims to be the first of its kind, but does not sufficiently situate itself against the most recent related work, such as the Suhas et al. (2020) paper that also classifies PD, ALS, and Healthy controls."
+      ],
+      "summary_comment": "This paper introduces a compelling and genuinely novel idea by applying CQCC features to the challenging problem of multi-class neurodegenerative disease classification from speech. The theoretical motivation based on form-invariance is well-articulated and convincing. While the experimental methodology could be more rigorous and detailed, the significant performance gains over the strong MFCC baseline are promising. The core idea is innovative and has the strong potential to inspire future work in this area, meriting acceptance despite minor methodological imperfections."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper tackles a clinically relevant problem of classifying neurodegenerative disorders using speech signals.",
+        "The theoretical discussion of the Constant Q Transform and its form-invariance property is a solid contribution to the methodological background.",
+        "The use of multiple, publicly available datasets (Italian Parkinson, Minsk2019 ALS) adds credibility to the experimental setup."
+      ],
+      "weaknesses": [
+        "The experimental evaluation is methodologically weak and unconvincing; results for the SVM classifier on the primary binary classification task (Healthy vs. Pathological) show CQCC performing worse than baseline features (63.4%) which contradicts the main claim of superiority, yet this major inconsistency is not discussed.",
+        "Critical methodological details are missing, such as the number of subjects/samples per class in the final test sets after SMOTE, the specific implementation of the CQCC feature extraction (e.g., number of bins per octave), and a clear description of the train/test split strategy, making the experiments difficult to reproduce and verify."
+      ],
+      "summary_comment": "While the application of CQCC features to neurodegenerative disorder classification is potentially interesting, the paper suffers from fundamental flaws in its experimental rigor and reporting. The results contain internal contradictions that are not addressed (e.g., poor SVM performance with CQCC on the main task), and the lack of essential methodological details severely undermines the soundness and reproducibility of the evaluation. As a reviewer who prioritizes methodological correctness, I cannot recommend acceptance based on the presented evidence."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper addresses a highly relevant and practical problem: improving the early classification of neurodegenerative disorders like Parkinson's and ALS using speech analysis.",
+        "The proposed method (CQCC) demonstrates a clear practical advantage, showing significant performance improvements (5.6% and 7.7%) over the widely-used MFCC baseline on real-world datasets.",
+        "The evaluation is comprehensive, using multiple datasets, several baseline features (Jitter, Shimmer, Teager Energy, MFCC), and two different classifiers (RF, SVM), with results that are convincing and practically meaningful."
+      ],
+      "weaknesses": [
+        "The clarity of the paper is acceptable but could be improved; the writing contains some grammatical errors and awkward phrasings (e.g., 'to that effectm it can be observed') that slightly hinder readability.",
+        "The experimental section lacks some details that are important for reproducibility, such as the specific parameters used for the CQCC extraction (e.g., number of bins per octave 'B') and a clearer description of the train/test split and SMOTE application."
+      ],
+      "summary_comment": "This paper presents a strong practical contribution by successfully applying Constant Q Cepstral Coefficients (CQCC) to the classification of neurodegenerative disorders from speech. The method shows a clear and significant improvement over standard features like MFCC, validated on two distinct clinical datasets. While the writing could be polished for greater clarity and some experimental details added for reproducibility, the work is sound, novel in its specific application, and holds significant potential for real-world diagnostic assistance. The practical impact is evident, warranting acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper addresses a healthcare application using machine learning, which aligns with ICML's interest in application-driven ML",
+        "The work involves feature engineering and classification methods (RF, SVM) that are within ICML's scope",
+        "The paper presents empirical results on real-world datasets, which ICML values"
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution is more about signal processing (CQCC feature extraction) than machine learning innovation",
+        "Limited theoretical machine learning contributions - primarily application of existing classifiers",
+        "Reviewer B noted methodological weaknesses in experimental evaluation that would be problematic for ICML's rigor standards",
+        "The paper's focus is more on biomedical signal processing than core ML advances"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The application to healthcare (ALS and Parkinson's classification) aligns with NeurIPS's interest in AI/ML for health",
+        "The paper uses multiple datasets and presents comparative results, which NeurIPS values",
+        "The work has potential clinical significance, which fits NeurIPS's interdisciplinary focus"
+      ],
+      "why_it_does_not_fit": [
+        "The methodological approach is more engineering-focused than theoretical or algorithmic innovation",
+        "Limited novelty in machine learning aspects - primarily application of standard classifiers",
+        "Reviewer B's concerns about experimental rigor and internal inconsistencies would be problematic for NeurIPS",
+        "The paper doesn't contribute significantly to core ML theory or algorithms"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The paper involves signal processing and feature extraction from audio data",
+        "Application to healthcare problems is within ICLR's broad scope"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR focuses primarily on deep learning and representation learning, which this paper doesn't address",
+        "No neural networks or deep learning methods are used or proposed",
+        "The feature extraction method (CQCC) is not based on learned representations",
+        "The paper's signal processing focus is quite distant from ICLR's core interests in deep learning"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

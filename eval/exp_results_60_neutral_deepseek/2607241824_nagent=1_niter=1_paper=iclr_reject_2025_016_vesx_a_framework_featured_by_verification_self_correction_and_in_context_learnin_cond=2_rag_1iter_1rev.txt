@@ -1,0 +1,388 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The VeSX framework introduces a comprehensive and well-integrated approach combining subgoal-guided verification, hierarchical self-correction, and an exemplar bank, which addresses key challenges in web automation.",
+        "Achieves state-of-the-art results on the WebArena benchmark, significantly outperforming existing methods without human guidance, demonstrating practical effectiveness.",
+        "Provides thorough ablation studies that clearly demonstrate the contribution of each proposed component (verification, self-correction, exemplar bank) to the overall performance."
+      ],
+      "weaknesses": [
+        "The exemplar bank construction relies on self-evaluation by the LLM for trajectory filtering, which may introduce noise and limit the quality of automatically generated data.",
+        "The performance, while state-of-the-art, is still at a 34% success rate on WebArena, indicating that the problem remains challenging and there is significant room for improvement."
+      ],
+      "summary_comment": "This paper presents VeSX, a novel framework for LLM-based web automation that integrates verification, self-correction, and in-context learning. It demonstrates strong empirical results, a solid experimental setup, and clear contributions. The weaknesses are acknowledged by the authors as limitations. The work is a significant step forward for autonomous web agents."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses machine learning systems and optimization aspects through its framework design for LLM agents, aligning with ICML's focus on improved implementation and scalability",
+        "The work involves probabilistic methods and reinforcement learning components through its hierarchical self-correction mechanism, which fits ICML's scope",
+        "The empirical evaluation on WebArena benchmark demonstrates practical application of machine learning techniques, relevant to ICML's application-driven machine learning track"
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution is more focused on workflow design and system architecture rather than fundamental machine learning algorithms or theory, which may not align with ICML's emphasis on core ML contributions",
+        "The paper's focus on web automation as a specific application domain might be too narrow for ICML's broader machine learning focus",
+        "Reviewer comments note the 34% success rate indicates significant room for improvement, suggesting the methodological contributions may not be mature enough for ICML's standards"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses human interaction in AI systems and decision-making/control problems, which are explicit topics of interest for NeurIPS",
+        "The work on LLM agents and their reasoning capabilities aligns with NeurIPS' focus on language models and generalization/multi-task learning",
+        "The framework combines planning, execution, and verification components, fitting NeurIPS' interdisciplinary nature and interest in AI systems that combine multiple capabilities"
+      ],
+      "why_it_does_not_fit": [
+        "The application domain (web automation) is quite specific and may not have the broad appeal typically sought by NeurIPS",
+        "While the method achieves state-of-the-art results, the absolute performance (34% success rate) might be considered too low for NeurIPS' high standards",
+        "The technical approach is more engineering-focused than theoretical, which may not fully match NeurIPS' preference for foundational contributions"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper deals with representation learning for language and other modalities through LLM-based web interaction, aligning with ICLR's focus areas",
+        "The work involves learning on graphs and other geometries through web structure understanding, relevant to ICLR's topics",
+        "The framework incorporates reasoning and planning capabilities for LLMs, which connects to ICLR's interest in neurosymbolic and hybrid AI systems"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly emphasizes deep learning and representation learning, while this paper focuses more on agent workflow design and system architecture",
+        "The paper lacks significant theoretical contributions or novel deep learning architectures, which are typically valued at ICLR",
+        "The application focus on web automation may be too applied for ICLR's preference for more fundamental deep learning contributions"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_c3b9b2c89412",
+    "paper_id": "paper_9bdd8c08e471",
+    "target_paper_summary": {
+      "paper_id": "paper_9bdd8c08e471",
+      "title": "Vesx: A Framework Featured By Verification, Self-Correction And In-Context Learning For Web Automation Tasks",
+      "abstract": "1 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100 101 102 103 104 105 106 107\n\n: the i-th subtask : the j-th action to address the i-th subtask : the i-th subgoal : verification for the i-th subgoal\n(a) Only Execution Workflow Query: Tell me the status of my latest order and when will it arrive.\n\n(b) Planning-Execution Workflow\n(with human guidance)\nDecompose into a series of subtasks\n... ...\n\n: find_order\n(\"my latest order\")\n: get_information\n(\"its status and arrival time\") : **Answer**\nplanning:\n+ +\nclick [status] **click [view details]**\n\n... ... ...\n\nGenerate actions one by one predict action and execute:\n... ...\n\npredict action and execute:\n... ...\n\nclick [my account] answer [Delivery. Tomorrow]\n\nclick [Sales]\n\nclick [my account] finish_subtask **answer [Delivery. Tomorrow]**\n\n(c) VeSX Workflow (Ours):\nDecompose into a series of subtask and subgoal pairs\n: find the **latest order** ... ...\n\nplanning:\n: Answer : check_url\n(\"my_account/orders\")\n: check_webpage\n\n(\"The order is latest\")\nclick [my_account] scroll [down] click [orders] answer [Delivery. Tomorrow] click [sorted by] **click [order_123]**\n... ... ...\n\n: find my order list predict action, execute and verify:\npass fail pass click [time]\n\nfinish_subtask **finish_subtask**\n\nfail selfcorrectionselfcorrection\nVeSX introduces two significant modules to the planning-execution workflow for web automation tasks, as illustrated in Figure 1(c). The first involves adopting **subgoal-guided verification** to ascertain the successful completion of subtasks. VeSX generates subgoals in the planning phase and conducts verification to check whether the execution result satisfies the subgoal once execution is finished. We devised two modes for verification: self-verification which makes LLMs do verification by themselves, and external verification which calls for external functions to conduct verification. Verification ensures the completion of the subtasks and avoids the issue of subsequent subtasks becoming infeasible due to errors in the execution of previous subtasks. The second improvement is **hierarchical self-correction**, which aims to self-correct both execution and planning. When verification fails, VeSX first tries to identify and correct errors in the current subtask's execution trajectory, a process referred to as \"reflection\". If reflection is unsuccessful, the",
+      "topic": "",
+      "claims": []
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "web automation OR web task automation OR web interaction automation",
+          "rationale": "The paper focuses on automating web-based tasks, so queries should target the general research area of web automation"
+        },
+        {
+          "group": "same_method",
+          "query": "subgoal verification OR hierarchical self-correction OR planning-execution verification",
+          "rationale": "The paper introduces specific methods including subgoal-guided verification and hierarchical self-correction for web automation workflows"
+        },
+        {
+          "group": "same_constraints",
+          "query": "web automation LLM OR large language model web interaction",
+          "rationale": "The paper uses LLMs for verification and appears to operate in the context of language model-based web automation systems"
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "web automation benchmark OR web task automation dataset OR web interaction evaluation",
+          "rationale": "Search for established benchmarks and evaluation frameworks in web automation research"
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "subgoal verification web automation OR self-correction web interaction OR hierarchical verification web tasks",
+          "rationale": "Search for prior work that may have introduced similar verification or self-correction mechanisms for web automation"
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "web automation limitations OR web interaction failures OR automation error recovery challenges",
+          "rationale": "Search for papers that discuss limitations, failure modes, or challenges in web automation systems"
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 5,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_e20d322e5",
+        "title": "Analyzing Web Archives Through Topic and Event Focused Sub-collections",
+        "authors": [
+          "Gerhard Gossen",
+          "Elena Demidova",
+          "Thomas Risse"
+        ],
+        "year": 2016,
+        "publication_date": "2016-12-16",
+        "venue": "arXiv",
+        "abstract": "Web archives capture the history of the Web and are therefore an important source to study how societal developments have been reflected on the Web. However, the large size of Web archives and their temporal nature pose many challenges to researchers interested in working with these collections. In this work, we describe the challenges of working with Web archives and propose the research methodology of extracting and studying sub-collections of the archive focused on specific topics and events. We discuss the opportunities and challenges of this approach and suggest a framework for creating sub-collections.",
+        "url": "http://arxiv.org/abs/1612.05413v1",
+        "doi": "",
+        "arxiv_id": "1612.05413v1",
+        "source_ids": {
+          "arXiv": "1612.05413v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "limitations_counterevidence",
+          "novelty_competitor",
+          "same_constraints",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_002_727c885ba",
+        "title": "SaGe: Web Preemption for Public SPARQL Query Services",
+        "authors": [
+          "Thomas Minier",
+          "Hala Skaf-Molli",
+          "Pascal Molli"
+        ],
+        "year": 2019,
+        "publication_date": "2019-02-13",
+        "venue": "arXiv",
+        "abstract": "To provide stable and responsive public SPARQL query services, data providers enforce quotas on server usage. Queries which exceed these quotas are interrupted and deliver partial results. Such interruption is not an issue if it is possible to resume queries execution afterward. Unfortunately, there is no preemption model for the Web that allows for suspending and resuming SPARQL queries. In this paper, we propose SaGe: a SPARQL query engine based on Web preemption. SaGe allows SPARQL queries to be suspended by the Web server after a fixed time quantum and resumed upon client request. Web preemption is tractable only if its cost in time is negligible compared to the time quantum. The challenge is to support the full SPARQL query language while keeping the cost of preemption negligible. Experimental results demonstrate that SaGe outperforms existing SPARQL query processing approaches by several orders of magnitude in term of the average total query execution time and the time for first results.",
+        "url": "http://arxiv.org/abs/1902.04790v1",
+        "doi": "",
+        "arxiv_id": "1902.04790v1",
+        "source_ids": {
+          "arXiv": "1902.04790v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence",
+          "novelty_competitor",
+          "same_constraints",
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_003_beffd7117",
+        "title": "Deductive Verification of Unmodified Linux Kernel Library Functions",
+        "authors": [
+          "Denis Efremov",
+          "Mikhail Mandrykin",
+          "Alexey Khoroshilov"
+        ],
+        "year": 2018,
+        "publication_date": "2018-09-03",
+        "venue": "arXiv",
+        "abstract": "This paper presents results from the development and evaluation of a deductive verification benchmark consisting of 26 unmodified Linux kernel library functions implementing conventional memory and string operations. The formal contract of the functions was extracted from their source code and was represented in the form of preconditions and postconditions. The correctness of 23 functions was completely proved using AstraVer toolset, although success for 11 functions was achieved using 2 new specification language constructs. Another 2 functions were proved after a minor modification of their source code, while the final one cannot be completely proved using the existing memory model. The benchmark can be used for the testing and evaluation of deductive verification tools and as a starting point for verifying other parts of the Linux kernel.",
+        "url": "http://arxiv.org/abs/1809.00626v1",
+        "doi": "",
+        "arxiv_id": "1809.00626v1",
+        "source_ids": {
+          "arXiv": "1809.00626v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_004_8c42634ae",
+        "title": "Partial Verification as a Substitute for Money",
+        "authors": [
+          "Sofia Ceppi",
+          "Ian Kash",
+          "Rafael Frongillo"
+        ],
+        "year": 2018,
+        "publication_date": "2018-12-18",
+        "venue": "arXiv",
+        "abstract": "Recent work shows that we can use partial verification instead of money to implement truthful mechanisms. In this paper we develop tools to answer the following question. Given an allocation rule that can be made truthful with payments, what is the minimal verification needed to make it truthful without them? Our techniques leverage the geometric relationship between the type space and the set of possible allocations.",
+        "url": "http://arxiv.org/abs/1812.07312v2",
+        "doi": "",
+        "arxiv_id": "1812.07312v2",
+        "source_ids": {
+          "arXiv": "1812.07312v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_005_dc382992e",
+        "title": "Unsupervised Multi-label Dataset Generation from Web Data",
+        "authors": [
+          "Carlos Roig",
+          "David Varas",
+          "Issey Masuda",
+          "Juan Carlos Riveiro",
+          "Elisenda Bou-Balust"
+        ],
+        "year": 2020,
+        "publication_date": "2020-05-12",
+        "venue": "arXiv",
+        "abstract": "This paper presents a system towards the generation of multi-label datasets from web data in an unsupervised manner. To achieve this objective, this work comprises two main contributions, namely: a) the generation of a low-noise unsupervised single-label dataset from web-data, and b) the augmentation of labels in such dataset (from single label to multi label). The generation of a single-label dataset uses an unsupervised noise reduction phase (clustering and selection of clusters using anchors) obtaining a 85% of correctly labeled images. An unsupervised label augmentation process is then performed to assign new labels to the images in the dataset using the class activation maps and the uncertainty associated with each class. This process is applied to the dataset generated in this paper and a public dataset (Places365) achieving a 9.5% and 27% of extra labels in each dataset respectively, therefore demonstrating that the presented system can robustly enrich the initial dataset.",
+        "url": "http://arxiv.org/abs/2005.05623v1",
+        "doi": "",
+        "arxiv_id": "2005.05623v1",
+        "source_ids": {
+          "arXiv": "2005.05623v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_beffd7117",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper introduces deductive verification for software functions, aligning with VeSX's subgoal-guided verification method, though in a different domain (kernel functions vs. web automation).",
+        "evidence_summary": "Deductive Verification of Unmodified Linux Kernel Library Functions (Efremov et al., 2018) develops deductive verification techniques for software correctness."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_8c42634ae",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "It explores partial verification mechanisms, which conceptually relate to VeSX's verification modules but in a monetary/mechanism design context rather than web automation.",
+        "evidence_summary": "Partial Verification as a Substitute for Money (Ceppi et al., 2018) studies partial verification as an alternative to payments in truthful mechanisms."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_002_727c885ba",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_constraints",
+          "same_problem"
+        ],
+        "rationale": "Addresses web-based query processing and preemption, sharing the web automation context and constraints, though focused on SPARQL rather than task automation.",
+        "evidence_summary": "SaGe: Web Preemption for Public SPARQL Query Services (Minier et al., 2019) proposes Web preemption for efficient SPARQL query handling on public services."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_dc382992e",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Involves unsupervised dataset generation from web data, providing background on web data handling but not directly related to automation or verification methods.",
+        "evidence_summary": "Unsupervised Multi-label Dataset Generation from Web Data (Roig et al., 2020) presents a system for creating multi-label datasets from web data unsupervised."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_001_e20d322e5",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Discusses web archives and challenges, tangentially related to web automation contexts but lacks focus on task automation or verification methods.",
+        "evidence_summary": "Analyzing Web Archives Through Topic and Event Focused Sub-collections (Gossen et al., 2016) addresses challenges in working with web archives and proposes sub-collection methodologies."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Prior work includes Deductive Verification of Unmodified Linux Kernel Library Functions (Efremov et al., 2018) and Partial Verification as a Substitute for Money (Ceppi et al., 2018), which explore verification mechanisms in software and economic contexts, respectively. SaGe: Web Preemption for Public SPARQL Query Services (Minier et al., 2019) addresses web-based processing challenges, while Unsupervised Multi-label Dataset Generation from Web Data (Roig et al., 2020) and Analyzing Web Archives Through Topic and Event Focused Sub-collections (Gossen et al., 2016) provide background on web data handling and archival analysis.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 5,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 5,
+      "num_cutoff_valid": 5,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 5,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 5,
+    "num_cutoff_valid": 5,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

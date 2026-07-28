@@ -1,0 +1,111 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Analyzing discrete-time gradient descent with random initialization is a major step up in difficulty compared to the continuous-time gradient flows or warm-start assumptions common in prior tensor works.",
+        "The authors do a solid job of tackling the coupled slice interactions in the Fourier domain. It's a messy technical hurdle because the channels don't just decouple nicely under the measurement operator.",
+        "The numerical results are clear and actually show the two distinct phases (spectral alignment first, then geometric convergence) that the math predicts."
+      ],
+      "weaknesses": [
+        "The exponential dependence on the condition number is a pretty brutal limitation, making the actual recovery bounds incredibly conservative for realistic, ill-conditioned data.",
+        "The proof relies heavily on the specific algebraic structure of the t-product, so it's not clear how easily these insights will translate to CP or Tucker decompositions."
+      ],
+      "summary_comment": "The authors addressed my main concerns in their response. While the exponential dependence on the condition number is still a massive bottleneck in the bounds, their explanation of why this happens during the alignment phase makes sense, and I'm glad they've added this discussion to the paper. Their proposed ideas for extending this to Tucker via HOSVD also flesh out the outlook section nicely. I still think the bounds are very pessimistic, but getting a discrete-time analysis for tensor GD from random initialization is a really strong conceptual contribution. I'm happy to recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Tackles discrete-time gradient descent instead of taking the easy way out with gradient flow. The step-size restriction $\\mu \\le c \\sqrt{k} \\kappa^{-4} \\|X\\|^{-2}$ actually reflects discrete dynamics.",
+        "The authors handle the 'slice cross-talk' issue in the Fourier domain beautifully. Since the measurement adjoint couples the slices, you cannot just run parallel matrix proofs; the estimation of the off-diagonal interactive terms in Lemmas E.4 and E.5 is very clean.",
+        "Though the tensor dimension in the experiments is quite small ($10 \\times 10 \\times 4$), Figure 2 does a nice job of illustrating the clear divide between the spectral alignment phase and the actual convergence phase."
+      ],
+      "weaknesses": [
+        "Let's be real: $O(\\kappa^8 r^2 n k)$ sample complexity is brutal. It practically limits this math to toy tensors that are almost perfectly conditioned.",
+        "The restriction to the symmetric PSD case ($X*X^\\top$) leaves out most real-world tensor recovery scenarios (which are highly asymmetric). The authors' proposed pathway using 'implicit balancing' is a promising pointer, but remains unproven here."
+      ],
+      "summary_comment": "The authors' response clears up how the slice-coupling forces the highly conservative $\\kappa$ and $\\delta$ parameters. Although the practical utility of these bounds is limited by their pessimistic scaling, the theoretical mechanics of proving convergence for overparameterized t-product tensors in discrete-time are sound and represent a solid technical contribution. I am happy to recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "Analyzing discrete gradient descent instead of the mathematically convenient gradient flow is a big deal for practitioners. It directly aligns with the actual optimization loops we run in production.",
+        "The way the authors explain the mathematical transition from matrix to tensor limits—specifically pointing out how discrete updates couple all Fourier slices and create 'cross-talk'—makes a highly technical topic very approachable.",
+        "The authors actually went out and ran a realistic 50 x 50 x 3 color video segment experiment for the rebuttal rather than just hand-waving my concerns about the toy 10 x 10 x 4 setup. Seeing the identical two-stage convergence on real video frames tells me the underlying math is robust."
+      ],
+      "weaknesses": [
+        "The theoretical bound on alpha remains double-exponentially small with respect to the condition number, which means the strict math is still ultra-conservative compared to practical settings.",
+        "The worst-case sample complexity of O(kappa^8 r^2 n k) is still quite high, meaning there remains a gap between our theoretical underdetermined limits and actual practical performance."
+      ],
+      "summary_comment": "As an applied researcher, I originally had serious doubts about the actual utility of this paper given the micro 10x10x4 synthetic tests. But the authors' rebuttal completely won me over. They didn't just give me boilerplate math reasons; they literally set up and ran a 50x50x3 RGB video sequence reconstruction where the empirical dynamics matched their two-stage convergence theorem precisely. While the worst-case sample complexity bounds are still overly conservative, this work genuinely bridges the theoretical gap between matrix and tubal tensor dynamics. I highly recommend an Accept."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper provides a highly rigorous mathematical analysis of discrete-time gradient descent under a non-convex loss, which perfectly aligns with ICML's focus on the 'theory of machine learning' and 'optimization' (specifically non-convex optimization and tensor methods).",
+        "Analyzing discrete-time dynamics with random initialization instead of relying on the mathematically simpler continuous-time gradient flows or warm-start assumptions represents a substantial technical hurdle that is highly valued by ICML's theoretically oriented audience.",
+        "The rigorous handling of the Fourier-domain slice 'cross-talk' and the explicit step-size restrictions directly address core algorithmic concerns rather than idealized systems."
+      ],
+      "why_it_does_not_fit": [
+        "The derived sample complexity ($O(\\kappa^8 r^2 n k)$) and the initialization scale parameter bounds are extremely conservative and pessimistic, which may attract criticism from ICML reviewers who look for tight, near-optimal bounds.",
+        "The analysis is strictly limited to the symmetric PSD case ($X * X^\\top$) and relies heavily on the algebraic specifics of the t-product, making its applicability to more general non-symmetric tensor recovery settings unproven."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS is an excellent fit due to its rich history of publishing foundational works on overparameterization, deep learning theory, and implicit regularization.",
+        "The paper directly addresses the connection between tensor factorization and implicit bias in neural networks, specifically highlighting how implicit regularization guides overparameterized networks with small random initializations to generalize well.",
+        "Reviewers strongly appreciated the mathematical novelty of achieving a discrete-time analysis for tensor GD from random initialization, a conceptual contribution that fits the high-level theoretical themes of NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "The heavy reliance on the specific algebraic structure of the tubal product (t-product) may be viewed as somewhat niche compared to broader tensor structures like CP or Tucker decompositions, which have wider general appeal.",
+        "Despite the addition of a video segment experiment in the rebuttal, the main text's empirical evaluations are primarily low-dimensional toy problems ($10 \\times 10 \\times 4$), which might be seen as less impactful for the broader, application-oriented NeurIPS crowd."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR focuses intensely on representation learning and deep learning dynamics. Understanding how gradient descent implicitly regularizes deep structures (modeled here via tensor factorization) aligns directly with ICLR’s core interests.",
+        "The authors explicitly motivate their tubal-rank tensor setting as a surrogate for neural network training and convolution-style layer designs, which matches the representation learning paradigm of ICLR.",
+        "The practical relevance of discrete-time updates over continuous-time flows directly matches the interest of ICLR developers and practitioners looking at realistic optimization bounds."
+      ],
+      "why_it_does_not_fit": [
+        "The presentation is exceptionally math-heavy, relying on detailed linear algebra concepts (such as circulants and Fourier slices) which might feel too abstract and far removed from typical deep representation learning paradigms.",
+        "Many ICLR reviewers expect extensive engineering-scale or highly realistic deep learning experiments on modern architectures. Although the video segment experiment was well-received in the review process, the paper's core is inherently coordinate-free tensor proofs, which may face pushback for lack of practical scale in the main paper."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

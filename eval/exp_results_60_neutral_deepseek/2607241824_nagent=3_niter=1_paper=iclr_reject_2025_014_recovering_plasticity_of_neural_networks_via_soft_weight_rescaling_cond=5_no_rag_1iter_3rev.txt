@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a highly novel and elegant regularization method (Soft Weight Rescaling) by leveraging the principle of proportionality in neural networks, which is a fresh and insightful perspective.",
+        "The work is ambitious, tackling a fundamental and well-known problem (plasticity loss from unbounded weight growth) and offering a theoretically grounded solution that claims advantages in both preserving information and maintaining plasticity, unlike previous re-initialization or penalty-based methods.",
+        "Provides a comprehensive evaluation across multiple important scenarios (warm-start, continual learning, generalization) and model architectures, demonstrating consistent and often superior performance compared to strong baselines."
+      ],
+      "weaknesses": [
+        "The theoretical analysis, while a strength, makes an assumption that the change in the Frobenius norm from a gradient update is bounded; the paper could more thoroughly justify the reasonableness of this assumption or discuss its limitations.",
+        "The treatment of learning rate schedulers introduces an adaptation (re-initializing the reference norm) which, while practical, is an ad-hoc adjustment that is not as theoretically integrated into the core method and highlights a potential limitation in dynamic training regimes."
+      ],
+      "summary_comment": "This paper presents a genuinely novel and theoretically motivated approach to solving plasticity loss. The idea of using a proportionality-based rescaling to control weight growth without discarding learned information is creative, simple, and compelling. While the theoretical framework has a minor caveat (the bounded gradient update assumption) and the method requires a slight adjustment for learning rate decay, these are acceptable imperfections given the significant novelty and the strong empirical results across diverse settings. The potential impact on fields like continual learning is high, and the work opens up new research directions."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a strong theoretical foundation for the proposed method, including a proof of the 'proportionality' property for neural networks and a formal proof of bounded weight growth.",
+        "The experimental evaluation is comprehensive, covering multiple learning scenarios (warm-start, continual, single-task) and various model architectures on standard benchmarks, with results that convincingly support the claims.",
+        "The method is rigorously compared against several strong and relevant baselines, and the experimental procedures, including hyperparameter selection, are clearly described."
+      ],
+      "weaknesses": [
+        "While the theoretical analysis is solid, the practical assumption that the change in the squared Frobenius norm from a single gradient update is bounded (Theorem 2) is not empirically verified in the paper.",
+        "The paper acknowledges that in some experiments, particularly with learning rate decay, standard L2 regularization can outperform the basic SWR method, suggesting the performance advantage is not universal and may require specific tuning."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and well-evaluated contribution. The proposed Soft Weight Rescaling (SWR) is novel and grounded in a strong theoretical framework. The experiments are extensive, rigorous, and convincingly demonstrate the method's effectiveness across several challenging learning paradigms. The soundness of the reasoning and the quality of the evaluation easily meet the bar for acceptance, despite moderate novelty and a few minor weaknesses."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a practical and important problem of plasticity loss and unbounded weight growth in neural networks",
+        "Proposes a simple yet effective method (SWR) with minimal computational overhead that preserves learned information",
+        "Provides comprehensive experimental evaluation across multiple scenarios (warm-start, continual learning, generalization) with standard benchmarks"
+      ],
+      "weaknesses": [
+        "The method's performance with learning rate schedulers requires additional tuning (SWR+re-init), suggesting potential sensitivity to training dynamics",
+        "Limited exploration of why L2 regularization sometimes outperforms SWR in certain settings, indicating room for further analysis",
+        "Theoretical analysis assumes bounded gradient updates, which may not hold in all practical scenarios"
+      ],
+      "summary_comment": "This paper presents a well-motivated and practical solution to the problem of plasticity loss in neural networks. SWR is a novel approach that effectively prevents unbounded weight growth while preserving learned information, addressing limitations of both regularization and re-initialization methods. The theoretical foundation is sound, and the comprehensive experimental evaluation demonstrates consistent improvements across multiple learning scenarios. The method's simplicity and low computational overhead make it highly practical for real-world applications. While some aspects like learning rate scheduler compatibility require further refinement, the overall contribution is significant and clearly communicated."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem (plasticity loss and weight regularization) that aligns with ICML's focus on optimization and deep learning methodologies",
+        "Provides strong theoretical analysis of weight bounding and proportionality properties, which matches ICML's appreciation for theoretically grounded work",
+        "Comprehensive experimental evaluation across multiple scenarios (warm-start, continual learning, generalization) with standard benchmarks demonstrates rigorous empirical validation"
+      ],
+      "why_it_does_not_fit": [
+        "The work is more applied than theoretical compared to typical ICML contributions - while it has theory, the focus is on practical regularization techniques",
+        "Application domain is primarily computer vision (image classification), which might be seen as less novel for ICML compared to more fundamental ML contributions",
+        "Reviewer comments note that L2 regularization sometimes outperforms SWR, suggesting the advantage isn't universal across all scenarios"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' focus on deep learning optimization and neural network training dynamics",
+        "Addresses plasticity loss and continual learning - highly relevant to NeurIPS' interests in non-stationary environments and learning systems",
+        "Strong empirical results across multiple learning paradigms (warm-start, continual, single-task) with comprehensive benchmarking",
+        "Reviewers praised the novelty and practical significance, particularly for continual learning applications"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical contribution, while solid, may be less mathematically deep than some NeurIPS preferences",
+        "Primary evaluation is on standard image classification tasks rather than more diverse or emerging application areas"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Directly addresses deep learning optimization issues (weight growth, plasticity loss) central to ICLR's focus",
+        "Provides theoretical analysis of neural network proportionality and weight bounding properties",
+        "Strong experimental results on deep architectures (VGG-16) with normalization layers"
+      ],
+      "why_it_does_not_fit": [
+        "The work is more focused on optimization techniques than representation learning or architectural innovations typically emphasized at ICLR",
+        "While theoretically grounded, the contributions are more methodological than fundamental to deep learning theory",
+        "Reviewer comments suggest the novelty is moderate compared to more transformative deep learning contributions"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

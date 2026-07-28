@@ -1,0 +1,784 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a novel integration of block coordinate descent with Hessian-informed zeroth-order optimization to address memory overhead",
+        "Demonstrates practical memory reduction (up to 39%) compared to HiZOO while maintaining comparable accuracy",
+        "Provides extensive experiments on medium-sized models (OPT-1.3B and LLaMA-2-7B) across multiple GLUE and SuperGLUE tasks"
+      ],
+      "weaknesses": [
+        "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+        "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+          "severity": "major",
+          "evidence": "The author acknowledges that 'a more rigorous treatment specifically addressing BCD integration would strengthen the paper' and that this 'represents an important direction for future work.' The submitted paper only provides an adapted convergence analysis from HiZOO without proving how BCD integration affects convergence properties.",
+          "affected_claim": "Claims of convergence properties and theoretical soundness",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO",
+          "severity": "major",
+          "evidence": "The author acknowledges they 'focused evaluation on methods most directly comparable' but recognizes 'the value of broader comparison with methods like GaLore.' The submitted paper lacks comparisons with contemporary SOTA methods mentioned in the RAG evidence.",
+          "affected_claim": "Comprehensive evaluation and superiority over existing methods",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The theoretical foundation for BCD integration remains unsupported in the submitted work. The author's acknowledgment of needing 'more rigorous treatment' confirms this weakness persists."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The integration approach remains novel despite building on prior works, and the author response does not diminish this aspect."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "While memory reduction is achieved, the improvement remains incremental (39% over HiZOO), and the lack of comparison with SOTA methods limits the demonstrated significance for top-tier conferences."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation still lacks comparison with recent SOTA memory-efficient methods, and the author acknowledges this limitation in their response."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains well-structured and clearly written, and the author response does not affect this assessment."
+        }
+      },
+      "summary_comment": "The author response acknowledges both major weaknesses but does not resolve them with evidence already present in the submitted paper. The theoretical justification for BCD integration remains lacking, and comparisons with SOTA methods are still absent. While the memory reduction results are practically useful, the paper does not meet the standards for theoretical soundness and comprehensive evaluation required for a top-tier conference. The promises of future improvements do not change the assessment of the submitted work."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper directly addresses optimization, a core ICML area, by proposing a novel block coordinate descent (BCD) method for training LLMs.",
+        "It builds upon established lines of Zeroth-Order (ZO) optimization and Hessian-based methods, which are of significant interest within the ICML community.",
+        "The work presents extensive empirical results on tasks from standard NLP benchmarks, aligning with ICML's emphasis on empirical evaluation in machine learning."
+      ],
+      "why_it_does_not_fit": [
+        "The technical contribution is perceived as incremental. Reviewer 1 notes a 'Lack of theoretical justification' and that the improvement is 'incremental (39% over HiZOO)'. ICML often expects stronger theoretical grounding or more substantial novel algorithmic advances.",
+        "The comparison is insufficient. Reviewer 1 flags 'Insufficient comparison with state-of-the-art memory-efficient methods'. For ICML's high standards, benchmarking against a broader set of contemporary methods (e.g., GaLore, Sophia) is often required to demonstrate clear superiority.",
+        "The 'Reviewer Risk' based on the feedback is high. The reviewer's acceptance gates for soundness, significance, and evaluation all 'fail', indicating the paper in its current form has fundamental weaknesses that would likely lead to rejection at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The topic of memory-efficient fine-tuning for large foundation models (LLMs) is highly relevant to NeurIPS, especially under areas like 'SysML Infrastructure' and 'General machine learning'.",
+        "The paper tackles a practical, real-world problem (enabling LLM fine-tuning on memory-constrained devices) which resonates with NeurIPS's applied and interdisciplinary focus."
+      ],
+      "why_it_does_not_fit": [
+        "NeurIPS typically requires very high novelty and significance. Reviewer 1 explicitly questions the significance, stating the improvement is 'incremental' and the work lacks comparison with SOTA, which limits its impact claim. The integration of BCD with ZO is noted as novel but not sufficiently groundbreaking for NeurIPS.",
+        "The evaluation is not comprehensive enough. The reviewer's criticism that comparisons are limited to HiZOO and MeZO is a major flaw for NeurIPS, which expects thorough empirical validation against the latest relevant baselines.",
+        "The methodological weakness is severe. The 'Lack of theoretical justification' is a critical issue. While NeurIPS accepts empirically-driven work, the combination of an incremental practical gain with weak theoretical support and incomplete evaluation makes it a weak fit. The reviewer's overall 'Reject' decision and failing gates strongly signal it would not succeed at NeurIPS."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "ICLR's focus on deep learning makes this work on fine-tuning LLMs (specifically OPT and LLaMA-2) topically relevant.",
+        "The method aims to improve the training process (optimization) for deep neural networks, which falls under ICLR's scope.",
+        "The paper provides implementation details and experiments, aligning with ICLR's practical and empirical culture."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR has a very high bar for novelty in optimization techniques for deep learning. The core idea of combining BCD with a preconditioned ZO method may be seen as a straightforward composition of existing ideas (BCD from BAdam/LiSA and ZO Newton from HiZOO), lacking the conceptual breakthrough often sought at ICLR.",
+        "The technical depth is questioned. The reviewer's major concern about the lack of theoretical justification for the BCD integration is a significant weakness for ICLR, where novel optimizers are often accompanied by strong convergence analysis.",
+        "The empirical scope is narrow. The experiments are on standard NLP fine-tuning tasks. ICLR often favors work that demonstrates broader applicability across different model architectures (e.g., vision transformers) or provides deeper insights into the learning dynamics, which this paper does not do. The reviewer's failing 'evaluation' gate supports this."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel integration of block coordinate descent with Hessian-informed zeroth-order optimization to address memory overhead",
+              "Demonstrates practical memory reduction (up to 39%) compared to HiZOO while maintaining comparable accuracy",
+              "Provides extensive experiments on medium-sized models (OPT-1.3B and LLaMA-2-7B) across multiple GLUE and SuperGLUE tasks"
+            ],
+            "weaknesses": [
+              "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+              "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+                "severity": "major",
+                "evidence": "The paper states: 'Since our focus is primarily on the practical analysis and implementation of memory efficiency, this work emphasizes practical solutions over theoretical exploration.' It provides a brief convergence analysis adapted from HiZOO without proving how BCD affects convergence.",
+                "affected_claim": "Claims of convergence properties and theoretical soundness",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO",
+                "severity": "major",
+                "evidence": "Experiments compare only with SGD, BCD-SGD, LoRA, MeZO, and HiZOO. The RAG evidence mentions recent works like GaLore (Zhao et al. 2024a) and other efficient methods that are not included as baselines.",
+                "affected_claim": "Comprehensive evaluation and superiority over existing methods",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claim of convergence is not rigorously supported; the method relies on adapted analysis from HiZOO without proving BCD integration preserves convergence properties."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The integration of BCD with Hessian-informed zeroth-order optimization is novel, though building on prior works like MeZO, HiZOO, and BAdam."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While memory reduction is achieved, the improvement is incremental (39% over HiZOO), and the method does not outperform first-order baselines in accuracy, limiting its impact for top-tier conferences."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "Experiments lack comparison with recent state-of-the-art memory-efficient methods (e.g., GaLore), and theoretical convergence claims are not empirically validated beyond adapted proofs."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clearly written, with detailed algorithms and experimental results."
+              }
+            },
+            "summary_comment": "The paper proposes a memory-efficient method combining BCD with Hessian-informed zeroth-order optimization, demonstrating practical memory savings. However, it lacks theoretical grounding for convergence and fails to compare with recent SOTA methods, limiting its significance and soundness for a top-tier conference. The presentation is clear, but the contributions are incremental and insufficiently validated."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel integration of block coordinate descent with Hessian-informed zeroth-order optimization to address memory overhead",
+              "Demonstrates practical memory reduction (up to 39%) compared to HiZOO while maintaining comparable accuracy",
+              "Provides extensive experiments on medium-sized models (OPT-1.3B and LLaMA-2-7B) across multiple GLUE and SuperGLUE tasks"
+            ],
+            "weaknesses": [
+              "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+              "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+                "severity": "major",
+                "evidence": "The author response acknowledges that 'the specific theoretical implications of BCD integration require more rigorous treatment' and promises to enhance theoretical analysis in future work. The submitted paper only provides an adapted convergence analysis from HiZOO without proving how BCD integration affects convergence properties.",
+                "affected_claim": "Claims of convergence properties and theoretical soundness",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO",
+                "severity": "major",
+                "evidence": "The author response acknowledges this limitation and promises to include comparisons with GaLore and other methods in future revisions. The submitted paper only compares against SGD, BCD-SGD, LoRA, MeZO, and HiZOO, missing contemporary SOTA methods mentioned in the RAG evidence.",
+                "affected_claim": "Comprehensive evaluation and superiority over existing methods",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claim of convergence remains theoretically unsupported for the BCD integration aspect. The author acknowledges the need for more rigorous treatment, confirming this weakness persists in the submitted work."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The integration approach remains novel despite building on prior works, and the author response does not diminish this aspect."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While memory reduction is achieved, the improvement remains incremental (39% over HiZOO), and the lack of comparison with SOTA methods limits the demonstrated significance for top-tier conferences."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation still lacks comparison with recent SOTA memory-efficient methods, and the author acknowledges this limitation in their response."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains well-structured and clearly written, and the author response does not affect this assessment."
+              }
+            },
+            "summary_comment": "The author response acknowledges both major weaknesses identified in the review but does not resolve them with evidence already present in the submitted paper. The theoretical justification for BCD integration remains lacking, and comparisons with SOTA methods are still absent. While the memory reduction results are practically useful, the paper does not meet the standards for theoretical soundness and comprehensive evaluation required for a top-tier conference. The promises of future improvements do not change the assessment of the submitted work."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of theoretical justification for convergence properties of BCD integration\",\n        \"Insufficient comparison with state-of-the-art memory-efficient methods\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Convergence properties need theoretical justification\",\n          \"location\": \"Section 4.2, Appendix D\",\n          \"explanation\": \"The paper provides a convergence analysis adapted from HiZOO (Equation 7) and includes a detailed proof sketch in Appendix D, showing that under classical assumptions the method converges to a bounded neighborhood of a stationary point with O(1/√T) rate. While this demonstrates convergence for the zeroth-order Newton component, we acknowledge that the specific theoretical implications of BCD integration require more rigorous treatment.\"\n        },\n        {\n          \"concern\": \"Empirical validation of convergence\",\n          \"location\": \"Section 5.1, Figure 3\",\n          \"explanation\": \"Figure 3 provides empirical evidence of convergence performance, showing that our method achieves better convergence than MeZO and matches HiZOO's performance while maintaining MeZO's time efficiency. Table 3 further demonstrates comparable accuracy across multiple tasks, supporting the practical convergence behavior.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Theoretical analysis of BCD integration\",\n          \"proposed_change\": \"We will enhance the theoretical analysis in Section 4.2 to specifically address how BCD affects convergence properties, including analysis of the block selection strategy and its impact on convergence rates. This will provide stronger theoretical grounding for the method.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Comparison with additional SOTA methods\",\n          \"proposed_change\": \"We will include comparisons with recent memory-efficient methods mentioned in the review, particularly GaLore, following the experimental setup described in Section 5. This will provide a more comprehensive evaluation against contemporary approaches.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"Thank you for the thorough review and valuable feedback. We acknowledge both concerns and provide the following responses:\\n\\nRegarding the theoretical justification, we recognize that while we provided a convergence analysis adapted from HiZOO (Section 4.2 and Appendix D), the specific theoretical implications of BCD integration merit deeper investigation. Our analysis currently shows that under classical assumptions, the method converges with O(1/√T) rate to a bounded neighborhood of a stationary point (Equation 7). However, we agree that a more rigorous treatment of how BCD affects convergence properties would strengthen the theoretical foundation. In revision, we will enhance the theoretical analysis to specifically address the convergence implications of layer-wise block updates.\\n\\nFor the empirical evaluation, we focused our comparisons on methods most directly related to our approach (zeroth-order optimization and BCD variants) to maintain a clear narrative. However, we acknowledge the value of comparing with additional SOTA methods like GaLore. Our experiments already demonstrate significant advantages over HiZOO (39% memory reduction while maintaining accuracy) and practical benefits over first-order methods in memory-constrained settings. In revision, we will include comparisons with GaLore and other relevant SOTA methods to provide a more comprehensive evaluation.\\n\\nThe 39% memory reduction represents a significant practical improvement that enables Hessian-informed optimization on devices where HiZOO would be infeasible. While first-order methods achieve slightly higher accuracy, they require 5-7× more memory (Table 1), making them impractical for the memory-constrained scenarios that motivated our work. Our method bridges this gap by delivering Hessian-informed convergence benefits at MeZO-level memory costs.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel integration of block coordinate descent with Hessian-informed zeroth-order optimization to address memory overhead",
+              "Demonstrates practical memory reduction (up to 39%) compared to HiZOO while maintaining comparable accuracy",
+              "Provides extensive experiments on medium-sized models (OPT-1.3B and LLaMA-2-7B) across multiple GLUE and SuperGLUE tasks"
+            ],
+            "weaknesses": [
+              "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+              "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of theoretical justification for the convergence properties of the proposed BCD-integrated method",
+                "severity": "major",
+                "evidence": "The author acknowledges that 'a more rigorous treatment specifically addressing BCD integration would strengthen the paper' and that this 'represents an important direction for future work.' The submitted paper only provides an adapted convergence analysis from HiZOO without proving how BCD integration affects convergence properties.",
+                "affected_claim": "Claims of convergence properties and theoretical soundness",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Insufficient comparison with state-of-the-art memory-efficient methods beyond HiZOO and MeZO",
+                "severity": "major",
+                "evidence": "The author acknowledges they 'focused evaluation on methods most directly comparable' but recognizes 'the value of broader comparison with methods like GaLore.' The submitted paper lacks comparisons with contemporary SOTA methods mentioned in the RAG evidence.",
+                "affected_claim": "Comprehensive evaluation and superiority over existing methods",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The theoretical foundation for BCD integration remains unsupported in the submitted work. The author's acknowledgment of needing 'more rigorous treatment' confirms this weakness persists."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The integration approach remains novel despite building on prior works, and the author response does not diminish this aspect."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While memory reduction is achieved, the improvement remains incremental (39% over HiZOO), and the lack of comparison with SOTA methods limits the demonstrated significance for top-tier conferences."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation still lacks comparison with recent SOTA memory-efficient methods, and the author acknowledges this limitation in their response."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains well-structured and clearly written, and the author response does not affect this assessment."
+              }
+            },
+            "summary_comment": "The author response acknowledges both major weaknesses but does not resolve them with evidence already present in the submitted paper. The theoretical justification for BCD integration remains lacking, and comparisons with SOTA methods are still absent. While the memory reduction results are practically useful, the paper does not meet the standards for theoretical soundness and comprehensive evaluation required for a top-tier conference. The promises of future improvements do not change the assessment of the submitted work."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of theoretical justification for convergence properties of BCD integration\",\n        \"Insufficient comparison with state-of-the-art memory-efficient methods\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Empirical validation of convergence properties\",\n          \"location\": \"Section 5.1, Figure 3, Table 3\",\n          \"explanation\": \"While we acknowledge the need for enhanced theoretical analysis, our paper provides substantial empirical evidence demonstrating that our BCD-integrated method achieves comparable convergence to HiZOO while maintaining MeZO's time efficiency. Figure 3 shows convergence curves, and Table 3 demonstrates that our method achieves accuracy comparable to baseline methods across multiple benchmarks.\"\n        },\n        {\n          \"concern\": \"Practical significance of memory reduction\",\n          \"location\": \"Section 5.1, Table 1, Table 2\",\n          \"explanation\": \"Our experiments show a 39% memory reduction compared to HiZOO while maintaining accuracy, which represents a significant practical advancement for memory-constrained environments. This reduction enables Hessian-informed optimization on devices where HiZOO would be infeasible, addressing a key practical bottleneck in zeroth-order optimization.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Theoretical analysis of BCD integration\",\n          \"proposed_change\": \"We will enhance the theoretical analysis in Section 4.2 to provide a more rigorous treatment of how BCD integration affects convergence properties, including analysis of the block selection strategy and its impact on convergence rates.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Comparison with additional SOTA methods\",\n          \"proposed_change\": \"We will include comparisons with GaLore and other relevant state-of-the-art memory-efficient methods in the experimental section to provide a more comprehensive evaluation.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement with our work. We acknowledge that both identified concerns represent important areas for improvement, though we believe the current submission already makes valuable contributions.\\n\\nRegarding theoretical justification: While we provided a convergence analysis adapted from HiZOO (Section 4.2 and Appendix D), we recognize that a more rigorous treatment specifically addressing BCD integration would strengthen the paper. Our current analysis shows that under classical assumptions, the method converges with O(1/√T) rate to a bounded neighborhood of a stationary point. However, we agree that explicitly analyzing how the block coordinate descent component affects convergence would provide stronger theoretical grounding. This represents an important direction for future work that we will address in revision.\\n\\nRegarding comparison with SOTA methods: We focused our evaluation on methods most directly comparable to our approach (zeroth-order optimization and BCD variants) to maintain a clear narrative arc. However, we acknowledge the value of broader comparison with methods like GaLore. Our experiments demonstrate significant practical advantages: a 39% memory reduction over HiZOO while maintaining accuracy, and the ability to run Hessian-informed optimization on devices where HiZOO would be infeasible due to memory constraints.\\n\\nWe believe these practical contributions are substantial, as they enable second-order optimization in memory-constrained environments where it was previously impossible. The 39% reduction represents a meaningful advancement for practical deployment scenarios. While we acknowledge the need for broader comparisons and enhanced theoretical analysis, we believe the empirical results and practical utility demonstrated in the current submission represent a valuable contribution to the field of memory-efficient LLM fine-tuning.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_cd8b39284acb",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/icml_reject_2025_038_memory_efficient_block_coordinate_descent_method_for_forward_only_second_order_f.md",
+    "target_paper_summary": {
+      "paper_id": "paper_cd8b39284acb",
+      "title": "Memory Efficient Block Coordinate Descent Method For Forward-Only Second-Order Finetuning Of Llm Models",
+      "abstract": "Fine-tuning large language models (LLMs) for specific downstream tasks has traditionally relied on memory-intensive optimizers using classical backpropagation, which demands substantial memory to store model states for gradient computation, motivating the development of memoryefficient zeroth-order optimizers that operate in a forward-only manner. However, the slower convergence of the zeroth-order optimizer remains a challenge, which recent research addresses by incorporating Hessian information to accelerate training, although storing even the diagonal Hessian requires memory equivalent to that of the model weights, leading to significant memory usage. To mitigate this problem, we propose a novel approach that integrates the block coordinate descent (BCD) method with a Hessian-informed zeroth-order optimizer, allowing us to treat model layers as separate blocks and update only a subset of layers per training iteration, thereby reducing memory requirements and accelerating convergence. Specifically, at each iteration, an active block of layers is selected according to the chosen BCD rule, such as ascending order, and their weights are updated while the other layers remain fixed, with diagonal Hessian information stored and updated exclusively for the active layers. For fine-tuning foundation models of medium size (OPT-1.3B and LLaMA-2-7B), our method achieves up to 39% memory reduction compared to existing Hessian-informed zeroth-order methods, while preserving baseline accuracy and memory usage to zeroth-order methods across various tasks, offering a memory-efficient alternative method for LLMs fine-tuning, especially on memory-constrained devices.",
+      "topic": "",
+      "claims": [
+        "we propose a novel approach that integrates the block coordinate descent (BCD) method with a Hessian-informed zeroth-order optimizer, allowing us to treat model layers as separate blocks and update only a subset of layers per training iteration, thereby reducing memory requirements and accelerating convergence.",
+        "our method achieves up to 39% memory reduction compared to existing Hessian-informed zeroth-order methods, while preserving baseline accuracy and memory usage to zeroth-order methods across various tasks, offering a memory-efficient alternative method for LLMs fine-tuning, especially on memory-constrained devices."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_141bfe0a4",
+        "title": "Large Language Models: A Survey",
+        "authors": [
+          "Shervin Minaee",
+          "Tomas Mikolov",
+          "Nikzad, Narjes",
+          "Meysam Chenaghlu",
+          "Richard Socher",
+          "Xavier Amatriain",
+          "Jianfeng Gao"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-09",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large Language Models (LLMs) have drawn a lot of attention due to their strong performance on a wide range of natural language tasks, since the release of ChatGPT in November 2022. LLMs' ability of general-purpose language understanding and generation is acquired by training billions of model's parameters on massive amounts of text data, as predicted by scaling laws \\cite{kaplan2020scaling,hoffmann2022training}. The research area of LLMs, while very recent, is evolving rapidly in many different ways. In this paper, we review some of the most prominent LLMs, including three popular LLM families (GPT, LLaMA, PaLM), and discuss their characteristics, contributions and limitations. We also give an overview of techniques developed to build, and augment LLMs. We then survey popular datasets prepared for LLM training, fine-tuning, and evaluation, review widely used LLM evaluation metrics, and compare the performance of several popular LLMs on a set of representative benchmarks. Finally, we conclude the paper by discussing open challenges and future research directions.",
+        "url": "http://arxiv.org/abs/2402.06196",
+        "doi": "https://doi.org/10.48550/arxiv.2402.06196",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4391766565"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 225
+      },
+      {
+        "paper_id": "rw_002_976afd9f7",
+        "title": "Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models",
+        "authors": [
+          "Guangji Bai",
+          "Zheng Chai",
+          "Ling Chen",
+          "Shiyu Wang",
+          "Jiaying Lu",
+          "Nan Zhang",
+          "Tingwei Shi",
+          "Ziyang Yu",
+          "Mengdan Zhu",
+          "Yifei Zhang",
+          "Song, Xinyuan",
+          "Carl Yang",
+          "Yue Cheng",
+          "Liang Zhao"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "The burgeoning field of Large Language Models (LLMs), exemplified by sophisticated models like OpenAI's ChatGPT, represents a significant advancement in artificial intelligence. These models, however, bring forth substantial challenges in the high consumption of computational, memory, energy, and financial resources, especially in environments with limited resource capabilities. This survey aims to systematically address these challenges by reviewing a broad spectrum of techniques designed to enhance the resource efficiency of LLMs. We categorize methods based on their optimization focus: computational, memory, energy, financial, and network resources and their applicability across various stages of an LLM's lifecycle, including architecture design, pretraining, finetuning, and system design. Additionally, the survey introduces a nuanced categorization of resource efficiency techniques by their specific resource types, which uncovers the intricate relationships and mappings between various resources and corresponding optimization techniques. A standardized set of evaluation metrics and datasets is also presented to facilitate consistent and fair comparisons across different models and techniques. By offering a comprehensive overview of the current sota and identifying open research avenues, this survey serves as a foundational reference for researchers and practitioners, aiding them in developing more sustainable and efficient LLMs in a rapidly evolving landscape.",
+        "url": "http://arxiv.org/abs/2401.00625",
+        "doi": "https://doi.org/10.48550/arxiv.2401.00625",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390529182"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 39
+      },
+      {
+        "paper_id": "rw_003_bcf293e35",
+        "title": "Fine-Tuning Language Models with Just Forward Passes",
+        "authors": [
+          "Sadhika Malladi",
+          "Tianyu Gao",
+          "Eshaan Nichani",
+          "Alex Damian",
+          "Jason D. Lee",
+          "Danqi Chen",
+          "Sanjeev Arora"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-27",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Fine-tuning language models (LMs) has yielded success on diverse downstream tasks, but as LMs grow in size, backpropagation requires a prohibitively large amount of memory. Zeroth-order (ZO) methods can in principle estimate gradients using only two forward passes but are theorized to be catastrophically slow for optimizing large models. In this work, we propose a memory-efficient zerothorder optimizer (MeZO), adapting the classical ZO-SGD method to operate in-place, thereby fine-tuning LMs with the same memory footprint as inference. For example, with a single A100 80GB GPU, MeZO can train a 30-billion parameter model, whereas fine-tuning with backpropagation can train only a 2.7B LM with the same budget. We conduct comprehensive experiments across model types (masked and autoregressive LMs), model scales (up to 66B), and downstream tasks (classification, multiple-choice, and generation). Our results demonstrate that (1) MeZO significantly outperforms in-context learning and linear probing; (2) MeZO achieves comparable performance to fine-tuning with backpropagation across multiple tasks, with up to 12x memory reduction and up to 2x GPU-hour reduction in our implementation; (3) MeZO is compatible with both full-parameter and parameter-efficient tuning techniques such as LoRA and prefix tuning; (4) MeZO can effectively optimize non-differentiable objectives (e.g., maximizing accuracy or F1). We support our empirical findings with theoretical insights, highlighting how adequate pre-training and task prompts enable MeZO to fine-tune huge models, despite classical ZO analyses suggesting otherwise.",
+        "url": "http://arxiv.org/abs/2305.17333",
+        "doi": "https://doi.org/10.48550/arxiv.2305.17333",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4378770452"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 36
+      },
+      {
+        "paper_id": "rw_004_d435489ba",
+        "title": "Revisiting Zeroth-Order Optimization for Memory-Efficient LLM Fine-Tuning: A Benchmark",
+        "authors": [
+          "Yihua Zhang",
+          "Pingzhi Li",
+          "Junyuan Hong",
+          "Jiaxiang Li",
+          "Yimeng Zhang",
+          "Wenqing Zheng",
+          "Pin‐Yu Chen",
+          "Jason D. Lee",
+          "Wotao Yin",
+          "Mingyi Hong",
+          "Zhangyang Wang",
+          "Sijia Liu",
+          "Tianlong Chen"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-18",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "In the evolving landscape of natural language processing (NLP), fine-tuning pre-trained Large Language Models (LLMs) with first-order (FO) optimizers like SGD and Adam has become standard. Yet, as LLMs grow {in size}, the substantial memory overhead from back-propagation (BP) for FO gradient computation presents a significant challenge. Addressing this issue is crucial, especially for applications like on-device training where memory efficiency is paramount. This paper proposes a shift towards BP-free, zeroth-order (ZO) optimization as a solution for reducing memory costs during LLM fine-tuning, building on the initial concept introduced by MeZO. Unlike traditional ZO-SGD methods, our work expands the exploration to a wider array of ZO optimization techniques, through a comprehensive, first-of-its-kind benchmarking study across five LLM families (Roberta, OPT, LLaMA, Vicuna, Mistral), three task complexities, and five fine-tuning schemes. Our study unveils previously overlooked optimization principles, highlighting the importance of task alignment, the role of the forward gradient method, and the balance between algorithm complexity and fine-tuning performance. We further introduce novel enhancements to ZO optimization, including block-wise descent, hybrid training, and gradient sparsity. Our study offers a promising direction for achieving further memory-efficient LLM fine-tuning. Codes to reproduce all our experiments are at https://github.com/ZO-Bench/ZO-LLM .",
+        "url": "http://arxiv.org/abs/2402.11592",
+        "doi": "https://doi.org/10.48550/arxiv.2402.11592",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392011615"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 7
+      },
+      {
+        "paper_id": "rw_005_0fd258272",
+        "title": "A Survey on Efficient Inference for Large Language Models",
+        "authors": [
+          "Zixuan Zhou",
+          "Xuefei Ning",
+          "Ke Hong",
+          "Tianyu Fu",
+          "Jiaming Xu",
+          "Shiyao Li",
+          "Yuming Lou",
+          "Luning Wang",
+          "Zhihang Yuan",
+          "Xiuhong Li",
+          "Shengen Yan",
+          "Guohao Dai",
+          "Xiaoping Zhang",
+          "Yuhan Dong",
+          "Yu Wang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-04-22",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large Language Models (LLMs) have attracted extensive attention due to their remarkable performance across various tasks. However, the substantial computational and memory requirements of LLM inference pose challenges for deployment in resource-constrained scenarios. Efforts within the field have been directed towards developing techniques aimed at enhancing the efficiency of LLM inference. This paper presents a comprehensive survey of the existing literature on efficient LLM inference. We start by analyzing the primary causes of the inefficient LLM inference, i.e., the large model size, the quadratic-complexity attention operation, and the auto-regressive decoding approach. Then, we introduce a comprehensive taxonomy that organizes the current literature into data-level, model-level, and system-level optimization. Moreover, the paper includes comparative experiments on representative methods within critical sub-fields to provide quantitative insights. Last but not least, we provide some knowledge summary and discuss future research directions.",
+        "url": "http://arxiv.org/abs/2404.14294",
+        "doi": "https://doi.org/10.48550/arxiv.2404.14294",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4395065783"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 23
+      },
+      {
+        "paper_id": "rw_006_9d9f6dc99",
+        "title": "Efficient Large Language Models: A Survey",
+        "authors": [
+          "Zhongwei Wan",
+          "Xin Wang",
+          "Liu Che",
+          "Samiul Alam",
+          "Yu Zheng",
+          "Liu, Jiachen",
+          "Zhongnan Qu",
+          "Shen Yan",
+          "Yi Zhu",
+          "Quanlu Zhang",
+          "Mosharaf Chowdhury",
+          "M. Zhang"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-06",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large Language Models (LLMs) have demonstrated remarkable capabilities in important tasks such as natural language understanding and language generation, and thus have the potential to make a substantial impact on our society. Such capabilities, however, come with the considerable resources they demand, highlighting the strong need to develop effective techniques for addressing their efficiency challenges. In this survey, we provide a systematic and comprehensive review of efficient LLMs research. We organize the literature in a taxonomy consisting of three main categories, covering distinct yet interconnected efficient LLMs topics from model-centric, data-centric, and framework-centric perspective, respectively. We have also created a GitHub repository where we organize the papers featured in this survey at https://github.com/AIoT-MLSys-Lab/Efficient-LLMs-Survey. We will actively maintain the repository and incorporate new research as it emerges. We hope our survey can serve as a valuable resource to help researchers and practitioners gain a systematic understanding of efficient LLMs research and inspire them to contribute to this important and exciting field.",
+        "url": "http://arxiv.org/abs/2312.03863",
+        "doi": "https://doi.org/10.48550/arxiv.2312.03863",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4389500833"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 24
+      },
+      {
+        "paper_id": "rw_007_d13d8443b",
+        "title": "LLM Inference Unveiled: Survey and Roofline Model Insights",
+        "authors": [
+          "Zhihang Yuan",
+          "Yuzhang Shang",
+          "Yang Zhou",
+          "Zhen Dong",
+          "Zhou, Zhe",
+          "Chenhao Xue",
+          "Bingzhe Wu",
+          "Zhikai Li",
+          "Qingyi Gu",
+          "Yong Jae Lee",
+          "Yan Yan",
+          "Beidi Chen",
+          "Guangyu Sun",
+          "Kurt Keutzer"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-26",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "The field of efficient Large Language Model (LLM) inference is rapidly evolving, presenting a unique blend of opportunities and challenges. Although the field has expanded and is vibrant, there hasn't been a concise framework that analyzes the various methods of LLM Inference to provide a clear understanding of this domain. Our survey stands out from traditional literature reviews by not only summarizing the current state of research but also by introducing a framework based on roofline model for systematic analysis of LLM inference techniques. This framework identifies the bottlenecks when deploying LLMs on hardware devices and provides a clear understanding of practical problems, such as why LLMs are memory-bound, how much memory and computation they need, and how to choose the right hardware. We systematically collate the latest advancements in efficient LLM inference, covering crucial areas such as model compression (e.g., Knowledge Distillation and Quantization), algorithm improvements (e.g., Early Exit and Mixture-of-Expert), and both hardware and system-level enhancements. Our survey stands out by analyzing these methods with roofline model, helping us understand their impact on memory access and computation. This distinctive approach not only showcases the current research landscape but also delivers valuable insights for practical implementation, positioning our work as an indispensable resource for researchers new to the field as well as for those seeking to deepen their understanding of efficient LLM deployment. The analyze tool, LLM-Viewer, is open-sourced.",
+        "url": "http://arxiv.org/abs/2402.16363",
+        "doi": "https://doi.org/10.48550/arxiv.2402.16363",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4392222465"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 13
+      },
+      {
+        "paper_id": "rw_008_459901ae7",
+        "title": "Domain Specialization as the Key to Make Large Language Models Disruptive: A Comprehensive Survey",
+        "authors": [
+          "Chen Ling",
+          "Xujiang Zhao",
+          "Jiaying Lu",
+          "Chengyuan Deng",
+          "Can Zheng",
+          "Junxiang Wang",
+          "Tanmoy Chowdhury",
+          "Yun Li",
+          "Hejie Cui",
+          "Xuchao Zhang",
+          "Tianjiao Zhao",
+          "Amit Panalkar",
+          "Mehta, Dhagash",
+          "Pasquali, Stefano",
+          "Wei Cheng",
+          "Wang, Haoyu",
+          "Yanchi Liu",
+          "Zhengzhang Chen",
+          "Haifeng Chen",
+          "Chris White",
+          "Quanquan Gu",
+          "Pei, Jian",
+          "Carl Yang",
+          "Liang Zhao"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-30",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large language models (LLMs) have significantly advanced the field of natural language processing (NLP), providing a highly useful, task-agnostic foundation for a wide range of applications. However, directly applying LLMs to solve sophisticated problems in specific domains meets many hurdles, caused by the heterogeneity of domain data, the sophistication of domain knowledge, the uniqueness of domain objectives, and the diversity of the constraints (e.g., various social norms, cultural conformity, religious beliefs, and ethical standards in the domain applications). Domain specification techniques are key to make large language models disruptive in many applications. Specifically, to solve these hurdles, there has been a notable increase in research and practices conducted in recent years on the domain specialization of LLMs. This emerging field of study, with its substantial potential for impact, necessitates a comprehensive and systematic review to better summarize and guide ongoing work in this area. In this article, we present a comprehensive survey on domain specification techniques for large language models, an emerging direction critical for large language model applications. First, we propose a systematic taxonomy that categorizes the LLM domain-specialization techniques based on the accessibility to LLMs and summarizes the framework for all the subcategories as well as their relations and differences to each other. Second, we present an extensive taxonomy of critical application domains that can benefit dramatically from specialized LLMs, discussing their practical significance and open challenges. Last, we offer our insights into the current research status and future trends in this area.",
+        "url": "http://arxiv.org/abs/2305.18703",
+        "doi": "https://doi.org/10.48550/arxiv.2305.18703",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4379138252"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 74
+      },
+      {
+        "paper_id": "rw_010_5c55cbe71",
+        "title": "Large Language Models: A Comprehensive Survey of its Applications, Challenges, Limitations, and Future Prospects",
+        "authors": [
+          "Muhammad Usman Hadi",
+          "qasem al tashi",
+          "Rizwan Qureshi",
+          "Abbas Shah",
+          "Amgad Muneer",
+          "Muhammad Irfan",
+          "Anas Zafar",
+          "Muhammad Bilal Shaikh",
+          "Naveed Akhtar",
+          "Syed Zohaib Hassan",
+          "Maged Shoman",
+          "Jia Wu",
+          "Seyedali Mirjalili",
+          "Mubarak Shah"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-21",
+        "venue": "",
+        "abstract": "Within the vast expanse of computerized language processing, a revolutionary entity known as Large Language Models (LLMs) has emerged, wielding immense power in its capacity to comprehend intricate linguistic patterns and conjure coherent and contextually fitting responses. Large language models (LLMs) are a type of artificial intelligence (AI) that have emerged as powerful tools for a wide range of tasks, including natural language processing (NLP), machine translation, and question-answering. This survey paper provides a comprehensive overview of LLMs, including their history, architecture, training methods, applications, and challenges. The paper begins by discussing the fundamental concepts of generative AI and the architecture of generative pre- trained transformers (GPT). It then provides an overview of the history of LLMs, their evolution over time, and the different training methods that have been used to train them. The paper then discusses the wide range of applications of LLMs, including medical, education, finance, and engineering. It also discusses how LLMs are shaping the future of AI and how they can be used to solve real-world problems. The paper then discusses the challenges associated with deploying LLMs in real-world scenarios, including ethical considerations, model biases, interpretability, and computational resource requirements. It also highlights techniques for enhancing the robustness and controllability of LLMs, and addressing bias, fairness, and generation quality issues. Finally, the paper concludes by highlighting the future of LLM research and the challenges that need to be addressed in order to make LLMs more reliable and useful. This survey paper is intended to provide researchers, practitioners, and enthusiasts with a comprehensive understanding of LLMs, their evolution, applications, and challenges. By consolidating the state-of-the-art knowledge in the field, this survey serves as a valuable resource for further advancements in the development and utilization of LLMs for a wide range of real-world applications. The GitHub repo for this project is available at https://github.com/anas-zafar/LLM-Survey",
+        "url": "https://doi.org/10.36227/techrxiv.23589741.v2",
+        "doi": "https://doi.org/10.36227/techrxiv.23589741.v2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385067052"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 45
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_bcf293e35",
+        "relevance_score": 0.93,
+        "relevance_types": [
+          "same_method",
+          "same_constraints",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper directly introduces MeZO, a memory-efficient zeroth-order optimizer fine-tuning LMs with only forward passes, which is a key baseline for the target's Hessian-informed zeroth-order approach; it reports memory reductions, GPU-hour savings, and performance on classification, multiple-choice, and generation tasks.",
+        "evidence_summary": "In 2023, Malladi et al. published 'Fine-Tuning Language Models with Just Forward Passes,' which proposed MeZO, a memory-efficient zeroth-order optimizer that fine-tunes language models using only forward passes, reducing memory footprint to inference levels. The method achieved comparable performance to backpropagation fine-tuning on classification, multiple-choice, and generation tasks, with up to 12x memory reduction and 2x GPU-hour reduction, and was compatible with parameter-efficient tuning techniques like LoRA."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_d435489ba",
+        "relevance_score": 0.87,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper benchmarks zeroth-order optimization for memory-efficient LLM fine-tuning, including block-wise descent enhancements, which parallels the target's block coordinate descent method; it evaluates across LLM families like OPT and LLaMA and discusses algorithm complexity and performance.",
+        "evidence_summary": "In 2024, Zhang et al. published 'Revisiting Zeroth-Order Optimization for Memory-Efficient LLM Fine-Tuning: A Benchmark,' which conducted a comprehensive benchmarking study of zeroth-order optimization techniques across five LLM families, including OPT and LLaMA, three task complexities, and five fine-tuning schemes. The study introduced enhancements like block-wise descent and hybrid training, highlighting principles such as task alignment and the balance between algorithm complexity and fine-tuning performance."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_002_976afd9f7",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_constraints",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey systematically reviews resource-efficient LLM techniques, covering memory optimization challenges relevant to the target's memory reduction goal; it categorizes methods by resource types and lifecycle stages, providing context on efficiency trade-offs.",
+        "evidence_summary": "In 2024, Bai et al. published 'Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models,' which surveyed techniques to enhance computational, memory, energy, financial, and network resource efficiency of LLMs across architecture design, pretraining, fine-tuning, and system design stages. The survey categorized optimization methods by resource type and presented evaluation metrics and datasets for consistent comparisons."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_9d9f6dc99",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This survey on efficient LLMs covers model-centric, data-centric, and framework-centric perspectives on resource challenges, aligning with the target's memory efficiency focus.",
+        "evidence_summary": "In 2023, Wan et al. published 'Efficient Large Language Models: A Survey,' which reviewed techniques for addressing efficiency challenges in large language models from model-centric, data-centric, and framework-centric perspectives. The survey organized literature into a taxonomy and provided a GitHub repository for ongoing updates."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_005_0fd258272",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This survey on efficient LLM inference analyzes bottlenecks like memory and computation needs, which contextualizes the target's memory reduction claims.",
+        "evidence_summary": "In 2024, Zhou et al. published 'A Survey on Efficient Inference for Large Language Models,' which surveyed techniques to enhance LLM inference efficiency by addressing large model size, quadratic-complexity attention, and auto-regressive decoding. The taxonomy included data-level, model-level, and system-level optimizations, with comparative experiments on representative methods."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_d13d8443b",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This survey uses a roofline model to analyze LLM inference bottlenecks, including memory-bound issues, which relates to the target's memory efficiency focus.",
+        "evidence_summary": "In 2024, Yuan et al. published 'LLM Inference Unveiled: Survey and Roofline Model Insights,' which analyzed LLM inference bottlenecks using a roofline model, covering model compression, algorithm improvements, and hardware enhancements. The survey provided insights into memory access and computation needs and included an open-source analysis tool."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_141bfe0a4",
+        "relevance_score": 0.35,
+        "relevance_types": [],
+        "rationale": "This general LLM survey reviews model families and techniques but lacks specific focus on memory-efficient fine-tuning or zeroth-order methods.",
+        "evidence_summary": "In 2024, Minaee et al. published 'Large Language Models: A Survey,' which reviewed prominent LLMs like GPT, LLaMA, and PaLM, their characteristics, and techniques for building and augmenting LLMs. The survey also covered datasets for training, fine-tuning, and evaluation, and compared LLM performance on representative benchmarks."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_459901ae7",
+        "relevance_score": 0.25,
+        "relevance_types": [],
+        "rationale": "This survey on domain specialization of LLMs discusses customization challenges but does not address memory-efficient optimization methods.",
+        "evidence_summary": "In 2023, Ling et al. published 'Domain Specialization as the Key to Make Large Language Models Disruptive: A Comprehensive Survey,' which surveyed techniques for specializing LLMs to specific domains, addressing data heterogeneity, knowledge sophistication, and application constraints. The paper proposed a taxonomy based on LLM accessibility and discussed critical application domains."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_010_5c55cbe71",
+        "relevance_score": 0.15,
+        "relevance_types": [],
+        "rationale": "This broad LLM survey covers applications and challenges but lacks specific details on memory-efficient fine-tuning or optimization techniques.",
+        "evidence_summary": "In 2023, Hadi et al. published 'Large Language Models: A Comprehensive Survey of its Applications, Challenges, Limitations, and Future Prospects,' which overviewed LLM history, architecture, training methods, and applications in fields like medicine and education. The survey also discussed challenges such as ethical considerations, model biases, and computational resource requirements."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Malladi et al. published 'Fine-Tuning Language Models with Just Forward Passes,' which proposed MeZO, a memory-efficient zeroth-order optimizer that fine-tunes language models using only forward passes, reducing memory footprint to inference levels; it achieved comparable performance to backpropagation on classification, multiple-choice, and generation tasks, with up to 12x memory reduction. In 2024, Zhang et al. published 'Revisiting Zeroth-Order Optimization for Memory-Efficient LLM Fine-Tuning: A Benchmark,' which benchmarked zeroth-order methods across five LLM families, including OPT and LLaMA, and introduced enhancements like block-wise descent, highlighting task alignment and algorithm complexity trade-offs. In 2024, Bai et al. published 'Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models,' which surveyed techniques for computational, memory, energy, financial, and network efficiency across LLM lifecycle stages, categorizing methods by resource type. In 2023, Wan et al. published 'Efficient Large Language Models: A Survey,' which reviewed efficiency techniques from model-centric, data-centric, and framework-centric perspectives, organizing literature into a taxonomy. In 2024, Zhou et al. published 'A Survey on Efficient Inference for Large Language Models,' which surveyed optimizations for model size, attention complexity, and decoding, with a taxonomy covering data, model, and system levels. In 2024, Yuan et al. published 'LLM Inference Unveiled: Survey and Roofline Model Insights,' which analyzed inference bottlenecks using a roofline model, covering compression, algorithms, and hardware improvements.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

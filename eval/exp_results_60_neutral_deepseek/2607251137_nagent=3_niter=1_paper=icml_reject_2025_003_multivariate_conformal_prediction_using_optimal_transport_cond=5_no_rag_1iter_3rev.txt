@@ -1,0 +1,120 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a novel and principled extension of conformal prediction (CP) to multivariate outputs by leveraging optimal transport theory for ranking, addressing a core theoretical limitation in the field.",
+        "Provides a solid theoretical foundation, proving distribution-free finite-sample coverage guarantees for the proposed OT-CP method, which remains valid regardless of the approximation quality of the optimal transport map.",
+        "Demonstrates practical feasibility by connecting the theory to computationally tractable entropic map estimation via the Sinkhorn algorithm and validates the method on a comprehensive benchmark of multivariate regression tasks."
+      ],
+      "weaknesses": [
+        "The empirical evaluation, while broad, is somewhat limited in depth; the ablation studies highlight sensitivity to hyperparameters (regularization, grid size), and the method's computational cost is notably higher than simpler baselines, which could limit scalability.",
+        "Some mathematical passages and notation in the paper are slightly dense or could be streamlined for improved accessibility, though the core ideas remain clear."
+      ],
+      "summary_comment": "This paper introduces an innovative and well-motivated fusion of optimal transport theory with conformal prediction to handle multivariate responses. The core idea is novel and represents a significant conceptual advance, offering a principled solution to a known limitation. The theoretical guarantees are strong and align with the conformal prediction philosophy. While the experimental evaluation shows practical promise and includes an extensive benchmark, the method's sensitivity to hyperparameters and computational cost are noted as limitations. Overall, the work is bold, theoretically sound, and has high potential to inspire future research, clearly meeting the bar for acceptance based on its novelty and significance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper provides a rigorous theoretical foundation by proving finite-sample coverage guarantees (Lemma 3.3, Proposition 3.4) that are distribution-free and hold for any approximation of the optimal transport map. This is methodologically sound and addresses a key challenge in multivariate conformal prediction.",
+        "The proposed method (OT-CP) is systematically evaluated against established baselines (M-CP, Merge-CP) on a comprehensive, recently released benchmark with 24 datasets. The experiments cover varying output dimensions and include critical metrics like coverage and region size, showing overall superior performance for OT-CP.",
+        "The work makes a clear and important connection between two distinct research areas: conformal prediction and optimal transport-based multivariate rank/quantile theory. It provides a principled computational implementation using the entropic map and Sinkhorn algorithm, addressing practical feasibility while maintaining theoretical guarantees."
+      ],
+      "weaknesses": [
+        "The clarity of the exposition could be improved. The paper is dense, with frequent jumps between theoretical concepts, implementation details, and experimental results, making it sometimes challenging to follow the precise algorithmic flow and the justification for certain design choices (e.g., how the discrete spherical uniform grid is constructed and used in practice).",
+        "While the computational approach (entropic map) is practical, the paper acknowledges the curse of dimensionality, and the sensitivity to hyperparameters (ε and m) is non-trivial. Although an ablation study is mentioned, the paper lacks a clear, systematic analysis or guidance on how to select these parameters robustly for new problems, which is crucial for practical adoption."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and significant contribution by addressing the key challenge of ranking multivariate scores for conformal prediction using optimal transport theory. The core strength lies in its rigorous theoretical guarantees (finite-sample, distribution-free coverage) and its thorough, convincing experimental validation on a modern benchmark. While the novelty is solid but not revolutionary, combining these two fields in this rigorous way represents a clear advance. The weaknesses relate primarily to presentation clarity and practical parameter tuning guidance, but they do not undermine the paper's scientific validity or the strength of its results. Therefore, I recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "Provides a principled framework for multivariate conformal prediction using optimal transport, addressing a clear gap in existing methods",
+        "Maintains distribution-free finite-sample coverage guarantees, crucial for practical reliability",
+        "Comprehensive experimental evaluation on 24 datasets showing competitive performance compared to established baselines"
+      ],
+      "weaknesses": [
+        "Computational cost of Sinkhorn algorithm and grid size scaling may be prohibitive for very high-dimensional applications",
+        "Hyperparameter sensitivity (entropic regularization ε, grid size m) requires careful tuning and is not fully automated"
+      ],
+      "summary_comment": "This paper makes a significant practical contribution by extending conformal prediction to multivariate settings using optimal transport. The method is theoretically sound with proven coverage guarantees, clearly explained, and demonstrates strong empirical performance across diverse benchmarks. While computational costs and parameter tuning are concerns, the approach solves a real problem in uncertainty quantification with multivariate outputs."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem (uncertainty quantification) using conformal prediction, which aligns well with ICML's focus on general machine learning methodologies",
+        "The work combines theoretical contributions (coverage guarantees) with practical implementation using optimal transport, fitting ICML's emphasis on both theoretical and applied ML",
+        "The method demonstrates strong empirical results on multiple benchmarks, meeting ICML's standards for rigorous evaluation",
+        "Optimal transport is an established area within ML optimization that ICML regularly publishes"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus on conformal prediction is more specialized than some ICML papers, potentially making it a better fit for more statistically-focused venues",
+        "While theoretically sound, the computational cost of the Sinkhorn algorithm might be seen as a limitation for large-scale applications that ICML often emphasizes",
+        "The work builds heavily on existing conformal prediction literature rather than introducing fundamentally new ML paradigms"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS strongly values work on uncertainty quantification and reliable ML, which aligns perfectly with the paper's focus on conformal prediction",
+        "The integration of optimal transport theory with practical ML applications fits NeurIPS' interdisciplinary nature",
+        "The paper provides both theoretical guarantees and empirical validation across multiple datasets, meeting NeurIPS' high standards for rigor",
+        "The work addresses a clear gap in multivariate prediction settings, which is highly relevant to modern ML applications",
+        "NeurIPS has consistently published work on conformal prediction and optimal transport in recent years"
+      ],
+      "why_it_does_not_fit": [
+        "The computational complexity might be seen as a limitation for some NeurIPS applications, though the theoretical contributions likely outweigh this concern",
+        "The paper is more methodologically focused than some NeurIPS papers that emphasize groundbreaking architectural innovations"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR publishes work on uncertainty quantification and probabilistic methods, which aligns with the conformal prediction aspect",
+        "The paper includes theoretical analysis of coverage guarantees, which fits ICLR's emphasis on theoretical understanding",
+        "The method could be applied to deep learning models for uncertainty quantification"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR primarily focuses on deep learning, while this work is more general and not specifically tied to neural networks",
+        "The paper doesn't introduce new architectural innovations or deep learning-specific contributions",
+        "The optimal transport approach is more aligned with traditional ML/statistics than deep learning frameworks",
+        "The experimental validation uses tabular datasets rather than the large-scale deep learning benchmarks common at ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

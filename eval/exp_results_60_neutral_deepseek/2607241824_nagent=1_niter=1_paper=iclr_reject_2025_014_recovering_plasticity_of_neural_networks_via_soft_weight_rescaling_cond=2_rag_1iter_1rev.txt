@@ -1,0 +1,536 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper introduces a novel and conceptually simple method, Soft Weight Rescaling (SWR), for preventing plasticity loss by directly scaling weights, which is distinct from prior regularization or re-initialization approaches.",
+        "Provides a solid theoretical foundation, including proofs that SWR bounds weight norms and improves layer-wise balancedness, connecting the method to desirable network properties.",
+        "Empirical evaluation is comprehensive, covering warm-start, continual learning, and single-task learning scenarios across multiple architectures and datasets, demonstrating consistent improvements, especially for larger models like VGG-16."
+      ],
+      "weaknesses": [
+        "The clarity of the paper could be improved; the mathematical notation is sometimes inconsistent (e.g., variable definitions like z_l and z_i, formatting issues in equations), and the flow of the theoretical sections is occasionally difficult to follow.",
+        "The practical integration with standard training protocols like learning rate decay requires an ad-hoc modification (SWR + re-init), suggesting the core method may have limitations in common deep learning workflows that need further investigation."
+      ],
+      "summary_comment": "This paper presents a well-motivated and technically sound contribution to addressing plasticity loss via a novel weight rescaling technique. The method is theoretically grounded and shows strong empirical results across several challenging learning scenarios. While the presentation could be refined for better readability, the novelty, significance, and thorough evaluation support acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem - plasticity loss and weight regularization - which aligns well with ICML's focus on optimization and training dynamics",
+        "The method combines theoretical analysis with empirical validation across multiple learning scenarios (warm-start, continual, single-task), matching ICML's preference for rigorous methodological contributions",
+        "The work provides novel insights into weight growth dynamics and layer balancing, contributing to fundamental understanding of neural network training"
+      ],
+      "why_it_does_not_fit": [
+        "The evaluation is primarily on standard image classification benchmarks rather than more diverse or cutting-edge applications that ICML often features",
+        "While theoretically sound, the method's novelty is incremental relative to existing weight regularization approaches rather than groundbreaking",
+        "The paper focuses more on empirical validation than deep theoretical analysis, which might limit its appeal to ICML's more theory-oriented audience"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Plasticity loss and continual learning are highly relevant to NeurIPS' interests in non-stationary learning environments and neural network dynamics",
+        "The paper addresses practical issues in deep learning training that have broad applicability across the NeurIPS community",
+        "The combination of theoretical guarantees and extensive empirical evaluation matches NeurIPS' preference for well-validated methods"
+      ],
+      "why_it_does_not_fit": [
+        "The work is more incremental than transformative, which might not stand out in NeurIPS' highly competitive acceptance process",
+        "The method focuses on relatively standard architectures (MLP, CNN, VGG) rather than state-of-the-art models that NeurIPS often features",
+        "The application domains (image classification) are somewhat conventional for NeurIPS, which tends to favor more novel application areas"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper focuses on deep learning optimization and training dynamics, which are core to ICLR's focus",
+        "The method addresses fundamental issues in neural network training that are relevant to the ICLR community",
+        "The theoretical analysis of weight scaling and proportionality provides insights into deep learning fundamentals"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically favors more cutting-edge deep learning research, while this work is more incremental in nature",
+        "The paper doesn't focus specifically on deep learning architectures or techniques that are ICLR's primary emphasis",
+        "The reviewer noted clarity issues with mathematical notation, which could be problematic for ICLR's standards"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_d1c89f68e9bd",
+    "paper_id": "paper_a27148757bfc",
+    "target_paper_summary": {
+      "paper_id": "paper_a27148757bfc",
+      "title": "Recovering Plasticity Of Neural Networks Via Soft Weight Rescaling",
+      "abstract": "Recent studies have shown that as training progresses, neural networks gradually lose their capacity to learn new information, a phenomenon known as plasticity loss. An unbounded weight growth is one of the main causes of plasticity loss. Furthermore, it harms generalization capability and disrupts optimization dynamics. Re-initializing the network can be a solution, but it results in the loss of learned information, leading to performance drops. In this paper, we propose Soft Weight Rescaling (SWR), a novel approach that prevents unbounded weight growth without losing information. SWR recovers the plasticity of the network by simply scaling down the weight at each step of the learning process. We theoretically prove that SWR bounds weight magnitude and balances weight magnitude between layers. Our experiment shows that SWR improves performance on warm-start learning, continual learning, and single-task learning setups on standard image classification benchmarks.",
+      "topic": "",
+      "claims": [
+        "we propose Soft Weight Rescaling (SWR), a novel approach that prevents unbounded weight growth without losing information."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "plasticity loss neural networks unbounded weight growth causes mitigation",
+          "rationale": "The paper's core problem is plasticity loss in neural networks caused by unbounded weight growth during training. This query targets studies specifically analyzing this phenomenon and its root causes."
+        },
+        {
+          "group": "same_method",
+          "query": "weight rescaling regularization neural network gradient descent adaptive scale",
+          "rationale": "SWR is a method that rescales weights during training. This query targets related regularization or optimization techniques that adaptively scale, clip, or constrain weights dynamically."
+        },
+        {
+          "group": "same_constraints",
+          "query": "continual learning warm-start plasticity online learning non-stationary distribution",
+          "rationale": "The method is evaluated in setups (continual, warm-start learning) with constraints of sequential or adapted learning without catastrophic forgetting, assuming non-stationary data streams or a need to preserve prior knowledge."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "CIFAR-10 ImageNet continual learning benchmark baseline methods weight growth regularization",
+          "rationale": "The paper uses standard image classification benchmarks (implied: CIFAR, ImageNet) in continual/warm-start settings. This query retrieves foundational datasets, established baselines, and comparative studies in those benchmarks."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "preventing unbounded weight growth without re-initialization gradient descent plasticity",
+          "rationale": "The novelty claim is preventing unbounded weight growth without losing information. This query seeks prior work with similar mechanisms to control weight magnitude dynamically while preserving learned features, which could challenge the novelty of SWR."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "weight growth beneficial generalization neural networks optimization stability necessity",
+          "rationale": "The paper assumes unbounded weight growth is harmful. This query aims to find counterevidence showing that certain types of weight growth may be necessary for stability, generalization, or are not the primary cause of plasticity loss."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_326e8daa0",
+        "title": "The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory",
+        "authors": [
+          "Sergey Oladyshkin",
+          "Timothy Praditia",
+          "Ilja Kröker",
+          "Farid Mohammadi",
+          "Wolfgang Nowak",
+          "Sebastian Otte"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-26",
+        "venue": "arXiv",
+        "abstract": "Artificial Intelligence and Machine learning have been widely used in various fields of mathematical computing, physical modeling, computational science, communication science, and stochastic analysis. Approaches based on Deep Artificial Neural Networks (DANN) are very popular in our days. Depending on the learning task, the exact form of DANNs is determined via their multi-layer architecture, activation functions and the so-called loss function. However, for a majority of deep learning approaches based on DANNs, the kernel structure of neural signal processing remains the same, where the node response is encoded as a linear superposition of neural activity, while the non-linearity is triggered by the activation functions. In the current paper, we suggest to analyze the neural signal processing in DANNs from the point of view of homogeneous chaos theory as known from polynomial chaos expansion (PCE). From the PCE perspective, the (linear) response on each node of a DANN could be seen as a $1^{st}$ degree multi-variate polynomial of single neurons from the previous layer, i.e. linear weighted sum of monomials. From this point of view, the conventional DANN structure relies implicitly (but erroneously) on a Gaussian distribution of neural signals. Additionally, this view revels that by design DANNs do not necessarily fulfill any orthogonality or orthonormality condition for a majority of data-driven applications. Therefore, the prevailing handling of neural signals in DANNs could lead to redundant representation as any neural signal could contain some partial information from other neural signals. To tackle that challenge, we suggest to employ the data-driven generalization of PCE theory known as arbitrary polynomial chaos (aPC) to construct a corresponding multi-variate orthonormal representations on each node of a DANN to obtain Deep arbitrary polynomial chaos neural networks.",
+        "url": "http://arxiv.org/abs/2306.14753v1",
+        "doi": "",
+        "arxiv_id": "2306.14753v1",
+        "source_ids": {
+          "arXiv": "2306.14753v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_002_9899c126b",
+        "title": "Understanding Weight Similarity of Neural Networks via Chain Normalization Rule and Hypothesis-Training-Testing",
+        "authors": [
+          "Guangcong Wang",
+          "Guangrun Wang",
+          "Wenqi Liang",
+          "Jianhuang Lai"
+        ],
+        "year": 2022,
+        "publication_date": "2022-08-08",
+        "venue": "arXiv",
+        "abstract": "We present a weight similarity measure method that can quantify the weight similarity of non-convex neural networks. To understand the weight similarity of different trained models, we propose to extract the feature representation from the weights of neural networks. We first normalize the weights of neural networks by introducing a chain normalization rule, which is used for weight representation learning and weight similarity measure. We extend the traditional hypothesis-testing method to a hypothesis-training-testing statistical inference method to validate the hypothesis on the weight similarity of neural networks. With the chain normalization rule and the new statistical inference, we study the weight similarity measure on Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN), and Recurrent Neural Network (RNN), and find that the weights of an identical neural network optimized with the Stochastic Gradient Descent (SGD) algorithm converge to a similar local solution in a metric space. The weight similarity measure provides more insight into the local solutions of neural networks. Experiments on several datasets consistently validate the hypothesis of weight similarity measure.",
+        "url": "http://arxiv.org/abs/2208.04369v1",
+        "doi": "",
+        "arxiv_id": "2208.04369v1",
+        "source_ids": {
+          "arXiv": "2208.04369v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_003_76f987eb1",
+        "title": "A Tutorial about Random Neural Networks in Supervised Learning",
+        "authors": [
+          "Sebastián Basterrech",
+          "Gerardo Rubino"
+        ],
+        "year": 2016,
+        "publication_date": "2016-09-15",
+        "venue": "arXiv",
+        "abstract": "Random Neural Networks (RNNs) are a class of Neural Networks (NNs) that can also be seen as a specific type of queuing network. They have been successfully used in several domains during the last 25 years, as queuing networks to analyze the performance of resource sharing in many engineering areas, as learning tools and in combinatorial optimization, where they are seen as neural systems, and also as models of neurological aspects of living beings. In this article we focus on their learning capabilities, and more specifically, we present a practical guide for using the RNN to solve supervised learning problems. We give a general description of these models using almost indistinctly the terminology of Queuing Theory and the neural one. We present the standard learning procedures used by RNNs, adapted from similar well-established improvements in the standard NN field. We describe in particular a set of learning algorithms covering techniques based on the use of first order and, then, of second order derivatives. We also discuss some issues related to these objects and present new perspectives about their use in supervised learning problems. The tutorial describes their most relevant applications, and also provides a large bibliography.",
+        "url": "http://arxiv.org/abs/1609.04846v1",
+        "doi": "",
+        "arxiv_id": "1609.04846v1",
+        "source_ids": {
+          "arXiv": "1609.04846v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_004_856b725be",
+        "title": "Beyond NTK with Vanilla Gradient Descent: A Mean-Field Analysis of Neural Networks with Polynomial Width, Samples, and Time",
+        "authors": [
+          "Arvind Mahankali",
+          "Jeff Z. Haochen",
+          "Kefan Dong",
+          "Margalit Glasgow",
+          "Tengyu Ma"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-28",
+        "venue": "arXiv",
+        "abstract": "Despite recent theoretical progress on the non-convex optimization of two-layer neural networks, it is still an open question whether gradient descent on neural networks without unnatural modifications can achieve better sample complexity than kernel methods. This paper provides a clean mean-field analysis of projected gradient flow on polynomial-width two-layer neural networks. Different from prior works, our analysis does not require unnatural modifications of the optimization algorithm. We prove that with sample size $n = O(d^{3.1})$ where $d$ is the dimension of the inputs, the network trained with projected gradient flow converges in $\\text{poly}(d)$ time to a non-trivial error that is not achievable by kernel methods using $n \\ll d^4$ samples, hence demonstrating a clear separation between unmodified gradient descent and NTK. As a corollary, we show that projected gradient descent with a positive learning rate and a polynomial number of iterations converges to low error with the same sample complexity.",
+        "url": "http://arxiv.org/abs/2306.16361v2",
+        "doi": "",
+        "arxiv_id": "2306.16361v2",
+        "source_ids": {
+          "arXiv": "2306.16361v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_005_568f26a4b",
+        "title": "Energy-Based Models for Continual Learning",
+        "authors": [
+          "Shuang Li",
+          "Yilun Du",
+          "Gido M. van de Ven",
+          "Igor Mordatch"
+        ],
+        "year": 2020,
+        "publication_date": "2020-11-24",
+        "venue": "arXiv",
+        "abstract": "We motivate Energy-Based Models (EBMs) as a promising model class for continual learning problems. Instead of tackling continual learning via the use of external memory, growing models, or regularization, EBMs change the underlying training objective to cause less interference with previously learned information. Our proposed version of EBMs for continual learning is simple, efficient, and outperforms baseline methods by a large margin on several benchmarks. Moreover, our proposed contrastive divergence-based training objective can be combined with other continual learning methods, resulting in substantial boosts in their performance. We further show that EBMs are adaptable to a more general continual learning setting where the data distribution changes without the notion of explicitly delineated tasks. These observations point towards EBMs as a useful building block for future continual learning methods.",
+        "url": "http://arxiv.org/abs/2011.12216v3",
+        "doi": "",
+        "arxiv_id": "2011.12216v3",
+        "source_ids": {
+          "arXiv": "2011.12216v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_006_7e1d6db23",
+        "title": "Efficient Methods for Non-stationary Online Learning",
+        "authors": [
+          "Peng Zhao",
+          "Yan-Feng Xie",
+          "Lijun Zhang",
+          "Zhi-Hua Zhou"
+        ],
+        "year": 2023,
+        "publication_date": "2023-09-16",
+        "venue": "arXiv",
+        "abstract": "Non-stationary online learning has drawn much attention in recent years. In particular, dynamic regret and adaptive regret are proposed as two principled performance measures for online convex optimization in non-stationary environments. To optimize them, a two-layer online ensemble is usually deployed due to the inherent uncertainty of non-stationarity, in which multiple base-learners are maintained and a meta-algorithm is employed to track the best one on the fly. However, the two-layer structure raises concerns about computational complexity -- such methods typically maintain $O(\\log T)$ base-learners simultaneously for a $T$-round online game and thus perform multiple projections onto the feasible domain per round, which becomes the computational bottleneck when the domain is complicated. In this paper, we present efficient methods for optimizing dynamic regret and adaptive regret that reduce the number of projections per round from $O(\\log T)$ to $1$. The proposed algorithms require only one gradient query and one function evaluation at each round. Our technique hinges on the reduction mechanism developed in parameter-free online learning and requires non-trivial modifications for non-stationary online methods. Furthermore, we study an even stronger measure, namely \"interval dynamic regret\", and reduce the number of projections per round from $O(\\log^2 T)$ to $1$ for minimizing it. Our reduction demonstrates broad generality and applies to two important applications: online stochastic control and online principal component analysis, resulting in methods that are both efficient and optimal. Finally, empirical studies verify our theoretical findings.",
+        "url": "http://arxiv.org/abs/2309.08911v3",
+        "doi": "",
+        "arxiv_id": "2309.08911v3",
+        "source_ids": {
+          "arXiv": "2309.08911v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_007_94ebcc8c9",
+        "title": "Towards Exemplar-Free Continual Learning in Vision Transformers: an Account of Attention, Functional and Weight Regularization",
+        "authors": [
+          "Francesco Pelosin",
+          "Saurav Jha",
+          "Andrea Torsello",
+          "Bogdan Raducanu",
+          "Joost van de Weijer"
+        ],
+        "year": 2022,
+        "publication_date": "2022-03-24",
+        "venue": "arXiv",
+        "abstract": "In this paper, we investigate the continual learning of Vision Transformers (ViT) for the challenging exemplar-free scenario, with special focus on how to efficiently distill the knowledge of its crucial self-attention mechanism (SAM). Our work takes an initial step towards a surgical investigation of SAM for designing coherent continual learning methods in ViTs. We first carry out an evaluation of established continual learning regularization techniques. We then examine the effect of regularization when applied to two key enablers of SAM: (a) the contextualized embedding layers, for their ability to capture well-scaled representations with respect to the values, and (b) the prescaled attention maps, for carrying value-independent global contextual information. We depict the perks of each distilling strategy on two image recognition benchmarks (CIFAR100 and ImageNet-32) -- while (a) leads to a better overall accuracy, (b) helps enhance the rigidity by maintaining competitive performances. Furthermore, we identify the limitation imposed by the symmetric nature of regularization losses. To alleviate this, we propose an asymmetric variant and apply it to the pooled output distillation (POD) loss adapted for ViTs. Our experiments confirm that introducing asymmetry to POD boosts its plasticity while retaining stability across (a) and (b). Moreover, we acknowledge low forgetting measures for all the compared methods, indicating that ViTs might be naturally inclined continual learner",
+        "url": "http://arxiv.org/abs/2203.13167v4",
+        "doi": "",
+        "arxiv_id": "2203.13167v4",
+        "source_ids": {
+          "arXiv": "2203.13167v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_008_5da5db88a",
+        "title": "Kwinking as the plastic forming mechanism of B19' NiTi martensite",
+        "authors": [
+          "Hanuš Seiner",
+          "Petr Sedlák",
+          "Miroslav Frost",
+          "Petr Šittner"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-11",
+        "venue": "arXiv",
+        "abstract": "Irreversible plastic forming of B19$^\\prime$ martensite of the NiTi shape memory alloy is discussed within the framework of continuum mechanics. It is suggested that the main mechanism arises from coupling between martensite reorientation and coordinated $[100](001)_{\\rm M}$ dislocation slip. A heuristic model is proposed, showing that the ${(20\\bar{1})_{\\rm M}}$ deformation-twin bands, commonly observed in experiments, can be interpreted as a combination of dislocation-mediated kink bands, appearing due to strong plastic anisotropy, and reversible twinning of martensite. We introduce a term 'kwinking' for this combination of reversible twinning and irreversible plastic kinking. The model is subsequently formulated using the tools of nonlinear elasticity theory of martensite and crystal plasticity, introducing 'kwink interfaces' as planar, kinematically compatible interfaces between two differently plastically slipped variants of martensite. It is shown that the ${(20\\bar{1})_{\\rm M}}$ kwink bands may be understood as resultsing from energy minimization, and that their nucleation and growth and their pairing with $(100)_{\\rm M}$ twins into specific patterns enables low-energy plastic forming of NiTi martensite. We conclude that kwinking makes plastic deformation of B19$^\\prime$ martensite in polycrystalline NiTi possible despite only one slip system being available.",
+        "url": "http://arxiv.org/abs/2305.07125v3",
+        "doi": "",
+        "arxiv_id": "2305.07125v3",
+        "source_ids": {
+          "arXiv": "2305.07125v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_010_65c6480e2",
+        "title": "Existence and Global Logarithmic Stability of Impulsive Neural Networks with Time Delay",
+        "authors": [
+          "A. K. Ojha",
+          "Dushmanta Mallick",
+          "C. Mallick"
+        ],
+        "year": 2010,
+        "publication_date": "2010-02-05",
+        "venue": "arXiv",
+        "abstract": "The stability and convergence of the neural networks are the fundamental characteristics in the Hopfield type networks. Since time delay is ubiquitous in most physical and biological systems, more attention is being made for the delayed neural networks. The inclusion of time delay into a neural model is natural due to the finite transmission time of the interactions. The stability analysis of the neural networks depends on the Lyapunov function and hence it must be constructed for the given system. In this paper we have made an attempt to establish the logarithmic stability of the impulsive delayed neural networks by constructing suitable Lyapunov function.",
+        "url": "http://arxiv.org/abs/1002.1164v1",
+        "doi": "",
+        "arxiv_id": "1002.1164v1",
+        "source_ids": {
+          "arXiv": "1002.1164v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_9899c126b",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Directly analyzes weight behavior in neural networks under SGD optimization, providing foundational understanding of weight convergence and similarity—critical for evaluating SWR's claim of bounding weight growth and balancing magnitude between layers.",
+        "evidence_summary": "This paper introduces a weight similarity measure and chain normalization rule to study how SGD optimization leads weights to converge to similar local solutions, offering insights into weight magnitude dynamics."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_005_568f26a4b",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "benchmark_baseline",
+          "same_constraints"
+        ],
+        "rationale": "Presents energy-based models as a continual learning baseline tested on standard benchmarks, directly relevant for comparing SWR's performance in continual learning setups without exemplar storage.",
+        "evidence_summary": "Proposes energy-based models for continual learning, demonstrating improved performance over baseline methods on multiple benchmarks, which serves as a key comparison point for SWR's continual learning evaluations."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_94ebcc8c9",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Focuses on exemplar-free continual learning for Vision Transformers with regularization techniques, providing benchmark comparisons on CIFAR100 and ImageNet-32—datasets likely used in SWR's image classification experiments.",
+        "evidence_summary": "Investigates attention and weight regularization in Vision Transformers for continual learning on CIFAR100 and ImageNet-32, establishing a relevant baseline for SWR's benchmark results."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_7e1d6db23",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Addresses non-stationary online learning with efficient methods, aligning with SWR's application in continual and warm-start learning under distribution shifts, though methodologically distinct.",
+        "evidence_summary": "Develops efficient online learning methods for non-stationary environments, relevant to SWR's constraints in handling sequential learning without catastrophic forgetting."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_004_856b725be",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Analyzes gradient descent dynamics in neural networks beyond NTK regimes, offering theoretical context for optimization behaviors that SWR aims to improve, but not directly addressing weight rescaling.",
+        "evidence_summary": "Provides mean-field analysis of gradient descent in polynomial-width networks, showing convergence beyond NTK regimes, which contextualizes SWR's optimization improvements."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_010_65c6480e2",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "Studies stability in delayed neural networks via Lyapunov functions, potentially offering counterevidence on the necessity of weight constraints for stability, though focused on impulsive systems rather than plasticity loss.",
+        "evidence_summary": "Establishes logarithmic stability for impulsive delayed neural networks using Lyapunov methods, suggesting stability mechanisms that may contrast with SWR's assumption that unbounded weight growth is harmful."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_003_76f987eb1",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "A tutorial on random neural networks in supervised learning, providing general background on neural optimization but lacking direct relevance to weight rescaling or plasticity recovery.",
+        "evidence_summary": "Offers a tutorial on random neural networks and their learning algorithms in supervised settings, serving as broad background material for neural network training methods."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_001_326e8daa0",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Discusses neural signal processing from a polynomial chaos perspective, tangentially related to network behavior but not addressing plasticity loss or weight growth mitigation.",
+        "evidence_summary": "Analyzes neural networks through polynomial chaos expansion theory, focusing on signal representation rather than plasticity or weight dynamics."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_008_5da5db88a",
+        "relevance_score": 0.15,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Focuses on material science plasticity in NiTi martensite, with no relevance to neural networks or machine learning, making it unrelated to SWR's contributions.",
+        "evidence_summary": "Proposes a plasticity mechanism for NiTi shape memory alloys in materials science, unrelated to neural network plasticity or weight rescaling."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Recent work has explored weight dynamics in neural networks, such as Understanding Weight Similarity of Neural Networks via Chain Normalization Rule and Hypothesis-Training-Testing (Wang et al., 2022), which studies weight convergence under SGD. In continual learning, Energy-Based Models for Continual Learning (Li et al., 2020) and Towards Exemplar-Free Continual Learning in Vision Transformers (Pelosin et al., 2022) provide benchmarks on image classification tasks. Efficient Methods for Non-stationary Online Learning (Zhao et al., 2023) addresses learning under distribution shifts, while Beyond NTK with Vanilla Gradient Descent (Mahankali et al., 2023) analyzes optimization beyond kernel regimes. Counterperspectives include Existence and Global Logarithmic Stability of Impulsive Neural Networks with Time Delay (Ojha et al., 2010), which examines stability mechanisms that may challenge assumptions about weight growth.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

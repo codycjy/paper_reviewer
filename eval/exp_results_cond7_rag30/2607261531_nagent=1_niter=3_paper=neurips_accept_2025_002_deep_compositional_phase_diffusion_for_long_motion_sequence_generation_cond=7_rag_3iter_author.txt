@@ -1,0 +1,844 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel compositional phase diffusion framework that effectively addresses smooth transitions between semantically different motion segments",
+        "Proposes three well-designed components (ACT-PAE, SPDM, TPDM) that work collaboratively in a unified phase latent space",
+        "Demonstrates strong performance across multiple tasks including compositional motion generation, long-term generation, and motion inbetweening"
+      ],
+      "weaknesses": [
+        "Limited discussion of computational complexity and runtime compared to baseline methods",
+        "Lack of statistical significance testing due to single experimental runs"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Limited discussion of computational complexity and runtime compared to baseline methods",
+          "severity": "minor",
+          "evidence": "The paper mentions parallel processing capabilities but does not provide quantitative comparisons of computational requirements or runtime against TEACH, priorMDM, or other baselines",
+          "affected_claim": "Claims about scalability and efficiency of the framework",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Lack of statistical significance testing due to single experimental runs",
+          "severity": "minor",
+          "evidence": "Section 7 of the Neurips Paper Checklist states: 'Due to the limited computational resources, we conducted each experiment only once'",
+          "affected_claim": "Statistical reliability of the quantitative results presented in Tables 1-3",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The paper presents a technically sound approach with well-designed components (ACT-PAE, SPDM, TPDM), proper mathematical formulations, and comprehensive experiments that support the central claims"
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The compositional phase diffusion framework represents a novel approach to motion generation that differs significantly from prior work by operating in a unified phase latent space and enabling bidirectional phase information propagation"
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work addresses an important problem in motion generation (smooth transitions between semantic segments) and demonstrates state-of-the-art performance across multiple tasks, advancing the field meaningfully"
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Extensive experiments on BABEL-TEACH dataset with appropriate metrics (FID, MMD) show superior performance in compositional motion generation, long-term generation, and motion inbetweening tasks compared to multiple baselines"
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written with good organization, sufficient technical details, and helpful visualizations that facilitate understanding and assessment of the proposed method"
+        }
+      },
+      "summary_comment": "The author response acknowledges both identified weaknesses but does not resolve them with evidence already present in the submitted paper. The response consists primarily of promises to add content in future revisions (computational analysis in supplementary material, discussion of limitations in main paper). Since these are future promises rather than evidence in the current submission, the weaknesses remain unresolved. However, both issues are minor and do not materially undermine the paper's central contributions. The framework demonstrates novel technical approach, strong experimental results across multiple tasks, and clear presentation. The consistent performance advantages across diverse metrics and tasks, despite single runs, provide reasonable confidence in the results. The paper meets top-tier conference standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem in generative modeling for motion sequences, which falls under ICML's interests in deep learning and probabilistic methods",
+        "The proposed compositional phase diffusion framework represents a novel methodological contribution with well-designed components (ACT-PAE, SPDM, TPDM) that operate in a unified latent space",
+        "Strong experimental results on BABEL-TEACH dataset demonstrate state-of-the-art performance in compositional motion generation, aligning with ICML's emphasis on rigorous evaluation"
+      ],
+      "why_it_does_not_fit": [
+        "The application focus on motion generation and animation is somewhat specialized and may be better suited for computer vision/graphics venues",
+        "While technically sound, the work has stronger applications focus than theoretical foundations, which might not appeal to ICML's core theory audience",
+        "The computational complexity and runtime analysis is limited, which could be a concern for ICML's systems-oriented reviewers"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper presents a novel diffusion-based framework for compositional generation, directly relevant to NeurIPS' interests in deep learning and generative models",
+        "The work addresses important challenges in long-sequence generation with smooth transitions, which has broad applications in AI systems",
+        "Strong experimental validation across multiple tasks (compositional generation, long-term generation, inbetweening) with comprehensive metrics aligns well with NeurIPS' empirical focus",
+        "The bidirectional phase information propagation represents an interesting architectural innovation in diffusion models"
+      ],
+      "why_it_does_not_fit": [
+        "The specific application domain (human motion generation) is somewhat niche compared to more general ML topics typically featured at NeurIPS",
+        "Limited discussion of theoretical foundations beyond the applied methodology",
+        "Single experimental runs without statistical significance testing may concern NeurIPS reviewers expecting rigorous statistical validation"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on deep learning architectures for representation learning in motion data aligns perfectly with ICLR's core interests",
+        "The compositional phase diffusion framework operates in a learned latent space (ACT-PAE), which is central to ICLR's representation learning theme",
+        "The work demonstrates state-of-the-art performance in multiple deep learning tasks (generation, inbetweening, long-sequence modeling)",
+        "The transformer-based architecture and diffusion modeling approach are highly relevant to current ICLR trends",
+        "Strong experimental results on standard benchmarks with clear ablation studies support the claims effectively"
+      ],
+      "why_it_does_not_fit": [
+        "The motion generation application domain, while using deep learning methods, is somewhat specialized for ICLR's broad deep learning audience",
+        "Limited theoretical analysis of the phase diffusion process beyond empirical validation"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel compositional phase diffusion framework that effectively addresses smooth transitions between semantically different motion segments",
+              "Proposes three well-designed components (ACT-PAE, SPDM, TPDM) that work collaboratively in a unified phase latent space",
+              "Demonstrates strong performance across multiple tasks including compositional motion generation, long-term generation, and motion inbetweening"
+            ],
+            "weaknesses": [
+              "Limited discussion of computational complexity and runtime compared to baseline methods",
+              "Lack of statistical significance testing due to single experimental runs"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited discussion of computational complexity and runtime compared to baseline methods",
+                "severity": "minor",
+                "evidence": "The paper mentions parallel processing capabilities but does not provide quantitative comparisons of computational requirements or runtime against TEACH, priorMDM, or other baselines",
+                "affected_claim": "Claims about scalability and efficiency of the framework",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Lack of statistical significance testing due to single experimental runs",
+                "severity": "minor",
+                "evidence": "Section 7 of the Neurips Paper Checklist states: 'Due to the limited computational resources, we conducted each experiment only once'",
+                "affected_claim": "Statistical reliability of the quantitative results presented in Tables 1-3",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The paper presents a technically sound approach with well-designed components (ACT-PAE, SPDM, TPDM), proper mathematical formulations, and comprehensive experiments that support the central claims"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The compositional phase diffusion framework represents a novel approach to motion generation that differs significantly from prior work by operating in a unified phase latent space and enabling bidirectional phase information propagation"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses an important problem in motion generation (smooth transitions between semantic segments) and demonstrates state-of-the-art performance across multiple tasks, advancing the field meaningfully"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Extensive experiments on BABEL-TEACH dataset with appropriate metrics (FID, MMD) show superior performance in compositional motion generation, long-term generation, and motion inbetweening tasks compared to multiple baselines"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written with good organization, sufficient technical details, and helpful visualizations that facilitate understanding and assessment of the proposed method"
+              }
+            },
+            "summary_comment": "This paper presents a novel compositional phase diffusion framework that effectively addresses the challenge of generating smooth transitions between semantically different motion segments. The proposed approach introduces three well-designed components (ACT-PAE, SPDM, TPDM) that operate collaboratively in a unified phase latent space. The method demonstrates strong performance across multiple tasks including compositional motion generation, long-term generation, and motion inbetweening, achieving state-of-the-art results on the BABEL-TEACH dataset. While minor weaknesses include limited computational complexity analysis and lack of statistical significance testing, the overall contribution is significant, technically sound, and well-presented, meeting the standards of a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel compositional phase diffusion framework that effectively addresses smooth transitions between semantically different motion segments",
+              "Proposes three well-designed components (ACT-PAE, SPDM, TPDM) that work collaboratively in a unified phase latent space",
+              "Demonstrates strong performance across multiple tasks including compositional motion generation, long-term generation, and motion inbetweening"
+            ],
+            "weaknesses": [
+              "Limited discussion of computational complexity and runtime compared to baseline methods",
+              "Lack of statistical significance testing due to single experimental runs"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited discussion of computational complexity and runtime compared to baseline methods",
+                "severity": "minor",
+                "evidence": "The paper mentions parallel processing capabilities but does not provide quantitative comparisons of computational requirements or runtime against TEACH, priorMDM, or other baselines",
+                "affected_claim": "Claims about scalability and efficiency of the framework",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Lack of statistical significance testing due to single experimental runs",
+                "severity": "minor",
+                "evidence": "Section 7 of the Neurips Paper Checklist states: 'Due to the limited computational resources, we conducted each experiment only once'",
+                "affected_claim": "Statistical reliability of the quantitative results presented in Tables 1-3",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The paper presents a technically sound approach with well-designed components (ACT-PAE, SPDM, TPDM), proper mathematical formulations, and comprehensive experiments that support the central claims"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The compositional phase diffusion framework represents a novel approach to motion generation that differs significantly from prior work by operating in a unified phase latent space and enabling bidirectional phase information propagation"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses an important problem in motion generation (smooth transitions between semantic segments) and demonstrates state-of-the-art performance across multiple tasks, advancing the field meaningfully"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Extensive experiments on BABEL-TEACH dataset with appropriate metrics (FID, MMD) show superior performance in compositional motion generation, long-term generation, and motion inbetweening tasks compared to multiple baselines"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written with good organization, sufficient technical details, and helpful visualizations that facilitate understanding and assessment of the proposed method"
+              }
+            },
+            "summary_comment": "The author response acknowledges the identified weaknesses but does not resolve them with evidence already present in the submitted paper. The response promises future additions to supplementary material and discussion sections, but these do not change the assessment of the submitted work. The minor weaknesses regarding computational complexity analysis and statistical significance testing remain, but they do not materially undermine the paper's central contributions. The framework demonstrates novel technical approach, strong experimental results across multiple tasks, and clear presentation, meeting top-tier conference standards. The weaknesses are minor and fixable without substantial new work."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited discussion of computational complexity and runtime compared to baseline methods\",\n        \"Lack of statistical significance testing due to single experimental runs\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Parallel processing capabilities mentioned but no quantitative comparisons\",\n          \"location\": \"Section 3.2.3, Abstract\",\n          \"explanation\": \"The paper mentions that 'the denoising process of all segments can be done in parallel, making the overall denoising time independent of the number of segments' but does not provide runtime comparisons\"\n        },\n        {\n          \"concern\": \"Single experimental runs due to computational constraints\",\n          \"location\": \"Neurips Paper Checklist Section 7\",\n          \"explanation\": \"Explicitly states: 'Due to the limited computational resources, we conducted each experiment only once'\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited computational complexity analysis\",\n          \"proposed_change\": \"Add a section in the supplementary material comparing computational requirements and runtime against baseline methods (TEACH, priorMDM, MDM) on standard hardware configurations\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Lack of statistical significance testing\",\n          \"proposed_change\": \"Explicitly acknowledge this limitation in the main paper (Section 4 or 5) and discuss how the consistent performance advantages across multiple metrics and tasks provide confidence in the results despite single runs\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and constructive feedback. Regarding computational complexity, we acknowledge that while we described the parallel processing capabilities of our framework (Section 3.2.3), we did not provide quantitative runtime comparisons. In our supplementary material, we will add a comprehensive analysis of computational requirements and runtime comparisons against baseline methods (TEACH, priorMDM, MDM) on standard hardware configurations, demonstrating the practical efficiency of our approach.\\n\\nFor the statistical significance concern, we explicitly acknowledge this limitation in our NeurIPS Paper Checklist (Section 7) due to computational constraints. While we conducted each experiment once, we note that our method consistently outperforms baselines across multiple metrics (FID, MMD, L2-Vel, L2-Rot6D, NPSS, RMS-Jerk) and three distinct tasks (compositional motion generation, long-term generation, and motion inbetweening). This consistent performance advantage across diverse evaluation scenarios provides confidence in the robustness of our results. We will add a brief discussion of this limitation in the main paper to ensure transparency.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel compositional phase diffusion framework that effectively addresses smooth transitions between semantically different motion segments",
+              "Proposes three well-designed components (ACT-PAE, SPDM, TPDM) that work collaboratively in a unified phase latent space",
+              "Demonstrates strong performance across multiple tasks including compositional motion generation, long-term generation, and motion inbetweening"
+            ],
+            "weaknesses": [
+              "Limited discussion of computational complexity and runtime compared to baseline methods",
+              "Lack of statistical significance testing due to single experimental runs"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited discussion of computational complexity and runtime compared to baseline methods",
+                "severity": "minor",
+                "evidence": "The paper mentions parallel processing capabilities but does not provide quantitative comparisons of computational requirements or runtime against TEACH, priorMDM, or other baselines",
+                "affected_claim": "Claims about scalability and efficiency of the framework",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Lack of statistical significance testing due to single experimental runs",
+                "severity": "minor",
+                "evidence": "Section 7 of the Neurips Paper Checklist states: 'Due to the limited computational resources, we conducted each experiment only once'",
+                "affected_claim": "Statistical reliability of the quantitative results presented in Tables 1-3",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The paper presents a technically sound approach with well-designed components (ACT-PAE, SPDM, TPDM), proper mathematical formulations, and comprehensive experiments that support the central claims"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The compositional phase diffusion framework represents a novel approach to motion generation that differs significantly from prior work by operating in a unified phase latent space and enabling bidirectional phase information propagation"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses an important problem in motion generation (smooth transitions between semantic segments) and demonstrates state-of-the-art performance across multiple tasks, advancing the field meaningfully"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Extensive experiments on BABEL-TEACH dataset with appropriate metrics (FID, MMD) show superior performance in compositional motion generation, long-term generation, and motion inbetweening tasks compared to multiple baselines"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written with good organization, sufficient technical details, and helpful visualizations that facilitate understanding and assessment of the proposed method"
+              }
+            },
+            "summary_comment": "The author response acknowledges both identified weaknesses but does not resolve them with evidence already present in the submitted paper. The response consists primarily of promises to add content in future revisions (computational analysis in supplementary material, discussion of limitations in main paper). Since these are future promises rather than evidence in the current submission, the weaknesses remain unresolved. However, both issues are minor and do not materially undermine the paper's central contributions. The framework demonstrates novel technical approach, strong experimental results across multiple tasks, and clear presentation. The consistent performance advantages across diverse metrics and tasks, despite single runs, provide reasonable confidence in the results. The paper meets top-tier conference standards."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited discussion of computational complexity and runtime compared to baseline methods\",\n        \"Lack of statistical significance testing due to single experimental runs\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Parallel processing capabilities mentioned but no quantitative comparisons\",\n          \"location\": \"Section 3.2.3\",\n          \"explanation\": \"The paper states: 'the denoising process of all segments can be done in parallel, making the overall denoising time independent of the number of segments' - this describes the theoretical advantage but lacks empirical validation\"\n        },\n        {\n          \"concern\": \"Single experimental runs acknowledged\",\n          \"location\": \"Neurips Paper Checklist Section 7\",\n          \"explanation\": \"We explicitly state: 'Due to the limited computational resources, we conducted each experiment only once' - this is an honest acknowledgment of the limitation\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited computational complexity analysis\",\n          \"proposed_change\": \"We will add runtime comparisons and computational analysis in supplementary material to demonstrate the practical efficiency claims\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Lack of statistical significance testing\",\n          \"proposed_change\": \"We will explicitly discuss this limitation in the main paper and note that despite single runs, the consistent performance advantages across multiple metrics and tasks provide confidence in the results\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and constructive feedback. We acknowledge both limitations identified. Regarding computational complexity, while our framework's parallel architecture theoretically enables efficient processing (Section 3.2.3), we will add empirical runtime comparisons against baseline methods in supplementary material. For statistical significance, we explicitly acknowledged the single-run limitation in our NeurIPS checklist due to computational constraints. However, we note that our method demonstrates consistent performance advantages across multiple evaluation metrics (FID, MMD, L2-Vel, L2-Rot6D, NPSS, RMS-Jerk) and three distinct tasks, providing robust evidence of effectiveness despite the single-run limitation. We will add a brief discussion of this in the limitations section to ensure transparency.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_f42484f27658",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "data/md/neurips_accept_2025_002_deep_compositional_phase_diffusion_for_long_motion_sequence_generation.md",
+    "target_paper_summary": {
+      "paper_id": "paper_f42484f27658",
+      "title": "Deep Compositional Phase Diffusion For Long Motion Sequence Generation",
+      "abstract": "Recent research on motion generation has shown significant progress in generating semantically aligned motion with singular semantics. However, when employing these models to create composite sequences containing multiple semantically generated motion clips, they often struggle to preserve the continuity of motion dynamics at the transition boundaries between clips, resulting in awkward transitions and abrupt artifacts. To address these challenges, we present Compositional Phase Diffusion, which leverages the Semantic Phase Diffusion Module (SPDM)\nand Transitional Phase Diffusion Module (TPDM) to progressively incorporate semantic guidance and phase details from adjacent motion clips into the diffusion process. Specifically, SPDM and TPDM operate within the latent motion frequency domain established by the pre-trained Action-Centric Motion Phase Autoencoder\n∗Corresponding Author\n(ACT-PAE). This allows them to learn semantically important and transition-aware phase information from variable-length motion clips during training. Experimental results demonstrate the competitive performance of our proposed framework in generating compositional motion sequences that align semantically with the input conditions, while preserving phase transitional continuity between preceding and succeeding motion clips. Additionally, motion inbetweening task is made possible by keeping the phase parameter of the input motion sequences fixed throughout the diffusion process, showcasing the potential for extending the proposed framework to accommodate various application scenarios. Codes are available at https://github.com/asdryau/TransPhase.",
+      "topic": "",
+      "claims": [
+        "we present Compositional Phase Diffusion, which leverages the Semantic Phase Diffusion Module (SPDM) and Transitional Phase Diffusion Module (TPDM) to progressively incorporate semantic guidance and phase details from adjacent motion clips into the diffusion process."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_879aaa0fa",
+        "title": "A survey on deep learning in medical image analysis",
+        "authors": [
+          "Geert Litjens",
+          "Thijs Kooi",
+          "Babak Ehteshami Bejnordi",
+          "Arnaud A. A. Setio",
+          "Francesco Ciompi",
+          "Mohsen Ghafoorian",
+          "Jeroen van der Laak",
+          "Bram van Ginneken",
+          "Clara I. Sá‎nchez"
+        ],
+        "year": 2017,
+        "publication_date": "2017-07-26",
+        "venue": "Medical Image Analysis",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.media.2017.07.005",
+        "doi": "https://doi.org/10.1016/j.media.2017.07.005",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2592929672"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 14650
+      },
+      {
+        "paper_id": "rw_002_32b64b8c5",
+        "title": "Physics-informed machine learning",
+        "authors": [
+          "George Em Karniadakis",
+          "Ioannis G. Kevrekidis",
+          "Lu Lu",
+          "Paris Perdikaris",
+          "Sifan Wang",
+          "Liu Yang"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-24",
+        "venue": "Nature Reviews Physics",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/s42254-021-00314-5",
+        "doi": "https://doi.org/10.1038/s42254-021-00314-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3163993681"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 7015
+      },
+      {
+        "paper_id": "rw_003_2c0c029e3",
+        "title": "Atmospheric composition change – global and regional air quality",
+        "authors": [
+          "P. S. Monks",
+          "Claire Granier",
+          "S. Fuzzi",
+          "A. Stohl",
+          "M. L. Williams",
+          "Hajime Akimoto",
+          "Markus Amann",
+          "Alexander Baklanov",
+          "U. Baltensperger",
+          "I. Bey",
+          "N. J. Blake",
+          "Rhiannon Blake",
+          "K. S. Carslaw",
+          "Owen R. Cooper",
+          "Frank Dentener",
+          "D. Fowler",
+          "Evangelia Fragkou",
+          "G. J. Frost",
+          "Sylvia Generoso",
+          "Paul Ginoux",
+          "Volker Grewe",
+          "Alex Guenther",
+          "Hans‐Christen Hansson",
+          "Stephan Henne",
+          "J. Hjorth",
+          "Andreas Hofzumahaus",
+          "H. Huntrieser",
+          "I. S. A. Isaksen",
+          "Michael E. Jenkin",
+          "Jan Kaiser",
+          "Maria Kanakidou",
+          "Zbigniew Klimont",
+          "Markku Kulmala",
+          "Paolo Laj",
+          "M. G. Lawrence",
+          "James Lee",
+          "C. Liousse",
+          "Michela Maione",
+          "G. McFiggans",
+          "Axel Metzger",
+          "Aude Miéville",
+          "Ν. Moussiopoulos",
+          "John J. Orlando",
+          "Colin O’Dowd",
+          "Paul I. Palmer",
+          "D. D. Parrish",
+          "Andreas Petzold",
+          "U. Platt",
+          "Ulrich Pöschl",
+          "Andrê S. H. Prévôt",
+          "Claire E. Reeves",
+          "Stefan Reimann",
+          "Yinon Rudich",
+          "Karine Sellegri",
+          "R. Steinbrecher",
+          "David Simpson",
+          "H.M. ten Brink",
+          "J. Theloke",
+          "Guido R. van der Werf",
+          "Robert Vautard",
+          "Vigdis Vestreng",
+          "Christos Vlachokostas",
+          "R. von Glasow"
+        ],
+        "year": 2009,
+        "publication_date": "2009-08-29",
+        "venue": "Atmospheric Environment",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.atmosenv.2009.08.021",
+        "doi": "https://doi.org/10.1016/j.atmosenv.2009.08.021",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2136263534"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 957
+      },
+      {
+        "paper_id": "rw_004_0edeea248",
+        "title": "Phase separation processes in polymer solutions in relation to membrane formation",
+        "authors": [
+          "P. van de Witte",
+          "Pieter J. Dijkstra",
+          "J.W.A. van den Berg",
+          "J. Feijen"
+        ],
+        "year": 1996,
+        "publication_date": "1996-08-01",
+        "venue": "Journal of Membrane Science",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/0376-7388(96)00088-9",
+        "doi": "https://doi.org/10.1016/0376-7388(96)00088-9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2052927598"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1368
+      },
+      {
+        "paper_id": "rw_005_fc78307b5",
+        "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+        "authors": [
+          "Cheng Chi",
+          "Siyuan Feng",
+          "Yilun Du",
+          "Zhenjia Xu",
+          "Eric Cousineau",
+          "Benjamin Burchfiel",
+          "Shuran Song"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-10",
+        "venue": "",
+        "abstract": "",
+        "url": "https://doi.org/10.15607/rss.2023.xix.026",
+        "doi": "https://doi.org/10.15607/rss.2023.xix.026",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385403811"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 424
+      },
+      {
+        "paper_id": "rw_006_a7641d069",
+        "title": "Listen, Denoise, Action! Audio-Driven Motion Synthesis with Diffusion Models",
+        "authors": [
+          "Simon Alexanderson",
+          "Rajmund Nagy",
+          "Jonas Beskow",
+          "Gustav Eje Henter"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-26",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "Diffusion models have experienced a surge of interest as highly expressive yet efficiently trainable probabilistic models. We show that these models are an excellent fit for synthesising human motion that co-occurs with audio, e.g., dancing and co-speech gesticulation, since motion is complex and highly ambiguous given audio, calling for a probabilistic description. Specifically, we adapt the DiffWave architecture to model 3D pose sequences, putting Conformers in place of dilated convolutions for improved modelling power. We also demonstrate control over motion style, using classifier-free guidance to adjust the strength of the stylistic expression. Experiments on gesture and dance generation confirm that the proposed method achieves top-of-the-line motion quality, with distinctive styles whose expression can be made more or less pronounced. We also synthesise path-driven locomotion using the same model architecture. Finally, we generalise the guidance procedure to obtain product-of-expert ensembles of diffusion models and demonstrate how these may be used for, e.g., style interpolation, a contribution we believe is of independent interest.",
+        "url": "https://doi.org/10.1145/3592458",
+        "doi": "https://doi.org/10.1145/3592458",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4377010269"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 173
+      },
+      {
+        "paper_id": "rw_007_111e51758",
+        "title": "Protein sequences bound to mineral surfaces persist into deep time",
+        "authors": [
+          "Beatrice Demarchi",
+          "Shaun Hall",
+          "Teresa Roncal‐Herrero",
+          "Colin L. Freeman",
+          "Jos Woolley",
+          "Molly Crisp",
+          "Julie Wilson",
+          "Anna K. Fotakis",
+          "Román Fischer",
+          "Benedikt M. Kessler",
+          "Rosa Jersie-Christensen",
+          "Jesper V. Olsen",
+          "James Haile",
+          "Jessica Thomas",
+          "Curtis W. Marean",
+          "John Parkington",
+          "Samantha Presslee",
+          "Julia A. Lee‐Thorp",
+          "Peter Ditchfıeld",
+          "Jacqueline F. Hamilton",
+          "Martyn Ward",
+          "Chunting Michelle Wang",
+          "Marvin Shaw",
+          "Terry Harrison",
+          "Manuel Domínguez-Rodrigo",
+          "R. D. E. MacPhee",
+          "Amandus Kwekason",
+          "Michaela Ecker",
+          "Liora Kolska Horwitz",
+          "Michael Chazan",
+          "Roland Kröger",
+          "Jane Thomas‐Oates",
+          "John H. Harding",
+          "Enrico Cappellini",
+          "Kirsty Penkman",
+          "Matthew J. Collins"
+        ],
+        "year": 2016,
+        "publication_date": "2016-09-26",
+        "venue": "eLife",
+        "abstract": "Proteins persist longer in the fossil record than DNA, but the longevity, survival mechanisms and substrates remain contested. Here, we demonstrate the role of mineral binding in preserving the protein sequence in ostrich (Struthionidae) eggshell, including from the palaeontological sites of Laetoli (3.8 Ma) and Olduvai Gorge (1.3 Ma) in Tanzania. By tracking protein diagenesis back in time we find consistent patterns of preservation, demonstrating authenticity of the surviving sequences. Molecular dynamics simulations of struthiocalcin-1 and -2, the dominant proteins within the eggshell, reveal that distinct domains bind to the mineral surface. It is the domain with the strongest calculated binding energy to the calcite surface that is selectively preserved. Thermal age calculations demonstrate that the Laetoli and Olduvai peptides are 50 times older than any previously authenticated sequence (equivalent to ~16 Ma at a constant 10°C).",
+        "url": "https://doi.org/10.7554/elife.17092",
+        "doi": "https://doi.org/10.7554/elife.17092",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2524133771"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 275
+      },
+      {
+        "paper_id": "rw_008_47d4b22b8",
+        "title": "A tutorial survey of architectures, algorithms, and applications for deep learning",
+        "authors": [
+          "Li Deng"
+        ],
+        "year": 2014,
+        "publication_date": "2014-01-01",
+        "venue": "APSIPA Transactions on Signal and Information Processing",
+        "abstract": "In this invited paper, my overview material on the same topic as presented in the plenary overview session of APSIPA-2011 and the tutorial material presented in the same conference The previous and the updated materials cover both theory and applications, and analyze its future directions. The goal of this tutorial survey is to introduce the emerging area of deep learning or hierarchical learning to the APSIPA community. Deep learning refers to a class of machine learning techniques, developed largely since 2006, where many stages of non-linear information processing in hierarchical architectures are exploited for pattern classification and for feature learning. In the more recent literature, it is also connected to representation learning, which involves a hierarchy of features or concepts where higherlevel concepts are defined from lower-level ones and where the same lower-level concepts help to define higher-level ones. In this tutorial survey, a brief history of deep learning research is discussed first. Then, a classificatory scheme is developed to analyze and summarize major work reported in the recent deep learning literature. Using this scheme, I provide a taxonomy-oriented survey on the existing deep architectures and algorithms in the literature, and categorize them into three classes: generative, discriminative, and hybrid. Three representative deep architectures -deep autoencoders, deep stacking networks with their generalization to the temporal domain (recurrent networks), and deep neural networks (pretrained with deep belief networks)one in each of the three classes, are presented in more detail. Next, selected applications of deep learning are reviewed in broad areas of signal and information processing including audio/speech, image/vision, multimodality, language modeling, natural language processing, and information retrieval. Finally, future directions of deep learning are discussed and analyzed.",
+        "url": "https://doi.org/10.1017/atsip.2013.9",
+        "doi": "https://doi.org/10.1017/atsip.2013.9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2123585936"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 739
+      },
+      {
+        "paper_id": "rw_009_9d7531773",
+        "title": "Deep learning in medical imaging and radiation therapy",
+        "authors": [
+          "Berkman Sahiner",
+          "Aria Pezeshk",
+          "Lubomir M. Hadjiiski",
+          "Xiaosong Wang",
+          "Karen Drukker",
+          "Kenny H. Cha",
+          "Ronald M. Summers",
+          "Maryellen L. Giger"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-27",
+        "venue": "Medical Physics",
+        "abstract": "The goals of this review paper on deep learning (DL) in medical imaging and radiation therapy are to (a) summarize what has been achieved to date; (b) identify common and unique challenges, and strategies that researchers have taken to address these challenges; and (c) identify some of the promising avenues for the future both in terms of applications as well as technical innovations. We introduce the general principles of DL and convolutional neural networks, survey five major areas of application of DL in medical imaging and radiation therapy, identify common themes, discuss methods for dataset expansion, and conclude by summarizing lessons learned, remaining challenges, and future directions.",
+        "url": "https://doi.org/10.1002/mp.13264",
+        "doi": "https://doi.org/10.1002/mp.13264",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2898197178"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 749
+      },
+      {
+        "paper_id": "rw_010_16dbff8ff",
+        "title": "Aeroparticles, Composition, and Lung Diseases",
+        "authors": [
+          "Carlos Iván Falcón-Rodríguez",
+          "Álvaro Osornio-Vargas",
+          "Isabel Sada‐Ovalle",
+          "Patricia Segura-Medina"
+        ],
+        "year": 2016,
+        "publication_date": "2016-01-20",
+        "venue": "Frontiers in Immunology",
+        "abstract": "Urban air pollution is a serious worldwide problem due to its impact on human health. In the past 60 years, growing evidence established a correlation between exposure to air pollutants and the developing of severe respiratory diseases. Recently particulate matter (PM) is drawing more public attention to various aspects including historical backgrounds, physicochemical characteristics, and its pathological role. Therefore, this review is focused on these aspects. The most famous air pollution disaster happened in London on December 1952; it has been calculated that more than 4,000 deaths occurred during this event. Air pollution is a complex mix of gases and particles. Gaseous pollutants disseminate deeply into the alveoli, allowing its diffusion through the blood-air barrier to several organs. Meanwhile, PM is a mix of solid or liquid particles suspended in the air. PM is deposited at different levels of the respiratory tract, depending on its size: coarse particles (PM10) in upper airways and fine particles (PM2.5) can be accumulated in the lung parenchyma, inducing several respiratory diseases. Additionally to size, the composition of PM has been associated with different toxicological outcomes on clinical and epidemiological, as well as in vivo and in vitro animal and human studies. PM can be constituted by organic, inorganic, and biological compounds. All these compounds are capable of modifying several biological activities, including alterations in cytokine production, coagulation factors balance, pulmonary function, respiratory symptoms, and cardiac function. It can also generate different modifications during its passage through the airways, like inflammatory cells recruitment, with the release of cytokines and reactive oxygen species (ROS). These inflammatory mediators can activate different pathways, such as MAP kinases, NF-κB, and Stat-1, or induce DNA adducts. All these alterations can mediate obstructive or restrictive respiratory diseases like asthma, COPD, pulmonary fibrosis, and even cancer. In 2013, outdoor air pollution was classified as Group 1 by IARC based on all research studies data about air pollution effects. Therefore, it is important to understand how PM composition can generate several pulmonary pathologies.",
+        "url": "https://doi.org/10.3389/fimmu.2016.00003",
+        "doi": "https://doi.org/10.3389/fimmu.2016.00003",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2253274866"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 393
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_a7641d069",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper applies diffusion models to human motion synthesis from audio, offering a directly comparable approach in generative human motion modeling, albeit for a different condition (audio instead of semantic composition/timing).",
+        "evidence_summary": "In 2023, Alexanderson et al. published 'Listen, Denoise, Action! Audio-Driven Motion Synthesis with Diffusion Models' in ACM Transactions on Graphics. The method adapts the DiffWave architecture to 3D pose sequences, replacing dilated convolutions with Conformers, and uses classifier-free guidance for motion style control. Experimental results on gesture and dance generation demonstrate top-of-the-line motion quality and synthesis of path-driven locomotion with the same architecture."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_005_fc78307b5",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper introduces a diffusion-based policy for action/visuomotor learning, establishing 'Diffusion Policy' as a relevant methodological approach for learning action sequences, providing context for diffusion application in sequential action/motion domains.",
+        "evidence_summary": "In 2023, Chi et al. published 'Diffusion Policy: Visuomotor Policy Learning via Action Diffusion'."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_004_0edeea248",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The paper's focus on 'phase separation' and 'phase' processes in a different domain (polymer science) provides a weak but existent conceptual link to the target's use of 'phase' information in motion sequences.",
+        "evidence_summary": "In 1996, Witte et al. published 'Phase separation processes in polymer solutions in relation to membrane formation' in the Journal of Membrane Science."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_001_879aaa0fa",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "This is a high-level survey of deep learning in a specific application domain (medical imaging), providing only general background context for deep learning applications.",
+        "evidence_summary": "In 2017, Litjens et al. published 'A survey on deep learning in medical image analysis' in Medical Image Analysis."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_009_9d7531773",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "This review paper covers deep learning applications in medical imaging and radiation therapy, offering general background on convolutional neural networks and deep learning principles.",
+        "evidence_summary": "In 2018, Sahiner et al. published 'Deep learning in medical imaging and radiation therapy' in Medical Physics. The paper summarizes achievements in deep learning for medical imaging, identifies common challenges and strategies, and introduces general principles of convolutional neural networks across several application areas."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_002_32b64b8c5",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "This review paper on physics-informed machine learning provides only tangential, high-level background on integrating domain knowledge into machine learning models.",
+        "evidence_summary": "In 2021, Karniadakis et al. published 'Physics-informed machine learning' in Nature Reviews Physics."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_003_2c0c029e3",
+        "relevance_score": 0.15,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "The paper's title shares the word 'composition' but is about atmospheric chemistry, representing a purely lexical overlap with the target's focus on motion composition.",
+        "evidence_summary": "In 2009, Monks et al. published 'Atmospheric composition change – global and regional air quality' in Atmospheric Environment."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_007_111e51758",
+        "relevance_score": 0.15,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "The paper's title contains 'deep time' which is a purely lexical overlap with the target's 'deep' in 'Deep Compositional Phase Diffusion', but the content is about protein sequences in paleontology.",
+        "evidence_summary": "In 2016, Demarchi et al. published 'Protein sequences bound to mineral surfaces persist into deep time' in eLife. The study demonstrated the role of mineral binding in preserving protein sequences in ostrich eggshell from palaeontological sites, using molecular dynamics simulations to show that domains with strong binding energy to calcite are selectively preserved."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_010_16dbff8ff",
+        "relevance_score": 0.1,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "The paper's title contains 'Composition' but is about aeroparticles and lung diseases, representing a purely lexical and domain-incorrect match.",
+        "evidence_summary": "In 2016, Falcón-Rodríguez et al. published 'Aeroparticles, Composition, and Lung Diseases' in Frontiers in Immunology. The review focuses on particulate matter (PM) in air pollution, its composition, and its pathological role in inducing respiratory diseases by altering biological activities such as cytokine production and pulmonary function."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_008_47d4b22b8",
+        "relevance_score": 0.058,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "In this invited paper, my overview material on the same topic as presented in the plenary overview session of APSIPA-2011 and the tutorial material presented in the same conference The previous and the updated materials cover both theory and applications, and analyze its future directions. Three representative deep architectures -deep autoencoders, deep stacking networks with their generalization to the temporal domain (recurrent networks), and deep neural networks (pretrained with deep belief networks)one in each of the three classes, are presented in more detail."
+      }
+    ],
+    "reranking": {
+      "source": "mixed"
+    },
+    "related_work_summary": "In 2023, Simon Alexanderson et al. published \"Listen, Denoise, Action! Audio-Driven Motion Synthesis with Diffusion Models\" in ACM Transactions on Graphics. Experiments on gesture and dance generation confirm that the proposed method achieves top-of-the-line motion quality, with distinctive styles whose expression can be made more or less pronounced. Diffusion models have experienced a surge of interest as highly expressive yet efficiently trainable probabilistic models. Specifically, the authors adapt the DiffWave architecture to model 3D pose sequences, putting Conformers in place of dilated convolutions for improved modelling power. In 2023, Cheng Chi et al. published \"Diffusion Policy: Visuomotor Policy Learning via Action Diffusion\". The available metadata does not include an abstract with contribution, dataset, or result details. In 1996, P. van de Witte et al. published \"Phase separation processes in polymer solutions in relation to membrane formation\" in Journal of Membrane Science. The available metadata does not include an abstract with contribution, dataset, or result details. In 2017, Geert Litjens et al. published \"A survey on deep learning in medical image analysis\" in Medical Image Analysis. The available metadata does not include an abstract with contribution, dataset, or result details. In 2018, Berkman Sahiner et al. published \"Deep learning in medical imaging and radiation therapy\" in Medical Physics. The authors introduce the general principles of DL and convolutional neural networks, survey five major areas of application of DL in medical imaging and radiation therapy, identify common themes, discuss methods for dataset expansion, and conclude by summarizing lessons learned, remaining challenges, and future directions. The goals of this review paper on deep learning (DL) in medical imaging and radiation therapy are to (a) summarize what has been achieved to date; (b) identify common and unique challenges, and strategies that researchers have taken to address these challenges; and (c) identify some of the promising avenues for the future both in terms of applications as well as technical innovations. In 2021, George Em Karniadakis et al. published \"Physics-informed machine learning\" in Nature Reviews Physics. The available metadata does not include an abstract with contribution, dataset, or result details.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

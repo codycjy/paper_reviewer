@@ -1,0 +1,202 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a fundamentally novel approach to measuring sharpness by leveraging Riemannian geometry to account for transformer symmetries, addressing a critical gap in existing literature",
+        "Demonstrates strong empirical results across multiple domains (diagonal networks, vision transformers, language models) with significantly improved correlation between sharpness and generalization",
+        "Provides a principled mathematical framework that generalizes previous adaptive sharpness measures as first-order approximations and offers a unified treatment of various symmetries"
+      ],
+      "weaknesses": [
+        "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which may limit practical utility without deeper understanding",
+        "Computational complexity increases compared to adaptive sharpness, particularly for the inv metric which requires solving Sylvester equations, though the mix metric offers a more efficient alternative"
+      ],
+      "summary_comment": "This paper makes a significant contribution by addressing the failure of existing sharpness measures for transformers through a novel Riemannian geometry framework. The approach is highly innovative and demonstrates strong empirical results across multiple domains, restoring correlation where previous methods failed. While some practical limitations remain regarding correlation sign variability and computational cost, the theoretical advancement and empirical validation are compelling. The work opens new directions for understanding generalization in transformers and deserves acceptance for its novelty and impact."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a mathematically rigorous and principled approach to handling parameter space symmetries in neural networks, specifically transformers, by leveraging Riemannian geometry and quotient manifolds. This is a significant methodological contribution.",
+        "The experimental evaluation is thorough and convincing, demonstrating a clear improvement (stronger correlation) over existing adaptive sharpness measures on multiple model types (diagonal nets, vision transformers, language models) and datasets (ImageNet, MNLI). The verification of reparameterization invariance is a particularly strong methodological check.",
+        "The theoretical analysis is sound, correctly identifying the limitations of prior work and clearly deriving the connection between the proposed geodesic sharpness and existing adaptive sharpness as a first-order approximation."
+      ],
+      "weaknesses": [
+        "The paper identifies that the sign of the correlation between sharpness and generalization varies across tasks, but does not provide a deep theoretical explanation for this phenomenon, leaving it as a limitation for future work rather than a fully explained result.",
+        "The computational practicality of the method for very large-scale models is not exhaustively analyzed; while complexity is discussed, a more detailed runtime comparison or scaling analysis would strengthen the case for broad applicability."
+      ],
+      "summary_comment": "This paper makes a strong methodological contribution by rigorously addressing a known problem (failure of sharpness measures for transformers) using tools from Riemannian geometry. The soundness of the mathematical framework and the convincing experimental results across multiple settings are exceptional. While the novelty is high and the significance is clear, the most compelling aspect is the methodological rigor and the robust evaluation that provides clear empirical evidence for the proposed approach's superiority. The identified weaknesses are not fatal to the contribution and are appropriately framed as directions for future work."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "Significant practical contribution: clearly identifies why existing sharpness measures fail for transformers (GL(h) symmetries) and provides a principled, geometry-corrected solution that restores strong correlation with generalization.",
+        "Exceptional clarity: the paper is very well-written, with excellent figures and a clear narrative that makes the Riemannian geometry accessible and connects theory to practice effectively.",
+        "Strong and convincing empirical validation across diverse architectures (diagonal nets, vision transformers, language models) on real-world tasks (ImageNet, MNLI), showing consistent, strong correlations where previous methods fail or are weak."
+      ],
+      "weaknesses": [
+        "Computational cost: while argued to be manageable, the proposed method is more expensive than adaptive sharpness (e.g., requires solving Sylvester equations for one metric, Christoffel symbol calculations). The practical scalability to extremely large models needs more discussion.",
+        "Interpretation of the correlation sign: the observation that the sign of correlation between geodesic sharpness and generalization varies across tasks (sometimes negative, sometimes positive) is surprising and undermines a simple 'flatter is better' narrative, requiring further investigation and limiting immediate use for regularization."
+      ],
+      "summary_comment": "This is an excellent applied research paper. It tackles a real and acknowledged problem (poor correlation of sharpness with generalization in transformers) with a principled solution rooted in Riemannian geometry to correctly quotient out parameter symmetries. The theoretical development is sound and well-explained, and the empirical results are compelling, demonstrating strong correlations on practical models where previous measures fail. The clarity, significance, and practical impact are all very strong. The noted limitations (computational cost and variable correlation sign) are honestly discussed and point to valuable future work. This work meaningfully advances the field by providing a more accurate tool for understanding generalization in modern architectures."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICML covers optimization and theory of machine learning, and this paper makes significant contributions to both by introducing a Riemannian geometry framework for measuring sharpness in neural networks.",
+        "The paper addresses a fundamental problem in deep learning generalization theory (sharpness-generalization relationship) which aligns with ICML's focus on theoretical foundations.",
+        "The work includes rigorous mathematical treatment (manifold theory, symmetry groups) combined with empirical validation on real-world datasets (ImageNet, MNLI), matching ICML's preference for theoretically grounded empirical work."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's heavy focus on transformer-specific symmetries (GL(h)) might be somewhat narrow for ICML's broad ML scope, though the diagonal network results provide broader relevance.",
+        "While the theoretical contribution is significant, the practical implementation aspects (computational complexity of Sylvester equations) might be less emphasized than typical ICML systems papers.",
+        "The varying correlation sign results (negative for ImageNet, positive for MNLI) present an unresolved theoretical puzzle that might be better suited for venues more tolerant of open theoretical questions."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS strongly emphasizes novel theoretical frameworks with practical impact in deep learning, and this paper's Riemannian geometry approach to transformer symmetries fits perfectly.",
+        "The work addresses a well-known failure mode of existing methods (poor sharpness-generalization correlation in transformers) and provides a principled solution, aligning with NeurIPS' focus on significant algorithmic advances.",
+        "The comprehensive evaluation across vision transformers (ImageNet) and language models (MNLI) matches NeurIPS' preference for extensive empirical validation in multiple domains.",
+        "The paper's interdisciplinary nature (connecting differential geometry with deep learning) fits NeurIPS' welcoming of cross-disciplinary approaches."
+      ],
+      "why_it_does_not_fit": [
+        "The computational complexity of the proposed method, while discussed, might be concerning for NeurIPS' increasingly practical focus on scalable methods.",
+        "The theoretical depth might be slightly beyond the typical NeurIPS paper, though the clear writing and practical results mitigate this concern."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR's focus on deep learning fundamentals makes this paper highly relevant, as it addresses a core problem in understanding generalization in transformers.",
+        "The work provides novel insights into attention mechanism symmetries, which are central to modern deep learning architectures studied at ICLR.",
+        "The empirical validation includes both vision and language transformers, covering key application areas prominent at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically prefers more immediately practical contributions to deep learning, while this paper's heavy mathematical framework might be less accessible to the broader ICLR audience.",
+        "The paper's focus on generalization metrics rather than new architectures or training methods might be less aligned with ICLR's typical emphasis.",
+        "The unresolved issue of varying correlation signs might be more problematic for ICLR's preference for clear, actionable insights."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Novelty)",
+          "review": {
+            "reviewer": "Reviewer A - Novelty Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a fundamentally novel approach to measuring sharpness by leveraging Riemannian geometry to account for transformer symmetries, addressing a critical gap in existing literature",
+              "Demonstrates strong empirical results across multiple domains (diagonal networks, vision transformers, language models) with significantly improved correlation between sharpness and generalization",
+              "Provides a principled mathematical framework that generalizes previous adaptive sharpness measures as first-order approximations and offers a unified treatment of various symmetries"
+            ],
+            "weaknesses": [
+              "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which may limit practical utility without deeper understanding",
+              "Computational complexity increases compared to adaptive sharpness, particularly for the inv metric which requires solving Sylvester equations, though the mix metric offers a more efficient alternative"
+            ],
+            "summary_comment": "This paper makes a significant contribution by addressing the failure of existing sharpness measures for transformers through a novel Riemannian geometry framework. The approach is highly innovative and demonstrates strong empirical results across multiple domains, restoring correlation where previous methods failed. While some practical limitations remain regarding correlation sign variability and computational cost, the theoretical advancement and empirical validation are compelling. The work opens new directions for understanding generalization in transformers and deserves acceptance for its novelty and impact."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 2 (Rigor)",
+          "review": {
+            "reviewer": "Reviewer B - Rigor Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper provides a mathematically rigorous and principled approach to handling parameter space symmetries in neural networks, specifically transformers, by leveraging Riemannian geometry and quotient manifolds. This is a significant methodological contribution.",
+              "The experimental evaluation is thorough and convincing, demonstrating a clear improvement (stronger correlation) over existing adaptive sharpness measures on multiple model types (diagonal nets, vision transformers, language models) and datasets (ImageNet, MNLI). The verification of reparameterization invariance is a particularly strong methodological check.",
+              "The theoretical analysis is sound, correctly identifying the limitations of prior work and clearly deriving the connection between the proposed geodesic sharpness and existing adaptive sharpness as a first-order approximation."
+            ],
+            "weaknesses": [
+              "The paper identifies that the sign of the correlation between sharpness and generalization varies across tasks, but does not provide a deep theoretical explanation for this phenomenon, leaving it as a limitation for future work rather than a fully explained result.",
+              "The computational practicality of the method for very large-scale models is not exhaustively analyzed; while complexity is discussed, a more detailed runtime comparison or scaling analysis would strengthen the case for broad applicability."
+            ],
+            "summary_comment": "This paper makes a strong methodological contribution by rigorously addressing a known problem (failure of sharpness measures for transformers) using tools from Riemannian geometry. The soundness of the mathematical framework and the convincing experimental results across multiple settings are exceptional. While the novelty is high and the significance is clear, the most compelling aspect is the methodological rigor and the robust evaluation that provides clear empirical evidence for the proposed approach's superiority. The identified weaknesses are not fatal to the contribution and are appropriately framed as directions for future work."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 3 (Practical)",
+          "review": {
+            "reviewer": "Reviewer C - Practicality Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 5
+            },
+            "strengths": [
+              "Significant practical contribution: clearly identifies why existing sharpness measures fail for transformers (GL(h) symmetries) and provides a principled, geometry-corrected solution that restores strong correlation with generalization.",
+              "Exceptional clarity: the paper is very well-written, with excellent figures and a clear narrative that makes the Riemannian geometry accessible and connects theory to practice effectively.",
+              "Strong and convincing empirical validation across diverse architectures (diagonal nets, vision transformers, language models) on real-world tasks (ImageNet, MNLI), showing consistent, strong correlations where previous methods fail or are weak."
+            ],
+            "weaknesses": [
+              "Computational cost: while argued to be manageable, the proposed method is more expensive than adaptive sharpness (e.g., requires solving Sylvester equations for one metric, Christoffel symbol calculations). The practical scalability to extremely large models needs more discussion.",
+              "Interpretation of the correlation sign: the observation that the sign of correlation between geodesic sharpness and generalization varies across tasks (sometimes negative, sometimes positive) is surprising and undermines a simple 'flatter is better' narrative, requiring further investigation and limiting immediate use for regularization."
+            ],
+            "summary_comment": "This is an excellent applied research paper. It tackles a real and acknowledged problem (poor correlation of sharpness with generalization in transformers) with a principled solution rooted in Riemannian geometry to correctly quotient out parameter symmetries. The theoretical development is sound and well-explained, and the empirical results are compelling, demonstrating strong correlations on practical models where previous measures fail. The clarity, significance, and practical impact are all very strong. The noted limitations (computational cost and variable correlation sign) are honestly discussed and point to valuable future work. This work meaningfully advances the field by providing a more accurate tool for understanding generalization in modern architectures."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

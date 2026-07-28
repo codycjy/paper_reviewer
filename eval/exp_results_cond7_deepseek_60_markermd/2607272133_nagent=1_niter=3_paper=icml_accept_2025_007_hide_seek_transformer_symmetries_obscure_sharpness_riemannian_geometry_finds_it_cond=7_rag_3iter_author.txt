@@ -1,0 +1,372 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 4,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 3
+      },
+      "strengths": [
+        "Proposes a novel, principled Riemannian geometric framework to define symmetry-invariant sharpness measures for neural networks.",
+        "Identifies and addresses a specific failure mode (GL(h) symmetries) of prior sharpness measures for transformers, providing a compelling motivation.",
+        "Demonstrates strong empirical correlation between the proposed geodesic sharpness and generalization on transformers for image and language tasks, where prior methods failed."
+      ],
+      "weaknesses": [
+        "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+        "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+          "severity": "major",
+          "evidence": "The authors correctly point to the successful empirical results on ViT-B/32 and BERT models as evidence of practical feasibility. However, the submission still contains Algorithm 1, which implements complex Riemannian corrections, Christoffel symbol calculations, and potential Sylvester equation solves. While the authors note the forward/backward propagation bottleneck, the additional complexity of the method remains substantial and its behavior on larger models (e.g., ViT-L, GPT-scale) is unexplored. The concern about practical scalability and robustness is not fully resolved by the evidence in the submission.",
+          "affected_claim": "The claim that geodesic sharpness is a practical, general solution for transformer symmetries.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers.",
+          "severity": "major",
+          "evidence": "The authors provide a thoughtful interpretation that the inconsistent sign reveals a nuanced relationship rather than a methodological flaw. While this perspective is scientifically interesting, it does not resolve the fundamental issue: the proposed measure shows positive correlation on MNLI (τ=0.28-0.38) but negative correlation on ImageNet (τ≈-0.7) and diagonal networks (τ≈-0.83 to -0.86). This inconsistency means that without prior knowledge of the task, one cannot interpret whether higher geodesic sharpness predicts better or worse generalization. For a method intended to predict generalization, this unpredictable relationship severely limits its practical utility, regardless of the theoretical explanation.",
+          "affected_claim": "The central claim that correcting for transformer symmetries via Riemannian geometry reveals a consistent correlation between sharpness and generalization.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The method's soundness remains questionable due to implementation complexity and the fundamental inconsistency in correlation sign. While the authors provide evidence of working implementations on specific models, the general robustness and scalability are not fully demonstrated. Most critically, the unpredictable relationship between the proposed measure and generalization across different tasks undermines the claim that it reliably predicts generalization for transformers."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The application of Riemannian quotient manifold geometry to address GL(h) symmetries in transformers remains novel and represents a significant theoretical contribution."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The practical significance is limited by the inconsistent correlation sign across tasks. Without understanding when and why the relationship flips from positive to negative, the method cannot be reliably used for generalization prediction or regularization in practice, despite its theoretical elegance."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation demonstrates successful application to specific models but does not adequately address the core issue of inconsistent correlation signs across tasks. The results show the method works differently on different problems, which undermines its utility as a general predictive tool for transformers."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains clearly written and the concepts are adequately explained for assessment, despite the technical complexity of the subject matter."
+        }
+      },
+      "summary_comment": "The authors' rebuttal provides valuable context and interpretation of their results, particularly regarding the inconsistent correlation sign. However, the fundamental issues remain unresolved: 1) The method introduces substantial complexity whose scalability to larger models is unproven, and 2) The unpredictable sign of the correlation between geodesic sharpness and generalization (positive for MNLI, negative for ImageNet and diagonal networks) severely limits the practical utility of the proposed measure for generalization prediction. While the theoretical framework is novel and the work identifies an important problem, these major weaknesses prevent the paper from meeting top-tier conference standards. The work would be significantly strengthened by either resolving the sign inconsistency or providing a predictive framework for when positive versus negative correlation should be expected."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong topic fit: ICML covers optimization, theory of machine learning, and geometric methods in ML, all central to this paper",
+        "Methodological contribution aligns with ICML's focus on theoretical foundations and optimization techniques",
+        "The paper addresses a fundamental problem in deep learning theory (generalization prediction) that is core to ICML's scope",
+        "Rigorous mathematical treatment using Riemannian geometry fits ICML's appreciation for theoretical depth"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about implementation complexity and scalability may be problematic for ICML's practical standards",
+        "Inconsistent correlation signs across tasks undermines the practical utility that ICML often values",
+        "The computational overhead of Riemannian corrections might be seen as excessive for a practical conference"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent topic fit: NeurIPS strongly emphasizes deep learning theory, optimization, and geometric methods",
+        "The transformer focus aligns perfectly with NeurIPS' current interests in large-scale models",
+        "The paper bridges theory (Riemannian geometry) and practice (transformer generalization), which NeurIPS values",
+        "Strong empirical results on both vision and language tasks match NeurIPS' broad application focus"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about inconsistent correlation signs could be problematic for NeurIPS' standards",
+        "The computational complexity might be seen as limiting practical adoption",
+        "While novel, the approach may be considered too specialized for the broad NeurIPS audience"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect topic fit: ICLR specializes in deep learning theory and specifically covers representation learning, optimization, and geometric methods",
+        "The transformer focus is extremely relevant to ICLR's core audience",
+        "Riemannian geometry approach aligns with ICLR's appreciation for mathematically sophisticated deep learning methods",
+        "The paper addresses a fundamental limitation in current sharpness measures for modern architectures",
+        "Strong empirical validation on both vision and language transformers matches ICLR's focus"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about implementation complexity remain relevant",
+        "The inconsistent correlation sign across tasks might be seen as a theoretical limitation",
+        "The method's computational requirements could be seen as impractical for some ICLR reviewers"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a novel, principled Riemannian geometric framework to define symmetry-invariant sharpness measures for neural networks.",
+              "Identifies and addresses a specific failure mode (GL(h) symmetries) of prior sharpness measures for transformers, providing a compelling motivation.",
+              "Demonstrates strong empirical correlation between the proposed geodesic sharpness and generalization on transformers for image and language tasks, where prior methods failed."
+            ],
+            "weaknesses": [
+              "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+              "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+                "severity": "major",
+                "evidence": "The paper acknowledges the need for approximations (Eq. 5), numeric relaxation for rank assumptions (Assumption 5.1, ϵ relaxation), solving Sylvester equations, and Christoffel symbol calculations. Algorithm 1 is complex and the cost comparison in Section C.3 suggests increased overhead. The heavy reliance on approximations and numeric stabilization introduces doubt about the robustness and scalability of the proposed method.",
+                "affected_claim": "The claim that geodesic sharpness is a practical, general solution for transformer symmetries.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers.",
+                "severity": "major",
+                "evidence": "The paper reports negative correlation for diagonal nets and ImageNet ViTs but a positive correlation for MNLI BERT models (Figs. 3, 4, 5; Table 1). The discussion in Section 7 (Remarks) notes this variability and states it 'limits the utility of geodesic sharpness, e.g. for regularizing transformer training.' This inconsistency contradicts the common hypothesis that flatness aids generalization and weakens the claim of discovering a reliable, predictive relationship specific to transformers.",
+                "affected_claim": "The central claim that correcting for transformer symmetries via Riemannian geometry reveals a consistent correlation between sharpness and generalization.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "While the core mathematical formalism is principled, the practical implementation relies on significant approximations (e.g., truncated geodesics, rank relaxations, numeric solves) whose impact on the final measure is not thoroughly analyzed. The inconsistency in the sign of the correlation with generalization (positive vs. negative across tasks) raises fundamental questions about whether the central claim—that this corrected sharpness reliably predicts generalization for transformers—is technically supported by the evidence. The empirical validation is not fully convincing due to this inconsistency."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of Riemannian quotient manifold geometry to systematically remove high-dimensional (GL(h)) neural network symmetries for defining sharpness is novel. While prior work (e.g., Rangamani et al. 2019) used Riemannian geometry for scaling symmetries, the extension to the attention mechanism's symmetries and the proposal of geodesic-ball-based sharpness constitute a distinct contribution."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The practical significance for top-tier ML conferences is limited. Although the work addresses an important open problem, the inconsistent correlation sign and the complexity of the proposed solution mean its utility as a predictive or regularization tool is currently unclear. The findings do not yet represent a clear, meaningful advance in understanding or controlling generalization in transformers."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments are limited in scope (primarily fine-tuned models, not training from scratch) and scale. The critical inconsistency in the correlation sign across tasks is a major weakness that is not adequately explained or controlled for. Comparisons to relevant baselines like relative sharpness (Fig. 6) are shown but not deeply analyzed. The evaluation does not convincingly demonstrate that geodesic sharpness is a robust, reliable measure across diverse transformer tasks and training regimes."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-structured and the core ideas are explained, though the heavy reliance on Riemannian geometry and the technical details in the appendices make it challenging. The concepts of total/quotient space, horizontal lifts, and geodesic sharpness are presented sufficiently clearly to permit assessment."
+              }
+            },
+            "summary_comment": "This paper proposes a theoretically interesting approach to defining symmetry-invariant sharpness for neural networks using Riemannian quotient manifolds, specifically targeting the GL(h) symmetries of transformers. The novelty is strong, and the motivation—addressing the failure of prior sharpness measures for transformers—is compelling. However, major weaknesses prevent acceptance at a top-tier conference. The practical implementation is complex and relies on approximations whose robustness is questionable. Most critically, the empirical results show an inconsistent relationship (varying positive/negative correlation) between the proposed geodesic sharpness and generalization across tasks. This inconsistency fundamentally undermines the paper's central claim of restoring a reliable predictive link for transformers and limits the significance of the contribution. The work is promising but requires a more coherent empirical story and a deeper investigation into the causes of the correlation sign variability."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a novel, principled Riemannian geometric framework to define symmetry-invariant sharpness measures for neural networks.",
+              "Identifies and addresses a specific failure mode (GL(h) symmetries) of prior sharpness measures for transformers, providing a compelling motivation.",
+              "Demonstrates strong empirical correlation between the proposed geodesic sharpness and generalization on transformers for image and language tasks, where prior methods failed."
+            ],
+            "weaknesses": [
+              "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+              "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+                "severity": "major",
+                "evidence": "The author's response correctly cites the paper's own complexity analysis (Section C.3) and notes that the ⟨·,·⟩mix metric avoids Sylvester solves. However, the submitted paper still requires approximations (Eq. 5), numeric stabilizations (Section H.2), Christoffel symbol calculations (Eq. 11-12), and a complex optimization algorithm (Algorithm 1). The rebuttal does not provide new evidence to refute the concern that this complexity affects robustness and scalability; it merely restates existing claims about practicality. The concern remains based on the submitted material.",
+                "affected_claim": "The claim that geodesic sharpness is a practical, general solution for transformer symmetries.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers.",
+                "severity": "major",
+                "evidence": "The author acknowledges the inconsistency and argues it reveals a more nuanced relationship. While this is an interesting perspective, it does not resolve the core weakness: the unpredictable sign (positive on MNLI, negative on ImageNet and diagonal nets) fundamentally limits the utility and interpretability of the proposed measure as a reliable predictor of generalization for transformers. The rebuttal does not provide new analysis or evidence from the submitted paper to explain or mitigate this inconsistency. It presents a post-hoc interpretation but does not alter the fact that the empirical results fail to establish a consistent, predictable relationship—this remains a major shortcoming.",
+                "affected_claim": "The central claim that correcting for transformer symmetries via Riemannian geometry reveals a consistent correlation between sharpness and generalization.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal does not resolve the core issues. The practical soundness of the method remains questionable due to its reliance on multiple approximations and numeric stabilizations, and the fundamental inconsistency in the correlation sign casts serious doubt on whether the central claim—that this corrected sharpness reliably predicts generalization for transformers—is technically supported. The author's response acknowledges the sign inconsistency but offers no new evidence or clarification from the submitted paper to address it."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of Riemannian quotient manifold geometry to systematically remove high-dimensional (GL(h)) neural network symmetries for defining sharpness remains novel. The rebuttal does not change this assessment."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The practical significance for top-tier ML conferences is still limited. The inconsistency in the correlation sign means the proposed measure cannot be reliably used to predict or regularize generalization without first understanding the task-dependent factors that determine the sign. This ambiguity severely limits its immediate utility and broader impact, despite the theoretical advance."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation in the submitted paper still shows inconsistent results across tasks. The rebuttal provides a speculative interpretation but no new experiments or analyses to substantiate a systematic understanding of the inconsistency. The evaluation therefore does not convincingly demonstrate that geodesic sharpness is a robust, reliable predictor across diverse transformer settings."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The presentation remains sufficiently clear for assessment. The rebuttal does not change this evaluation."
+              }
+            },
+            "summary_comment": "The authors' rebuttal acknowledges the key weaknesses but does not resolve them with new evidence or clarifications from the submitted paper. While they provide context for the computational complexity and offer an interesting interpretation of the inconsistent correlation sign, the fundamental issues remain: 1) the proposed method is complex and its robustness at scale is unproven, and 2) the unpredictable sign of the correlation between geodesic sharpness and generalization across tasks severely undermines its reliability and utility as a predictive measure. The theoretical novelty and motivation are strong, but these major weaknesses prevent the paper from meeting the standards of a top-tier conference. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Implementation complexity and scalability concerns (approximations, Sylvester equations, Christoffel symbols)\",\n        \"Inconsistent correlation sign between sharpness and generalization across tasks\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Implementation complexity and scalability concerns\",\n          \"location\": \"Section C.3 (Complexity)\",\n          \"explanation\": \"The paper acknowledges the additional computational overhead and provides an analysis showing that while geodesic sharpness is more complex than adaptive sharpness, the bottleneck remains the forward and backward propagations rather than the Riemannian corrections. The Christoffel symbol computations are shown to require only efficient matrix multiplications, and Sylvester equation solves are cubic in h (typically small, e.g., h=64).\"\n        },\n        {\n          \"concern\": \"Practical implementation robustness\",\n          \"location\": \"Section H.2 (Relaxation) and Figure 11\",\n          \"explanation\": \"The paper demonstrates empirical robustness to the relaxation parameter ϵ used for numerical stability, showing that results remain consistent across a range of ϵ values. This provides evidence that the method is not overly sensitive to numerical approximations.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Detailed scalability analysis\",\n          \"proposed_change\": \"Include more detailed runtime comparisons between adaptive sharpness and geodesic sharpness on the same hardware, and analyze how computational cost scales with model size and number of attention heads.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Inconsistent correlation sign explanation\",\n          \"proposed_change\": \"Add more extensive discussion of potential factors influencing correlation sign (task complexity, data distribution, optimization dynamics) and conduct additional experiments to investigate this phenomenon more systematically.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"Thank you for the thoughtful review. We appreciate the recognition of our theoretical novelty and motivation. We address the concerns about implementation complexity and correlation sign inconsistency below.\\n\\nRegarding implementation complexity: While geodesic sharpness does introduce additional computational elements compared to adaptive sharpness, our analysis in Section C.3 shows that the bottleneck remains the forward/backward propagations, not the Riemannian corrections. The Christoffel symbol computations require only efficient matrix multiplications, and for the ⟨·,·⟩mix metric (which performs comparably to ⟨·,·⟩inv), the horizontal projection has an explicit form without requiring Sylvester equation solves. Our ablation studies in Appendix G show that the most impactful component is the Riemannian norm, which is computationally lightweight. The method has proven practical on large transformers (ViT-B/32 on ImageNet and BERT on MNLI) with reasonable computational overhead.\\n\\nRegarding the inconsistent correlation sign: We acknowledge this as an important and surprising finding that merits further investigation. However, we believe this actually strengthens rather than weakens our contribution. The key insight is that our method reveals a consistent correlation where previous methods found none (MNLI) or weaker correlations (ImageNet). The fact that this correlation can be positive or negative depending on the task suggests that the relationship between sharpness and generalization in transformers is more nuanced than previously understood, potentially involving complex interactions between data distribution, optimization dynamics, and architecture. Our work provides the first tool that can detect these relationships consistently within tasks, opening new research directions. We discuss this limitation honestly in Section 7 and propose future work to understand the underlying factors influencing the correlation sign.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 3
+            },
+            "strengths": [
+              "Proposes a novel, principled Riemannian geometric framework to define symmetry-invariant sharpness measures for neural networks.",
+              "Identifies and addresses a specific failure mode (GL(h) symmetries) of prior sharpness measures for transformers, providing a compelling motivation.",
+              "Demonstrates strong empirical correlation between the proposed geodesic sharpness and generalization on transformers for image and language tasks, where prior methods failed."
+            ],
+            "weaknesses": [
+              "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+              "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The practical implementation, approximations, and algorithm introduce significant complexity, and it is unclear how robust or computationally feasible the approach is at scale.",
+                "severity": "major",
+                "evidence": "The authors correctly point to the successful empirical results on ViT-B/32 and BERT models as evidence of practical feasibility. However, the submission still contains Algorithm 1, which implements complex Riemannian corrections, Christoffel symbol calculations, and potential Sylvester equation solves. While the authors note the forward/backward propagation bottleneck, the additional complexity of the method remains substantial and its behavior on larger models (e.g., ViT-L, GPT-scale) is unexplored. The concern about practical scalability and robustness is not fully resolved by the evidence in the submission.",
+                "affected_claim": "The claim that geodesic sharpness is a practical, general solution for transformer symmetries.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The sign of the correlation between sharpness and generalization is inconsistent (sometimes negative), which undermines the foundational claim of establishing a reliable predictive relationship for transformers.",
+                "severity": "major",
+                "evidence": "The authors provide a thoughtful interpretation that the inconsistent sign reveals a nuanced relationship rather than a methodological flaw. While this perspective is scientifically interesting, it does not resolve the fundamental issue: the proposed measure shows positive correlation on MNLI (τ=0.28-0.38) but negative correlation on ImageNet (τ≈-0.7) and diagonal networks (τ≈-0.83 to -0.86). This inconsistency means that without prior knowledge of the task, one cannot interpret whether higher geodesic sharpness predicts better or worse generalization. For a method intended to predict generalization, this unpredictable relationship severely limits its practical utility, regardless of the theoretical explanation.",
+                "affected_claim": "The central claim that correcting for transformer symmetries via Riemannian geometry reveals a consistent correlation between sharpness and generalization.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The method's soundness remains questionable due to implementation complexity and the fundamental inconsistency in correlation sign. While the authors provide evidence of working implementations on specific models, the general robustness and scalability are not fully demonstrated. Most critically, the unpredictable relationship between the proposed measure and generalization across different tasks undermines the claim that it reliably predicts generalization for transformers."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of Riemannian quotient manifold geometry to address GL(h) symmetries in transformers remains novel and represents a significant theoretical contribution."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The practical significance is limited by the inconsistent correlation sign across tasks. Without understanding when and why the relationship flips from positive to negative, the method cannot be reliably used for generalization prediction or regularization in practice, despite its theoretical elegance."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation demonstrates successful application to specific models but does not adequately address the core issue of inconsistent correlation signs across tasks. The results show the method works differently on different problems, which undermines its utility as a general predictive tool for transformers."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and the concepts are adequately explained for assessment, despite the technical complexity of the subject matter."
+              }
+            },
+            "summary_comment": "The authors' rebuttal provides valuable context and interpretation of their results, particularly regarding the inconsistent correlation sign. However, the fundamental issues remain unresolved: 1) The method introduces substantial complexity whose scalability to larger models is unproven, and 2) The unpredictable sign of the correlation between geodesic sharpness and generalization (positive for MNLI, negative for ImageNet and diagonal networks) severely limits the practical utility of the proposed measure for generalization prediction. While the theoretical framework is novel and the work identifies an important problem, these major weaknesses prevent the paper from meeting top-tier conference standards. The work would be significantly strengthened by either resolving the sign inconsistency or providing a predictive framework for when positive versus negative correlation should be expected."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Unresolved concerns about practical implementation complexity and scalability\",\n        \"Unresolved concerns about inconsistent correlation sign limiting utility\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Practical implementation robustness on demonstrated scales\",\n          \"location\": \"Figures 4, 5, and Table 1 in Section 5.3 and the supplemental table\",\n          \"explanation\": \"The paper provides successful empirical results on real-world transformer architectures (ViT-B/32 on ImageNet, BERT on MNLI), demonstrating that the method works in practice at non-trivial scales. The reported correlations (τ ≈ -0.7 on ImageNet and τ ≈ 0.3-0.4 on MNLI) are strong and were obtained using the described implementation.\"\n        },\n        {\n          \"concern\": \"Framework generalizes to simpler symmetries as a special case\",\n          \"location\": \"Section F (Appendix)\",\n          \"explanation\": \"The paper analytically shows that our geodesic sharpness reduces exactly to adaptive sharpness when considering only GL(1) symmetries and ignoring higher-order curvature terms (first-order approximation). This demonstrates that our more general framework naturally contains prior successful methods as special cases, validating the underlying mathematical approach.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clearer positioning regarding correlation sign interpretability\",\n          \"proposed_change\": \"In Section 7 (Remarks), we will clarify that the key result is not that geodesic sharpness always positively correlates with generalization, but that it reveals a consistent (signed) correlation where previous measures found none or weak correlation. We will explicitly state that understanding the direction of this correlation requires further investigation into task-specific factors.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"More explicit discussion of computational trade-offs\",\n          \"proposed_change\": \"In Section C.3 and the main text discussion of limitations, we will more explicitly compare the computational overhead of our method relative to adaptive sharpness, and discuss scenarios where the additional complexity is justified (i.e., when GL(h) symmetries are significant).\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"Thank you for the continued engagement. We respectfully disagree that our previous response failed to address the core issues, and we provide further clarification based on evidence already present in the submission.\\n\\nFirst, regarding complexity and scalability: The paper demonstrates that our method works on practical transformer architectures (Sections 5.3.1-5.3.2). The computational analysis in Section C.3 shows the bottleneck remains forward/backward propagation, not our Riemannian corrections. Crucially, our approach is not presented as a drop-in replacement for all scenarios, but specifically as a solution for architectures with GL(h) symmetries where simpler methods fail. For such cases, the added complexity is justified by the empirical results showing strong correlation where adaptive sharpness found none (MNLI: τ=0.06 vs. τ=0.28-0.38) or weaker correlation (ImageNet: τ=-0.41 vs. τ=-0.7).\\n\\nSecond, regarding the inconsistent correlation sign: We argue this finding is scientifically valuable rather than a weakness. The central claim of our paper is that properly accounting for transformer symmetries reveals a consistent correlation where previously there was none or weak correlation. The sign of this revealed correlation is task-dependent, suggesting deeper interactions between geometry, data, and optimization. This nuance contrasts with the oversimplified \\\"flatness always helps\\\" narrative. Our results on transformers show: 1) For a given task (MNLI or ImageNet), the correlation is consistent across models; 2) Our method reveals this correlation where adaptive sharpness could not (MNLI) or revealed a weaker one (ImageNet). This constitutes a significant advance in understanding sharpness-generalization relationships in transformers. The inconsistency across tasks does not invalidate the method but points to important future research directions, which we explicitly discuss in Section 7.\\n\\nOur work provides a principled geometric framework that successfully addresses the specific failure mode of prior methods on transformers, as evidenced by our empirical results. We believe this represents a meaningful contribution to the community's understanding of generalization in modern architectures.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_123e74a6905a",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/icml_accept_2025_007_hide_seek_transformer_symmetries_obscure_sharpness_riemannian_geometry_finds_it.md",
+    "target_paper_summary": {
+      "paper_id": "paper_123e74a6905a",
+      "title": "Hide & Seek: Transformer Symmetries Obscure Sharpness & Riemannian Geometry Finds It",
+      "abstract": "The concept of sharpness has been successfully applied to traditional architectures like MLPs and CNNs to predict their generalization. For transformers, however, recent work reported weak correlation between flatness and generalization. We argue that existing sharpness measures fail for transformers, because they have much richer symmetries in their attention mechanism that induce directions in parameter space along which the network or its loss remain identical. We posit that sharpness must account fully for these symmetries, and thus we redefine it on a quotient manifold that results from quotienting out the transformer symmetries, thereby removing their ambiguities. Leveraging tools from Riemannian geometry, we propose a fully general notion of sharpness in terms of a geodesic ball on the symmetrycorrected quotient manifold. In practice, we need to approximate the geodesics. Doing so up to first order yields existing adaptive sharpness measures, and we demonstrate that including higher-order terms is crucial to recover correlation with generalization. We present results on diagonal nets with synthetic data and show that our geodesic sharpness reveals strong correlation with generalization for real-world transformers on both text and image classification tasks.",
+      "topic": "",
+      "claims": [
+        "we propose a fully general notion of sharpness in terms of a geodesic ball on the symmetrycorrected quotient manifold.",
+        "we demonstrate that including higher-order terms is crucial to recover correlation with generalization.",
+        "We present results on diagonal nets with synthetic data and show that our geodesic sharpness reveals strong correlation with generalization for real-world transformers on both text and image classification tasks."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 8,
+      "num_removed_post_cutoff": 7,
+      "num_removed_undated": 1,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 8,
+    "num_removed_post_cutoff": 7,
+    "num_removed_undated": 1,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The proposed VeSX framework effectively addresses the limitations of existing methods in web automation by introducing novel components like subgoal-guided verification and hierarchical self-correction.",
+        "The empirical results show a significant improvement in task success rates across various scenarios, demonstrating the effectiveness of the framework.",
+        "The ablation studies provide strong evidence for the necessity and impact of each component within the VeSX framework, thereby validating the authors' claims."
+      ],
+      "weaknesses": [
+        "The reliance on the quality of verification and the accuracy of reflection and replanning mechanisms raises questions about the overall robustness of the framework in increasingly complex scenarios.",
+        "The paper admits to a scarcity of data in the web automation domain, which could limit the broader applicability of the VeSX framework outside of the specific contexts tested."
+      ],
+      "summary_comment": "This paper presents a comprehensive framework that enhances the automation capabilities of LLMs in web environments through innovative strategies. The implementation of subgoal-guided verification and self-correction mechanisms showcases its potential to advance the field significantly. However, concerns regarding data limitations and the reliability of the component mechanisms warrant attention. Nonetheless, the results are promising, suggesting that the framework could inspire future work in similar applications."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper addresses general machine learning problems by focusing on web automation tasks, which aligns with ICML's interest in application-driven machine learning.",
+        "The introduction of novel components such as subgoal-guided verification and hierarchical self-correction demonstrates a theoretical contribution that matches ICML's emphasis on innovation in machine learning systems.",
+        "The empirical evaluation on the WebArena benchmark showcases the application of machine learning methods to real-world tasks, fitting well with ICML's focus on relevant application areas."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper shows empirical results, the novelty level was rated only moderately by the reviewer, which may not meet ICML's expectations for groundbreaking contributions.",
+        "The concerns raised about the reliance on data scarcity and the accuracy of the framework may suggest limitations in robustness that are critical for ICML's high standards."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary research, and the VeSX framework's focus on LLMs and web automation aligns well with the conference's encouragement of innovative machine learning applications.",
+        "The framework integrates several advanced machine learning concepts, particularly in reinforcement learning and decision-making, which are core areas of interest for NeurIPS.",
+        "The results showing significant improvements in task success rates provide empirical evidence that could captivate the NeurIPS audience, known for its appreciation of high-impact findings."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns regarding the framework's reliance on accurate verification and limited data could weaken the case for its applicability, potentially deterring a NeurIPS audience that favors robust, generalizable findings.",
+        "The novelty score of 4 indicates that while there are new contributions, they may not be unique enough to stand out in a NeurIPS space that values highly original and pioneering research."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The integration of deep learning concepts through LLM workflows fits ICLR's focus on advancements in representation learning and large-scale models.",
+        "The frameworks' methodological advancements regarding error-correction and verification align with ICLR's interest in rigorous methodologies within deep learning research.",
+        "The empirical evaluation and ablation studies conducted draw upon techniques that ICLR values in assessing model performance and applicability."
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer's weak novelty score suggests a less-than-optimal level of innovation, which may not align with ICLR's expectations for submissions that challenge existing paradigms.",
+        "The paper's emphasis on web automation, while relevant, may be considered less foundational in the core areas typically highlighted at ICLR, which leans more towards pure deep learning innovations."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_9890297814ca",
+    "paper_id": "paper_9bdd8c08e471",
+    "target_paper_summary": {
+      "paper_id": "paper_9bdd8c08e471",
+      "title": "Vesx: A Framework Featured By Verification, Self-Correction And In-Context Learning For Web Automation Tasks",
+      "abstract": "1 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100 101 102 103 104 105 106 107\n\n: the i-th subtask : the j-th action to address the i-th subtask : the i-th subgoal : verification for the i-th subgoal\n(a) Only Execution Workflow Query: Tell me the status of my latest order and when will it arrive.\n\n(b) Planning-Execution Workflow\n(with human guidance)\nDecompose into a series of subtasks\n... ...\n\n: find_order\n(\"my latest order\")\n: get_information\n(\"its status and arrival time\") : **Answer**\nplanning:\n+ +\nclick [status] **click [view details]**\n\n... ... ...\n\nGenerate actions one by one predict action and execute:\n... ...\n\npredict action and execute:\n... ...\n\nclick [my account] answer [Delivery. Tomorrow]\n\nclick [Sales]\n\nclick [my account] finish_subtask **answer [Delivery. Tomorrow]**\n\n(c) VeSX Workflow (Ours):\nDecompose into a series of subtask and subgoal pairs\n: find the **latest order** ... ...\n\nplanning:\n: Answer : check_url\n(\"my_account/orders\")\n: check_webpage\n\n(\"The order is latest\")\nclick [my_account] scroll [down] click [orders] answer [Delivery. Tomorrow] click [sorted by] **click [order_123]**\n... ... ...\n\n: find my order list predict action, execute and verify:\npass fail pass click [time]\n\nfinish_subtask **finish_subtask**\n\nfail selfcorrectionselfcorrection\nVeSX introduces two significant modules to the planning-execution workflow for web automation tasks, as illustrated in Figure 1(c). The first involves adopting **subgoal-guided verification** to ascertain the successful completion of subtasks. VeSX generates subgoals in the planning phase and conducts verification to check whether the execution result satisfies the subgoal once execution is finished. We devised two modes for verification: self-verification which makes LLMs do verification by themselves, and external verification which calls for external functions to conduct verification. Verification ensures the completion of the subtasks and avoids the issue of subsequent subtasks becoming infeasible due to errors in the execution of previous subtasks. The second improvement is **hierarchical self-correction**, which aims to self-correct both execution and planning. When verification fails, VeSX first tries to identify and correct errors in the current subtask's execution trajectory, a process referred to as \"reflection\". If reflection is unsuccessful, the",
+      "topic": "",
+      "claims": []
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "web automation task frameworks",
+          "rationale": "The target paper focuses on a framework for web automation tasks, so papers that address similar tasks are relevant."
+        },
+        {
+          "group": "same_method",
+          "query": "subgoal-guided verification in planning-execution workflows",
+          "rationale": "The target paper employs a specific method of subgoal-guided verification, so similar methodologies are pertinent."
+        },
+        {
+          "group": "same_constraints",
+          "query": "verification and self-correction in web automation",
+          "rationale": "Papers that share assumptions about the constraints of verification and self-correction in web automation are relevant."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "benchmarks for web automation task performance",
+          "rationale": "Papers that establish benchmarks or datasets for evaluating web automation tasks are crucial for comparison."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "recent advancements in web automation task frameworks",
+          "rationale": "Prior works presenting new frameworks for web automation may challenge the novelty claim of the target paper."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "limitations of verification methods in web automation",
+          "rationale": "Papers that highlight limitations or provide counterevidence regarding verification methods in web automation are significant."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: The read operation timed out",
+          "arXiv query failed for benchmark_baseline: The read operation timed out",
+          "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+        ]
+      }
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: The read operation timed out",
+      "arXiv query failed for benchmark_baseline: The read operation timed out",
+      "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: The read operation timed out",
+    "arXiv query failed for benchmark_baseline: The read operation timed out",
+    "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Presents the first formal framework for data attribution in online RL, addressing a significant gap created by the circular dependency between data collection and model updates.",
+        "Introduces a practical and iterative algorithm (IIF) that leverages attribution insights to achieve substantial improvements in sample efficiency and final performance across diverse RL benchmarks, including RLHF for LLMs.",
+        "Offers novel and interpretable insights into RL training dynamics, such as characterizing harmful records by inaccurate advantage estimates and revealing phase transitions in behavior formation.",
+        "Demonstrates impressive breadth of application, from classic control and locomotion tasks to RLHF for large language model detoxification, validating the framework's general utility."
+      ],
+      "weaknesses": [
+        "The local attribution framework, while elegant, lacks a clear counterfactual/causal interpretation of the computed influences, which is acknowledged by the authors as a fundamental challenge in the online RL setting.",
+        "The adaptation of influence estimation (TracIn) uses SGD as a proxy for Adam optimizers, which is a pragmatic but theoretically imperfect choice for modern RL/LLM training.",
+        "The computational and storage cost savings from the proposed 'ghost dot product' and checkpointing choices are presented but could benefit from a more detailed ablation or analysis to quantify the trade-offs precisely."
+      ],
+      "summary_comment": "This paper makes a bold and highly novel contribution by pioneering data attribution for online RL, a long-overlooked area. The core idea—developing a local attribution framework to handle the unique data-model circular dependency—is both creative and impactful. The work excels in novelty and significance, successfully opening a new research direction. The proposed IIF algorithm delivers impressive empirical gains in sample efficiency and performance, demonstrating the framework's practical value. While there are some methodological approximations (e.g., using SGD for influence with Adam) and the inherent limitation of non-counterfactual interpretation, these are acceptable trade-offs given the paper's forward-thinking contribution. The potential to inspire future work on interpretable and efficient RL is substantial."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a methodologically sound local data attribution framework specifically tailored for the challenging online RL setting, addressing the circular data-model dependency that standard attribution methods cannot handle.",
+        "The experimental evaluation is comprehensive and convincing, spanning multiple RL environments (classic control, navigation, locomotion) and extending to RLHF for LLMs. The experiments are carefully designed with statistical significance, proper baselines, and runtime analysis.",
+        "The paper provides valuable insights (diagnosis of learning, phase transition analysis, targeted interventions) and demonstrates a practical algorithmic improvement (IIF) that yields consistent gains in sample efficiency, runtime, and final performance.",
+        "The clarity of exposition is strong, with good organization, clear definitions, and figures that support the narrative.",
+        "The authors acknowledge limitations (optimizer assumptions, extension to other algorithms, lack of counterfactual interpretation) and provide a detailed description of experimental setups for reproducibility."
+      ],
+      "weaknesses": [
+        "The core concept of using gradient similarity for attribution in an online setting, while elegantly adapted, is not fundamentally new. The main novelty lies in the careful adaptation and application to online RL rather than a completely new attribution technique.",
+        "Some design choices, such as using SGD as a proxy for Adam and the 'ghost dot product' simplification for computational efficiency, while justified empirically, could benefit from more theoretical justification or a robustness analysis concerning their potential impact on attribution accuracy."
+      ],
+      "summary_comment": "This is a strong and rigorous paper. While the underlying attribution idea is not entirely novel, the authors make a significant and well-executed contribution by adapting it to the non-stationary, online RL setting—a problem that violates assumptions of previous work. The framework is methodologically sound, and the evaluation is exceptionally thorough, providing convincing evidence for its effectiveness across a diverse set of tasks, from traditional RL to RLHF. The insights gained from the framework are valuable, and the proposed IIF algorithm demonstrates clear practical benefits (improved sample efficiency, reduced runtime). The paper is clearly written and the experimental protocol is robust. Despite moderate novelty, the strong soundness, excellent evaluation, and clear practical significance justify acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Presents a novel and practically motivated framework for data attribution in online RL, addressing a clear gap in interpretability and efficiency.",
+        "Demonstrates strong and consistent empirical improvements across varied RL benchmarks (control, navigation, locomotion) and LLM RLHF, showing real-world relevance.",
+        "Provides detailed, actionable applications (diagnosis, temporal analysis, targeted filtering) that offer fresh insights and lead to a useful algorithm (IIF).",
+        "Extensive evaluation is well-designed, with fair baselines and comprehensive metrics for sample efficiency, runtime, and final performance."
+      ],
+      "weaknesses": [
+        "The framework's reliance on a local, per-round attribution inherently limits its ability to provide a complete counterfactual interpretation of a record's full impact across training (acknowledged in Sec. 7).",
+        "While efficient approximations are used, the computational overhead of gradient-based attribution is non-zero, and its scaling to extremely large-scale, high-dimensional policy networks could be a practical concern."
+      ],
+      "summary_comment": "This paper makes a significant practical contribution by successfully adapting data attribution to the challenging online RL setting. The proposed 'local' framework is well-motivated, clearly described, and convincively validated. The derived Iterative Influence-Based Filtering (IIF) algorithm delivers tangible benefits in sample efficiency and training speed across diverse tasks, including RLHF—a high-impact application. The work is empirically solid, clearly written, and opens a valuable new direction for interpretable and efficient RL."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's reinforcement learning focus - paper contributes novel methodology for online RL interpretability and efficiency",
+        "Excellent empirical evaluation across multiple RL benchmarks (classic control, navigation, locomotion) which matches ICML's breadth of ML applications",
+        "Methodological rigor with comprehensive experiments and statistical analysis fits ICML's standards",
+        "Novel contribution to trustworthy ML through interpretability framework for RL systems"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus on online RL with circular data-model dependency is somewhat specialized compared to ICML's broader ML scope",
+        "While theoretically sound, the attribution framework lacks strong theoretical foundations that ICML often values",
+        "Reviewer B noted moderate novelty score (3/5) suggesting the core attribution concept isn't fundamentally new"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect alignment with NeurIPS' focus on reinforcement learning and interpretability research",
+        "Strong match with NeurIPS' interest in novel methodologies for understanding deep learning systems",
+        "Excellent empirical results across diverse RL benchmarks including RLHF for LLMs - matches NeurIPS' interdisciplinary nature",
+        "High novelty score from reviewers (4-5/5) fits NeurIPS' emphasis on innovative research directions",
+        "Practical significance for real-world RL applications aligns well with NeurIPS' applied research focus"
+      ],
+      "why_it_does_not_fit": [
+        "The computational overhead of gradient-based attribution might be concerning for very large-scale applications",
+        "Lack of counterfactual interpretation could be seen as a limitation for a theory-focused venue"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong relevance to ICLR's deep learning focus, particularly reinforcement learning and representation learning",
+        "Application to RLHF for large language models aligns with ICLR's growing interest in LLM research",
+        "Methodological contributions to interpretability of deep RL systems",
+        "Good empirical results across multiple environments demonstrate practical utility"
+      ],
+      "why_it_does_not_fit": [
+        "The paper focuses more on RL methodology than core deep learning architectures or theory",
+        "ICLR typically prefers more theoretically grounded work - this paper is more empirically focused",
+        "The local attribution framework lacks the strong theoretical foundations that ICLR often emphasizes",
+        "Reviewer concerns about methodological approximations (SGD proxy for Adam) might be more critical at ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

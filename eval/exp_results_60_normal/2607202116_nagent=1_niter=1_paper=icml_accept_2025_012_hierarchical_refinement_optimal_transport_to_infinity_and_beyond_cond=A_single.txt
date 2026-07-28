@@ -1,0 +1,82 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of hierarchically refining low-rank OT problems to infer a full-rank Monge map is highly novel and addresses a critical scalability bottleneck in Optimal Transport.",
+        "The theoretical foundation, specifically Proposition 3.1 which states that optimal low-rank factors co-cluster points with their Monge map images, is a creative and insightful invariant that underpins the hierarchy.",
+        "The empirical evaluation demonstrates impressive scalability (over a million points) and competitive primal costs compared to existing methods, making full-rank OT practical for previously intractable datasets.",
+        "The log-linear time and linear space complexity are a significant advancement for OT algorithms, pushing the boundaries of what's feasible in the field."
+      ],
+      "weaknesses": [
+        "The explicit assumption of strictly r-Monge separability (Definition B.2) and the reliance on an 'optimal black-box low-rank solver' for theoretical guarantees might be strong in practice, given the non-convexity of low-rank problems and the challenge of proving this separability for real datasets. This could affect the practical optimality claims.",
+        "The comparison to MOP, while valid, uses default partitions for MOP (GMRA R package). Discussing how a more carefully chosen or optimized multiscale partition for MOP might perform would strengthen the comparative analysis, even if the paper's main point is to *construct* such partitions dynamically."
+      ],
+      "summary_comment": "This paper presents HiRef, an exceptionally novel approach to Optimal Transport that leverages hierarchical refinement of low-rank OT problems to ultimately derive a full-rank Monge map. The central theoretical insight (Proposition 3.1) is bold and provides a solid, if somewhat idealized, foundation for the algorithm's recursive nature. The demonstrated scalability to over a million points with log-linear time and linear space complexity represents a significant leap forward for the field, enabling applications that were previously out of reach. While the theoretical assumptions for guaranteed optimality are strong and might not always hold perfectly in practice (as acknowledged by the authors regarding the 'black-box' solver), the practical results are compelling and the conceptual innovation is outstanding. Minor methodological imperfections in the evaluation or theoretical rigor are acceptable given the groundbreaking potential and forward-looking nature of this work. This is exactly the kind of ambitious research that pushes boundaries and opens up new avenues for future investigation."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel algorithm, Hierarchical Refinement (HiRef), for Optimal Transport (OT), a topic explicitly listed under 'general machine learning' and 'optimization' for ICML.",
+        "The methodology focuses on improving the scalability and efficiency of a core machine learning algorithm (OT), which aligns well with ICML's interest in 'machine learning systems' and 'optimization (convex and non-convex optimization, matrix/tensor methods, stochastic, online, non-smooth, composite, etc.)'.",
+        "The paper provides a strong theoretical foundation with Proposition 3.1, demonstrating a core invariant leveraging low-rank OT for co-clustering. This rigor is highly valued by ICML.",
+        "The empirical results show impressive scalability (over a million points) and competitive performance on real-world large-scale datasets (transcriptomics, ImageNet), showcasing 'application-driven machine learning' in areas like 'computational biology' and 'physical sciences'.",
+        "Reviewer A highlights the 'highly novel' and 'creative and insightful' nature of the core idea and theoretical foundation, emphasizing 'groundbreaking potential and forward-looking nature of this work', which is consistent with ICML's goal of publishing cutting-edge research.",
+        "The paper addresses a significant limitation (scalability) of a widely used technique in machine learning, offering 'a significant advancement for OT algorithms, pushing the boundaries of what's feasible in the field', directly contributing to the 'advancement of the branch of artificial intelligence known as machine learning'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's theoretical guarantees are explicitly stated, Reviewer A points out that the assumptions (e.g., 'strictly r-Monge separability') and reliance on an 'optimal black-box low-rank solver' for practical optimality might be strong, indicating some potential gap between theoretical ideal and practical implementation, which ICML sometimes scrutinizes for practical applicability.",
+        "The 'minor methodological imperfections in the evaluation' noted by Reviewer A, specifically regarding the comparison to MOP using default partitions, suggest that the empirical comparison could be more robust, potentially diminishing the strength of claims against competing methods in some reviewers' eyes."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Optimal Transport is a fundamental component of machine learning, fitting well within NeurIPS's broad scope including 'General machine learning: core contributions in supervised and unsupervised methods', 'Optimization', and 'Probabilistic methods'.",
+        "The paper's focus on scalability and applicability to 'large-scale datasets' such as ImageNet and spatial transcriptomics aligns with NeurIPS's interest in 'Data-centric aspects of AI' and 'AI/ML for physical sciences' / 'AI/ML for health and biotechnology'.",
+        "The theoretical contribution, Proposition 3.1, elucidating the co-clustering property of low-rank factors in relation to the Monge map, provides a 'new insight' into existing methods, which NeurIPS encourages.",
+        "The development of HiRef as an 'interdisciplinary submission' that significantly pushes the scale of OT applications, making it feasible for 'millions of points', fits NeurIPS's welcoming of research that 'do not fit neatly into existing categories' but advance the field.",
+        "Reviewer A acknowledges the 'highly novel' approach and 'significant advancement' for OT algorithms, indicating the work's potential for high impact, a key criterion for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the theoretical guarantees depend on strong assumptions like 'strictly r-Monge separability' and the optimality of the 'black-box low-rank solver'. While the authors acknowledge the non-convexity, this might be viewed as a gap in rigor by some NeurIPS reviewers looking for robust theoretical guarantees in practical settings.",
+        "The comparison with MOP could be more thorough, as highlighted by Reviewer A, who suggests a more 'carefully chosen or optimized multiscale partition' for MOP would strengthen the comparative analysis. This might be a point of criticism for NeurIPS, which values comprehensive empirical evaluations.",
+        "The paper's 'Others' topic classification might suggest it doesn't align with a very specific, hot NeurIPS sub-area, though its fundamental contribution to scaling OT makes it broadly relevant."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper explicitly mentions applications of OT in 'deep learning frameworks, such as OT flow-matching', and 'neural OT approaches', which strongly aligns with ICLR's primary focus on deep learning. It states, 'This advancement paves the way for integrating OT into large-scale deep generative models and modern vision and language tasks'.",
+        "The algorithm's ability to 'scale to over a million points' directly supports large-scale applications pertinent to ICLR's interest in 'large-scale learning' and 'optimization' applied to deep learning.",
+        "The discussion of using HiRef to precompute 'globally aligned pairs' for generative models and its potential for 'directly regress a neural network Tθ on the Monge map T without the bias of mini-batching or entropy' shows a clear connection to deep learning applications, a core interest of ICLR.",
+        "Reviewer A notes the 'groundbreaking potential and forward-looking nature of this work' specifically in 'opening up new avenues for future investigation', which suits ICLR's appetite for cutting-edge and transformative research in deep learning."
+      ],
+      "why_it_does_not_fit": [
+        "While relevant to deep learning applications, the core methodology described (Hierarchical Refinement using low-rank OT) is more grounded in general machine learning, optimization, and theoretical aspects of optimal transport rather than novel deep learning architectures or representation learning techniques, which are common for ICLR.",
+        "The paper is not centered around a specific neural network architecture, model, or (un/self/semi-supervised) representation learning, which are very common topics at ICLR.",
+        "The detailed theoretical analysis and mathematical proofs, while rigorous, might not be as central to the ICLR audience unless directly tied to novel deep learning theoretical insights.",
+        "The 'limitations' section mentions the 'constant dependent on the low-rank OT subprocedure used - this underscores the need to accelerate and stabilize low-rank OT solvers further', which suggests the direct application within deep learning might still face practical hurdles, a point ICLR might scrutinize heavily for practical deep learning implications."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

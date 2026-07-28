@@ -1,0 +1,512 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a technically sound integration of Variational Autoencoders with black-box combinatorial solvers via Fenchel-Young loss gradient estimation, creating a structured latent variable model (IO-LVM).",
+        "The method demonstrates the ability to learn disentangled latent representations for underlying optimization costs from observed structured decisions (paths/cycles), enabling the modeling of multiple agents without labels.",
+        "Comprehensive empirical validation is provided across synthetic and real-world datasets (including ship routing), showcasing tasks like latent space analysis, path reconstruction, and denoising."
+      ],
+      "weaknesses": [
+        "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+        "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+          "severity": "major",
+          "evidence": "The rebuttal argues that the novelty lies in the problem formulation of learning a distribution over optimization costs for unlabeled multi-agent behavior. While this application is interesting, the submitted paper does not demonstrate that this formulation requires fundamentally new methodology beyond integrating a VAE with a perturbed optimizer. The technical core remains the combination of these established components. The qualitative results (Figs. 2, 3) show the model can separate behaviors, but this does not substantiate a novel methodological contribution distinct from applying existing techniques to a new problem setting.",
+          "affected_claim": "Claims of introducing a novel approach (IO-LVM) that is \"sufficiently distinct from prior work.\"",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority.",
+          "severity": "major",
+          "evidence": "The rebuttal acknowledges that comparisons to methods requiring labels or context are 'not apples-to-apples,' but does not address the core issue: the submitted evaluation does not benchmark against alternative approaches that could also handle unsupervised multi-agent settings (e.g., clustering + single-agent inverse optimization, or other unsupervised structured latent models). The quantitative improvements over the adapted PO baseline remain modest (Table 2). The qualitative demonstrations, while compelling, are insufficient to establish superiority or significance for a top-tier conference.",
+          "affected_claim": "Claims of effectiveness, significance, and superiority in \"demonstrating the versatility of IO-LVM\" and its performance in reconstruction and prediction.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are technically supported. The method builds on established principles (ELBO, Fenchel-Young loss, perturbed gradient estimation), and the algorithmic derivation appears correct. Experiments are internally consistent, and the use of solvers guarantees constraint satisfaction."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The contribution remains an integration of existing techniques (VAE framework + perturbed optimizer gradient estimation) applied to a new problem setting. While the application to unsupervised multi-agent cost inference is interesting, the core methodological novelty is incremental. The rebuttal's emphasis on the problem formulation does not change the assessment that the technical approach builds directly on prior work."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The demonstrated contribution is modest for a top-tier ML conference. The practical implications for transportation and logistics are noted, but the empirical validation does not strongly establish the method's superiority over plausible alternatives or its impact on real-world problems. The application domains remain narrow (path/cycle inference in graphs)."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The experiments still lack rigorous comparison to a broad range of baselines appropriate for the claimed problem setting. The evaluation relies heavily on qualitative results and modest quantitative gains over a limited set of baselines. This is insufficient to convincingly demonstrate the method's advantages for a top-tier conference."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written, well-structured, and easy to understand. Figures and algorithm descriptions aid comprehension."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal continues to emphasize the novelty of the problem formulation (unsupervised multi-agent cost inference) rather than addressing the methodological incrementalism. While the application is interesting and the qualitative results are compelling, the submitted work does not demonstrate a significant technical advance over the integration of existing components (VAE + perturbed optimizer). The evaluation remains limited in scope, with modest quantitative improvements and insufficient comparison to alternative approaches for the claimed problem setting. For a top-tier conference, the paper does not meet the required thresholds for novelty, significance, and rigorous evaluation. The decision remains Reject."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's methodological focus on integrating deep learning (VAE) with discrete optimization through gradient estimation aligns with ICML's 'general machine learning' and 'machine learning systems' tracks.",
+        "The use of Fenchel-Young losses and perturbation-based gradient estimation connects to theoretical foundations in optimization, fitting ICML's 'optimization' and 'probabilistic methods' topics.",
+        "Application-driven aspects (ship routing) touch on sustainability/transportation, relevant to ICML's 'application-driven machine learning' track, particularly if framed as a core ML contribution."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1's major criticism that the work is an 'incremental adaptation' of existing techniques (Berthet et al., 2020 + VAE) directly conflicts with ICML's high bar for novelty, which the reviewer deems insufficient.",
+        "The evaluation's heavy reliance on qualitative results and limited quantitative benchmarking (weak baseline comparisons) does not meet ICML's typical standards for rigorous empirical validation.",
+        "The core problem (inverse optimization with latent variables) is somewhat niche; while ICML accepts specialized work, the perceived lack of broad impact (flagged by reviewer as low significance) reduces its competitiveness.",
+        "The computational focus is on discrete graph problems; while ICML covers optimization, the paper doesn't advance optimization theory itself but rather uses solvers as black boxes, which may limit appeal to ICML's optimization community."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The integration of deep latent variable models with structured decision-making (path planning) directly fits NeurIPS's 'Decision-making, reinforcement learning, and control' and 'General machine learning' tracks.",
+        "The work's emphasis on unsupervised discovery of multi-agent behaviors from trajectories aligns with NeurIPS's interest in 'Socio-technical aspects of AI' and 'Human interaction in AI systems' when framed as modeling human/navigational behavior.",
+        "The use of perturbation-based gradient estimation through non-differentiable solvers connects to 'SysML Infrastructure' interests in making black-box components differentiable.",
+        "Real-world ship routing application touches on 'AI/ML for sustainability' (maritime efficiency) and provides concrete use-case narratives valued at NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1's novelty concern remains critical; NeurIPS also expects substantive methodological advances, and the reviewer's assessment that this is 'integration of existing components' poses a risk, even if the application is novel.",
+        "Comparison to the most relevant prior work (Berthet et al., 2020) shows modest gains; NeurIPS reviewers often demand clearer technical or empirical separation from direct predecessors.",
+        "The evaluation still lacks comparisons to strong unsupervised structured prediction baselines (e.g., other latent variable models for combinatorial outputs), which NeurIPS reviewers would likely expect.",
+        "The theoretical depth is limited; while the method works, it doesn't provide new theoretical insights into convergence, identifiability, or generalization, which many NeurIPS papers emphasize."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper's core revolves around deep generative modeling (VAE framework) for structured representations, which aligns perfectly with ICLR's focus on representation learning and generative models.",
+        "The specific challenges of learning latent representations for discrete structured outputs (paths/cycles) connect to ICLR's interests in 'representation learning for ... language, and other modalities' and 'structured prediction'.",
+        "Application to robotics/autonomy (path planning) fits ICLR's 'applications to robotics, autonomy, planning' track."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR emphasizes deep learning innovations; the paper's key technical component (gradient estimation via perturbed Fenchel-Young loss) is adapted from prior work, not a novel deep learning architecture or training algorithm.",
+        "The deep learning components (encoder/decoder networks) are standard; the novelty lies in their integration with an optimization solver, which is not a core deep learning methodological advance.",
+        "Reviewer 1's criticism that the approach is an 'incremental adaptation' would be particularly damaging at ICLR, where novelty in deep learning techniques is paramount.",
+        "The paper does not explore neural-symbolic aspects, new architectures, or fundamental advances in representation learning theory, which are typical ICLR strengths.",
+        "Experimental validation does not include ablation studies on architectural choices or training dynamics, which ICLR often expects for deep learning papers."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper presents a novel integration of Variational Autoencoders with black-box combinatorial solvers via Fenchel-Young loss gradient estimation, creating a structured latent variable model (IO-LVM).",
+              "The method demonstrates the ability to learn disentangled latent representations for underlying optimization costs from observed structured decisions (paths/cycles), enabling the modeling of multiple agents without labels.",
+              "Comprehensive empirical validation is provided across synthetic and real-world datasets (including ship routing), showcasing tasks like latent space analysis, path reconstruction, and denoising."
+            ],
+            "weaknesses": [
+              "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+              "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+                "severity": "major",
+                "evidence": "The method directly builds on Perturbed Optimizer (PO) by Berthet et al. (2020) for gradient estimation and integrates it into a VAE framework. The core novelty claim is the construction of a latent space for COP costs, but the paper does not sufficiently distinguish this from existing latent variable models for structured outputs that also aim for disentangled representations (e.g., prior work on deep Gaussian processes and variational propagation of uncertainty for latent variables). The related work section acknowledges these foundations but does not justify why this specific integration constitutes a substantial advance.",
+                "affected_claim": "Claims of introducing a novel approach (IO-LVM) that is \"sufficiently distinct from prior work.\"",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority.",
+                "severity": "major",
+                "evidence": "The primary quantitative comparison is against a vanilla VAE and a single adapted baseline (Perturbed Optimizer - PO). The performance gaps are modest (Table 2 shows IO-LVM slightly better than PO on Spearman but similar on Jensen-Shannon). Evaluation on TSPLIB cycles uses Recall of edges, which doesn't reflect full solution quality. The paper lacks comparisons to more recent or competitive inverse optimization/IRL methods (e.g., context-aware or deep inverse RL) or structured deep generative models. The RAG evidence suggests existing work on latent variable models with uncertainty propagation (e.g., deep GPs) addresses similar representation challenges, but no such comparisons are made.",
+                "affected_claim": "Claims of effectiveness, significance, and superiority in \"demonstrating the versatility of IO-LVM\" and its performance in reconstruction and prediction.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported. The method builds on established principles (ELBO, Fenchel-Young loss, perturbed gradient estimation), and the algorithmic derivation appears correct. Experiments are internally consistent, and the use of solvers guarantees constraint satisfaction."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The contribution is an integration of existing techniques (VAE framework + perturbed optimizer gradient estimation from Berthet et al.). While the application to learning latent spaces of COP costs for multi-agent behavior is interesting, the core methodological novelty is incremental relative to prior work on differentiable optimization and latent variable models for structured data."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution is modest for a top-tier ML conference. The application domains (path/cycle inference) are somewhat narrow, and the empirical gains over adapted baselines are not compelling. The potential impact for behavior analysis is noted but not strongly validated with benchmark tasks or comparisons to state-of-the-art alternatives."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments, while extensive, are not fully convincing or fair. The baselines are limited (VAE and an adapted PO). Quantitative metrics are not comprehensive, and the evaluation lacks comparison to relevant contemporary methods in inverse optimization or structured latent modeling. The reliance on qualitative visualization and illustrative examples does not suffice for rigorous validation."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written, well-structured, and easy to understand. Figures and algorithm descriptions aid comprehension. The method and experiments are explained sufficiently for assessment."
+              }
+            },
+            "summary_comment": "IO-LVM presents a technically sound integration of VAE with perturbed optimization gradients for learning latent COP costs. The paper is well-written and explores an interesting application to multi-agent path modeling. However, the novelty is moderate, building directly on prior work (Berthet et al.). The significance is limited by the incremental advance and narrow application focus. Crucially, the evaluation does not convincingly demonstrate superiority over strong baselines or state-of-the-art methods, relying on modest quantitative gains and qualitative demonstrations. For a top-tier conference, the contribution lacks the novelty, significance, and empirical rigor required for acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper presents a technically sound integration of Variational Autoencoders with black-box combinatorial solvers via Fenchel-Young loss gradient estimation, creating a structured latent variable model (IO-LVM).",
+              "The method demonstrates the ability to learn disentangled latent representations for underlying optimization costs from observed structured decisions (paths/cycles), enabling the modeling of multiple agents without labels.",
+              "Comprehensive empirical validation is provided across synthetic and real-world datasets (including ship routing), showcasing tasks like latent space analysis, path reconstruction, and denoising."
+            ],
+            "weaknesses": [
+              "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+              "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+                "severity": "major",
+                "evidence": "The method directly builds on Perturbed Optimizer (PO) by Berthet et al. (2020) for gradient estimation and integrates it into a VAE framework. The rebuttal argues that the novelty lies in the objective of learning a latent space of costs for multi-agent behavior, but the submitted paper does not sufficiently demonstrate how this formulation is fundamentally novel beyond the integration of existing components. The related work section acknowledges these foundations but does not justify why this specific integration constitutes a substantial advance over prior latent variable models for structured outputs.",
+                "affected_claim": "Claims of introducing a novel approach (IO-LVM) that is \"sufficiently distinct from prior work.\"",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority.",
+                "severity": "major",
+                "evidence": "The primary quantitative comparison is against a vanilla VAE and an adapted PO baseline. The performance gaps are modest (Table 2 shows IO-LVM slightly better than PO on Spearman but similar on Jensen-Shannon). Evaluation on TSPLIB cycles uses Recall of edges, which doesn't reflect full solution quality. The rebuttal acknowledges that comparisons to context-conditioned inverse optimization or IRL methods are 'not apples-to-apples' but does not provide evidence in the submitted paper that such comparisons were attempted or that IO-LVM outperforms methods designed for similar unsupervised settings. The qualitative results (Figs. 2, 3, 5) are illustrative but not sufficient for rigorous validation.",
+                "affected_claim": "Claims of effectiveness, significance, and superiority in \"demonstrating the versatility of IO-LVM\" and its performance in reconstruction and prediction.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported. The method builds on established principles (ELBO, Fenchel-Young loss, perturbed gradient estimation), and the algorithmic derivation appears correct. Experiments are internally consistent, and the use of solvers guarantees constraint satisfaction."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The contribution remains an integration of existing techniques (VAE framework + perturbed optimizer gradient estimation from Berthet et al.). While the application to learning latent spaces of COP costs for multi-agent behavior is interesting, the core methodological novelty is incremental relative to prior work on differentiable optimization and latent variable models for structured data. The rebuttal does not provide new evidence from the submitted paper to substantiate a higher level of novelty."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution remains modest for a top-tier ML conference. The application domains (path/cycle inference) are somewhat narrow, and the empirical gains over adapted baselines are not compelling. The potential impact for behavior analysis is noted but not strongly validated with benchmark tasks or comparisons to state-of-the-art alternatives. The rebuttal's promises of future discussion do not change the assessment of the submitted work."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments, while extensive, are not fully convincing or fair. The baselines are limited (VAE and an adapted PO). Quantitative metrics are not comprehensive, and the evaluation lacks comparison to relevant contemporary methods in inverse optimization or structured latent modeling. The rebuttal acknowledges these limitations but does not resolve them with evidence from the submitted paper."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written, well-structured, and easy to understand. Figures and algorithm descriptions aid comprehension. The method and experiments are explained sufficiently for assessment."
+              }
+            },
+            "summary_comment": "The authors' rebuttal acknowledges the concerns about novelty and evaluation but primarily promises future revisions rather than providing evidence from the submitted paper that resolves these issues. While IO-LVM is a technically sound integration of VAE with perturbed optimization gradients for learning latent COP costs, its novelty remains incremental relative to prior work. The evaluation still lacks rigorous comparisons to strong baselines and state-of-the-art methods, relying on modest quantitative gains and qualitative demonstrations. For a top-tier conference, the contribution lacks the novelty, significance, and empirical rigor required for acceptance. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Novelty is perceived as incremental, as the paper integrates established components (VAE, Perturbed Optimizer gradient estimation).\",\n        \"Evaluation is considered insufficiently rigorous: comparisons are limited (VAE, adapted PO), metrics are not comprehensive, and state-of-the-art baselines are missing.\",\n        \"Significance is questioned due to modest gains, narrow application focus, and lack of strong validation against relevant contemporary methods.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The method's derivation builds directly on established principles, which may be perceived as an incremental combination.\",\n          \"location\": \"Section 3 (Method)\",\n          \"explanation\": \"The paper transparently details that IO-LVM adapts the VAE's ELBO objective and leverages the Fenchel-Young loss gradient estimation technique from Berthet et al. (2020) to handle the non-differentiable solver. Algorithm 1 clearly shows the integration of these components. Our distinct contribution, as argued, is the novel *objective and framework* for learning a latent space of COP *costs* to model multi-agent behavior, which existing works (VAEs, single-cost Inverse Optimization) do not address.\"\n        },\n        {\n          \"concern\": \"Evaluation demonstrates the method's capability to learn disentangled latent spaces and reconstruct feasible solutions, outperforming a standard VAE.\",\n          \"location\": \"Section 4.2 (Latent Space Analysis), Section 4.3 (Qualitative Reconstruction Analysis), Table 1\",\n          \"explanation\": \"Figures 2, 3, and 5 provide qualitative evidence that IO-LVM learns interpretable, disentangled latent spaces and guarantees feasible outputs (unlike VAEs). Quantitative results in Table 1 show IO-LVM outperforms VAE in Recall for a fixed number of latent dimensions in the Hamiltonian Cycles task, specifically because it enforces structural feasibility.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"The evaluation lacks comparison to more sophisticated structured prediction or state-of-the-art inverse optimization methods.\",\n          \"proposed_change\": \"We will expand the related work discussion to more explicitly position IO-LVM against a broader set of methods, including context-conditioned inverse optimization and modern structured deep generative models. We will clarify why direct comparisons with many of these are not straightforward, as they typically assume a single global cost or require agent labels, which is the core problem setting IO-LVM addresses (unsupervised multi-agent cost inference).\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Quantitative metrics (Recall, JSD on edges) do not fully establish superiority or reflect full solution quality.\",\n          \"proposed_change\": \"We will add further discussion in Section 4.4 to justify the choice of metrics. For path/cycle reconstruction, Recall is a direct measure of edge-level accuracy, and when the ground truth is a single optimal path (as in our data generation process), perfect reconstruction is the goal. For distribution prediction, Jensen-Shannon Divergence on edge usage is a standard metric for comparing path distributions. We can also report additional metrics, such as the fraction of perfectly reconstructed paths/cycles, to complement the analysis.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"The significance and novelty of the integration need stronger justification relative to prior work.\",\n          \"proposed_change\": \"We will strengthen the contribution narrative in the introduction and conclusion. We will emphasize that the primary novelty is not any single component but the novel *problem formulation and end-to-end framework* for learning a disentangled latent space of *optimization costs* from unlabeled, structured decisions. This enables new capabilities (like the unsupervised clustering of agents in Fig. 2) that are not achievable by simply applying a Perturbed Optimizer (which learns a single cost) or a standard VAE (which cannot enforce constraints).\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We sincerely thank the reviewer for their thoughtful assessment and acknowledge the concerns regarding novelty, evaluation, and significance. We believe a key misunderstanding may be the perceived direct comparability of our method with other inverse optimization or structured latent models.\\n\\nFirst, on **novelty**: IO-LVM's core contribution is the novel *objective* of learning a latent space of *COP costs* to explain *unlabeled*, structured decisions from potentially multiple agents. While we build on the gradient estimation technique of Berthet et al. (2020), their Perturbed Optimizer (PO) learns a *single, global* cost function. IO-LVM fundamentally extends this by learning a *distribution* over costs via a latent space, enabling the modeling of multi-modal decision data without labels—a capability PO lacks, as shown in our experiments where IO-LVM separates agents (Fig. 2) while PO cannot. Similarly, standard VAEs fail to generate feasible structured outputs. Thus, the integration creates a new framework for unsupervised multi-agent behavior analysis.\\n\\nSecond, on **evaluation**: The reviewer is correct that we compare against VAE and an adapted PO. We chose these as the most direct conceptual baselines: a standard latent variable model (VAE) and the state-of-the-art method for learning from decisions via a black-box solver (PO). Comparing to context-conditioned inverse optimization or IRL methods is not apples-to-apples, as those methods typically assume a *single* cost function conditioned on observable context, or require agent labels for multi-agent settings. Our problem setting is precisely where such labels/context are *not* available. The quantitative results (Tables 1 & 2) show that IO-LVM reliably outperforms VAE in generating feasible solutions and matches or outperforms PO in distribution prediction, while additionally providing the interpretable latent space analyses (Figs. 2, 3) that PO cannot. We will clarify this distinction in the revised text.\\n\\nThird, on **significance**: We demonstrate a new capability—unsupervised disentanglement of agent behaviors via their implicit cost functions—on synthetic and real-world maritime data. The application to ship path analysis (Fig. 3) shows the latent space captures semantically meaningful features (ship size) not used in training, suggesting utility for real-world behavior analysis tasks like clustering and anomaly detection. The guarantee of constraint satisfaction via the solver-in-the-loop is crucial for downstream applications where feasibility is non-negotiable.\\n\\nWe will revise the paper to more strongly articulate these points, explicitly justify the baseline comparisons, and discuss the limitations and appropriate application domains for IO-LVM versus other lines of work. We believe the framework is a sound and novel contribution to the intersection of latent variable models and inverse optimization.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper presents a technically sound integration of Variational Autoencoders with black-box combinatorial solvers via Fenchel-Young loss gradient estimation, creating a structured latent variable model (IO-LVM).",
+              "The method demonstrates the ability to learn disentangled latent representations for underlying optimization costs from observed structured decisions (paths/cycles), enabling the modeling of multiple agents without labels.",
+              "Comprehensive empirical validation is provided across synthetic and real-world datasets (including ship routing), showcasing tasks like latent space analysis, path reconstruction, and denoising."
+            ],
+            "weaknesses": [
+              "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+              "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's core combination of VAE with a Fenchel-Young loss through a perturbed solver (Berthet et al., 2020) is an incremental adaptation; the novelty relative to prior work on differentiable perturbed optimizers and structured latent models is not strongly justified.",
+                "severity": "major",
+                "evidence": "The rebuttal argues that the novelty lies in the problem formulation of learning a distribution over optimization costs for unlabeled multi-agent behavior. While this application is interesting, the submitted paper does not demonstrate that this formulation requires fundamentally new methodology beyond integrating a VAE with a perturbed optimizer. The technical core remains the combination of these established components. The qualitative results (Figs. 2, 3) show the model can separate behaviors, but this does not substantiate a novel methodological contribution distinct from applying existing techniques to a new problem setting.",
+                "affected_claim": "Claims of introducing a novel approach (IO-LVM) that is \"sufficiently distinct from prior work.\"",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The empirical evaluation is primarily qualitative and illustrative; quantitative comparisons with strong baselines (e.g., more sophisticated structured prediction or state-of-the-art inverse optimization methods) are limited, and the metrics (e.g., Recall, JSD on edges) do not fully establish superiority.",
+                "severity": "major",
+                "evidence": "The rebuttal acknowledges that comparisons to methods requiring labels or context are 'not apples-to-apples,' but does not address the core issue: the submitted evaluation does not benchmark against alternative approaches that could also handle unsupervised multi-agent settings (e.g., clustering + single-agent inverse optimization, or other unsupervised structured latent models). The quantitative improvements over the adapted PO baseline remain modest (Table 2). The qualitative demonstrations, while compelling, are insufficient to establish superiority or significance for a top-tier conference.",
+                "affected_claim": "Claims of effectiveness, significance, and superiority in \"demonstrating the versatility of IO-LVM\" and its performance in reconstruction and prediction.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported. The method builds on established principles (ELBO, Fenchel-Young loss, perturbed gradient estimation), and the algorithmic derivation appears correct. Experiments are internally consistent, and the use of solvers guarantees constraint satisfaction."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The contribution remains an integration of existing techniques (VAE framework + perturbed optimizer gradient estimation) applied to a new problem setting. While the application to unsupervised multi-agent cost inference is interesting, the core methodological novelty is incremental. The rebuttal's emphasis on the problem formulation does not change the assessment that the technical approach builds directly on prior work."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution is modest for a top-tier ML conference. The practical implications for transportation and logistics are noted, but the empirical validation does not strongly establish the method's superiority over plausible alternatives or its impact on real-world problems. The application domains remain narrow (path/cycle inference in graphs)."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments still lack rigorous comparison to a broad range of baselines appropriate for the claimed problem setting. The evaluation relies heavily on qualitative results and modest quantitative gains over a limited set of baselines. This is insufficient to convincingly demonstrate the method's advantages for a top-tier conference."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written, well-structured, and easy to understand. Figures and algorithm descriptions aid comprehension."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal continues to emphasize the novelty of the problem formulation (unsupervised multi-agent cost inference) rather than addressing the methodological incrementalism. While the application is interesting and the qualitative results are compelling, the submitted work does not demonstrate a significant technical advance over the integration of existing components (VAE + perturbed optimizer). The evaluation remains limited in scope, with modest quantitative improvements and insufficient comparison to alternative approaches for the claimed problem setting. For a top-tier conference, the paper does not meet the required thresholds for novelty, significance, and rigorous evaluation. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Core novelty is still perceived as incremental despite rebuttal arguments\",\n        \"Evaluation lacks rigorous comparisons to state-of-the-art methods in similar problem settings\",\n        \"Quantitative results show only modest improvements over baselines\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The method's ability to learn disentangled representations for multi-agent behavior is a novel capability not present in the baseline methods\",\n          \"location\": \"Section 4.2 (Latent Space Analysis), Figures 2 and 3\",\n          \"explanation\": \"Figures 2 and 3 demonstrate that IO-LVM can automatically separate paths from different agents (synthetic data) and capture correlated features like ship width (real data) without any supervision. This unsupervised disentanglement of behavioral patterns is a capability that PO (which learns a single cost) and standard VAEs (which cannot enforce feasibility) cannot achieve.\"\n        },\n        {\n          \"concern\": \"The method guarantees constraint satisfaction for generated solutions, which is critical for real-world applications\",\n          \"location\": \"Section 4.3 (Qualitative Reconstruction Analysis), Figure 5\",\n          \"explanation\": \"Figure 5 shows that IO-LVM always generates valid Hamiltonian cycles, while the VAE produces infeasible solutions. This structured feasibility guarantee is a key advantage over traditional generative models and is essential for applications where constraint satisfaction is mandatory.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"The novelty argument needs stronger positioning against latent variable models for structured outputs\",\n          \"proposed_change\": \"We will add a dedicated subsection in the related work discussing why existing structured latent variable models (e.g., those using deep GPs or specialized decoders) cannot naturally handle the multi-agent cost inference problem that IO-LVM addresses. We will emphasize that the key innovation is not just the components but the novel problem formulation of learning a distribution over optimization costs to explain behavioral diversity.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Evaluation should include discussion of why certain state-of-the-art methods are not directly comparable\",\n          \"proposed_change\": \"We will expand Section 4.4 to explicitly discuss why methods requiring agent labels (like multi-task IRL) or assuming observable context variables (like context-conditioned inverse optimization) are fundamentally solving different problems. We will clarify that IO-LVM targets the unsupervised setting where such supervision is unavailable, which represents an important practical scenario.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"The significance of the multi-agent unsupervised setting should be emphasized\",\n          \"proposed_change\": \"We will strengthen the motivation in the introduction and conclusion to highlight that real-world decision data often contains mixtures of behaviors from different agents/strategies without labels. The ability to automatically discover and model these behavioral modes has significant practical implications for transportation, logistics, and behavioral analysis that extend beyond the specific path/cycle applications shown.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We understand the concerns about novelty and evaluation rigor. While we acknowledge that IO-LVM builds on established components, we believe the reviewer may be underestimating the novelty of the *problem formulation* and its practical implications.\\n\\nThe core innovation of IO-LVM is not merely technical integration, but the formulation of learning a *distribution over optimization costs* to explain *unlabeled* structured decisions from potentially heterogeneous agents. This is a fundamentally different objective from: (1) PO (Berthet et al.), which learns a single cost function; (2) standard inverse optimization/IRL methods, which typically require agent labels or observable context for multi-agent settings; and (3) traditional VAEs, which cannot enforce solution feasibility.\\n\\nThe empirical results demonstrate capabilities that these alternatives cannot provide: unsupervised discovery of behavioral modes (Fig. 2), correlation with unobserved agent characteristics (Fig. 3), and guaranteed constraint satisfaction (Fig. 5). While the quantitative improvements over PO may appear modest in Table 2, this comparison misses the point - PO cannot perform the multi-agent disentanglement that is IO-LVM's primary contribution. The Spearman correlation improvement (0.873 vs 0.813) reflects IO-LVM's ability to better capture the multimodal path distribution arising from multiple agents.\\n\\nWe acknowledge that comparisons to all possible related methods are challenging due to differing problem assumptions. However, we believe the unsupervised multi-agent cost inference problem we address is both novel and practically significant. Many real-world decision datasets (like our ship routing data) contain mixed behaviors without clear labeling of which agent or strategy produced each decision. IO-LVM provides the first framework to automatically discover and model these behavioral patterns while ensuring generated solutions satisfy problem constraints.\\n\\nWe will revise the paper to more clearly articulate this novel problem setting and its practical significance, and to better justify why existing methods are not directly comparable. We believe the combination of unsupervised multi-agent behavior discovery with guaranteed constraint satisfaction represents a meaningful advance for applications in transportation, logistics, and behavioral analysis.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_7fcfeea88e9d",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/icml_reject_2025_033_io_lvm_inverse_optimization_latent_variable_models_with_graph_based_planning_app.md",
+    "target_paper_summary": {
+      "paper_id": "paper_7fcfeea88e9d",
+      "title": "Io-Lvm: Inverse Optimization Latent Variable Models With Graph-Based Planning Applications",
+      "abstract": "## Anonymous Authors1 Abstract",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_6971e6eb3",
+        "title": "Deep Gaussian Processes and Variational Propagation of Uncertainty",
+        "authors": [
+          "Andreas Damianou"
+        ],
+        "year": 2015,
+        "publication_date": "2015-01-01",
+        "venue": "White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York)",
+        "abstract": "Uncertainty propagation across components of complex probabilistic models is vital for improving regularisation. Unfortunately, for many interesting models based on non-linear Gaussian processes (GPs), straightforward propagation of uncertainty is computationally and mathematically intractable. This thesis is concerned with solving this problem through developing novel variational inference approaches. &#13;\\n&#13;\\nFrom a modelling perspective, a key contribution of the thesis is the development of deep Gaussian processes (deep GPs). Deep GPs generalise several interesting GP-based models and, hence, motivate the development of uncertainty propagation techniques. In a deep GP, each layer is modelled as the output of a multivariate GP, whose inputs are governed by another GP. The resulting model is no longer a GP but, instead, can learn much more complex interactions between data. In contrast to other deep models, all the uncertainty in parameters and latent variables is marginalised out and both supervised and unsupervised learning is handled.&#13;\\n&#13;\\nTwo important special cases of a deep GP can equivalently be seen as its building components and, historically, were developed as such. Firstly, the variational GP-LVM is concerned with propagating uncertainty in Gaussian process latent variable models. Any observed inputs (e.g. temporal) can also be used to correlate the latent space posteriors. Secondly, this thesis develops manifold relevance determination (MRD) which considers a common latent space for multiple views. An adapted variational framework allows for strong model regularisation, resulting in rich latent space representations to be learned. The developed models are also equipped with algorithms that maximise the information communicated between their different stages using uncertainty propagation, to achieve improved learning when partially observed values are present. &#13;\\n&#13;\\nThe developed methods are demonstrated in experiments with simulated and real data. The results show that the developed variational methodologies improve practical applicability by enabling automatic capacity control in the models, even when data are scarce.",
+        "url": "https://doi.org/10.13140/rg.2.1.1458.8885",
+        "doi": "https://doi.org/10.13140/rg.2.1.1458.8885",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1172736100"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 82
+      },
+      {
+        "paper_id": "rw_002_e0cdbeac0",
+        "title": "Distorted correlations among censored data: causes, effects, and correction",
+        "authors": [
+          "Kimberly A. Barchard",
+          "James A. Russell"
+        ],
+        "year": 2023,
+        "publication_date": "2023-12-21",
+        "venue": "Behavior Research Methods",
+        "abstract": "Data censoring occurs when researchers do not know precise values of data points (e.g., age is 55+ or concentration ≤ .001). Censoring is frequent within psychology but typically unrecognized outside of longitudinal studies. We describe five circumstances when censoring may occur, demonstrate censoring distorts correlations, and discuss how censoring can create spurious factors. Next, we explain how to use R package lava to calculate maximum likelihood estimates (Holst and Budtz-Jørgensen Computational Statistics, 28(4), 1385-1452, 2013) of correlations between uncensored variables based upon censored variables. Previous research demonstrated these estimates were more accurate than Muthén's (1984) estimate for one particular model, but no research has systematically examined their accuracy. We therefore conducted a simulation study exploring the effects of the correlation, sample size, and censoring on point and interval estimates of correlations. Based upon 80 cells in which low values of normally distributed variables were censored, we recommend the constrained regression model with Wald confidence intervals. These methods were precise and unbiased unless both variables had 70% censoring and the correlation was large and negative (e.g., -.9), in which case estimates were closer to -1 than they should be. Opposite results would occur if low values of one variable and high values of the other were censored: Estimates would be precise and unbiased unless censoring was extreme and correlations were large and positive. To estimate large correlations accurately, we recommend researchers reduce censoring by using longer longitudinal studies, using scales with more response options, and matching measures to populations to reduce floor and ceiling effects.",
+        "url": "https://doi.org/10.3758/s13428-023-02086-5",
+        "doi": "https://doi.org/10.3758/s13428-023-02086-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390046578"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 5
+      },
+      {
+        "paper_id": "rw_003_fb9264206",
+        "title": "Modular system programming in MINIX 3",
+        "authors": [
+          "Jorrit N. Herder",
+          "Herbert Bos",
+          "Ben Gras",
+          "Philip Homburg",
+          "Andrew S. Tanenbaum"
+        ],
+        "year": 2006,
+        "publication_date": "2006-01-01",
+        "venue": "VU Research Portal",
+        "abstract": "By \"next-generation,\" I mean that MINIX is a microkernel in design and philosophy.Only the kernel runs as privileged, and all other services, including process management, file systems, networking, and all device drivers, run in their own private address spaces.Just moving device drivers out of the kernel and into their own address spaces means that they can crash without crashing the kernel.It also means that system code, including device drivers, can be tested without rebooting, and failed drivers (or servers) can be restarted.While MINIX 3 is not going to replace your desktop today, it is already a good candidate for embedded systems where robustness, reliability, and a small memory footprint are crucial.Perhaps your cell phone will be running MINIX 3 some day.",
+        "url": "https://research.vu.nl/en/publications/f0be7e18-0934-4aeb-8ef4-62ec6c1a48c5",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1532119620"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 14
+      },
+      {
+        "paper_id": "rw_004_d5f86803e",
+        "title": "ClusterRAID: Architecture and Prototype of a Distributed Fault-Tolerant Mass Storage System for Clusters",
+        "authors": [
+          "Arne Wiebalck"
+        ],
+        "year": 2005,
+        "publication_date": "2005-01-01",
+        "venue": "heiDOK (Heidelberg University)",
+        "abstract": "During the past few years clusters built from commodity off-the-shelf (COTS) components have emerged as the predominant supercomputer architecture. Typically comprising a collection of standard PCs or workstations and an interconnection network, they have replaced the traditionally used integrated systems due to their better price/performance ratio. As paradigms shift from mere computing intensive to I/O intensive applications, mass storage solutions for cluster installations become a more and more crucial aspect of these systems. The inherent unreliability of the underlying components is one of the reasons why no system has been established as a standard storage solution for clusters yet. This thesis sets out the architecture and prototype implementation of a novel distributed mass storage system for commodity off-the-shelf clusters and addresses the issue of the unreliable constituent components. The key concept of the presented system is the conversion of the local hard disk drive of a cluster node into a reliable device while preserving the block device interface. By the deployment of sophisticated erasure-correcting codes, the system allows the adjustment of the number of tolerable failures and thus the overall reliability. In addition, the applied data layout considers the access behaviour of a broad range of applications and minimizes the number of required network transactions. Extensive measurements and functionality tests of the prototype, both stand-alone and in conjunction with local or distributed file systems, show the validity of the concept.",
+        "url": "https://doi.org/10.11588/heidok.00005624",
+        "doi": "https://doi.org/10.11588/heidok.00005624",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1775671334"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_6971e6eb3",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "This candidate from the 'related_work' query group develops variational propagation of uncertainty in complex probabilistic models, specifically deep Gaussian processes and Gaussian process latent variable models (GP-LVMs). It addresses challenges in uncertainty propagation that are relevant to probabilistic latent variable modeling, which shares conceptual foundations with the target's latent variable model focus.",
+        "evidence_summary": "In 2015, Andreas Damianou published 'Deep Gaussian Processes and Variational Propagation of Uncertainty'. The thesis developed deep Gaussian processes, which generalize several GP-based models and handle supervised and unsupervised learning by marginalizing uncertainty in parameters and latent variables. A key special case developed was the variational GP-LVM for propagating uncertainty in Gaussian process latent variable models, and the thesis also introduced manifold relevance determination for a common latent space across multiple views using an adapted variational framework."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_e0cdbeac0",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "This candidate shares a latent variable modeling component through its use of the lava R package and discusses estimation methods for censored data correlations, which could provide tangential methodological background for statistical inference in models with latent variables. The paper was retrieved via the 'related_work' query, though its primary application domain (psychology) differs from the target's graph-based planning.",
+        "evidence_summary": "In 2023, Kimberly A. Barchard and James A. Russell published 'Distorted correlations among censored data: causes, effects, and correction' in Behavior Research Methods. The paper described how data censoring distorts correlations and can create spurious factors, and it explained how to use the R package lava to calculate maximum likelihood estimates of correlations between uncensored variables based on censored data. A simulation study explored effects of correlation, sample size, and censoring on point and interval estimates, finding the constrained regression model with Wald confidence intervals generally precise and unbiased except under extreme censoring with very large positive or negative correlations."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_fb9264206",
+        "relevance_score": 0.28,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "This candidate describes a modular microkernel operating system architecture with no direct methodological, modeling, or application overlap with inverse optimization or latent variable models for planning. It is retrieved from the 'related_work' query group, but the connection to the target appears incidental.",
+        "evidence_summary": "In 2006, Jorrit N. Herder, Herbert Bos, Ben Gras, Philip Homburg, and Andrew S. Tanenbaum published 'Modular system programming in MINIX 3'. The paper described MINIX 3 as a microkernel-based operating system where only the kernel runs as privileged, and all other services (process management, file systems, networking, device drivers) run in separate private address spaces, allowing components to crash or be restarted independently. The authors proposed MINIX 3 as a candidate for embedded systems requiring robustness, reliability, and a small memory footprint."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_004_d5f86803e",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "This candidate is a thesis on a distributed fault-tolerant mass storage system architecture for clusters. The topic (distributed storage systems using erasure codes) and application domain differ substantially from inverse optimization, latent variable models, or graph-based planning, despite being retrieved via the generic 'related_work' query.",
+        "evidence_summary": "In 2005, Arne Wiebalck published 'ClusterRAID: Architecture and Prototype of a Distributed Fault-Tolerant Mass Storage System for Clusters'. The thesis set out the architecture and prototype implementation of a distributed mass storage system for commodity clusters that converts a node's local hard drive into a reliable device while preserving a block device interface. The system used erasure-correcting codes to adjust the number of tolerable failures and considered data layout to minimize required network transactions, with prototype validation through extensive measurements and functionality tests."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2015, Andreas Damianou published \"Deep Gaussian Processes and Variational Propagation of Uncertainty\" in White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York). This thesis is concerned with solving this problem through developing novel variational inference approaches. &#13;\\n&#13;\\nFrom a modelling perspective, a key contribution of the thesis is the development of deep Gaussian processes (deep GPs). The resulting model is no longer a GP but, instead, can learn much more complex interactions between data. The developed models are also equipped with algorithms that maximise the information communicated between their different stages using uncertainty propagation, to achieve improved learning when partially observed values are present. &#13;\\n&#13;\\nThe developed methods are demonstrated in experiments with simulated and real data. In 2023, Kimberly A. Barchard and James A. Russell published \"Distorted correlations among censored data: causes, effects, and correction\" in Behavior Research Methods. The authors describe five circumstances when censoring may occur, demonstrate censoring distorts correlations, and discuss how censoring can create spurious factors. Data censoring occurs when researchers do not know precise values of data points (e.g., age is 55+ or concentration ≤ .001). These methods were precise and unbiased unless both variables had 70% censoring and the correlation was large and negative (e.g., -.9), in which case estimates were closer to -1 than they should be. In 2006, Jorrit N. Herder et al. published \"Modular system programming in MINIX 3\" in VU Research Portal. By \"next-generation,\" I mean that MINIX is a microkernel in design and philosophy.Only the kernel runs as privileged, and all other services, including process management, file systems, networking, and all device drivers, run in their own private address spaces.Just moving device drivers out of the kernel and into their own address spaces means that they can crash without crashing the kernel.It also means that system code, including device drivers, can be tested without rebooting, and failed... In 2005, Arne Wiebalck published \"ClusterRAID: Architecture and Prototype of a Distributed Fault-Tolerant Mass Storage System for Clusters\" in heiDOK (Heidelberg University). This thesis sets out the architecture and prototype implementation of a novel distributed mass storage system for commodity off-the-shelf clusters and addresses the issue of the unreliable constituent components. In addition, the applied data layout considers the access behaviour of a broad range of applications and minimizes the number of required network transactions. Typically comprising a collection of standard PCs or workstations and an interconnection network, they have replaced the traditionally used integrated systems due to their better price/performance ratio.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 4,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 4,
+      "num_cutoff_valid": 4,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 4,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 4,
+    "num_cutoff_valid": 4,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces the novel concept of 'knowledge entropy' to quantify how language models integrate parametric knowledge throughout pretraining",
+        "Provides compelling evidence that knowledge entropy decreases during pretraining and correlates with reduced knowledge acquisition/retention capabilities",
+        "Demonstrates practical significance by showing that mid-stage pretraining checkpoints offer optimal balance for continual learning tasks"
+      ],
+      "weaknesses": [
+        "The resuscitation method (Algorithm 1) is somewhat arbitrary and may not represent the most sophisticated approach to testing the hypothesis",
+        "Limited to OLMo models due to availability of intermediate checkpoints, though authors acknowledge this limitation",
+        "The relationship between knowledge entropy decline and performance degradation, while strongly correlated, could benefit from more causal analysis"
+      ],
+      "summary_comment": "This paper makes a significant contribution by introducing the concept of knowledge entropy and demonstrating its decay during pretraining correlates with reduced plasticity. The findings are novel, well-supported by experiments, and have important implications for model training strategies. While the resuscitation approach is somewhat simplistic, it effectively tests the core hypothesis. The work opens promising directions for understanding and improving language model knowledge integration."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces and rigorously defines a novel concept, 'knowledge entropy', which effectively quantifies the breadth of memory vector utilization in language models.",
+        "The experimental design is comprehensive, using multiple model sizes, datasets, and hyperparameter configurations to validate the findings across diverse conditions.",
+        "The resuscitation experiments provide compelling empirical support for the hypothesis by demonstrating that artificially increasing knowledge entropy improves acquisition and retention."
+      ],
+      "weaknesses": [
+        "The resuscitation method, while effective, relies on a somewhat ad hoc parameter modification scheme that may not be theoretically grounded or easily generalizable.",
+        "The analysis focuses solely on OLMo models due to checkpoint availability, limiting the generalizability of the findings to other architectures or training regimes."
+      ],
+      "summary_comment": "This paper presents a well-executed study with strong methodological rigor. The introduction of knowledge entropy is novel and insightful, and the experiments robustly support the core thesis that decreasing entropy correlates with impaired knowledge acquisition and retention. The resuscitation experiments provide convincing causal evidence. While the method is somewhat heuristic and the scope is limited to OLMo, the soundness and thoroughness of the evaluation justify acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper introduces a novel and well-motivated concept, 'knowledge entropy', to quantify a model's integration of parametric knowledge over time, which is intuitive and grounded in established understanding of FFNs as key-value memories.",
+        "It addresses a significant practical challenge—why later-stage pretraining models struggle with new knowledge acquisition—with clear evidence linking decreasing knowledge entropy to poorer performance in continual learning setups.",
+        "The clarity of the exposition is excellent; the problem is well-motivated, the methodology is transparent, and the contributions are clearly communicated for practitioners. The paper includes extensive experiments and ablation studies, enhancing reproducibility."
+      ],
+      "weaknesses": [
+        "The resuscitation intervention, while intriguing, is relatively simplistic (linear scaling of coefficients) and yields only modest improvements; more sophisticated methods might be needed for more substantial recovery to earlier-stage plasticity.",
+        "Given the focus on the OLMo family and the continual learning setup, it remains to be validated if the observed trends hold across a wider range of architectures (e.g., different sizes, training setups) and during direct pretraining, as acknowledged in the limitations."
+      ],
+      "summary_comment": "This is a strong, practical paper that makes a clear, significant contribution. It introduces a well-defined metric (knowledge entropy) to explain a key practical problem (loss of plasticity in late-stage pretraining). The experiments are extensive, sound, and clearly linked to the central hypothesis. The findings have immediate relevance for practitioners choosing checkpoint stages for fine-tuning or continual learning. While the proposed intervention is somewhat preliminary, it provides valuable evidence supporting the core concept. The paper is exceptionally well-written and its real-world significance for model training and deployment is substantial."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper introduces a novel concept (knowledge entropy) that quantifies memory integration behavior in language models, aligning with ICML's interest in fundamental machine learning concepts",
+        "Strong experimental methodology with comprehensive analysis across different model sizes and training stages matches ICML's emphasis on rigorous empirical evaluation",
+        "The work bridges theoretical understanding of neural networks (FFNs as key-value memories) with practical training dynamics, fitting ICML's focus on both theoretical and applied ML"
+      ],
+      "why_it_does_not_fit": [
+        "The paper focuses specifically on language model pretraining dynamics, which may be too narrow for ICML's broader ML audience",
+        "While novel, the concept of knowledge entropy builds heavily on existing FFN-as-memory literature rather than introducing fundamentally new algorithmic contributions",
+        "The resuscitation method is somewhat heuristic and may not meet ICML's high standards for methodological innovation"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' focus on understanding deep learning systems and their internal dynamics",
+        "The paper addresses a critical practical problem in large language model training (loss of plasticity) with significant implications for real-world applications",
+        "Strong interdisciplinary appeal combining insights from information theory, neural network analysis, and continual learning",
+        "Comprehensive experimental validation across multiple dimensions (model sizes, datasets, hyperparameters) aligns with NeurIPS' emphasis on thorough evaluation"
+      ],
+      "why_it_does_not_fit": [
+        "The work is somewhat specialized to language models rather than general neural architectures",
+        "The resuscitation intervention, while effective, is relatively simple and may not represent the cutting-edge methodological innovation NeurIPS typically favors"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect alignment with ICLR's focus on deep learning architectures and their training dynamics",
+        "Direct relevance to language model pretraining and fine-tuning practices, core interests of ICLR audience",
+        "The paper provides novel insights into FFN layers as knowledge storage mechanisms, building directly on key ICLR literature",
+        "Strong practical significance for checkpoint selection and continual learning strategies in real-world LLM deployment",
+        "Excellent clarity and comprehensive experimental analysis meet ICLR's standards for reproducibility"
+      ],
+      "why_it_does_not_fit": [
+        "Limited to OLMo models due to checkpoint availability, though authors acknowledge this limitation",
+        "The resuscitation method, while effective, is somewhat ad-hoc and may benefit from more sophisticated approaches"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

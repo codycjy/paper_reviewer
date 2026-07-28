@@ -1,0 +1,809 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Pioneers data attribution for online RL by addressing the circular dependency between data and model, a significant gap in existing literature",
+        "Provides a comprehensive framework with concrete applications including diagnosis, temporal analysis, and targeted intervention",
+        "Demonstrates practical utility through IIF algorithm that improves sample efficiency and performance across diverse RL benchmarks including RLHF for LLMs"
+      ],
+      "weaknesses": [
+        "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+        "Lack of counterfactual interpretation for influence scores due to circular data-model dependency"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+          "severity": "minor",
+          "evidence": "The paper focuses primarily on PPO with SGD, with only brief experiments using Adam optimizer in Appendix B.7. Extension to other online RL algorithms like TRPO, A3C, or GRPO is discussed but not thoroughly evaluated.",
+          "affected_claim": "Claim that framework readily extends to other online RL algorithms",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Lack of counterfactual interpretation for influence scores due to circular data-model dependency",
+          "severity": "minor",
+          "evidence": "Section 7 acknowledges that the local attribution framework lacks clear counterfactual interpretation, stemming from both TracIn limitations and the fundamental difficulty of tracking causal effects across circular data-model dependency.",
+          "affected_claim": "Completeness of interpretability provided by the framework",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are technically supported through extensive experiments across multiple environments, proper statistical analysis, and ablation studies. The framework builds on established TracIn methodology adapted appropriately for online RL."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "This is the first work to address data attribution for online RL, tackling the circular data-model dependency problem that existing methods cannot handle. The local attribution framework and IIF algorithm represent novel contributions beyond prior work on interpretability and data selection."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work addresses fundamental challenges in online RL (sample inefficiency, interpretability) and demonstrates meaningful improvements across diverse benchmarks including traditional RL and modern RLHF for LLMs. The framework opens a new direction for RL research."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Experiments are comprehensive across multiple environments with proper statistical analysis. Comparisons with baselines (random filtering, advantage-based heuristics) demonstrate the effectiveness of the proposed approach. The RLHF extension shows practical relevance to current important applications."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured with clear explanations of the framework, applications, and algorithm. Figures effectively illustrate key concepts and results. The writing is generally clear despite the technical complexity."
+        }
+      },
+      "summary_comment": "The authors' response acknowledges both minor concerns but does not provide new evidence or arguments that would change the assessment of the submitted paper. Both weaknesses remain as originally identified: the evaluation is primarily focused on PPO/SGD (though with some Adam results), and counterfactual interpretation remains challenging due to the fundamental nature of online RL's circular dependency. These minor limitations do not materially affect the paper's substantial contributions. The work remains technically sound, novel, significant, well-evaluated, and clearly presented, meeting top-tier conference standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's reinforcement learning and optimization tracks - paper makes significant contributions to online RL efficiency and interpretability",
+        "Methodological innovation in data attribution framework addresses core ML challenges of sample efficiency and training stability",
+        "Comprehensive experimental evaluation across diverse RL benchmarks demonstrates rigorous empirical validation",
+        "Strong theoretical grounding in gradient-based influence estimation with practical algorithmic contributions"
+      ],
+      "why_it_does_not_fit": [
+        "While RL is within ICML's scope, the heavy focus on online RL specifics may not appeal to ICML's broader ML audience",
+        "Limited theoretical analysis beyond empirical demonstrations - ICML typically values strong theoretical contributions",
+        "Applications to RLHF for LLMs, while impressive, may be seen as more specialized than ICML's core focus areas"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' reinforcement learning and interpretability tracks - addresses fundamental challenges in online RL",
+        "Strong novelty as first work on data attribution for online RL, addressing circular data-model dependency",
+        "Practical significance demonstrated through IIF algorithm with improvements in sample efficiency and performance across diverse benchmarks",
+        "Excellent experimental rigor with comprehensive evaluation including RLHF applications to LLMs",
+        "Clear writing and presentation with well-structured framework development"
+      ],
+      "why_it_does_not_fit": [
+        "Some reviewer concerns about limited evaluation beyond PPO/SGD - NeurIPS typically expects broad validation",
+        "Lack of counterfactual interpretation for influence scores may be seen as a theoretical limitation for NeurIPS"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong relevance to ICLR's deep learning and reinforcement learning focus, particularly with applications to RLHF for LLMs",
+        "Innovative gradient-based methodology aligns well with ICLR's technical focus",
+        "Good empirical results across multiple environments with proper statistical analysis"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically emphasizes architectural innovations and deep learning theory - this work is more algorithmic/methodological",
+        "Limited exploration of neural network architectures or deep learning-specific contributions",
+        "While RLHF is relevant, the core methodology is more general RL-focused rather than deep learning-centric"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Pioneers data attribution for online RL by addressing the circular dependency between data and model, a significant gap in existing literature",
+              "Provides a comprehensive framework with concrete applications including diagnosis, temporal analysis, and targeted intervention",
+              "Demonstrates practical utility through IIF algorithm that improves sample efficiency and performance across diverse RL benchmarks including RLHF for LLMs"
+            ],
+            "weaknesses": [
+              "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+              "Lack of counterfactual interpretation for influence scores due to circular data-model dependency"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+                "severity": "minor",
+                "evidence": "The paper focuses primarily on PPO with SGD, with only brief experiments using Adam optimizer in Appendix B.7. Extension to other online RL algorithms like TRPO, A3C, or GRPO is discussed but not thoroughly evaluated.",
+                "affected_claim": "Claim that framework readily extends to other online RL algorithms",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Lack of counterfactual interpretation for influence scores due to circular data-model dependency",
+                "severity": "minor",
+                "evidence": "Section 7 acknowledges that the local attribution framework lacks clear counterfactual interpretation, stemming from both TracIn limitations and the fundamental difficulty of tracking causal effects across circular data-model dependency.",
+                "affected_claim": "Completeness of interpretability provided by the framework",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through extensive experiments across multiple environments, proper statistical analysis, and ablation studies. The framework builds on established TracIn methodology adapted appropriately for online RL."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "This is the first work to address data attribution for online RL, tackling the circular data-model dependency problem that existing methods cannot handle. The local attribution framework and IIF algorithm represent novel contributions beyond prior work on interpretability and data selection."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses fundamental challenges in online RL (sample inefficiency, interpretability) and demonstrates meaningful improvements across diverse benchmarks including traditional RL and modern RLHF for LLMs. The framework opens a new direction for RL research."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive across multiple environments with proper statistical analysis. Comparisons with baselines (random filtering, advantage-based heuristics) demonstrate the effectiveness of the proposed approach. The RLHF extension shows practical relevance to current important applications."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear explanations of the framework, applications, and algorithm. Figures effectively illustrate key concepts and results. The writing is generally clear despite the technical complexity."
+              }
+            },
+            "summary_comment": "This paper makes significant contributions by pioneering data attribution for online RL, addressing the circular data-model dependency problem that existing methods cannot handle. The local attribution framework is well-designed with meaningful target functions and demonstrates practical utility through three concrete applications. The IIF algorithm shows substantial improvements in sample efficiency and performance across diverse benchmarks. While there are minor limitations in generalization evaluation and counterfactual interpretation, the work is technically sound, novel, and impactful for the field. The paper meets the standards of a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Pioneers data attribution for online RL by addressing the circular dependency between data and model, a significant gap in existing literature",
+              "Provides a comprehensive framework with concrete applications including diagnosis, temporal analysis, and targeted intervention",
+              "Demonstrates practical utility through IIF algorithm that improves sample efficiency and performance across diverse RL benchmarks including RLHF for LLMs"
+            ],
+            "weaknesses": [
+              "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+              "Lack of counterfactual interpretation for influence scores due to circular data-model dependency"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+                "severity": "minor",
+                "evidence": "The paper focuses primarily on PPO with SGD, with only brief experiments using Adam optimizer in Appendix B.7. Extension to other online RL algorithms like TRPO, A3C, or GRPO is discussed but not thoroughly evaluated.",
+                "affected_claim": "Claim that framework readily extends to other online RL algorithms",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Lack of counterfactual interpretation for influence scores due to circular data-model dependency",
+                "severity": "minor",
+                "evidence": "Section 7 acknowledges that the local attribution framework lacks clear counterfactual interpretation, stemming from both TracIn limitations and the fundamental difficulty of tracking causal effects across circular data-model dependency.",
+                "affected_claim": "Completeness of interpretability provided by the framework",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through extensive experiments across multiple environments, proper statistical analysis, and ablation studies. The framework builds on established TracIn methodology adapted appropriately for online RL."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "This is the first work to address data attribution for online RL, tackling the circular data-model dependency problem that existing methods cannot handle. The local attribution framework and IIF algorithm represent novel contributions beyond prior work on interpretability and data selection."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses fundamental challenges in online RL (sample inefficiency, interpretability) and demonstrates meaningful improvements across diverse benchmarks including traditional RL and modern RLHF for LLMs. The framework opens a new direction for RL research."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive across multiple environments with proper statistical analysis. Comparisons with baselines (random filtering, advantage-based heuristics) demonstrate the effectiveness of the proposed approach. The RLHF extension shows practical relevance to current important applications."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear explanations of the framework, applications, and algorithm. Figures effectively illustrate key concepts and results. The writing is generally clear despite the technical complexity."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges both concerns and provides appropriate context from the submitted paper. The limited evaluation beyond PPO/SGD is appropriately framed as a focus on a widely-used standard rather than a limitation of the framework's design. The lack of counterfactual interpretation is correctly identified as a fundamental challenge inherent to online RL's circular dependency. Both concerns remain minor and do not materially affect the paper's contributions. The work remains technically sound, novel, significant, well-evaluated, and clearly presented, meeting top-tier conference standards."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited evaluation of framework generalization beyond PPO and SGD optimizer\",\n        \"Lack of counterfactual interpretation for influence scores due to circular data-model dependency\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited evaluation of framework generalization beyond PPO and SGD optimizer\",\n          \"location\": \"Section 3.1, Remark 2; Section 7\",\n          \"explanation\": \"The paper explicitly discusses the extensibility of the framework to other on-policy methods (TRPO, A3C) by modifying the per-sample loss gradient, and to other settings like offline RL (DQN) by adjusting the target function. Section 7 also outlines GRPO as a promising avenue for future work and discusses the technical reasons for using SGD as a proxy for Adam, citing related work (Wang et al., 2025b).\"\n        },\n        {\n          \"concern\": \"Lack of counterfactual interpretation for influence scores due to circular data-model dependency\",\n          \"location\": \"Section 3, first paragraph (Challenges); Section 7 (Limitations)\",\n          \"explanation\": \"The paper acknowledges the fundamental difficulty of causal/counterfactual interpretation from the outset. Section 3 explains that the circular data-model dependency is a unique challenge of online RL that prevents direct application of standard attribution methods. The Limitations section (Sec. 7) explicitly states the lack of a clear counterfactual interpretation, attributing it partly to TracIn itself but primarily to the inherent difficulty of tracking causal effects across the non-stationary, non-differentiable dependency loop, which is presented as an open problem for future work.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited evaluation of framework generalization beyond PPO and SGD optimizer\",\n          \"proposed_change\": \"We will add a short discussion in Section 7 (Limitations) to more explicitly acknowledge the current experimental focus on PPO and SGD, and to clarify the distinction between our framework's stated extensibility (which is based on its modular design of target functions and attribution methods) and the empirical demonstration of its efficacy under these specific, widely-used conditions. We will also note that experiments with Adam (Appendix B.7) demonstrate the algorithm's effectiveness with an adaptive optimizer.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We sincerely thank the reviewer for their positive and constructive feedback. We are pleased that they find our work to be a significant contribution that is sound, novel, impactful, and well-presented.\\n\\nRegarding the first point on limited evaluation, we agree that our primary empirical demonstration is focused on PPO with SGD, as this constitutes a widely used and effective standard in the field. Our design principle is modular: the local attribution framework decouples the *definition of attribution entities and target functions* (Sections 3.1-3.1) from the *choice of attribution method* (Section 3.1). This modularity facilitates the extensions we mention (e.g., to TRPO, A3C, or GRPO via new loss gradients, or to different attribution techniques). Our core contribution is establishing this framework and showing its utility within a standard, representative setting. In a revised manuscript, we will clarify this distinction between the framework's potential for generalization (which is broad) and our specific experimental validation (focused on PPO). The experiments with Adam presented in Appendix B.7 reinforce that the benefits of IIF persist with a different optimizer.\\n\\nConcerning the second point on counterfactual interpretation, we appreciate this important observation. The reviewer correctly notes that we explicitly identify this limitation in the paper. We frame the lack of a clear counterfactual interpretation not as a flaw in our specific implementation, but as a fundamental theoretical challenge inherent to any method attempting to attribute influence within the unique data-model loop of online RL. As we state in Section 3, this circular dependency is 'unique to online RL and cannot be addressed by existing attribution methods.' Therefore, our 'local' framing—analyzing influence within a single training round—is a deliberate strategy to make the problem tractable while honestly acknowledging that a full causal/counterfactual account across the entire training history remains an open and challenging research problem. We hope our work will inspire future research in this direction.\\n\\nBoth of these points are important for readers to understand the scope and context of our contributions. We will incorporate the suggested discussion on experimental focus into the Limitations section to further enhance the paper's clarity and completeness.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Pioneers data attribution for online RL by addressing the circular dependency between data and model, a significant gap in existing literature",
+              "Provides a comprehensive framework with concrete applications including diagnosis, temporal analysis, and targeted intervention",
+              "Demonstrates practical utility through IIF algorithm that improves sample efficiency and performance across diverse RL benchmarks including RLHF for LLMs"
+            ],
+            "weaknesses": [
+              "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+              "Lack of counterfactual interpretation for influence scores due to circular data-model dependency"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited evaluation of framework generalization beyond PPO and SGD optimizer",
+                "severity": "minor",
+                "evidence": "The paper focuses primarily on PPO with SGD, with only brief experiments using Adam optimizer in Appendix B.7. Extension to other online RL algorithms like TRPO, A3C, or GRPO is discussed but not thoroughly evaluated.",
+                "affected_claim": "Claim that framework readily extends to other online RL algorithms",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Lack of counterfactual interpretation for influence scores due to circular data-model dependency",
+                "severity": "minor",
+                "evidence": "Section 7 acknowledges that the local attribution framework lacks clear counterfactual interpretation, stemming from both TracIn limitations and the fundamental difficulty of tracking causal effects across circular data-model dependency.",
+                "affected_claim": "Completeness of interpretability provided by the framework",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through extensive experiments across multiple environments, proper statistical analysis, and ablation studies. The framework builds on established TracIn methodology adapted appropriately for online RL."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "This is the first work to address data attribution for online RL, tackling the circular data-model dependency problem that existing methods cannot handle. The local attribution framework and IIF algorithm represent novel contributions beyond prior work on interpretability and data selection."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses fundamental challenges in online RL (sample inefficiency, interpretability) and demonstrates meaningful improvements across diverse benchmarks including traditional RL and modern RLHF for LLMs. The framework opens a new direction for RL research."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive across multiple environments with proper statistical analysis. Comparisons with baselines (random filtering, advantage-based heuristics) demonstrate the effectiveness of the proposed approach. The RLHF extension shows practical relevance to current important applications."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear explanations of the framework, applications, and algorithm. Figures effectively illustrate key concepts and results. The writing is generally clear despite the technical complexity."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges both minor concerns but does not provide new evidence or arguments that would change the assessment of the submitted paper. Both weaknesses remain as originally identified: the evaluation is primarily focused on PPO/SGD (though with some Adam results), and counterfactual interpretation remains challenging due to the fundamental nature of online RL's circular dependency. These minor limitations do not materially affect the paper's substantial contributions. The work remains technically sound, novel, significant, well-evaluated, and clearly presented, meeting top-tier conference standards."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited evaluation of framework generalization beyond PPO and SGD optimizer\",\n        \"Lack of counterfactual interpretation for influence scores due to circular data-model dependency\"\n      ],\n      \"supporting_evidence_in_submission\": [],\n      \"proposed_future_revisions\": [],\n      \"response\": \"We thank the reviewer for their positive and thoughtful review. We are very pleased that they found our contributions significant, technically sound, and well-presented. We also appreciate that after considering our initial response, they find both identified weaknesses to be minor and that these points do not materially impact the acceptance of our work. We will consider the points raised--especially clarifying the distinction between the framework's broad extensibility and our focused empirical validation--when preparing the final version of the paper for publication. We thank the reviewer for their constructive and supportive feedback throughout the review process.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_aed62a6938cc",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_043_a_snapshot_of_influence_a_local_data_attribution_framework_for_online_reinforcem.md",
+    "target_paper_summary": {
+      "paper_id": "paper_aed62a6938cc",
+      "title": "A Snapshot Of Influence: A Local Data Attribution Framework For Online Reinforcement Learning",
+      "abstract": "Online reinforcement learning (RL) excels in complex, safety-critical domains but suffers from sample inefficiency, training instability, and limited interpretability. Data attribution provides a principled way to trace model behavior back to training samples, yet existing methods assume fixed datasets, which is violated in online RL where each experience both updates the policy and shapes future data collection. In this paper, we initiate the study of data attribution for online RL, focusing on the widely used Proximal Policy Optimization (PPO) algorithm. We start by establishing a *local* attribution framework, interpreting model checkpoints with respect to the records in the recent training buffer. We design two target functions, capturing agent action and cumulative return respectively, and measure each record's contribution through gradient similarity between its training loss and these targets. We demonstrate the power of this framework through three concrete applications: diagnosis of learning, temporal analysis of behavior formation, and targeted intervention during training. Leveraging this framework, we further propose an algorithm, iterative influence-based filtering (IIF), for online RL training that iteratively performs experience filtering to refine policy updates. Across standard RL benchmarks (classic control, navigation, locomotion) to RLHF for large language models, IIF reduces sample complexity, speeds up training, and achieves higher returns. Together, these results open a new direction for making online RL more interpretable, efficient, and effective.",
+      "topic": "",
+      "claims": [
+        "We demonstrate the power of this framework through three concrete applications: diagnosis of learning, temporal analysis of behavior formation, and targeted intervention during training."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_2fd3b9c31",
+        "title": "Machine Learning and Deep Learning frameworks and libraries for large-scale data mining: a survey",
+        "authors": [
+          "Giang Nguyen",
+          "Štefan Dlugolinský",
+          "Martin Bobák",
+          "Viet Tran",
+          "Álvaro López García",
+          "Ignacio Heredia",
+          "Peter Malík",
+          "Ladislav Hluchý"
+        ],
+        "year": 2019,
+        "publication_date": "2019-01-19",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "The combined impact of new computing resources and techniques with an increasing avalanche of large datasets, is transforming many research areas and may lead to technological breakthroughs that can be used by billions of people. In the recent years, Machine Learning and especially its subfield Deep Learning have seen impressive advances. Techniques developed within these two fields are now able to analyze and learn from huge amounts of real world examples in a disparate formats. While the number of Machine Learning algorithms is extensive and growing, their implementations through frameworks and libraries is also extensive and growing too. The software development in this field is fast paced with a large number of open-source software coming from the academy, industry, start-ups or wider open-source communities. This survey presents a recent time-slide comprehensive overview with comparisons as well as trends in development and usage of cutting-edge Artificial Intelligence software. It also provides an overview of massive parallelism support that is capable of scaling computation effectively and efficiently in the era of Big Data.",
+        "url": "https://doi.org/10.1007/s10462-018-09679-z",
+        "doi": "https://doi.org/10.1007/s10462-018-09679-z",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2910096450"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 862
+      },
+      {
+        "paper_id": "rw_002_74d09cbde",
+        "title": "Distributed Drone Base Station Positioning for Emergency Cellular Networks Using Reinforcement Learning",
+        "authors": [
+          "Paulo Valente Klaine",
+          "João Pedro Battistella Nadas",
+          "Richard Demo Souza",
+          "Muhammad Ali Imran"
+        ],
+        "year": 2018,
+        "publication_date": "2018-05-22",
+        "venue": "Cognitive Computation",
+        "abstract": "Due to the unpredictability of natural disasters, whenever a catastrophe happens, it is vital that not only emergency rescue teams are prepared, but also that there is a functional communication network infrastructure. Hence, in order to prevent additional losses of human lives, it is crucial that network operators are able to deploy an emergency infrastructure as fast as possible. In this sense, the deployment of an intelligent, mobile, and adaptable network, through the usage of drones—unmanned aerial vehicles—is being considered as one possible alternative for emergency situations. In this paper, an intelligent solution based on reinforcement learning is proposed in order to find the best position of multiple drone small cells (DSCs) in an emergency scenario. The proposed solution’s main goal is to maximize the amount of users covered by the system, while drones are limited by both backhaul and radio access network constraints. Results show that the proposed Q -learning solution largely outperforms all other approaches with respect to all metrics considered. Hence, intelligent DSCs are considered a good alternative in order to enable the rapid and efficient deployment of an emergency communication network.",
+        "url": "https://doi.org/10.1007/s12559-018-9559-8",
+        "doi": "https://doi.org/10.1007/s12559-018-9559-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2799343071"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 117
+      },
+      {
+        "paper_id": "rw_003_cb29e0439",
+        "title": "COLREG-Compliant Collision Avoidance for Unmanned Surface Vehicle Using Deep Reinforcement Learning",
+        "authors": [
+          "Eivind Meyer",
+          "Amalie Heiberg",
+          "Adil Rasheed",
+          "Omer San"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Path Following and Collision Avoidance, be it for unmanned surface vessels or other autonomous vehicles, are two fundamental guidance problems in robotics. For many decades, they have been subject to academic study, leading to a vast number of proposed approaches. However, they have mostly been treated as separate problems, and have typically relied on non-linear first-principles models with parameters that can only be determined experimentally. The rise of deep reinforcement learning in recent years suggests an alternative approach: end-to-end learning of the optimal guidance policy from scratch by means of a trial-and-error based approach. In this article, we explore the potential of Proximal Policy Optimization, a deep reinforcement learning algorithm with demonstrated state-of-the-art performance on Continuous Control tasks, when applied to the dual-objective problem of controlling an autonomous surface vehicle in a COLREGs compliant manner such that it follows an a priori known desired path while avoiding collisions with other vessels along the way. Based on high-fidelity elevation and AIS tracking data from the Trondheim Fjord, an inlet of the Norwegian sea, we evaluate the trained agent's performance in challenging, dynamic real-world scenarios where the ultimate success of the agent rests upon its ability to navigate non-uniform marine terrain while handling challenging, but realistic vessel encounters.",
+        "url": "https://doi.org/10.1109/access.2020.3022600",
+        "doi": "https://doi.org/10.1109/access.2020.3022600",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3083914918"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 93
+      },
+      {
+        "paper_id": "rw_004_a9c9caf03",
+        "title": "Deep Reinforcement Learning Versus Evolution Strategies: A Comparative Survey",
+        "authors": [
+          "Amjad Yousef Majid",
+          "Serge Saaybi",
+          "Vincent François-Lavet",
+          "Ramjee Prasad",
+          "C.J.M. Verhoeven"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-02",
+        "venue": "IEEE Transactions on Neural Networks and Learning Systems",
+        "abstract": "Deep reinforcement learning (DRL) and evolution strategies (ESs) have surpassed human-level control in many sequential decision-making problems, yet many open challenges still exist. To get insights into the strengths and weaknesses of DRL versus ESs, an analysis of their respective capabilities and limitations is provided. After presenting their fundamental concepts and algorithms, a comparison is provided on key aspects, such as scalability, exploration, adaptation to dynamic environments, and multiagent learning. Current research challenges are also discussed, including sample efficiency, exploration versus exploitation, dealing with sparse rewards, and learning to plan. Then, the benefits of hybrid algorithms that combine DRL and ESs are highlighted.",
+        "url": "https://doi.org/10.1109/tnnls.2023.3264540",
+        "doi": "https://doi.org/10.1109/tnnls.2023.3264540",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4367727829"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 79
+      },
+      {
+        "paper_id": "rw_005_89b6e8056",
+        "title": "Deep reinforcement learning for multi-objective placement of virtual machines in cloud datacenters",
+        "authors": [
+          "Luca Caviglione",
+          "Mauro Gaggero",
+          "Massimo Paolucci",
+          "Roberto Ronco"
+        ],
+        "year": 2020,
+        "publication_date": "2020-12-12",
+        "venue": "Soft Computing",
+        "abstract": "Abstract The ubiquitous diffusion of cloud computing requires suitable management policies to face the workload while guaranteeing quality constraints and mitigating costs. The typical trade-off is between the used power and the adherence to a service-level metric subscribed by customers. To this aim, a possible idea is to use an optimization-based placement mechanism to select the servers where to deploy virtual machines. Unfortunately, high packing factors could lead to performance and security issues, e.g., virtual machines can compete for hardware resources or collude to leak data. Therefore, we introduce a multi-objective approach to compute optimal placement strategies considering different goals, such as the impact of hardware outages, the power required by the datacenter, and the performance perceived by users. Placement strategies are found by using a deep reinforcement learning framework to select the best placement heuristic for each virtual machine composing the workload. Results indicate that our method outperforms bin packing heuristics widely used in the literature when considering either synthetic or real workloads.",
+        "url": "https://doi.org/10.1007/s00500-020-05462-x",
+        "doi": "https://doi.org/10.1007/s00500-020-05462-x",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3112195926"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 74
+      },
+      {
+        "paper_id": "rw_006_e7a1ee957",
+        "title": "Retrosynthesis prediction with an interpretable deep-learning framework based on molecular assembly tasks",
+        "authors": [
+          "Y. Wang",
+          "Chao Pang",
+          "Yuzhe Wang",
+          "Junru Jin",
+          "Jingjie Zhang",
+          "Xiangxiang Zeng",
+          "Ran Su",
+          "Quan Zou",
+          "Leyi Wei"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-03",
+        "venue": "Nature Communications",
+        "abstract": "Automating retrosynthesis with artificial intelligence expedites organic chemistry research in digital laboratories. However, most existing deep-learning approaches are hard to explain, like a \"black box\" with few insights. Here, we propose RetroExplainer, formulizing the retrosynthesis task into a molecular assembly process, containing several retrosynthetic actions guided by deep learning. To guarantee a robust performance of our model, we propose three units: a multi-sense and multi-scale Graph Transformer, structure-aware contrastive learning, and dynamic adaptive multi-task learning. The results on 12 large-scale benchmark datasets demonstrate the effectiveness of RetroExplainer, which outperforms the state-of-the-art single-step retrosynthesis approaches. In addition, the molecular assembly process renders our model with good interpretability, allowing for transparent decision-making and quantitative attribution. When extended to multi-step retrosynthesis planning, RetroExplainer has identified 101 pathways, in which 86.9% of the single reactions correspond to those already reported in the literature. As a result, RetroExplainer is expected to offer valuable insights for reliable, high-throughput, and high-quality organic synthesis in drug development.",
+        "url": "https://doi.org/10.1038/s41467-023-41698-5",
+        "doi": "https://doi.org/10.1038/s41467-023-41698-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387297831"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 118
+      },
+      {
+        "paper_id": "rw_008_dd7d56781",
+        "title": "GPT-4 Technical Report",
+        "authors": [
+          "OpenAI",
+          "Achiam, Josh",
+          "Adler, Steven",
+          "Agarwal, Sandhini",
+          "Ahmad, Lama",
+          "Akkaya, Ilge",
+          "Aleman, Florencia Leoni",
+          "Almeida, Diogo",
+          "Altenschmidt, Janko",
+          "Altman, Sam",
+          "Anadkat, Shyamal",
+          "Avila, Red",
+          "Babuschkin, Igor",
+          "Balaji, Suchir",
+          "Balcom, Valerie",
+          "Baltescu, Paul",
+          "Bao, Haiming",
+          "Bavarian, Mohammad",
+          "Belgum, Jeff",
+          "Bello, Irwan",
+          "Berdine, Jake",
+          "Bernadett-Shapiro, Gabriel",
+          "Berner, Christopher",
+          "Bogdonoff, Lenny",
+          "Boiko, Oleg",
+          "Boyd, Madelaine",
+          "Brakman, Anna-Luisa",
+          "Brockman, Greg",
+          "Brooks, Tim",
+          "Brundage, Miles",
+          "Button, Kevin",
+          "Cai, Trevor",
+          "Campbell, Rosie",
+          "Cann, Andrew",
+          "Carey, Brittany",
+          "Carlson, Chelsea",
+          "Carmichael, Rory",
+          "Chan, Brooke",
+          "Chang, Che",
+          "Chantzis, Fotis",
+          "Chen, Derek",
+          "Chen, Sully",
+          "Chen, Ruby",
+          "Chen, Jason",
+          "Chen, Mark",
+          "Chess, Ben",
+          "Cho, Chester",
+          "Chu, Casey",
+          "Chung, Hyung Won",
+          "Cummings, Dave",
+          "Currier, Jeremiah",
+          "Dai, Yunxing",
+          "Decareaux, Cory",
+          "Degry, Thomas",
+          "Deutsch, Noah",
+          "Deville, Damien",
+          "Dhar, Arka",
+          "Dohan, David",
+          "Dowling, Steve",
+          "Dunning, Sheila",
+          "Ecoffet, Adrien",
+          "Eleti, Atty",
+          "Eloundou, Tyna",
+          "Farhi, David",
+          "Fedus, Liam",
+          "Felix, Niko",
+          "Fishman, Simón Posada",
+          "Forte, Juston",
+          "Fulford, Isabella",
+          "Gao, Leo",
+          "Georges, Elie",
+          "Gibson, Christian",
+          "Goel, Vik",
+          "Gogineni, Tarun",
+          "Goh, Gabriel",
+          "Gontijo-Lopes, Rapha",
+          "Gordon, Jonathan",
+          "Grafstein, Morgan",
+          "Gray, Scott",
+          "Greene, Ryan",
+          "Gross, Joshua",
+          "Gu, Shixiang Shane",
+          "Guo, Yufei",
+          "Hallacy, Chris",
+          "Han, Jesse",
+          "Harris, Jeff",
+          "He, Yuchen",
+          "Heaton, Mike",
+          "Heidecke, Johannes",
+          "Hesse, Chris",
+          "Hickey, Alan",
+          "Hickey, Wade",
+          "Hoeschele, Peter",
+          "Houghton, Brandon",
+          "Hsu, Kenny",
+          "Hu, Shengli",
+          "Hu, Xin",
+          "Huizinga, Joost",
+          "Jain, Shantanu",
+          "Jain, Shawn"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-15",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Abstract—Large Language Models (LLMs) suffer from inherent stochasticity, limiting their utility in high-stakes enterprise environments where determinism and auditability are required. This paper introduces the MFOUR Vibe Framework (MVF), a platform-agnostic architectural standard that transforms probabilistic natural language intent into deterministic software artifacts. We define a five-layer topology, comprising the Kernel Identity, Synaptic Routing, Interface Contracts, Context Anchoring, and the Mirror Test. Furthermore, we introduce The Vibe Integrity Score (VIS), a quantitative metric for evaluating the structural adherence of generative outputs. This specification provides the foundational schema and logic protocols for building \"Glass Box\" AI systems that are observable, secure, and commercially viable.",
+        "url": "http://arxiv.org/abs/2303.08774",
+        "doi": "https://doi.org/10.4230/lipics.cosit.2024.11",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4327810158"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2421
+      },
+      {
+        "paper_id": "rw_009_9a348978d",
+        "title": "A Review of Deep Learning-Based Semantic Segmentation for Point Cloud",
+        "authors": [
+          "Jiaying Zhang",
+          "Xiaoli Zhao",
+          "Zheng Chen",
+          "Zhejun Lu"
+        ],
+        "year": 2019,
+        "publication_date": "2019-01-01",
+        "venue": "IEEE Access",
+        "abstract": "In recent years, the popularity of depth sensors and 3D scanners has led to a rapid development of 3D point clouds. Semantic segmentation of point cloud, as a key step in understanding 3D scenes, has attracted extensive attention of researchers. Recent advances in this topic are dominantly led by deep learning-based methods. In this paper, we provide a survey covering various aspects ranging from indirect segmentation to direct segmentation. Firstly, we review methods of indirect segmentation based on multi-views and voxel grids, as well as direct segmentation methods from different perspectives including point ordering, multi-scale, feature fusion and fusion of graph convolutional neural network (GCNN). Then, the common datasets for point cloud segmentation are exposed to help researchers choose which one is the most suitable for their tasks. Following that, we devote a part of the paper to analyze the quantitative results of these methods. Finally, the development trend of point cloud semantic segmentation technology is prospected.",
+        "url": "https://doi.org/10.1109/access.2019.2958671",
+        "doi": "https://doi.org/10.1109/access.2019.2958671",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2995932445"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 307
+      },
+      {
+        "paper_id": "rw_010_dfdafa089",
+        "title": "Learning against learning : evolutionary dynamics of reinforcement learning algorithms in strategic interactions",
+        "authors": [
+          "Michael Kaisers"
+        ],
+        "year": 2012,
+        "publication_date": "2012-01-01",
+        "venue": "",
+        "abstract": "Imagine computer programs (agents) that learn to coordinate or to compete. This study investigates how their learning processes influence each other. Such adaptive agents already take vital roles behind the scenes of our society, e.g., high frequency automated traders participate in financial trading and create more volume than human trading in some US markets. However, many learning algorithms only have proven performance guarantees if they act alone - as soon as a second agent influences the outcomes most guarantees are invalid. This dissertation extends guarantees to strategic interactions of several agents and examines how closely algorithms approximate optimal behavior. This research was funded by a TopTalent 2008 grant of NWO.",
+        "url": "https://doi.org/10.26481/dis.20121217mk",
+        "doi": "https://doi.org/10.26481/dis.20121217mk",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1260602278"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 34
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_cb29e0439",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper applies the Proximal Policy Optimization (PPO) algorithm, the same method targeted for data attribution in the target paper, to the control of an autonomous surface vehicle for path following and collision avoidance.",
+        "evidence_summary": "In 2020, Meyer et al. published 'COLREG-Compliant Collision Avoidance for Unmanned Surface Vehicle Using Deep Reinforcement Learning', which explored the use of the Proximal Policy Optimization algorithm for controlling an autonomous surface vehicle. The agent was tasked with following a desired path while avoiding collisions in a COLREGs-compliant manner, utilizing high-fidelity elevation and AIS tracking data from the Trondheim Fjord for evaluation in dynamic real-world scenarios."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_a9c9caf03",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey compares deep reinforcement learning and evolution strategies, directly discussing challenges like sample efficiency and exploration in RL which are core problems addressed by the target paper's proposed framework and algorithm.",
+        "evidence_summary": "In 2023, Majid et al. published 'Deep Reinforcement Learning Versus Evolution Strategies: A Comparative Survey', providing an analysis of the capabilities, limitations, and research challenges of deep reinforcement learning. The survey highlighted key challenges including sample efficiency, the exploration versus exploitation trade-off, and dealing with sparse rewards."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_002_74d09cbde",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper applies reinforcement learning to a practical, dynamic optimization problem, demonstrating the use of Q-learning for drone positioning, which is relevant to the online RL application domains discussed in the target paper.",
+        "evidence_summary": "In 2018, Klaine et al. published 'Distributed Drone Base Station Positioning for Emergency Cellular Networks Using Reinforcement Learning', proposing an intelligent Q-learning solution to position multiple drone small cells in an emergency scenario. The goal was to maximize user coverage under backhaul and radio access network constraints, with results showing the solution outperformed other considered approaches across all metrics."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_e7a1ee957",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "novelty_competitor",
+          "same_constraints"
+        ],
+        "rationale": "This paper proposes an interpretable deep-learning framework for retrosynthesis, addressing the 'black box' problem and providing transparent decision-making with quantitative attribution, which aligns with the target paper's goal of improving interpretability in online RL.",
+        "evidence_summary": "In 2023, Wang et al. published 'Retrosynthesis prediction with an interpretable deep-learning framework based on molecular assembly tasks', formulating retrosynthesis as a molecular assembly process guided by deep learning. The proposed RetroExplainer model incorporated a Graph Transformer, contrastive learning, and multi-task learning, yielding interpretability through its assembly process, outperforming state-of-the-art single-step retrosynthesis approaches on 12 benchmark datasets, and identifying reaction pathways with high correspondence to literature."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_005_89b6e8056",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper applies deep reinforcement learning to a multi-objective optimization problem in cloud computing, relevant to the application of RL in complex domains as mentioned in the target paper's abstract.",
+        "evidence_summary": "In 2020, Caviglione et al. published 'Deep reinforcement learning for multi-objective placement of virtual machines in cloud datacenters', which used a deep reinforcement learning framework to select placement heuristics for virtual machines. The multi-objective approach considered goals like hardware outage impact, datacenter power, and user performance, and was shown to outperform standard bin packing heuristics on both synthetic and real workloads."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_010_dfdafa089",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This dissertation examines the dynamics of reinforcement learning algorithms in multi-agent strategic interactions, discussing the invalidation of performance guarantees when multiple learning agents interact, a relevant limitation context for online RL.",
+        "evidence_summary": "In 2012, Kaisers authored 'Learning against learning : evolutionary dynamics of reinforcement learning algorithms in strategic interactions', investigating how learning processes of adaptive agents influence each other in strategic interactions. The work highlighted that many learning algorithms lack performance guarantees when other agents influence outcomes, and extended guarantees to such multi-agent settings."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_2fd3b9c31",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This is a broad survey of machine learning and deep learning frameworks and libraries, providing general background on the field but no direct connection to data attribution, online RL, or PPO.",
+        "evidence_summary": "In 2019, Nguyen et al. published 'Machine Learning and Deep Learning frameworks and libraries for large-scale data mining: a survey', providing a comprehensive overview and comparison of cutting-edge Artificial Intelligence software. The survey also covered trends in development and usage, as well as massive parallelism support for scaling computation in the era of Big Data."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_dd7d56781",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This technical report on GPT-4 discusses large language models and a framework for deterministic outputs, which is only tangentially related to the target via the mention of RLHF for LLMs as a potential application domain.",
+        "evidence_summary": "In 2023, OpenAI et al. published the 'GPT-4 Technical Report'. The report introduced the MFOUR Vibe Framework, an architectural standard to transform probabilistic natural language intent into deterministic software artifacts, and defined a five-layer topology and a Vibe Integrity Score for evaluating generative outputs."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_009_9a348978d",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This is a review of deep learning methods for semantic segmentation of 3D point clouds, which is a different computer vision task unrelated to data attribution or online reinforcement learning.",
+        "evidence_summary": "In 2019, Zhang et al. published 'A Review of Deep Learning-Based Semantic Segmentation for Point Cloud', surveying methods ranging from indirect segmentation based on multi-views and voxel grids to direct segmentation. The review also analyzed quantitative results of these methods on common datasets and prospected the technology's development trends."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2020, Eivind Meyer et al. published \"COLREG-Compliant Collision Avoidance for Unmanned Surface Vehicle Using Deep Reinforcement Learning\" in IEEE Access. For many decades, they have been subject to academic study, leading to a vast number of proposed approaches. In this article, the authors explore the potential of Proximal Policy Optimization, a deep reinforcement learning algorithm with demonstrated state-of-the-art performance on Continuous Control tasks, when applied to the dual-objective problem of controlling an autonomous surface vehicle in a COLREGs compliant manner such that it follows an a priori known desired path while avoiding collisions with other vessels along the way. However, they have mostly been treated as separate problems, and have typically relied on non-linear first-principles models with parameters that can only be determined experimentally. In 2023, Amjad Yousef Majid et al. published \"Deep Reinforcement Learning Versus Evolution Strategies: A Comparative Survey\" in IEEE Transactions on Neural Networks and Learning Systems. After presenting their fundamental concepts and algorithms, a comparison is provided on key aspects, such as scalability, exploration, adaptation to dynamic environments, and multiagent learning. Current research challenges are also discussed, including sample efficiency, exploration versus exploitation, dealing with sparse rewards, and learning to plan. Deep reinforcement learning (DRL) and evolution strategies (ESs) have surpassed human-level control in many sequential decision-making problems, yet many open challenges still exist. In 2018, Paulo Valente Klaine et al. published \"Distributed Drone Base Station Positioning for Emergency Cellular Networks Using Reinforcement Learning\" in Cognitive Computation. In this paper, an intelligent solution based on reinforcement learning is proposed in order to find the best position of multiple drone small cells (DSCs) in an emergency scenario. Results show that the proposed Q -learning solution largely outperforms all other approaches with respect to all metrics considered. Hence, intelligent DSCs are considered a good alternative in order to enable the rapid and efficient deployment of an emergency communication network. In 2023, Y. Wang et al. published \"Retrosynthesis prediction with an interpretable deep-learning framework based on molecular assembly tasks\" in Nature Communications. Here, the authors propose RetroExplainer, formulizing the retrosynthesis task into a molecular assembly process, containing several retrosynthetic actions guided by deep learning. The results on 12 large-scale benchmark datasets demonstrate the effectiveness of RetroExplainer, which outperforms the state-of-the-art single-step retrosynthesis approaches. However, most existing deep-learning approaches are hard to explain, like a \"black box\" with few insights. In 2020, Luca Caviglione et al. published \"Deep reinforcement learning for multi-objective placement of virtual machines in cloud datacenters\" in Soft Computing. Therefore, the authors introduce a multi-objective approach to compute optimal placement strategies considering different goals, such as the impact of hardware outages, the power required by the datacenter, and the performance perceived by users. The typical trade-off is between the used power and the adherence to a service-level metric subscribed by customers. Unfortunately, high packing factors could lead to performance and security issues, e.g., virtual machines can compete for hardware resources or collude to leak data. In 2012, Michael Kaisers published \"Learning against learning : evolutionary dynamics of reinforcement learning algorithms in strategic interactions\". Such adaptive agents already take vital roles behind the scenes of the authors' society, e.g., high frequency automated traders participate in financial trading and create more volume than human trading in some US markets. However, many learning algorithms only have proven performance guarantees if they act alone - as soon as a second agent influences the outcomes most guarantees are invalid. This study investigates how their learning processes influence each other.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

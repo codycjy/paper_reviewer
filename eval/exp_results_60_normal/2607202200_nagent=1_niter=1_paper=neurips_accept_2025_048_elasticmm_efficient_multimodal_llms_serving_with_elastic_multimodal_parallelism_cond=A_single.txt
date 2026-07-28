@@ -1,0 +1,81 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of 'Elastic Multimodal Parallelism' (EMP) with its two-tiered decoupling (modality-level and stage-level) is genuinely novel and a significant step forward for MLLM serving. It breaks away from the tightly coupled architectures, which is a bold and much-needed innovation.",
+        "The proposed solutions—modality-aware load balancing, elastic partitioned scheduling, unified multimodal prefix caching, and non-blocking encoding—directly address the unique challenges of MLLM serving, demonstrating a deep understanding of the problem space.",
+        "The experimental results showcasing substantial improvements (up to 4.2x TTFT reduction, 3.2-4.5x throughput increase) over SOTA baselines like vLLM are highly impressive and suggest a practical, impactful solution."
+      ],
+      "weaknesses": [
+        "While the paper presents good results, the evaluation is primarily focused on a single-node setup with 8 A800 GPUs. The authors acknowledge this as future work, but the scalability of the elastic mechanisms, especially inter-node communication for preemption and dynamic allocation, remains largely unexplored and is critical for real-world large-scale deployments.",
+        "The explanation of the `gain-cost model` for reactive scaling and preemption (Equations 2 and 3) is somewhat high-level. More detailed empirical analysis or sensitivity studies on the `w` (penalty factor) and how different values impact performance and resource utilization would strengthen the soundness of the adaptive mechanisms."
+      ],
+      "summary_comment": "This paper presents ElasticMM, a highly novel and significant system for serving Multimodal Large Language Models (MLLMs). The central concept of Elastic Multimodal Parallelism (EMP), which decouples MLLM serving at both modality and inference stage levels, is a truly innovative approach to overcome the limitations of existing tightly coupled LLM serving systems when extended to MLLMs. The dynamic resource allocation, elastic scheduling, and specific multimodal optimizations (prefix caching, non-blocking encoding) are well-conceived and address the core challenges of MLLM inference efficiency. The performance gains demonstrated over state-of-the-art baselines are compelling and suggest a strong practical impact. While the current evaluation is limited to a single node, the foundational ideas are robust and potentially transformative for the field of efficient MLLM serving. The identified weaknesses are relatively minor given the overall innovation and the acknowledged future work."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's topic of 'Efficient Multimodal LLMs Serving' directly aligns with ICML's interest in 'machine learning systems (improved implementation and scalability, hardware, libraries, distributed methods, etc.)' and 'deep learning (architectures, generative models, theory, etc.)' as MLLMs are a form of deep learning model.",
+        "The contribution is primarily systems-oriented, focusing on architectural innovations (Elastic Multimodal Parallelism, modality-aware load balancing, elastic partitioned scheduling) and optimizations (unified multimodal prefix caching, non-blocking encoding) to improve the efficiency and scalability of MLLM serving. ICML explicitly welcomes research on 'machine learning systems'.",
+        "The work introduces a 'genuinely novel' serving paradigm with 'two-tiered decoupling' which is a significant methodological advancement. This level of novelty, aiming to break away from tightly coupled architectures, is highly valued at ICML.",
+        "The experimental results demonstrate substantial performance improvements (up to 4.2x TTFT reduction, 3.2-4.5x throughput increase) over SOTA systems, providing strong empirical evidence for the proposed system's rigor and practical impact, which is a key component of 'evaluation' at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the overall topic is relevant, the paper's focus is very specific to system architecture and performance optimization for MLLMs, which might be considered more specialized than some of the broader machine learning topics ICML covers. It leans heavily towards a Systems/ML intersection rather than core ML algorithms or theory.",
+        "Reviewer A notes that 'the explanation of the `gain-cost model` for reactive scaling and preemption...is somewhat high-level. More detailed empirical analysis or sensitivity studies...would strengthen the soundness of the adaptive mechanisms.' This suggests a minor gap in the theoretical or empirical rigor for some components that ICML reviewers might scrutinize for a systems paper.",
+        "The evaluation's primary focus on a single-node setup, despite acknowledging multi-node scalability as future work, could be seen as a limitation by ICML, which often looks for solutions that scale to very large deployments. The 'scalability of the elastic mechanisms...remains largely unexplored' for inter-node communication."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper focuses on 'Efficient Multimodal LLMs Serving', which aligns well with NeurIPS's interest in 'Language and multimodal language models' and 'SysML Infrastructure'. The practical challenge of efficiently serving MLLMs is directly relevant to the community.",
+        "The work presents novel system design (Elastic Multimodal Parallelism) and optimizations to address the significant inference overheads of MLLMs, contributing to the 'Data-centric aspects of AI' and 'General machine learning: core contributions in supervised and unsupervised methods' by improving the practical deployment of these models.",
+        "The reviewer highlights the 'genuinely novel' aspect of the two-tiered decoupling, which is a strong fit for NeurIPS's emphasis on new and original research.",
+        "The comprehensive evaluation on diverse real-world datasets and impressive performance gains (4.2x TTFT reduction, 3.2-4.5x throughput increase) against SOTA baselines demonstrate the robustness and practical significance of the method, which is well-regarded at NeurIPS for empirical contributions.",
+        "The NeurIPS checklist items (Limitations, Experimental Result Reproducibility, Open Access to Data and Code, Experimental Setting/Details, Experiment Statistical Significance, Experiments Compute Resources) are all marked 'Yes' by the author, indicating a strong commitment to reproducibility and transparency, which is valued by NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "While relevant, the paper's deep dive into distributed systems engineering for LLM serving, with terms like 'modality-aware load balancing', 'elastic partitioned scheduling', and explicit memory/compute optimization, might be considered more 'applied systems' than the 'core machine learning algorithm or theory' that some NeurIPS tracks might prioritize. It's an interdisciplinary topic, but its emphasis is heavily on deployment infrastructure.",
+        "The reviewer's concern about the 'high-level' explanation of the `gain-cost model` and lack of 'detailed empirical analysis or sensitivity studies' regarding the penalty factor `w` could be a point of critique. NeurIPS often favors a deeper theoretical or mechanistic understanding of adaptive components.",
+        "The limitation to a 'single-node setup' for evaluation, as mentioned in the weakness, is a notable constraint for a paper addressing large-scale serving. NeurIPS, while accepting single-node experiments, often encourages solutions that are proven to scale for large models and data, which this paper acknowledges as future work."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "ICLR explicitly welcomes 'cutting-edge research on all aspects of deep learning', and Multimodal Large Language Models are a prominent area within deep learning. The paper directly addresses efficiency challenges for these models.",
+        "The topic of 'infrastructure, software libraries, hardware, etc.' is listed as a relevant topic for ICLR. The proposed ElasticMM system, with its focus on serving architecture, resource management, and optimization for MLLMs, fits within this category.",
+        "The paper introduces innovative concepts like 'Elastic Multimodal Parallelism' and 'two-tiered decoupling' to improve the efficiency of deep learning models in multi-modal settings. This focus on architectural advancements for deep learning systems is suitable for ICLR.",
+        "The optimizations like 'unified multimodal prefix caching' and 'non-blocking encoding' are specific to enhancing the performance of deep learning models (MLLMs) and contribute to the practical deployment of these models, which is aligned with ICLR's practical application focus.",
+        "The paper provides strong empirical results, demonstrating significant improvements for MLLMs, which is a common and valued contribution type at ICLR, especially for system-level papers."
+      ],
+      "why_it_does_not_fit": [
+        "While MLLMs are deep learning, the core contribution of this paper is heavily focused on system-level infrastructure for serving, rather than novel deep learning models, algorithms, or fundamental learning theory. ICLR, while broad, has a stronger emphasis on novel aspects of 'representation learning', 'generative models', 'optimization theory', or novel deep learning 'architectures' themselves.",
+        "The reviewer noted that the explanation and sensitivity analysis of the 'gain-cost model' for elastic scheduling could be more detailed. ICLR places a strong emphasis on the rigor of the proposed mechanisms, especially for systems that claim 'elasticity' and dynamic adaptation.",
+        "The evaluation is limited to a single-node setup. While this is noted as future work, ICLR might prefer demonstrations of such complex systems scaling across multiple nodes to truly validate the 'elastic' and 'parallelism' claims for large-scale deep learning deployments. The 'scalability of elastic mechanisms' for inter-node communication is left unexplored.",
+        "The 'Others' category for the paper topic suggests it might not neatly fit into one of the core, well-defined machine learning areas at ICLR, potentially making it a 'borderline' fit compared to conferences with a more explicit systems track."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

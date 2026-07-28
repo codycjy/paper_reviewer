@@ -1,0 +1,131 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a truly novel architectural paradigm (Memory Mosaics v2) that challenges the current Transformer-centric view by demonstrating superior capabilities in new-task learning and in-context learning.",
+        "The extensive evaluation across three distinct dimensions (persistent-knowledge, new-knowledge, and in-context learning) provides a comprehensive assessment, particularly highlighting the strengths of Memory Mosaics v2 where Transformers struggle.",
+        "The 'risk-return trade-off' analysis and the compelling evidence that Memory Mosaics v2 (1T tokens) can outperform a Transformer (8T tokens) underscore the significance of this architectural innovation and its potential to alleviate data and computational bottlenecks."
+      ],
+      "weaknesses": [
+        "While the paper claims Memory Mosaics v2 are more 'transparent' than Transformers, the architectural modifications (gated time-variant key extractor, 3-level memory) introduce additional complexity that might warrant deeper theoretical analysis to fully support this claim.",
+        "The discussion on the 'failures of many potential baselines' (memory compression algorithms) could be more nuanced. While they might fail on these specific tasks by construction, this doesn't fully negate their potential for distinct use cases or imply that Memory Mosaics v2 is a universally superior solution for all types of long-context processing."
+      ],
+      "summary_comment": "This paper presents a bold and potentially transformative step forward in LLM architecture. The core idea of Memory Mosaics v2, building upon associative memories and incorporating clever architectural modifications, is highly novel. The results showcasing superior new-task learning and in-context learning over Transformers, especially when comparing models trained on vastly different data scales, are incredibly significant and challenge fundamental assumptions in the field. While some minor methodological or clarity improvements could be made, the innovative nature of the work and its potential impact on future LLM research strongly warrant acceptance. This is exactly the kind of forward-thinking research that pushes boundaries."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a rigorous and comprehensive evaluation methodology, utilizing three distinct dimensions (persistent-knowledge storage, new-knowledge storage, and in-context learning) to thoroughly assess the capabilities of Memory Mosaics v2. This multi-faceted approach provides strong evidence for the reported improvements.",
+        "The architectural modifications to Memory Mosaics (v2) are well-motivated, particularly the adaptive bandwidth in Gaussian kernel smoothing and the gated time-variant key feature extractor. These modifications are explained with clear references to existing kernel regression theory and recurrent-style networks, demonstrating a solid theoretical grounding.",
+        "The empirical results are compelling, especially the significant outperformance of Memory Mosaics v2 over transformers in new-knowledge storage and in-context learning tasks. The comparison against transformers trained with 8x more data, revealing persistent performance gaps, strongly supports the claim that these improvements are not easily replicable by simply scaling existing architectures.",
+        "The ablation studies, such as evaluating performance after removing long-term memory, provide critical insights into the role of different architectural components and strengthen the paper's claims about the necessity of memory elements for specific tasks.",
+        "The discussion on the 'risk-return trade-off' and the comparison of scaling approaches provides valuable context and insight into the broader implications of this work for foundational model development. It directly addresses the common 'more data, more compute' paradigm."
+      ],
+      "weaknesses": [
+        "While the architectural modifications are well-motivated, some aspects of their implementation could benefit from more detailed theoretical derivation or empirical analysis. For instance, the specific choice of `min(|theta|, 1)` for alpha in the adaptive bandwidth (Table 6) is mentioned as a reparameterization, but a clearer explanation of its theoretical basis or empirical impact would be beneficial.",
+        "The paper claims that Memory Mosaics v2 is not simply a transformer variation but a 'different architecture.' While the absence of explicit position encoding and the symmetric kernel are highlighted differences, a more in-depth theoretical analysis of how these architectural choices fundamentally shift the inductive biases and computational properties compared to transformers would strengthen this claim. The current explanation, while plausible, relies heavily on empirical observation rather than a deep structural analysis.",
+        "The paper lacks a detailed breakdown of the computational cost (e.g., training time, inference latency per token) beyond FLOPs and parameter counts when comparing Memory Mosaics v2 and transformers. While Figure 12 provides a high-level comparison, a more granular analysis, particularly for very long context lengths, would be valuable for practical deployment considerations and for understanding the true efficiency gains."
+      ],
+      "summary_comment": "This paper presents a strong and meticulously evaluated effort to scale Memory Mosaics, demonstrating significant improvements over transformers in critical areas like new-knowledge storage and in-context learning. The architectural modifications are well-justified, and the empirical results are compelling, particularly the robust performance of Memory Mosaics v2 even when competing with transformers trained on considerably more data. The multi-dimensional evaluation framework is a notable strength, offering a clear and validated assessment of the model's capabilities. While a deeper theoretical dive into certain architectural choices and more granular computational cost analysis would be beneficial, the paper's methodological rigor and strong empirical findings make it a significant contribution to the field.",
+      "final_decision": "Accept"
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper demonstrates a clear, practical benefit of Memory Mosaics v2 over traditional Transformers for new-task learning, which is a highly significant result for practitioners.",
+        "The evaluation methodology is robust, using three distinct dimensions (persistent knowledge, new knowledge, in-context learning) and demonstrating the necessity of the architectural changes through ablation studies (e.g., removing long-term memory). This provides strong evidence for the claims.",
+        "The comparison of 'risk-return trade-off' and the analysis showing that Transformers require 8x more data (and still underperform in some areas) to match Memory Mosaics v2's performance is a compelling argument for the practical and economic efficiency of the proposed model.",
+        "The demonstration of significantly faster fine-tuning (single minibatch for substantial accuracy improvement) is a huge practical advantage for real-world deployment and adaptation."
+      ],
+      "weaknesses": [
+        "While the paper contrasts implicitly with 'memory compression algorithms,' the baselines primarily focus on standard Transformers. A more direct empirical comparison with state-space models or other non-Transformer architectures (beyond just citing their failure according to other works) might strengthen the claims further, especially given the recurrent elements introduced in v2.",
+        "The architectural modifications, particularly the '3-level memory' design, could benefit from a more detailed and clearer illustration or deeper explanation of how the attention masks create and enforce these distinct memory behaviors, beyond just Figure 2 and brief text."
+      ],
+      "summary_comment": "This paper presents a highly significant advance for practitioners. Memory Mosaics v2 demonstrates a clear practical superiority over Transformers in new-task learning, knowledge storage, and critically, in fine-tuning speed and data efficiency. The evaluation is thorough and convincing, highlighting the limitations of simply scaling Transformers. The claim that Memory Mosaics v2 can outperform an 8T-token-trained Transformer with only 1T tokens is a powerful message for resource-constrained development. While more direct comparisons with other non-Transformer architectures could be beneficial, the impact of these results on real-world applications and the efficiency gains are undeniable. The paper is well-written, and the contributions are clearly articulated."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel deep learning architecture, 'Memory Mosaics v2,' which directly aligns with ICML's interest in 'deep learning (architectures, generative models, theory, etc.)' and 'general machine learning (supervised, semi- and self-supervised learning, etc.).'",
+        "The evaluation methodology, which assesses training-knowledge storage, new-knowledge storage, and in-context learning, falls under ICML's 'evaluation (methodology, meta studies, replicability and validity, human-in-the-loop, etc.)' topic.",
+        "The paper's focus on understanding and improving compositional and in-context learning capabilities directly relates to core challenges in 'general machine learning' and 'deep learning' that ICML aims to address.",
+        "The work presents 'innovative techniques' that are of interest to the machine learning community, demonstrating superior performance over transformers on new-task learning and in-context learning, which is a significant methodological contribution.",
+        "Reviewers praise the paper for presenting 'a truly novel architectural paradigm' and 'innovative nature,' which are highly valued at ICML for pushing the boundaries of machine learning research.",
+        "The paper provides a 'rigorous and comprehensive evaluation methodology' and 'compelling empirical results,' demonstrating the effectiveness of the proposed architecture, which is a strong fit for ICML's emphasis on sound research."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper claims Memory Mosaics v2 are more 'transparent' than transformers, Reviewer A notes that the architectural modifications might 'warrant deeper theoretical analysis to fully support this claim,' which could be a minor misalignment with ICML's theoretical interests.",
+        "Reviewer B points out that 'a more in-depth theoretical analysis of how these architectural choices fundamentally shift the inductive biases and computational properties compared to transformers' could strengthen the claim, indicating a potential for more theoretical depth that ICML often welcomes.",
+        "The paper focuses heavily on empirical results and applications in large language models, while ICML also has a strong emphasis on foundational theory; some reviewers note a desire for more theoretical grounding or derivation for certain architectural choices."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core contribution, 'Memory Mosaics v2,' is a new deep learning architecture for large language models, aligning with NeurIPS's strong interest in 'Deep learning' and 'General machine learning: core contributions in supervised and unsupervised methods.'",
+        "The investigation into compositional and in-context learning capabilities, and the comparison with transformers, fits within NeurIPS's scope for research on fundamental aspects of 'Generalization and multi-task learning.'",
+        "The work demonstrates significant advancements in 'Language and multimodal language models' by scaling memory mosaics to 10B parameters and training on one trillion tokens, addressing a key area for NeurIPS.",
+        "The paper's 'risk-return trade-off' analysis and the comparison against transformers trained with massive amounts of data directly address the 'socio-technical aspects of AI' and highlight considerations for 'SysML Infrastructure' and general resource utilization in large-scale AI development.",
+        "Reviewers highlight the 'potentially transformative step forward in LLM architecture' and the 'significant improvements over transformers in critical areas,' indicating strong 'novelty' and 'significance' that are valued by NeurIPS.",
+        "The robust empirical evaluation across three dimensions (persistent-knowledge, new-knowledge, and in-context learning) provides strong evidence for the model's capabilities, aligning with NeurIPS's focus on well-evaluated research."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B notes that 'the paper lacks a detailed breakdown of the computational cost (e.g., training time, inference latency per token) beyond FLOPs and parameter counts,' which could be a minor detractor for NeurIPS, given its practical application tracks.",
+        "While the paper establishes a new architectural paradigm, some reviewers suggest 'a deeper theoretical dive into certain architectural choices' to fully justify its novelty beyond empirical performance, which could be an area where NeurIPS often seeks more depth.",
+        "The explicit mention of 'Others' as a topic could suggest a broad scope that might not immediately fit specific traditional categories at NeurIPS, though the topic clearly falls under deep learning and LLMs."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR focuses heavily on 'all aspects of deep learning,' and this paper directly contributes a novel deep learning architecture, 'Memory Mosaics v2,' which is a perfect fit for the conference's core focus.",
+        "The paper explicitly discusses 'representation learning for computer vision, audio, language, and other modalities' through its improvements in in-context learning and new-knowledge storage for large language models.",
+        "The architectural modifications such as 'adaptive bandwidth in associative memory' and 'gated time-variant key feature extractor' highlight advancements in specific deep learning components that are highly relevant to ICLR's topics like 'optimization' and 'generative models'.",
+        "The comparison between Memory Mosaics v2 and transformers, particularly in their ability to handle long contexts and perform in-context learning, strongly aligns with ICLR's interest in 'large-scale learning and non-convex optimization.'",
+        "Reviewer A states that the work 'presents a truly novel architectural paradigm' and is 'exactly the kind of forward-thinking research that pushes boundaries,' which aligns perfectly with ICLR's reputation for cutting-edge deep learning research.",
+        "The paper's extensive empirical evaluation showcasing superior performance in new-task learning and in-context learning over transformers, alongside an analysis of the 'risk-return trade-off,' is highly relevant to ICLR's emphasis on both novel architectures and their practical implications."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper positions Memory Mosaics v2 as a 'different architecture,' Reviewer B suggests a 'more in-depth theoretical analysis of how these architectural choices fundamentally shift the inductive biases and computational properties compared to transformers' to fully support this claim. A lack of deep theoretical underpinning could be a slight drawback for ICLR, which values theoretical insights into deep learning.",
+        "Reviewer B also points out the need for 'more granular computational cost analysis,' beyond just FLOPs and parameter counts, which might be an area of improvement for ICLR submissions that increasingly consider efficiency alongside performance.",
+        "The paper could benefit from a more explicit connection to 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' or other explicit ICLR topics beyond the general deep learning architectural contribution."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

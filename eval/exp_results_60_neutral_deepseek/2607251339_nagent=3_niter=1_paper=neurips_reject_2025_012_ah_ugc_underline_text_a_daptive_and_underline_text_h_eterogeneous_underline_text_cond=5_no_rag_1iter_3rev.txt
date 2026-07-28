@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces the first unified framework for both adaptive and heterogeneous graph coarsening, addressing two significant gaps in existing literature",
+        "Combines Locality-Sensitive Hashing (LSH) with Consistent Hashing in a novel way to enable efficient multi-resolution coarsening without reprocessing",
+        "Proposes type-isolated coarsening strategy that preserves semantic integrity in heterogeneous graphs, preventing invalid node type merges"
+      ],
+      "weaknesses": [
+        "Theoretical guarantees for load balance (Theorem 3.2) rely on probabilistic bounds that may not hold in all practical scenarios",
+        "Evaluation shows minor performance dips on some spectral metrics compared to specialized methods, though this is justified by the framework's broader capabilities",
+        "The paper could benefit from more detailed analysis of the computational complexity trade-offs between different aggregation functions"
+      ],
+      "summary_comment": "AH-UGC represents a significant step forward in graph coarsening by simultaneously addressing adaptive multi-resolution coarsening and heterogeneous graph support. The integration of LSH with consistent hashing is particularly innovative and enables efficient progressive refinement. While minor methodological imperfections exist, the core idea is genuinely novel and has substantial potential impact. The framework's ability to handle diverse graph types (homophilic, heterophilic, heterogeneous) while maintaining scalability makes it a valuable contribution that could inspire future work in graph reduction techniques."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Methodological soundness and rigorous theoretical foundation, including Theorems 3.1, Lemma 1, and Theorem 3.2 with proofs provided in the appendix.",
+        "Comprehensive and convincing experimental evaluation across 23 diverse datasets, encompassing homophilic, heterophilic, homogeneous, heterogeneous, and large-scale graphs, with metrics covering runtime, spectral properties, and node classification accuracy using multiple GNN backbones.",
+        "Clear and well-motivated problem formulation addressing two key challenges: adaptive coarsening (supporting multiple ratios without reprocessing) and heterogeneous graph coarsening (via type-isolated strategy), offering a unified solution to limitations in prior work."
+      ],
+      "weaknesses": [
+        "The core adaptive mechanism (consistent hashing with random clockwise merges) builds heavily upon the UGC framework's LSH foundation, and while the extension to multiple ratios is novel for graph coarsening, the consistent hashing principle itself is well-established in distributed systems. Some claims of being the 'first' to meet all criteria might be slightly overstated without deeper discussion of prior art.",
+        "While the experimental validation is extensive, the justification for some design choices (e.g., using mean aggregation for hash scores) and the practical trade-offs between coarsening quality and adaptive runtime gain could be analyzed in more depth."
+      ],
+      "summary_comment": "The paper presents a technically sound and methodologically rigorous framework (AH-UGC) for adaptive and heterogeneous graph coarsening. It provides solid theoretical grounding and exceptionally thorough experimental validation. While the novelty of combining LSH and consistent hashing is incremental relative to UGC, the solution to the adaptive and heterogeneous coarsening problems is significant and impactful. The evaluation is convincing, demonstrating superior scalability, strong preservation of spectral properties, and competitive or superior node classification performance across a vast array of datasets and models. The work meets high standards of soundness and evaluation. Minor concerns about novelty are outweighed by the strength of execution and the clear utility of the proposed framework. Therefore, this paper should be accepted."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a clear and significant practical problem in graph coarsening: enabling adaptive (multi-resolution) coarsening without recomputation and correctly handling heterogeneous graphs, which is a major limitation of existing methods.",
+        "The experimental evaluation is extensive and convincing, covering 23 diverse datasets, multiple spectral fidelity metrics, node classification performance across many GNN models, and clear scalability comparisons. The empirical evidence strongly supports the method's practical effectiveness.",
+        "The framework is well-motivated and clearly integrates locality-sensitive hashing and consistent hashing to achieve its goals. The theoretical analysis (load balancing, projection proximity) adds soundness. The proposed method is model-agnostic, fast, scalable, and demonstrably suitable for real-world graph types.",
+        "The paper makes its contribution concrete by demonstrating the method's superiority over a large suite of baselines, including on large-scale graphs where other methods fail (OOT). The handling of heterogeneous semantics via type-isolated coarsening is a crucial and well-validated contribution."
+      ],
+      "weaknesses": [
+        "The core adaptive mechanism (merging a random node with its clockwise neighbor in a sorted list) is simple, and the novelty is more in the combination of LSH and CH for this specific purpose rather than a fundamentally new algorithm. The theoretical guarantee on load balance is a nice addition but the mechanism itself is heuristic.",
+        "While the paper is generally clear, some parts could be more concise (e.g., the appendix material is very long). The description of the framework in sections 3.1 and 3.2 could be streamlined further for quicker comprehension."
+      ],
+      "summary_comment": "This is a strong, practical paper that delivers a meaningful advance for graph coarsening. It solves two well-identified problems—lack of adaptivity and poor support for heterogeneous graphs—with a well-designed, fast, and scalable framework. The evaluation is exceptionally thorough, using a wide range of datasets, metrics, and baselines to convincingly demonstrate the method's advantages in speed, scalability, and preservation of structural and semantic properties. The significance for practitioners working with large or heterogeneous graphs is high. The paper is clearly written and offers a well-supported, useful contribution. Minor weaknesses in novelty depth are outweighed by the practical impact and rigorous validation. Accept."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong fit for ICML's machine learning systems track - addresses computational efficiency and scalability of graph processing",
+        "Excellent methodological contribution combining hashing techniques (LSH + consistent hashing) for adaptive graph reduction",
+        "Comprehensive evaluation across 23 datasets aligns with ICML's emphasis on rigorous empirical validation",
+        "Theoretical analysis (Theorems 3.1, 3.2) provides solid foundation for the proposed approach"
+      ],
+      "why_it_does_not_fit": [
+        "While novel in combination, the core techniques (LSH, consistent hashing) are established methods rather than groundbreaking theoretical advances",
+        "Reviewer B noted that some novelty claims might be slightly overstated relative to prior UGC work",
+        "Focus is more on engineering-efficient systems than fundamental machine learning theory",
+        "Minor performance dips on some spectral metrics might concern theory-focused ICML reviewers"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect alignment with NeurIPS' interdisciplinary focus - combines graph theory, hashing techniques, and ML systems",
+        "Addresses pressing scalability challenges in graph ML that are highly relevant to NeurIPS audience",
+        "Strong novelty in unified framework for both adaptive and heterogeneous coarsening - addresses significant gaps in literature",
+        "Extensive evaluation across diverse graph types (homophilic, heterophilic, heterogeneous) demonstrates broad applicability",
+        "Reviewers consistently praised the comprehensive experimental validation and practical significance"
+      ],
+      "why_it_does_not_fit": [
+        "Theoretical contributions, while solid, may not be as mathematically deep as some NeurIPS theory papers",
+        "Some aspects build upon existing UGC framework rather than being completely revolutionary",
+        "Focus on efficient systems might be less aligned with NeurIPS' core theoretical interests"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong relevance to graph representation learning and GNN scalability - core ICLR topics",
+        "Excellent evaluation with multiple GNN architectures demonstrates model-agnostic benefits",
+        "Type-isolated coarsening for heterogeneous graphs addresses important semantic preservation issues",
+        "Good fit for ICLR's applied track with focus on practical ML systems"
+      ],
+      "why_it_does_not_fit": [
+        "Less focus on deep learning architectures per se - more on preprocessing/scaling for existing models",
+        "ICLR typically prefers more deep learning-centric approaches rather than hashing-based methods",
+        "The paper's hashing-based approach may be less aligned with ICLR's emphasis on neural network innovations",
+        "Reviewer concerns about theoretical novelty might be more pronounced at ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,643 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a clear and compelling theoretical picture (Fig. 1) that is strongly validated by a combination of extensive empirical experiments on a realistic dataset (CelebA with U-Nets) and a rigorous theoretical analysis using a random features model.",
+        "The identification and measurement of two distinct, scalable timescales (τ_gen constant, τ_mem ∝ n) that create a widening generalization window is a significant empirical discovery, supported by clear scaling plots and appropriate metrics (FID, fmem).",
+        "The theoretical analysis in the high-dimensional limit using random matrix theory is sound and provides a tractable explanation for the observed phenomena, directly linking the timescales to the spectrum of the correlation matrix and the separation of eigenvalue bulks."
+      ],
+      "weaknesses": [
+        "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+        "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+          "severity": "minor",
+          "evidence": "The Related Works section thoroughly cites prior studies on memorization transitions [16, 57], architectural regularization [23, 22], the role of early stopping [26, 4], and spectral bias [38, 54]. The introduction states the transition is observed even when known regularizers are present, suggesting the core mechanism lies 'elsewhere,' but the proposed mechanism integrates these concepts (dynamics, spectral bias) rather than introducing a fundamentally new one.",
+          "affected_claim": "The claim that the paper demonstrates a core mechanism behind the transition that lies elsewhere from known regularizers. The contribution is more precisely the detailed characterization of the specific, scalable dynamical regime (τ_gen, τ_mem) within this broader context.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation.",
+          "severity": "minor",
+          "evidence": "Section 2 states: 'We conduct our experiments on the CelebA face dataset...' and uses a standard U-Net DDPM. The Limitations section acknowledges exploring a wider range of p and extending to richer data distributions as future work. The core scaling results (τ_mem ∝ n) are demonstrated for the CelebA and synthetic data settings provided.",
+          "affected_claim": "The claim that the findings 'reveal a form of implicit dynamical regularization...even in highly overparameterized settings.' The claim is strongly supported for the settings tested, but its universality across all realistic DM training scenarios is not fully proven.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims remain technically sound. The author response correctly references existing evidence in the paper (e.g., Fig. 2 scaling collapse, SM experiments) and does not reveal any flaws in the theoretical analysis."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The author response correctly points to the specific novelty: the precise empirical characterization of the two timescales and their scaling relationships (τ_gen constant, τ_mem ∝ n). While the work builds on prior literature, this specific quantitative finding represents a distinct contribution as evidenced in Figure 2."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work provides a meaningful advance in understanding the dynamical nature of generalization/memorization transitions in diffusion models. The practical insight regarding early stopping within a widening window remains valuable."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The evaluation methodology is comprehensive. The author response correctly notes that supplemental experiments (synthetic data, conditional tests) exist in the SM, providing additional support beyond the main CelebA experiments presented in the paper."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and well-structured. Proposed clarifications are not required to assess the current submission's clarity."
+        }
+      },
+      "summary_comment": "The author response correctly identifies evidence already present in the submitted paper, confirming the novelty of the specific timescale characterization and the existence of supporting experiments in supplemental materials. The response does not resolve the minor concerns—they are acknowledged as inherent to the paper's scope—but correctly argues that they do not undermine the core contribution. The paper makes a solid, well-supported contribution that meets the standards for acceptance."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses fundamental questions about generalization and memorization in machine learning models, which aligns with ICML's focus on core ML theory",
+        "The work combines theoretical analysis with empirical validation, matching ICML's emphasis on rigorous methodology",
+        "The study of training dynamics and implicit regularization falls within ICML's scope of optimization and learning theory topics",
+        "The paper provides practical insights for training diffusion models, which has applications across various ML domains"
+      ],
+      "why_it_does_not_fit": [
+        "The paper focuses specifically on diffusion models rather than general machine learning methods, which might be slightly narrow for ICML's broad scope",
+        "While theoretically grounded, the work is more applied than typical pure theory papers at ICML",
+        "The experimental validation, while thorough, uses standard architectures rather than introducing novel algorithmic contributions"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS strongly values work on understanding deep learning phenomena like generalization and memorization",
+        "The paper's combination of theory and experiments on realistic datasets aligns well with NeurIPS preferences",
+        "Research on diffusion models and their training dynamics is highly relevant to current NeurIPS interests",
+        "The work provides both theoretical insights and practical guidelines for model training",
+        "The study addresses important questions about when and why models memorize versus generalize"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical analysis uses simplified models (random features) rather than analyzing full neural network architectures",
+        "While comprehensive, the work builds significantly on existing literature rather than introducing completely novel concepts"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR focuses on deep learning, making diffusion models a perfect fit for the venue",
+        "The paper provides insights into training dynamics of deep generative models",
+        "The work addresses fundamental questions about representation learning and generalization in deep networks",
+        "The combination of U-Net experiments and theoretical analysis aligns with ICLR's experimental focus"
+      ],
+      "why_it_does_not_fit": [
+        "The paper is more theoretically oriented than typical ICLR submissions, which often emphasize novel architectures or training techniques",
+        "The random features analysis might be considered too simplified for ICLR's focus on practical deep learning",
+        "The work doesn't introduce new architectural innovations or training methods for diffusion models"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper provides a clear and compelling theoretical picture (Fig. 1) that is strongly validated by a combination of extensive empirical experiments on a realistic dataset (CelebA with U-Nets) and a rigorous theoretical analysis using a random features model.",
+              "The identification and measurement of two distinct, scalable timescales (τ_gen constant, τ_mem ∝ n) that create a widening generalization window is a significant empirical discovery, supported by clear scaling plots and appropriate metrics (FID, fmem).",
+              "The theoretical analysis in the high-dimensional limit using random matrix theory is sound and provides a tractable explanation for the observed phenomena, directly linking the timescales to the spectrum of the correlation matrix and the separation of eigenvalue bulks."
+            ],
+            "weaknesses": [
+              "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+              "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+                "severity": "minor",
+                "evidence": "The Related Works section thoroughly cites prior studies on memorization transitions [16, 57], architectural regularization [23, 22], the role of early stopping [26, 4], and spectral bias [38, 54]. The introduction states the transition is observed even when known regularizers are present, suggesting the core mechanism lies 'elsewhere,' but the proposed mechanism integrates these concepts (dynamics, spectral bias) rather than introducing a fundamentally new one.",
+                "affected_claim": "The claim that the paper demonstrates a core mechanism behind the transition that lies elsewhere from known regularizers. The contribution is more precisely the detailed characterization of the specific, scalable dynamical regime (τ_gen, τ_mem) within this broader context.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation.",
+                "severity": "minor",
+                "evidence": "Section 2 states: 'We conduct our experiments on the CelebA face dataset...' and uses a standard U-Net DDPM. The Limitations section acknowledges exploring a wider range of p and extending to richer data distributions as future work. The core scaling results (τ_mem ∝ n) are shown for CelebA and synthetic data, but not for large-scale, diverse datasets like ImageNet.",
+                "affected_claim": "The claim that the findings 'reveal a form of implicit dynamical regularization...even in highly overparameterized settings.' The claim is strongly supported for the settings tested, but its universality across all realistic DM training scenarios is not fully proven.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically sound. The empirical measurements (FID, fmem, loss) are carefully conducted with error bars. The theoretical analysis using the random features model is rigorous, with clear assumptions and theorems (supported in the SM). The link between experiment and theory (separation of timescales from eigenvalue spectrum) is convincingly established."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While building on a rich existing literature, the paper's specific contribution—identifying and analytically characterizing the two distinct, scalable training timescales (τ_gen independent of n, τ_mem linear in n) that create a dynamical generalization window—is novel and sufficiently distinct. The RAG evidence does not indicate prior work that has established this precise scaling relationship and its theoretical underpinning."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides a meaningful advance in understanding generalization in overparameterized generative models. The identified dynamical regularization mechanism and the practical guideline (early stopping within a window that grows with dataset size) are valuable for both theory and practice, especially in data-scarce domains. It meets the standard for a top-tier ML conference."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, using standard metrics (FID, memorization fraction), varying key parameters (n, p), and showing convincing scaling collapses. The theoretical model is evaluated via numerical solutions that mirror the empirical findings. Comparisons are fair, as the paper positions itself relative to prior work and uses its own controlled experiments for analysis."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The theoretical picture (Fig. 1) effectively guides the reader. The methodologies for both experiments and theory are described in sufficient detail to permit reliable assessment. Some derivations are deferred to the SM, which is appropriate."
+              }
+            },
+            "summary_comment": "This is a strong paper that makes a clear contribution. It combines careful experimentation on realistic diffusion models with a rigorous theoretical analysis of a tractable model to uncover and explain a key dynamical phenomenon: the emergence of two separable training timescales governing generalization and memorization. The finding that the memorization timescale grows linearly with dataset size, creating a widening window for effective generalization via early stopping, is both insightful and practically relevant. The work is sound, novel, significant, well-evaluated, and clearly presented. It meets the standards for acceptance at a top-tier machine learning conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper provides a clear and compelling theoretical picture (Fig. 1) that is strongly validated by a combination of extensive empirical experiments on a realistic dataset (CelebA with U-Nets) and a rigorous theoretical analysis using a random features model.",
+              "The identification and measurement of two distinct, scalable timescales (τ_gen constant, τ_mem ∝ n) that create a widening generalization window is a significant empirical discovery, supported by clear scaling plots and appropriate metrics (FID, fmem).",
+              "The theoretical analysis in the high-dimensional limit using random matrix theory is sound and provides a tractable explanation for the observed phenomena, directly linking the timescales to the spectrum of the correlation matrix and the separation of eigenvalue bulks."
+            ],
+            "weaknesses": [
+              "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+              "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+                "severity": "minor",
+                "evidence": "The Related Works section thoroughly cites prior studies on memorization transitions [16, 57], architectural regularization [23, 22], the role of early stopping [26, 4], and spectral bias [38, 54]. The introduction states the transition is observed even when known regularizers are present, suggesting the core mechanism lies 'elsewhere,' but the proposed mechanism integrates these concepts (dynamics, spectral bias) rather than introducing a fundamentally new one.",
+                "affected_claim": "The claim that the paper demonstrates a core mechanism behind the transition that lies elsewhere from known regularizers. The contribution is more precisely the detailed characterization of the specific, scalable dynamical regime (τ_gen, τ_mem) within this broader context.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation.",
+                "severity": "minor",
+                "evidence": "Section 2 states: 'We conduct our experiments on the CelebA face dataset...' and uses a standard U-Net DDPM. The Limitations section acknowledges exploring a wider range of p and extending to richer data distributions as future work. The core scaling results (τ_mem ∝ n) are shown for CelebA and synthetic data, but not for large-scale, diverse datasets like ImageNet.",
+                "affected_claim": "The claim that the findings 'reveal a form of implicit dynamical regularization...even in highly overparameterized settings.' The claim is strongly supported for the settings tested, but its universality across all realistic DM training scenarios is not fully proven.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims remain technically sound. The author response confirms the empirical evidence already present in the paper (CelebA experiments, synthetic data validation, conditional generation tests) and does not reveal any flaws in the theoretical analysis."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The author response correctly emphasizes that while building on prior work, the specific characterization of the two timescales and their scaling relationships represents a novel contribution. The precise measurement of τ_gen being constant while τ_mem scales linearly with n is not evidenced in the cited prior literature."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides meaningful advances in understanding generalization dynamics in diffusion models. The practical implications for early stopping strategies remain valuable for both theoretical understanding and practical applications."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The evaluation methodology remains comprehensive and appropriate. The author response confirms that additional validation exists in supplemental materials (synthetic data, conditional settings), though the main empirical focus remains on CelebA."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The author's promise to clarify certain aspects does not affect the assessment of the current submission's clarity."
+              }
+            },
+            "summary_comment": "The author response confirms that the paper's core contributions—the identification and characterization of two distinct training timescales with specific scaling properties—represent novel findings beyond prior work. While the empirical scope is primarily focused on CelebA with supplemental validation, the evidence presented is sufficient to support the claims. The theoretical analysis remains sound and provides a compelling explanation for the observed phenomena. The minor weaknesses identified do not materially undermine the central contribution. The paper meets the standards for acceptance at a top-tier machine learning conference."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"The paper builds significantly on existing work and represents an incremental synthesis rather than a fundamentally new mechanism\",\n        \"Empirical scope is limited to CelebA and unconditional models, raising questions about generalizability\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The paper builds on existing work but provides novel characterization of specific dynamical regime\",\n          \"location\": \"Introduction and Related Works sections\",\n          \"explanation\": \"While we acknowledge the rich existing literature on memorization in diffusion models, our work makes a distinct contribution by precisely characterizing the two timescales τ_gen and τ_mem and their scaling relationships. The observation that τ_gen remains constant while τ_mem scales linearly with n, creating a widening generalization window, represents a novel empirical finding not previously established in prior work.\"\n        },\n        {\n          \"concern\": \"Empirical scope covers realistic settings with controlled experiments\",\n          \"location\": \"Section 2 and Supplemental Material\",\n          \"explanation\": \"Our experiments on CelebA with U-Net architectures provide controlled validation of our core findings. We additionally verify our results on synthetic data (SM Sects. A and B) and show that the same scaling holds in conditional settings with classifier-free guidance. While we acknowledge that exploring more diverse datasets would be valuable, our results establish the fundamental phenomenon across multiple experimental settings.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify the novel aspects relative to prior work\",\n          \"proposed_change\": \"We will more explicitly highlight the specific novelty of our timescale characterization and scaling relationships in the introduction and discussion sections, making clear how our findings extend beyond prior work on memorization transitions, architectural regularization, and spectral bias.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Acknowledge limitations of empirical scope more prominently\",\n          \"proposed_change\": \"We will expand the limitations section to more explicitly discuss the need for validation on larger and more diverse datasets like ImageNet, while emphasizing that our controlled experiments on CelebA and synthetic data provide strong evidence for the fundamental phenomenon.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful assessment and positive evaluation of our work. We appreciate the recognition of our paper's strengths in combining empirical and theoretical analysis to uncover the dynamical timescales governing generalization and memorization.\\n\\nRegarding the concern about building on existing work: We agree that our work sits within a rich literature on memorization in diffusion models. However, our specific contribution lies in the precise characterization of the two distinct training timescales (τ_gen and τ_mem) and their scaling relationships. The finding that τ_gen remains constant while τ_mem scales linearly with n, creating a widening window for generalization via early stopping, represents a novel empirical discovery not previously established. Our theoretical analysis using random features provides a tractable explanation for this phenomenon through the separation of eigenvalue bulks in the spectrum of the correlation matrix.\\n\\nRegarding the empirical scope: We acknowledge that our main experiments focus on CelebA with U-Net architectures, which provides a controlled setting for our investigation. However, we have validated our core findings across multiple settings: (1) synthetic data experiments in Supplemental Material Sects. A and B, (2) verification that the same scaling holds with full-batch updates (ruling out data repetition effects), and (3) conditional generation experiments with classifier-free guidance. While extending to larger datasets like ImageNet would be valuable future work, our results establish the fundamental phenomenon across these diverse experimental conditions.\\n\\nWe will revise the paper to more explicitly highlight the novelty of our timescale characterization and to acknowledge more prominently the opportunities for extending our empirical validation to broader settings. These revisions will strengthen the paper while maintaining the core contributions that the reviewer has recognized as sound, novel, and significant.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper provides a clear and compelling theoretical picture (Fig. 1) that is strongly validated by a combination of extensive empirical experiments on a realistic dataset (CelebA with U-Nets) and a rigorous theoretical analysis using a random features model.",
+              "The identification and measurement of two distinct, scalable timescales (τ_gen constant, τ_mem ∝ n) that create a widening generalization window is a significant empirical discovery, supported by clear scaling plots and appropriate metrics (FID, fmem).",
+              "The theoretical analysis in the high-dimensional limit using random matrix theory is sound and provides a tractable explanation for the observed phenomena, directly linking the timescales to the spectrum of the correlation matrix and the separation of eigenvalue bulks."
+            ],
+            "weaknesses": [
+              "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+              "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's core findings, while well-supported, build significantly upon a line of existing work on memorization in diffusion models (e.g., [13, 22, 23, 57]). The central observation of a timescale separation is novel, but the broader framing of implicit dynamical regularization as a key mechanism is an incremental synthesis of prior ideas on spectral bias and early stopping.",
+                "severity": "minor",
+                "evidence": "The Related Works section thoroughly cites prior studies on memorization transitions [16, 57], architectural regularization [23, 22], the role of early stopping [26, 4], and spectral bias [38, 54]. The introduction states the transition is observed even when known regularizers are present, suggesting the core mechanism lies 'elsewhere,' but the proposed mechanism integrates these concepts (dynamics, spectral bias) rather than introducing a fundamentally new one.",
+                "affected_claim": "The claim that the paper demonstrates a core mechanism behind the transition that lies elsewhere from known regularizers. The contribution is more precisely the detailed characterization of the specific, scalable dynamical regime (τ_gen, τ_mem) within this broader context.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The empirical scope is somewhat limited: all main image experiments use a single dataset (CelebA) and an unconditional U-Net architecture. While supplemental experiments are mentioned, the generalizability of the precise scaling laws to more complex data distributions (e.g., ImageNet) and conditional models requires further validation.",
+                "severity": "minor",
+                "evidence": "Section 2 states: 'We conduct our experiments on the CelebA face dataset...' and uses a standard U-Net DDPM. The Limitations section acknowledges exploring a wider range of p and extending to richer data distributions as future work. The core scaling results (τ_mem ∝ n) are demonstrated for the CelebA and synthetic data settings provided.",
+                "affected_claim": "The claim that the findings 'reveal a form of implicit dynamical regularization...even in highly overparameterized settings.' The claim is strongly supported for the settings tested, but its universality across all realistic DM training scenarios is not fully proven.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims remain technically sound. The author response correctly references existing evidence in the paper (e.g., Fig. 2 scaling collapse, SM experiments) and does not reveal any flaws in the theoretical analysis."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The author response correctly points to the specific novelty: the precise empirical characterization of the two timescales and their scaling relationships (τ_gen constant, τ_mem ∝ n). While the work builds on prior literature, this specific quantitative finding represents a distinct contribution as evidenced in Figure 2."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides a meaningful advance in understanding the dynamical nature of generalization/memorization transitions in diffusion models. The practical insight regarding early stopping within a widening window remains valuable."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The evaluation methodology is comprehensive. The author response correctly notes that supplemental experiments (synthetic data, conditional tests) exist in the SM, providing additional support beyond the main CelebA experiments presented in the paper."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. Proposed clarifications are not required to assess the current submission's clarity."
+              }
+            },
+            "summary_comment": "The author response correctly identifies evidence already present in the submitted paper, confirming the novelty of the specific timescale characterization and the existence of supporting experiments in supplemental materials. The response does not resolve the minor concerns—they are acknowledged as inherent to the paper's scope—but correctly argues that they do not undermine the core contribution. The paper makes a solid, well-supported contribution that meets the standards for acceptance."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"The paper builds significantly on existing work and represents an incremental synthesis rather than a fundamentally new mechanism\",\n        \"Empirical scope is limited to CelebA and unconditional models, raising questions about generalizability\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The paper builds on existing work but provides novel characterization of specific dynamical regime\",\n          \"location\": \"Introduction, Section 2, and Figure 2\",\n          \"explanation\": \"Our work makes a distinct contribution by precisely characterizing the two timescales τ_gen and τ_mem and their scaling relationships. The empirical finding that τ_gen remains constant while τ_mem scales linearly with n (demonstrated in Figure 2) represents a novel discovery not established in prior work. The scaling collapse in the inset of Figure 2 provides strong evidence for τ_mem ∝ n.\"\n        },\n        {\n          \"concern\": \"Empirical scope covers realistic settings with controlled experiments\",\n          \"location\": \"Section 2, Supplemental Material Sects. A and B\",\n          \"explanation\": \"While our main experiments focus on CelebA, we provide validation across multiple settings: (1) synthetic data experiments in SM Sects. A and B, (2) verification that the scaling holds with full-batch updates (ruling out data repetition effects), and (3) conditional generation experiments with classifier-free guidance mentioned in SM Sect. B. These diverse experimental conditions support the robustness of our findings.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify the novel aspects relative to prior work\",\n          \"proposed_change\": \"We will revise the introduction and discussion to more explicitly highlight the specific novelty of our timescale characterization and scaling relationships, making clear how our findings extend beyond prior work on memorization transitions, architectural regularization, and spectral bias.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Acknowledge limitations of empirical scope more prominently\",\n          \"proposed_change\": \"We will expand the limitations section to more explicitly discuss the need for validation on larger and more diverse datasets, while emphasizing that our controlled experiments on CelebA and synthetic data provide strong evidence for the fundamental phenomenon.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful assessment and positive evaluation of our work. We appreciate the recognition of our paper's strengths in combining empirical and theoretical analysis to uncover the dynamical timescales governing generalization and memorization.\\n\\nRegarding the concern about building on existing work: We agree that our work sits within a rich literature on memorization in diffusion models. However, our specific contribution lies in the precise characterization of the two distinct training timescales (τ_gen and τ_mem) and their scaling relationships. The finding that τ_gen remains constant while τ_mem scales linearly with n, creating a widening window for generalization via early stopping, represents a novel empirical discovery not previously established. Our theoretical analysis using random features provides a tractable explanation for this phenomenon through the separation of eigenvalue bulks in the spectrum of the correlation matrix.\\n\\nRegarding the empirical scope: We acknowledge that our main experiments focus on CelebA with U-Net architectures, which provides a controlled setting for our investigation. However, we have validated our core findings across multiple settings: (1) synthetic data experiments in Supplemental Material Sects. A and B, (2) verification that the same scaling holds with full-batch updates (ruling out data repetition effects), and (3) conditional generation experiments with classifier-free guidance. While extending to larger datasets like ImageNet would be valuable future work, our results establish the fundamental phenomenon across these diverse experimental conditions.\\n\\nWe will revise the paper to more explicitly highlight the novelty of our timescale characterization and to acknowledge more prominently the opportunities for extending our empirical validation to broader settings. These revisions will strengthen the paper while maintaining the core contributions that the reviewer has recognized as sound, novel, and significant.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_14986a8fa1aa",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "data/md/neurips_accept_2025_010_why_diffusion_models_don_t_memorize_the_role_of_implicit_dynamical_regularizatio.md",
+    "target_paper_summary": {
+      "paper_id": "paper_14986a8fa1aa",
+      "title": "Why Diffusion Models Don'T Memorize: The Role Of Implicit Dynamical Regularization In Training",
+      "abstract": "Diffusion models have achieved remarkable success across a wide range of generative tasks. A key challenge is understanding the mechanisms that prevent their memorization of training data and allow generalization. In this work, we investigate the role of the training dynamics in the transition from generalization to memorization. Through extensive experiments and theoretical analysis, we identify two distinct timescales: an early time τgen at which models begin to generate high-quality samples, and a later time τmem beyond which memorization emerges. Crucially, we find that τmem increases linearly with the training set size n, while τgen remains constant. This creates a growing window of training times with n where models generalize effectively, despite showing strong memorization if training continues beyond it. It is only when n becomes larger than a model-dependent threshold that overfitting disappears at infinite training times. These findings reveal a form of implicit dynamical regularization in the training dynamics, which allow to avoid memorization even in highly overparameterized settings. Our results are supported by numerical experiments with standard U-Net architectures on realistic and synthetic datasets, and by a theoretical analysis using a tractable random features model studied in the high-dimensional limit.",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_426d1e242",
+        "title": "Large Language Models: A Comprehensive Survey of its Applications, Challenges, Limitations, and Future Prospects",
+        "authors": [
+          "Muhammad Usman Hadi",
+          "qasem al tashi",
+          "Rizwan Qureshi",
+          "Abbas Shah",
+          "Amgad Muneer",
+          "Muhammad Irfan",
+          "Anas Zafar",
+          "Muhammad Bilal Shaikh",
+          "Naveed Akhtar",
+          "Syed Zohaib Hassan",
+          "Maged Shoman",
+          "Jia Wu",
+          "Seyedali Mirjalili",
+          "Mubarak Shah"
+        ],
+        "year": 2023,
+        "publication_date": "2023-09-21",
+        "venue": "",
+        "abstract": "Within the vast expanse of computerized language processing, a revolutionary entity known as Large Language Models (LLMs) has emerged, wielding immense power in its capacity to comprehend intricate linguistic patterns and conjure coherent and contextually fitting responses. Large language models (LLMs) are a type of artificial intelligence (AI) that have emerged as powerful tools for a wide range of tasks, including natural language processing (NLP), machine translation, and question-answering. This survey paper provides a comprehensive overview of LLMs, including their history, architecture, training methods, applications, and challenges. The paper begins by discussing the fundamental concepts of generative AI and the architecture of generative pre- trained transformers (GPT). It then provides an overview of the history of LLMs, their evolution over time, and the different training methods that have been used to train them. The paper then discusses the wide range of applications of LLMs, including medical, education, finance, and engineering. It also discusses how LLMs are shaping the future of AI and how they can be used to solve real-world problems. The paper then discusses the challenges associated with deploying LLMs in real-world scenarios, including ethical considerations, model biases, interpretability, and computational resource requirements. It also highlights techniques for enhancing the robustness and controllability of LLMs, and addressing bias, fairness, and generation quality issues. Finally, the paper concludes by highlighting the future of LLM research and the challenges that need to be addressed in order to make LLMs more reliable and useful. This survey paper is intended to provide researchers, practitioners, and enthusiasts with a comprehensive understanding of LLMs, their evolution, applications, and challenges. By consolidating the state-of-the-art knowledge in the field, this survey serves as a valuable resource for further advancements in the development and utilization of LLMs for a wide range of real-world applications. The GitHub repo for this project is available at https://github.com/anas-zafar/LLM-Survey",
+        "url": "https://doi.org/10.36227/techrxiv.23589741.v3",
+        "doi": "https://doi.org/10.36227/techrxiv.23589741.v3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4386917649"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 53
+      },
+      {
+        "paper_id": "rw_002_19027774c",
+        "title": "Learning from models beyond fine-tuning",
+        "authors": [
+          "Hongling Zheng",
+          "Li Shen",
+          "Anke Tang",
+          "Yong Luo",
+          "Hu Han",
+          "Bo Du",
+          "Wen, Yonggang",
+          "Tao, Dacheng"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-12",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Foundation models (FM) have demonstrated remarkable performance across a wide range of tasks (especially in the fields of natural language processing and computer vision), primarily attributed to their ability to comprehend instructions and access extensive, high-quality data. This not only showcases their current effectiveness but also sets a promising trajectory towards the development of artificial general intelligence. Unfortunately, due to multiple constraints, the raw data of the model used for large model training are often inaccessible, so the use of end-to-end models for downstream tasks has become a new research trend, which we call Learn From Model (LFM) in this article. LFM focuses on the research, modification, and design of FM based on the model interface, so as to better understand the model structure and weights (in a black box environment), and to generalize the model to downstream tasks. The study of LFM techniques can be broadly categorized into five major areas: model tuning, model distillation, model reuse, meta learning and model editing. Each category encompasses a repertoire of methods and strategies that aim to enhance the capabilities and performance of FM. This paper gives a comprehensive review of the current methods based on FM from the perspective of LFM, in order to help readers better understand the current research status and ideas. To conclude, we summarize the survey by highlighting several critical areas for future exploration and addressing open issues that require further attention from the research community. The relevant papers we investigated in this article can be accessed at https://github.com/ruthless-man/Awesome-Learn-from-Model",
+        "url": "http://arxiv.org/abs/2310.08184",
+        "doi": "https://doi.org/10.48550/arxiv.2310.08184",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387635340"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 17
+      },
+      {
+        "paper_id": "rw_003_03a33ec6b",
+        "title": "Likelihood-based parameter estimation and comparison of dynamical cognitive models.",
+        "authors": [
+          "Heiko H. Schütt",
+          "Lars Oliver Martin Rothkegel",
+          "Hans A. Trukenbrod",
+          "Sebastian Reich",
+          "Felix A. Wichmann",
+          "Ralf Engbert"
+        ],
+        "year": 2017,
+        "publication_date": "2017-04-27",
+        "venue": "Psychological Review",
+        "abstract": "Dynamical models of cognition play an increasingly important role in driving theoretical and experimental research in psychology. Therefore, parameter estimation, model analysis and comparison of dynamical models are of essential importance. In this article, we propose a maximum likelihood approach for model analysis in a fully dynamical framework that includes time-ordered experimental data. Our methods can be applied to dynamical models for the prediction of discrete behavior (e.g., movement onsets); in particular, we use a dynamical model of saccade generation in scene viewing as a case study for our approach. For this model, the likelihood function can be computed directly by numerical simulation, which enables more efficient parameter estimation including Bayesian inference to obtain reliable estimates and corresponding credible intervals. Using hierarchical models inference is even possible for individual observers. Furthermore, our likelihood approach can be used to compare different models. In our example, the dynamical framework is shown to outperform nondynamical statistical models. Additionally, the likelihood based evaluation differentiates model variants, which produced indistinguishable predictions on hitherto used statistics. Our results indicate that the likelihood approach is a promising framework for dynamical cognitive models. (PsycINFO Database Record",
+        "url": "https://doi.org/10.1037/rev0000068",
+        "doi": "https://doi.org/10.1037/rev0000068",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2460557441"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 6
+      },
+      {
+        "paper_id": "rw_005_b666f1b50",
+        "title": "Inductive evolution : cognition, culture, and regularity in language",
+        "authors": [
+          "Vanessa Ferdinand"
+        ],
+        "year": 2015,
+        "publication_date": "2015-06-30",
+        "venue": "ERA",
+        "abstract": "Cultural artifacts, such as language, survive and replicate by passing from mind to mind. Cultural evolution always proceeds by an inductive process, where behaviors are never directly copied, but reverse engineered by the cognitive mechanisms involved in learning and production. I will refer to this type of evolutionary change as inductive evolution and explain how this represents a broader class of evolutionary processes that can include both neutral and selective evolution. This thesis takes a mechanistic approach to understanding the forces of evolution underlying change in culture over time, where the mechanisms of change are sought within human cognition. I define culture as anything that replicates by passing through a cognitive system and take language as a premier example of culture, because of the wealth of knowledge about linguistic behaviors (external language) and its cognitive processing mechanisms (internal language). Mainstream cultural evolution theories related to social learning and social transmission of information define culture ideationally, as the subset of socially-acquired information in cognition that affects behaviors. Their goal is to explain behaviors with culture and avoid circularity by defining behaviors as markedly not part of culture. I take a reductionistic approach and argue that all there is to culture is brain states and behaviors, and further, that a complete explanation of the forces of cultural change can not be explained by a subset of cognition related to social learning, but necessarily involves domain-general mechanisms, because cognition is an integrated system. Such an approach should decompose culture into its constituent parts and explore 1) how brains states effect behavior, 2) how behavior effects brain states, and 3) how brain states and behaviors change over time when they are linked up in a process of cultural transmission, where one person's behavior is the input to another. I conduct several psychological experiments on frequency learning with adult learners and describe the behavioral biases that alter the frequencies of linguistic variants over time. I also fit probabilistic models of cognition to participant data to understand the inductive biases at play during linguistic frequency learning. Using these inductive and behavioral biases, I infer a Markov model over my empirical data to extrapolate participants' behavior forward in cultural evolutionary time and determine equivalences (and divergences) between inductive evolution and standard models from population genetics. As a key divergence point, I introduce the concept of non-binomial cultural drift, argue that this is a rampant form of neutral evolution in culture, and empirically demonstrate that probability matching is one such inductive mechanism that results in non-binomial cultural drift. I argue further that all inductive problems involving representativeness are potential drivers of neutral evolution unique to cultural systems. I also explore deviations from probability matching and describe non-neutral evolution due to inductive regularization biases in a linguistic and non-linguistic domain. Here, I offer a new take on an old debate about the domain-specificity vs -generality of the cognitive mechanisms involved in language processing, and show that the evolution of regularity in language cannot be predicted in isolation from the general cognitive mechanisms involved in frequency learning. Using my empirical data on regularization vs probability matching, I demonstrate how the use of appropriate non-binomial null hypotheses offers us greater precision in determining the strength of selective forces in cultural evolution.",
+        "url": "http://hdl.handle.net/1842/11741",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2264968271"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 12
+      },
+      {
+        "paper_id": "rw_006_accd07a51",
+        "title": "A Comprehensive Survey on Test-Time Adaptation under Distribution Shifts",
+        "authors": [
+          "Jian Liang",
+          "Ran He",
+          "Tieniu Tan"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-27",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Machine learning methods strive to acquire a robust model during the training process that can effectively generalize to test samples, even in the presence of distribution shifts. However, these methods often suffer from performance degradation due to unknown test distributions. Test-time adaptation (TTA), an emerging paradigm, has the potential to adapt a pre-trained model to unlabeled data during testing, before making predictions. Recent progress in this paradigm has highlighted the significant benefits of using unlabeled data to train self-adapted models prior to inference. In this survey, we categorize TTA into several distinct groups based on the form of test data, namely, test-time domain adaptation, test-time batch adaptation, and online test-time adaptation. For each category, we provide a comprehensive taxonomy of advanced algorithms and discuss various learning scenarios. Furthermore, we analyze relevant applications of TTA and discuss open challenges and promising areas for future research. For a comprehensive list of TTA methods, kindly refer to \\url{https://github.com/tim-learn/awesome-test-time-adaptation}.",
+        "url": "http://arxiv.org/abs/2303.15361",
+        "doi": "https://doi.org/10.48550/arxiv.2303.15361",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4361194454"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 10
+      },
+      {
+        "paper_id": "rw_008_a16eb25c1",
+        "title": "A Survey of Methods, Challenges and Perspectives in Causality",
+        "authors": [
+          "G. Gendron",
+          "Michael Witbrock",
+          "Gillian Dobbie"
+        ],
+        "year": 2023,
+        "publication_date": "2023-02-01",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Deep Learning models have shown success in a large variety of tasks by extracting correlation patterns from high-dimensional data but still struggle when generalizing out of their initial distribution. As causal engines aim to learn mechanisms independent from a data distribution, combining Deep Learning with Causality can have a great impact on the two fields. In this paper, we further motivate this assumption. We perform an extensive overview of the theories and methods for Causality from different perspectives, with an emphasis on Deep Learning and the challenges met by the two domains. We show early attempts to bring the fields together and the possible perspectives for the future. We finish by providing a large variety of applications for techniques from Causality.",
+        "url": "http://arxiv.org/abs/2302.00293",
+        "doi": "https://doi.org/10.48550/arxiv.2302.00293",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4319165341"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 9
+      },
+      {
+        "paper_id": "rw_010_577e32a03",
+        "title": "Advancing Perception in Artificial Intelligence through Principles of Cognitive Science",
+        "authors": [
+          "Palaash Agrawal",
+          "Cheston Tan",
+          "Heena Rathore"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-13",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Although artificial intelligence (AI) has achieved many feats at a rapid pace, there still exist open problems and fundamental shortcomings related to performance and resource efficiency. Since AI researchers benchmark a significant proportion of performance standards through human intelligence, cognitive sciences-inspired AI is a promising domain of research. Studying cognitive science can provide a fresh perspective to building fundamental blocks in AI research, which can lead to improved performance and efficiency. In this review paper, we focus on the cognitive functions of perception, which is the process of taking signals from one's surroundings as input, and processing them to understand the environment. Particularly, we study and compare its various processes through the lens of both cognitive sciences and AI. Through this study, we review all current major theories from various sub-disciplines of cognitive science (specifically neuroscience, psychology and linguistics), and draw parallels with theories and techniques from current practices in AI. We, hence, present a detailed collection of methods in AI for researchers to build AI systems inspired by cognitive science. Further, through the process of reviewing the state of cognitive-inspired AI, we point out many gaps in the current state of AI (with respect to the performance of the human brain), and hence present potential directions for researchers to develop better perception systems in AI.",
+        "url": "http://arxiv.org/abs/2310.08803",
+        "doi": "https://doi.org/10.48550/arxiv.2310.08803",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387687139"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 3
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_002_19027774c",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_method",
+          "constraints",
+          "limitations"
+        ],
+        "rationale": "It studies model adaptation methods, including parameter estimation and black-box analysis of model weights, which relates to the target's training dynamics and regularization in overparameterized settings.",
+        "evidence_summary": "Zheng et al. (2023) in 'Learning from models beyond fine-tuning' propose Learn From Model (LFM) techniques for analyzing foundation models in black-box environments, categorizing methods into model tuning, distillation, reuse, meta learning, and editing. The paper addresses constraints where raw training data is inaccessible and focuses on generalizing models to downstream tasks by modifying model structure and weights."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_008_a16eb25c1",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_method",
+          "limitations"
+        ],
+        "rationale": "It discusses causality and generalization challenges in deep learning, aligning with the target's investigation of memorization and generalization mechanisms in diffusion models.",
+        "evidence_summary": "Gendron et al. (2023) in 'A Survey of Methods, Challenges and Perspectives in Causality' review causal methods combining deep learning to address generalization issues when models shift from initial distributions. The survey highlights challenges and early attempts to integrate causality for building robust models."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_010_577e32a03",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_method",
+          "limitations"
+        ],
+        "rationale": "It explores cognitive science principles to improve AI perception systems, which may relate to the target's theoretical analysis of implicit regularization in model training dynamics.",
+        "evidence_summary": "Agrawal et al. (2023) in 'Advancing Perception in Artificial Intelligence through Principles of Cognitive Science' compare cognitive theories from neuroscience, psychology, and linguistics with AI techniques to address performance gaps. The paper identifies potential directions for developing better perception systems by drawing parallels between human cognition and AI methods."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_accd07a51",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "constraints"
+        ],
+        "rationale": "It addresses test-time adaptation under distribution shifts, which relates to the target's focus on generalization and avoiding memorization in model training.",
+        "evidence_summary": "Liang et al. (2023) in 'A Comprehensive Survey on Test-Time Adaptation under Distribution Shifts' categorize adaptation methods into test-time domain, batch, and online adaptation for improving model robustness. The survey discusses challenges like performance degradation from unknown test distributions and lists algorithms for self-adapted model training."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_003_03a33ec6b",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "It presents a likelihood-based approach for parameter estimation in dynamical models, which aligns with the target's use of theoretical analysis and training dynamics.",
+        "evidence_summary": "Schütt et al. (2017) in 'Likelihood-based parameter estimation and comparison of dynamical cognitive models' propose maximum likelihood methods for analyzing dynamical models using time-ordered experimental data, with a case study on saccade generation. The approach enables efficient parameter estimation and model comparison through hierarchical models and Bayesian inference."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_001_426d1e242",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "limitations"
+        ],
+        "rationale": "It surveys large language models' challenges, including ethical issues and biases, which may provide background on limitations in AI models relevant to overparameterization concerns.",
+        "evidence_summary": "Hadi et al. (2023) in 'Large Language Models: A Comprehensive Survey of its Applications, Challenges, Limitations, and Future Prospects' overview LLM history, architecture, training methods, and applications in fields like medicine and education. The paper discusses deployment challenges such as model biases, interpretability, and computational resource requirements."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_b666f1b50",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "It examines inductive evolution in cultural artifacts like language, which involves cognitive mechanisms that may loosely relate to the target's study of learning dynamics.",
+        "evidence_summary": "Ferdinand (2015) in 'Inductive evolution : cognition, culture, and regularity in language' defines culture as replicating through cognitive systems and argues that cultural change involves domain-general cognitive mechanisms. The thesis uses language as a case study to explain evolutionary processes via reverse engineering of behaviors."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2023, Hongling Zheng et al. published \"Learning from models beyond fine-tuning\" in arXiv (Cornell University). This not only showcases their current effectiveness but also sets a promising trajectory towards the development of artificial general intelligence. Foundation models (FM) have demonstrated remarkable performance across a wide range of tasks (especially in the fields of natural language processing and computer vision), primarily attributed to their ability to comprehend instructions and access extensive, high-quality data. Unfortunately, due to multiple constraints, the raw data of the model used for large model training are often inaccessible, so the use of end-to-end models for downstream tasks has become a new research trend, which the authors call Learn From Model (LFM) in this article. In 2023, G. Gendron et al. published \"A Survey of Methods, Challenges and Perspectives in Causality\" in arXiv (Cornell University). Deep Learning models have shown success in a large variety of tasks by extracting correlation patterns from high-dimensional data but still struggle when generalizing out of their initial distribution. In this paper, the authors further motivate this assumption. As causal engines aim to learn mechanisms independent from a data distribution, combining Deep Learning with Causality can have a great impact on the two fields. In 2023, Palaash Agrawal et al. published \"Advancing Perception in Artificial Intelligence through Principles of Cognitive Science\" in arXiv (Cornell University). Further, through the process of reviewing the state of cognitive-inspired AI, the authors point out many gaps in the current state of AI (with respect to the performance of the human brain), and hence present potential directions for researchers to develop better perception systems in AI. Since AI researchers benchmark a significant proportion of performance standards through human intelligence, cognitive sciences-inspired AI is a promising domain of research. The authors, hence, present a detailed collection of methods in AI for researchers to build AI systems inspired by cognitive science. In 2023, Jian Liang et al. published \"A Comprehensive Survey on Test-Time Adaptation under Distribution Shifts\" in arXiv (Cornell University). In this survey, the authors categorize TTA into several distinct groups based on the form of test data, namely, test-time domain adaptation, test-time batch adaptation, and online test-time adaptation. However, these methods often suffer from performance degradation due to unknown test distributions. Test-time adaptation (TTA), an emerging paradigm, has the potential to adapt a pre-trained model to unlabeled data during testing, before making predictions. In 2017, Heiko H. Schütt et al. published \"Likelihood-based parameter estimation and comparison of dynamical cognitive models.\" in Psychological Review. In this article, the authors propose a maximum likelihood approach for model analysis in a fully dynamical framework that includes time-ordered experimental data. In the authors' example, the dynamical framework is shown to outperform nondynamical statistical models. The authors' methods can be applied to dynamical models for the prediction of discrete behavior (e.g., movement onsets); in particular, the authors use a dynamical model of saccade generation in scene viewing as a case study for the approach. In 2023, Muhammad Usman Hadi et al. published \"Large Language Models: A Comprehensive Survey of its Applications, Challenges, Limitations, and Future Prospects\". By consolidating the state-of-the-art knowledge in the field, this survey serves as a valuable resource for further advancements in the development and utilization of LLMs for a wide range of real-world applications. Large language models (LLMs) are a type of artificial intelligence (AI) that have emerged as powerful tools for a wide range of tasks, including natural language processing (NLP), machine translation, and question-answering. This survey paper provides a comprehensive overview of LLMs, including their history, architecture, training methods, applications, and challenges.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 3,
+      "num_removed_undated": 0,
+      "num_used": 7,
+      "num_cutoff_valid": 7,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 3,
+    "num_removed_undated": 0,
+    "num_used": 7,
+    "num_cutoff_valid": 7,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

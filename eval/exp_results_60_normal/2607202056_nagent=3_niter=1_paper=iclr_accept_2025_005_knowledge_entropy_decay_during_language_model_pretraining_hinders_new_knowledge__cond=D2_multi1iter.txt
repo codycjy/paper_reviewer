@@ -1,0 +1,129 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The introduction of 'knowledge entropy' is a truly novel concept that provides a quantifiable metric to understand the underlying mechanisms of knowledge integration in LLMs during pretraining. This offers a new lens for analyzing model behavior.",
+        "The paper directly addresses a significant and open problem in LLM research: why models become less plastic and struggle to acquire new knowledge as pretraining advances. The findings provide a compelling explanation based on the decay of knowledge entropy.",
+        "The experimental validation, particularly the 'resuscitating inactive memory vectors' experiment, is highly creative and strongly supports the central hypothesis. This manipulation provides strong evidence for the proposed mechanism."
+      ],
+      "weaknesses": [
+        "While the concept of knowledge entropy is well-defined, the 'resuscitation' mechanism (Algorithm 1) feels somewhat ad-hoc. While it demonstrates the hypothesis, it's not clear if this artificial intervention corresponds to any natural or optimal learning process. More exploration into a principled way to maintain high knowledge entropy would be beneficial.",
+        "The study primarily focuses on OLMo models (1B and 7B). While acknowledged as a limitation, the generalizability of these findings to other model architectures or scales (e.g., Llama, GPT-style models of larger sizes) remains an open question and could strengthen the claims significantly."
+      ],
+      "summary_comment": "This paper presents a highly novel and significant contribution by introducing the concept of 'knowledge entropy' to explain the observed plasticity-stability dilemma in large language models during pretraining. The finding that knowledge entropy consistently decreases throughout pretraining, correlating with reduced knowledge acquisition and increased forgetting, is a critical insight. The creative experiment of 'resuscitating' inactive memory vectors further strengthens the core hypothesis, providing compelling evidence for the impact of broad knowledge integration. While the resuscitation method is somewhat artificial and the scope of model testing is limited to OLMo, the core idea is bold and forward-looking, opening new avenues for understanding and potentially mitigating issues in continual learning for LLMs. This work has the potential to significantly influence future research in LLM training dynamics."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel concept, 'knowledge entropy,' and thoroughly defines it based on established understanding of FFNs as key-value memories. The formulation of knowledge entropy is clear and well-justified.",
+        "The experimental design is rigorous, analyzing knowledge entropy across various pretraining stages, with different model sizes (1B, 7B), alternative entropy definitions (attention, NTP), and even different activation functions, consistently demonstrating the decay of knowledge entropy.",
+        "The link between decaying knowledge entropy and reduced knowledge acquisition/increased forgetting in a continual learning setup is investigated comprehensively through empirical evaluation, including a clever 'resuscitation' experiment to support the causal hypothesis. This evaluation includes both probe performance and general downstream tasks, showcasing a balanced view of model capabilities.",
+        "The paper provides detailed ablation studies and additional analyses in the appendix, including the choice of training datasets, model size effects, and hyperparameters, which strengthens the validity and generalizability of the findings."
+      ],
+      "weaknesses": [
+        "While the 'resuscitation' experiment provides support for the hypothesis, the mechanism for modifying the up-projection matrix (Algorithm 1) seems somewhat heuristic. The observation that linear scaling is 'insufficient to induce fundamental behavioral changes' points to a need for a more principled approach to demonstrate direct causality or to better understand the underlying mechanisms.",
+        "The paper heavily relies on the OLMo model suite. While this is acknowledged as a limitation due to computational constraints and the availability of intermediate checkpoints, the generalizability of the findings to other LLM architectures (e.g., different FFN structures, attention mechanisms) and pretraining objectives could be further explored, even if only through discussion of potential differences."
+      ],
+      "summary_comment": "This paper presents a compelling and well-executed investigation into the dynamics of knowledge integration during large language model pretraining. The introduction of 'knowledge entropy' provides a valuable metric for understanding how models utilize their internal knowledge representations. The core finding—that knowledge entropy consistently decays during pretraining, correlating with reduced knowledge acquisition and increased forgetting in continual learning—is well-supported by extensive empirical evidence. The 'resuscitation' experiment, despite its heuristic nature, offers strong evidence for the proposed causal link. The methodological rigor, including diverse experiments, ablation studies, and clear definitions, makes this a valuable contribution to the field. While there are some limitations regarding the generalizability to other models and the heuristic nature of the resuscitation method, these do not overshadow the overall soundness and significance of the work."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly relevant and practical problem for practitioners: understanding why LLMs struggle to acquire new knowledge as pretraining advances, and identifying strategies to mitigate this.",
+        "The introduction of 'knowledge entropy' as a metric to quantify the integration of memory sources is a novel and intuitive approach, providing a clear lens through which to analyze model dynamics during pretraining and continual learning.",
+        "The empirical findings are robust, showing a consistent decline in knowledge entropy, knowledge acquisition, and retention as pretraining progresses across different model sizes (1B, 7B) and verified using various entropy definitions (attention, NTP).",
+        "The proposed intervention of 'resuscitating inactive memory vectors' provides tangible evidence supporting the core hypothesis and offers a promising direction for improving continual learning performance in heavily pretrained models."
+      ],
+      "weaknesses": [
+        "While the resuscitation method effectively demonstrates the hypothesis, its practical applicability is still limited. The current approach involves arbitrary modification of parameters and doesn't fully restore plasticity to the level of mid-stage models, highlighting a need for more principled methods.",
+        "The definition of the \"mid-stage\" as 50% of the learning rate schedule is noted as an approximation. For practical adoption, a more robust or data-driven method for identifying optimal mid-stage checkpoints would be beneficial."
+      ],
+      "summary_comment": "This paper presents a highly significant contribution to the field of large language models, particularly from a practical perspective. It tackles the crucial problem of declining knowledge acquisition and increasing forgetting during late-stage pretraining, a challenge faced by anyone attempting to continually update or adapt LLMs. The concept of 'knowledge entropy' is well-defined and serves as an effective diagnostic tool, correlating strongly with observed learning behaviors. The empirical evidence across multiple models and settings is convincing, showing a clear trend of decreased integration of memory vectors leading to reduced plasticity. The most compelling aspect for an experienced practitioner is the experimental validation of their hypothesis through 'resuscitating inactive memory vectors', which, despite its current limitations, provides a clear path for future research and practical solutions. The clarity of writing and motivation are strong, making the complex dynamics accessible. While the proposed resuscitation method isn't a silver bullet yet, it strongly supports the paper's central claims and points towards actionable research directions. This work will undoubtedly influence how practitioners think about and manage the lifecycle of pretrained language models."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces 'knowledge entropy,' a novel methodological concept to analyze general machine learning (specifically, deep learning architectures) and their behavior during pretraining and continual learning, which aligns well with ICML's focus on innovative techniques and theory in ML.",
+        "The topic directly addresses the dynamics of deep learning models, specifically large language models (LLMs), focusing on aspects like knowledge acquisition, forgetting, and plasticity, which are key areas within deep learning and general machine learning research, explicitly listed in ICML's topics of interest.",
+        "The paper provides a detailed analysis of model internals (FFN as key-value memory, memory coefficients) and their changes over time during pretraining, offering theoretical insights into LLM behavior, which is a valued contribution type at ICML.",
+        "The experimental methodology is thorough, testing different model scales (1B, 7B), alternative entropy definitions, and even activation functions, demonstrating rigor in evaluating the proposed concept, fitting ICML's emphasis on strong methodology.",
+        "The 'resuscitating inactive memory vectors' experiment is an innovative empirical validation that strongly supports the central hypothesis, showcasing problem-solving originality that ICML values.",
+        "Reviewers B and C highlight the 'well-executed investigation' and 'robust empirical findings across multiple models and settings,' indicating the paper's strong evaluation and general machine learning relevance for ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper introduces a novel concept, the 'resuscitation' mechanism is described by reviewers as 'somewhat ad-hoc' (Reviewer A) and 'heuristic' (Reviewer B), suggesting that the practical intervention is not fully principled yet, which might be a slight detractor for a conference that values strong theoretical underpinnings or directly deployable methods.",
+        "The primary focus on OLMo models, though acknowledged, could be seen as a limitation in generalizability across the broader spectrum of deep learning architectures relevant to ICML (Reviewer A, B).",
+        "While the paper provides theoretical insights into LLM behavior, it lacks a formal theoretical guarantee or a new mathematical framework beyond the proposed entropy metric, which might be expected for highly theoretical contributions at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly investigates the core mechanics of large language models during pretraining and continual learning, which falls under 'Deep learning' and 'General machine learning: core contributions in supervised and unsupervised methods' topics strongly featured at NeurIPS.",
+        "The concept of 'knowledge entropy' and its analysis of knowledge acquisition and forgetting in LLMs offers 'new insights in terms of their limitations or behavior beyond the scope of the original work,' which NeurIPS explicitly welcomes for in-depth analysis of existing methods.",
+        "The paper's interdisciplinary nature, combining aspects of information theory (entropy) with deep learning architectures to understand cognitive phenomena like knowledge acquisition and forgetting, aligns well with NeurIPS's interdisciplinary mission, as noted by Reviewer A's mention of the 'plasticity-stability dilemma'.",
+        "The methodology involves rigorous empirical validation using established LLM benchmarks (OLMo, PubMed, C4 datasets, various downstream tasks) and carefully designed experiments, including a 'resuscitation' intervention to test causality, indicating strong evaluation fitting NeurIPS's rigor.",
+        "Reviewers praise the novelty ('truly novel concept' - Reviewer A) and significance ('critical insight' - Reviewer A, 'valuable contribution' - Reviewer B) of the work, which are key aspects for NeurIPS submissions.",
+        "The paper investigates generalization and multi-task learning implicitly through its study of knowledge acquisition and forgetting in a continual learning setup, which aligns with NeurIPS's listed topics."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, the 'resuscitation mechanism' is noted as 'heuristic' and 'somewhat ad-hoc' by reviewers. While it provides empirical evidence, a more theoretically grounded intervention or a deeper mathematical analysis of why it works would strengthen the theoretical contribution often highly valued at NeurIPS.",
+        "The limitation to OLMo models might restrict the immediate generalizability across the diverse LLM landscape that NeurIPS often sees, even if the findings are robust for the studied models (Reviewer B).",
+        "The paper focuses on analysis and mechanistic understanding rather than proposing a new, high-performance model or a novel algorithmic breakthrough, which, while valuable, sometimes faces tougher competition in NeurIPS against papers with significant empirical performance gains or entirely new model architectures."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR is globally renowned for presenting 'cutting-edge research on all aspects of deep learning,' and this paper directly addresses fundamental understanding of 'representation learning' (specifically, how parametric knowledge is represented and integrated) in large language models.",
+        "The analysis of FFNs as 'key-value memory' and the proposal of 'knowledge entropy' as a metric for understanding the dynamics of these representations during pretraining strongly aligns with ICLR's interest in representation learning.",
+        "The paper examines the dynamics of knowledge acquisition and forgetting in a 'continual learning' setup, which is a direct topic of interest for ICLR.",
+        "The work uses advanced deep learning models (OLMo 1B, 7B) and analyzes their internal mechanisms, which is consistent with ICLR's deep learning focus.",
+        "Reviewers consistently highlight the novelty of 'knowledge entropy' and its application to LLM dynamics, a characteristic central to ICLR's mission.",
+        "The paper's detailed analysis of how internal states (knowledge entropy) influence model behavior (knowledge acquisition/forgetting) provides foundational insights into deep learning plasticity and stability, a topic relevant to ICLR's focus on learning theory."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper introduces a novel concept, the 'resuscitation' method is acknowledged as an 'arbitrary modification of parameters' (Reviewer C) and 'somewhat ad-hoc' (Reviewer A). ICLR often favors novel algorithmic or architectural contributions that are more principled or directly lead to improved model capabilities, whereas this is more analytical.",
+        "The paper mainly offers an analytical framework and findings about LLM behavior, rather than proposing a new deep learning architecture or a significant optimization technique, which are very common and highly competitive contributions at ICLR.",
+        "The focus is on understanding existing large language models' pretraining dynamics rather than developing entirely new representation learning techniques or models, which could be perceived as less 'cutting-edge' in terms of active deep learning model development, compared to some ICLR papers introducing novel architectures or training paradigms.",
+        "The discussion on limitations, such as the need for 'more fundamental and alternative approaches' to restore plasticity effectively, and the heuristic nature of the current intervention, might lead some ICLR reviewers to see the practical utility or direct applicability of the current proposed 'solution' as underdeveloped compared to purely analytical contributions."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

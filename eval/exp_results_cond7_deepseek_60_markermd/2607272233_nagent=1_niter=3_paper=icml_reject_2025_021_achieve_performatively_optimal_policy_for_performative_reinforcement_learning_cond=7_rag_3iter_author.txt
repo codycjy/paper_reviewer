@@ -1,0 +1,738 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 4,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper addresses a clear and important gap in performative RL (PRL) by focusing on achieving the Performatively Optimal (PO) policy, whereas prior work only targeted Performatively Stable (PS) policies with a known suboptimality gap. This is a well-motivated contribution.",
+        "The theoretical analysis introduces several novel techniques, such as proving a gradient dominance property under a regularizer dominance condition and establishing a policy lower bound that enables working within a compact subspace where Lipschitz properties hold.",
+        "The proposed 0-PPG algorithm is novel for PRL, combining zeroth-order gradient estimation with a Frank-Wolfe approach to converge to a PO policy. The proof of polynomial sample complexity for convergence is non-trivial."
+      ],
+      "weaknesses": [
+        "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+        "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+          "severity": "major",
+          "evidence": "The paper is purely theoretical. No experimental section or results are included in the submission. The claims about the 0-PPG algorithm's performance, convergence speed, and advantage over existing methods are not supported by any empirical validation.",
+          "affected_claim": "The practical significance of the proposed 0-PPG algorithm and its superiority over PS-seeking baselines.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance.",
+          "severity": "major",
+          "evidence": "The theoretical guarantees depend crucially on: 1) Assumption 3 (uniform lower bound D on state occupancy), 2) Equation (24) assuming policy evaluation with deterministic error, and 3) the condition µ ≥ 0 in Theorem 1 requiring a sufficiently large regularizer λ relative to environmental sensitivity parameters. The paper does not discuss how to verify or satisfy these in practice.",
+          "affected_claim": "The applicability and robustness of the theoretical guarantees in real-world or standard benchmark settings.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The authors acknowledge the assumptions but do not dispute the internal mathematical validity of the proofs given those assumptions. The derivations in the submitted paper appear logically consistent."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The core objective (achieving PO in PRL) and the technical approach (gradient dominance, policy subspace analysis, zeroth-order estimation on a constrained manifold) are distinct from prior work that focused on PS policies."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The authors agree that empirical validation is crucial for impact. However, the submitted paper contains no experiments to demonstrate the algorithm's performance, practicality, or advantage over existing methods. The significance of the contribution remains unproven and speculative without empirical evidence."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The authors propose adding an experimental section in a future revision, but the current submission has no empirical evaluation whatsoever. Promises of future experiments do not constitute evaluation in the submitted work. This is a major flaw for a conference paper."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and well-structured, allowing the theoretical claims to be assessed reliably."
+        }
+      },
+      "summary_comment": "The authors' response acknowledges the weaknesses but does not resolve them. The lack of empirical evaluation is a critical omission; promises of future experiments do not change the assessment of the submitted paper. The strong assumptions remain unaddressed within the submission, as the authors only discuss how they might be justified or extended in future revisions. Consequently, both major weaknesses stand. The theoretical contributions are novel and sound under the stringent framework, but without empirical validation or a convincing discussion of practical applicability, the work does not meet the bar for a top-tier conference. The decision remains Reject."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong topic fit: ICML covers optimization, reinforcement learning, and theory of machine learning, which aligns with this paper's focus on performative RL and policy optimization.",
+        "Theoretical contribution: The paper provides novel theoretical results (gradient dominance, policy lower bound) and a polynomial-time convergence algorithm, which matches ICML's emphasis on rigorous theoretical analysis.",
+        "Relevance to ICML themes: The work connects to core ML topics like non-convex optimization, gradient methods, and RL theory, making it suitable for ICML."
+      ],
+      "why_it_does_not_fit": [
+        "Lack of empirical validation: ICML values empirical support for theoretical claims, and this paper has no experiments, which reduces its practical impact and could be a concern for reviewers.",
+        "Strong assumptions: The theoretical results rely on assumptions (e.g., regularizer dominance, known lower bound D) that may be viewed as restrictive without empirical justification, potentially limiting appeal to ICML's broad audience."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Interdisciplinary appeal: NeurIPS welcomes RL, optimization, and theoretical work, and this paper's focus on performative RL fits well with the conference's scope.",
+        "Novelty: The paper addresses an underexplored problem (achieving PO in performative RL) with new insights, which aligns with NeurIPS' interest in innovative research.",
+        "Algorithmic contribution: The zeroth-order policy gradient method introduces a practical approach for settings with policy-dependent environments, relevant to NeurIPS' systems and applications focus."
+      ],
+      "why_it_does_not_fit": [
+        "No experiments: NeurIPS highly values empirical evaluation, and the absence of experiments weakens the paper's suitability, as reviewers may question the practical relevance.",
+        "Theoretical heavy: While NeurIPS accepts theory, the paper's dense theoretical presentation might not engage the broader NeurIPS audience without complementary empirical results."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "RL and deep learning focus: ICLR emphasizes deep learning and RL, and this paper's RL-based framework and potential extensions to deep settings (e.g., function approximation) could be relevant.",
+        "Theoretical depth: ICLR appreciates theoretical contributions in RL, and the paper's analysis of gradient dominance and convergence provides solid theoretical insights."
+      ],
+      "why_it_does_not_fit": [
+        "No empirical validation: ICLR strongly favors papers with empirical results, especially for RL works, and the lack of experiments makes it a poor fit.",
+        "Limited connection to deep learning: The paper focuses on tabular/linear settings without explicit deep learning components, which may reduce its appeal to ICLR's audience.",
+        "Presentation: The writing is technical and may not align with ICLR's preference for clear, accessible papers with empirical demonstrations."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "The paper addresses a clear and important gap in performative RL (PRL) by focusing on achieving the Performatively Optimal (PO) policy, whereas prior work only targeted Performatively Stable (PS) policies with a known suboptimality gap. This is a well-motivated contribution.",
+              "The theoretical analysis introduces several novel techniques, such as proving a gradient dominance property under a regularizer dominance condition and establishing a policy lower bound that enables working within a compact subspace where Lipschitz properties hold.",
+              "The proposed 0-PPG algorithm is novel for PRL, combining zeroth-order gradient estimation with a Frank-Wolfe approach to converge to a PO policy. The proof of polynomial sample complexity for convergence is non-trivial."
+            ],
+            "weaknesses": [
+              "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+              "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+                "severity": "major",
+                "evidence": "The paper is purely theoretical and contains no experiments, data, or comparisons. Section 4 describes the 0-PPG algorithm and its theoretical convergence guarantees, but there is no Section 5 for experiments; the paper concludes directly after the proofs. The claims about polynomial complexity and improved optimality over prior PS-focused methods are unsubstantiated empirically.",
+                "affected_claim": "The claim that the 0-PPG algorithm 'for the first time converges to the desired PO policy' in a practically useful way and its comparison to existing repeated retraining methods.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance.",
+                "severity": "major",
+                "evidence": "The analysis relies on: Assumption 3 (a constant lower bound D on state occupancy measures for all policies), the ability to obtain a stochastic policy evaluation V_hat with a deterministic error bound epsilon_V (Eq. 24), and the regularizer dominance condition (mu >= 0 in Theorem 1) which requires the regularizer strength lambda to be large relative to environmental shift parameters (epsilon_p, S_p, etc.). These conditions are difficult to verify or guarantee in practice, and the analysis does not discuss their implications for real-world problems.",
+                "affected_claim": "The theoretical guarantees of the 0-PPG algorithm, including gradient dominance, Lipschitz properties, and the final convergence result (Theorem 4). If these assumptions are violated, the core results may not hold.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are supported by detailed theoretical proofs under the stated assumptions. The mathematical derivations appear thorough, with novel components like the recursion for the occupancy measure error and the policy lower bound. While the assumptions are strong, the logic within the assumed framework seems correct."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The work is sufficiently distinct from prior PRL works (e.g., Mandal et al. 2023, Rank et al. 2024) which focused solely on PS policies. The paper's primary goal is to achieve PO, which is a new objective for PRL. The techniques for establishing gradient dominance and the zeroth-order estimator adapted to the policy subspace are novel contributions to this area."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the problem (achieving PO in PRL) is significant, the contribution's impact is uncertain due to the lack of empirical validation and the strength of the required assumptions. For a top-tier ML conference, a purely theoretical paper without experiments or a demonstration of practical relevance on standard benchmarks is insufficient to claim meaningful advancement of the field. The significance is therefore limited."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation is inadequate. There are no experiments, simulations, or comparisons with any baseline algorithms. The claims about the algorithm's performance and its advantage over existing PS-seeking methods are purely theoretical and untested. This makes it impossible to assess the practical relevance, robustness, or efficiency of the proposed method."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly structured and written. The problem is well-motivated, the contributions are listed, and the theoretical development is explained step-by-step with intuitive outlines. The notation is consistent, and the appendix provides detailed proofs. The clarity is sufficient for reliable assessment, despite the complexity of the analysis."
+              }
+            },
+            "summary_comment": "This paper presents a novel theoretical contribution to performative reinforcement learning by introducing an algorithm (0-PPG) designed to converge to the Performatively Optimal (PO) policy, a problem previously unaddressed as existing work focused on suboptimal Performatively Stable (PS) policies. The theoretical analysis is sound under strong assumptions and includes interesting technical innovations such as a gradient dominance property and a policy lower bound. However, the work fails the overall top-tier conference standard due to two major weaknesses: (1) A complete lack of empirical evaluation, which is crucial for validating the practicality, efficiency, and advantage of the proposed approach. (2) The theoretical guarantees rely on assumptions (e.g., deterministic policy evaluation with bounded error, uniform state occupancy lower bound) that are difficult to satisfy in practice and limit the real-world applicability of the results. While the ideas are promising and the theory is non-trivial, the absence of any experimental validation and the strong assumptions prevent the paper from meeting the bar for acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "The paper addresses a clear and important gap in performative RL (PRL) by focusing on achieving the Performatively Optimal (PO) policy, whereas prior work only targeted Performatively Stable (PS) policies with a known suboptimality gap. This is a well-motivated contribution.",
+              "The theoretical analysis introduces several novel techniques, such as proving a gradient dominance property under a regularizer dominance condition and establishing a policy lower bound that enables working within a compact subspace where Lipschitz properties hold.",
+              "The proposed 0-PPG algorithm is novel for PRL, combining zeroth-order gradient estimation with a Frank-Wolfe approach to converge to a PO policy. The proof of polynomial sample complexity for convergence is non-trivial."
+            ],
+            "weaknesses": [
+              "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+              "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+                "severity": "major",
+                "evidence": "The paper is purely theoretical and contains no experiments, data, or comparisons. Section 4 describes the 0-PPG algorithm and its theoretical convergence guarantees, but there is no Section 5 for experiments; the paper concludes directly after the proofs. The claims about polynomial complexity and improved optimality over prior PS-focused methods are unsubstantiated empirically.",
+                "affected_claim": "The claim that the 0-PPG algorithm 'for the first time converges to the desired PO policy' in a practically useful way and its comparison to existing repeated retraining methods.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance.",
+                "severity": "major",
+                "evidence": "The analysis relies on: Assumption 3 (a constant lower bound D on state occupancy measures for all policies), the ability to obtain a stochastic policy evaluation V_hat with a deterministic error bound epsilon_V (Eq. 24), and the regularizer dominance condition (mu >= 0 in Theorem 1) which requires the regularizer strength lambda to be large relative to environmental shift parameters (epsilon_p, S_p, etc.). These conditions are difficult to verify or guarantee in practice, and the analysis does not discuss their implications for real-world problems.",
+                "affected_claim": "The theoretical guarantees of the 0-PPG algorithm, including gradient dominance, Lipschitz properties, and the final convergence result (Theorem 4). If these assumptions are violated, the core results may not hold.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The authors' response acknowledges the reliance on strong assumptions but does not dispute the internal mathematical consistency of the proofs under these assumptions. The theoretical development remains logically sound within the stated framework, with no evidence of errors in the derivations provided in the submitted paper."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The authors' response correctly highlights that the focus on PO policies and the specific theoretical techniques (gradient dominance, policy subspace analysis) are novel contributions distinct from prior PRL work on PS policies. The rebuttal does not diminish the paper's novelty claim."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The authors acknowledge the lack of empirical validation and agree it is crucial for impact. However, the submitted paper contains no experiments to demonstrate the algorithm's performance, robustness, or advantage over baselines. Promises of future work do not resolve this deficiency in the current submission. The significance of the contribution remains uncertain without empirical evidence."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The authors concede that experiments are needed but have not included any in the submitted work. The evaluation remains purely theoretical, with no empirical validation of the algorithm's convergence, sample efficiency, or comparison to existing methods. This is a critical flaw for a top-tier conference submission."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clearly written, allowing for reliable assessment of its theoretical claims. The authors' response does not indicate any issues with the clarity of the submitted text."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges the two major weaknesses identified in the review: the absence of empirical evaluation and the reliance on strong assumptions. However, the response consists primarily of promises for future work (adding experiments, discussing assumptions) rather than providing evidence already present in the submitted paper. Consequently, the weaknesses remain entirely unresolved. The theoretical contributions are novel and sound under the stated assumptions, but the lack of any empirical validation severely undermines the practical significance and evaluative strength of the work. For a top-tier conference, a purely theoretical paper without experiments or a demonstration of applicability on relevant problems does not meet the standard for acceptance. The decision remains Reject."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Lack of empirical evaluation (no experiments, comparisons, or validation)\",\n        \"Strong/unrealistic assumptions (Assumption 3, deterministic policy evaluation, regularizer dominance)\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Lack of empirical evaluation\",\n          \"location\": \"Entire paper (Sections 1-5, Appendix)\",\n          \"explanation\": \"The paper is purely theoretical. Sections 4.1-4.2 describe the 0-PPG algorithm and its theoretical convergence guarantees, but no experimental section exists. The paper concludes after theoretical results without any empirical validation or comparisons to baselines.\"\n        },\n        {\n          \"concern\": \"Strong assumptions (e.g., Assumption 3, deterministic policy evaluation)\",\n          \"location\": \"Sections 3.1 (Assumptions 1-3), 4.1 (Eq. 24)\",\n          \"explanation\": \"Assumption 3 requires a constant lower bound D on state occupancy measures for all policies. Eq. 24 assumes access to policy evaluation with deterministic error bounds, which is challenging in practice. The regularizer dominance condition (µ ≥ 0 in Theorem 1) requires large λ relative to environmental shifts.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of empirical evaluation\",\n          \"proposed_change\": \"Add an experimental section validating 0-PPG on synthetic or standard PRL benchmarks (e.g., recommender systems or autonomous driving simulators). Compare against repeated retraining baselines (e.g., Mandal et al. 2023) to demonstrate convergence to PO vs. PS and sample efficiency.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Strong assumptions (e.g., Assumption 3)\",\n          \"proposed_change\": \"Discuss the practical implications of assumptions (e.g., how to estimate D or ensure regularizer dominance) and potential relaxations (e.g., stochastic policy evaluation with high-probability bounds). Extend theory to handle approximate policy evaluation with variance.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback and acknowledge the concerns regarding empirical validation and assumption strength. Below, we address each point clearly and professionally.\\n\\n**Addressing Lack of Empirical Evaluation:**\\nWe agree that empirical validation is crucial for practical impact. Our current focus was on establishing the first theoretical foundation for achieving PO policies in PRL, which required extensive analysis (e.g., gradient dominance and policy lower bounds). However, we recognize that experiments are necessary to demonstrate practicality. In future work, we will implement 0-PPG on PRL benchmarks (e.g., synthetic environments with policy-dependent dynamics or adapted OpenAI Gym tasks) and compare against repeated retraining baselines [Mandal et al., 2023] to empirically confirm convergence to PO and sample complexity. We will also explore the impact of hyperparameters (e.g., λ, δ) and assumption violations.\\n\\n**Addressing Strong Assumptions:**\\nWe acknowledge that assumptions like Assumption 3 (state occupancy lower bound) and deterministic policy evaluation (Eq. 24) are strong. These were necessary to derive clean theoretical guarantees for the first PO algorithm in PRL. However:\\n- Assumption 3 is common in RL theory [Agarwal et al., 2021; Chen and Huang, 2024] and can be justified in settings with sufficient exploration or ergodicity (see Appendix C).\\n- The regularizer dominance condition (µ ≥ 0) aligns with prior PRL works [Mandal et al., 2023] requiring similar conditions for PS convergence.\\n- For policy evaluation, stochastic methods with high-probability bounds (e.g., TD learning) can be integrated, and our analysis can be extended to account for variance (Appendix H alludes to this).\\nWe will clarify these points in the text and discuss practical strategies for mitigating assumption violations (e.g., using entropy regularization to ensure exploration).\\n\\n**Conclusion:**\\nWhile our work provides novel theoretical advancements (first PO convergence, gradient dominance, and policy subspace analysis), we agree that empirical results are needed for full validation. We will address this in subsequent versions by adding experiments and broadening the discussion of assumptions.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 3
+            },
+            "strengths": [
+              "The paper addresses a clear and important gap in performative RL (PRL) by focusing on achieving the Performatively Optimal (PO) policy, whereas prior work only targeted Performatively Stable (PS) policies with a known suboptimality gap. This is a well-motivated contribution.",
+              "The theoretical analysis introduces several novel techniques, such as proving a gradient dominance property under a regularizer dominance condition and establishing a policy lower bound that enables working within a compact subspace where Lipschitz properties hold.",
+              "The proposed 0-PPG algorithm is novel for PRL, combining zeroth-order gradient estimation with a Frank-Wolfe approach to converge to a PO policy. The proof of polynomial sample complexity for convergence is non-trivial."
+            ],
+            "weaknesses": [
+              "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+              "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The experimental evaluation is completely absent. No empirical results are provided to validate the theory, compare against baselines (like repeated retraining for PS), or demonstrate practical utility, which severely undermines confidence in the contributions.",
+                "severity": "major",
+                "evidence": "The paper is purely theoretical. No experimental section or results are included in the submission. The claims about the 0-PPG algorithm's performance, convergence speed, and advantage over existing methods are not supported by any empirical validation.",
+                "affected_claim": "The practical significance of the proposed 0-PPG algorithm and its superiority over PS-seeking baselines.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The algorithmic and analytical assumptions are strong and potentially unrealistic for many practical applications, particularly the assumptions of deterministic policy evaluation, known lower bounds on state occupancy, and the regularizer dominance condition that ensures gradient dominance.",
+                "severity": "major",
+                "evidence": "The theoretical guarantees depend crucially on: 1) Assumption 3 (uniform lower bound D on state occupancy), 2) Equation (24) assuming policy evaluation with deterministic error, and 3) the condition µ ≥ 0 in Theorem 1 requiring a sufficiently large regularizer λ relative to environmental sensitivity parameters. The paper does not discuss how to verify or satisfy these in practice.",
+                "affected_claim": "The applicability and robustness of the theoretical guarantees in real-world or standard benchmark settings.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The authors acknowledge the assumptions but do not dispute the internal mathematical validity of the proofs given those assumptions. The derivations in the submitted paper appear logically consistent."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The core objective (achieving PO in PRL) and the technical approach (gradient dominance, policy subspace analysis, zeroth-order estimation on a constrained manifold) are distinct from prior work that focused on PS policies."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The authors agree that empirical validation is crucial for impact. However, the submitted paper contains no experiments to demonstrate the algorithm's performance, practicality, or advantage over existing methods. The significance of the contribution remains unproven and speculative without empirical evidence."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The authors propose adding an experimental section in a future revision, but the current submission has no empirical evaluation whatsoever. Promises of future experiments do not constitute evaluation in the submitted work. This is a major flaw for a conference paper."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured, allowing the theoretical claims to be assessed reliably."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges the weaknesses but does not resolve them. The lack of empirical evaluation is a critical omission; promises of future experiments do not change the assessment of the submitted paper. The strong assumptions remain unaddressed within the submission, as the authors only discuss how they might be justified or extended in future revisions. Consequently, both major weaknesses stand. The theoretical contributions are novel and sound under the stringent framework, but without empirical validation or a convincing discussion of practical applicability, the work does not meet the bar for a top-tier conference. The decision remains Reject."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Lack of empirical evaluation (no experiments, comparisons, or validation)\",\n        \"Strong/unrealistic assumptions (Assumption 3, deterministic policy evaluation, regularizer dominance)\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Lack of empirical evaluation\",\n          \"location\": \"Entire paper (Sections 1-5, Appendix)\",\n          \"explanation\": \"The paper is purely theoretical. No experimental section exists to validate the proposed 0-PPG algorithm, compare it to baselines (e.g., repeated retraining for PS policies), or demonstrate practical utility.\"\n        },\n        {\n          \"concern\": \"Strong assumptions (e.g., Assumption 3)\",\n          \"location\": \"Sections 3.1 (Assumptions 1-3), 4.1 (Eq. 24)\",\n          \"explanation\": \"Assumption 3 requires a uniform lower bound D on state occupancy measures. Eq. 24 assumes access to policy evaluation with deterministic error bounds. The regularizer dominance condition (µ ≥ 0 in Theorem 1) requires large λ relative to environmental shifts.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of empirical evaluation\",\n          \"proposed_change\": \"Add an experimental section in a revised manuscript. This section will implement 0-PPG on synthetic PRL environments (e.g., with controlled policy-dependent transitions) and standard benchmarks (e.g., adapted OpenAI Gym tasks). Compare against repeated retraining baselines [Mandal et al., 2023] to empirically demonstrate convergence to PO policies, sample efficiency, and advantage over PS policies.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Strong assumptions (e.g., Assumption 3)\",\n          \"proposed_change\": \"Extend the discussion in Sections 3.1 and 4.1 to address the practicality of assumptions. For Assumption 3, cite common RL works that use similar conditions [Agarwal et al., 2021; Chen and Huang, 2024] and discuss how exploration (e.g., via entropy regularization) can help satisfy it. For policy evaluation, discuss how high-probability stochastic methods (e.g., TD learning) can be integrated, and note that the analysis in Appendix H provides a foundation for extending to stochastic errors.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their rigorous assessment and acknowledge that the lack of empirical validation is a significant limitation. We also appreciate the feedback on our assumptions.\\n\\nRegarding the absence of experiments: We agree that empirical results are crucial for demonstrating practical impact. Our initial submission focused on establishing the theoretical foundation for achieving PO policies—a novel and challenging goal in PRL—which required extensive analysis (e.g., gradient dominance, policy subspaces, and zeroth-order estimation in constrained spaces). However, we recognize that experiments are necessary to validate the theory. In a revised manuscript, we will add a comprehensive experimental section. We will implement 0-PPG on synthetic PRL environments (where policy-dependent dynamics can be precisely controlled) and adapted standard benchmarks (e.g., based on OpenAI Gym). We will compare against repeated retraining baselines [Mandal et al., 2023] to empirically confirm: (1) convergence to PO policies (verifying the suboptimality gap between PO and PS), (2) sample efficiency of 0-PPG, and (3) robustness to hyperparameters. This will substantiate our claims about the algorithm's practical utility.\\n\\nRegarding the strong assumptions: We acknowledge that assumptions like Assumption 3 (state occupancy lower bound) and deterministic policy evaluation (Eq. 24) are stringent. These were necessary to derive clean theoretical guarantees for the first algorithm targeting PO policies. However:\\n- Assumption 3 is common in theoretical RL [Agarwal et al., 2021; Chen and Huang, 2024] and often holds in practice with sufficient exploration (which our entropy regularizer encourages). We will add a discussion on this point and cite prior works that use similar conditions.\\n- The regularizer dominance condition (µ ≥ 0) aligns with prior PRL works [Mandal et al., 2023] that require similar conditions for PS convergence. We will clarify this connection.\\n- For policy evaluation, stochastic methods with high-probability bounds can be integrated. Our analysis in Appendix H (Proposition 1) provides a framework that can be extended to handle stochastic errors, and we will note this potential extension.\\n\\nWe are committed to enhancing the paper's practical relevance by adding experiments and broadening the discussion of assumptions. We believe these revisions will significantly strengthen the work.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_9381a750c57c",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/icml_reject_2025_021_achieve_performatively_optimal_policy_for_performative_reinforcement_learning.md",
+    "target_paper_summary": {
+      "paper_id": "paper_9381a750c57c",
+      "title": "Achieve Performatively Optimal Policy For Performative Reinforcement Learning",
+      "abstract": "Performative reinforcement learning is an emerging dynamical decision making framework, which extends reinforcement learning to the common applications where the agent's policy can change the environmental dynamics. Existing works on performative reinforcement learning only aim at a performatively stable (PS) policy that maximizes an approximate value function. However, there is a provably positive constant gap between the PS policy and the desired performatively optimal (PO) policy that maximizes the original value function. In contrast, this work proposes a zerothorder performative policy gradient (0-PPG) algorithm that **for the first time converges to the** desired PO policy with polynomial computation complexity under mild conditions. For the convergence analysis, we prove two important properties of the nonconvex value function. First, when the policy regularizer dominates the environmental shift, the value function satisfies a certain gradient dominance property, so that any stationary point of the value function is a desired PO.\n\nSecond, though the value function has unbounded gradient, we prove that all the sufficiently stationary points lie in a convex and compact policy subspace Π∆, where the policy value has a constant lower bound ∆ > 0 and thus the gradient becomes bounded and Lipschitz continuous.",
+      "topic": "",
+      "claims": [
+        "we prove two important properties of the nonconvex value function.",
+        "we prove that all the sufficiently stationary points lie in a convex and compact policy subspace Π∆, where the policy value has a constant lower bound ∆ > 0 and thus the gradient becomes bounded and Lipschitz continuous."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_f9e45fc13",
+        "title": "Reinforcement Learning: A Survey",
+        "authors": [
+          "Leslie Pack Kaelbling",
+          "Michael L. Littman",
+          "Andrew Moore"
+        ],
+        "year": 1996,
+        "publication_date": "1996-05-01",
+        "venue": "Journal of Artificial Intelligence Research",
+        "abstract": "This paper surveys the field of reinforcement learning from a computer-science perspective. It is written to be accessible to researchers familiar with machine learning. Both the historical basis of the field and a broad selection of current work are summarized. Reinforcement learning is the problem faced by an agent that learns behavior through trial-and-error interactions with a dynamic environment. The work described here has a resemblance to work in psychology, but differs considerably in the details and in the use of the word ``reinforcement.'' The paper discusses central issues of reinforcement learning, including trading off exploration and exploitation, establishing the foundations of the field via Markov decision theory, learning from delayed reinforcement, constructing empirical models to accelerate learning, making use of generalization and hierarchy, and coping with hidden state. It concludes with a survey of some implemented systems and an assessment of the practical utility of current methods for reinforcement learning.",
+        "url": "https://doi.org/10.1613/jair.301",
+        "doi": "https://doi.org/10.1613/jair.301",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2107726111"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 8876
+      },
+      {
+        "paper_id": "rw_002_02c4cc10d",
+        "title": "A survey on Image Data Augmentation for Deep Learning",
+        "authors": [
+          "Connor Shorten",
+          "Taghi M. Khoshgoftaar"
+        ],
+        "year": 2019,
+        "publication_date": "2019-07-06",
+        "venue": "Journal Of Big Data",
+        "abstract": "Deep convolutional neural networks have performed remarkably well on many Computer Vision tasks. However, these networks are heavily reliant on big data to avoid overfitting. Overfitting refers to the phenomenon when a network learns a function with very high variance such as to perfectly model the training data. Unfortunately, many application domains do not have access to big data, such as medical image analysis. This survey focuses on Data Augmentation, a data-space solution to the problem of limited data. Data Augmentation encompasses a suite of techniques that enhance the size and quality of training datasets such that better Deep Learning models can be built using them. The image augmentation algorithms discussed in this survey include geometric transformations, color space augmentations, kernel filters, mixing images, random erasing, feature space augmentation, adversarial training, generative adversarial networks, neural style transfer, and meta-learning. The application of augmentation methods based on GANs are heavily covered in this survey. In addition to augmentation techniques, this paper will briefly discuss other characteristics of Data Augmentation such as test-time augmentation, resolution impact, final dataset size, and curriculum learning. This survey will present existing methods for Data Augmentation, promising developments, and meta-level decisions for implementing Data Augmentation. Readers will understand how Data Augmentation can improve the performance of their models and expand limited datasets to take advantage of the capabilities of big data.",
+        "url": "https://doi.org/10.1186/s40537-019-0197-0",
+        "doi": "https://doi.org/10.1186/s40537-019-0197-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2954996726"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 12640
+      },
+      {
+        "paper_id": "rw_003_728b828c1",
+        "title": "Tree-Based Batch Mode Reinforcement Learning",
+        "authors": [
+          "Damien Ernst",
+          "Pierre Geurts",
+          "Louis Wehenkel"
+        ],
+        "year": 2005,
+        "publication_date": "2005-12-01",
+        "venue": "",
+        "abstract": "Reinforcement learning aims to determine an optimal control policy from interaction with a system or from observations gathered from a system. In batch mode, it can be achieved by approximating the so-called Q-function based on a set of four-tuples (xt,ut,rt,xt+1) where xt denotes the system state at time t, ut the control action taken, rt the instantaneous reward obtained and xt+1 the successor state of the system, and by determining the control policy from this Q-function. The Q-function approximation may be obtained from the limit of a sequence of (batch mode) supervised learning problems. Within this framework we describe the use of several classical tree-based supervised learning methods (CART, Kd-tree, tree bagging) and two newly proposed ensemble algorithms, namely extremely and totally randomized trees. We study their performances on several examples and find that the ensemble methods based on regression trees perform well in extracting relevant information about the optimal control policy from sets of four-tuples. In particular, the totally randomized trees give good results while ensuring the convergence of the sequence, whereas by relaxing the convergence constraint even better accuracy results are provided by the extremely randomized trees.",
+        "url": "http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.63.7705",
+        "doi": "",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2120346334"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 867
+      },
+      {
+        "paper_id": "rw_004_c206b2a96",
+        "title": "A Comprehensive Survey of Multiagent Reinforcement Learning",
+        "authors": [
+          "Lucian Buşoniu",
+          "Robert Babuška",
+          "Bart De Schutter"
+        ],
+        "year": 2008,
+        "publication_date": "2008-02-27",
+        "venue": "IEEE Transactions on Systems Man and Cybernetics Part C (Applications and Reviews)",
+        "abstract": "<para xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> Multiagent systems are rapidly finding applications in a variety of domains, including robotics, distributed control, telecommunications, and economics. The complexity of many tasks arising in these domains makes them difficult to solve with preprogrammed agent behaviors. The agents must, instead, discover a solution on their own, using learning. A significant part of the research on multiagent learning concerns reinforcement learning techniques. This paper provides a comprehensive survey of multiagent reinforcement learning (MARL). A central issue in the field is the formal statement of the multiagent learning goal. Different viewpoints on this issue have led to the proposal of many different goals, among which two focal points can be distinguished: stability of the agents' learning dynamics, and adaptation to the changing behavior of the other agents. The MARL algorithms described in the literature aim---either explicitly or implicitly---at one of these two goals or at a combination of both, in a fully cooperative, fully competitive, or more general setting. A representative selection of these algorithms is discussed in detail in this paper, together with the specific issues that arise in each category. Additionally, the benefits and challenges of MARL are described along with some of the problem domains where the MARL techniques have been applied. Finally, an outlook for the field is provided. </para>",
+        "url": "https://doi.org/10.1109/tsmcc.2007.913919",
+        "doi": "https://doi.org/10.1109/tsmcc.2007.913919",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2099618002"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2207
+      },
+      {
+        "paper_id": "rw_005_3912206a5",
+        "title": "Deep Reinforcement Learning That Matters",
+        "authors": [
+          "Peter Henderson",
+          "Riashat Islam",
+          "Philip Bachman",
+          "Joëlle Pineau",
+          "Doina Precup",
+          "David Meger"
+        ],
+        "year": 2018,
+        "publication_date": "2018-04-29",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "In recent years, significant progress has been made in solving challenging problems across various domains using deep reinforcement learning (RL). Reproducing existing work and accurately judging the improvements offered by novel methods is vital to sustaining this progress. Unfortunately, reproducing results for state-of-the-art deep RL methods is seldom straightforward. In particular, non-determinism in standard benchmark environments, combined with variance intrinsic to the methods, can make reported results tough to interpret. Without significance metrics and tighter standardization of experimental reporting, it is difficult to determine whether improvements over the prior state-of-the-art are meaningful. In this paper, we investigate challenges posed by reproducibility, proper experimental techniques, and reporting procedures. We illustrate the variability in reported metrics and results when comparing against common baselines and suggest guidelines to make future results in deep RL more reproducible. We aim to spur discussion about how to ensure continued progress in the field by minimizing wasted effort stemming from results that are non-reproducible and easily misinterpreted.",
+        "url": "https://doi.org/10.1609/aaai.v32i1.11694",
+        "doi": "https://doi.org/10.1609/aaai.v32i1.11694",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2754517384"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1531
+      },
+      {
+        "paper_id": "rw_006_81cabd032",
+        "title": "Near-Optimal Reinforcement Learning in Polynomial Time",
+        "authors": [
+          "Michael Kearns",
+          "Satinder Singh"
+        ],
+        "year": 2002,
+        "publication_date": "2002-11-01",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1023/a:1017984413808",
+        "doi": "https://doi.org/10.1023/a:1017984413808",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2489939061"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 859
+      },
+      {
+        "paper_id": "rw_007_ae5202429",
+        "title": "Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition",
+        "authors": [
+          "Tom Dietterich"
+        ],
+        "year": 2000,
+        "publication_date": "2000-11-01",
+        "venue": "Journal of Artificial Intelligence Research",
+        "abstract": "This paper presents a new approach to hierarchical reinforcement learning based on decomposing the target Markov decision process (MDP) into a hierarchy of smaller MDPs and decomposing the value function of the target MDP into an additive combination of the value functions of the smaller MDPs. The decomposition, known as the MAXQ decomposition, has both a procedural semantics---as a subroutine hierarchy---and a declarative semantics---as a representation of the value function of a hierarchical policy. MAXQ unifies and extends previous work on hierarchical reinforcement learning by Singh, Kaelbling, and Dayan and Hinton. It is based on the assumption that the programmer can identify useful subgoals and define subtasks that achieve these subgoals. By defining such subgoals, the programmer constrains the set of policies that need to be considered during reinforcement learning. The MAXQ value function decomposition can represent the value function of any policy that is consistent with the given hierarchy. The decomposition also creates opportunities to exploit state abstractions, so that individual MDPs within the hierarchy can ignore large parts of the state space. This is important for the practical application of the method. This paper defines the MAXQ hierarchy, proves formal results on its representational power, and establishes five conditions for the safe use of state abstractions. The paper presents an online model-free learning algorithm, MAXQ-Q, and proves that it converges with probability 1 to a kind of locally-optimal policy known as a recursively optimal policy, even in the presence of the five kinds of state abstraction. The paper evaluates the MAXQ representation and MAXQ-Q through a series of experiments in three domains and shows experimentally that MAXQ-Q (with state abstractions) converges to a recursively optimal policy much faster than flat Q learning. The fact that MAXQ learns a representation of the value function has an important benefit: it makes it possible to compute and execute an improved, non-hierarchical policy via a procedure similar to the policy improvement step of policy iteration. The paper demonstrates the effectiveness of this non-hierarchical execution experimentally. Finally, the paper concludes with a comparison to related work and a discussion of the design tradeoffs in hierarchical reinforcement learning.",
+        "url": "https://doi.org/10.1613/jair.639",
+        "doi": "https://doi.org/10.1613/jair.639",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2121517924"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1455
+      },
+      {
+        "paper_id": "rw_008_f83133409",
+        "title": "Rainbow: Combining Improvements in Deep Reinforcement Learning",
+        "authors": [
+          "Matteo Hessel",
+          "Joseph Modayil",
+          "Hado van Hasselt",
+          "Tom Schaul",
+          "Georg Ostrovski",
+          "Will Dabney",
+          "Dan Horgan",
+          "Bilal Piot",
+          "Mohammad Gheshlaghi Azar",
+          "David Silver"
+        ],
+        "year": 2018,
+        "publication_date": "2018-04-29",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "The deep reinforcement learning community has made several independent improvements to the DQN algorithm. However, it is unclear which of these extensions are complementary and can be fruitfully combined. This paper examines six extensions to the DQN algorithm and empirically studies their combination. Our experiments show that the combination provides state-of-the-art performance on the Atari 2600 benchmark, both in terms of data efficiency and final performance. We also provide results from a detailed ablation study that shows the contribution of each component to overall performance.",
+        "url": "https://doi.org/10.1609/aaai.v32i1.11796",
+        "doi": "https://doi.org/10.1609/aaai.v32i1.11796",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2761873684"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1750
+      },
+      {
+        "paper_id": "rw_009_7b694fe61",
+        "title": "An Introduction to Deep Reinforcement Learning",
+        "authors": [
+          "Vincent François-Lavet",
+          "Peter Henderson",
+          "Riashat Islam",
+          "Marc G. Bellemare",
+          "Joëlle Pineau"
+        ],
+        "year": 2018,
+        "publication_date": "2018-12-20",
+        "venue": "Foundations and Trends® in Machine Learning",
+        "abstract": "Deep reinforcement learning is the combination of reinforcement learning (RL) and deep learning. This field of research has been able to solve a wide range of complex decision making tasks that were previously out of reach for a machine. Thus, deep RL opens up many new applications in domains such as healthcare, robotics, smart grids, finance, and many more. This manuscript provides an introduction to deep reinforcement learning models, algorithms and techniques. Particular focus is on the aspects related to generalization and how deep RL can be used for practical applications. We assume the reader is familiar with basic machine learning concepts.",
+        "url": "https://doi.org/10.1561/2200000071",
+        "doi": "https://doi.org/10.1561/2200000071",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3100366369"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1269
+      },
+      {
+        "paper_id": "rw_010_15c415572",
+        "title": "Self-improving reactive agents based on reinforcement learning, planning and teaching",
+        "authors": [
+          "Long-Ji Lin"
+        ],
+        "year": 1992,
+        "publication_date": "1992-05-01",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/bf00992699",
+        "doi": "https://doi.org/10.1007/bf00992699",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2141559645"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1653
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_81cabd032",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "same_problem",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper addresses near-optimal reinforcement learning with polynomial time complexity, directly relevant to the target's focus on achieving performatively optimal policy with polynomial computation complexity.",
+        "evidence_summary": "In 2002, Kearns and Singh published 'Near-Optimal Reinforcement Learning in Polynomial Time,' which investigated methods for achieving near-optimal policies in reinforcement learning with computational efficiency guarantees."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_003_728b828c1",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper discusses tree-based batch mode reinforcement learning methods, which relate to value function approximation and policy optimization techniques, relevant to the target's analysis of nonconvex value functions.",
+        "evidence_summary": "In 2005, Ernst et al. published 'Tree-Based Batch Mode Reinforcement Learning,' which used tree-based supervised learning methods like CART and ensemble algorithms to approximate Q-functions from batch data, with empirical performance studies on optimal control policies."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_ae5202429",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This paper introduces hierarchical reinforcement learning with value function decomposition, which aligns with the target's focus on policy optimization and value function properties.",
+        "evidence_summary": "In 2000, Dietterich published 'Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition,' which decomposed MDPs into hierarchies and value functions additively, enabling state abstractions and online learning with convergence proofs for recursively optimal policies."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_010_15c415572",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper covers self-improving reactive agents using reinforcement learning, planning, and teaching, providing background on RL methods relevant to the target's dynamical decision-making framework.",
+        "evidence_summary": "In 1992, Lin published 'Self-improving reactive agents based on reinforcement learning, planning and teaching,' which explored methods for agent improvement through learning and interaction, though specific details on contributions or results are not provided in the metadata."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_001_f9e45fc13",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_problem",
+          "benchmark_baseline"
+        ],
+        "rationale": "This survey provides foundational background on reinforcement learning, including issues like exploration-exploitation trade-offs and Markov decision theory, which are relevant to the target's context.",
+        "evidence_summary": "In 1996, Kaelbling et al. published 'Reinforcement Learning: A Survey' in the Journal of Artificial Intelligence Research, summarizing historical and current work on RL, including central issues like delayed reinforcement, empirical models, and practical utility assessments of methods."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_004_c206b2a96",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey on multiagent reinforcement learning discusses stability and adaptation goals, which relate to the target's focus on policy dynamics and environmental changes.",
+        "evidence_summary": "In 2008, Buoniu et al. published 'A Comprehensive Survey of Multiagent Reinforcement Learning' in IEEE Transactions on Systems Man and Cybernetics Part C, covering MARL goals like stability and adaptation, algorithms for cooperative and competitive settings, and applications in domains such as robotics and economics."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_3912206a5",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "benchmark_baseline",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper addresses reproducibility and experimental challenges in deep RL, which provides context for evaluating methods like the target's, though it is not directly on performative RL.",
+        "evidence_summary": "In 2018, Henderson et al. published 'Deep Reinforcement Learning That Matters' in Proceedings of the AAAI Conference on Artificial Intelligence, investigating reproducibility issues, variability in metrics, and guidelines for experimental reporting in deep RL to ensure meaningful improvements."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_f83133409",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper combines improvements in deep RL for Atari benchmarks, offering insights on method integration and performance, but it is less directly related to performative RL.",
+        "evidence_summary": "In 2018, Hessel et al. published 'Rainbow: Combining Improvements in Deep Reinforcement Learning' in Proceedings of the AAAI Conference on Artificial Intelligence, which examined six DQN extensions and their combination, achieving state-of-the-art performance on the Atari 2600 benchmark in data efficiency and final performance."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_009_7b694fe61",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This introduction to deep RL provides general background useful for understanding RL methods, but it does not specifically address performative aspects.",
+        "evidence_summary": "In 2018, François-Lavet et al. published 'An Introduction to Deep Reinforcement Learning' in Foundations and Trends® in Machine Learning, covering deep RL models, algorithms, and techniques with a focus on generalization and practical applications in domains like healthcare and robotics."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_002_02c4cc10d",
+        "relevance_score": 0.35,
+        "relevance_types": [],
+        "rationale": "This survey on image data augmentation for deep learning is weakly related, as it focuses on computer vision and data enhancement rather than reinforcement learning or performative policies.",
+        "evidence_summary": "In 2019, Shorten and Khoshgoftaar published 'A survey on Image Data Augmentation for Deep Learning' in Journal Of Big Data, discussing techniques like geometric transformations and GANs to enhance training datasets for deep learning, particularly in domains with limited data such as medical image analysis."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2002, Kearns and Singh published 'Near-Optimal Reinforcement Learning in Polynomial Time,' which investigated methods for achieving near-optimal policies with computational efficiency. In 2005, Ernst et al. published 'Tree-Based Batch Mode Reinforcement Learning,' using tree-based supervised learning methods like CART and ensemble algorithms to approximate Q-functions from batch data, with empirical performance studies. In 2000, Dietterich published 'Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition,' decomposing MDPs into hierarchies and value functions additively, enabling state abstractions and online learning with convergence proofs. In 1992, Lin published 'Self-improving reactive agents based on reinforcement learning, planning and teaching,' exploring agent improvement through learning and interaction. In 1996, Kaelbling et al. published 'Reinforcement Learning: A Survey' in the Journal of Artificial Intelligence Research, summarizing historical and current work on RL issues like delayed reinforcement and practical utility. In 2008, Buoniu et al. published 'A Comprehensive Survey of Multiagent Reinforcement Learning' in IEEE Transactions on Systems Man and Cybernetics Part C, covering MARL goals, algorithms, and applications in domains such as robotics.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

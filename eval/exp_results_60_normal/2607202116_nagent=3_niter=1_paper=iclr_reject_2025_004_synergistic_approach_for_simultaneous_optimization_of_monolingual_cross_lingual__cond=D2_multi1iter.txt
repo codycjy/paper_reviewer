@@ -1,0 +1,126 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of a hybrid batch training strategy to simultaneously optimize monolingual, cross-lingual, and multilingual IR is genuinely novel and addresses a significant challenge in combining these often conflicting objectives.",
+        "The paper demonstrates that this simple modification to training data batches can achieve comparable or superior performance across multiple retrieval tasks and languages, outperforming methods optimized solely for one setting.",
+        "The approach effectively mitigates language bias, which is a crucial and often overlooked aspect of multilingual IR systems, especially when using pre-trained language models."
+      ],
+      "weaknesses": [
+        "The hyperparameter tuning for 'alpha' (0.5) was determined through a grid search on a held-out validation set. While reported as stable, a more detailed analysis or sensitivity study of 'alpha' and its impact on different languages or resource settings would strengthen the findings.",
+        "The training data augmentation relies on an in-house machine translation pipeline. While acknowledging its use, more details on the quality and potential biases introduced by this translation process, especially for low-resource languages, would be beneficial."
+      ],
+      "summary_comment": "This paper presents a creative and simple, yet effective, hybrid batch training strategy for multilingual information retrieval. The idea of judiciously mixing monolingual and cross-lingual batches to achieve a synergistic improvement across different IR settings is quite novel. It successfully addresses the common trade-off between monolingual and cross-lingual performance, while also significantly reducing language bias. The results are compelling, showcasing consistent improvements or competitive performance on established benchmarks. While deeper analysis of hyperparameter sensitivity and the impact of the translation pipeline could be added, the core innovation and its demonstrated impact are strong enough to warrant acceptance. This work pushes the field forward by offering a straightforward and impactful way to improve the robustness and fairness of multilingual IR systems."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper systematically evaluates the proposed hybrid batch training strategy across three distinct retrieval settings (monolingual, cross-lingual, and multilingual) and two representative multilingual pre-trained models (XLM-R and LaBSE). This comprehensive evaluation provides strong evidence for the effectiveness of the approach.",
+        "The methodology is clearly described, focusing on a simple yet effective modification to the batch sampling procedure. The hyperparameter tuning for 'alpha' is also thoroughly explained, demonstrating a careful approach to optimizing the method.",
+        "The quantitative analysis of language bias using rank distance is a valuable contribution, demonstrating that the hybrid approach not only improves retrieval performance but also mitigates inherent language biases present in other training strategies."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates strong zero-shot generalization to unseen languages in the evaluation datasets (e.g., Greek and Vietnamese in XQuAD-R/MLQA-R tests), these languages were included in the *training* datasets through machine translation. It would be more rigorously 'unseen' if the languages were entirely excluded from the training data, even translated versions, to truly assess generalization beyond languages encountered during fine-tuning.",
+        "The paper mentions the use of an \"in-house machine translation pipeline\" to generate parallel QA pairs for training data. More details on the quality and specifics of this pipeline are needed, as its translation quality could significantly impact the training efficacy and the overall results. Lack of information on this potentially critical component is a minor methodological gap."
+      ],
+      "summary_comment": "This paper presents a thoughtful and well-evaluated hybrid batch training strategy for simultaneously optimizing monolingual, cross-lingual, and multilingual information retrieval. The core idea is a straightforward combination of existing batching methods, but its systematic application and rigorous empirical validation across multiple models and datasets make it a solid contribution. The detailed analysis of language bias is particularly commendable. While the claim of \"unseen languages\" could be more precisely defined given the use of translated training data, the overall experimental setup is robust, and the results convincingly support the proposed method's benefits."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a practically significant problem: simultaneously optimizing monolingual, cross-lingual, and multilingual retrieval, which is a common trade-off in real-world applications.",
+        "The proposed hybrid batch training strategy is straightforward to implement and integrates existing batching procedures, making it highly practical for practitioners.",
+        "The experimental evaluation is comprehensive, covering two different multilingual models (XLM-R, LaBSE) and three benchmark datasets (XQuAD-R, MLQA-R, MIRACL) to demonstrate consistent improvements and language bias reduction."
+      ],
+      "weaknesses": [
+        "While the approach is effective, the novelty primarily lies in combining existing batching strategies. A deeper theoretical insight into why this specific combination works better than others might strengthen the contribution.",
+        "The discussion of the practical implications beyond benchmark scores could be expanded. For example, how does this method fare in scenarios with highly skewed language distributions or in real-time IR systems?"
+      ],
+      "summary_comment": "This paper presents a simple yet effective hybrid batch training strategy for multilingual information retrieval. It tackles the practical challenge of balancing performance across monolingual, cross-lingual, and multilingual settings, which is a common pain point for practitioners. The experimental results are convincing, showing consistent improvements and reduction in language bias. The clarity of the writing and the comprehensive evaluation make this a valuable contribution to the field, offering a readily applicable method for improving multilingual IR systems."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning (supervised, semi- and self-supervised learning, time series analysis, etc.)' and 'deep learning (architectures, generative models, theory, etc.)' through its fine-tuning of multilingual pre-trained language models and use of contrastive learning.",
+        "The topic of Information Retrieval (IR) and Natural Language Processing (NLP) is explicitly mentioned as an important application area for machine learning at ICML. The paper's focus on multilingual IR aligns well with this.",
+        "The 'optimization' aspect, specifically the novel hybrid batch training strategy, fits within ICML's interest in 'optimization (stochastic, online, non-smooth, composite, etc.)' applied to learning processes.",
+        "Reviewer A acknowledges the 'genuinely novel' aspect of the hybrid batch training strategy and its ability to address 'significant challenge in combining these often conflicting objectives,' aligning with ICML's focus on cutting-edge research.",
+        "Reviewer B highlights the 'systematic evaluation' and 'comprehensive evaluation' across models and datasets, which aligns with ICML's emphasis on strong evaluation methodology.",
+        "The paper's contribution to 'trustworthy machine learning (fairness)' through mitigating language bias is a strong fit for ICML's recognized topics."
+      ],
+      "why_it_does_not_fit": [
+        "While solid, the novelty might be seen as incremental by some, as Reviewer C notes, 'the novelty primarily lies in combining existing batching strategies,' which might be less appealing if the theoretical depth isn't emphasized as much as empirical performance.",
+        "Reviewer A and B both point out the need for more details on the 'in-house machine translation pipeline' and its potential biases. A lack of transparency or a more rigorous investigation into this methodological component could be a minor drawback for a top-tier ML conference.",
+        "Reviewer C suggests expanding the discussion of practical implications beyond benchmark scores, indicating a slight gap in positioning for real-world scenarios that some ICML reviewers might prefer."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper squarely falls under 'General machine learning: core contributions in supervised and unsupervised methods' given its focus on training strategies for machine learning models.",
+        "The use of multilingual language models and fine-tuning directly relates to 'Language and multimodal language models' which is a key topic at NeurIPS.",
+        "The methodology involves 'Optimization' through batch sampling strategies which is a listed topic of interest for NeurIPS.",
+        "The paper's emphasis on addressing 'language bias' aligns with NeurIPS's growing interest in 'Socio-technical aspects of AI' and 'Human interaction in AI systems,' particularly concerning fairness and robustness.",
+        "Reviewer B praises the 'thoughtful and well-evaluated hybrid batch training strategy' and the 'rigorous empirical validation across multiple models and datasets,' which would be well-received at NeurIPS.",
+        "Reviewer C highlights the practical significance of simultaneously optimizing performance across different IR settings, a desirable aspect for NeurIPS given its blend of theoretical and applied ML."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, its main contribution is within Natural Language Processing (NLP) applied to Information Retrieval (IR), which might be slightly less central to NeurIPS's broader ML focus compared to, say, deep learning theory or neuroscience applications.",
+        "Reviewer B's comment about the 'zero-shot generalization to unseen languages' being less rigorous due to translated training data might raise questions about the true generalization capabilities from a fundamental research perspective, which NeurIPS often seeks.",
+        "The paper could benefit from a deeper theoretical analysis of why the hybrid batching works, which is often valued at NeurIPS alongside empirical results, as hinted by Reviewer C asking for 'deeper theoretical insight'."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core methodology, which involves 'fine-tuning multilingual language models' and 'contrastive learning' for learning 'language-agnostic representations,' directly aligns with ICLR's explicit focus on 'deep learning' and 'representation learning (unsupervised, self-supervised, semi-supervised, and supervised)'.",
+        "The mention of 'generative models' in ICLR's topics is relevant, as multilingual pre-trained language models often have generative capabilities, even if the fine-tuning here is for retrieval.",
+        "The approach involves 'optimization' of a learning process via batch sampling, a general topic ICLR covers.",
+        "The paper addresses 'societal considerations including fairness' through its mitigation of language bias, which is a listed topic of interest for ICLR.",
+        "Reviewer A explicitly notes the 'genuinely novel' aspect and 'addresses a significant challenge,' qualities highly valued by ICLR for cutting-edge deep learning research.",
+        "Reviewer B's appreciation for the 'systematic application and rigorous empirical validation' over 'multiple models and datasets' fits ICLR's emphasis on demonstrating effective deep learning techniques."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, the 'novelty primarily lies in combining existing batching strategies' (Reviewer C). ICLR often seeks more fundamentally architectural or theoretical innovations in deep learning, though practical improvements are also welcome.",
+        "Reviewers A and B both highlighted the need for more details and transparency regarding the 'in-house machine translation pipeline.' For ICLR, which values methodological rigor in deep learning, this lack of detail could be a minor point of concern.",
+        "The paper is primarily application-driven within NLP/IR, which is a good fit, but sometimes ICLR prefers submissions with a stronger emphasis on novel deep learning architectures or foundational theory over empirical improvements on existing models, even if those improvements are significant."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

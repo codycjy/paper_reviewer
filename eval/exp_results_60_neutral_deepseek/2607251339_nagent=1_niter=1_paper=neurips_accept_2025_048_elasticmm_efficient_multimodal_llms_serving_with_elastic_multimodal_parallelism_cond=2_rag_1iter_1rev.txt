@@ -1,0 +1,220 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel and timely approach (Elastic Multimodal Parallelism) specifically designed for MLLM serving, going beyond prior work on decoupled LLM serving by adding modality-aware grouping and elastic scheduling.",
+        "The evaluation is comprehensive and convincing, using two different MLLM architectures (decoder-only, encoder-decoder), two real-world datasets, strong baselines (vLLM, DistServe), and thorough ablation studies, with reported gains (up to 4.2x TTFT reduction, 3.2-4.5x throughput) being substantial.",
+        "The system design is detailed, proposing multiple, concrete innovations (modality-aware load balancing, elastic partition scheduling, unified multimodal prefix cache, non-blocking encoding) that address distinct, well-motivated bottlenecks in MLLM serving."
+      ],
+      "weaknesses": [
+        "The experimental validation is limited to a single-node, 8-GPU setup. While results are strong, the scalability claims for 'elasticity' should be more strongly qualified, and the multi-node implications (e.g., communication overhead, fault tolerance) highlighted as future work are significant.",
+        "The gain-cost models for preemption and scaling (Equations 2, 3), while reasonable, are presented with less formal justification or sensitivity analysis regarding tunable parameters like the penalty factor 'w'. A deeper discussion or empirical justification for these heuristic models would strengthen the technical soundness."
+      ],
+      "summary_comment": "This is a strong paper addressing a pressing challenge in MLLM serving. The core idea of a two-level (modality, stage) elastic decoupling is novel and well-motivated. The proposed ElasticMM system is meticulously designed with concrete contributions and optimizations. The experimental evaluation is excellent, demonstrating significant performance improvements over state-of-the-art baselines across realistic workloads and model types. The main weaknesses are the single-node evaluation (limiting claims about large-scale elasticity) and the somewhat high-level presentation of the scheduling gain-cost models. Nonetheless, the work is clearly impactful, technically sound, and well-executed, meriting acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses efficient serving of multimodal large language models, which aligns with ICML's focus on machine learning systems and optimization topics",
+        "The work introduces novel scheduling and parallelism techniques that contribute to the systems-oriented machine learning research that ICML values",
+        "The comprehensive experimental evaluation with real-world datasets demonstrates practical significance in ML deployment scenarios"
+      ],
+      "why_it_does_not_fit": [
+        "The paper is primarily systems-focused with limited machine learning algorithmic contributions, which may not align with ICML's stronger emphasis on core ML algorithms",
+        "While MLLMs are relevant, the paper focuses more on serving infrastructure than ML model development or theoretical foundations",
+        "Reviewer noted the gain-cost models lack formal justification, which may not meet ICML's expectations for theoretical rigor"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Multimodal large language models are a core topic of interest at NeurIPS, especially with the conference's focus on language and multimodal models",
+        "The work addresses practical challenges in deploying state-of-the-art AI models, which aligns with NeurIPS' interest in real-world AI applications",
+        "The paper includes comprehensive evaluations on diverse datasets, meeting NeurIPS' standards for empirical validation"
+      ],
+      "why_it_does_not_fit": [
+        "The paper is primarily a systems engineering contribution rather than a core machine learning innovation, which may not fit NeurIPS' typical focus",
+        "Limited theoretical contributions beyond practical system design - reviewer noted the gain-cost models lack formal justification",
+        "The single-node evaluation limits the scalability claims, which may reduce impact for NeurIPS audience"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "ICLR's focus on deep learning and representation learning makes MLLM serving relevant to the conference",
+        "The work addresses practical challenges in deploying multimodal models, which aligns with ICLR's application interests",
+        "The prefix caching and optimization techniques relate to efficient inference of deep learning models"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically emphasizes model architecture and learning algorithms rather than serving systems infrastructure",
+        "The paper lacks contributions to model architecture or training methods, focusing exclusively on inference serving",
+        "Limited connection to the core deep learning research that constitutes ICLR's primary focus"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_417a0c76053d",
+    "paper_id": "paper_f71494680bac",
+    "target_paper_summary": {
+      "paper_id": "paper_f71494680bac",
+      "title": "Elasticmm: Efficient Multimodal Llms Serving With Elastic Multimodal Parallelism",
+      "abstract": "Multimodal large language models (MLLMs) extend LLMs to handle images, videos, and audio by incorporating feature extractors and projection modules. However, these additional components—combined with complex inference pipelines and heterogeneous workloads—introduce significant inference overhead. Therefore, efficiently serving MLLMs remains a major challenge. Current tightly coupled serving architectures struggle to distinguish between mixed request types or adapt parallelism strategies to different inference stages, leading to increased time-to-first-token (TTFT) and poor resource utilization. To address this, we introduce Elastic Multimodal Parallelism (EMP), a new serving paradigm that elastically adapts to resource heterogeneity across request types and inference stages. Building upon EMP, we develop ElasticMM, an MLLM serving system that\n(1) separates requests into independent modality groups with dynamic resource allocation via a modality-aware load balancer; (2) decouples inference stages and enables parallelism adjustment and adaptive scaling via elastic partition scheduling; and (3) improves inference efficiency through unified multimodal prefix caching and non-blocking encoding. Experiments on diverse real-world datasets show that ElasticMM outperforms state-of-the-art (SOTA) serving systems, reducing TTFT by up to 4.2× and achieving 3.2–4.5× higher throughput while meeting service-level objectives (SLOs).",
+      "topic": "",
+      "claims": [
+        "we introduce Elastic Multimodal Parallelism (EMP), a new serving paradigm that elastically adapts to resource heterogeneity across request types and inference stages.",
+        "we develop ElasticMM, an MLLM serving system that (1) separates requests into independent modality groups with dynamic resource allocation via a modality-aware load balancer; (2) decouples inference stages and enables parallelism adjustment and adaptive scaling via elastic partition scheduling; and (3) improves inference efficiency through unified multimodal prefix caching and non-blocking encoding."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "efficient serving inference multimodal large language models (MLLMs)",
+          "rationale": "The core problem is optimizing the inference serving of MLLMs, which is explicitly stated. This query directly targets papers that aim to make serving MLLMs more efficient."
+        },
+        {
+          "group": "same_method",
+          "query": "dynamic parallelism adaptation elastic scheduling serving large language models",
+          "rationale": "ElasticMM's key methodological concepts involve elastic parallelism adjustment and scheduling for dynamic resource allocation. This query searches for systems using similar elastic or adaptive parallelism strategies in LLM serving."
+        },
+        {
+          "group": "same_constraints",
+          "query": "multimodal request heterogeneity SLO time-to-first-token TTFT serving workloads",
+          "rationale": "The work operates under the constraints of diverse (heterogeneous) multimodal requests and the need to meet service-level objectives (SLOs) like low TTFT. This query targets other serving systems designed for similar mixed workloads with performance guarantees."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "state-of-the-art SOTA serving systems Orca vLLM TGI multimodal baseline",
+          "rationale": "The paper benchmarks against SOTA serving systems. Queries for known high-performance serving systems like Orca, vLLM, and Text Generation Inference (TGI), or their multimodal adaptations, will find the relevant baselines and benchmark comparisons."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "multimodal prefix caching load balancer scheduling batch processing MLLM serving",
+          "rationale": "The novelty claims involve a modality-aware load balancer, elastic scheduling, and unified multimodal prefix caching. This query aims to find prior work that might have proposed similar caching, load balancing, or scheduling techniques for MLLM serving, potentially challenging the novelty of these components."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "multimodal projection overhead feature extractor inefficiency MLLM serving bottleneck",
+          "rationale": "The paper identifies overhead from feature extractors and projection modules as a key challenge. This query seeks papers that analyze, quantify, or expose the specific inefficiencies or bottlenecks in MLLM inference pipelines, which could provide counter-evidence if their findings contradict the source of the problem or suggest different primary bottlenecks."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+          "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+          "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+        ]
+      }
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "target paper: suspicious instruction-like text matched /system prompt/",
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+      "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+      "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "target paper: suspicious instruction-like text matched /system prompt/",
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+    "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+    "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

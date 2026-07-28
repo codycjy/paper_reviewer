@@ -1,0 +1,116 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The conceptual transition of UI/UX-style 'dark patterns' into conversational NLP is highly creative and timely. Redefining digital deception for conversational agents—specifically tracking how systems use sneaky semantic shifts or subtle brand biases—gives the safety community a brand new lens to analyze commercial alignment.",
+        "The authors have executed a solid empirical study by running 660 prompts against 14 distinct models. The resulting data exposes interesting developer-specific biases, showing that user retention and sneaking behaviors are surprisingly prevalent across almost all popular systems.",
+        "To counter the natural subjectivity of these evaluation categories, the setup uses a solid multi-model judge pipeline. Involving three distinct model families (GPT, Claude, Gemini) along with a human baseline is a smart way to minimize corporate bias in the automated scoring."
+      ],
+      "weaknesses": [
+        "Even with the proposed 'annotation cookbook' mentioned in the rebuttal, the boundaries of categories like 'sneaking' and 'brand bias' remain highly subjective. The low inter-rater correlation (Cohen's Kappa around 0.42-0.56) demonstrates that these definitions are still quite fuzzy, and relying on LLM ensembles might hide systematic evaluation errors rather than solve them.",
+        "There is still a lot of conceptual overlap with traditional safety benchmarks in the 'Harmful Generation' and 'Sycophancy' categories. For example, generating essays about dangerous starvation diets is fundamentally an instruction-following and safety control problem, and it is not fully clear how this warrants a brand-new 'manipulation' taxonomy when standard jailbreak suites already cover it."
+      ],
+      "summary_comment": "DarkBench represents a highly creative pivot in language model evaluation, shifting current safety research away from simple toxic keyword matching and toward the study of agentic manipulation and economic incentives. The authors' rebuttal successfully defended their work by explaining how they target deceptive agency. Furthermore, their plan to include clear decision trees in an appendix to help distinguish stylistic polishing from unauthorized semantic drift addresses my classification concerns. The core conceptual leap here is easily strong enough to recommend acceptance.",
+      "reviewer_type": "Senior Researcher"
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The authors exhibit outstanding intellectual honesty and scientific rigor by engaging directly and transparently with the statistical and taxonomic concerns raised during the review process.",
+        "The proposed conceptual restructuring into User-reversing 'Conversational Dark Patterns' and User-compliant 'Deceptive Conversational Anti-Patterns' is an excellent taxonomy refinement that aligns perfectly with established HCI principles.",
+        "The proactive diagnostic run of the 'Sneaking' category (reducing false positives from standard RLHF safety softening) demonstrates high methodological awareness."
+      ],
+      "weaknesses": [
+        "The current draft under review is mathematically and taxonomically invalid. While the authors' plan to overhaul the paper is conceptually sound, the peer review process must evaluate the submitted manuscript rather than a pledge to rewrite the paper. Accepting a paper where key tables, taxonomic groups, and empirical statistics must be completely retracted and recalculated is scientifically irresponsible.",
+        "The dataset in its current state suffers from extremely low reproducibility and baseline scientific agreement, as evidenced by the unacceptably low human Jaccard Indices (e.g., J = 0.20 for Sycophancy). The high-confidence consensus protocol promised by the authors has not yet been peer-reviewed or integrated into the paper's actual results.",
+        "The current results presented in Figure 4 and Section 3 contain heavily inflated and misleading figures (e.g., an average 'sneaking' rate of 79%, which the authors concede is actually closer to 24% when correcting for standard RLHF artifacts). Publishing these uncorrected numbers would mislead the AI safety and HCI communities."
+      ],
+      "summary_comment": "I commend the authors for an exceptionally rigorous, mature, and scientifically honest rebuttal. They have rightly acknowledged the taxonomic conflations, the limitations of the Kappa Paradox, and the low Jaccard agreement rates, presenting a concrete roadmap for a complete manuscript overhaul. However, because the requested changes require renaming the framework, recalculating all results, and completely rebuilding the evaluation protocols, the existing PDF is fundamentally unsound. I must reject this manuscript but strongly encourage the authors to execute their proposed revisions and resubmit this work to a future venue, as the revised version will undoubtedly be a valuable contribution to the field."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The scale of testing across 14 LLMs is highly robust. Having pre-packaged DVC, Docker, and Poetry configurations shows excellent engineering hygiene, making it incredibly easy for an enterprise security or compliance team to clone the repo and run tests locally.",
+        "The structural overhaul of the taxonomy is excellent. Resolving the boundary issues by splitting the benchmark into 'Conversational Dark Patterns' and 'Deceptive Conversational Anti-Patterns' while sharpening 'Harmful Generation' into 'Deceptive Persona Generation' cleanly untangles UX deception from standard safety violations.",
+        "Creating the 'High-Confidence Consensus Subset' (requiring 100% agreement between the ensemble judges) is a masterstroke for practitioners. Downstream compliance auditors cannot tolerate statistical noise, so providing a zero-divergence, high-precision evaluation split makes the tool directly applicable for legal auditing under frameworks like the EU AI Act."
+      ],
+      "weaknesses": [
+        "Using an ensemble of three frontier LLMs (GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro) as judges is computationally expensive. It is a highly accurate setup, but running thousands of evaluations across three separate API pipelines will be slow and costly for teams wanting to integrate this into daily CI/CD testing.",
+        "Despite the new rule-based trees in the upcoming cookbook, categories like 'Sycophancy' remain highly elastic. Differentiating between a model being genuinely helpful versus manipulative to match a user's biases remains an operational gray area that automated scoring will continue to struggle with."
+      ],
+      "summary_comment": "The authors have delivered an outstanding, transition-ready response that directly addresses my core worries about target boundaries and evaluation noise. By splitting the dataset, renaming the safety-adjacent category to 'Deceptive Persona Generation,' and rolling out a zero-divergence consensus subset, they have elevated DarkBench from an interesting academic baseline to a highly robust compliance framework. The inclusion of a rule-based auditing cookbook is exactly what human-in-the-loop auditors need. This is a highly valuable, practical piece of work that I am fully in favor of accepting."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The paper introduces a benchmark ('DarkBench') to evaluate trustworthy machine learning, specifically targeting deceptive design patterns in interactions with large language models, which aligns with ICML's 'trustworthy machine learning' and 'evaluation' topic areas.",
+        "The evaluation tests 14 distinct frontier and open-source models, demonstrating a scale and range of empirical model testing that represents a typical benchmark setup at ICML.",
+        "The paper tries to address algorithmic safety and user manipulation, which is an emerging interest within general machine learning safety and commercial alignment."
+      ],
+      "why_it_does_not_fit": [
+        "This paper has a very heavy human-computer interaction (HCI) and UX design focus rather than the core mathematical, theoretical, or optimization focused contributions typically favored at ICML.",
+        "Reviewers raised severe concerns regarding statistical soundness and mathematical validity. Reviewer B points out that the current results contain heavily inflated and misleading figures (e.g., an average sneaking rate of 79% which actually drops to 24% once corrected for RLHF artifacts), which would be heavily penalized under ICML's strict rigor guidelines.",
+        "The paper suffers from low inter-rater agreement (with Jaccard indices as low as 0.20 for Sycophancy and Cohen's Kappa around 0.42–0.56). ICML reviewers heavily prioritize clean, low-noise, and reproducible metrics, making this highly subjective taxonomy a very poor fit."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "NeurIPS explicitly welcomes highly interdisciplinary submissions, making the transition of HCI/UX 'dark patterns' into conversational NLP safety ('Socio-technical aspects of AI' and 'Human interaction in AI systems') a great thematic match.",
+        "The paper is highly suitable for the NeurIPS 'Datasets and Benchmarks' track, which specifically values comprehensive evaluation frameworks, datasets, and auditing pipelines for commercial large language models.",
+        "Reviewer A notes that shifting safety research from simple toxic keyword matching to agentic manipulation and economic incentives is a creative conceptual pivot that would generate excellent discussion at NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "There is a massive 'Reviewer Risk' associated with the paper's current state. As Reviewer B highlights, the submitted manuscript requires a complete overhaul, renaming of the main framework, and recalculation of all key statistical findings to correct for RLHF softening artifacts.",
+        "The baseline agreement rates (e.g., the low Jaccard agreement of 0.20 for Sycophancy) indicate that the underlying dataset in its current state may be seen as procedurally premature or unstable for the main NeurIPS tracks.",
+        "The computationally expensive ensemble scoring protocol (using three separate costly commercial API endpoints: GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro) limits the practicality and democratization of the benchmark, a concern that NeurIPS reviewers frequently flag."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The practical and engineering-focused setup—complete with Docker containers, Poetry, and DVC configurations—is highly appreciated by the hands-on practitioner base that populates ICLR.",
+        "The paper addresses safety, societal considerations, and evaluation methodologies of conversational generative models, which are highly active areas of interest in current ICLR iterations.",
+        "The creation of a 'High-Confidence Consensus Subset' to provide a high-precision split appeals to ICLR's focus on robust, reproducible benchmark engineering."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR primarily focuses on representation learning and deep learning methodologies. The paper's core contribution is an empirical, heuristic-driven benchmark rather than a novel deep learning framework or representations model.",
+        "There is an operational gray area around subjective, elastic categories like 'Sycophancy' and 'Sneaking'. As Reviewer C notes, automated scoring struggles to reliably differentiate between stylistic polish and actual deceptive manipulation, which runs contrary to ICLR's pursuit of methodical clarity.",
+        "Due to the acknowledged flaws in the current draft where key tables, taxonomic groupings, and empirical statistics must be substantially revised, submitting this work before a complete overhaul is executed poses a high risk of rejection."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

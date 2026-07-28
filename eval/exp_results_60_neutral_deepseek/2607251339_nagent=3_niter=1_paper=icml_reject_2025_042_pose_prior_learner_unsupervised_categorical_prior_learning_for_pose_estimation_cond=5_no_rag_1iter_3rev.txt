@@ -1,0 +1,124 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper proposes a genuinely novel and creative challenge: unsupervised categorical prior learning for pose estimation. The idea of learning category-specific pose priors from data without any supervision is forward-thinking and could inspire significant future work in self-supervised representation learning.",
+        "The core method, the Pose Prior Learner (PPL), is innovative. It combines a hierarchical memory for storing prototypical poses, a mechanism to distill a general prior from the memory, and an iterative inference strategy for occlusion handling. This integration of compositional memory, prior distillation, and iterative refinement is a novel contribution.",
+        "The results are highly significant and demonstrate a meaningful advance. The method outperforms strong unsupervised baselines (including those with human-defined priors) on multiple benchmarks (Human3.6m, Taichi, CUB), showing that learned priors can surpass hand-crafted ones. The demonstration of effectiveness on occluded scenes adds to the impact, showing a practical benefit of the learned priors and memory.",
+        "The work connects foundational concepts (priors, unsupervised learning) with a practical vision task and provides a clear computational framework (PPL) to explore them. The framing around the three 'key intelligence questions' is a strong and thought-provoking narrative that elevates the work."
+      ],
+      "weaknesses": [
+        "The methodological soundness, while largely acceptable, could be more rigorously established. The training procedure with multiple gradient detachments and a 'chicken-and-egg' problem (Section A6) is complex. While the authors provide techniques to manage it, a deeper theoretical or empirical analysis of the convergence properties would strengthen the work.",
+        "The paper claims the learned priors are 'more representative' than human-defined ones, but the evaluation is primarily based on final L2 error. A more thorough analysis of what the prior has learned (beyond visualizations in Figure 4b) and a direct, perhaps qualitative, comparison to human-defined priors would make this claim more convincing. The ablation in Table 4 is good but could be discussed in more depth.",
+        "Clarity could be improved in some sections. The description of the hierarchical memory and its connection to the distillation of the pose prior (Sections 3.3, Figure A4) is somewhat dense and could benefit from a clearer step-by-step explanation earlier in the main text. The loss functions are clear, but the overall training objective feels like a collection of components; a more unified view could help."
+      ],
+      "summary_comment": "This paper introduces a highly novel and significant idea: unsupervised learning of categorical pose priors. The proposed Pose Prior Learner (PPL) is a creative and ambitious method that outperforms existing unsupervised approaches, even those using human-defined priors, on multiple benchmarks. The iterative inference strategy for occlusion is a compelling application of the learned priors. While the methodology involves some complex training heuristics, the core idea is sound, well-motivated, and the empirical results are strong and convincing. The novelty and potential impact of this work on self-supervised learning and pose estimation are exceptional. Minor weaknesses in methodological exposition and analysis do not undermine the core contributions. This is exactly the kind of forward-looking, idea-driven paper that should be accepted to inspire the community."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Methodological rigor and soundness: The formulation is mathematically clear, with well-defined priors (keypoint and connectivity), transformation mechanics, and a comprehensive loss function. The training process, including gradient management strategies, is meticulously detailed.",
+        "Strong and extensive experimental evaluation: The paper demonstrates superior performance on multiple standard benchmarks (Human3.6m, Taichi, CUB) against competitive baselines. The evaluation includes crucial ablations (prior variants, memory architecture), robustness tests for occlusion, and extensive qualitative visualizations across diverse categories.",
+        "Well-identified and addressed research challenge: The paper clearly frames the novel problem of 'unsupervised categorical prior learning' for pose estimation, providing a systematic solution (PPL) that learns priors end-to-end without human annotation, outperforming methods that use fixed human-defined priors."
+      ],
+      "weaknesses": [
+        "Clarity of architectural flow: While the mathematical components are clear, the integration of the hierarchical memory's retrieval, distillation, and its interaction with the prior and reconstruction pipeline could be more seamlessly explained in the main text. The heavy reliance on appendix figures (e.g., A4) for core mechanics slightly disrupts the narrative flow.",
+        "Limited novelty depth: The core concepts—using a memory module for prototypes, reconstructing images for self-supervision, and applying transformations to a template—are individually established in prior work. The novelty lies more in their specific integration and application to the novel 'prior learning' problem rather than in fundamentally new algorithmic components."
+      ],
+      "summary_comment": "This paper is methodologically sound, with a rigorous experimental evaluation that convincingly demonstrates the effectiveness of the proposed Pose Prior Learner (PPL). It makes a clear contribution by formalizing and addressing the problem of unsupervised categorical prior learning, showing that learned priors can outperform human-defined ones. The approach is well-justified, the experiments are comprehensive and fair, and the results are significant for the field. While the architectural integration could be slightly clearer, the technical soundness and evaluation strength are excellent, meeting the high bar for acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a highly practical problem of learning pose priors without manual annotation, directly tackling a significant bottleneck in unsupervised pose estimation.",
+        "Comprehensive evaluation across multiple datasets (human and animal poses) demonstrating clear performance improvements over strong baselines, including those using human-defined priors.",
+        "The proposed iterative inference strategy and hierarchical memory architecture provide a robust mechanism for handling occlusions and refining predictions, showcasing strong real-world applicability."
+      ],
+      "weaknesses": [
+        "The paper lacks a detailed ablation on the computational overhead introduced by the hierarchical memory and iterative inference, which is important for practical deployment considerations.",
+        "While the method is evaluated on several datasets, the performance on highly articulated or non-rigid objects (like dogs) is noted to be inferior, and a deeper analysis of these failure modes is needed."
+      ],
+      "summary_comment": "This paper presents a novel and practical approach to unsupervised pose estimation by learning categorical pose priors. The method is well-motivated, sound, and demonstrates significant improvements over existing baselines. The strong empirical results, especially the ability to outperform models using human-defined priors and handle occlusions effectively, make a compelling case for its contribution. While some practical considerations like computational cost could be explored further, the overall impact and clarity of the work warrant acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Topic fits well with ICML's computer vision and deep learning tracks, particularly unsupervised representation learning and geometric deep learning",
+        "Strong methodological contribution with novel integration of hierarchical memory, prior learning, and pose estimation",
+        "Comprehensive experimental evaluation across multiple benchmarks demonstrates solid empirical results",
+        "Addresses fundamental ML challenges in unsupervised learning and prior modeling"
+      ],
+      "why_it_does_not_fit": [
+        "While technically strong, the work is more computer vision application-focused than core ML theory/methodology",
+        "The hierarchical memory architecture, while innovative, builds on established compositional memory concepts rather than introducing fundamental algorithmic breakthroughs",
+        "Reviewer concerns about methodological complexity and training heuristics may not align with ICML's preference for elegant, theoretically-grounded approaches"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit with NeurIPS's interdisciplinary focus on representation learning and self-supervised methods",
+        "High novelty in framing 'unsupervised categorical prior learning' as a fundamental AI challenge",
+        "Strong alignment with current NeurIPS interests in compositional reasoning and memory-augmented networks",
+        "Comprehensive evaluation including occlusion robustness demonstrates real-world applicability",
+        "Reviewer praise for 'forward-looking, idea-driven' nature matches NeurIPS's preference for inspiring future work"
+      ],
+      "why_it_does_not_fit": [
+        "Somewhat specialized to pose estimation rather than general representation learning",
+        "Reviewer concerns about architectural complexity and heavy reliance on appendix figures",
+        "While novel, the core components (memory modules, self-supervision) are established concepts in the NeurIPS community"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect alignment with ICLR's focus on deep learning architectures and representation learning",
+        "Hierarchical memory design and unsupervised learning methodology are core ICLR topics",
+        "Strong emphasis on learned representations and their visualization fits ICLR's interests",
+        "Outperforming human-defined priors demonstrates the power of learned representations",
+        "Reviewer excitement about 'novel and creative challenge' matches ICLR's preference for innovative deep learning ideas"
+      ],
+      "why_it_does_not_fit": [
+        "Application is primarily 2D pose estimation rather than more general deep learning problems",
+        "Limited theoretical analysis of the memory architecture and training dynamics",
+        "The paper could benefit from more ablation studies on architectural choices specifically relevant to deep learning research"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

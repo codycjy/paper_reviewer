@@ -1,0 +1,733 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "Provides a comprehensive, principled probabilistic framework for controlled LM generation, framing the problem as sampling from a global product-of-experts distribution.",
+        "Delivers a strong, extensive empirical evaluation across four diverse and challenging domains (Python, SQL, goal inference, molecule synthesis), demonstrating consistent and large performance gains.",
+        "The method is computationally efficient and practically impactful, showing that smaller open-source models can outperform much larger or fine-tuned closed-source models.",
+        "The paper includes a thorough ablation study that cleanly isolates and validates the contributions of key algorithmic components (weight correction, expensive potentials, resampling).",
+        "The work connects practical performance gains to theoretical soundness by empirically validating that better probabilistic inference (lower KL to target) correlates with higher downstream accuracy."
+      ],
+      "weaknesses": [
+        "The comparison to concurrent work, while present, remains at a high level; a more detailed methodological juxtaposition would further clarify the distinct contributions.",
+        "The discussion of computational overhead, while providing concrete numbers, could more directly acknowledge the potential latency implications for real-time applications."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The comparison to concurrent work, while present, remains at a high level; a more detailed methodological juxtaposition would further clarify the distinct contributions.",
+          "severity": "minor",
+          "evidence": "The rebuttal correctly identifies relevant discussion in Sections 1, 2, F, and Table 9. These sections do position the work relative to Park et al. (2025) and Zhao et al. (2024), noting differences like programmable vs. learned potentials. However, the comparison is spread out and lacks a synthesized, point-by-point contrast that would make the novelty boundaries exceptionally clear.",
+          "affected_claim": "The clarity and emphasis of the method's distinct advantages relative to very recent, closely related approaches.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The discussion of computational overhead, while providing concrete numbers, could more directly acknowledge the potential latency implications for real-time applications.",
+          "severity": "minor",
+          "evidence": "As noted by the authors, Table 8 provides data and Section 3.2 mentions mitigating factors (semantic intervals, CPU-offloading). This information is sufficient to assess the overhead. The rebuttal agrees this discussion could be more nuanced, but the data required for assessment is present in the submitted paper. The weakness pertains to the framing of the discussion, not the absence of evidence.",
+          "affected_claim": "The completeness of the discussion regarding practical deployment considerations.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The authors point to existing evidence in the paper supporting the soundness of the claims. The theoretical framework in Section 2 and the empirical validation in Section 3.3 comprehensively support the central technical claims."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The authors correctly note that the submitted paper already contains substantive comparison to concurrent work (Park et al., Zhao et al.) in Sections 1, 2, F, and Table 9, establishing distinctions based on programmable potentials and the integration of Φ_eff/Φ_exp. The novelty of the architecture and its application across these diverse domains is established by the evidence in the submitted manuscript."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The significant empirical results demonstrating that small LMs outperform much larger/fine-tuned models, the efficient use of particles via resampling, and the principled link between inference quality and task performance are all present and unchanged. The rebuttal does not alter this assessment."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The extensive, multi-domain evaluation, ablation studies, and analysis of approximation quality (all present in the submitted paper) constitute a highly convincing evaluation. The rebuttal does not change this judgment."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-written and clear. The minor weaknesses noted pertain to the depth of discussion on specific points, not to the overall clarity of presentation."
+        }
+      },
+      "summary_comment": "The authors' rebuttal effectively confirms that the evidence addressing the reviewer's concerns is present in the submitted paper. The comparisons to concurrent work are substantively present across multiple sections, and the computational overhead is quantified and discussed. The proposed revisions (synthesized comparison table, nuanced latency discussion) would improve clarity but are not required to establish the paper's contributions. The minor weaknesses remain but do not materially affect the paper's soundness, novelty, significance, or evaluation. The decision stands as Accept."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Strong topic fit: The paper's core contribution is a novel probabilistic inference method (Sequential Monte Carlo) for controlled generation from language models. This directly aligns with ICML's focus on general machine learning (inference, sampling) and optimization/probabilistic methods.",
+        "The methodology is rigorous and theoretically grounded, with derivation of importance weights and proper weighting conditions, which matches ICML's emphasis on sound algorithmic contributions and theory of machine learning.",
+        "Excellent empirical evaluation across four diverse domains (code generation, SQL, planning, chemistry) with comprehensive ablation studies. This aligns with ICML's appreciation for thorough experimental validation and application-driven ML.",
+        "The connection between probabilistic inference quality (KL divergence) and downstream task performance provides a strong theoretical validation, fitting ICML's profile of papers that combine theory and practice.",
+        "The work introduces a programmable inference framework, which resonates with ICML's interest in machine learning systems and probabilistic programming."
+      ],
+      "why_it_does_not_fit": [
+        "The application domains (semantic parsing, code generation) are more traditionally associated with NLP/EMNLP venues, though ICML does publish application-driven work.",
+        "While the methodology is general, the paper is heavily evaluated on structured text/code generation tasks, which might be seen as slightly narrower than some ICML papers that focus on more fundamental algorithmic advances.",
+        "The reviewer noted minor weaknesses regarding comparison depth to concurrent work and latency discussion, but these are not central to the core contribution and are addressable."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS's machine learning focus: The paper presents a novel inference algorithm (SMC) for improving LM generation, which falls squarely under general machine learning and deep learning categories.",
+        "Strong empirical results showing that small LMs can outperform much larger ones through better inference, which aligns with NeurIPS's interest in efficient and effective ML methods.",
+        "The work has significant practical implications for applications like code generation, planning, and molecular design, fitting NeurIPS's application tracks (AI/ML for physical sciences, health/biotech, sustainability, etc.).",
+        "The probabilistic framing and validation via KL divergence estimation provide theoretical grounding that NeurIPS appreciates.",
+        "The paper's scale and comprehensive evaluation (4 domains, 7 methods, ablation studies) match NeurIPS standards for thorough empirical work."
+      ],
+      "why_it_does_not_fit": [
+        "The application focus on structured language/code generation might be seen as somewhat specific compared to more fundamental ML contributions often at NeurIPS.",
+        "While the method is general, the experiments are exclusively in language-related domains rather than more diverse ML applications.",
+        "The reviewer's minor concern about computational overhead for real-time applications is slightly more relevant for NeurIPS's systems-oriented track."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Good fit for ICLR's deep learning focus: The paper deals with controlling large language models (deep generative models) using inference techniques.",
+        "The application to code generation and structured text output aligns with ICLR's interest in representation learning for language and other modalities.",
+        "The probabilistic inference perspective connects to ICLR's topics in probabilistic methods and generative models.",
+        "The empirical improvements on challenging benchmarks are substantial and would be of interest to the ICLR community."
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution is more about inference algorithms and controlled generation rather than novel deep learning architectures or representation learning, which are ICLR's primary focus.",
+        "The paper's methodology (SMC, importance sampling) is more classical probabilistic inference rather than deep learning innovation, though applied to deep models.",
+        "ICLR tends to favor more fundamental advances in neural network architectures, training, or theory rather than inference-time algorithms.",
+        "The application domains, while impressive, are not the central focus of ICLR compared to more core deep learning topics."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "Provides a comprehensive, principled probabilistic framework for controlled LM generation, framing the problem as sampling from a global product-of-experts distribution.",
+              "Delivers a strong, extensive empirical evaluation across four diverse and challenging domains (Python, SQL, goal inference, molecule synthesis), demonstrating consistent and large performance gains.",
+              "The method is computationally efficient and practically impactful, showing that smaller open-source models can outperform much larger or fine-tuned closed-source models.",
+              "The paper includes a thorough ablation study that cleanly isolates and validates the contributions of key algorithmic components (weight correction, expensive potentials, resampling).",
+              "The work connects practical performance gains to theoretical soundness by empirically validating that better probabilistic inference (lower KL to target) correlates with higher downstream accuracy."
+            ],
+            "weaknesses": [
+              "The paper's comparison to concurrent work (e.g., Park et al. 2025, Zhao et al. 2024) is somewhat limited and could be more detailed to better position the novelty.",
+              "The computational overhead of the expensive potentials, while argued to be minimal, could be a practical barrier for some real-time applications and deserves more discussion of trade-offs."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper's comparison to concurrent work (e.g., Park et al. 2025, Zhao et al. 2024) is somewhat limited and could be more detailed to better position the novelty.",
+                "severity": "minor",
+                "evidence": "The related work section mentions these works, and in Section 3 they briefly compare to 'Grammar-aligned decoding' (Park et al., 2025) and 'twisted SMC' (Zhao et al., 2024). However, the discussion is relatively high-level. A more detailed, side-by-side comparison of methodologies, assumptions (e.g., requirement for learned vs. programmable potentials), and empirical performance would strengthen the claim of distinct contribution.",
+                "affected_claim": "Claims regarding the novelty and distinct advantages of the proposed architecture.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The computational overhead of the expensive potentials, while argued to be minimal, could be a practical barrier for some real-time applications and deserves more discussion of trade-offs.",
+                "severity": "minor",
+                "evidence": "Table 8 shows per-token costs for Φ_exp ranging from ~0.3ms to ~31ms. The paper argues this is mitigated by caching and CPU offloading. However, for applications requiring very low-latency generation (e.g., conversational agents), even 30ms per token can be significant, especially compared to pure LM inference. The discussion in Section 3.2 is brief.",
+                "affected_claim": "Claims regarding the practical applicability and low overhead of the method.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim—that SMC provides a better approximation to the global product-of-experts distribution for controlled generation—is strongly supported. The theoretical framework in Section 2 is clear and correct. The empirical validation in Section 3.3 directly measures approximation quality (KL divergence) and shows the full SMC method achieves the best approximation, directly linking sound inference to performance gains."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While SMC for LM inference has been explored (Lew et al. 2023, Zhao et al. 2024), the novel contribution here is the specific architecture for semantic parsing/code generation, the flexible integration of both cheap (Φ_eff) and expensive (Φ_exp) potentials within the SMC framework, and the demonstration of its effectiveness across diverse, challenging domains. The focus on programmable, non-learned potentials and proposals is a distinct engineering and methodological choice from prior learned approaches."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated performance improvements are substantial and meaningful for top-tier conferences. Enabling small LMs (e.g., 8B) to outperform models 8x larger and closed-source fine-tuned models on standard benchmarks (DS-1000, Spider) is a significant result. The work provides a powerful, general toolkit for controlled generation that is likely to influence both research and practice."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation is exceptionally thorough and convincing. The paper compares seven methods across four diverse domains with proper statistical analysis. Ablation studies clearly dissect the contribution of each algorithmic component. The analysis of approximation quality (Section 3.3) provides rare and compelling evidence linking probabilistic inference quality to task performance. Experiments on particle count and computational cost add practical depth."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is very well-written, logically structured, and easy to follow. Figures and tables are clear and informative. The exposition of the SMC algorithm in Section 2 is particularly lucid. The appendices provide necessary technical details without cluttering the main narrative."
+              }
+            },
+            "summary_comment": "This is an excellent paper that makes significant contributions to the field of controlled language model generation. It presents a principled, probabilistic framework based on Sequential Monte Carlo, supported by a rigorous and extensive empirical evaluation. The core strengths are its sound theoretical foundation, the clear demonstration of substantial performance gains across multiple challenging domains, and the insightful analysis linking inference quality to downstream accuracy. The work is mature, well-executed, and well-presented. Minor weaknesses concerning comparison to concurrent work and a more nuanced discussion of computational trade-offs do not detract from the paper's overall high quality and suitability for acceptance at a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "Provides a comprehensive, principled probabilistic framework for controlled LM generation, framing the problem as sampling from a global product-of-experts distribution.",
+              "Delivers a strong, extensive empirical evaluation across four diverse and challenging domains (Python, SQL, goal inference, molecule synthesis), demonstrating consistent and large performance gains.",
+              "The method is computationally efficient and practically impactful, showing that smaller open-source models can outperform much larger or fine-tuned closed-source models.",
+              "The paper includes a thorough ablation study that cleanly isolates and validates the contributions of key algorithmic components (weight correction, expensive potentials, resampling).",
+              "The work connects practical performance gains to theoretical soundness by empirically validating that better probabilistic inference (lower KL to target) correlates with higher downstream accuracy."
+            ],
+            "weaknesses": [
+              "The comparison to concurrent work, while present, remains at a high level; a more detailed methodological juxtaposition would further clarify the distinct contributions.",
+              "The discussion of computational overhead, while providing concrete numbers, could more directly acknowledge the potential latency implications for real-time applications."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The comparison to concurrent work, while present, remains at a high level; a more detailed methodological juxtaposition would further clarify the distinct contributions.",
+                "severity": "minor",
+                "evidence": "The rebuttal correctly identifies relevant discussion in Sections 1, 2, F, and Table 9. These sections do position the work relative to Park et al. (2025) and Zhao et al. (2024), noting differences like programmable vs. learned potentials. However, the comparison is spread out and lacks a synthesized, point-by-point contrast that would make the novelty boundaries exceptionally clear.",
+                "affected_claim": "The clarity and emphasis of the method's distinct advantages relative to very recent, closely related approaches.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The discussion of computational overhead, while providing concrete numbers, could more directly acknowledge the potential latency implications for real-time applications.",
+                "severity": "minor",
+                "evidence": "As noted by the authors, Table 8 provides data and Section 3.2 mentions mitigating factors (semantic intervals, CPU-offloading). This information is sufficient to assess the overhead. The rebuttal agrees this discussion could be more nuanced, but the data required for assessment is present in the submitted paper. The weakness pertains to the framing of the discussion, not the absence of evidence.",
+                "affected_claim": "The completeness of the discussion regarding practical deployment considerations.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The authors point to existing evidence in the paper supporting the soundness of the claims. The theoretical framework in Section 2 and the empirical validation in Section 3.3 comprehensively support the central technical claims."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The authors correctly note that the submitted paper already contains substantive comparison to concurrent work (Park et al., Zhao et al.) in Sections 1, 2, F, and Table 9, establishing distinctions based on programmable potentials and the integration of Φ_eff/Φ_exp. The novelty of the architecture and its application across these diverse domains is established by the evidence in the submitted manuscript."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The significant empirical results demonstrating that small LMs outperform much larger/fine-tuned models, the efficient use of particles via resampling, and the principled link between inference quality and task performance are all present and unchanged. The rebuttal does not alter this assessment."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The extensive, multi-domain evaluation, ablation studies, and analysis of approximation quality (all present in the submitted paper) constitute a highly convincing evaluation. The rebuttal does not change this judgment."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-written and clear. The minor weaknesses noted pertain to the depth of discussion on specific points, not to the overall clarity of presentation."
+              }
+            },
+            "summary_comment": "The authors' thoughtful rebuttal clarifies that key evidence addressing the reviewer's concerns is already present in the submitted paper. The comparisons to concurrent work are substantively present (though could be more synthetically presented), and the computational overhead is quantified and discussed. These are minor, presentation-level issues that do not materially undermine the paper's central contributions. The paper's strengths—its principled framework, extensive and convincing experiments, and significant practical results—remain outstanding. The decision stands as Accept."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited detailed comparison to concurrent works (Park et al. 2025, Zhao et al. 2024).\",\n        \"Discussion of computational overhead of expensive potentials could be expanded.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Comparison to concurrent work.\",\n          \"location\": \"Section 1, Related Work (Section F), Section 2 (paragraph on locally constrained decoding), Table 9.\",\n          \"explanation\": \"The paper positions its work relative to local decoding (Lew et al. 2023; Park et al. 2025) and SMC with learned twists (Zhao et al. 2024) throughout. Table 9 explicitly categorizes our 'Full SMC' method as targeting the global product of experts 'g' using the efficient proposal 'ℓ_eff', distinct from 'Grammar-only SMC' which is noted as similar to Park et al. 2025. Section F details the methodological distinction from Zhao et al. 2024, emphasizing our use of programmable vs. learned potentials.\"\n        },\n        {\n          \"concern\": \"Computational overhead of expensive potentials.\",\n          \"location\": \"Section 3.2 (paragraph 'Our approach incurs minimal computational overhead...'), Table 8.\",\n          \"explanation\": \"Table 8 quantifies the average per-token cost of computing Φ_exp across domains, showing it is generally low (<~30 ms). Section 3.2 discusses two mitigating factors: (i) expensive potentials often trigger at semantically meaningful intervals (e.g., statement/clause boundaries), not every token, and (ii) they are often CPU-bound, offloading cost from GPU. This information is present in the submitted manuscript.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Comparison to concurrent work could be more detailed.\",\n          \"proposed_change\": \"In a revised version, we will expand the Related Work section (F.3) to include a clearer, side-by-side comparison table summarizing key distinctions between our work, Park et al. 2025 (Grammar-aligned decoding), and Zhao et al. 2024 (Twisted SMC). This table will highlight differences in constraint integration (local vs. global target), requirement for learning/tuning, applicability to non-CFG constraints (e.g., Φ_exp), and resampling strategy.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Discussion of computational trade-offs could be more nuanced.\",\n          \"proposed_change\": \"We will strengthen the discussion in Section 3.2 to more explicitly acknowledge that for latency-critical applications, the synchronous evaluation of CPU-based Φ_exp could be a bottleneck. We will also note that the framework's design (particle-based, incremental) naturally supports asynchronous potential evaluation as a future optimization, which could further reduce perceived latency.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"Thank you for the positive and constructive review. We appreciate your recognition of the paper's strengths—its principled framework, extensive evaluation, and the connection between inference quality and performance.\\n\\nWe agree that a more detailed comparison with concurrent work would be valuable. The submitted paper positions our method relative to Park et al. (2025) and Zhao et al. (2024) in Sections 1, 2, and F, and classifies them in Table 9. We will expand the Related Work section (F.3) with a concise comparative table to more clearly delineate methodological distinctions, such as our focus on programmable, non-learned potentials versus their use of learned components, and our integration of both cheap (Φ_eff) and expensive (Φ_exp) potentials within a single SMC loop targeting the global posterior.\\n\\nRegarding computational overhead, we have presented quantitative data in Table 8 and discussed mitigating factors in Section 3.2. We acknowledge your point that for strict real-time applications, any added latency requires consideration. In a revision, we will add a brief discussion acknowledging this trade-off more explicitly and noting that the particle-parallel nature of SMC offers avenues for asynchronous potential evaluation to mitigate latency, though such optimizations are beyond the scope of the current study.\\n\\nThese clarifications will strengthen the paper without affecting its core contributions, which you have rightly identified as sound, novel, significant, and thoroughly evaluated.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 5
+            },
+            "strengths": [
+              "Provides a comprehensive, principled probabilistic framework for controlled LM generation, framing the problem as sampling from a global product-of-experts distribution.",
+              "Delivers a strong, extensive empirical evaluation across four diverse and challenging domains (Python, SQL, goal inference, molecule synthesis), demonstrating consistent and large performance gains.",
+              "The method is computationally efficient and practically impactful, showing that smaller open-source models can outperform much larger or fine-tuned closed-source models.",
+              "The paper includes a thorough ablation study that cleanly isolates and validates the contributions of key algorithmic components (weight correction, expensive potentials, resampling).",
+              "The work connects practical performance gains to theoretical soundness by empirically validating that better probabilistic inference (lower KL to target) correlates with higher downstream accuracy."
+            ],
+            "weaknesses": [
+              "The comparison to concurrent work, while present, remains at a high level; a more detailed methodological juxtaposition would further clarify the distinct contributions.",
+              "The discussion of computational overhead, while providing concrete numbers, could more directly acknowledge the potential latency implications for real-time applications."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The comparison to concurrent work, while present, remains at a high level; a more detailed methodological juxtaposition would further clarify the distinct contributions.",
+                "severity": "minor",
+                "evidence": "The rebuttal correctly identifies relevant discussion in Sections 1, 2, F, and Table 9. These sections do position the work relative to Park et al. (2025) and Zhao et al. (2024), noting differences like programmable vs. learned potentials. However, the comparison is spread out and lacks a synthesized, point-by-point contrast that would make the novelty boundaries exceptionally clear.",
+                "affected_claim": "The clarity and emphasis of the method's distinct advantages relative to very recent, closely related approaches.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The discussion of computational overhead, while providing concrete numbers, could more directly acknowledge the potential latency implications for real-time applications.",
+                "severity": "minor",
+                "evidence": "As noted by the authors, Table 8 provides data and Section 3.2 mentions mitigating factors (semantic intervals, CPU-offloading). This information is sufficient to assess the overhead. The rebuttal agrees this discussion could be more nuanced, but the data required for assessment is present in the submitted paper. The weakness pertains to the framing of the discussion, not the absence of evidence.",
+                "affected_claim": "The completeness of the discussion regarding practical deployment considerations.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The authors point to existing evidence in the paper supporting the soundness of the claims. The theoretical framework in Section 2 and the empirical validation in Section 3.3 comprehensively support the central technical claims."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The authors correctly note that the submitted paper already contains substantive comparison to concurrent work (Park et al., Zhao et al.) in Sections 1, 2, F, and Table 9, establishing distinctions based on programmable potentials and the integration of Φ_eff/Φ_exp. The novelty of the architecture and its application across these diverse domains is established by the evidence in the submitted manuscript."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The significant empirical results demonstrating that small LMs outperform much larger/fine-tuned models, the efficient use of particles via resampling, and the principled link between inference quality and task performance are all present and unchanged. The rebuttal does not alter this assessment."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The extensive, multi-domain evaluation, ablation studies, and analysis of approximation quality (all present in the submitted paper) constitute a highly convincing evaluation. The rebuttal does not change this judgment."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-written and clear. The minor weaknesses noted pertain to the depth of discussion on specific points, not to the overall clarity of presentation."
+              }
+            },
+            "summary_comment": "The authors' rebuttal effectively confirms that the evidence addressing the reviewer's concerns is present in the submitted paper. The comparisons to concurrent work are substantively present across multiple sections, and the computational overhead is quantified and discussed. The proposed revisions (synthesized comparison table, nuanced latency discussion) would improve clarity but are not required to establish the paper's contributions. The minor weaknesses remain but do not materially affect the paper's soundness, novelty, significance, or evaluation. The decision stands as Accept."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Comparison to concurrent work could be synthesized more clearly.\",\n        \"Discussion of computational overhead could more explicitly acknowledge latency trade-offs.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Comparison to concurrent work.\",\n          \"location\": \"Sections 1, 2, F; Table 9\",\n          \"explanation\": \"The paper provides substantive comparisons to Park et al. (2025) and Zhao et al. (2024), noting distinctions such as programmable vs. learned potentials (Zhao et al.), and targeting the global posterior with integrated Φ_exp vs. focusing on CFG-specific expected future grammaticality (Park et al.). Table 9 explicitly categorizes our 'Full SMC' method as distinct from these approaches.\"\n        },\n        {\n          \"concern\": \"Computational overhead discussion.\",\n          \"location\": \"Section 3.2, Table 8\",\n          \"explanation\": \"Table 8 provides quantitative data on the per-token cost of Φ_exp across domains. Section 3.2 discusses mitigating factors (evaluation at semantic intervals, CPU-offloading) that reduce the practical impact of this overhead.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Synthesize comparisons to concurrent work more clearly.\",\n          \"proposed_change\": \"We will revise the Related Work section (F.3) to include a concise, synthesized summary table comparing our method to Park et al. (2025) and Zhao et al. (2024) across key dimensions: target distribution (local vs. global), use of learned vs. programmable components, handling of expensive potentials (Φ_exp), and resampling strategy. This will make the distinctions more immediately clear to the reader.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Acknowledge latency implications more explicitly.\",\n          \"proposed_change\": \"We will add a sentence in Section 3.2 explicitly noting that while the average overhead is low, the synchronous evaluation of Φ_exp can introduce latency, which may be a consideration for real-time applications. We will also note that the particle-parallel nature of SMC offers a natural path for asynchronous evaluation to mitigate this, though exploring such optimizations is future work.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and for confirming that the evidence supporting our claims is already present in the submitted paper. We appreciate the suggestion to further improve the clarity of our comparisons to concurrent work. We will revise the Related Work section to include a synthesized table that provides a point-by-point contrast between our method, Park et al. (2025), and Zhao et al. (2024), highlighting distinctions in methodological approach (programmable vs. learned), target distribution, and handling of expensive constraints. This will make the novelty boundaries even clearer without requiring new experiments. Regarding computational overhead, we will strengthen the discussion in Section 3.2 to more explicitly acknowledge that latency-sensitive applications must consider the cost of Φ_exp, while also noting the inherent opportunities for asynchronous evaluation within our framework. These revisions will enhance the paper's clarity and completeness while preserving its strong technical contributions.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_ccb797b502b4",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/iclr_accept_2025_017_syntactic_and_semantic_control_of_large_language_models_via_sequential_monte_car.md",
+    "target_paper_summary": {
+      "paper_id": "paper_ccb797b502b4",
+      "title": "Syntactic And Semantic Control Of Large Language Models Via Sequential Monte Carlo",
+      "abstract": "A wide range of LM applications require generating text that conforms to syntactic or semantic constraints. Imposing such constraints can be naturally framed as *probabilistic conditioning*, but exact generation from the resulting distribution—which can differ substantially from the LM's base distribution—is generally intractable. In this work, we develop an architecture for controlled LM generation based on sequential Monte Carlo (SMC). Our SMC framework allows us to flexibly incorporate domain- and problem-specific constraints at inference time, and efficiently reallocate computational resources in light of new information during the course of generation. By comparing to a number of alternatives and ablations on four challenging domains—Python code generation for data science, text-to-SQL, goal inference, and molecule synthesis—we demonstrate that, with little overhead, our approach allows small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones. In support of the probabilistic perspective, we show that these performance improvements are driven by better approximation to the posterior distribution. Our system builds on the framework of Lew et al. (2023) and integrates with its language model probabilistic programming language, giving users a simple, programmable way to apply SMC to a broad variety of controlled generation problems.\n\nhttps://github.com/probcomp/genlm-control",
+      "topic": "",
+      "claims": [
+        "we develop an architecture for controlled LM generation based on sequential Monte Carlo (SMC).",
+        "we demonstrate that, with little overhead, our approach allows small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones.",
+        "we show that these performance improvements are driven by better approximation to the posterior distribution.",
+        "our approach allows small open-source language models to outperform models over 8× larger, as well as closed-source, fine-tuned ones."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_dd46630e4",
+        "title": "Explainability for Large Language Models: A Survey",
+        "authors": [
+          "Haiyan Zhao",
+          "Hanjie Chen",
+          "Fan Yang",
+          "Ninghao Liu",
+          "Huiqi Deng",
+          "Hengyi Cai",
+          "Shuaiqiang Wang",
+          "Dawei Yin",
+          "Mengnan Du"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-02",
+        "venue": "ACM Transactions on Intelligent Systems and Technology",
+        "abstract": "Large language models (LLMs) have demonstrated impressive capabilities in natural language processing. However, their internal mechanisms are still unclear and this lack of transparency poses unwanted risks for downstream applications. Therefore, understanding and explaining these models is crucial for elucidating their behaviors, limitations, and social impacts. In this article, we introduce a taxonomy of explainability techniques and provide a structured overview of methods for explaining Transformer-based language models. We categorize techniques based on the training paradigms of LLMs: traditional fine-tuning-based paradigm and prompting-based paradigm. For each paradigm, we summarize the goals and dominant approaches for generating local explanations of individual predictions and global explanations of overall model knowledge. We also discuss metrics for evaluating generated explanations and discuss how explanations can be leveraged to debug models and improve performance. Lastly, we examine key challenges and emerging opportunities for explanation techniques in the era of LLMs in comparison to conventional deep learning models.",
+        "url": "https://doi.org/10.1145/3639372",
+        "doi": "https://doi.org/10.1145/3639372",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390490761"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 576
+      },
+      {
+        "paper_id": "rw_002_eb7c2e880",
+        "title": "Semantic memory: A review of methods, models, and current challenges",
+        "authors": [
+          "Abhilasha Ashok Kumar"
+        ],
+        "year": 2020,
+        "publication_date": "2020-09-03",
+        "venue": "Psychonomic Bulletin & Review",
+        "abstract": "",
+        "url": "https://doi.org/10.3758/s13423-020-01792-x",
+        "doi": "https://doi.org/10.3758/s13423-020-01792-x",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3083307665"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 313
+      },
+      {
+        "paper_id": "rw_003_fb7ea64d4",
+        "title": "Language structure in the brain: A fixation-related fMRI study of syntactic surprisal in reading",
+        "authors": [
+          "John M. Henderson",
+          "Wonil Choi",
+          "Matthew W. Lowder",
+          "Fernanda Ferreira"
+        ],
+        "year": 2016,
+        "publication_date": "2016-02-21",
+        "venue": "NeuroImage",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.neuroimage.2016.02.050",
+        "doi": "https://doi.org/10.1016/j.neuroimage.2016.02.050",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2276591486"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 165
+      },
+      {
+        "paper_id": "rw_004_e15414f9a",
+        "title": "Stimulating the Brain's Language Network: Syntactic Ambiguity Resolution after TMS to the Inferior Frontal Gyrus and Middle Temporal Gyrus",
+        "authors": [
+          "Daniel J. Acheson",
+          "Peter Hagoort"
+        ],
+        "year": 2013,
+        "publication_date": "2013-06-14",
+        "venue": "Journal of Cognitive Neuroscience",
+        "abstract": "The posterior middle temporal gyrus (MTG) and inferior frontal gyrus (IFG) are two critical nodes of the brain's language network. Previous neuroimaging evidence has supported a dissociation in language comprehension in which parts of the MTG are involved in the retrieval of lexical syntactic information and the IFG in unification operations that maintain, select, and integrate multiple sources of information over time. In the present investigation, we tested for causal evidence of this dissociation by modulating activity in IFG and MTG using an offline TMS procedure: continuous theta-burst stimulation. Lexical-syntactic retrieval was manipulated by using sentences with and without a temporarily word-class (noun/verb) ambiguity (e.g., run). In one group of participants, TMS was applied to the IFG and MTG, and in a control group, no TMS was applied. Eye movements were recorded and quantified at two critical sentence regions: a temporarily ambiguous region and a disambiguating region. Results show that stimulation of the IFG led to a modulation of the ambiguity effect (ambiguous-unambiguous) at the disambiguating sentence region in three measures: first fixation durations, total reading times, and regressive eye movements into the region. Both IFG and MTG stimulation modulated the ambiguity effect for total reading times in the temporarily ambiguous sentence region relative to the control group. The current results demonstrate that an offline repetitive TMS protocol can have influences at a different point in time during online processing and provide causal evidence for IFG involvement in unification operations during sentence comprehension.",
+        "url": "https://doi.org/10.1162/jocn_a_00430",
+        "doi": "https://doi.org/10.1162/jocn_a_00430",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2158757265"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 185
+      },
+      {
+        "paper_id": "rw_005_2370b895d",
+        "title": "How arbitrary is language?",
+        "authors": [
+          "Padraic Monaghan",
+          "Richard Shillcock",
+          "Morten H. Christiansen",
+          "Simon Kirby"
+        ],
+        "year": 2014,
+        "publication_date": "2014-08-04",
+        "venue": "Philosophical Transactions of the Royal Society B Biological Sciences",
+        "abstract": "It is a long established convention that the relationship between sounds and meanings of words is essentially arbitrary--typically the sound of a word gives no hint of its meaning. However, there are numerous reported instances of systematic sound-meaning mappings in language, and this systematicity has been claimed to be important for early language development. In a large-scale corpus analysis of English, we show that sound-meaning mappings are more systematic than would be expected by chance. Furthermore, this systematicity is more pronounced for words involved in the early stages of language acquisition and reduces in later vocabulary development. We propose that the vocabulary is structured to enable systematicity in early language learning to promote language acquisition, while also incorporating arbitrariness for later language in order to facilitate communicative expressivity and efficiency.",
+        "url": "https://doi.org/10.1098/rstb.2013.0299",
+        "doi": "https://doi.org/10.1098/rstb.2013.0299",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2098586765"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 329
+      },
+      {
+        "paper_id": "rw_006_ac384c441",
+        "title": "Long Text Generation via Adversarial Training with Leaked Information",
+        "authors": [
+          "Jiaxian Guo",
+          "Sidi Lu",
+          "Han Cai",
+          "Weinan Zhang",
+          "Yong Yu",
+          "Jun Wang"
+        ],
+        "year": 2018,
+        "publication_date": "2018-04-27",
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "abstract": "Automatically generating coherent and semantically meaningful text has many applications in machine translation, dialogue systems, image captioning, etc. Recently, by combining with policy gradient, Generative Adversarial Nets(GAN) that use a discriminative model to guide the training of the generative model as a reinforcement learning policy has shown promising results in text generation. However, the scalar guiding signal is only available after the entire text has been generated and lacks intermediate information about text structure during the generative process. As such, it limits its success when the length of the generated text samples is long (more than 20 words). In this paper, we propose a new framework, called LeakGAN, to address the problem for long text generation. We allow the discriminative net to leak its own high-level extracted features to the generative net to further help the guidance. The generator incorporates such informative signals into all generation steps through an additional MANAGER module, which takes the extracted features of current generated words and outputs a latent vector to guide the WORKER module for next-word generation.Our extensive experiments on synthetic data and various real-world tasks with Turing test demonstrate that LeakGAN is highly effective in long text generation and also improves the performance in short text generation scenarios. More importantly, without any supervision, LeakGAN would be able to implicitly learn sentence structures only through the interaction between MANAGER and WORKER.",
+        "url": "https://doi.org/10.1609/aaai.v32i1.11957",
+        "doi": "https://doi.org/10.1609/aaai.v32i1.11957",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2963248348"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 426
+      },
+      {
+        "paper_id": "rw_007_e4698bfcb",
+        "title": "An Introduction to Variational Autoencoders",
+        "authors": [
+          "Diederik P. Kingma",
+          "Max Welling"
+        ],
+        "year": 2019,
+        "publication_date": "2019-11-28",
+        "venue": "Foundations and Trends® in Machine Learning",
+        "abstract": "Variational autoencoders provide a principled framework for learning deep latent-variable models and corresponding inference models. In this work, we provide an introduction to variational autoencoders and some important extensions.",
+        "url": "https://doi.org/10.1561/2200000056",
+        "doi": "https://doi.org/10.1561/2200000056",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2948978827"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2549
+      },
+      {
+        "paper_id": "rw_008_6d4cc3b6b",
+        "title": "Semi-supervised semantic role labeling using the latent words language model",
+        "authors": [
+          "Koen Deschacht",
+          "Marie‐Francine Moens"
+        ],
+        "year": 2009,
+        "publication_date": "2009-01-01",
+        "venue": "",
+        "abstract": "Semantic Role Labeling (SRL) has proved to be a valuable tool for performing automatic analysis of natural language texts. Currently however, most systems rely on a large training set, which is manually annotated, an effort that needs to be repeated whenever different languages or a different set of semantic roles is used in a certain application. A possible solution for this problem is semi-supervised learning, where a small set of training examples is automatically expanded using unlabeled texts. We present the Latent Words Language Model, which is a language model that learns word similarities from unlabeled texts. We use these similarities for different semi-supervised SRL methods as additional features or to automatically expand a small training set. We evaluate the methods on the PropBank dataset and find that for small training sizes our best performing system achieves an error reduction of 33.27% F1-measure compared to a state-of-the-art supervised baseline.",
+        "url": "https://doi.org/10.3115/1699510.1699514",
+        "doi": "https://doi.org/10.3115/1699510.1699514",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2159746348"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 76
+      },
+      {
+        "paper_id": "rw_009_3a2506e20",
+        "title": "A survey of safety and trustworthiness of large language models through the lens of verification and validation",
+        "authors": [
+          "Xiaowei Huang",
+          "Wenjie Ruan",
+          "Wei Huang",
+          "Gaojie Jin",
+          "Yi Dong",
+          "Changshun Wu",
+          "Saddek Bensalem",
+          "Ronghui Mu",
+          "Qi Yi",
+          "Xingyu Zhao",
+          "Kaiwen Cai",
+          "Yanghao Zhang",
+          "Sihao Wu",
+          "Peipei Xu",
+          "Dengyu Wu",
+          "André Freitas",
+          "Mustafa Mustafa"
+        ],
+        "year": 2024,
+        "publication_date": "2024-06-17",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Abstract Large language models (LLMs) have exploded a new heatwave of AI for their ability to engage end-users in human-level conversations with detailed and articulate answers across many knowledge domains. In response to their fast adoption in many industrial applications, this survey concerns their safety and trustworthiness. First, we review known vulnerabilities and limitations of the LLMs, categorising them into inherent issues, attacks, and unintended bugs. Then, we consider if and how the Verification and Validation (V&amp;V) techniques, which have been widely developed for traditional software and deep learning models such as convolutional neural networks as independent processes to check the alignment of their implementations against the specifications, can be integrated and further extended throughout the lifecycle of the LLMs to provide rigorous analysis to the safety and trustworthiness of LLMs and their applications. Specifically, we consider four complementary techniques: falsification and evaluation, verification, runtime monitoring, and regulations and ethical use. In total, 370+ references are considered to support the quick understanding of the safety and trustworthiness issues from the perspective of V&amp;V. While intensive research has been conducted to identify the safety and trustworthiness issues, rigorous yet practical methods are called for to ensure the alignment of LLMs with safety and trustworthiness requirements.",
+        "url": "https://doi.org/10.1007/s10462-024-10824-0",
+        "doi": "https://doi.org/10.1007/s10462-024-10824-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4399750638"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 117
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_ac384c441",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper addresses controlled text generation with adversarial training and a MANAGER-WORKER architecture, which relates to the target's SMC-based control method. It explicitly discusses limitations in long-text generation and efficiency, providing a comparative baseline.",
+        "evidence_summary": "In 2018, Guo et al. published 'Long Text Generation via Adversarial Training with Leaked Information,' which introduced LeakGAN, a framework using a discriminative net to leak high-level features to a generative net via a MANAGER module for guided word generation. The method was evaluated on synthetic data and real-world tasks with Turing tests, showing effectiveness in long-text generation and improvements in short-text scenarios, while implicitly learning sentence structures without supervision."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_008_6d4cc3b6b",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_constraints",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper deals with semantic role labeling using semi-supervised learning and language models, aligning with the target's focus on semantic constraints and probabilistic methods. It uses PropBank dataset and discusses training efficiency.",
+        "evidence_summary": "In 2009, Deschacht and Moens published 'Semi-supervised semantic role labeling using the latent words language model,' which employed the Latent Words Language Model to learn word similarities from unlabeled texts for semi-supervised SRL. Evaluated on the PropBank dataset, the system achieved a 33.27% F1-measure error reduction compared to a supervised baseline for small training sizes."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_001_dd46630e4",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey covers explainability for LLMs, including transparency and risks, which relates to the target's control and constraint methods. It discusses metrics and challenges, providing broader context.",
+        "evidence_summary": "In 2024, Zhao et al. published 'Explainability for Large Language Models: A Survey,' which introduced a taxonomy of explainability techniques for Transformer-based language models, categorizing methods by training paradigms and summarizing approaches for local and global explanations. The work discussed evaluation metrics and how explanations can debug models and improve performance, while examining challenges in the era of LLMs."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_009_3a2506e20",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_constraints",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey addresses safety and trustworthiness of LLMs through verification and validation, touching on constraints and limitations relevant to controlled generation. It categorizes vulnerabilities and discusses V&V techniques.",
+        "evidence_summary": "In 2024, Huang et al. published 'A survey of safety and trustworthiness of large language models through the lens of verification and validation,' which reviewed vulnerabilities and limitations of LLMs, categorizing them into inherent issues, attacks, and bugs. The survey considered falsification, evaluation, verification, runtime monitoring, and regulations as techniques to ensure alignment with safety requirements."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_007_e4698bfcb",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This introduction to variational autoencoders provides background on latent-variable models and inference, which relates to the target's probabilistic conditioning and posterior approximation methods.",
+        "evidence_summary": "In 2019, Kingma and Welling published 'An Introduction to Variational Autoencoders,' which provided a principled framework for learning deep latent-variable models and corresponding inference models, along with important extensions."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_005_2370b895d",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper examines sound-meaning mappings in language, including systematicity, which relates to semantic control aspects in the target. It uses corpus analysis and discusses language acquisition.",
+        "evidence_summary": "In 2014, Monaghan et al. published 'How arbitrary is language?,' which conducted a large-scale corpus analysis of English to show that sound-meaning mappings are more systematic than expected by chance, with greater systematicity in early language acquisition vocabulary."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_002_eb7c2e880",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This review on semantic memory provides general background on methods and models, but lacks specific details relevant to the target's controlled generation approach.",
+        "evidence_summary": "In 2020, Kumar published 'Semantic memory: A review of methods, models, and current challenges,' which reviewed methods, models, and challenges in semantic memory."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_003_fb7ea64d4",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This fMRI study on syntactic surprisal in reading addresses language structure but is focused on neuroscience, with limited direct relevance to LLM control methods.",
+        "evidence_summary": "In 2016, Henderson et al. published 'Language structure in the brain: A fixation-related fMRI study of syntactic surprisal in reading,' which conducted a fixation-related fMRI study on syntactic surprisal in reading."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_004_e15414f9a",
+        "relevance_score": 0.32,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This TMS study on syntactic ambiguity resolution is neuroscience-focused and does not directly relate to computational methods for LLM control.",
+        "evidence_summary": "In 2013, Acheson and Hagoort published 'Stimulating the Brain's Language Network: Syntactic Ambiguity Resolution after TMS to the Inferior Frontal Gyrus and Middle Temporal Gyrus,' which used TMS to modulate activity in IFG and MTG, showing effects on ambiguity resolution in eye movement measures during sentence processing."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2018, Guo et al. published 'Long Text Generation via Adversarial Training with Leaked Information,' introducing LeakGAN, a framework that uses a discriminative net to leak features to a generative net via a MANAGER module for guided generation, evaluated on synthetic data and real-world tasks with Turing tests. In 2009, Deschacht and Moens published 'Semi-supervised semantic role labeling using the latent words language model,' employing a language model to learn word similarities for SRL, achieving a 33.27% F1 error reduction on PropBank. In 2024, Zhao et al. published 'Explainability for Large Language Models: A Survey,' categorizing explainability techniques by training paradigms and discussing evaluation metrics and challenges. In 2024, Huang et al. published 'A survey of safety and trustworthiness of large language models through the lens of verification and validation,' reviewing vulnerabilities and V&V techniques for LLM safety. In 2019, Kingma and Welling published 'An Introduction to Variational Autoencoders,' providing a framework for latent-variable models and inference. In 2014, Monaghan et al. published 'How arbitrary is language?,' showing through corpus analysis that sound-meaning mappings in English are systematic, especially in early acquisition vocabulary.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

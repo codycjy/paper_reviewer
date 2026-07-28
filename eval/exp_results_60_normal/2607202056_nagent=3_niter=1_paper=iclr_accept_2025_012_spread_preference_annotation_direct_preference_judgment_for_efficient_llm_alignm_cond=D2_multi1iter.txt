@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of 'Spread Preference Annotation' (SPA) leveraging the LLM's own logits for direct preference judgment is highly novel and avoids the pitfalls of external reward models or LLM-as-judge, which often require larger, well-aligned models or significant human data to pre-train.",
+        "The introduction of a 'noise-aware preference learning algorithm' with 'de-coupled noise detection' is an innovative way to handle the inherent noise when generating self-annotated data, significantly improving the robustness of the iterative alignment process.",
+        "The empirical results are impressive, demonstrating superior alignment performance with a very small fraction (3.3%) of human-labeled data compared to baselines, even outperforming models trained on 100% of the data. This highlights the practical significance and efficiency of SPA."
+      ],
+      "weaknesses": [
+        "While the paper justifies length-controlled metrics, the tendency of SPA to generate longer responses might be a subtle form of 'reward hacking' if not carefully managed. Further deep dives into this behavior would strengthen the analysis (though some discussion is in the appendix).",
+        "The progressive reduction of the hyper-parameter lambda for de-coupled noise detection (1/2, 1/4, 1/8) across iterations is presented without a clear theoretical justification or ablation study, making it seem heuristic. More insight into its impact on training dynamics would be beneficial."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach to LLM alignment, addressing the critical bottleneck of human preference data scarcity. The idea of using an LLM's intrinsic logits for direct preference judgment, coupled with a sophisticated noise-aware learning mechanism, is a bold and forward-thinking step. The empirical results on AlpacaEval 2.0 and MT-Bench are very strong, showcasing significant improvements with minimal human supervision. While some minor methodological details could be more thoroughly explored, the novelty and potential impact of SPA are exceptionally high, pushing the boundaries of efficient LLM alignment. This work represents an exciting direction for the field and deserves to be recognized for its creative contribution."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core methodology of SPA, leveraging direct preference judgment from the LLM's own logits and incorporating a noise-aware preference learning algorithm, is well-articulated and logically structured.",
+        "The evaluation is exceptionally thorough, encompassing comparisons against strong baselines (Iterative DPO with PairRM and LLM-as-judge), diverse seed data sizes (including zero-shot), various LLM architectures (Phi-2, LLaMA-3, Phi-3), and comprehensive ablation studies. This breadth of evaluation significantly strengthens the claims.",
+        "The paper rigorously addresses potential limitations, such as the observed increase in response length, by demonstrating the method's effectiveness under length-controlled metrics and showing compatibility with existing length penalty techniques, showcasing strong scientific integrity."
+      ],
+      "weaknesses": [
+        "While the concept of using the model's logits for direct preference judgment is presented as novel, the underlying mathematical justification for why this specific form of 'inherent preference' is a superior proxy for human preference compared to more explicit reward models or LLM-as-judge could be more deeply explored theoretically. The current explanation leans more on empirical observation of effectiveness.",
+        "The iterative process of SPA, particularly the changing `lambda` values for de-coupled noise detection and the fixed `alpha` and `K` hyperparameters, could benefit from a more detailed sensitivity analysis or theoretical grounding. It is unclear if these specific values are universally optimal or highly dependent on the experimental setup."
+      ],
+      "summary_comment": "This paper presents SPA, an iterative framework for aligning LLMs with human preferences using minimal human-annotated data. The core idea of directly judging preference from the LLM's logits and incorporating a noise-aware refinement mechanism is sound. The experimental validation is exceptionally rigorous, covering a wide range of scenarios and outperforming strong baselines. The paper's commitment to thorough evaluation, including addressing potential biases like response length, is commendable. While the theoretical 'why' behind the direct preference judgment could be expanded, the empirical evidence strongly supports the method's effectiveness and practical significance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and significant problem: the high cost of human-annotated preference data for LLM alignment. The proposed SPA framework offers a compelling solution to reduce this dependency.",
+        "The evaluation is thorough and convincing, using established benchmarks (AlpacaEval 2.0, MT-Bench) and comparing against strong baselines. The ablation studies and generalization across different LLMs and seed data sizes further strengthen the results.",
+        "The core idea of leveraging the LLM's intrinsic reward model for preference judgment, combined with noise-aware learning through a confidence-based refinement and de-coupled noise detection, is a clever and effective approach to self-improvement."
+      ],
+      "weaknesses": [
+        "While the concept of \"direct preference judgment using logits\" is central, the explanation could be more intuitively elaborated for practitioners less familiar with the specific DPO formulation. A high-level explanation of why logits reflect preference might be helpful.",
+        "The discussion on hyperparameter tuning (e.g., K%, alpha, and especially the progressively reduced lambda) is a bit brief. More insight into the sensitivity of the method to these parameters and how they were chosen would be valuable for practical implementation."
+      ],
+      "summary_comment": "This paper presents SPA, a highly relevant and effective framework for aligning LLMs with significantly less human-annotated preference data. The problem it addresses is a major bottleneck in the field, and the solution involving direct preference judgment from the LLM's logits, coupled with a robust noise-aware learning mechanism, is both innovative and practically sound. The authors provide extensive experimental evidence showing superior performance with minimal data across various models and benchmarks, which is highly impressive. The clarity of the experimental setup and results is excellent. While some theoretical nuances and hyperparameter choices could be further detailed, the overall practical impact and demonstrated effectiveness make this a strong contribution."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'general machine learning' and 'deep learning' topics, specifically within LLM alignment, which is a highly active and relevant area for ICML. The focus on efficiency in data annotation for LLM alignment is of broad interest.",
+        "The contribution involves a novel algorithmic framework (SPA) with technical innovations like direct preference judgment from logits and a noise-aware preference learning algorithm, aligning well with ICML's emphasis on new methods and algorithms.",
+        "Reviewers consistently highlight the high novelty of the approach ('highly novel', 'innovative', 'bold and forward-thinking'), which is a key criterion for ICML. The empirical results showing superior alignment with minimal data (3.3%) solidify this novelty.",
+        "The methodology is evaluated with strong rigor, including comparisons against state-of-the-art baselines (Iterative DPO, PairRM, LLM-as-judge), ablation studies, and generalization tests across various LLMs and seed data sizes, demonstrating sound experimental design. This aligns with ICML's expectation for robust evaluation."
+      ],
+      "why_it_does_not_fit": [
+        "While the empirical evaluation is strong, Reviewer B notes that the theoretical justification for why the specific form of 'inherent preference' from logits is superior could be more deeply explored. ICML often values strong theoretical underpinnings.",
+        "Reviewers B and C point out that the justification and sensitivity analysis for hyperparameter choices (e.g., `lambda`, `alpha`, `K`) are somewhat brief. A conference like ICML might expect more detailed theoretical or empirical reasoning for these choices."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper falls under 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning', specifically within the context of aligning large language models, a topic explicitly welcomed at NeurIPS.",
+        "The interdisciplinary nature of the work, combining machine learning algorithms with a focus on data efficiency and practical application in LLMs, fits NeurIPS's broad scope that welcomes submissions not neatly fitting into existing categories.",
+        "The paper presents a new framework (SPA) and innovative techniques for efficient LLM alignment, demonstrating significant empirical improvements. This contribution type, combining algorithmic novelty with strong empirical evidence, is highly valued at NeurIPS.",
+        "The thorough experimental validation, including rigorous baselines, ablation studies, and generalization to different LLMs, aligns well with NeurIPS's expectations for robust evaluation, as highlighted by Reviewer B ('exceptionally rigorous')."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, Reviewer B suggests that a deeper theoretical exploration of the 'why' behind using logits for direct preference judgment, beyond empirical observation, could strengthen the paper. NeurIPS often appreciates strong theoretical foundations alongside empirical results.",
+        "The progressive reduction of the `lambda` hyperparameter and the fixed `alpha` and `K` parameters lack extensive theoretical justification or sensitivity analysis, which could be a point of further scrutiny at NeurIPS, as mentioned by Reviewers B and C."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly targets 'deep learning' and 'reinforcement learning', specifically focusing on 'representation learning for ... language' and 'generative models' (LLMs). The alignment of LLMs is a core topic for ICLR.",
+        "The paper introduces a novel method (SPA) that iteratively improves LLM alignment using self-generated preference data and a noise-aware learning algorithm. This fits ICLR's focus on cutting-edge research in deep learning, including self-supervised learning and optimization.",
+        "Reviewers emphasize the high novelty of the approach, particularly the direct preference judgment from logits and the noise-aware refinement. ICLR strongly prioritizes novel deep learning ideas and architectural innovations.",
+        "The empirical evaluation is comprehensive, covering multiple LLMs and benchmarks, with strong results and ablation studies. ICLR values empirical rigor and solid experimental backing for novel deep learning methods."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is highly relevant to deep learning, some of the technical details around preference learning and optimization might be considered more general ML or RL topics rather than strictly 'representation learning' which is a central theme for ICLR.",
+        "Reviewer A mentioned that the tendency of SPA to generate longer responses could be a subtle form of 'reward hacking,' which, if not fully understood, could be a concern regarding the robustness or unintended consequences in deep learning systems.",
+        "The lack of detailed theoretical justification for the hyperparameter choices and the specific 'inherent preference' derivation, as noted by Reviewers B and C, might be considered a weakness by ICLR which also values theoretical understanding in deep learning methods."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and comprehensive framework for automated code review that goes far beyond previous snippet-level approaches. The integration of code slicing, a multi-role LLM system, fine-grained filtering, and line-level localization represents a significant leap forward in practical application.",
+        "The validation on real-world, industry-scale defects from a large company with substantial financial implications makes the results highly significant and credible, addressing a critical need for defect detection that previous work often overlooked.",
+        "The identification and systematic addressing of four key challenges (context, KBI, FAR, human workflow) with specific technical solutions is a strong point. This shows a deep understanding of the practical problems in automated code review rather than just theoretical improvements."
+      ],
+      "weaknesses": [
+        "While the authors have clarified the practical derivation of heuristic filtering thresholds, the underlying justification for the specific numerical values remains empirically rather than theoretically driven, which might limit generalizability without further investigation into adaptive thresholds.",
+        "The paper identifies and explains the KBI/FAR trade-off introduced by the validator but doesn't present a concrete, quantified solution within the current framework to optimize this balance. This leaves a significant area for future work, as acknowledged by the authors."
+      ],
+      "summary_comment": "This paper presents a bold and innovative approach to automated code review, tackling real-world complexities that previous research has largely ignored. The shift from snippet-level, text-similarity-based evaluation to a full-pipeline, defect-focused framework is highly novel and promises significant practical impact. The proposed components, including advanced code slicing and a multi-role LLM architecture with robust filtering, directly address critical challenges in industrial-scale codebases. The authors have effectively addressed my concerns by providing further clarification on the heuristic nature of the filtering thresholds, rooting it in practical developer feedback, and by detailing the root causes for the KBI reduction by the validator. While a fully quantified solution to the KBI/FAR trade-off is left for future work, the clear identification and discussion of this challenge still adds value to the paper. The strong novelty, practical significance, and the clear articulation of future research directions make this work highly impactful and thus, acceptable."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly relevant and practical problem: automating code review, moving beyond snippet-level generation to a more holistic, real-world scenario. The focus on defect detection and integration into industry-scale DevOps workflows is commendable.",
+        "The evaluation is thorough and grounded in real-world data from a large company, using metrics (KBI, FAR, CPI, LSR) that directly align with developer expectations and the pragmatic goals of code review, rather than relying solely on proxy text similarity metrics. The ablation studies provide strong evidence for the contribution of each proposed component.",
+        "The proposed framework, including novel code slicing algorithms (Original Diff, Parent Function, Left Flow, Full Flow), a multi-role LLM system, and a redundancy comment filter mechanism, demonstrates a robust and well-thought-out approach to tackle the identified challenges."
+      ],
+      "weaknesses": [
+        "The empirical validation of the 'language-agnostic' claim is limited to C++. While the architectural components may be designed generically, concrete empirical evidence across multiple languages is still lacking to fully substantiate this assertion.",
+        "The reliance on qualitative developer feedback for setting heuristic filtering thresholds, while practical for a real-world deployment, still presents a methodological weakness. A more formal, quantitative analysis (e.g., sensitivity analysis, A/B testing, or deriving thresholds from a statistically significant user study) would strengthen the scientific rigor of this component's design and justification."
+      ],
+      "summary_comment": "The authors have presented a robust, well-evaluated system for automated code review, demonstrating substantial practical improvements over prior methods within an industrial setting. My initial concerns regarding the novelty were somewhat mitigated by the strong practical contributions and thorough evaluation. The authors have consistently and adequately addressed my questions regarding the generalizability of their framework beyond C++ and the justification for their heuristic filtering thresholds. While the empirical validation for language-agnosticism remains limited and the quantitative rigor for threshold setting could be enhanced, their iterative development process with 'super reviewers' provides valuable real-world context for how these decisions were made. The paper's overall methodological soundness, comprehensive evaluation, and significant practical impact are strong, supporting an 'Accept' decision."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and significant problem in software engineering—automating code reviews at an industry scale, moving beyond theoretical snippet-level analysis to real-world merge request granularity. The motivation is strong, rooted in actual financial losses from bugs.",
+        "The proposed framework is comprehensive, tackling four key challenges (context, KBI, FAR, human workflow) with specific, well-described components like code slicing, multi-role LLMs, filtering, and line localization. This holistic approach makes it very relevant to practitioners.",
+        "The evaluation is thorough and practical, using real-world fault reports from an industrial C++ codebase, and employing metrics (KBI, FAR, CPI, LSR) that directly align with practitioner expectations, rather than abstract text similarity scores. The significant performance improvement (10x over baselines) is very compelling."
+      ],
+      "weaknesses": [
+        "While the paper demonstrates strong practical results, the heuristic nature of some filtering thresholds (e.g., Q1/Q2 scores of 4 or below) could be a minor concern regarding generalizability. Briefly mentioning the exploration of adaptive thresholds for future work helps, but more insight into the robustness of these specific heuristics would strengthen the work.",
+        "The benefits of the multi-role LLM system are presented, but deeper insights into the specific interactions or communication protocols between the roles (beyond general CoT) could further enhance the understandability and reproducibility for other practitioners aiming to implement similar systems."
+      ],
+      "summary_comment": "The authors have adequately addressed the concerns raised in the prior review. Their commitment to elaborating on the practical justification for heuristic thresholds and providing more explicit detail on the multi-role LLM communication in the camera-ready version is appreciated. These improvements will further enhance the practicality and clarity of an already strong paper, which is a significant contribution to the field of automated code review from a practitioner's perspective. The paper's focus on real-world impact and its comprehensive approach continue to make it highly valuable. I maintain my 'Accept' decision."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces a novel framework for automated code review using large language models, which aligns with 'general machine learning' and 'deep learning (architectures, generative models)'.",
+        "The use of code slicing algorithms and multi-role LLM systems for context extraction and defect detection can be seen as an application of 'machine learning systems (improved implementation and scalability)' and 'trustworthy machine learning (reliability, robustness)' as it aims to improve software quality.",
+        "The focus on solving real-world challenges in a specific domain (software engineering/code review) and validated on industry-scale defects makes this an 'application-driven machine learning' paper, which ICML covers. The detailed quantitative evaluation using metrics like KBI, FAR, and CPI shows strong rigor.",
+        "Reviewers lauded the paper's novelty (Reviewer A score 5, Reviewer C score 4) for moving beyond snippet-level approaches to a full pipeline, which is a contribution ICML values in novel methodology and system design.",
+        "The paper provides a comprehensive evaluation with ablation studies, a thorough comparison against baselines, and justification of design choices, which addresses the 'evaluation (methodology, meta studies)' aspect of ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While falling under 'application-driven machine learning', the paper is heavily focused on a specific software engineering problem, which might be considered less 'general machine learning' theory or methodology compared to some other ICML submissions. The core contributions are primarily empirical and system-building rather than theoretical breakthroughs.",
+        "Reviewer B scored novelty as 3, suggesting that while the approach is practical and comprehensive, some underlying ML techniques might not be entirely novel in isolation, even if their integration is. ICML often seeks high novelty in the core ML methodology.",
+        "The acknowledged methodological weaknesses by reviewers, such as the heuristic nature of filtering thresholds and the lack of a fully quantified solution for the KBI/FAR trade-off, could be viewed as minor concerns regarding academic rigor, though the practical justification was accepted."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's use of Large Language Models (LLMs) and multi-agent systems aligns with NeurIPS topics like 'Deep learning', 'Language and multimodal language models', and potentially 'General machine learning: core contributions in supervised and unsupervised methods'.",
+        "The application to automated code review and defect detection in an industrial setting can be categorized under 'AI/ML for physical sciences' (broadly interpreted to include engineering and software systems) or 'Socio-technical aspects of AI' by improving developer workflows.",
+        "The interdisciplinary nature of applying ML to a complex software engineering task, addressing practical challenges, aligns with NeurIPS's welcome for 'interdisciplinary submissions that do not fit neatly into existing categories' and 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior'.",
+        "The significant practical impact and real-world validation on industry-scale defects are strengths emphasized by all reviewers, aligning with NeurIPS's interest in impactful applications.",
+        "The paper's thorough evaluation, including ablation studies and new metrics (KBI, FAR, CPI, LSR) tailored to practical needs, demonstrates a strong evaluation methodology which is valued at NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "While important, automated code review is a very specific application within software engineering. NeurIPS typically features a broader range of applications or theoretical contributions that are more directly translatable across different ML domains, rather than an intensely domain-specific system.",
+        "Reviewer B's initial concern about novelty (score of 3) suggests that the core algorithmic novelty from a purely machine learning perspective might not be as high as some state-of-the-art NeurIPS papers that focus on foundational ML advancements.",
+        "The reliance on heuristic thresholds and the limitations in empirically validating language-agnosticism beyond C++ are methodological aspects that could be scrutinized more heavily by NeurIPS reviewers looking for extensive generalizability and theoretically-backed decisions.",
+        "The 'Others' topic for the paper might suggest it is a bit outside the core focus areas, though NeurIPS does encourage interdisciplinary work."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper heavily leverages Large Language Models (LLMs) and explores multi-role LLM frameworks and Chain-of-Thought (CoT) reasoning, which directly align with ICLR's focus on 'deep learning', 'generative models', 'representation learning for computer vision, audio, language, and other modalities', and 'optimization' (implicitly in LLM usage).",
+        "The discussion of context representation through code slicing (Left Flow, Full Flow) for LLMs touches upon 'representation learning' and how it impacts LLM performance with varying input lengths (as noted by Reviewer A's comment on 'longer contexts').",
+        "The problem of reducing hallucinations and improving reliability within LLMs through filtering and validation mechanisms (as highlighted by Reviewer A's comments on KBI/FAR trade-off and Reviewer B's focus on soundness) relates to 'trustworthy machine learning' and 'societal considerations including fairness, safety, privacy' (specifically reliability).",
+        "The practical application of deep learning in software engineering for automated code review, with strong empirical validation, is relevant to ICLR's interest in 'applications to robotics, autonomy, planning' and 'general machine learning (i.e., none of the above)'.",
+        "Reviewers praised the comprehensive evaluation and significant performance improvements (10x over baselines), providing empirical evidence for the effectiveness of the deep learning architecture."
+      ],
+      "why_it_does_not_fit": [
+        "While leveraging deep learning, the paper's primary contribution is a system integration and application in software engineering, rather than a novel theoretical contribution to deep learning architectures or learning theory. ICLR often prioritizes foundational deep learning research.",
+        "The 'Others' topic indicates a more applied or interdisciplinary nature. ICLR, while welcoming applications, is largely centered on the fundamental advancements in deep learning algorithms and theory.",
+        "The methodological aspects highlighted as weaknesses, such as the heuristic rather than theoretically optimal filtering thresholds and the KBI/FAR trade-off, might be viewed as areas for deeper theoretical exploration by ICLR reviewers.",
+        "Reviewer B's lower novelty score (3) for the core ML contributions could be a concern for ICLR, which strongly values groundbreaking deep learning methods."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

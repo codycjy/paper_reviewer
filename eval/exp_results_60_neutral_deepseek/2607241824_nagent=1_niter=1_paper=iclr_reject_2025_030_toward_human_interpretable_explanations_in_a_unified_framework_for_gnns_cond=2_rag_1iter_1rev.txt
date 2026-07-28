@@ -1,0 +1,468 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel, unified framework for GNN explainability (UO-Explainer) that simultaneously provides model-level and instance-level explanations, addressing a significant gap in the literature.",
+        "The method is grounded in the well-established concept of graphlets and orbits, providing human-interpretable explanation units that can leverage user-defined prior knowledge, which is a major strength for domain experts.",
+        "The experimental evaluation is extensive, covering eight diverse datasets (synthetic and real-world) and demonstrating superior performance over multiple strong baselines on both explanation levels."
+      ],
+      "weaknesses": [
+        "The method is inherently limited to explanation patterns that can be expressed using the pre-defined 2-5 node graphlets (or user-defined ones); capturing more complex or larger-scale crucial patterns may be challenging, as acknowledged in the limitations.",
+        "The explanation for why the method occasionally fails on certain tasks in the GCN model (e.g., tasks 33, 60, 62 in Table 1) is attributed to GNN expressiveness but could merit deeper analysis or mitigation strategies beyond switching to a GIN model."
+      ],
+      "summary_comment": "UO-Explainer is a well-motivated and executed contribution to the field of GNN explainability. Its core innovation is the use of graphlet orbits as a unified, human-interpretable basis for both model-level and instance-level explanations. The approach is sound, clearly formulated with decomposition and greedy search algorithms. The significance is high, as it addresses the often-overlooked need for user-centric, interpretable units in a unified framework. Evaluation is rigorous and convincing, showing strong performance across metrics and datasets. While limited by its reliance on graphlets, the framework's allowance for user-defined patterns mitigates this. The paper is also clearly written. Overall, it represents a strong advance worthy of acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's focus on trustworthy machine learning, particularly in explainability and interpretability of neural networks",
+        "Methodological contribution in developing a novel decomposition approach for GNN weights into orbit-based units",
+        "Rigorous experimental evaluation across multiple datasets demonstrating performance improvements over baselines",
+        "Addresses important applications in scientific domains like biology and chemistry, which are within ICML's scope"
+      ],
+      "why_it_does_not_fit": [
+        "The work is more applied than theoretical, with limited theoretical contributions which ICML typically values highly",
+        "While methodologically sound, the approach is somewhat specialized to graph domains rather than general ML",
+        "Reviewer noted limitations in capturing complex patterns beyond pre-defined graphlets, which may limit broader applicability"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit with NeurIPS' interdisciplinary focus, bridging graph ML with human interpretability and scientific applications",
+        "Strong novelty in unified framework for model-level and instance-level explanations, addressing an underexplored area",
+        "Extensive experimental validation across synthetic and real-world datasets demonstrates practical significance",
+        "Clear positioning at intersection of AI/ML for health and biotechnology, which NeurIPS explicitly encourages",
+        "Reviewer highlighted the well-motivated contribution and rigorous evaluation as major strengths"
+      ],
+      "why_it_does_not_fit": [
+        "The method relies heavily on graph-specific structures (graphlets/orbits) rather than general ML principles",
+        "Limited theoretical analysis beyond the algorithmic contributions and empirical results",
+        "While innovative, the approach may be seen as somewhat incremental in the broader context of explainable AI"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong relevance to ICLR's focus on deep learning and representation learning, particularly for graph-structured data",
+        "Addresses interpretability of deep learning models, which is a growing concern in the community",
+        "Method leverages node representation vectors and decomposition techniques relevant to representation learning",
+        "Applications in molecular structure networks and biological domains align with ICLR's application interests"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically prioritizes core deep learning innovations over explainability methods",
+        "The approach is more post-hoc explanation than fundamental architecture or representation learning contribution",
+        "Limited focus on novel neural network architectures or training paradigms, which are ICLR's core strengths",
+        "Reviewer concerns about pattern complexity limitations may be more problematic for ICLR's forward-looking focus"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_a7702f86b06a",
+    "paper_id": "paper_53c05f958151",
+    "target_paper_summary": {
+      "paper_id": "paper_53c05f958151",
+      "title": "Toward Human-Interpretable Explanations In A Unified Framework For Gnns",
+      "abstract": "1 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100 101 102 103 104 105 106 107 on conjecture based on the generated explanations. Additionally, these explanations do not always present results in a human-intuitive form, as they may include isolated nodes or disconnected edges, further hindering their interpretability. Therefore, we emphasize the need for explainability that centers on human interpretability, a perspective that has been largely underexplored. Last but not least, human-interpretable explanations should be delivered in a unified framework, incorporating both global and local levels in terms of the scope of explanation (Yuan et al., 2022; Prado-Romero et al., 2024). Most of the existing methods primarily specialize one one-level explanation either model or instance-level explanations. Model-level methods reveal patterns that GNNs deem significant for specific classes, eventually offering a broad understanding of the GNNs' general behavior. On the other hand, instance-level methods focus on individual predictions, identifying the subgraphs most relevant to the target node or graph. As each type of explanation complements the other from different perspectives, understanding at both levels enhances the explainability necessary for grasping the decision-making process of GNNs. However, State-of-the-art (Azzolin et al., 2022; Chen et al., 2023) studies also have rarely explored a unified framework that simultaneously provides both model-level and instance-level explanations in the user-centric perspective of interest. In this paper, we prioritize the two crucial perspectives that explanation should be human-interpretable in the unified framework incorporating both model and instance levels. Our proposed model, UO- Explainer, the Unified and Orbit-based Explainer for GNNs, allows users to harness their prior knowledge by giving room to select the user-defined explanation units in unified views. Considering the uniqueness of the graph domain to define explanation unit, we exploit orbits within graphlets that have been studied as a generalizable and universal pattern in many scientific fields such as protein interaction networks Przulj et al. (2004); Pr ˇ zulj (2007), social networks Chen & Lui (2018); Ahmed ˇ et al. (2015), and molecular structure networks Kondor et al. (2009), while users can also adopt a unique ",
+      "topic": "",
+      "claims": []
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "human-interpretable explanations graph neural networks",
+          "rationale": "The paper focuses on creating human-interpretable explanations for GNNs, which is the core research problem"
+        },
+        {
+          "group": "same_method",
+          "query": "orbit-based graphlet explanations GNN interpretability",
+          "rationale": "The paper uses orbit-based graphlet patterns as explanation units for GNN interpretability"
+        },
+        {
+          "group": "same_constraints",
+          "query": "unified framework model-level instance-level GNN explanations",
+          "rationale": "The paper emphasizes a unified framework that combines both model-level and instance-level explanations"
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "GNN explanation methods evaluation metrics datasets",
+          "rationale": "For benchmarking, papers defining evaluation metrics, datasets, and baseline methods for GNN explainability"
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "unified framework GNN explanations model-level instance-level",
+          "rationale": "Searching for prior work that already proposes unified frameworks combining both model and instance level explanations"
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "limitations graphlet-based explanations GNN interpretability",
+          "rationale": "Papers discussing limitations or negative results of graphlet/orbit-based explanation methods for GNNs"
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 9,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_326e8daa0",
+        "title": "The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory",
+        "authors": [
+          "Sergey Oladyshkin",
+          "Timothy Praditia",
+          "Ilja Kröker",
+          "Farid Mohammadi",
+          "Wolfgang Nowak",
+          "Sebastian Otte"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-26",
+        "venue": "arXiv",
+        "abstract": "Artificial Intelligence and Machine learning have been widely used in various fields of mathematical computing, physical modeling, computational science, communication science, and stochastic analysis. Approaches based on Deep Artificial Neural Networks (DANN) are very popular in our days. Depending on the learning task, the exact form of DANNs is determined via their multi-layer architecture, activation functions and the so-called loss function. However, for a majority of deep learning approaches based on DANNs, the kernel structure of neural signal processing remains the same, where the node response is encoded as a linear superposition of neural activity, while the non-linearity is triggered by the activation functions. In the current paper, we suggest to analyze the neural signal processing in DANNs from the point of view of homogeneous chaos theory as known from polynomial chaos expansion (PCE). From the PCE perspective, the (linear) response on each node of a DANN could be seen as a $1^{st}$ degree multi-variate polynomial of single neurons from the previous layer, i.e. linear weighted sum of monomials. From this point of view, the conventional DANN structure relies implicitly (but erroneously) on a Gaussian distribution of neural signals. Additionally, this view revels that by design DANNs do not necessarily fulfill any orthogonality or orthonormality condition for a majority of data-driven applications. Therefore, the prevailing handling of neural signals in DANNs could lead to redundant representation as any neural signal could contain some partial information from other neural signals. To tackle that challenge, we suggest to employ the data-driven generalization of PCE theory known as arbitrary polynomial chaos (aPC) to construct a corresponding multi-variate orthonormal representations on each node of a DANN to obtain Deep arbitrary polynomial chaos neural networks.",
+        "url": "http://arxiv.org/abs/2306.14753v1",
+        "doi": "",
+        "arxiv_id": "2306.14753v1",
+        "source_ids": {
+          "arXiv": "2306.14753v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_002_1faaec8ea",
+        "title": "Learning Active Subspaces and Discovering Important Features with Gaussian Radial Basis Functions Neural Networks",
+        "authors": [
+          "Danny D'Agostino",
+          "Ilija Ilievski",
+          "Christine Annette Shoemaker"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-11",
+        "venue": "arXiv",
+        "abstract": "Providing a model that achieves a strong predictive performance and is simultaneously interpretable by humans is one of the most difficult challenges in machine learning research due to the conflicting nature of these two objectives. To address this challenge, we propose a modification of the radial basis function neural network model by equipping its Gaussian kernel with a learnable precision matrix. We show that precious information is contained in the spectrum of the precision matrix that can be extracted once the training of the model is completed. In particular, the eigenvectors explain the directions of maximum sensitivity of the model revealing the active subspace and suggesting potential applications for supervised dimensionality reduction. At the same time, the eigenvectors highlight the relationship in terms of absolute variation between the input and the latent variables, thereby allowing us to extract a ranking of the input variables based on their importance to the prediction task enhancing the model interpretability. We conducted numerical experiments for regression, classification, and feature selection tasks, comparing our model against popular machine learning models, the state-of-the-art deep learning-based embedding feature selection techniques, and a transformer model for tabular data. Our results demonstrate that the proposed model does not only yield an attractive prediction performance compared to the competitors but also provides meaningful and interpretable results that potentially could assist the decision-making process in real-world applications. A PyTorch implementation of the model is available on GitHub at the following link. https://github.com/dannyzx/Gaussian-RBFNN",
+        "url": "http://arxiv.org/abs/2307.05639v2",
+        "doi": "",
+        "arxiv_id": "2307.05639v2",
+        "source_ids": {
+          "arXiv": "2307.05639v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_004_3c22b53c4",
+        "title": "CI-GNN: A Granger Causality-Inspired Graph Neural Network for Interpretable Brain Network-Based Psychiatric Diagnosis",
+        "authors": [
+          "Kaizhong Zheng",
+          "Shujian Yu",
+          "Badong Chen"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-04",
+        "venue": "arXiv",
+        "abstract": "There is a recent trend to leverage the power of graph neural networks (GNNs) for brain-network based psychiatric diagnosis, which,in turn, also motivates an urgent need for psychiatrists to fully understand the decision behavior of the used GNNs. However, most of the existing GNN explainers are either post-hoc in which another interpretive model needs to be created to explain a well-trained GNN, or do not consider the causal relationship between the extracted explanation and the decision, such that the explanation itself contains spurious correlations and suffers from weak faithfulness. In this work, we propose a granger causality-inspired graph neural network (CI-GNN), a built-in interpretable model that is able to identify the most influential subgraph (i.e., functional connectivity within brain regions) that is causally related to the decision (e.g., major depressive disorder patients or healthy controls), without the training of an auxillary interpretive network. CI-GNN learns disentangled subgraph-level representations α and \\b{eta} that encode, respectively, the causal and noncausal aspects of original graph under a graph variational autoencoder framework, regularized by a conditional mutual information (CMI) constraint. We theoretically justify the validity of the CMI regulation in capturing the causal relationship. We also empirically evaluate the performance of CI-GNN against three baseline GNNs and four state-of-the-art GNN explainers on synthetic data and three large-scale brain disease datasets. We observe that CI-GNN achieves the best performance in a wide range of metrics and provides more reliable and concise explanations which have clinical evidence.The source code and implementation details of CI-GNN are freely available at GitHub repository (https://github.com/ZKZ-Brain/CI-GNN/).",
+        "url": "http://arxiv.org/abs/2301.01642v3",
+        "doi": "",
+        "arxiv_id": "2301.01642v3",
+        "source_ids": {
+          "arXiv": "2301.01642v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_005_65498a9ff",
+        "title": "Are Larger Pretrained Language Models Uniformly Better? Comparing Performance at the Instance Level",
+        "authors": [
+          "Ruiqi Zhong",
+          "Dhruba Ghosh",
+          "Dan Klein",
+          "Jacob Steinhardt"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-13",
+        "venue": "arXiv",
+        "abstract": "Larger language models have higher accuracy on average, but are they better on every single instance (datapoint)? Some work suggests larger models have higher out-of-distribution robustness, while other work suggests they have lower accuracy on rare subgroups. To understand these differences, we investigate these models at the level of individual instances. However, one major challenge is that individual predictions are highly sensitive to noise in the randomness in training. We develop statistically rigorous methods to address this, and after accounting for pretraining and finetuning noise, we find that our BERT-Large is worse than BERT-Mini on at least 1-4% of instances across MNLI, SST-2, and QQP, compared to the overall accuracy improvement of 2-10%. We also find that finetuning noise increases with model size and that instance-level accuracy has momentum: improvement from BERT-Mini to BERT-Medium correlates with improvement from BERT-Medium to BERT-Large. Our findings suggest that instance-level predictions provide a rich source of information; we therefore, recommend that researchers supplement model weights with model predictions.",
+        "url": "http://arxiv.org/abs/2105.06020v1",
+        "doi": "",
+        "arxiv_id": "2105.06020v1",
+        "source_ids": {
+          "arXiv": "2105.06020v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_006_1f251fea3",
+        "title": "Address Instance-level Label Prediction in Multiple Instance Learning",
+        "authors": [
+          "Minlong Peng",
+          "Qi Zhang"
+        ],
+        "year": 2019,
+        "publication_date": "2019-05-29",
+        "venue": "arXiv",
+        "abstract": "\\textit{Multiple Instance Learning} (MIL) is concerned with learning from bags of instances, where only bag labels are given and instance labels are unknown. Existent approaches in this field were mainly designed for the bag-level label prediction (predict labels for bags) but not the instance-level (predict labels for instances), with the task loss being only defined at the bag level. This restricts their application in many tasks, where the instance-level labels are more interested. In this paper, we propose a novel algorithm, whose loss is specifically defined at the instance level, to address instance-level label prediction in MIL. We prove that the loss of this algorithm can be unbiasedly and consistently estimated without using instance labels, under the i.i.d assumption. Empirical study validates the above statements and shows that the proposed algorithm can achieve superior instance-level and comparative bag-level performance, compared to state-of-the-art MIL methods. In addition, it shows that the proposed method can achieve similar results as the fully supervised model (trained with instance labels) for label prediction at the instance level.",
+        "url": "http://arxiv.org/abs/1905.12226v1",
+        "doi": "",
+        "arxiv_id": "1905.12226v1",
+        "source_ids": {
+          "arXiv": "1905.12226v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor",
+          "same_constraints"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_007_21344ad7b",
+        "title": "Evaluating Readability and Faithfulness of Concept-based Explanations",
+        "authors": [
+          "Meng Li",
+          "Haoran Jin",
+          "Ruixuan Huang",
+          "Zhihao Xu",
+          "Defu Lian",
+          "Zijia Lin",
+          "Di Zhang",
+          "Xiting Wang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-04-29",
+        "venue": "arXiv",
+        "abstract": "With the growing popularity of general-purpose Large Language Models (LLMs), comes a need for more global explanations of model behaviors. Concept-based explanations arise as a promising avenue for explaining high-level patterns learned by LLMs. Yet their evaluation poses unique challenges, especially due to their non-local nature and high dimensional representation in a model's hidden space. Current methods approach concepts from different perspectives, lacking a unified formalization. This makes evaluating the core measures of concepts, namely faithfulness or readability, challenging. To bridge the gap, we introduce a formal definition of concepts generalizing to diverse concept-based explanations' settings. Based on this, we quantify the faithfulness of a concept explanation via perturbation. We ensure adequate perturbation in the high-dimensional space for different concepts via an optimization problem. Readability is approximated via an automatic and deterministic measure, quantifying the coherence of patterns that maximally activate a concept while aligning with human understanding. Finally, based on measurement theory, we apply a meta-evaluation method for evaluating these measures, generalizable to other types of explanations or tasks as well. Extensive experimental analysis has been conducted to inform the selection of explanation evaluation measures.",
+        "url": "http://arxiv.org/abs/2404.18533v3",
+        "doi": "",
+        "arxiv_id": "2404.18533v3",
+        "source_ids": {
+          "arXiv": "2404.18533v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_009_821402a4f",
+        "title": "From Stars to Subgraphs: Uplifting Any GNN with Local Structure Awareness",
+        "authors": [
+          "Lingxiao Zhao",
+          "Wei Jin",
+          "Leman Akoglu",
+          "Neil Shah"
+        ],
+        "year": 2021,
+        "publication_date": "2021-10-07",
+        "venue": "arXiv",
+        "abstract": "Message Passing Neural Networks (MPNNs) are a common type of Graph Neural Network (GNN), in which each node's representation is computed recursively by aggregating representations (messages) from its immediate neighbors akin to a star-shaped pattern. MPNNs are appealing for being efficient and scalable, how-ever their expressiveness is upper-bounded by the 1st-order Weisfeiler-Lehman isomorphism test (1-WL). In response, prior works propose highly expressive models at the cost of scalability and sometimes generalization performance. Our work stands between these two regimes: we introduce a general framework to uplift any MPNN to be more expressive, with limited scalability overhead and greatly improved practical performance. We achieve this by extending local aggregation in MPNNs from star patterns to general subgraph patterns (e.g.,k-egonets):in our framework, each node representation is computed as the encoding of a surrounding induced subgraph rather than encoding of immediate neighbors only (i.e. a star). We choose the subgraph encoder to be a GNN (mainly MPNNs, considering scalability) to design a general framework that serves as a wrapper to up-lift any GNN. We call our proposed method GNN-AK(GNN As Kernel), as the framework resembles a convolutional neural network by replacing the kernel with GNNs. Theoretically, we show that our framework is strictly more powerful than 1&2-WL, and is not less powerful than 3-WL. We also design subgraph sampling strategies which greatly reduce memory footprint and improve speed while maintaining performance. Our method sets new state-of-the-art performance by large margins for several well-known graph ML tasks; specifically, 0.08 MAE on ZINC,74.79% and 86.887% accuracy on CIFAR10 and PATTERN respectively.",
+        "url": "http://arxiv.org/abs/2110.03753v3",
+        "doi": "",
+        "arxiv_id": "2110.03753v3",
+        "source_ids": {
+          "arXiv": "2110.03753v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_004_3c22b53c4",
+        "relevance_score": 0.87,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Directly addresses human-interpretable explanations for GNNs using a causality-inspired framework, aligning with the target paper's focus on interpretability and novel explanation methods.",
+        "evidence_summary": "CI-GNN: A Granger Causality-Inspired Graph Neural Network for Interpretable Brain Network-Based Psychiatric Diagnosis (Zheng et al., 2023) proposes a built-in interpretable GNN model that identifies influential subgraphs for psychiatric diagnosis, emphasizing causality and interpretability without auxiliary networks."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_21344ad7b",
+        "relevance_score": 0.83,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Provides evaluation metrics for concept-based explanations, relevant for benchmarking the target paper's human-interpretable framework, though focused on LLMs rather than GNNs.",
+        "evidence_summary": "Evaluating Readability and Faithfulness of Concept-based Explanations (Li et al., 2024) introduces formal definitions and measures for faithfulness and readability of explanations, applicable to evaluating interpretability in machine learning models."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_009_821402a4f",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "Discusses limitations of MPNNs and proposes enhancements using subgraph patterns, which relates to the target paper's use of graphlets and orbits for explanations, offering evidence on scalability and expressiveness trade-offs.",
+        "evidence_summary": "From Stars to Subgraphs: Uplifting Any GNN with Local Structure Awareness (Zhao et al., 2021) extends GNN aggregation to subgraph patterns, improving expressiveness beyond 1-WL with theoretical guarantees and practical scalability."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_65498a9ff",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "same_constraints",
+          "novelty_competitor"
+        ],
+        "rationale": "Addresses instance-level performance analysis in language models, relevant to the target paper's unified framework combining instance-level and model-level explanations, though not specific to GNNs.",
+        "evidence_summary": "Are Larger Pretrained Language Models Uniformly Better? Comparing Performance at the Instance Level (Zhong et al., 2021) statistically analyzes instance-level accuracy variations in language models, highlighting differences not captured by average performance."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_1f251fea3",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "same_constraints",
+          "novelty_competitor"
+        ],
+        "rationale": "Focuses on instance-level label prediction in MIL, aligning with the target paper's emphasis on instance-level explanations, but in a different context (MIL vs. GNNs).",
+        "evidence_summary": "Address Instance-level Label Prediction in Multiple Instance Learning (Peng and Zhang, 2019) proposes an algorithm for instance-level predictions in MIL with unbiased loss estimation, achieving near-supervised performance."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_002_1faaec8ea",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Addresses interpretability and feature importance in neural networks, relevant to the general problem of human-interpretable explanations, but uses RBF networks rather than GNNs.",
+        "evidence_summary": "Learning Active Subspaces and Discovering Important Features with Gaussian Radial Basis Functions Neural Networks (D'Agostino et al., 2023) enhances RBF networks for interpretability by learning precision matrices to identify important features and active subspaces."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_326e8daa0",
+        "relevance_score": 0.41,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Discusses neural network interpretability from a chaos theory perspective, tangentially related to the target paper's focus on explanations, but not specific to GNNs or graph-based methods.",
+        "evidence_summary": "The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory (Oladyshkin et al., 2023) analyzes DANN signal processing using polynomial chaos expansion, highlighting redundancy and distribution assumptions."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Research on explainable AI has increasingly focused on human-interpretable methods, particularly for graph neural networks (GNNs). Prior work includes CI-GNN: A Granger Causality-Inspired Graph Neural Network for Interpretable Brain Network-Based Psychiatric Diagnosis (Zheng et al., 2023), which offers built-in interpretability for GNNs using causal subgraphs. Evaluations of explanations are addressed in Evaluating Readability and Faithfulness of Concept-based Explanations (Li et al., 2024), providing metrics for faithfulness and readability. Scalability and expressiveness concerns are explored in From Stars to Subgraphs: Uplifting Any GNN with Local Structure Awareness (Zhao et al., 2021), which enhances GNNs with subgraph patterns. Instance-level analysis is covered in Are Larger Pretrained Language Models Uniformly Better? Comparing Performance at the Instance Level (Zhong et al., 2021) and Address Instance-level Label Prediction in Multiple Instance Learning (Peng and Zhang, 2019), though not GNN-specific. Broader interpretability approaches include Learning Active Subspaces and Discovering Important Features with Gaussian Radial Basis Functions Neural Networks (D'Agostino et al., 2023) and The Deep Arbitrary Polynomial Chaos Neural Network (Oladyshkin et al., 2023), which use alternative neural network frameworks.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 9,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 7,
+      "num_cutoff_valid": 7,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 9,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 7,
+    "num_cutoff_valid": 7,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

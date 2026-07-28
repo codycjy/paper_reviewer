@@ -1,0 +1,207 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Introduces CQCC features which leverage geometrically spaced frequency bins for superior spectrotemporal resolution in neurodegenerative disorder classification",
+        "Achieves substantial performance improvements (99% accuracy with RF classifier) over traditional MFCC features and other baseline methods",
+        "Presents comprehensive theoretical foundation with form-invariance property of CQT that provides mathematical justification for the approach"
+      ],
+      "weaknesses": [
+        "Paper organization and clarity could be improved - multiple sections appear fragmented with numerical sequences interrupting the flow",
+        "Evaluation could be more thorough with additional datasets and deeper statistical analysis to reinforce the claimed performance improvements",
+        "Some mathematical notation appears incomplete or improperly formatted, which affects readability"
+      ],
+      "summary_comment": "This paper presents a highly innovative approach using Constant Q Cepstral Coefficients for neurodegenerative disorder classification. The novelty is outstanding, introducing CQCC features that significantly outperform traditional methods. The theoretical foundation is strong with the form-invariance property providing mathematical justification. While the paper could benefit from better organization and more comprehensive evaluation, the core idea represents a meaningful advancement in the field with clear practical significance for early disease detection. The substantial performance improvements (99% accuracy) demonstrate the potential impact of this approach."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "Applies a relatively modern signal processing technique (CQCC) to an important clinical problem—classifying neurodegenerative disorders from speech.",
+        "Provides a detailed mathematical exposition of the Constant Q Transform and its theoretical 'form-invariance' property, showing technical depth.",
+        "Uses multiple, publicly available datasets (Italian Parkinson's, Minsk2019 ALS) and compares the proposed method against several baseline features (MFCC, Jitter, Shimmer, Teager Energy)."
+      ],
+      "weaknesses": [
+        "The experimental methodology is critically flawed. Reported SVM results for CQCC on binary classification (healthy vs. pathological) show 63.4% accuracy, which is significantly worse than MFCC (88.4%) and even some simpler features like Shimmer (65.3%). This contradicts the main claim of CQCC's superiority and is not adequately explained, casting doubt on the robustness of the conclusions.",
+        "Methodological details are severely lacking. Key parameters for feature extraction (e.g., number of CQT bins, specific resampling method) are missing. Details on dataset splits, handling of subject-independent evaluation, and the specific application of SMOTE are insufficient for reproducibility. The extremely high accuracy (99% for RF with CQCC) suggests potential overfitting or data leakage, which is not addressed."
+      ],
+      "summary_comment": "While the application of CQCC to neurodegenerative disorder classification is potentially interesting, the paper contains major flaws in evaluation that undermine its scientific validity. The inconsistent and potentially overfitted results, combined with a lack of critical methodological details, make the claims unsubstantiated. Soundness and evaluation are weak, leading to a reject decision."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a clinically significant problem with clear practical relevance for early diagnosis of neurodegenerative disorders.",
+        "Comprehensive evaluation on multiple real-world datasets (Italian Parkinson's and Minsk2019 ALS) with clear performance improvements over strong baselines.",
+        "Well-motivated theoretical foundation (form-invariance property of CQT) with practical implementation details provided."
+      ],
+      "weaknesses": [
+        "Limited discussion of computational complexity and practical deployment considerations for clinical settings.",
+        "The significant performance gap between RF and SVM with CQCC features (99% vs 63.4%) warrants deeper investigation into classifier compatibility."
+      ],
+      "summary_comment": "This paper presents a well-executed application of CQCC features for neurodegenerative disorder classification. The work demonstrates strong practical significance with clear improvements over standard features (MFCC, Jitter, Shimmer) on clinically relevant datasets. The methodology is sound, the evaluation is thorough, and the results are convincing. While some practical implementation details could be expanded, the paper makes a valuable contribution to the field with immediate clinical applicability."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The paper addresses a clear application of machine learning (classification) to a significant real-world problem (healthcare/diagnostics), which aligns with ICML's interest in 'application-driven machine learning'.",
+        "It uses established ML methods (Random Forest, SVM) in a comparative evaluation framework, which is methodologically appropriate for ICML.",
+        "The work involves feature engineering based on signal processing theory (CQCC, form-invariance), touching on topics like 'probabilistic methods' and 'evaluation' relevant to ICML's scope."
+      ],
+      "why_it_does_not_fit": [
+        "The core contribution is less about a novel ML algorithm or theory and more about the application of a specific signal processing feature (CQCC) to a biomedical domain. This makes it more of an applied engineering or domain-specific paper, which is often a weaker fit for ICML's core focus on ML advancements.",
+        "Reviewer B raised major concerns about experimental soundness, methodological flaws, and potential overfitting (99% accuracy with RF). ICML places a high premium on rigorous evaluation and reproducibility; these weaknesses significantly reduce the paper's fit.",
+        "The paper's novelty, while acknowledged, is situated in the intersection of audio processing and clinical diagnosis, not in pushing the boundaries of ML theory, optimization, or systems—areas ICML strongly emphasizes.",
+        "The writing and organization were noted as fragmented by Reviewer A ('clarity: 3'), which could hinder its reception at a highly competitive, broad-scope conference like ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The application area is a strong fit for NeurIPS's interdisciplinary tracks, specifically 'AI/ML for health and biotechnology'. The paper's goal of early diagnosis for Parkinson's and ALS aligns perfectly.",
+        "NeurIPS encourages submissions that do not fit neatly into existing categories and has a broad scope that includes applications. The mix of signal processing theory and ML application fits this ethos.",
+        "The paper attempts to provide a theoretical motivation (form-invariance property) for its feature extraction method, which connects to the 'Theory' and 'General machine learning' interests of NeurIPS.",
+        "Reviewers A and C highlighted the 'practical significance' and 'clear practical relevance', which are valued at NeurIPS, especially in its applied tracks."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the fundamental ML contribution is incremental (applying an existing feature to a new domain). The core ML methods (RF, SVM) are standard. NeurIPS, while broad, is increasingly competitive for works with more groundbreaking algorithmic or theoretical insights.",
+        "The critical methodological flaws identified by Reviewer B (inconsistent SVM results, lack of reproducibility details, risk of overfitting) pose a significant 'Reviewer Risk' at a top-tier venue like NeurIPS, where experimental rigor is paramount.",
+        "The paper's structure and clarity issues (noted by multiple reviewers) could be a liability in the NeurIPS review process, which requires clear and compelling narratives to stand out among thousands of submissions.",
+        "While the application is relevant, the work may be perceived as closer to biomedical engineering or clinical informatics than to core ML research, potentially placing it at the fringe of NeurIPS's primary interests."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "The paper involves feature extraction from audio signals, which is related to 'representation learning for ... audio ... and other modalities', a topic within ICLR's scope.",
+        "It uses learned representations (CQCC) for a downstream classification task, which is a standard paradigm in representation learning."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's core identity is deeply tied to *deep learning*. This paper uses no deep learning methods; its classifiers are Random Forest and SVM. This is a fundamental mismatch with the conference's focus.",
+        "The proposed CQCC features are based on a fixed, hand-engineered signal processing transform (CQT), not on a learned, data-driven representation model (e.g., neural networks). This contrasts sharply with ICLR's emphasis on learned representations.",
+        "The theoretical contribution (form-invariance of CQT) is from classical signal processing, not related to deep learning theory, optimization for neural networks, or generative models.",
+        "Reviewer concerns about novelty and methodology are exacerbated at ICLR, where the bar for non-deep-learning work is exceptionally high, and innovation is expected within the deep learning paradigm. This paper would be a very poor fit."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Novelty)",
+          "review": {
+            "reviewer": "Reviewer A - Novelty Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 3
+            },
+            "strengths": [
+              "Introduces CQCC features which leverage geometrically spaced frequency bins for superior spectrotemporal resolution in neurodegenerative disorder classification",
+              "Achieves substantial performance improvements (99% accuracy with RF classifier) over traditional MFCC features and other baseline methods",
+              "Presents comprehensive theoretical foundation with form-invariance property of CQT that provides mathematical justification for the approach"
+            ],
+            "weaknesses": [
+              "Paper organization and clarity could be improved - multiple sections appear fragmented with numerical sequences interrupting the flow",
+              "Evaluation could be more thorough with additional datasets and deeper statistical analysis to reinforce the claimed performance improvements",
+              "Some mathematical notation appears incomplete or improperly formatted, which affects readability"
+            ],
+            "summary_comment": "This paper presents a highly innovative approach using Constant Q Cepstral Coefficients for neurodegenerative disorder classification. The novelty is outstanding, introducing CQCC features that significantly outperform traditional methods. The theoretical foundation is strong with the form-invariance property providing mathematical justification. While the paper could benefit from better organization and more comprehensive evaluation, the core idea represents a meaningful advancement in the field with clear practical significance for early disease detection. The substantial performance improvements (99% accuracy) demonstrate the potential impact of this approach."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 2 (Rigor)",
+          "review": {
+            "reviewer": "Reviewer B - Rigor Focused",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Applies a relatively modern signal processing technique (CQCC) to an important clinical problem—classifying neurodegenerative disorders from speech.",
+              "Provides a detailed mathematical exposition of the Constant Q Transform and its theoretical 'form-invariance' property, showing technical depth.",
+              "Uses multiple, publicly available datasets (Italian Parkinson's, Minsk2019 ALS) and compares the proposed method against several baseline features (MFCC, Jitter, Shimmer, Teager Energy)."
+            ],
+            "weaknesses": [
+              "The experimental methodology is critically flawed. Reported SVM results for CQCC on binary classification (healthy vs. pathological) show 63.4% accuracy, which is significantly worse than MFCC (88.4%) and even some simpler features like Shimmer (65.3%). This contradicts the main claim of CQCC's superiority and is not adequately explained, casting doubt on the robustness of the conclusions.",
+              "Methodological details are severely lacking. Key parameters for feature extraction (e.g., number of CQT bins, specific resampling method) are missing. Details on dataset splits, handling of subject-independent evaluation, and the specific application of SMOTE are insufficient for reproducibility. The extremely high accuracy (99% for RF with CQCC) suggests potential overfitting or data leakage, which is not addressed."
+            ],
+            "summary_comment": "While the application of CQCC to neurodegenerative disorder classification is potentially interesting, the paper contains major flaws in evaluation that undermine its scientific validity. The inconsistent and potentially overfitted results, combined with a lack of critical methodological details, make the claims unsubstantiated. Soundness and evaluation are weak, leading to a reject decision."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 3 (Practical)",
+          "review": {
+            "reviewer": "Reviewer C - Practicality Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses a clinically significant problem with clear practical relevance for early diagnosis of neurodegenerative disorders.",
+              "Comprehensive evaluation on multiple real-world datasets (Italian Parkinson's and Minsk2019 ALS) with clear performance improvements over strong baselines.",
+              "Well-motivated theoretical foundation (form-invariance property of CQT) with practical implementation details provided."
+            ],
+            "weaknesses": [
+              "Limited discussion of computational complexity and practical deployment considerations for clinical settings.",
+              "The significant performance gap between RF and SVM with CQCC features (99% vs 63.4%) warrants deeper investigation into classifier compatibility."
+            ],
+            "summary_comment": "This paper presents a well-executed application of CQCC features for neurodegenerative disorder classification. The work demonstrates strong practical significance with clear improvements over standard features (MFCC, Jitter, Shimmer) on clinically relevant datasets. The methodology is sound, the evaluation is thorough, and the results are convincing. While some practical implementation details could be expanded, the paper makes a valuable contribution to the field with immediate clinical applicability."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

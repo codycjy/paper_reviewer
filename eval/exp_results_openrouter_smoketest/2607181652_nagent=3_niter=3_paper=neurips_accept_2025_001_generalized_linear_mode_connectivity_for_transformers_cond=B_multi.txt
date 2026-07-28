@@ -1,0 +1,117 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The theoretical classification of Transformer-inherent symmetries (such as permutations, semi-permutations, orthogonal transformations, and the general invertible maps in QK/OV circuits) is excellent and correctly moves past the simplistic permutation-only paradigm.",
+        "Finding zero-barrier linear paths between independently trained Vision Transformers and GPT-2 models is an inspiring, non-trivial empirical result that updates our view of modern loss landscapes.",
+        "The investigation of width-heterogeneous alignment is a bold and creative step that provides a fresh, much-needed perspective on cross-architecture model merging."
+      ],
+      "weaknesses": [
+        "The empirical validation remains restricted to smaller architectures. Even though training-free weight-matching complexity scales computationally, the lack of evaluation on moderately sized open LLMs (e.g., in the 1B to 1.5B parameter range) leaves questions about how representational divergence behaves at scale.",
+        "Despite the coarse-to-fine justification, the dependency of the continuous learned matching step on the discrete weight-matching initialization is exceptionally tight. If global initialization fails in highly discordant models, the local gradient search is highly likely to remain trapped.",
+        "In Section 4.1, the mathematical presentation of the coordinate descent updates lacks deep convergence analysis. More detailed bounds on how local optimization traps are avoided when scaling the network depth would strengthen the methodology."
+      ],
+      "summary_comment": "This work takes a significant step forward by demonstrating that we can uncover linear path connectivity in Transformers, provided we model the rich, component-specific symmetries (like RMSNorm orthogonal maps) that simple permutation re-basining completely misses. Mathematically, it is a sound and exciting formulation. Practically, the dual-pipeline of weight matching (for global alignment) and learned matching (for continuous refinement) is logical, though the empirical verification is still on the scale of academic toy models rather than large open LLMs. Nonetheless, the conceptual novelty and the successful widening of the symmetry-aware landscape framework make this a highly influential paper that will guide future work in model merging and parameter space geometry."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "I found the diagnostic evaluation in Section 6 to be exceptionally illustrative. Specifically, isolating the performance gap of data-free weight matching to the continuous global rotation of the residual stream (rather than the discrete permutation sets) provides a clear blueprint for future data-free merging techniques.",
+        "The mathematical integration of RMSNorm/LayerNorm symmetries is handled very cleanly. Absorbing LayerNorm scales and offsets into neighboring linear weights is a highly practical workaround that maintains functional correctness.",
+        "The paper tackles multi-model and width-heterogeneous settings directly, demonstrating that the proposed alignments hold even when interpolating between architectures of different sizes."
+      ],
+      "weaknesses": [
+        "While I agree that training multi-billion parameter LLMs from scratch is computationally intractable for academic settings, I still wonder how the rotation matrix optimization behaves at scale. When the residual dimension grows to typical large-LLM sizes (like 4096 or 8192), does the projection step via SVD become a computational bottleneck, or does the optimization of the orthogonal matrix become significantly more prone to local minima?",
+        "The results on BookCorpus show that data-free weight matching still struggles to bridge the loss barrier. While the authors point to the potential of 'functional disconnection' (different generalization strategies) in their rebuttal, this raises a deeper question: how can we practically distinguish between a failure of the alignment algorithm versus a fundamental topological barrier in the loss landscape?",
+        "As discussed in the soft-permutations trade-off (Appendix D), continuous relaxations inevitably distort the clean functional representation at the endpoints. While this is a valuable theoretical insight, it suggests that soft-matching techniques are fundamentally limited if the goal is to produce a merged model that preserves original individual capabilities when un-interpolated."
+      ],
+      "summary_comment": "The authors have provided a highly complete and mathematically sound contribution. By expanding linear mode connectivity to incorporate semi-permutations, orthogonal maps, and invertible transformations, they finally offer a plausible explanation for why Transformers appeared to resist simple permutation-based alignment. The rebuttal successfully addressed my concerns regarding scale-invariance and the continuous relaxation trade-off. Despite the persistent difficulty of data-free alignment on complex language datasets, the overall methodological rigor, theoretical clarity, and detailed diagnostics of this work make it a very strong addition to the loss landscape literature.",
+      "final_decision": "Accept"
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "It's refreshing to see a work that acknowledges RMSNorm's orthogonal symmetry and actually leverages it to align the residual stream of Transformers.",
+        "The authors provide a completely data-free weight-matching (WM) variant. Even though it doesn't perform as well as the gradient-based learned version, slumping the BookCorpus barrier from 4.34 to 1.56 is a notable first-order correction achieved without seeing a single training point.",
+        "The hierarchical framework (semi-permutation, orthogonal, and invertible) matches the structural reality of modern attention-based architectures far better than naive neuron-reordering permutations."
+      ],
+      "weaknesses": [
+        "I'm still skeptical about the practical viability of the 'learned matching' (LM) loop for multi-billion parameter models. Backpropagating through a giant model only to search for coordinate alignments introduces massive computing and memory overhead.",
+        "While the authors have agreed to temper their 'zero-barrier' claims on language tasks, the persistent 0.42 barrier on BookCorpus indicates that we are still far from true functional alignment for sequence-level NLP configurations.",
+        "The paper lacks an empirical scaling analysis for 'universe matching' when the number of models, M, scales to double digits. While the theoretical anchoring strategy makes sense to prevent coordinate drift, practical test metrics for M > 3 are missing."
+      ],
+      "summary_comment": "I thank the authors for their realistic and pragmatic response. Their plan to tone down the absolute 'zero-loss' claims for NLP tasks like BookCorpus and their explanation of coordinate stability in multi-model settings (by anchoring to a seed model) are highly satisfactory. The contribution represents a robust step forward for practical model-merging and federated learning applications. Even with the performance gap between fully data-free weight matching and gradient-dependent learned matching, the framework is solid. I recommend an Accept."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper introduces a mathematically structured, hierarchical framework of symmetries (Permutation, Semi-permutation, Orthogonal, Invertible) in Section 3, which aligns well with ICML's interest in deep learning theory and optimization landscapes.",
+        "The formulation of weight matching as a 'sum of bilinear assignments problem' (SOBLAP) solved via coordinate descent (Section 4.1) directly relates to classical optimization algorithms featured at ICML.",
+        "The discovery of zero-barrier linear paths between independently trained models provides key insights into loss landscape geometry, a core topic of interest for the general ML theory community at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "As pointed out by Reviewer A, the mathematical presentation of the coordinate descent updates lacks a deep convergence analysis or bounds on avoiding local optimization traps, which might draw scrutiny from ICML's theoretically rigorous reviewers.",
+        "The empirical evaluation is restricted to smaller academic networks (6-8 layers, e.g., CIFAR and Tiny ImageNet), lacking the massive-scale verification often expected in ICML empirical evaluations.",
+        "The dependency of the continuous learned matching step on discrete weight-matching initialization is exceptionally tight, posing a practical optimization risk that is not fully resolved theoretically."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS has a long history of publishing foundational papers on neural network loss landscapes and linear mode connectivity (e.g., Garipov et al., Draxler et al., Entezari et al.).",
+        "The diagnostic study in Section 6, which isolates the performance gap of data-free weight matching to the continuous global rotation of the residual stream, provides concrete and inspiring insights for future research.",
+        "The expansion of alignment to multi-model ('universe matching') and width-heterogeneous architectures adds a strong, high-significance systems and structural element that fits the interdisciplinary nature of NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer C points out that the paper lacks empirical scaling analysis for 'universe matching' when the number of models (M) scales to double digits, containing experiments mainly for M=3.",
+        "There is a persistent performance barrier (0.42) on complex language modeling datasets like BookCorpus, raising questions about whether this constitutes a fundamental topological barrier that the proposed local alignment cannot cross.",
+        "At scale, calculating the SVD for the orthogonal matrix projection step could become a computational bottleneck when residual dimensions grow to typical large-LLM sizes (such as 4096 or 8192), which is not fully addressed."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR is the premier venue for deep learning representations, and this paper specifically studies how to align representations of attention heads and feed-forward layers in Transformers.",
+        "The paper's focus on practical architectural tricks—such as absorbing LayerNorm scales and offsets into neighboring linear layers and exploiting the invariance of OV/QK circuits—highly appeals to ICLR's representational and architectural audience.",
+        "The exploration of continuous relaxations of permutations (doubly stochastic matrices using differentiable Sinkhorn normalization in Appendix D) is a classic representation learning topic that fits ICLR perfectly."
+      ],
+      "why_it_does_not_fit": [
+        "For a purely representation-focused conference, the 'learned matching' loop introduces massive computing and memory overhead, limiting its practical viability for aligning multi-billion parameter models.",
+        "As noted in Appendix D, using continuous soft-permutations distorts the clean functional representation at the endpoints, creating a trade-off that limits their utility if the goal is to fully preserve individual capabilities."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper pioneers the application of the knowledge distillation paradigm to the challenging Fully Unsupervised Anomaly Detection (FUAD) setting, which is a clearly novel and forward-thinking direction.",
+        "The proposed Cross-Domain Distillation (CDD) framework is creative and addresses a core challenge (over-generalization to anomalies) in a non-obvious way via domain division, pseudo-normal feature generation, and cross-domain aggregation.",
+        "The method demonstrates strong empirical performance, significantly outperforming the baseline and achieving state-of-the-art or competitive results on standard datasets under noisy FUAD settings, validating the potential impact of the idea."
+      ],
+      "weaknesses": [
+        "The theoretical grounding, while based on plausible assumptions about anomaly sparsity and diversity, lacks formal proof and could be more rigorous. The reliance on the 'No Free Lunch' theorem feels somewhat hand-wavy.",
+        "Some experimental details are light: error bars/statistical significance are not reported, and the choice of hyperparameters (like the number of domains K and the scheduling strategy) is motivated empirically but not given a strong theoretical justification."
+      ],
+      "summary_comment": "This paper introduces a novel and significant idea: applying and adapting knowledge distillation to the practical and under-explored FUAD problem. The proposed CDD framework is innovative, leveraging domain-specific training and cross-domain aggregation in a clever way to 'fence off' anomaly interference. The core concept is strong and could inspire future work. While the methodology could be more formally grounded and the evaluation could include more statistical rigor, these are minor concerns relative to the paper's novelty and demonstrated potential. The results convincingly show substantial improvement over the baseline and competitive performance against existing methods. The work is timely, pushes the field forward, and aligns well with the real-world need for robust anomaly detection with noisy data. Therefore, I recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The method is built on a clear and well-motivated theoretical foundation, with sound assumptions about anomaly sparsity and diversity (Assumptions 1 & 2) that are used to justify the cross-domain design.",
+        "Comprehensive experimental evaluation on standard benchmarks (MVTec AD, VisA) under both 'No Overlap' and 'Overlap' settings, demonstrating robust performance improvements over strong baselines.",
+        "Thorough ablation studies validate the contribution of each proposed component (DST, CDKA) and explore critical hyperparameters (e.g., number of domains K, feature selection strategy), strengthening the methodological claims."
+      ],
+      "weaknesses": [
+        "The core idea of reducing interference by partitioning data into cleaner subsets is not entirely new, though its specific instantiation via cross-domain distillation for FUAD is novel. Some aspects of the domain construction rely on confidence scores from a previous model, creating a dependency that could be vulnerable to early learning errors.",
+        "The paper lacks statistical significance reporting (e.g., error bars, multiple runs) for the experimental results. While the overall performance trends are convincing, quantitative rigor for variance would strengthen the evaluation."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and well-evaluated approach to Fully Unsupervised Anomaly Detection (FUAD). The proposed Cross-Domain Distillation (CDD) framework is logically derived from clear assumptions about anomaly properties. The experimental work is extensive, using standard datasets and rigorous comparisons, which convincingly demonstrates the method's effectiveness and robustness. The ablation studies are particularly strong, linking design choices to performance. While the overarching concept of handling noise via subsetting has precedents, the specific application within a distillation framework for FUAD is novel and significant. The weaknesses (moderate novelty and lack of statistical error reporting) are outweighed by the strength of the methodological rigor and empirical validation. The paper is clearly written. I recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper addresses a highly practical and challenging problem: Fully Unsupervised Anomaly Detection (FUAD) where training sets contain unlabeled anomalous samples, which is more realistic than perfectly clean UAD.",
+        "The proposed Cross-Domain Distillation (CDD) framework is well-motivated and clearly explained, with a focus on reducing the impact of anomalies during training via domain-specific training and cross-domain knowledge aggregation.",
+        "The experimental evaluation is comprehensive and convincing, showing consistent performance improvements over strong baselines on standard datasets under both 'No Overlap' and more challenging 'Overlap' settings.",
+        "The paper is exceptionally clear, with excellent visual figures (overview, method details, histograms, anomaly maps) that help explain the methodology and results.",
+        "The work includes thorough ablation studies to validate the contribution of each component and provides insightful analysis about dynamic domain numbers and pseudo-normal feature selection strategies."
+      ],
+      "weaknesses": [
+        "While the method shows improvements, the core idea (dividing data into domains to reduce per-domain anomaly ratio and using cross-domain pseudo-labels) is incrementally built upon the Reverse Distillation paradigm rather than being a radical departure. The novelty, while solid, is more in the careful adaptation and combination of ideas for a specific setting.",
+        "The empirical evaluation lacks statistical significance analysis (e.g., error bars over multiple runs) and does not include a runtime or computational efficiency comparison with memory-based FUAD methods, even though these are mentioned as advantages of the KD paradigm. A more detailed practicality assessment would strengthen the case."
+      ],
+      "summary_comment": "This paper presents a well-executed and practically valuable contribution. It tackles the important and realistic FUAD problem with a novel distillation framework that effectively mitigates anomaly interference during training. The method is clearly motivated, soundly designed, and thoroughly evaluated. The paper is exceptionally well-written and provides strong evidence of effectiveness. While the core innovation is an incremental but clever adaptation of the KD paradigm to a noisier setting, the practical significance, clarity, and convincing experimental results make it a solid candidate for acceptance. The work provides a useful tool for practitioners dealing with imperfectly curated industrial datasets."
+    }
+  ],
+  "conference": {
+    "raw": "{\n    \"ICML\": {\n        \"fit_score\": 7,\n        \"why_it_fits\": [\n            \"Topic aligns well with ICML's machine learning systems and applications focus, particularly in industrial image anomaly detection\",\n            \"Strong empirical evaluation on standard benchmarks (MVTec AD, VisA) with comprehensive ablation studies matches ICML's emphasis on rigorous experimentation\",\n            \"Method contributes to knowledge distillation literature, which falls under ICML's scope of general machine learning and deep learning topics\"\n        ],\n        \"why_it_does_not_fit\": [\n            \"The application focus on industrial image anomaly detection may be too specific compared to ICML's preference for more general ML contributions\",\n            \"Theoretical foundations (Assumptions 1-2) are somewhat hand-wavy according to Reviewer 1, which may not meet ICML's standards for theoretical rigor\",\n            \"Lack of statistical significance reporting (mentioned by Reviewers 2 and 3) could be a concern for ICML's rigorous evaluation standards\"\n        ]\n    },\n    \"NeurIPS\": {\n        \"fit_score\": 8,\n        \"why_it_fits\": [\n            \"Excellent fit for NeurIPS' interdisciplinary focus on practical AI applications, particularly in computer vision and industrial applications\",\n            \"Addresses a practical real-world problem (noisy training data) that aligns with NeurIPS' emphasis on applications-driven research\",\n            \"Clear writing and excellent visualizations (noted by Reviewer 3) match NeurIPS' standards for presentation quality\",\n            \"The cross-domain knowledge transfer approach connects to NeurIPS' interest in generalization and transfer learning\"\n        ],\n        \"why_it_does_not_fit\": [\n            \"The incremental nature of the innovation (noted by Reviewer 3) might not stand out as strongly in NeurIPS' highly competitive environment\",\n            \"While methodologically sound, the theoretical contributions may not be groundbreaking enough for NeurIPS' highest standards\",\n            \"Application domain (industrial anomaly detection) might be considered too narrow compared to broader AI topics typically featured at NeurIPS\"\n        ]\n    },\n    \"ICLR\": {\n        \"fit_score\": 6,\n        \"why_it_fits\": [\n            \"Knowledge distillation approach connects to ICLR's focus on representation learning and deep learning architectures\",\n            \"Use of encoder-decoder structures and feature learning aligns with ICLR's technical interests\",\n            \"The reverse distillation paradigm builds on deep learning methodologies that are core to ICLR\"\n        ],\n        \"why_it_does_not_fit\": [\n            \"The industrial application focus is quite distant from ICLR's primary emphasis on fundamental deep learning research\",\n            \"Limited theoretical novelty (as noted by Reviewers 1 and 3) may not meet ICLR's high standards for conceptual contributions\",\n            \"The paper's empirical approach without strong theoretical foundations may be less favored at ICLR compared to more theoretically grounded work\",\n            \"ICLR typically prefers more fundamental contributions to deep learning theory or architecture rather than applied systems\"\n    }\n}",
+    "parse_error": true
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

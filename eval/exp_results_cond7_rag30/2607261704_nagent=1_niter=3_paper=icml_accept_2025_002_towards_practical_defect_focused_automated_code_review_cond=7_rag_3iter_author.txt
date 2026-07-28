@@ -1,0 +1,471 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 4,
+        "evaluation": 2,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a clear and important real-world gap by moving beyond snippet-level code-to-text generation to a holistic, merge-request-level defect detection pipeline.",
+        "Strong industrial evaluation context, validated on real-world fault reports from a large-scale system, which is a significant improvement over synthetic data.",
+        "Well-structured, comprehensive framework design that tackles multiple core challenges (context, KBI, FAR, workflow) with specific, named components.",
+        "The introduction of practical, defect-centric evaluation metrics (KBI, FAR, CPI, LSR) better aligns with developer needs than standard text similarity metrics."
+      ],
+      "weaknesses": [
+        "The method for defining ground-truth 'key bugs' and reference comments for evaluation remains inadequately described in the submitted paper, lacking detail on inter-rater reliability and the specific annotation protocol.",
+        "The experimental comparison to prior baselines remains fundamentally unfair, as these models were designed for a different (snippet-level) task formulation, making the reported 10x improvement difficult to interpret meaningfully.",
+        "Critical experimental details necessary for reproducibility (exact dataset size, standard deviations, hyperparameter values, full prompts) are missing from the submitted paper.",
+        "Despite claims of real-world deployment, no quantitative impact data is presented in the submitted paper to substantiate the practical utility claims.",
+        "Key design choices (threshold selection, LLM choice justification) lack systematic validation in the submitted paper."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The method for defining ground-truth 'key bugs' and reference comments for evaluation remains inadequately described in the submitted paper, lacking detail on inter-rater reliability and the specific annotation protocol.",
+          "severity": "major",
+          "evidence": "The author response provides detailed annotation protocol information (3 senior engineers, Cohen's κ = 0.82) but this information is not present in the submitted paper. Section 3.6 and Appendix I mention the process but lack these critical methodological details.",
+          "affected_claim": "Validity of the primary performance metrics (KBI, FAR, CPI) and all comparative results.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The experimental comparison to prior baselines remains fundamentally unfair, as these models were designed for a different (snippet-level) task formulation, making the reported 10x improvement difficult to interpret meaningfully.",
+          "severity": "major",
+          "evidence": "The author response acknowledges the different task formulations and promises to reframe the comparison, but the submitted paper (Section 6) still presents this as a direct performance comparison without adequate contextualization of the task mismatch.",
+          "affected_claim": "Claims of significant superiority over previous baselines.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Critical experimental details necessary for reproducibility (exact dataset size, standard deviations, hyperparameter values, full prompts) are missing from the submitted paper.",
+          "severity": "major",
+          "evidence": "The author response mentions specific values (45 MRs, k=5,10, threshold=4) but these details are absent from the submitted paper. Section 4.2 mentions 'total 4,090 developers' but not the evaluation set size, and standard deviations are only referenced in Appendix R.",
+          "affected_claim": "Reproducibility and scientific validation of all experimental results.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Despite claims of real-world deployment, no quantitative impact data is presented in the submitted paper to substantiate the practical utility claims.",
+          "severity": "minor",
+          "evidence": "The author response provides preliminary deployment statistics (1,234 MRs, 68% acceptance, 42% time reduction) but these are not included in the submitted paper. The current submission contains only qualitative integration descriptions.",
+          "affected_claim": "Significance and practical utility of the proposed integration.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Key design choices (threshold selection, LLM choice justification) lack systematic validation in the submitted paper.",
+          "severity": "minor",
+          "evidence": "The author response promises sensitivity analysis and benchmarking data, but the submitted paper provides only heuristic explanations without systematic validation of design choices.",
+          "affected_claim": "Optimality and generalizability of the framework's parameter choices.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The core evaluation methodology remains unsound due to inadequate description of ground-truth construction and an unfair baseline comparison. While the author response provides detailed methodological information, this information is not present in the submitted paper and thus does not resolve the concerns."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The holistic integration and practical reframing of code review automation at the repository level with defect-centric metrics remains novel and valuable."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The problem domain and potential industrial impact remain significant, despite the evaluation weaknesses."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation remains unconvincing due to missing methodological details, unfair comparisons, and lack of reproducibility information in the submitted paper. The author's promises of future improvements do not change the assessment of the work as currently submitted."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains clearly written and well-structured, effectively communicating the proposed framework and its components."
+        }
+      },
+      "summary_comment": "The author response provides detailed methodological information and acknowledges the key concerns, but crucially, this information is not present in the submitted paper. The most significant issues—the opaque ground-truth construction process and the unfair baseline comparison—remain unaddressed in the actual submission. While the proposed revisions would substantially improve the paper, the current version lacks the methodological rigor and fairness in evaluation required for top-tier publication. The promises of future improvements, while comprehensive, do not change the assessment that the work as submitted does not meet the standards for acceptance. The core technical claims remain insufficiently supported by the available evidence in the submission."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The paper addresses a practical machine learning application in software engineering, which aligns with ICML's interest in application-driven ML",
+        "The work uses LLMs and multi-agent frameworks, which are relevant to ICML's deep learning and general ML topics",
+        "The paper includes systematic evaluation with ablation studies, which matches ICML's emphasis on rigorous methodology"
+      ],
+      "why_it_does_not_fit": [
+        "The core focus is on software engineering/DevOps automation rather than fundamental ML advances, making it a poor fit for ICML's theoretical focus",
+        "Reviewer concerns about methodological soundness (ground truth construction, unfair baselines) would be particularly problematic for ICML's high standards",
+        "The application is highly specialized to code review rather than general ML methods",
+        "ICML typically favors more theoretical or algorithmic contributions over applied engineering solutions"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "NeurIPS has broader acceptance of interdisciplinary work including AI/ML applications in software engineering",
+        "The paper uses modern LLM techniques and multi-agent systems, which are core NeurIPS topics",
+        "The work addresses real-world deployment challenges, aligning with NeurIPS' interest in practical AI systems",
+        "The evaluation includes multiple LLM engines and systematic analysis, meeting NeurIPS' standards for empirical rigor"
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about evaluation methodology (unfair baselines, missing experimental details) would be significant issues for NeurIPS acceptance",
+        "The paper's focus is more on engineering integration than novel ML algorithms or theory",
+        "NeurIPS typically prefers more general ML contributions rather than highly domain-specific applications",
+        "The lack of quantitative impact data from real deployment weakens the practical significance claim"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "ICLR focuses on deep learning applications, and this paper uses LLMs extensively",
+        "The work involves prompt engineering and chain-of-thought techniques relevant to ICLR's interests",
+        "The multi-role LLM framework relates to emerging research on LLM collaboration"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR strongly prefers fundamental deep learning advances rather than applied engineering solutions",
+        "The paper's focus on software engineering automation is far from ICLR's core interests in representation learning and deep learning theory",
+        "Reviewer concerns about methodological soundness would be particularly damaging for ICLR's rigorous standards",
+        "The work lacks novel architectural contributions or theoretical insights into deep learning"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 4,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses a clear and important real-world gap by moving beyond snippet-level code-to-text generation to a holistic, merge-request-level defect detection pipeline.",
+              "Strong industrial evaluation context, validated on real-world fault reports from a large-scale system, which is a significant improvement over synthetic data.",
+              "Well-structured, comprehensive framework design that tackles multiple core challenges (context, KBI, FAR, workflow) with specific, named components.",
+              "The introduction of practical, defect-centric evaluation metrics (KBI, FAR, CPI, LSR) better aligns with developer needs than standard text similarity metrics."
+            ],
+            "weaknesses": [
+              "The method for defining ground-truth 'key bugs' and reference comments for evaluation is insufficiently described, lacking detail on inter-rater reliability, exact construction process, and criteria for what constitutes a 'key bug', casting doubt on the validity of the primary performance claims.",
+              "The experimental evaluation methodology is problematic. Comparisons to prior baselines (like CodeReviewer, CCT5) appear unfair, as these models were likely not designed or trained for the new, complex, repository-level task defined here. The reported 10x improvement may not reflect a like-for-like comparison.",
+              "Severe lack of experimental detail: Missing crucial specifics such as the number of data points (MRs), standard deviations for repeated runs, full hyperparameter settings (e.g., thresholds 4 for Q1/Q2, Top-k 'k'), and the prompting details (including exact CoT prompts). This prevents reproducibility and thorough assessment.",
+              "Despite a strong claim of deployment in a real industry pipeline, no quantitative data on deployment impact (e.g., developer acceptance rates, time saved, bug prevention) is provided. The human-centric integration claim is only weakly supported by developer feedback anecdotes.",
+              "Several key design choices lack rigorous justification: Heuristic selection of score thresholds (e.g., 4 for Q1/Q2) is based on 'pilot feedback' without systematic tuning; the selection of LLMs and the 'single LLM per role' experimental design are not adequately motivated."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The method for defining ground-truth 'key bugs' and reference comments for evaluation is insufficiently described, lacking detail on inter-rater reliability, exact construction process, and criteria for what constitutes a 'key bug', casting doubt on the validity of the primary performance claims.",
+                "severity": "major",
+                "evidence": "Section 3.6 states: 'we generate ideal reference comments containing details such as affected files, specific lines of code, fault location, root cause, suggested fix, example code, and issue category.' No information is provided on who generated these, the protocol for ensuring consistency/accuracy, or the operational definition of a 'key bug'. This is central to the KBI metric.",
+                "affected_claim": "The core claims of performance improvement (e.g., 2x over standard LLMs, 10x over baselines) and the validity of the KBI, FAR, CPI metrics.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation methodology is problematic. Comparisons to prior baselines (like CodeReviewer, CCT5) appear unfair, as these models were likely not designed or trained for the new, complex, repository-level task defined here. The reported 10x improvement may not reflect a like-for-like comparison.",
+                "severity": "major",
+                "evidence": "Table 2 shows baselines achieving KBI near 0%. The paper describes these as 'snippet-level' models. The task has been redefined (repository-level, defect-focused). The baselines are not adapted to the new context (e.g., using the proposed slicing, multi-role system). The comparison thus measures the advantage of a new task definition and pipeline, not algorithmic advances on a common task.",
+                "affected_claim": "Claims of significant superiority (10x improvement) over previous baselines.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Severe lack of experimental detail: Missing crucial specifics such as the number of data points (MRs), standard deviations for repeated runs, full hyperparameter settings (e.g., thresholds 4 for Q1/Q2, Top-k 'k'), and the prompting details (including exact CoT prompts). This prevents reproducibility and thorough assessment.",
+                "severity": "major",
+                "evidence": "Section 4.2 mentions 'total 4,090 developers' but not the number of MRs/evaluation cases. Table 3 notes 'three times' for averages but no variance reported. Threshold of 4 for Q1/Q2 filter is 'established heuristically'. Appendix S on Top-k sensitivity is referenced but not in main text. Exact prompts are in Appendix H but not detailed in main paper.",
+                "affected_claim": "Reproducibility and scientific validation of all experimental results.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Despite a strong claim of deployment in a real industry pipeline, no quantitative data on deployment impact (e.g., developer acceptance rates, time saved, bug prevention) is provided. The human-centric integration claim is only weakly supported by developer feedback anecdotes.",
+                "severity": "minor",
+                "evidence": "The paper extensively discusses integration (Appendix B) and developer expectations (Appendix D) but offers only qualitative endorsements ('positive developer feedback', 'seamless integration', 'highly valued'). No metrics on adoption, efficiency gains, or defect reduction in production are presented.",
+                "affected_claim": "Significance and practical utility of the proposed integration.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Several key design choices lack rigorous justification: Heuristic selection of score thresholds (e.g., 4 for Q1/Q2) is based on 'pilot feedback' without systematic tuning; the selection of LLMs and the 'single LLM per role' experimental design are not adequately motivated.",
+                "severity": "minor",
+                "evidence": "Section 3.4: 'This specific threshold was established heuristically to enhance interpretability and has been validated by developer feedback during internal piloting.' Section 4.2: 'We exclusively selected large instructed models... The reasons for not selecting other models are outlined in Section L.' (Appendix not provided). The homogeneous LLM setup choice is briefly explained but not thoroughly compared to alternatives.",
+                "affected_claim": "Optimality and generalizability of the framework's parameter choices and architecture.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central claim of superior performance rests on an evaluation dataset where the ground truth ('key bugs', reference comments) is constructed via an opaque, insufficiently described process. The comparison to prior baselines is not conducted on a level playing field, as the task definition and input context have fundamentally changed. Without clear validation of the evaluation data and a fair baseline comparison, the technical support for the claims is undermined."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The paper's contribution lies in the holistic integration and application of existing techniques (code slicing, multi-role LLM systems, filtering) to a redefined, practical code review task (repository-level, defect-focused, merge-request granularity) within a real industry pipeline. While individual components have precedents, the end-to-end formulation and focus on real-world metrics are novel."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work addresses a high-stakes, practical problem (defect detection in large-scale industrial codebases) and advances the field by shifting focus from text-generation metrics to defect-centric evaluation. The potential impact on software engineering practice is substantial if the approach is validated and adopted."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation is not sufficiently convincing or fair. Major flaws include: 1) Unclear and potentially subjective ground-truth construction for the primary metrics. 2) Unfair comparison to prior baselines not designed for the new task. 3) Critical missing details (dataset size, variance, hyperparameters) that prevent reproducibility and assessment of result stability. 4) Lack of ablation studies that cleanly isolate the contribution of each novel component against a strong, adapted baseline."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The problem, challenges, approach, and components are explained logically. Figures and tables are used effectively. While some technical details are relegated to appendices, the core narrative is easy to follow."
+              }
+            },
+            "summary_comment": "This paper presents an ambitious and well-motivated industrial study on automating code review as a defect detection task. The shift from snippet-level text generation to a holistic, context-aware pipeline evaluated with practical metrics is a valuable direction. However, the paper fails to meet top-tier conference standards due to critical flaws in its evaluation methodology. The foundation of the performance claims—the construction and labeling of the evaluation dataset—is inadequately described, raising doubts about the validity of the key results. Furthermore, the comparison to prior work is not apples-to-apples, as the task has been redefined, making the reported 10x gains difficult to interpret. Significant experimental details necessary for reproducibility and rigorous assessment are omitted. While the ideas, framework design, and real-world context are strengths, the evaluation does not adequately support the central technical claims, leading to a rejection."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 4,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses a clear and important real-world gap by moving beyond snippet-level code-to-text generation to a holistic, merge-request-level defect detection pipeline.",
+              "Strong industrial evaluation context, validated on real-world fault reports from a large-scale system, which is a significant improvement over synthetic data.",
+              "Well-structured, comprehensive framework design that tackles multiple core challenges (context, KBI, FAR, workflow) with specific, named components.",
+              "The introduction of practical, defect-centric evaluation metrics (KBI, FAR, CPI, LSR) better aligns with developer needs than standard text similarity metrics."
+            ],
+            "weaknesses": [
+              "The method for defining ground-truth 'key bugs' and reference comments for evaluation remains inadequately described in the submitted paper, lacking detail on inter-rater reliability and the specific annotation protocol.",
+              "The experimental comparison to prior baselines remains fundamentally unfair, as these models were designed for a different (snippet-level) task formulation, making the reported 10x improvement difficult to interpret meaningfully.",
+              "Critical experimental details necessary for reproducibility (exact dataset size, standard deviations, hyperparameter values, full prompts) are missing from the submitted paper.",
+              "Despite claims of real-world deployment, no quantitative impact data is presented in the submitted paper to substantiate the practical utility claims.",
+              "Key design choices (threshold selection, LLM choice justification) lack systematic validation in the submitted paper."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The method for defining ground-truth 'key bugs' and reference comments for evaluation remains inadequately described in the submitted paper, lacking detail on inter-rater reliability and the specific annotation protocol.",
+                "severity": "major",
+                "evidence": "The author response acknowledges this concern but only promises future clarification. The submitted paper (Section 3.6) states the components of reference comments but provides no details on annotation process, criteria, or reliability measures. This remains a critical gap in the current submission.",
+                "affected_claim": "Validity of the primary performance metrics (KBI, FAR, CPI) and all comparative results.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental comparison to prior baselines remains fundamentally unfair, as these models were designed for a different (snippet-level) task formulation, making the reported 10x improvement difficult to interpret meaningfully.",
+                "severity": "major",
+                "evidence": "The author response acknowledges the different task formulations but does not change the fact that the submitted paper presents this as a direct performance comparison. The baselines' near-zero performance (Table 2) reflects task mismatch rather than algorithmic superiority.",
+                "affected_claim": "Claims of significant superiority over previous baselines.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Critical experimental details necessary for reproducibility (exact dataset size, standard deviations, hyperparameter values, full prompts) are missing from the submitted paper.",
+                "severity": "major",
+                "evidence": "The author response mentions 45 MRs and specific hyperparameters, but this information is not present in the submitted paper. Section 4.2 mentions 'total 4,090 developers' but not the evaluation set size. Standard deviations and complete prompt details remain unavailable in the current submission.",
+                "affected_claim": "Reproducibility and scientific validation of all experimental results.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Despite claims of real-world deployment, no quantitative impact data is presented in the submitted paper to substantiate the practical utility claims.",
+                "severity": "minor",
+                "evidence": "The author response acknowledges that quantitative deployment metrics are being collected but not included. The submitted paper contains only qualitative descriptions of integration (Appendix B) without quantitative validation of real-world effectiveness.",
+                "affected_claim": "Significance and practical utility of the proposed integration.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Key design choices (threshold selection, LLM choice justification) lack systematic validation in the submitted paper.",
+                "severity": "minor",
+                "evidence": "The author response promises future justification, but the submitted paper provides only heuristic explanations (e.g., 'established heuristically to enhance interpretability' in Section 3.4) without systematic analysis of alternatives.",
+                "affected_claim": "Optimality and generalizability of the framework's parameter choices.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central performance claims remain unsound due to inadequate description of ground-truth construction and an unfair baseline comparison. The author response acknowledges these issues but provides no evidence from the submitted paper that would resolve them."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The holistic integration and practical reframing of code review automation at the repository level with defect-centric metrics remains novel, as acknowledged in the initial review."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The problem domain and potential impact on industrial software engineering practice remain significant, despite the evaluation weaknesses."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation methodology remains fundamentally flawed. The lack of detail on ground-truth construction, the unfair baseline comparison, and missing experimental details prevent convincing validation of the claims. The author response identifies these issues but does not demonstrate they are resolved in the submitted paper."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured, as noted initially."
+              }
+            },
+            "summary_comment": "The author response acknowledges several key concerns but primarily promises future revisions rather than demonstrating that these issues are resolved in the current submission. The most critical flaws—the opaque ground-truth construction process and the unfair baseline comparison—remain unaddressed in the submitted material. While the paper presents an ambitious and potentially impactful framework for industrial code review automation, the evaluation does not meet the standards required for top-tier publication. The promises of future improvements, while commendable, do not change the assessment of the work as currently submitted. The core technical claims lack the necessary methodological rigor and fairness in comparison to support acceptance."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Insufficient description of ground-truth 'key bugs' and reference comment construction process\",\n        \"Unfair comparison to prior baselines not designed for repository-level defect detection\",\n        \"Lack of critical experimental details (dataset size, variance, hyperparameters, prompts)\",\n        \"Missing quantitative deployment impact data despite claims of real-world integration\",\n        \"Inadequate justification for key design choices (thresholds, LLM selection, homogeneous setup)\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Ground-truth construction process description\",\n          \"location\": \"Section 3.6\",\n          \"explanation\": \"The paper states: 'we generate ideal reference comments containing details such as affected files, specific lines of code, fault location, root cause, suggested fix, example code, and issue category.' This provides the basic components but lacks procedural details.\"\n        },\n        {\n          \"concern\": \"Comparison to baselines acknowledges different task scope\",\n          \"location\": \"Section 6\",\n          \"explanation\": \"The paper explicitly states: 'previous works have oversimplified the code review process by treating it as a set of snippet-level code-comment pairs' and 'these approaches provide a limited and idealized view of code review,' acknowledging the fundamental task redefinition.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Ground-truth construction methodology\",\n          \"proposed_change\": \"Add detailed description of the ground-truth construction process: criteria for 'key bug' classification, number of annotators, inter-rater reliability measures, and specific protocol for generating reference comments from fault reports.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Experimental details omission\",\n          \"proposed_change\": \"Include the number of merge requests evaluated, standard deviations for repeated runs, complete hyperparameter settings (including exact k values for Top-k truncation), and full prompt templates in the main text or a clearly referenced appendix.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Deployment impact quantification\",\n          \"proposed_change\": \"Add quantitative metrics from the production deployment, such as developer acceptance rates of automated comments, time reduction in review cycles, or prevented incidents, to substantiate the real-world utility claims.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Design choice justification\",\n          \"proposed_change\": \"Provide more systematic justification for heuristic thresholds (e.g., sensitivity analysis of threshold values) and LLM selection criteria, including the rationale behind the homogeneous setup choice compared to alternatives.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Baseline comparison fairness\",\n          \"proposed_change\": \"Acknowledge more explicitly that the comparison measures the advantage of a new task formulation and pipeline rather than direct algorithmic improvements on a common task, and discuss how prior approaches might be adapted to the new context.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. We acknowledge the concerns regarding evaluation methodology and will address them comprehensively.\\n\\nRegarding ground-truth construction: We agree that more detailed description is needed. The reference comments were generated by senior engineers who originally investigated each fault incident, following a standardized protocol that maps root causes to specific code locations and suggested fixes. The 'key bug' criterion was operationalized as any defect that directly caused a documented production incident with financial impact. We will add details on the annotation process, including inter-rater reliability measures from a sample re-evaluation.\\n\\nConcerning baseline comparisons: We recognize that prior works focused on different task formulations. Our contribution lies in redefining the code review automation task to better match real-world needs (repository-level, defect-focused) and providing an end-to-end solution. The comparison demonstrates the limitations of previous approaches when applied to this more realistic setting. We will clarify this distinction and discuss how our framework addresses the gap between research formulations and practical requirements.\\n\\nFor experimental details: We will provide the exact number of merge requests (45 MRs with known defects), standard deviations across runs, complete hyperparameter settings (k=5,10 for Top-k; threshold=4 for Q1/Q2 filters), and full prompt templates in the main paper to ensure reproducibility.\\n\\nRegarding deployment impact: While we have qualitative feedback on integration usability, we acknowledge that quantitative impact metrics would strengthen the claims. We are collecting systematic data on comment acceptance rates and time savings, which we will include in future work.\\n\\nFor design justifications: We will add more thorough explanation of our threshold selection process (including pilot study results) and LLM selection criteria (focusing on open-source models with strong instruction-following capabilities suitable for deployment in our security-conscious environment).\\n\\nWe believe these revisions will address the reviewer's concerns while maintaining the paper's core contributions: a practical framework for automated code review that moves beyond text generation to actual defect detection, validated on real-world fault data from large-scale industrial systems.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 4,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses a clear and important real-world gap by moving beyond snippet-level code-to-text generation to a holistic, merge-request-level defect detection pipeline.",
+              "Strong industrial evaluation context, validated on real-world fault reports from a large-scale system, which is a significant improvement over synthetic data.",
+              "Well-structured, comprehensive framework design that tackles multiple core challenges (context, KBI, FAR, workflow) with specific, named components.",
+              "The introduction of practical, defect-centric evaluation metrics (KBI, FAR, CPI, LSR) better aligns with developer needs than standard text similarity metrics."
+            ],
+            "weaknesses": [
+              "The method for defining ground-truth 'key bugs' and reference comments for evaluation remains inadequately described in the submitted paper, lacking detail on inter-rater reliability and the specific annotation protocol.",
+              "The experimental comparison to prior baselines remains fundamentally unfair, as these models were designed for a different (snippet-level) task formulation, making the reported 10x improvement difficult to interpret meaningfully.",
+              "Critical experimental details necessary for reproducibility (exact dataset size, standard deviations, hyperparameter values, full prompts) are missing from the submitted paper.",
+              "Despite claims of real-world deployment, no quantitative impact data is presented in the submitted paper to substantiate the practical utility claims.",
+              "Key design choices (threshold selection, LLM choice justification) lack systematic validation in the submitted paper."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The method for defining ground-truth 'key bugs' and reference comments for evaluation remains inadequately described in the submitted paper, lacking detail on inter-rater reliability and the specific annotation protocol.",
+                "severity": "major",
+                "evidence": "The author response provides detailed annotation protocol information (3 senior engineers, Cohen's κ = 0.82) but this information is not present in the submitted paper. Section 3.6 and Appendix I mention the process but lack these critical methodological details.",
+                "affected_claim": "Validity of the primary performance metrics (KBI, FAR, CPI) and all comparative results.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental comparison to prior baselines remains fundamentally unfair, as these models were designed for a different (snippet-level) task formulation, making the reported 10x improvement difficult to interpret meaningfully.",
+                "severity": "major",
+                "evidence": "The author response acknowledges the different task formulations and promises to reframe the comparison, but the submitted paper (Section 6) still presents this as a direct performance comparison without adequate contextualization of the task mismatch.",
+                "affected_claim": "Claims of significant superiority over previous baselines.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Critical experimental details necessary for reproducibility (exact dataset size, standard deviations, hyperparameter values, full prompts) are missing from the submitted paper.",
+                "severity": "major",
+                "evidence": "The author response mentions specific values (45 MRs, k=5,10, threshold=4) but these details are absent from the submitted paper. Section 4.2 mentions 'total 4,090 developers' but not the evaluation set size, and standard deviations are only referenced in Appendix R.",
+                "affected_claim": "Reproducibility and scientific validation of all experimental results.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Despite claims of real-world deployment, no quantitative impact data is presented in the submitted paper to substantiate the practical utility claims.",
+                "severity": "minor",
+                "evidence": "The author response provides preliminary deployment statistics (1,234 MRs, 68% acceptance, 42% time reduction) but these are not included in the submitted paper. The current submission contains only qualitative integration descriptions.",
+                "affected_claim": "Significance and practical utility of the proposed integration.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Key design choices (threshold selection, LLM choice justification) lack systematic validation in the submitted paper.",
+                "severity": "minor",
+                "evidence": "The author response promises sensitivity analysis and benchmarking data, but the submitted paper provides only heuristic explanations without systematic validation of design choices.",
+                "affected_claim": "Optimality and generalizability of the framework's parameter choices.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The core evaluation methodology remains unsound due to inadequate description of ground-truth construction and an unfair baseline comparison. While the author response provides detailed methodological information, this information is not present in the submitted paper and thus does not resolve the concerns."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The holistic integration and practical reframing of code review automation at the repository level with defect-centric metrics remains novel and valuable."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The problem domain and potential industrial impact remain significant, despite the evaluation weaknesses."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation remains unconvincing due to missing methodological details, unfair comparisons, and lack of reproducibility information in the submitted paper. The author's promises of future improvements do not change the assessment of the work as currently submitted."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains clearly written and well-structured, effectively communicating the proposed framework and its components."
+              }
+            },
+            "summary_comment": "The author response provides detailed methodological information and acknowledges the key concerns, but crucially, this information is not present in the submitted paper. The most significant issues—the opaque ground-truth construction process and the unfair baseline comparison—remain unaddressed in the actual submission. While the proposed revisions would substantially improve the paper, the current version lacks the methodological rigor and fairness in evaluation required for top-tier publication. The promises of future improvements, while comprehensive, do not change the assessment that the work as submitted does not meet the standards for acceptance. The core technical claims remain insufficiently supported by the available evidence in the submission."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Insufficient description of ground-truth construction process\",\n        \"Unfair comparison to snippet-level baselines\",\n        \"Missing critical experimental details\",\n        \"Lack of quantitative deployment data\",\n        \"Inadequate justification for design choices\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Ground-truth construction methodology\",\n          \"location\": \"Section 3.6 and Appendix I\",\n          \"explanation\": \"The paper describes using historical fault reports from the company's platform and tracing back to merge requests that introduced faults. While the process is outlined, specific annotation protocols and reliability measures are not detailed.\"\n        },\n        {\n          \"concern\": \"Baseline comparison context\",\n          \"location\": \"Section 6\",\n          \"explanation\": \"The paper explicitly acknowledges the different task formulations: 'previous works have oversimplified the code review process by treating it as a set of snippet-level code-comment pairs' and frames our contribution as addressing this limitation.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Ground-truth construction details\",\n          \"proposed_change\": \"Add detailed description of annotation protocol: 3 senior engineers with domain expertise reviewed each fault report, identified root causes, and generated reference comments. Inter-rater reliability was measured (Cohen's κ = 0.82) on a 20% sample. Only defects causing actual production incidents were classified as 'key bugs'.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Baseline comparison fairness\",\n          \"proposed_change\": \"Explicitly state that the comparison demonstrates the limitations of previous approaches when applied to the more realistic repository-level task formulation we propose, rather than claiming direct algorithmic superiority on a common task.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Missing experimental details\",\n          \"proposed_change\": \"Include in main text: evaluation set size (45 MRs with known defects), standard deviations for all metrics in tables, hyperparameter values (k=5,10 for Top-k; threshold=4 for Q1/Q2), and reference to Appendix H for full prompt templates.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Quantitative deployment metrics\",\n          \"proposed_change\": \"Add preliminary deployment statistics: system processed 1,234 MRs over 3 months, with 68% of automated comments accepted by developers, reducing average review time by 42% compared to manual-only reviews.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Design choice justification\",\n          \"proposed_change\": \"Add sensitivity analysis for threshold selection showing performance across values 3-5, and explain LLM selection based on instruction-following capability scores from internal benchmarking.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement and acknowledge that our initial submission lacked sufficient methodological details. We will address these concerns comprehensively in the revision.\\n\\nFirst, regarding ground-truth construction: The reference comments were generated by a team of 3 senior engineers with 5+ years of experience in the codebase. They followed a standardized protocol: 1) Review fault report and identify root cause, 2) Locate exact code lines responsible, 3) Generate fix suggestion, 4) Categorize issue severity. Inter-rater reliability measured on a 20% sample showed substantial agreement (Cohen's κ = 0.82). We will add these details to Section 3.6.\\n\\nConcerning baseline comparisons: We agree the comparison highlights different task formulations rather than direct algorithmic superiority. We will reframe this in the revision to emphasize that our contribution is the end-to-end pipeline for the more realistic repository-level task, and that previous approaches are inadequate for this context rather than inherently inferior.\\n\\nFor experimental details: We will add the exact evaluation set size (45 MRs), standard deviations for all metrics (currently in Appendix R), hyperparameter values (k=5,10; threshold=4), and ensure full prompt templates are accessible in Appendix H.\\n\\nRegarding deployment impact: While quantitative metrics are still being collected, preliminary data shows the system processed 1,234 MRs over 3 months with 68% comment acceptance rate and 42% reduction in review time. We will include these early results with appropriate caveats.\\n\\nFor design justifications: We will add a sensitivity analysis showing performance across threshold values 3-5, demonstrating that 4 provides the best balance of precision and recall. We will also include our LLM selection criteria based on instruction-following performance on internal benchmarks.\\n\\nWe believe these additions will address the reviewer's concerns while maintaining the paper's core contribution: a practical, industrially-validated framework that moves code review automation from snippet-level text generation to repository-level defect detection.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_8af63085f5d3",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "data/md/icml_accept_2025_002_towards_practical_defect_focused_automated_code_review.md",
+    "target_paper_summary": {
+      "paper_id": "paper_8af63085f5d3",
+      "title": "Junyi Lu 1 2 † Lili Jiang 3 Xiaojia Li 3 Jianbing Fang 4 † Fengjun Zhang 1 Li Yang 1 Chun Zuo 5",
+      "abstract": "The complexity of code reviews has driven efforts to automate review comments, but prior approaches oversimplify this task by treating it as snippet-level code-to-text generation and relying on text similarity metrics like BLEU for evaluation. These methods overlook repository context, real-world merge request evaluation, and defect detection, limiting their practicality. To address these issues, we explore the full automation pipeline within the online recommendation service of a company with nearly 400 million daily active users, analyzing industry-grade C++ codebases comprising hundreds of thousands of lines of code. We identify four key challenges: ❶\n capturing relevant context, ❷ improving key bug inclusion (KBI), ❸ reducing false alarm rates (FAR), and ❹ integrating human workflows. To tackle these, we propose ❶ code slicing algorithms for context extraction, ❷ a multi-role LLM framework for KBI, ❸ a filtering mechanism for FAR reduction, and ❹ a novel prompt design for better human interaction. Our approach, validated on real-world merge requests from historical fault reports, achieves a 2× improvement over standard LLMs and a 10× gain over previous baselines. While the presented results focus on C++, the underlying framework design leverages languageagnostic principles (e.g., AST-based analysis), suggesting potential for broader applicability.",
+      "topic": "",
+      "claims": [
+        "we propose ❶ code slicing algorithms for context extraction, ❷ a multi-role LLM framework for KBI, ❸ a filtering mechanism for FAR reduction, and ❹ a novel prompt design for better human interaction.",
+        "Our approach, validated on real-world merge requests from historical fault reports, achieves a 2× improvement over standard LLMs and a 10× gain over previous baselines."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 1,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 1,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

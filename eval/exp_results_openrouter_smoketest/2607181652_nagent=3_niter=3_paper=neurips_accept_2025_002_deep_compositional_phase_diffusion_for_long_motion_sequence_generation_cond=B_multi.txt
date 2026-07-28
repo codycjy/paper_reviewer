@@ -1,0 +1,113 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Denoising motion within a phase parameter latent space (frequency, amplitude, shifts, offsets) is a refreshing departure from standard raw-pose or generic static VAE diffusion. This captures translational physics far better than standard architectures.",
+        "The parallel bidirectional formulation of TPDMs is mathematically elegant and practically scalable. It solves the boundary discontinuity problem of sequential motion sequence generation without the typical temporal rendering lag.",
+        "The empirical benchmarks provided in the rebuttal are highly convincing. Reaching an 8.6x speedup over autoregressive baselines (1.34s vs 11.55s for 16 clips) makes this method viable for real-time gaming or interactive character control pipelines."
+      ],
+      "weaknesses": [
+        "The phase-space formulation naturally smooths highly abrupt, non-periodic events. While the peak acceleration metrics for the stumble sequence (23.1 m/s² reconstructed vs 24.8 m/s² GT) and the proposed Residual Phase-Detail Connection (RPDC) help, highly chaotic or catastrophic physical animations still represent a logical limit for cyclic-heavy phase encoders.",
+        "The architecture's scalability is achieved at the expense of a linear increase in GPU memory (peaking at 4.1 GB for 16 clips). While this fits inside commodity consumer cards, it could limit nested batches or high-density crowded scene generation."
+      ],
+      "summary_comment": "The authors provided an outstanding rebuttal that directly addresses my core concerns regarding chaotic motion preservation and computational footprint. The foot joint peak acceleration analysis (23.1 m/s² vs 24.8 m/s²) proves that ACT-PAE retains highly dynamic, non-cyclic events, and the proposed RPDC module adds a robust safety net. Additionally, the scaling benchmark demonstrating near O(1) temporal execution scaling with an 8.6x speedup over sequential pipelines showcases the massive practical significance of this work. This is a highly novel, well-validated, and impactful contribution that pushes the boundaries of compositional motion synthesis. I highly recommend acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The ACT-PAE autoencoder is methodologically sound. By abandoning standard sliding-window heuristics and using a Transformer to encode variable-length inputs directly, it preserves phase continuity.",
+        "Designing the boundary and semantic alignment (TPDM/SPDM) directly in the phase latent space is a robust design choice, avoiding the dynamic artifacts common in raw-space motion blending.",
+        "The updated evaluation on the BABEL-TEACH dataset is highly rigorous. Adding 5-seed confidence intervals showing small variance proves the model's improvements over PCMDM and priorMDM are statistically meaningful.",
+        "The parallel batching structure of the pipeline scales exceptionally well. Achieving under 1 second of generation time for 3-segment sequences makes it highly viable for interactive use cases."
+      ],
+      "weaknesses": [
+        "The cubic mixing schedule r = (k/K)^3 remains an empirical heuristic. Although the additional transition boundary velocity analysis (showing drift under 0.003 m/s) and schedule ablations validate its performance, a formal mathematical derivation is still absent.",
+        "Parallel processing of long motion segments inevitably spikes concurrent VRAM usage. The authors' proposed Hybrid Execution Mode with cached adjacent phases mitigates this for edge hardware, but memory scaling remains a physical bottleneck for long parallel schedules."
+      ],
+      "summary_comment": "The authors have directly addressed my concerns regarding statistical validity and computational overhead. The addition of multi-seed standard deviations and the physical analysis of boundary velocity drift settle the questions over the empirical r-schedule. While the schedule is still a heuristic, the physical evidence of its stability and the newly detailed parallel vs. sequential execution modes make the technical and empirical package complete. The methodology is robust and the quantitative validation is now highly convincing. I recommend accepting the paper."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The raw throughput performance is a massive plus here. Generating a 12-second composite clip at 390 FPS using only 52M parameters on a single RTX 4090 means this model is actually light enough to be plugged into modern real-time game engines or interactive tools, which isn't the case for most heavy diffusion models.",
+        "Using localized windowed cross-attention in the TPDM is a highly practical design choice. By limiting attention to immediate neighboring segments, the authors avoid the usual O(K^2) memory explosion, meaning you can chain together hours of motion sequences linearly without hitting a VRAM bottleneck.",
+        "Operating in the phase domain (via ACT-PAE) works incredibly well to stop the typical 'skatey' foot slides and sudden angular joint snaps. These structural issues normally take animators hours of manual cleanup in Autodesk MotionBuilder, so fixing them directly in the generation stage is a huge win."
+      ],
+      "weaknesses": [
+        "Two-stage pipelines like this (where you have to first train the ACT-PAE encoder, freeze it, and then train the SPDM/TPDM models) are notoriously finicky to deploy and tune in real production pipelines. If the phase mapping collapses or shifts slightly, the entire downstream diffusion suffers. The authors should comment on the practical sensitivity of this phase latent representation during training.",
+        "While the zero-shot transfer performance on HumanML3D (1.542 FID) and the custom skeleton support look great on paper, this evaluation is currently completely missing from the main manuscript. For this paper to be truly useful to the community, these zero-shot results, along with detailed setup instructions for importing custom standard skeletons, must be fully integrated into the official text rather than treated as an afterthought."
+      ],
+      "summary_comment": "The authors' response thoroughly answered my practical concerns regarding execution speed, VRAM scaling, and out-of-distribution generalizability. Their O(K) complexity scaling on long chains and 390 FPS rendering performance are highly impressive and hold real industrial value. While two-stage pipelines are always a bit of a pain to maintain and tune in practice, the advantages here (avoiding post-process cleanup of sliding feet) make it well worth the hassle. I recommend accepting this paper, provided the authors follow through on integrating the HumanML3D zero-shot data and skeletal representation details into the final draft."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper introduces a scalable parallelized diffusion training and inference pipeline which aligns with ICML's interest in 'machine learning systems (improved implementation and scalability)'.",
+        "The use of diffusion processes in a unified latent phase space touches upon core probabilistic generative methodologies standard in contemporary ML venues.",
+        "The authors address evaluation rigor through confidence intervals and multi-seed statistical significance testing, which conforms to ICML's standards of empirical validation."
+      ],
+      "why_it_does_not_fit": [
+        "ICML has a strong preference for foundational algorithmic breakthroughs or deep theoretical contributions. As Reviewer B notes, the core cubic mixing schedule is an 'empirical heuristic' without a formal mathematical derivation, which would be heavily penalized at ICML.",
+        "The paper’s focus is highly application-driven, specifically targeting 3D human character animation and motion inbetweening. ICML reviewers frequently push back on specialized computer graphics/vision applications that do not introduce fundamental machine learning theory.",
+        "While it achieves high throughput (390 FPS), the methodology relies on existing architectures (ACTOR, DeepPhase, CLIP) rather than introducing new machine learning optimization or learning theory."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary and applied deep learning papers. This paper sits perfectly at the intersection of 'Deep learning', 'Computer vision/animation', and 'Robotics and embodied systems' (due to its preservation of translational physics and joint dynamics).",
+        "The parallel bidirectional formulation of TPDMs is mathematically elegant and provides an O(K) complexity scaling on long chains, solving practical temporal rendering bottlenecks which NeurIPS reviewers find highly significant.",
+        "The empirical evaluation is highly complete, utilizing the competitive BABEL-TEACH benchmark, providing multi-seed statistical significance, and conducting extensive ablation on peak joint acceleration."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B points out that parallel scheduling of multiple long motion segments spikes concurrent VRAM usage (peaking at 4.1 GB for 16 clips). In highly dense or crowded scene generative environments on edge hardware, this raw scaling bottleneck could invite skepticism regarding general system efficiency.",
+        "The paper incorporates a dual-stage training strategy (freezing ACT-PAE before diffusion training). Reviewers at NeurIPS can be critical of multi-stage pipelines because latent space shifts or collapses can easily degrade downstream generation performance, making training quite finicky."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "ICLR is the premier venue for representation learning. The primary core of this work—using ACT-PAE to transform variable-length raw pose motion into a clean parameter-level and frame-level phase latent space—is an exemplary case of learning structured, physics-aware representations.",
+        "Operating coordinate-free or frequency-domain diffusion to mitigate classic structural bugs (like foot skating or root joint snaps) is exactly typical of ICLR's emphasis on representation-guided generation.",
+        "The work demonstrates outstanding zero-shot transfer performance (1.542 FID on HumanML3D) and handles custom skeletal configurations dynamically, aligning with ICLR's appreciation for robust, out-of-distribution transferability."
+      ],
+      "why_it_does_not_fit": [
+        "The zero-shot HumanML3D evaluation and custom skeletal support details were described by Reviewer C as missing from the main text of the initial draft. A lack of proper integration of these key results into the final manuscript might hurt presentation clarity, which ICLR reviewers weigh heavily.",
+        "Like many deep representation generative pipelines, if the phase mapping from the frozen autoencoder collapses or has high sensitivity to out-of-distribution movements, the downstream diffusion fails, presenting a practical training vulnerability."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Proposes a novel, unified framework (AH-UGC) that successfully addresses two major limitations in graph coarsening: the lack of adaptive, multi-ratio coarsening and the inability to handle heterogeneous graphs while preserving semantics.",
+        "Demonstrates excellent scalability and computational efficiency through its LSH-based design, achieving significantly lower coarsening times than existing methods, even on large-scale graphs where others time out.",
+        "Provides a comprehensive and rigorous evaluation across 23 diverse datasets and numerous GNN models, showing that it preserves structural properties and achieves competitive or superior node classification accuracy compared to state-of-the-art baselines."
+      ],
+      "weaknesses": [
+        "The writing and presentation, particularly in sections with overlapping text and figures (e.g., the Introduction and Background), hinder clarity. The manuscript requires careful proofreading and formatting to improve readability.",
+        "While the experiments are extensive, more detailed analysis and justification for the hyperparameter choices (e.g., number of LSH projections l) and the observed minor performance dips on some spectral metrics would strengthen the case."
+      ],
+      "summary_comment": "This paper introduces a timely and impactful framework that elegantly combines LSH with consistent hashing to enable adaptive coarsening and separately processes node types for heterogeneous graphs. The core ideas are sound and well-motivated. The empirical evaluation is thorough, demonstrating clear advantages in speed, scalability, and preservation of semantic integrity for heterogeneous graphs. The main criticism is the paper's presentation, which needs polishing for clarity; however, the technical contributions are significant and well-supported. Therefore, I recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses graph coarsening, which aligns with ICML's focus on machine learning systems and scalable methods for large-scale graph processing",
+        "The work combines theoretical analysis (Theorem 3.1, Lemma 1) with extensive empirical evaluation across 23 datasets, matching ICML's emphasis on both theoretical and empirical contributions",
+        "The method's focus on scalability and efficiency through LSH and consistent hashing fits ICML's interest in optimization and systems for machine learning"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's primary focus on graph-specific methods rather than general ML algorithms may be slightly less aligned with ICML's broad ML scope",
+        "While the paper includes theoretical analysis, the emphasis is more on practical system design than deep theoretical foundations, which might be better suited for other venues",
+        "The 'Others' topic classification suggests it doesn't fit neatly into ICML's core focus areas"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Graph representation learning and scalable graph processing are core NeurIPS topics, with many papers on GNNs and graph algorithms",
+        "The paper's comprehensive evaluation across diverse graph types (homophilic, heterophilic, heterogeneous) aligns with NeurIPS' interest in broad ML applications",
+        "The integration of hashing techniques for efficient computation matches NeurIPS' focus on innovative algorithmic approaches",
+        "The work addresses practical scalability challenges that are highly relevant to the NeurIPS community"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's presentation issues noted by reviewers (clarity score of 3) might be a concern for NeurIPS' high standards",
+        "While innovative, the core technical approach builds substantially on existing LSH and hashing techniques rather than introducing fundamentally new learning paradigms"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Graph neural networks and their efficient training are central to ICLR's focus on deep learning",
+        "The paper's application of coarsening methods to improve GNN scalability directly addresses ICLR's interest in deep learning systems and efficiency",
+        "The heterogeneous graph processing aligns with ICLR's expanding scope into complex data structures for deep learning"
+      ],
+      "why_it_does_not_fit": [
+        "The paper is not primarily about deep learning architectures or novel neural network designs, which are ICLR's core focus",
+        "The method is model-agnostic rather than specifically designed for deep learning models",
+        "The theoretical analysis is more algorithmic than focused on deep learning theory"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_eee398cfba16",
+    "paper_id": "paper_bc3129d298e6",
+    "target_paper_summary": {
+      "paper_id": "paper_bc3129d298e6",
+      "title": "Ah-Ugc: Adaptive And Heterogeneous-Universal Graph Coarsening",
+      "abstract": "1 **Graph Coarsening (GC)** is a prominent graph reduction technique that com2 presses large graphs to enable efficient learning and inference. However, existing 3 GC methods generate only one coarsened graph per run and must recompute from 4 scratch for each new coarsening ratio, resulting in unnecessary overhead. Moreover, 5 most prior approaches are tailored to *homogeneous* graphs and fail to accommodate 6 the semantic constraints of *heterogeneous* graphs, which comprise multiple node 7 and edge types. To overcome these limitations, we introduce a novel framework 8 that combines Locality-Sensitive Hashing (LSH) with Consistent Hashing to en9 able *adaptive graph coarsening*. Leveraging hashing techniques, our method is 10 inherently fast and scalable. For heterogeneous graphs, we propose a *type-isolated* 11 *coarsening* strategy that ensures semantic consistency by restricting merges to 12 nodes of the same type. Our approach is the first unified framework to support both 13 adaptive and heterogeneous coarsening. Extensive evaluations on 23 real-world 14 datasets—including homophilic, heterophilic, homogeneous, and heterogeneous 15 graphs demonstrate that our method achieves superior scalability while preserving 16 the structural and semantic integrity of the original graph. Our code is available 17 here.\n\n18 1 **Introduction**\n19 Graphs are ubiquitous and have emerged as a fundamental data structure in numerous real-world 20 applications [1–3]. Broadly, graphs can be categorized into two types: (a) *Homogeneous graphs* 21 [4–6], which consist of a single type of nodes and edges. For instance, in a homogeneous citation 22 graph, all nodes represent papers, and all edges represent the \"cite\" relation between them; (b) 23 *Heterogeneous graphs* [7–9], which involve multiple types of nodes and/or edges, enabling the 24 modeling of richer and more realistic interactions. For example, in a recommendation system, a 25 heterogeneous graph may contain nodes of different types, such as users, items, and categories, and 26 edge types such as \"(user, buys, item)\", \"(user, views, item)\", and \"(item, belongs-to, category)\".\n\n27 Although many real-world datasets are inherently heterogeneous, early research in graph machine 28 learning predominantly focused on homogeneous graphs due to their modeling simplicity, availabil29 ity of standardized benchmarks, and theoretical tractability [10, 11]. However, the limitations of 30 homogeneous representations in capturing ",
+      "topic": "",
+      "claims": [
+        "we introduce a novel framework 8 that combines Locality-Sensitive Hashing (LSH) with Consistent Hashing to en9 able *adaptive graph coarsening*.",
+        "we propose a *type-isolated* 11 *coarsening* strategy that ensures semantic consistency by restricting merges to 12 nodes of the same type.",
+        "our method is 10 inherently fast and scalable.",
+        "Our approach is the first unified framework to support both 13 adaptive and heterogeneous coarsening.",
+        "our method achieves superior scalability while preserving 16 the structural and semantic integrity of the original graph."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "graph coarsening heterogeneous adaptive",
+          "rationale": "This query targets papers addressing the core problem of graph coarsening, especially for heterogeneous graphs and adaptive methods, as highlighted in the abstract."
+        },
+        {
+          "group": "same_method",
+          "query": "locality-sensitive hashing consistent hashing graph reduction",
+          "rationale": "This query focuses on papers using similar hashing techniques (LSH and Consistent Hashing) for graph coarsening or reduction, aligning with the method described."
+        },
+        {
+          "group": "same_constraints",
+          "query": "heterogeneous graph coarsening semantic constraints",
+          "rationale": "This query aims to find papers that share the constraint of handling semantic consistency in heterogeneous graphs during coarsening, as emphasized in the target."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "graph coarsening benchmark datasets metrics",
+          "rationale": "This query retrieves papers that define benchmarks, datasets, or metrics for evaluating graph coarsening methods, relevant for comparison."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "adaptive graph coarsening heterogeneous unified framework",
+          "rationale": "This query searches for prior papers that might claim a unified approach for adaptive and heterogeneous graph coarsening, challenging the novelty claim."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "graph coarsening limitations scalability overhead",
+          "rationale": "This query targets papers that discuss limitations, negative results, or counterevidence related to scalability and overhead in graph coarsening methods."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+          "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+          "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+        ]
+      }
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+      "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+      "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+    "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+    "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

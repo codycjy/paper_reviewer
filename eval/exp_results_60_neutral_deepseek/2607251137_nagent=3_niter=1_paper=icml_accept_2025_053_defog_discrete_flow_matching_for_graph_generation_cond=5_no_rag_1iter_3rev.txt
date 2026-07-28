@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel training-sampling decoupling framework (DeFoG) for graph generation, which is a significant departure from existing diffusion-based approaches",
+        "Achieves state-of-the-art performance across multiple datasets with impressive validity rates (e.g., 99.5% on planar graphs, 92.8% on MOSES)",
+        "Demonstrates exceptional sampling efficiency, outperforming diffusion models with only 5-10% of their sampling steps"
+      ],
+      "weaknesses": [
+        "The theoretical grounding, while present, could be more thoroughly developed to fully characterize the approximation errors introduced by the neural network",
+        "The hyperparameter optimization pipeline is somewhat ad-hoc and may not fully explore the expanded design space enabled by the decoupling"
+      ],
+      "summary_comment": "DeFoG represents a bold and innovative approach to graph generation by decoupling training from sampling, enabling unprecedented flexibility and efficiency. The method achieves SOTA results across diverse datasets while dramatically reducing computational costs. While some theoretical aspects could be further refined, the core idea is highly novel and has significant potential to advance the field of graph generative modeling."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Provides a rigorous theoretical foundation for the training-sampling decoupling framework with proofs of bounded estimation error and deviation from ground truth distribution",
+        "Comprehensive experimental evaluation across multiple datasets (synthetic, molecular, pathology) demonstrating state-of-the-art performance in both unconditional and conditional generation settings",
+        "Methodologically sound approach with careful attention to permutation invariance properties and discrete nature of graph data"
+      ],
+      "weaknesses": [
+        "While novel in the graph domain, the discrete flow matching approach builds upon existing work in other modalities, limiting absolute novelty",
+        "The hyperparameter optimization pipeline could be more systematically described, with potential concerns about reproducibility across different computational budgets"
+      ],
+      "summary_comment": "DeFoG presents a methodologically rigorous framework for graph generation that successfully decouples training from sampling. The theoretical guarantees of bounded estimation error and distributional faithfulness are particularly strong. Extensive experiments demonstrate state-of-the-art performance across diverse datasets, with significant efficiency gains (5-10% of sampling steps compared to diffusion models). While building on existing discrete flow matching concepts, the adaptation to graphs and comprehensive theoretical and empirical validation represent a solid contribution to the field."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "Solves a critical practical problem: The paper effectively addresses the inefficient sampling and inflexibility of graph diffusion models by decoupling training from sampling, which is a significant bottleneck for practitioners.",
+        "Strong empirical evidence: Demonstrates state-of-the-art performance across multiple synthetic, molecular, and digital pathology datasets, with impressive efficiency gains (5-10% of previous sampling steps).",
+        "Comprehensive and well-grounded methodology: Provides a solid theoretical foundation for the disentangled framework, thoroughly explores the expanded design space, and includes detailed ablation studies that validate the proposed components.",
+        "Excellent clarity: The paper is exceptionally well-written, with a clear motivation, a well-structured presentation of the framework, and accessible explanations of the theoretical and empirical contributions."
+      ],
+      "weaknesses": [
+        "Reliance on hyperparameter tuning for novel sampling methods: The 'defogging' of the design space introduces new hyperparameters (e.g., ω, η, distortion functions), and the optimal configuration is dataset-dependent. While the paper demonstrates the benefit, the need for per-dataset tuning could be a practical burden.",
+        "Comparative baselines could be further contextualized: Although the paper compares against numerous methods, a more direct discussion on the computational cost (training and sampling time) compared to the strongest diffusion baselines (e.g., Cometh, DisCo) would strengthen the efficiency claims."
+      ],
+      "summary_comment": "This is a strong paper with clear practical impact. DeFoG addresses a significant limitation in graph generative modeling—the tight coupling of training and sampling in diffusion models—by introducing a flexible discrete flow-matching framework. The work is theoretically sound, empirically rigorous, and clearly presented. The proposed disentanglement enables novel and effective sampling optimizations, leading to state-of-the-art performance and substantial efficiency gains. The significance for practitioners is high, as it enables more adaptive and cost-effective model deployment. The minor weaknesses do not detract from the overall substantial contribution. I recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICML covers machine learning systems and optimization topics - DeFoG's focus on efficient sampling and training-sampling decoupling aligns well with ICML's interest in scalable ML methods",
+        "The paper provides strong theoretical grounding (bounded estimation error proofs) which matches ICML's emphasis on rigorous methodology",
+        "Graph generative models fall under ICML's scope of general machine learning topics, particularly with applications in molecular design and computational biology"
+      ],
+      "why_it_does_not_fit": [
+        "While ICML covers graph methods, the conference tends to favor more general ML contributions rather than domain-specific graph generation work",
+        "The paper's focus on discrete state spaces and categorical data may be less aligned with ICML's broader continuous optimization focus",
+        "Reviewer concerns about theoretical development depth might be more problematic for ICML's rigorous standards"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS has strong focus on generative models and graph neural networks - this paper fits perfectly within these core research areas",
+        "The novel training-sampling decoupling approach represents significant methodological innovation that NeurIPS values",
+        "Strong empirical results across multiple domains (synthetic, molecular, pathology) demonstrate broad impact that NeurIPS appreciates",
+        "The theoretical contributions (bounded error proofs) align well with NeurIPS' interest in mathematically grounded work"
+      ],
+      "why_it_does_not_fit": [
+        "Some reviewers noted the approach builds on existing discrete flow matching concepts, which might slightly reduce perceived novelty for NeurIPS",
+        "The hyperparameter optimization approach could be seen as somewhat ad-hoc for NeurIPS' preference for more systematic methodologies"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR focuses heavily on deep learning and representation learning - DeFoG's use of graph transformers and RRWP features aligns well",
+        "The paper's applications to molecular generation and digital pathology fit ICLR's interest in real-world applications of deep learning",
+        "The discrete flow matching formulation connects to ICLR's interest in novel generative modeling approaches"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR tends to prioritize pure deep learning innovations over hybrid discrete-continuous methods like DeFoG",
+        "The theoretical contributions, while present, may not be deep enough for ICLR's preference for highly theoretical deep learning papers",
+        "The paper's focus on graph generation is somewhat specialized compared to ICLR's broader deep learning scope"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

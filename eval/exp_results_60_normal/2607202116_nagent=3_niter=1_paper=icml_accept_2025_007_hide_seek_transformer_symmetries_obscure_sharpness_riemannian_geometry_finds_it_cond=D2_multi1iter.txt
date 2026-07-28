@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and principled approach to redefine sharpness based on Riemannian geometry and quotient manifolds to account for continuous symmetries, particularly in transformers. This is a significant departure from previous ad-hoc methods.",
+        "The core idea of treating symmetries by quotienting out parameter space ambiguities using Riemannian geometry is a brilliant intellectual leap that promises to generalize beyond the specific transformer symmetries studied here.",
+        "The empirical results demonstrate a strong and consistent correlation between the proposed geodesic sharpness and generalization for transformers (ViT, BERT), where traditional adaptive sharpness measures failed. This directly addresses a known limitation in the field."
+      ],
+      "weaknesses": [
+        "While the theoretical framework is elegant, the practical implementation of higher-order geodesic terms involves approximations and relies on specific metric choices. The robustness of these approximations across a wider range of architectures and symmetries needs further investigation.",
+        "The varying sign of the correlation for geodesic sharpness across tasks (negative for ViT ImageNet, positive for BERT MNLI) is intriguing but also a limitation for immediate actionable insights, such as using it for regularization without further understanding."
+      ],
+      "summary_comment": "This paper presents a truly innovative and conceptually bold approach to understanding sharpness in neural networks, especially transformers. The application of Riemannian geometry to handle continuous symmetries in parameter space is a forward-thinking idea that significantly advances our theoretical understanding and practical ability to measure generalization. While there are some practical approximations and the varying sign of correlation is an open question, these minor imperfections do not detract from the clear novelty and potential impact of this work. It pushes the field forward by providing a principled framework to address a long-standing challenge and opens up exciting avenues for future research in geometry-informed deep learning. This is exactly the kind of creative and unconventional research that merits acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously develops a new sharpness measure based on Riemannian geometry and quotient manifolds to explicitly address symmetries in neural network parameter spaces, a significant theoretical advancement.",
+        "The authors provide strong empirical evidence on both synthetic diagonal networks and real-world transformer models (ViT and BERT) that their 'geodesic sharpness' correlates more strongly with generalization than existing adaptive sharpness measures.",
+        "The theoretical framework establishes a clear connection between geodesic sharpness and prior adaptive sharpness measures, showing the latter as first-order approximations, which provides unifying insight."
+      ],
+      "weaknesses": [
+        "The paper notes that the sign of the correlation can vary across tasks, which, while an interesting discovery, currently limits its direct utility for applications like regularization without further understanding of its determinants.",
+        "The computational complexity for the `inv` metric involves solving Sylvester equations, which, while manageable for small `h`, could become a bottleneck for larger `h` or more complex symmetries, despite the practical observation that forward/backward passes remain the bottleneck."
+      ],
+      "summary_comment": "This paper presents a theoretically sound and well-evaluated approach to defining sharpness in the presence of continuous parameter symmetries, particularly in transformers. By leveraging Riemannian geometry and quotient manifolds, the authors offer a principled way to account for GL(h) symmetries, which previous adaptive sharpness measures failed to fully capture. The derivation of geodesic sharpness as a higher-order approximation of existing adaptive measures is elegant and insightful. The empirical results on diverse tasks and models convincingly demonstrate improved correlation with generalization. While the varying sign of correlation is a current limitation for applied use, it opens new avenues for fundamental research. The work is rigorous, well-written, and represents a significant step forward in understanding the geometry of neural network loss landscapes and generalization."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a fundamental and practical problem: the inconsistency of sharpness-generalization correlation in transformers, which has hindered its utility in a highly relevant architecture.",
+        "Proposes a principled, generalizable solution using Riemannian geometry and quotient manifolds to explicitly account for continuous symmetries, such as the GL(h) symmetry in Transformer attention mechanisms. This moves beyond ad-hoc fixes.",
+        "Provides strong empirical evidence on real-world transformer models (ViT and BERT) across different tasks (image and text classification) that geodesic sharpness consistently uncovers strong correlations with generalization, where adaptive sharpness fails."
+      ],
+      "weaknesses": [
+        "The analytical forms for geodesics are only available for simplified cases (e.g., diagonal networks), requiring approximations (Eq. 5) for practical transformer models. While the ablation shows the higher-order terms are important, the reliance on a first-order approximation for gradients still means the 'geodesic' is not truly geodesic in practice beyond a certain order.",
+        "The varying sign of correlation (positive vs. negative) between geodesic sharpness and generalization across different tasks is a practical limitation. While noted as a future research direction, it currently limits the direct interpretability or prescriptive use of the metric for regularization or model selection without prior task-specific analysis."
+      ],
+      "summary_comment": "This paper tackles a critical problem in understanding and improving transformer generalization: the failure of traditional sharpness metrics due to architectural symmetries. The authors propose a novel, principled approach using Riemannian geometry on quotient manifolds to inherently account for these symmetries, leading to 'geodesic sharpness'. The work is highly significant for practitioners as it re-establishes a strong correlation with generalization in transformers, providing a more robust diagnostic tool. The theoretical foundation is sound, and the empirical evaluation on ViT and BERT models is convincing. While the practical computation relies on approximations and the varying sign of correlation is a current limitation, the overall contribution toward a more geometrically aware understanding of transformer generalization is substantial and holds strong practical relevance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel method within general machine learning, which is a core topic for ICML. Specifically, it addresses the theory and evaluation of machine learning models (transformers) and their generalization capabilities, aligning well with ICML's focus on foundational ML research.",
+        "The use of Riemannian geometry and quotient manifolds to redefine sharpness is a significant theoretical contribution, which ICML highly values. Reviewer A explicitly calls the approach a 'brilliant intellectual leap' and 'forward-thinking idea', while Reviewer B praises its 'rigorous development' and 'significant theoretical advancement'.",
+        "The paper provides strong empirical validation on real-world transformer models (ViT, BERT) for both image and text classification, demonstrating improved correlation between the proposed geodesic sharpness and generalization. This application-driven machine learning aspect, particularly with advanced architectures like transformers, is relevant to ICML.",
+        "The work builds upon and critiques existing sharpness measures (adaptive sharpness) and offers a more generalizable solution, aligning with ICML's interest in advancing evaluation methodologies and providing deeper theoretical insights into generalization."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is theoretically strong, the practical implementation of higher-order geodesic terms involves approximations, as noted by Reviewer A and Reviewer C. ICML sometimes prefers methods with clearer practical deployability, although this theoretical advancement is still highly valued.",
+        "The varying sign of correlation for geodesic sharpness across tasks, though an interesting discovery, currently limits its immediate actionable insights for regularization, as highlighted by all reviewers. This might be seen as a slight drawback for papers emphasizing direct application."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper offers new and original research on understanding generalization in machine learning models, specifically transformers, which falls under 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning' topics for NeurIPS.",
+        "The interdisciplinary nature of applying Riemannian geometry to machine learning model analysis is highly attractive for NeurIPS, which 'welcomes interdisciplinary submissions that do not fit neatly into existing categories'.",
+        "The theoretical development of geodesic sharpness and its connection to the geometry of neural network parameter spaces fits well with NeurIPS focus on 'Theory' and 'Probabilistic methods' as Riemannian methods often involve geometric and probabilistic interpretations.",
+        "The empirical evaluation on Transformer architectures for computer vision (ViT, ImageNet) and language models (BERT, MNLI) aligns directly with NeurIPS' topics such as 'Computer vision' and 'Language and multimodal language models'."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the practical implications of the varying correlation sign are not immediately clear for direct applications like regularization, which could be a minor point for some NeurIPS reviewers looking for immediate practical impact.",
+        "The computational complexity, particularly for the 'inv' metric using Sylvester equations (as noted by Reviewer B), might be a slight concern for NeurIPS, though the paper argues it's not the bottleneck."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'deep learning' (transformers) and its generalization, which is a central theme for ICLR. Specifically, it deals with theory and evaluation of learned representations.",
+        "The core contribution is related to understanding the geometry of neural networks with 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' and 'optimization' and 'learning theory', all key topics for ICLR.",
+        "The explicit focus on transformer symmetries, particularly GL(h) symmetry in attention mechanisms, positions the paper well for ICLR given its emphasis on architectural advancements and understanding in deep learning.",
+        "The empirical results on Vision Transformers (ViT) and BERT models directly align with 'representation learning for computer vision, audio, language, and other modalities' and applications to 'robotics, autonomy, planning' (implicitly, as transformers are used in these areas)."
+      ],
+      "why_it_does_not_fit": [
+        "While strong, the paper is primarily theoretical with a focus on mathematical rigor (Riemannian geometry) rather than purely empirical advancements or new architectures. ICLR sometimes leans more towards novel architectural designs or significant empirical breakthroughs in deep learning applications.",
+        "The theoretical complexity of Riemannian geometry and quotient manifolds, while a strength, might be perceived as less 'mainstream deep learning' by a subset of ICLR reviewers who favor more direct, practical deep learning techniques.",
+        "The approximations used for geodesics in practical settings, and the remaining questions about the varying sign of correlation limit its immediate utility for training or new model development, which ICLR often emphasizes."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

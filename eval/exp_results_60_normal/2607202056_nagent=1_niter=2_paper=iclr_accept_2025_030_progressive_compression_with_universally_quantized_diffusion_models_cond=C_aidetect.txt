@@ -1,0 +1,82 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of using uniform noise and universal quantization in a diffusion model for progressive compression is highly novel and addresses a critical limitation (intractability of Gaussian channel simulation) of prior diffusion-based compression methods.",
+        "The paper presents a comprehensive theoretical justification, showing the continuous-time limit equivalence to Gaussian diffusion and the implications for the ELBO, which provides a strong foundation for the proposed UQDM.",
+        "The practical results demonstrate competitive, and in some cases superior, rate-distortion and rate-realism performance across a wide range of bit-rates for image compression, showcasing the real-world applicability of this innovative approach.",
+        "The ability to achieve progressive coding with a single model and support for both lossy and lossless compression from one bitstream is a significant practical advantage for neural codecs."
+      ],
+      "weaknesses": [
+        "While the concept of learned reverse-process variance significantly improves performance, the initial evaluation presented a high computational cost for coding due to existing library limitations. Although the authors clarify this is an implementation, not a fundamental, limitation, this still represents a practical hurdle that needs further optimized solutions for real-world deployment.",
+        "The observation that an optimal 'T' for UQDM is small (contrasting with VDM's benefit from very large 'T') is insightful but also indicates that the current UQDM formulation, even with learned variance, doesn't achieve the same theoretical zero-KL-divergence limit for individual steps that makes VDM's ELBO arbitrarily tight with increasing 'T'. This suggests a potential avenue for further theoretical refinement."
+      ],
+      "summary_comment": "This paper presents a truly innovative and bold step towards practical neural image compression using diffusion models. The key idea of replacing Gaussian noise with uniform noise and leveraging universal quantization to enable tractable progressive coding is a significant leap forward. The authors' rebuttal clarifies that the computational cost of learned variance is primarily an implementation bottleneck, not an intrinsic flaw, which is reassuring; and the discussion around the optimal 'T' for UQDM versus VDM further elucidates the theoretical underpinnings and future research directions. While there are still practical considerations related to optimized implementations and areas for theoretical refinement to fully close the gap to hypothetically ideal Gaussian diffusion, the overall novelty and potential significance for the field are outstanding. The theoretical grounding is sound, and the experimental results, especially outperforming traditional codecs and competing with recent neural methods, are compelling enough to warrant acceptance. This work pushes the boundaries of what diffusion models can achieve in compression and will inspire much future research."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel 'Universally Quantized Diffusion Model' (UQDM) which directly aligns with 'general machine learning' and 'deep learning' topics, specifically 'generative models' and 'theory'.",
+        "The core contribution of replacing Gaussian distributions with uniform noise for tractable progressive coding addresses a significant challenge in diffusion models, a subject highly relevant to ICML given its profile on 'deep learning (architectures, generative models, theory, etc.)'.",
+        "The theoretical analysis of UQDM, including its continuous-time limit and relation to VDM, demonstrates rigorous 'theory of machine learning' as highlighted by Reviewer 1, who notes the 'comprehensive theoretical justification'.",
+        "The application to image compression with competitive rate-distortion and rate-realism results falls under 'application-driven machine learning', showing innovative techniques for a practical problem, which ICML explicitly welcomes.",
+        "The methodology involves 'optimization' of the NELBO loss and investigates 'probabilistic methods' (diffusion models, uniform distributions), both explicitly listed topics for ICML.",
+        "Reviewer 1 praises the 'highly novel' idea and 'significant leap forward', indicating a strong 'Novelty Fit' for ICML, which values cutting-edge research."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer 1 points out that the computational cost for learned reverse-process variance, although an implementation issue, 'still represents a practical hurdle'. This could be perceived as a weakness in 'machine learning systems' or 'improved implementation and scalability' if not adequately addressed in a revised submission.",
+        "While the paper has strong theoretical aspects, the observation that UQDM's optimal 'T' is small and doesn't fully achieve VDM's theoretical zero-KL-divergence limit for individual steps suggests some 'theoretical refinement' is still needed, which might slightly detract from the 'Rigor Fit' for the most theoretically-focused ICML sub-areas, despite the overall sound justification."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on diffusion models for progressive data compression directly aligns with several NeurIPS topics, including 'Deep learning', 'General machine learning: core contributions in supervised and unsupervised methods', and 'Probabilistic methods'.",
+        "The development of UQDM tackles a fundamental problem in information theory and machine learning (data compression via generative models), which is a new and original research contribution as desired by NeurIPS.",
+        "The theoretical insights into UQDM's continuous-time limit and its relation to VDM provide 'in-depth analysis of existing methods that provide new insights', which NeurIPS encourages.",
+        "The application to 'Computer vision' (image compression) is a primary topic explicitly listed by NeurIPS.",
+        "Reviewer 1 highlights the 'highly novel' core idea and 'significant leap forward', signifying an excellent 'Novelty Fit' for NeurIPS.",
+        "The paper provides 'promising first results' for practical deployment, demonstrating the interdisciplinary nature across machine learning and data compression, which NeurIPS encourages in 'interdisciplinary submissions that do not fit neatly into existing categories'."
+      ],
+      "why_it_does_not_fit": [
+        "The 'practical hurdle' of high computational cost for learned reverse-process variance, even if an implementation detail, could be a concern from a 'SysML Infrastructure' perspective, as mentioned by Reviewer 1.",
+        "The discussion about the optimal 'T' for UQDM versus VDM, and the potential need for 'further theoretical refinement' to close the gap to ideal Gaussian diffusion, might be seen as a minor weakness in 'Rigor Fit' compared to the absolute theoretical guarantees that some NeurIPS papers strive for."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's central contribution is a new form of diffusion model (UQDM) for progressive compression, which falls squarely under 'deep learning' and 'generative models', listed as core ICLR topics.",
+        "The approach uses 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' implicitly through the diffusion process and explicitly through the denoising network, addressing a broad range of ICLR's interests.",
+        "The work involves 'probabilistic methods (Bayesian methods, variational inference, sampling, UQ, etc.)' as it builds upon variational evidence lower bound (ELBO) and introduces universal quantization (UQ).",
+        "The authors address 'optimization' for training the model and mention 'large-scale learning and non-convex optimization' as related challenges, which are relevant to ICLR.",
+        "The application to image compression is a clear example of 'representation learning for computer vision' and 'applications in vision', which ICLR explicitly covers.",
+        "Reviewer 1 notes the 'highly novel' and 'cutting-edge research' nature of the paper, matching ICLR's reputation for presenting such work."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is technically strong, the emphasis on practical deployment and competitive performance against existing compression codecs, while important, sometimes features more prominently at venues with a stronger signal processing or applied machine learning component. ICLR typically favors papers with a deeper architectural or fundamental deep learning contribution, though this paper certainly has those.",
+        "The 'practical hurdle' regarding the computational cost for learned variance, identified by Reviewer 1, could be a point of less ideal 'infrastructure, software libraries, hardware' fit for ICLR if the authors don't emphasize the portability or generalizability of the solution to diverse hardware/software setups more directly."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

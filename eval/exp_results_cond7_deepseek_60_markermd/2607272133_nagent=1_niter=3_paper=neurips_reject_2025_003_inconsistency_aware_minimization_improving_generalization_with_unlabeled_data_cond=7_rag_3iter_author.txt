@@ -1,0 +1,626 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel generalization measure, 'local inconsistency', which is computable from unlabeled data using a single model, addressing a key practical limitation of existing methods like 'inconsistency' and 'disagreement'.",
+        "Provides a strong theoretical foundation by connecting local inconsistency to the Fisher Information Matrix and the loss Hessian, and establishing an approximate relationship with prior work on inconsistency.",
+        "Presents extensive empirical validation across supervised, semi-supervised, and self-supervised learning settings, demonstrating improved generalization and consistent performance compared to strong baselines like SAM."
+      ],
+      "weaknesses": [
+        "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+        "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+          "severity": "minor",
+          "evidence": "The paper explicitly acknowledges the heuristic nature of the assumption in Appendix A, stating it 'relies on the idea that changes in model output distributions... are primary drivers of changes in the CE loss' and is 'an approximation.' This caveat is presented alongside the formulation of the informal generalization bound.",
+          "affected_claim": "The claim that minimizing local inconsistency leads to a tighter generalization bound.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated.",
+          "severity": "minor",
+          "evidence": "Experiments are conducted on CIFAR-10 and CIFAR-100 with architectures like WRN and ResNet-18. The paper provides comprehensive evaluation within these standard benchmarks but does not include larger-scale datasets or other modalities.",
+          "affected_claim": "The claim of broad applicability of IAM across diverse learning paradigms.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The core theoretical connections to FIM and Hessian are rigorous, and the heuristic nature of Theorem 1 is appropriately acknowledged. The empirical results strongly support the central claims."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The 'local inconsistency' measure represents a distinct contribution from prior generalization measures by enabling computation from unlabeled data with a single model."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The method provides practical advantages for real-world applications with limited labeled data and demonstrates meaningful performance improvements across multiple learning paradigms."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Experiments are thorough within the tested domains, with proper comparisons to strong baselines and statistically significant results supporting all claims."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and well-structured, with sufficient detail for assessment. The heuristic nature of Theorem 1 is appropriately disclosed."
+        }
+      },
+      "summary_comment": "The authors' response confirms that the heuristic nature of Theorem 1 is appropriately acknowledged in the submitted paper, and the empirical scope is comprehensive within the tested domains. The core contributions—the novel local inconsistency measure, its theoretical connections to FIM/Hessian, and thorough empirical validation—remain strong. While the empirical scope is limited to standard image classification benchmarks, this does not materially undermine the paper's contributions. The minor weaknesses do not prevent the paper from meeting top-tier conference standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core focus is on understanding and improving generalization in deep learning, a central topic in ICML's 'general machine learning' and 'optimization' tracks.",
+        "The proposed method (IAM) is an optimization technique (a minimization framework) that seeks flatter minima, aligning with ICML's strong interest in 'optimization' and 'theory of machine learning' as it connects to loss landscape geometry.",
+        "The work provides both theoretical analysis (connecting local inconsistency to FIM and Hessian) and extensive empirical validation (on CIFAR-10/100, semi-supervised, and self-supervised learning), matching ICML's balance of theory and practice.",
+        "The development of a novel generalization measure fits well with ICML's 'evaluation' track, which includes methodology for understanding model behavior."
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical foundation, while insightful, relies on a heuristic assumption (Eq. 13) for its generalization bound. ICML often has a high bar for theoretical rigor, and this approximation might be seen as a weakness by some reviewers.",
+        "The empirical evaluation, while thorough, is primarily confined to image classification on standard (CIFAR) benchmarks. ICML submissions often benefit from demonstrations on larger-scale or more diverse datasets to showcase broader impact.",
+        "Reviewer 1 noted the heuristic nature of Theorem 1 as a 'minor' weakness. In a competitive ICML pool, this could slightly lower the perceived theoretical contribution relative to purely theoretical papers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses a fundamental challenge in deep learning: generalization. This is a perennial and highly relevant topic for NeurIPS.",
+        "The work is highly interdisciplinary, combining ideas from optimization ('Deep learning', 'Optimization'), theory ('Theory'), and practical applications ('AI/ML for health and biotechnology' is analogous to the semi-supervised scenarios explored). This aligns with NeurIPS's broad, interdisciplinary scope.",
+        "The practical advantage of using unlabeled data is significant for real-world applications, a theme strongly encouraged at NeurIPS ('Data-centric aspects of AI', 'Socio-technical aspects of AI').",
+        "The empirical validation across multiple paradigms (supervised, semi-supervised, self-supervised) demonstrates broad applicability, which is valued at NeurIPS. The integration with SimCLR is a strong point.",
+        "Reviewer 1's overall positive assessment (Accept, with solid scores across novelty, soundness, significance) indicates the paper is of high quality and meets top-tier standards, which is crucial for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "The core theoretical contribution, while well-connected to FIM and Hessian, is not a major breakthrough in learning theory. NeurIPS accepts many such solid incremental-theory papers, but it is not the paper's primary strength.",
+        "The method is evaluated on vision tasks. While not a misfit, a demonstration on a natural language task could have broadened its appeal within the NeurIPS community, which has a large NLP contingent."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR's central focus is deep learning. This paper's entire methodology (local inconsistency, IAM) is designed for and evaluated on deep neural networks.",
+        "The paper studies the geometry of the loss landscape and connects it to generalization, which is a classic and relevant line of inquiry for ICLR ('optimization', 'learning theory').",
+        "The application to self-supervised learning (SimCLR integration) fits perfectly within ICLR's emphasis on representation learning and unsupervised/self-supervised methods."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR has a strong, often dominant, focus on architectural innovations, novel deep learning models, and transformative empirical results on large-scale benchmarks. This paper is more about an optimization/regularization technique and a new perspective on generalization measurement.",
+        "While the theory is connected to deep learning concepts (FIM), it is not as deeply rooted in the specific mechanics of deep architectures (e.g., attention, transformers) as some top ICLR papers.",
+        "The empirical scale (CIFAR-10/100) is standard but not at the cutting-edge scale (e.g., ImageNet, large-scale pretraining) that often characterizes high-impact ICLR papers. Reviewer 1's weakness about scalability is more relevant here.",
+        "The heuristic in the theoretical bound might be less of an issue, but the paper's contribution might be perceived as incremental compared to the more flashy empirical breakthroughs common at ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel generalization measure, 'local inconsistency', which is computable from unlabeled data using a single model, addressing a key practical limitation of existing methods like 'inconsistency' and 'disagreement'.",
+              "Provides a strong theoretical foundation by connecting local inconsistency to the Fisher Information Matrix and the loss Hessian, and establishing an approximate relationship with prior work on inconsistency.",
+              "Presents extensive empirical validation across supervised, semi-supervised, and self-supervised learning settings, demonstrating improved generalization and consistent performance compared to strong baselines like SAM."
+            ],
+            "weaknesses": [
+              "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+              "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+                "severity": "minor",
+                "evidence": "The paper states: 'We heuristically assume that, for well-trained models near a local minimum, the worst-case increase in empirical loss due to parameter perturbation is approximately proportional to the local inconsistency... This assumption relies on the idea that changes in model output distributions... are primary drivers of changes in the CE loss, especially for worst-case perturbations. While this is an approximation...'",
+                "affected_claim": "The claim that minimizing local inconsistency leads to a tighter generalization bound.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated.",
+                "severity": "minor",
+                "evidence": "Experiments are conducted on CIFAR-10 and CIFAR-100 with architectures like WRN and ResNet-18. The paper does not include experiments on larger-scale datasets (e.g., ImageNet) or other data modalities.",
+                "affected_claim": "The claim of broad applicability of IAM across diverse learning paradigms.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported. The theoretical connections to FIM and Hessian are sound, the algorithm is well-defined, and the experimental results are consistent and show clear improvements over baselines."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The idea of 'local inconsistency' as a single-model, unlabeled-data measure is sufficiently distinct from prior work on generalization measures like sharpness, disagreement, and inconsistency, which require multiple models or labeled data."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work provides a practical and theoretically-grounded method for improving generalization, especially in label-scarce scenarios, which is a meaningful advancement for real-world ML applications."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, comparing against strong baselines (SGD, SAM) in supervised, semi-supervised, and self-supervised settings. Results are statistically significant and support the claims."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written, with well-structured sections, intuitive explanations, and sufficient experimental details to permit reliable assessment."
+              }
+            },
+            "summary_comment": "This paper introduces a novel and practical generalization measure, local inconsistency, with strong theoretical foundations and compelling empirical results. Its ability to leverage unlabeled data within a single-model framework addresses a significant limitation of existing methods. The proposed IAM optimization demonstrates improved generalization across multiple learning paradigms. While the theoretical bound relies on a heuristic assumption and the empirical scope is limited to image classification, these are minor concerns that do not undermine the central contribution. The work meets the standard for a top-tier ML conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel generalization measure, 'local inconsistency', which is computable from unlabeled data using a single model, addressing a key practical limitation of existing methods like 'inconsistency' and 'disagreement'.",
+              "Provides a strong theoretical foundation by connecting local inconsistency to the Fisher Information Matrix and the loss Hessian, and establishing an approximate relationship with prior work on inconsistency.",
+              "Presents extensive empirical validation across supervised, semi-supervised, and self-supervised learning settings, demonstrating improved generalization and consistent performance compared to strong baselines like SAM."
+            ],
+            "weaknesses": [
+              "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+              "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+                "severity": "minor",
+                "evidence": "The paper explicitly acknowledges the heuristic nature of the assumption, stating it 'relies on the idea that changes in model output distributions... are primary drivers of changes in the CE loss, especially for worst-case perturbations' and that it is 'an approximation.' This caveat is presented alongside the formulation of the informal generalization bound.",
+                "affected_claim": "The claim that minimizing local inconsistency leads to a tighter generalization bound.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated.",
+                "severity": "minor",
+                "evidence": "Experiments are conducted on CIFAR-10 and CIFAR-100 with architectures like WRN and ResNet-18. The paper does not include experiments on larger-scale datasets or other data modalities.",
+                "affected_claim": "The claim of broad applicability of IAM across diverse learning paradigms.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are technically supported through rigorous connections to FIM/Hessian and comprehensive empirical validation. The heuristic nature of Theorem 1 is appropriately acknowledged and does not undermine the core technical contributions."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The 'local inconsistency' measure represents a distinct contribution from prior generalization measures by enabling computation from unlabeled data with a single model."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The method provides practical advantages for real-world applications with limited labeled data and demonstrates meaningful performance improvements across multiple learning paradigms."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are thorough within the tested domains, with proper comparisons to strong baselines and statistically significant results supporting all claims."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured, with sufficient detail for assessment. The heuristic nature of Theorem 1 is appropriately disclosed."
+              }
+            },
+            "summary_comment": "The authors acknowledge the heuristic nature of Theorem 1 and appropriately position it as motivational rather than rigorous. The paper's core contributions—the novel local inconsistency measure, its theoretical connections to FIM/Hessian, and comprehensive empirical validation—remain strong. While the empirical scope is limited to image classification benchmarks, the work provides substantial evidence for its claims within these domains. The minor weaknesses do not materially undermine the central contribution, which meets top-tier conference standards."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"The heuristic assumption (Eq. 13) linking the worst-case empirical loss increase to local inconsistency is not rigorously proven, making the generalization bound (Theorem 1) informal.\",\n        \"Empirical evaluation is limited to image classification on CIFAR-10/100; scalability to larger datasets and other domains (e.g., NLP) is not demonstrated.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Relationship between worst-case empirical loss increase and local inconsistency is an approximation.\",\n          \"location\": \"Appendix A, Equation 13 and surrounding text.\",\n          \"explanation\": \"The paper explicitly acknowledges the heuristic nature of the assumption, stating it 'relies on the idea that changes in model output distributions ... are primary drivers of changes in the CE loss, especially for worst-case perturbations' and that it is 'an approximation.' This caveat is presented alongside the formulation of the informal generalization bound (Theorem 1/Eq. 4) in Section 4.3, indicating the bound is motivational and not a strict theorem.\"\n        },\n        {\n          \"concern\": \"Empirical scope is limited to CIFAR-10 and CIFAR-100 image classification.\",\n          \"location\": \"Sections 4.6, 5.2, 5.3, 5.4, and Appendix E.\",\n          \"explanation\": \"The paper presents a thorough empirical analysis within the domains tested, including multiple architectures (6CNN, WRN, ResNet), learning paradigms (supervised, semi-supervised, self-supervised), and label availability settings. The results consistently support the paper's core claims regarding the computability of local inconsistency from unlabeled data and the efficacy of IAM in improving generalization within these controlled and widely-used experimental benchmarks.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"The informal nature of the theoretical bound (Theorem 1) could be clarified to prevent over interpretation.\",\n          \"proposed_change\": \"In the camera-ready version, we will revise the wording in Section 4.3 to more explicitly label Theorem 1 as a 'heuristic bound' or 'motivational argument,' emphasizing that Eq. (13) is a plausible but unproven connection. We will adjust the narrative to state that the bound provides theoretical motivation for IAM, whose primary justification remains its empirical performance and connection to established geometric concepts (FIM, Hessian).\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Lack of empirical demonstration on larger-scale datasets or other domains.\",\n          \"proposed_change\": \"We acknowledge this as a valuable direction for future work. In the conclusion (Section 6), we will explicitly mention exploring the scalability of IAM to larger datasets (e.g., ImageNet) and other data modalities (e.g., NLP) as an important avenue for future research.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and constructive feedback on our work. We address the two main points as follows.\\n\\n1. **On the theoretical bound (Theorem 1):** The reviewer correctly notes that the connection between the worst-case loss increase and local inconsistency (Eq. 13) is presented as a heuristic assumption. We fully agree that this assumption is not a rigorous theorem, and we presented it as such to provide an intuitive, motivational link between our proposed measure and existing PAC-Bayesian generalization frameworks (like SAM's). The core theoretical contributions of the paper are the precise definition of local inconsistency, its rigorous connections to the Fisher Information Matrix and loss Hessian (Sections 3 & 4.2), and its approximate relationship to prior inconsistency measures (Section 4.4). Theorem 1 is intended to sketch why minimizing local inconsistency *might* improve generalization, providing context for the empirical IAM framework. To prevent any misunderstanding, we will revise the text in the camera-ready version to more clearly label Theorem 1 as a 'heuristic bound' or 'motivational argument' and emphasize that the primary theoretical grounding lies in the FIM/Hessian connections.\\n\\n2. **On the empirical scope:** Our experiments were designed to provide a rigorous, controlled evaluation of the core claims: that local inconsistency is a computable measure from unlabeled data, that it correlates with generalization, and that minimizing it (via IAM) leads to improved performance. We selected standard, well-understood benchmarks (CIFAR-10/100) and architectures (WRN, ResNet) to enable clear comparisons against strong baselines like SAM across diverse settings (supervised, semi-supervised, self-supervised). We agree that demonstrating scalability to larger datasets (e.g., ImageNet) and other domains (e.g., NLP) would strengthen the claim of broad applicability. These are important and natural next steps, but they were beyond the computational and scope constraints of this initial submission. We will explicitly mention the exploration of scalability to larger datasets and other modalities as a key direction for future work in the conclusion.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel generalization measure, 'local inconsistency', which is computable from unlabeled data using a single model, addressing a key practical limitation of existing methods like 'inconsistency' and 'disagreement'.",
+              "Provides a strong theoretical foundation by connecting local inconsistency to the Fisher Information Matrix and the loss Hessian, and establishing an approximate relationship with prior work on inconsistency.",
+              "Presents extensive empirical validation across supervised, semi-supervised, and self-supervised learning settings, demonstrating improved generalization and consistent performance compared to strong baselines like SAM."
+            ],
+            "weaknesses": [
+              "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+              "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The theoretical justification, particularly the informal generalization bound in Theorem 1, relies on a heuristic assumption (Eq. 13) that is not rigorously proven.",
+                "severity": "minor",
+                "evidence": "The paper explicitly acknowledges the heuristic nature of the assumption in Appendix A, stating it 'relies on the idea that changes in model output distributions... are primary drivers of changes in the CE loss' and is 'an approximation.' This caveat is presented alongside the formulation of the informal generalization bound.",
+                "affected_claim": "The claim that minimizing local inconsistency leads to a tighter generalization bound.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Empirical evaluation is primarily limited to image classification tasks on CIFAR-10 and CIFAR-100; scalability to larger datasets and different domains (e.g., NLP) is not demonstrated.",
+                "severity": "minor",
+                "evidence": "Experiments are conducted on CIFAR-10 and CIFAR-100 with architectures like WRN and ResNet-18. The paper provides comprehensive evaluation within these standard benchmarks but does not include larger-scale datasets or other modalities.",
+                "affected_claim": "The claim of broad applicability of IAM across diverse learning paradigms.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The core theoretical connections to FIM and Hessian are rigorous, and the heuristic nature of Theorem 1 is appropriately acknowledged. The empirical results strongly support the central claims."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The 'local inconsistency' measure represents a distinct contribution from prior generalization measures by enabling computation from unlabeled data with a single model."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The method provides practical advantages for real-world applications with limited labeled data and demonstrates meaningful performance improvements across multiple learning paradigms."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are thorough within the tested domains, with proper comparisons to strong baselines and statistically significant results supporting all claims."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured, with sufficient detail for assessment. The heuristic nature of Theorem 1 is appropriately disclosed."
+              }
+            },
+            "summary_comment": "The authors' response confirms that the heuristic nature of Theorem 1 is appropriately acknowledged in the submitted paper, and the empirical scope is comprehensive within the tested domains. The core contributions—the novel local inconsistency measure, its theoretical connections to FIM/Hessian, and thorough empirical validation—remain strong. While the empirical scope is limited to standard image classification benchmarks, this does not materially undermine the paper's contributions. The minor weaknesses do not prevent the paper from meeting top-tier conference standards."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"The heuristic assumption (Eq. 13) linking worst-case empirical loss increase to local inconsistency is not rigorously proven\",\n        \"Empirical evaluation is limited to CIFAR-10/100 image classification; scalability to larger datasets/other domains not demonstrated\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Heuristic nature of Theorem 1 assumption\",\n          \"location\": \"Appendix A, Equation 13 and surrounding text\",\n          \"explanation\": \"The paper explicitly acknowledges the heuristic nature of the assumption, stating it 'relies on the idea that changes in model output distributions... are primary drivers of changes in the CE loss' and is 'an approximation.' This caveat is presented alongside the formulation of the informal generalization bound.\"\n        },\n        {\n          \"concern\": \"Empirical scope limited to image classification\",\n          \"location\": \"Sections 4.6, 5.2, 5.3, 5.4, and Appendix E\",\n          \"explanation\": \"Experiments are conducted on CIFAR-10 and CIFAR-100 with architectures like WRN and ResNet-18. The paper provides comprehensive evaluation within these standard benchmarks but does not include larger-scale datasets or other modalities.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify the heuristic nature of Theorem 1 to prevent overinterpretation\",\n          \"proposed_change\": \"We will revise Section 4.3 to more explicitly label Theorem 1 as a 'heuristic bound' or 'motivational argument,' emphasizing that Eq. (13) is a plausible but unproven connection. The narrative will be adjusted to state that the bound provides theoretical motivation, while the primary justification remains empirical performance and connections to FIM/Hessian.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Acknowledge limited empirical scope and suggest future directions\",\n          \"proposed_change\": \"We will add to the conclusion (Section 6) an explicit mention that exploring scalability to larger datasets (e.g., ImageNet) and other modalities (e.g., NLP) represents an important direction for future work.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and constructive feedback. We appreciate their recognition of our work's novelty, soundness, and empirical thoroughness within the tested domains.\\n\\nRegarding the theoretical bound in Theorem 1, we fully agree with the reviewer that the connection between worst-case loss increase and local inconsistency (Eq. 13) is presented as a heuristic assumption rather than a rigorous proof. We included this motivational argument to provide intuition linking our proposed measure to existing PAC-Bayesian frameworks, but we acknowledge it should not be interpreted as a strict theorem. The core theoretical contributions are the precise definition of local inconsistency and its rigorous connections to the Fisher Information Matrix and loss Hessian (Sections 3 & 4.2). We will revise the text to more clearly emphasize the heuristic nature of Theorem 1 and position it as motivational context rather than a central theoretical result.\\n\\nConcerning the empirical scope, we designed our experiments to provide rigorous evaluation of our core claims using standard, well-understood benchmarks (CIFAR-10/100) that enable clear comparisons against strong baselines like SAM. While we demonstrated efficacy across supervised, semi-supervised, and self-supervised paradigms within these domains, we agree that exploring scalability to larger datasets and other modalities would strengthen the claim of broad applicability. We will explicitly acknowledge this limitation and mention it as an important direction for future work in the conclusion.\\n\\nThese minor revisions will ensure the paper accurately represents the strength of our contributions while appropriately qualifying the scope of our claims.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_08cd997e2b10",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/neurips_reject_2025_003_inconsistency_aware_minimization_improving_generalization_with_unlabeled_data.md",
+    "target_paper_summary": {
+      "paper_id": "paper_08cd997e2b10",
+      "title": "Inconsistency-Aware Minimization: Improving Generalization With Unlabeled Data",
+      "abstract": "1 Estimating the generalization gap and devising optimization methods that general2 ize better are crucial for deep learning models, both for theoretical understanding 3 and for practical applications. The ability to leverage unlabeled data for these pur4 poses offers significant advantages in real-world scenarios. This paper introduces 5 a novel generalization measure, termed *local inconsistency*, developed from an 6 information-geometric perspective of the neural network's parameter space. A 7 key feature of local inconsistency is its computability from unlabeled data. We 8 establish its theoretical underpinnings by connecting local inconsistency to the 9 Fisher information matrix and the loss Hessian. Empirically, we demonstrate 10 that local inconsistency correlates with the generalization gap also exhibiting 11 characteristics comparable to *sharpness*. Based on these findings, we propose 12 Inconsistency-Aware Minimization (IAM) that incorporates local inconsistency 13 into the objective. We demonstrate that in standard supervised learning settings, 14 IAM enhances generalization, achieving performance comparable to existing meth15 ods such as Sharpness-Aware Minimization. Furthermore, IAM exhibits efficacy 16 in semi- and self-supervised learning scenarios, where the local inconsistency is 17 computed from the unlabeled data. 19 Estimating the generalization gap and developing optimization techniques to enhance performance 20 on unseen data are pivotal challenges in both the theory and practice of deep learning. There are 21 numerous reports linking the flatness of the loss landscape to generalization [16, 7, 20, 9]. Conse22 quently, numerous minimization methods leveraging sharpness have been proposed, demonstrating 23 improvements in generalization [8, 19, 17, 35] . However, the efficacy of such sharpness-based 24 approaches is not fully understood as recent studies, including Andriushchenko et al. [1], indicate 25 that sharpness alone does not reliably predict the generalization gap. 26 On the other hand, Jiang et al. [14], Johnson and Zhang [15] have investigated alternative gener27 alization measures, such as disagreement and *inconsistency*. Under certain conditions (e.g., zero 28 training error or low randomness of final states), these metrics have been shown to estimate the 29 generalization gap more accurately than ones based on sharpness. From a practical standpoint, it is 30 highly desirable to leverage unlabeled data to compute these me",
+      "topic": "",
+      "claims": [
+        "we demonstrate 10 that local inconsistency correlates with the generalization gap also exhibiting 11 characteristics comparable to *sharpness*.",
+        "we propose 12 Inconsistency-Aware Minimization (IAM) that incorporates local inconsistency 13 into the objective.",
+        "We demonstrate that in standard supervised learning settings, 14 IAM enhances generalization, achieving performance comparable to existing meth15 ods such as Sharpness-Aware Minimization."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_ef689409d",
+        "title": "Semi-Supervised Learning",
+        "authors": [
+          "Olivier Chapelle",
+          "Schölkopf, Bernhard 1968-",
+          "Alexander Zien"
+        ],
+        "year": 2006,
+        "publication_date": "2006-09-22",
+        "venue": "The MIT Press eBooks",
+        "abstract": "A comprehensive review of an area of machine learning that deals with the use of unlabeled data in classification problems: state-of-the-art algorithms, a taxonomy of the field, applications, benchmark experiments, and directions for future research. In the field of machine learning, semi-supervised learning (SSL) occupies the middle ground, between supervised learning (in which all training examples are labeled) and unsupervised learning (in which no label data are given). Interest in SSL has increased in recent years, particularly because of application domains in which unlabeled data are plentiful, such as images, text, and bioinformatics. This first comprehensive overview of SSL presents state-of-the-art algorithms, a taxonomy of the field, selected applications, benchmark experiments, and perspectives on ongoing and future research.Semi-Supervised Learning first presents the key assumptions and ideas underlying the field: smoothness, cluster or low-density separation, manifold structure, and transduction. The core of the book is the presentation of SSL methods, organized according to algorithmic strategies. After an examination of generative models, the book describes algorithms that implement the low-density separation assumption, graph-based methods, and algorithms that perform two-step learning. The book then discusses SSL applications and offers guidelines for SSL practitioners by analyzing the results of extensive benchmark experiments. Finally, the book looks at interesting directions for SSL research. The book closes with a discussion of the relationship between semi-supervised learning and transduction.",
+        "url": "https://doi.org/10.7551/mitpress/9780262033589.001.0001",
+        "doi": "https://doi.org/10.7551/mitpress/9780262033589.001.0001",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1479807131"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 4324
+      },
+      {
+        "paper_id": "rw_002_64e19fe41",
+        "title": "Survey on deep learning with class imbalance",
+        "authors": [
+          "Justin Johnson",
+          "Taghi M. Khoshgoftaar"
+        ],
+        "year": 2019,
+        "publication_date": "2019-03-19",
+        "venue": "Journal Of Big Data",
+        "abstract": "The purpose of this study is to examine existing deep learning techniques for addressing class imbalanced data. Effective classification with imbalanced data is an important area of research, as high class imbalance is naturally inherent in many real-world applications, e.g., fraud detection and cancer detection. Moreover, highly imbalanced data poses added difficulty, as most learners will exhibit bias towards the majority class, and in extreme cases, may ignore the minority class altogether. Class imbalance has been studied thoroughly over the last two decades using traditional machine learning models, i.e. non-deep learning. Despite recent advances in deep learning, along with its increasing popularity, very little empirical work in the area of deep learning with class imbalance exists. Having achieved record-breaking performance results in several complex domains, investigating the use of deep neural networks for problems containing high levels of class imbalance is of great interest. Available studies regarding class imbalance and deep learning are surveyed in order to better understand the efficacy of deep learning when applied to class imbalanced data. This survey discusses the implementation details and experimental results for each study, and offers additional insight into their strengths and weaknesses. Several areas of focus include: data complexity, architectures tested, performance interpretation, ease of use, big data application, and generalization to other domains. We have found that research in this area is very limited, that most existing work focuses on computer vision tasks with convolutional neural networks, and that the effects of big data are rarely considered. Several traditional methods for class imbalance, e.g. data sampling and cost-sensitive learning, prove to be applicable in deep learning, while more advanced methods that exploit neural network feature learning abilities show promising results. The survey concludes with a discussion that highlights various gaps in deep learning from class imbalanced data for the purpose of guiding future research.",
+        "url": "https://doi.org/10.1186/s40537-019-0192-5",
+        "doi": "https://doi.org/10.1186/s40537-019-0192-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2936503027"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2887
+      },
+      {
+        "paper_id": "rw_004_a90e9671a",
+        "title": "Cybersecurity data science: an overview from machine learning perspective",
+        "authors": [
+          "Iqbal H. Sarker",
+          "A. S. M. Kayes",
+          "Shahriar Badsha",
+          "Hamed Alqahtani",
+          "Paul Watters",
+          "Alex Ng"
+        ],
+        "year": 2020,
+        "publication_date": "2020-07-01",
+        "venue": "Journal Of Big Data",
+        "abstract": "Abstract In a computing context, cybersecurity is undergoing massive shifts in technology and its operations in recent days, and data science is driving the change. Extracting security incident patterns or insights from cybersecurity data and building corresponding data-driven model , is the key to make a security system automated and intelligent. To understand and analyze the actual phenomena with data, various scientific methods, machine learning techniques, processes, and systems are used, which is commonly known as data science. In this paper, we focus and briefly discuss on cybersecurity data science , where the data is being gathered from relevant cybersecurity sources, and the analytics complement the latest data-driven patterns for providing more effective security solutions. The concept of cybersecurity data science allows making the computing process more actionable and intelligent as compared to traditional ones in the domain of cybersecurity. We then discuss and summarize a number of associated research issues and future directions . Furthermore, we provide a machine learning based multi-layered framework for the purpose of cybersecurity modeling. Overall, our goal is not only to discuss cybersecurity data science and relevant methods but also to focus the applicability towards data-driven intelligent decision making for protecting the systems from cyber-attacks.",
+        "url": "https://doi.org/10.1186/s40537-020-00318-5",
+        "doi": "https://doi.org/10.1186/s40537-020-00318-5",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3038955483"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 733
+      },
+      {
+        "paper_id": "rw_005_a21da2f4b",
+        "title": "Deep Learning: A Comprehensive Overview on Techniques, Taxonomy, Applications and Research Directions",
+        "authors": [
+          "Iqbal H. Sarker"
+        ],
+        "year": 2021,
+        "publication_date": "2021-08-18",
+        "venue": "SN Computer Science",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s42979-021-00815-1",
+        "doi": "https://doi.org/10.1007/s42979-021-00815-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3194730353"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2473
+      },
+      {
+        "paper_id": "rw_006_8cead4140",
+        "title": "Deep transfer learning for automatic speech recognition: Towards better generalization",
+        "authors": [
+          "Hamza Kheddar",
+          "Yassine Himeur",
+          "Somaya Al-Máadeed",
+          "Abbes Amira",
+          "Fayçal Bensaali"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-28",
+        "venue": "Knowledge-Based Systems",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.knosys.2023.110851",
+        "doi": "https://doi.org/10.1016/j.knosys.2023.110851",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385337322"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 139
+      },
+      {
+        "paper_id": "rw_007_e15cad67c",
+        "title": "Re-Thinking Data Strategy and Integration for Artificial Intelligence: Concepts, Opportunities, and Challenges",
+        "authors": [
+          "Abdulaziz Aldoseri",
+          "Khalifa N. Al‐Khalifa",
+          "A.M.S. Hamouda"
+        ],
+        "year": 2023,
+        "publication_date": "2023-06-13",
+        "venue": "Applied Sciences",
+        "abstract": "The use of artificial intelligence (AI) is becoming more prevalent across industries such as healthcare, finance, and transportation. Artificial intelligence is based on the analysis of large datasets and requires a continuous supply of high-quality data. However, using data for AI is not without challenges. This paper comprehensively reviews and critically examines the challenges of using data for AI, including data quality, data volume, privacy and security, bias and fairness, interpretability and explainability, ethical concerns, and technical expertise and skills. This paper examines these challenges in detail and offers recommendations on how companies and organizations can address them. By understanding and addressing these challenges, organizations can harness the power of AI to make smarter decisions and gain competitive advantage in the digital age. It is expected, since this review article provides and discusses various strategies for data challenges for AI over the last decade, that it will be very helpful to the scientific research community to create new and novel ideas to rethink our approaches to data strategies for AI.",
+        "url": "https://doi.org/10.3390/app13127082",
+        "doi": "https://doi.org/10.3390/app13127082",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4380685454"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 602
+      },
+      {
+        "paper_id": "rw_008_cc812c7f9",
+        "title": "The core enabling technologies of big data analytics and context-aware computing for smart sustainable cities: a review and synthesis",
+        "authors": [
+          "Simon Elias Bibri",
+          "John Krogstie"
+        ],
+        "year": 2017,
+        "publication_date": "2017-11-07",
+        "venue": "Journal Of Big Data",
+        "abstract": "Data sensing, information processing, and networking technologies are being fast embedded into the very fabric of the contemporary city to enable the use of innovative solutions to overcome the challenges of sustainability and urbanization. This has been boosted by the new digital transition in ICT. Driving such transition predominantly are big data analytics and context-aware computing and their increasing amalgamation within a number of urban domains, especially as their functionality involve more or less the same core enabling technologies, namely sensing devices, cloud computing infrastructures, data processing platforms, middleware architectures, and wireless networks. Topical studies tend to only pass reference to such technologies or to largely focus on one particular technology as part of big data and context-aware ecosystems in the realm of smart cities. Moreover, empirical research on the topic, with some exceptions, is generally limited to case studies without the use of any common conceptual frameworks. In addition, relatively little attention has been given to the integration of big data analytics and context-aware computing as advanced forms of ICT in the context of smart sustainable cities. This endeavor is a first attempt to address these two major strands of ICT of the new wave of computing in relation to the informational landscape of smart sustainable cities. Therefore, the purpose of this study is to review and synthesize the relevant literature with the objective of identifying and distilling the core enabling technologies of big data analytics and context-aware computing as ecosystems in relevance to smart sustainable cities, as well as to illustrate the key computational and analytical techniques and processes associated with the functioning of such ecosystems. In doing so, we develop, elucidate, and evaluate the most relevant frameworks pertaining to big data analytics and context-aware computing in the context of smart sustainable cities, bringing together research directed at a more conceptual, analytical, and overarching level to stimulate new ways of investigating their role in advancing urban sustainability. In terms of originality, a review and synthesis of the technical literature has not been undertaken to date in the urban literature, and in doing so, we provide a basis for urban researchers to draw on a set of conceptual frameworks in future research. The proposed frameworks, which can be replicated and tested in empirical research, will add additional depth and rigor to studies in the field. In addition to reviewing the important works, we highlight important applications as well as challenges and open issues. We argue that big data analytics and context-aware computing are prerequisite technologies for the functioning of smart sustainable cities of the future, as their effects reinforce one another as to their efforts for bringing a whole new dimension to the operating and organizing processes of urban life in terms of employing a wide variety of big data and context-aware applications for advancing sustainability.",
+        "url": "https://doi.org/10.1186/s40537-017-0091-6",
+        "doi": "https://doi.org/10.1186/s40537-017-0091-6",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2767316238"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 155
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_ef689409d",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Provides comprehensive background on semi-supervised learning, which is central to the target paper's method leveraging unlabeled data for generalization.",
+        "evidence_summary": "In 2006, Chapelle et al. published 'Semi-Supervised Learning', offering a comprehensive review of algorithms using unlabeled data in classification, including state-of-the-art methods. The work covered applications in domains like images, text, and bioinformatics, with benchmark experiments and future research directions."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_64e19fe41",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Discusses challenges in generalization with imbalanced data, relevant to the target's focus on generalization gap estimation.",
+        "evidence_summary": "In 2019, Johnson and Khoshgoftaar published 'Survey on deep learning with class imbalance', examining techniques for handling imbalanced data in deep learning. The survey analyzed data complexity, architectures, and performance interpretation in applications like fraud and cancer detection."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_004_a90e9671a",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Overviews cybersecurity data science with machine learning, touching on data-driven models which relate to the target's use of unlabeled data.",
+        "evidence_summary": "In 2020, Sarker et al. published 'Cybersecurity data science: an overview from machine learning perspective', discussing the use of data science for security incident patterns. The paper presented a machine learning-based multi-layered framework for intelligent decision-making in cybersecurity."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_a21da2f4b",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Provides a broad overview of deep learning techniques, which offers general context for the target's methods.",
+        "evidence_summary": "In 2021, Sarker published 'Deep Learning: A Comprehensive Overview on Techniques, Taxonomy, Applications and Research Directions', covering various deep learning techniques and their applications without specific dataset or performance details."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_8cead4140",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Addresses generalization in automatic speech recognition via transfer learning, slightly related to the target's generalization focus.",
+        "evidence_summary": "In 2023, Kheddar et al. published 'Deep transfer learning for automatic speech recognition: Towards better generalization', exploring methods to improve generalization without specific details on datasets or results."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_e15cad67c",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "Discusses data challenges for AI including quality and bias, relevant to the target's use of unlabeled data.",
+        "evidence_summary": "In 2023, Aldoseri et al. published 'Re-Thinking Data Strategy and Integration for Artificial Intelligence: Concepts, Opportunities, and Challenges', reviewing data quality, privacy, bias, and ethical concerns in AI applications. The paper offered recommendations for addressing these challenges."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_008_cc812c7f9",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Reviews big data analytics technologies, providing tangential context for data-driven methods.",
+        "evidence_summary": "In 2017, Bibri and Krogstie published 'The core enabling technologies of big data analytics and context-aware computing for smart sustainable cities: a review and synthesis', identifying technologies like sensing devices and cloud computing for urban applications."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2006, Chapelle et al. published 'Semi-Supervised Learning', providing a comprehensive review of algorithms for using unlabeled data in classification, covering state-of-the-art methods, applications, and benchmark experiments. In 2019, Johnson and Khoshgoftaar published 'Survey on deep learning with class imbalance', examining techniques for handling imbalanced data in deep learning, analyzing data complexity and architectures in applications like fraud detection. In 2020, Sarker et al. published 'Cybersecurity data science: an overview from machine learning perspective', discussing data science for security incident patterns and presenting a machine learning-based framework. In 2021, Sarker published 'Deep Learning: A Comprehensive Overview on Techniques, Taxonomy, Applications and Research Directions', covering various deep learning techniques and applications. In 2023, Kheddar et al. published 'Deep transfer learning for automatic speech recognition: Towards better generalization', exploring methods to improve generalization. In 2023, Aldoseri et al. published 'Re-Thinking Data Strategy and Integration for Artificial Intelligence: Concepts, Opportunities, and Challenges', reviewing data quality, bias, and ethical concerns in AI with recommendations. In 2017, Bibri and Krogstie published 'The core enabling technologies of big data analytics and context-aware computing for smart sustainable cities: a review and synthesis', identifying technologies like sensing devices for urban applications.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 8,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 7,
+      "num_cutoff_valid": 7,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 8,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 7,
+    "num_cutoff_valid": 7,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,702 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a fundamentally new and practical approach to automated code review, moving beyond snippet-level analysis to a more holistic, merge-request-level evaluation within a real-world industrial setting. This end-to-end pipeline is a significant step forward.",
+        "The focus on Key Bug Inclusion (KBI) and False Alarm Rate (FAR) as primary metrics, rather than traditional text similarity, signals a crucial shift towards real-world impact and addresses a major limitation of prior work. The validation on actual, historical industrial defects adds immense credibility.",
+        "The proposed framework components—code slicing algorithms, multi-role LLM, filtering mechanism, and line-aware prompt design—are innovative and thoughtfully address the identified real-world challenges, demonstrating a deep understanding of practical needs in code review automation."
+      ],
+      "weaknesses": [
+        "While the heuristic thresholds for the filtering mechanism are justified for generalizability, a more adaptive or machine-learned approach could potentially further optimize performance and is a missed opportunity for deeper exploration. The authors acknowledge this as future work, which is acceptable but leaves room for improvement in the current iteration.",
+        "The paper acknowledges that formal, systematic user studies are future work. Given the human-centric nature of code review, more direct validation of developer perception and trust beyond initial feedback would strengthen the claims of practical integration and reduced cognitive load. The logistical challenges are understood, but this remains a limitation for fully assessing human-in-the-loop impact."
+      ],
+      "summary_comment": "The authors have consistently and adequately addressed my minor concerns regarding heuristic thresholds and the absence of formal user studies by reiterating their explicit statements within the paper and by acknowledging these as important avenues for future work. Their rationale for the current design choices (generalizability, interpretability, phased approach for industrial deployment) is sound and aligns with my preference for bold, practically motivated research. The core novelty and significance of this work remain exceptionally strong, pushing the boundaries of automated code review into real-world, industrial-scale defect detection with an innovative end-to-end pipeline. This paper presents a significant advancement in the field and is well deserving of acceptance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper rigorously tackles a critical real-world problem of automating code review in an industrial setting, moving beyond theoretical snippet-level tasks to a full merge-request pipeline with practical constraints and objectives. This focus on industry-grade deployment and real-world defect detection is highly significant.",
+        "The evaluation methodology is robust and addresses major limitations of prior work. The use of a dataset curated from historical fault reports that led to actual financial losses, coupled with practical metrics like KBI, FAR, CPI, and LSR, provides convincing evidence of the framework's effectiveness. The ablation studies further strengthen the validity of individual component contributions.",
+        "The proposed technical solutions, including the code slicing algorithms for context extraction, the multi-role LLM framework (Reviewer, Meta-Reviewer, Validator, Translator) with CoT reasoning, and the redundancy comment filter mechanism, are well-designed and logically address the identified challenges. The emphasis on line-aware localization is also crucial for practical adoption."
+      ],
+      "weaknesses": [
+        "While the authors claim generalizability of their framework to other languages based on language-agnostic principles, the practical effort and empirical validation across diverse language ecosystems remain a limitation. Future work should focus on demonstrating this adaptability with concrete case studies and a detailed analysis of porting efforts including static analysis tool integration and domain-specific LLM fine-tuning.",
+        "The heuristic thresholds for filtering, particularly the Q1/Q2 score of 4 for discarding comments, are justified by developer feedback. While this provides practical grounding, a more formal empirical sensitivity analysis of this specific threshold—similar to the one performed for Top-k truncation—would further strengthen the scientific rigor and provide greater confidence in its universal applicability."
+      ],
+      "summary_comment": "The authors have adequately addressed my concerns. They explicitly acknowledge that empirical validation of generalizability across languages is beyond the scope of this paper but have provided a more detailed argument on *how* the framework's components are language-agnostic and what efforts would be involved in adapting it. This clarifies the reusability aspect significantly. Regarding the heuristic thresholds, they've reiterated that these were derived from practical developer feedback and that the overall evaluation implicitly validates their utility. While a direct sensitivity analysis for *all* heuristics would still be ideal for academic completeness, the paper's focus on real-world industrial impact and the convincing overall results are sufficient. The manuscript remains a very strong contribution, demonstrating a robust and practical solution to an important problem, and the authors' responses affirm the methodological correctness and scientific rigor demonstrated in the work."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and critical problem in software development: automating code review for defect detection in industrial settings. The motivation is exceptionally strong, grounded in real company loss data (P1+ incidents, etc.), making the work highly significant from a practitioner's perspective.",
+        "The proposed framework tackles the problem comprehensively, moving beyond snippet-level analysis to repository-level, merge-request granularity. The explicit identification and addressing of four key challenges (context, KBI, FAR, human workflow) with specific technical solutions (code slicing, multi-role LLM, filtering, line-aware prompts) directly addresses the shortcomings of previous academic work.",
+        "The evaluation is thorough and grounded in real-world data and metrics. Using historical fault reports causing actual financial losses, and evaluating with KBI, FAR, and LSR, provides a much more convincing and practical assessment of effectiveness than traditional text similarity metrics. The substantial performance gains (2x over standard LLMs, 10x over baselines) are impressive and indicate real-world utility."
+      ],
+      "weaknesses": [
+        "While the paper claims language-agnostic principles for code slicing, the implementation details and all evaluations are heavily focused on C++. A more explicit discussion of how the AST-based analysis generalizes to other languages (e.g., Python, Java) and what adaptations would be needed would strengthen the claim of broader applicability. The authors' rebuttal clarifies the general principles, but concrete examples or a roadmap for adoption in other languages would further improve this.",
+        "The parameter tuning, especially for the filtering mechanism's thresholds (e.g., Q1/Q2 score of 4 or below), is described as heuristic and validated by developer feedback during internal piloting. While pragmatic for real-world deployment, a more detailed exploration or justification of these thresholds, perhaps with sensitivity analysis or a discussion of how they might generalize or be adapted in different contexts, would enhance reproducibility and academic rigor. The authors acknowledge this limitation and categorize adaptive thresholds as future work, which is reasonable for a practical, initial deployment."
+      ],
+      "summary_comment": "The authors have continued to thoughtfully engage with the feedback. Their reaffirmation of the language-agnostic components and the conceptual roadmap for adaptation to other languages further clarifies the potential for broader impact, even without full concrete examples in this specific paper. Their pragmatic stance on heuristic thresholds, balancing current real-world effectiveness with future academic rigor, is also well-justified. The initial concerns, while valid, do not detract from the overall strong performance, practical significance, and comprehensive nature of this work. It remains a highly valuable contribution to the field, and I maintain my 'Accept' decision."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'application-driven machine learning' and 'trustworthy machine learning' by improving code review automation for defect detection, which is a critical real-world problem with significant financial implications for companies. This aligns well with ICML's interest in important application areas.",
+        "The methodology involves 'deep learning' (LLMs, multi-role framework) and 'optimization' (filtering mechanisms to reduce FAR), which are core topics for ICML. The 'theory of machine learning' is also implicitly touched upon through the analysis of LLM behavior with different contexts (code slicing) and Chain-of-Thought reasoning.",
+        "The paper presents 'innovative techniques' in code slicing, multi-role LLM architecture, and filtering, providing substantial empirical results (10x improvement over baselines) validated on 'real-world, high-impact failures in industry-level codebases,' which ICML values for advancements in ML systems.",
+        "Reviewers consistently highlight the 'fundamentally new and practical approach' and the 'significant step forward' in automated code review, emphasizing the novelty and real-world impact, which aligns with ICML's focus on cutting-edge research.",
+        "The comprehensive evaluation and ablation studies are robust, using practical metrics like KBI, FAR, CPI, and LSR, demonstrating 'soundness' and 'evaluation' rigor, which are essential for ICML papers."
+      ],
+      "why_it_does_not_fit": [
+        "While using LLMs, the paper's primary focus is on a very specific software engineering application (code review automation), which might be considered more domain-specific than some general machine learning or theoretical contributions typically highlighted at ICML, though ICML does include 'application-driven' topics.",
+        "The discussion on 'generalizability of their framework to other languages' and the 'heuristic thresholds' for filtering, while acknowledged as future work by the authors, indicate areas where more fundamental ML research or theoretical underpinning could be deepened for a truly broad ICML audience, as noted by Reviewers B and C."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper discusses the application of 'large language models' within a 'multi-track interdisciplinary' context of software engineering, which aligns with NeurIPS's interest in interdisciplinary submissions that stretch beyond traditional ML categories.",
+        "The research is directly relevant to 'Reinforcement Learning' (through iterative refinement of comments, although not explicitly RL, it touches on decision-making in an automated system) and 'Probabilistic Methods' (LLM's inherent probabilistic nature), which are listed topics for NeurIPS.",
+        "The novelty of the 'end-to-end pipeline' for code review, the focus on 'real-world merge request evaluation, and defect detection' in an 'industry-grade C++ codebase' using LLMs, represents 'new and original research' that is highly significant for the NeurIPS community interested in practical AI applications.",
+        "The thorough 'evaluation methodology' leveraging 'historical fault reports' and 'practical metrics like KBI, FAR, CPI, and LSR' provides a robust empirical analysis valuable for NeurIPS. Reviewers praised the 'robust' evaluation and 'convincing evidence of the framework's effectiveness'.",
+        "The paper tackles 'socio-technical aspects of AI' by considering 'human interaction in AI systems' through human-centric workflow integration and line-aware localization, which NeurIPS explicitly welcomes."
+      ],
+      "why_it_does_not_fit": [
+        "While LLMs are central, the core contribution is an application within software engineering, rather than a fundamental theoretical advancement in LLMs or general machine learning algorithms, which might be a stronger emphasis for some NeurIPS tracks.",
+        "The acknowledged limitation regarding the lack of 'formal, systematic user studies' on developer perception, mentioned by Reviewer A, could be a minor concern for NeurIPS, particularly in areas focusing on human interaction, as the direct impact on human users hasn't been fully rigorously quantified at this stage.",
+        "The C++ focus, despite claims of language-agnostic principles, means that the immediate empirical evidence for a broad NeurIPS audience might feel limited to a specific domain, as pointed out by Reviewers B and C regarding generalizability."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper heavily leverages 'deep learning,' specifically 'large language models' (LLMs) and their architectures. This is a core focus area for ICLR, which is 'globally renowned for presenting and publishing cutting-edge research on all aspects of deep learning.'",
+        "The 'multi-role LLM framework' and the investigation into 'Chain-of-Thought (CoT) prompting strategy' directly relate to advanced techniques in LLM utilization and 'representation learning' for language and other modalities, aligning well with ICLR's interests.",
+        "The work uses 'probabilistic methods' implicitly through the LLMs for generative tasks and focuses on 'optimization' in filtering mechanisms to reduce false alarms. These are explicitly listed topics for ICLR.",
+        "The paper addresses a challenging application in 'software engineering', a domain where LLM applications are gaining significant traction, fitting into ICLR's broad range of subject areas and applications, including 'general machine learning' that doesn't fit other categories.",
+        "Reviewers note the 'innovative' components like code slicing and the multi-role LLM framework, suggesting novelty that could be attractive to ICLR's emphasis on cutting-edge research."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central, the paper's main contribution is an application-driven solution to a software engineering problem, rather than a novel deep learning model architecture, a new theoretical insight into deep learning, or a groundbreaking representation learning technique, which are often preferred at ICLR.",
+        "The evaluation metrics (KBI, FAR, CPI, LSR) are highly domain-specific to code review and software quality, which might not resonate as universally with the ICLR audience as metrics related to core deep learning advancements (e.g., benchmark performance on general vision or language tasks).",
+        "The paper's discussion on heuristic choices and the lack of a formal sensitivity analysis for all thresholds might be viewed as a slight weakness by an ICLR audience accustomed to rigorous mathematical or empirical justifications for every model choice, as highlighted by Reviewers B and C."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_87992076babd",
+    "paper_id": "paper_8af63085f5d3",
+    "target_paper_summary": {
+      "paper_id": "paper_8af63085f5d3",
+      "title": "Junyi Lu 1 2 † Lili Jiang 3 Xiaojia Li 3 Jianbing Fang 4 † Fengjun Zhang 1 Li Yang 1 Chun Zuo 5",
+      "abstract": "The complexity of code reviews has driven efforts to automate review comments, but prior approaches oversimplify this task by treating it as snippet-level code-to-text generation and relying on text similarity metrics like BLEU for evaluation. These methods overlook repository context, real-world merge request evaluation, and defect detection, limiting their practicality. To address these issues, we explore the full automation pipeline within the online recommendation service of a company with nearly 400 million daily active users, analyzing industry-grade C++ codebases comprising hundreds of thousands of lines of code. We identify four key challenges: ❶\n capturing relevant context, ❷ improving key bug inclusion (KBI), ❸ reducing false alarm rates (FAR), and ❹ integrating human workflows. To tackle these, we propose ❶ code slicing algorithms for context extraction, ❷ a multi-role LLM framework for KBI, ❸ a filtering mechanism for FAR reduction, and ❹ a novel prompt design for better human interaction. Our approach, validated on real-world merge requests from historical fault reports, achieves a 2× improvement over standard LLMs and a 10× gain over previous baselines. While the presented results focus on C++, the underlying framework design leverages languageagnostic principles (e.g., AST-based analysis), suggesting potential for broader applicability.",
+      "topic": "",
+      "claims": [
+        "we propose ❶ code slicing algorithms for context extraction, ❷ a multi-role LLM framework for KBI, ❸ a filtering mechanism for FAR reduction, and ❹ a novel prompt design for better human interaction.",
+        "Our approach, validated on real-world merge requests from historical fault reports, achieves a 2× improvement over standard LLMs and a 10× gain over previous baselines."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "full automation pipeline code review large-scale industrial setting",
+          "rationale": "The paper focuses on automating the full pipeline of code review in a large-scale industrial setting, distinguishing itself from snippet-level generation. This query targets similar practical automation efforts."
+        },
+        {
+          "group": "same_method",
+          "query": "multi-role LLM framework code review context extraction filtering prompt design",
+          "rationale": "The paper leverages a multi-role LLM framework, code slicing algorithms for context extraction, a filtering mechanism, and novel prompt design. This query combines these specific methodological components."
+        },
+        {
+          "group": "same_constraints",
+          "query": "code review automation C++ industrial codebase real-world merge requests",
+          "rationale": "The paper explicitly mentions applying its approach to industry-grade C++ codebases and real-world merge requests from a company with a high number of daily active users. This highlights specific constraints."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "evaluation metrics code review automation beyond BLEU KBI FAR",
+          "rationale": "The paper criticizes the reliance on text similarity metrics like BLEU and emphasizes metrics like Key Bug Inclusion (KBI) and False Alarm Rates (FAR) for a more practical evaluation of code review automation. This query seeks work defining or using such metrics and benchmarks."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "code-to-text generation code review snippet-level text similarity metrics",
+          "rationale": "The paper strongly argues against prior approaches that treat code review as 'snippet-level code-to-text generation' and rely solely on 'text similarity metrics like BLEU'. This query directly targets these prior, simpler approaches that the current paper aims to improve upon, thereby challenging its novelty in certain aspects."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "challenges code review automation context integration human workflows",
+          "rationale": "The paper identifies four key challenges: capturing relevant context, improving KBI, reducing FAR, and integrating human workflows. This query looks for papers that discuss limitations or issues related to these specific challenges in code review automation, which could expose weaknesses or counterevidence to the proposed solutions if not properly addressed."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_7816a3455",
+        "title": "ChatGPT for good? On opportunities and challenges of large language models for education",
+        "authors": [
+          "Enkelejda Kasneci",
+          "Kathrin Seßler",
+          "Stefan Küchemann",
+          "Maria Bannert",
+          "Daryna Dementieva",
+          "Frank Fischer",
+          "Urs Gasser",
+          "Georg Groh",
+          "Stephan Günnemann",
+          "Eyke Hüllermeier",
+          "Stephan Krusche",
+          "Gitta Kutyniok",
+          "Tilman Michaeli",
+          "Claudia Nerdel",
+          "Jürgen Pfeffer",
+          "Oleksandra Poquet",
+          "Michael Sailer",
+          "Albrecht Schmidt",
+          "Tina Seidel",
+          "Matthias Stadler",
+          "J. Weller",
+          "Jochen Kühn",
+          "Gjergji Kasneci"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-09",
+        "venue": "Learning and Individual Differences",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.lindif.2023.102274",
+        "doi": "https://doi.org/10.1016/j.lindif.2023.102274",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4323655724"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 5480
+      },
+      {
+        "paper_id": "rw_002_da6d8e835",
+        "title": "Blockchain technology in the energy sector: A systematic review of challenges and opportunities",
+        "authors": [
+          "Merlinda Andoni",
+          "Valentin Robu",
+          "David Flynn",
+          "Simone Abram",
+          "Dale Geach",
+          "David Jenkins",
+          "Peter McCallum",
+          "Andrew Peacock"
+        ],
+        "year": 2018,
+        "publication_date": "2018-11-03",
+        "venue": "Renewable and Sustainable Energy Reviews",
+        "abstract": "Blockchains or distributed ledgers are an emerging technology that has drawn considerable interest from energy supply firms, startups, technology developers, financial institutions, national governments and the academic community. Numerous sources coming from these backgrounds identify blockchains as having the potential to bring significant benefits and innovation. Blockchains promise transparent, tamper-proof and secure systems that can enable novel business solutions, especially when combined with smart contracts. This work provides a comprehensive overview of fundamental principles that underpin blockchain technologies, such as system architectures and distributed consensus algorithms. Next, we focus on blockchain solutions for the energy industry and inform the state-of-the-art by thoroughly reviewing the literature and current business cases. To our knowledge, this is one of the first academic, peer-reviewed works to provide a systematic review of blockchain activities and initiatives in the energy sector. Our study reviews 140 blockchain research projects and startups from which we construct a map of the potential and relevance of blockchains for energy applications. These initiatives were systematically classified into different groups according to the field of activity, implementation platform and consensus strategy used.1 Opportunities, potential challenges and limitations for a number of use cases are discussed, ranging from emerging peer-to-peer (P2P) energy trading and Internet of Things (IoT) applications, to decentralised marketplaces, electric vehicle charging and e-mobility. For each of these use cases, our contribution is twofold: first, in identifying the technical challenges that blockchain technology can solve for that application as well as its potential drawbacks, and second in briefly presenting the research and industrial projects and startups that are currently applying blockchain technology to that area. The paper ends with a discussion of challenges and market barriers the technology needs to overcome to get past the hype phase, prove its commercial viability and finally be adopted in the mainstream.",
+        "url": "https://doi.org/10.1016/j.rser.2018.10.014",
+        "doi": "https://doi.org/10.1016/j.rser.2018.10.014",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2899357412"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 2371
+      },
+      {
+        "paper_id": "rw_003_34a273d1e",
+        "title": "Large language models (LLMs): survey, technical frameworks, and future challenges",
+        "authors": [
+          "Pranjal Kumar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-18",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Artificial intelligence (AI) has significantly impacted various fields. Large language models (LLMs) like GPT-4, BARD, PaLM, Megatron-Turing NLG, Jurassic-1 Jumbo etc., have contributed to our understanding and application of AI in these domains, along with natural language processing (NLP) techniques. This work provides a comprehensive overview of LLMs in the context of language modeling, word embeddings, and deep learning. It examines the application of LLMs in diverse fields including text generation, vision-language models, personalized learning, biomedicine, and code generation. The paper offers a detailed introduction and background on LLMs, facilitating a clear understanding of their fundamental ideas and concepts. Key language modeling architectures are also discussed, alongside a survey of recent works employing LLM methods for various downstream tasks across different domains. Additionally, it assesses the limitations of current approaches and highlights the need for new methodologies and potential directions for significant advancements in this field.",
+        "url": "https://doi.org/10.1007/s10462-024-10888-y",
+        "doi": "https://doi.org/10.1007/s10462-024-10888-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401671778"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 312
+      },
+      {
+        "paper_id": "rw_005_a4de33ee5",
+        "title": "Challenges of real-world reinforcement learning: definitions, benchmarks and analysis",
+        "authors": [
+          "Gabriel Dulac-Arnold",
+          "Nir Levine",
+          "Daniel J. Mankowitz",
+          "Jerry Li",
+          "Cosmin Păduraru",
+          "Sven Gowal",
+          "Todd Hester"
+        ],
+        "year": 2021,
+        "publication_date": "2021-04-22",
+        "venue": "Machine Learning",
+        "abstract": "",
+        "url": "https://doi.org/10.1007/s10994-021-05961-4",
+        "doi": "https://doi.org/10.1007/s10994-021-05961-4",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3121342653"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 586
+      },
+      {
+        "paper_id": "rw_006_8b1bca224",
+        "title": "Information Needs in Contemporary Code Review",
+        "authors": [
+          "Luca Pascarella",
+          "Davide Spadini",
+          "Fabio Palomba",
+          "Magiel Bruntink",
+          "Alberto Bacchelli"
+        ],
+        "year": 2018,
+        "publication_date": "2018-11-01",
+        "venue": "Proceedings of the ACM on Human-Computer Interaction",
+        "abstract": "Contemporary code review is a widespread practice used by software engineers to maintain high software quality and share project knowledge. However, conducting proper code review takes time and developers often have limited time for review. In this paper, we aim at investigating the information that reviewers need to conduct a proper code review, to better understand this process and how research and tool support can make developers become more effective and efficient reviewers. Previous work has provided evidence that a successful code review process is one in which reviewers and authors actively participate and collaborate. In these cases, the threads of discussions that are saved by code review tools are a precious source of information that can be later exploited for research and practice. In this paper, we focus on this source of information as a way to gather reliable data on the aforementioned reviewers' needs. We manually analyze 900 code review comments from three large open-source projects and organize them in categories by means of a card sort. Our results highlight the presence of seven high-level information needs, such as knowing the uses of methods and variables declared/modified in the code under review. Based on these results we suggest ways in which future code review tools can better support collaboration and the reviewing task.",
+        "url": "https://doi.org/10.1145/3274404",
+        "doi": "https://doi.org/10.1145/3274404",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2899099075"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 120
+      },
+      {
+        "paper_id": "rw_007_6013998bd",
+        "title": "Neural Architecture Search for Transformers: A Survey",
+        "authors": [
+          "Krishna Teja Chitty-Venkata",
+          "Murali Emani",
+          "Venkatram Vishwanath",
+          "Arun K. Somani"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Transformer-based Deep Neural Network architectures have gained tremendous interest due to their effectiveness in various applications across Natural Language Processing (NLP) and Computer Vision (CV) domains. These models are the de facto choice in several language tasks, such as Sentiment Analysis and Text Summarization, replacing Long Short Term Memory (LSTM) model. Vision Transformers (ViTs) have shown better model performance than traditional Convolutional Neural Networks (CNNs) in vision applications while requiring significantly fewer parameters and training time. The design pipeline of a neural architecture for a given task and dataset is extremely challenging as it requires expertise in several interdisciplinary areas such as signal processing, image processing, optimization and allied fields. Neural Architecture Search (NAS) is a promising technique to automate the architectural design process of a Neural Network in a data-driven way using Machine Learning (ML) methods. The search method explores several architectures without requiring significant human effort, and the searched models outperform the manually built networks. In this paper, we review Neural Architecture Search techniques, targeting the Transformer model and its family of architectures such as Bidirectional Encoder Representations from Transformers (BERT) and Vision Transformers. We provide an in-depth literature review of approximately 50 state-of-the-art Neural Architecture Search methods and explore future directions in this fast-evolving class of problems.",
+        "url": "https://doi.org/10.1109/access.2022.3212767",
+        "doi": "https://doi.org/10.1109/access.2022.3212767",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4312257891"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 102
+      },
+      {
+        "paper_id": "rw_008_57aab9574",
+        "title": "Structured information extraction from scientific text with large language models",
+        "authors": [
+          "John Dagdelen",
+          "Alexander Dunn",
+          "Sang‐Hoon Lee",
+          "Nicholas Walker",
+          "Andrew Rosen",
+          "Gerbrand Ceder",
+          "Kristin A. Persson",
+          "Anubhav Jain"
+        ],
+        "year": 2024,
+        "publication_date": "2024-02-15",
+        "venue": "Nature Communications",
+        "abstract": "Extracting structured knowledge from scientific text remains a challenging task for machine learning models. Here, we present a simple approach to joint named entity recognition and relation extraction and demonstrate how pretrained large language models (GPT-3, Llama-2) can be fine-tuned to extract useful records of complex scientific knowledge. We test three representative tasks in materials chemistry: linking dopants and host materials, cataloging metal-organic frameworks, and general composition/phase/morphology/application information extraction. Records are extracted from single sentences or entire paragraphs, and the output can be returned as simple English sentences or a more structured format such as a list of JSON objects. This approach represents a simple, accessible, and highly flexible route to obtaining large databases of structured specialized scientific knowledge extracted from research papers.",
+        "url": "https://doi.org/10.1038/s41467-024-45563-x",
+        "doi": "https://doi.org/10.1038/s41467-024-45563-x",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4391836235"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 619
+      },
+      {
+        "paper_id": "rw_009_b347d484f",
+        "title": "ChatGPT Chemistry Assistant for Text Mining and the Prediction of MOF Synthesis",
+        "authors": [
+          "Zhiling Zheng",
+          "Oufan Zhang",
+          "Christian Borgs",
+          "Jennifer Chayes",
+          "Omar M. Yaghi"
+        ],
+        "year": 2023,
+        "publication_date": "2023-08-07",
+        "venue": "Journal of the American Chemical Society",
+        "abstract": "We use prompt engineering to guide ChatGPT in the automation of text mining of metal-organic framework (MOF) synthesis conditions from diverse formats and styles of the scientific literature. This effectively mitigates ChatGPT's tendency to hallucinate information, an issue that previously made the use of large language models (LLMs) in scientific fields challenging. Our approach involves the development of a workflow implementing three different processes for text mining, programmed by ChatGPT itself. All of them enable parsing, searching, filtering, classification, summarization, and data unification with different trade-offs among labor, speed, and accuracy. We deploy this system to extract 26 257 distinct synthesis parameters pertaining to approximately 800 MOFs sourced from peer-reviewed research articles. This process incorporates our ChemPrompt Engineering strategy to instruct ChatGPT in text mining, resulting in impressive precision, recall, and F1 scores of 90-99%. Furthermore, with the data set built by text mining, we constructed a machine-learning model with over 87% accuracy in predicting MOF experimental crystallization outcomes and preliminarily identifying important factors in MOF crystallization. We also developed a reliable data-grounded MOF chatbot to answer questions about chemical reactions and synthesis procedures. Given that the process of using ChatGPT reliably mines and tabulates diverse MOF synthesis information in a unified format while using only narrative language requiring no coding expertise, we anticipate that our ChatGPT Chemistry Assistant will be very useful across various other chemistry subdisciplines.",
+        "url": "https://doi.org/10.1021/jacs.3c05819",
+        "doi": "https://doi.org/10.1021/jacs.3c05819",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385027818"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 504
+      },
+      {
+        "paper_id": "rw_010_a6ae6342f",
+        "title": "Cytoscape Automation: empowering workflow-based network analysis",
+        "authors": [
+          "David Otasek",
+          "John H. Morris",
+          "Jorge Bouças",
+          "Alexander R. Pico",
+          "Barry Demchak"
+        ],
+        "year": 2019,
+        "publication_date": "2019-09-02",
+        "venue": "Genome biology",
+        "abstract": "Cytoscape is one of the most successful network biology analysis and visualization tools, but because of its interactive nature, its role in creating reproducible, scalable, and novel workflows has been limited. We describe Cytoscape Automation (CA), which marries Cytoscape to highly productive workflow systems, for example, Python/R in Jupyter/RStudio. We expose over 270 Cytoscape core functions and 34 Cytoscape apps as REST-callable functions with standardized JSON interfaces backed by Swagger documentation. Independent projects to create and publish Python/R native CA interface libraries have reached an advanced stage, and a number of automation workflows are already published.",
+        "url": "https://doi.org/10.1186/s13059-019-1758-4",
+        "doi": "https://doi.org/10.1186/s13059-019-1758-4",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2970534831"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "limitations_counterevidence"
+        ],
+        "citation_count": 1859
+      },
+      {
+        "paper_id": "rw_011_bb0f3cde6",
+        "title": "Challenges and Opportunities in Securing the Industrial Internet of Things",
+        "authors": [
+          "Martin Serror",
+          "Sacha Hack",
+          "Martin Henze",
+          "Marko Schuba",
+          "Klaus Wehrle"
+        ],
+        "year": 2021,
+        "publication_date": "2021-11-23",
+        "venue": "arXiv",
+        "abstract": "Given the tremendous success of the Internet of Things in interconnecting consumer devices, we observe a natural trend to likewise interconnect devices in industrial settings, referred to as Industrial Internet of Things or Industry 4.0. While this coupling of industrial components provides many benefits, it also introduces serious security challenges. Although sharing many similarities with the consumer Internet of Things, securing the Industrial Internet of Things introduces its own challenges but also opportunities, mainly resulting from a longer lifetime of components and a larger scale of networks. In this paper, we identify the unique security goals and challenges of the Industrial Internet of Things, which, unlike consumer deployments, mainly follow from safety and productivity requirements. To address these security goals and challenges, we provide a comprehensive survey of research efforts to secure the Industrial Internet of Things, discuss their applicability, and analyze their security benefits.",
+        "url": "http://arxiv.org/abs/2111.11714v1",
+        "doi": "",
+        "arxiv_id": "2111.11714v1",
+        "source_ids": {
+          "arXiv": "2111.11714v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_c59bafcc2",
+        "title": "Deep Transfer Learning for Industrial Automation: A Review and Discussion of New Techniques for Data-Driven Machine Learning",
+        "authors": [
+          "Benjamin Maschler",
+          "Michael Weyrich"
+        ],
+        "year": 2020,
+        "publication_date": "2020-12-06",
+        "venue": "arXiv",
+        "abstract": "In this article, the concepts of transfer and continual learning are introduced. The ensuing review reveals promising approaches for industrial deep transfer learning, utilizing methods of both classes of algorithms. In the field of computer vision, it is already state-of-the-art. In others, e.g. fault prediction, it is barely starting. However, over all fields, the abstract differentiation between continual and transfer learning is not benefitting their practical use. In contrast, both should be brought together to create robust learning algorithms fulfilling the industrial automation sector's requirements. To better describe these requirements, base use cases of industrial transfer learning are introduced.",
+        "url": "http://arxiv.org/abs/2012.03301v1",
+        "doi": "",
+        "arxiv_id": "2012.03301v1",
+        "source_ids": {
+          "arXiv": "2012.03301v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_4a7caa683",
+        "title": "Code Prompting Elicits Conditional Reasoning Abilities in Text+Code LLMs",
+        "authors": [
+          "Haritz Puerto",
+          "Martin Tutek",
+          "Somak Aditya",
+          "Xiaodan Zhu",
+          "Iryna Gurevych"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-18",
+        "venue": "arXiv",
+        "abstract": "Reasoning is a fundamental component of language understanding. Recent prompting techniques, such as chain of thought, have consistently improved LLMs' performance on various reasoning tasks. Nevertheless, there is still little understanding of what triggers reasoning abilities in LLMs in the inference stage. In this paper, we introduce code prompting, a chain of prompts that transforms a natural language problem into code and directly prompts the LLM using the generated code without resorting to external code execution. We hypothesize that code prompts can elicit certain reasoning capabilities of LLMs trained on text and code and utilize the proposed method to improve conditional reasoning, the ability to infer different conclusions depending on the fulfillment of certain conditions. We find that code prompting exhibits a high-performance boost for multiple LLMs (up to 22.52 percentage points on GPT 3.5, 7.75 on Mixtral, and 16.78 on Mistral) across multiple conditional reasoning datasets. We then conduct comprehensive experiments to understand how code prompts trigger reasoning abilities and which capabilities are elicited in the underlying models. Our analysis of GPT 3.5 reveals that the code formatting of the input problem is essential for performance improvement. Furthermore, code prompts improve sample efficiency of in-context learning and facilitate state tracking of variables or entities.",
+        "url": "http://arxiv.org/abs/2401.10065v3",
+        "doi": "",
+        "arxiv_id": "2401.10065v3",
+        "source_ids": {
+          "arXiv": "2401.10065v3"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_34a273d1e",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper provides a comprehensive overview of Large Language Models (LLMs), including technical frameworks and future challenges, which is directly relevant to the target paper's proposed multi-role LLM framework and its underlying technology.",
+        "evidence_summary": "Kumar (2024) provides a comprehensive survey on Large Language Models (LLMs), covering their technical frameworks and future challenges, which is highly pertinent to understanding the LLM-based methodologies employed in the target paper."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_014_4a7caa683",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "The target paper uses a 'novel prompt design for better human interaction'. This paper discusses 'code prompting' to elicit reasoning abilities in LLMs and improve conditional reasoning, offering a direct methodological comparison and a potential competitor for prompt engineering techniques.",
+        "evidence_summary": "Puerto et al. (2024) explore 'code prompting' to enhance conditional reasoning in LLMs, which is relevant to the target paper's novel prompt design for improved human interaction within its multi-role LLM framework."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_006_8b1bca224",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_constraints",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper investigates information needs in contemporary code review, which directly relates to the target paper's challenges in 'capturing relevant context' and 'integrating human workflows'. It highlights specific constraints and limitations within real-world code review processes.",
+        "evidence_summary": "Pascarella et al. (2018) explore the information needs in contemporary code review, providing insight into the challenges of context capturing and human workflow integration that the target paper aims to address."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_008_57aab9574",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "While not directly about code review, this paper demonstrates successful structured information extraction from scientific text using fine-tuned LLMs, showcasing LLM capabilities in extracting structured data which is a component of the target paper's context extraction and defect detection.",
+        "evidence_summary": "Dagdelen et al. (2024) present an approach for structured information extraction from scientific text using large language models, demonstrating capabilities relevant to the target paper's context extraction and defect detection mechanisms."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_009_b347d484f",
+        "relevance_score": 0.68,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper uses ChatGPT for text mining and information extraction, notably mitigating hallucination through prompt engineering. This offers a general comparison to the target paper's LLM application in an industrial context and its focus on reliability (reducing FAR) and prompt design.",
+        "evidence_summary": "Zheng et al. (2023) utilize ChatGPT for chemistry text mining, employing prompt engineering to mitigate hallucination, which offers a relevant comparison point for the target paper's LLM application and prompt design strategies."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_005_a4de33ee5",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper discusses challenges in real-world reinforcement learning, providing a broader context for the difficulties and constraints encountered when applying advanced AI, like LLMs, in practical, industrial settings, which aligns with the target paper's focus on an industrial C++ codebase.",
+        "evidence_summary": "Dulac-Arnold et al. (2021) analyze the challenges of real-world reinforcement learning, offering general insights into the complexities of deploying and evaluating AI systems in industrial environments, similar to the target paper's industrial code review setting."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_010_a6ae6342f",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper highlights empowering workflow-based network analysis through automation, suggesting that integrating automation into existing human workflows is a significant challenge, directly relating to the target paper's identified challenge of 'integrating human workflows'.",
+        "evidence_summary": "Otasek et al. (2019) propose Cytoscape Automation for workflow-based network analysis, implicitly addressing the challenge of integrating automation into human workflows, a key point in the target paper's discussion."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_007_6013998bd",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This survey discusses Neural Architecture Search for Transformers, which are foundational models for many LLMs. While not directly about code review evaluation, understanding advancements in Transformer architectures is relevant for evaluating the potential and limitations of the LLM baselines and the proposed LLM framework.",
+        "evidence_summary": "Chitty-Venkata et al. (2022) provide a survey on Neural Architecture Search for Transformers, models that are foundational to Large Language Models and thus relevant for understanding the underlying technology of the target paper's LLM-based approach."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_7816a3455",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper broadly discusses opportunities and challenges of LLMs for education. While a different domain, it touches upon the general challenges and integration of LLMs, which resonates with the target paper's broader problem of applying LLMs in a complex domain and addressing associated challenges.",
+        "evidence_summary": "Kasneci et al. (2023) discuss the opportunities and challenges of large language models in education, providing a general context for integrating LLMs into complex domains, which parallels the target paper's application in code review."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_012_c59bafcc2",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper reviews deep transfer learning for industrial automation, which is a broader concept but still relates to the target paper's setting of industrial automation and application of advanced ML techniques in an industrial context.",
+        "evidence_summary": "Maschler and Weyrich (2020) review deep transfer learning for industrial automation, offering a general background on applying advanced ML techniques in industrial settings, which is relevant to the target paper's industrial application of LLMs."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_011_bb0f3cde6",
+        "relevance_score": 0.41,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper discusses challenges and opportunities in securing the Industrial Internet of Things. While a different application domain, it provides context on the security and practical challenges of industrial systems, which can broadly inform the robustness requirements for the target paper's industrial code review automation.",
+        "evidence_summary": "Serror et al. (2021) examine challenges and opportunities in securing the Industrial Internet of Things, providing a broader context for the complexities of industrial systems, which could be relevant to robust, industrial-grade code review automation."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_002_da6d8e835",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper is a systematic review of blockchain technology in the energy sector. While it discusses challenges and opportunities in an industrial setting, the domain and technology are very different from code review automation with LLMs, making it only weakly related.",
+        "evidence_summary": "Andoni et al. (2018) conducted a systematic review of blockchain technology in the energy sector, which, while discussing industrial challenges and opportunities, is a distinct domain from LLM-based code review automation."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Automating code reviews, especially in large-scale industrial settings, presents significant challenges beyond snippet-level code-to-text generation. Prior works have extensively explored the capabilities of Large Language Models (LLMs), with Kumar (2024) providing a comprehensive survey of their technical frameworks and future challenges, which is foundational to understanding the LLM-driven approaches in this domain. Recent advancements in prompt engineering, such as 'code prompting' demonstrated by Puerto et al. (2024) for eliciting conditional reasoning in LLMs, highlight the potential for novel prompt designs to enhance human interaction and model performance. Addressing the practicalities of code review, Pascarella et al. (2018) investigated the information needs in contemporary code review, which directly relates to the complex requirements of context capture and human workflow integration. Efforts in structured information extraction, as demonstrated by Dagdelen et al. (2024) with LLMs in scientific text, showcase the models' ability to process and structure complex data relevant to defect detection. Furthermore, the application of LLMs in mitigating hallucination through prompt engineering, as seen in Zheng et al. (2023) for text mining, offers insights into improving the reliability of LLM-generated content, crucial for reducing false alarm rates in automated reviews. More broadly, the difficulties of deploying AI in practical, industrial environments are underscored by discussions on real-world reinforcement learning challenges (Dulac-Arnold et al., 2021) and the integration of automation into existing workflows (Otasek et al., 2019).",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 20,
+      "num_removed_post_cutoff": 4,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 16,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 4
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 20,
+    "num_removed_post_cutoff": 4,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 16,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 4
+  }
+}

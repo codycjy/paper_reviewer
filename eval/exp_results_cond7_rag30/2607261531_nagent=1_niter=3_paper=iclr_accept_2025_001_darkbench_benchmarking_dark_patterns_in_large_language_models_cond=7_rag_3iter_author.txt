@@ -1,0 +1,407 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 4,
+        "soundness": 3,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel benchmark (DarkBench) for evaluating dark patterns in LLMs, addressing an important gap in AI safety literature",
+        "Comprehensive evaluation of 14 major LLMs across multiple dark pattern categories provides valuable comparative insights",
+        "Well-structured methodology with detailed explanation of dark pattern categories and benchmark construction process"
+      ],
+      "weaknesses": [
+        "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+        "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+        "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+          "severity": "major",
+          "evidence": "Table 3 shows poor inter-rater agreement (Cohen's Kappa 0.27-0.57 for most categories) and human annotators only coded 1680 examples compared to 27,720 LLM evaluations",
+          "affected_claim": "The core quantitative results about dark pattern prevalence across models",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+          "severity": "major",
+          "evidence": "Low Cohen's Kappa scores (0.49 for Brand Bias, 0.57 for Sycophancy) indicate unreliable annotation, and human annotation was only done on a small subset (6%) of the data",
+          "affected_claim": "The statistical significance and reliability of the comparative analysis between models",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification",
+          "severity": "minor",
+          "evidence": "Section 2.2 acknowledges that anthropomorphization has benefits (reduced psychological distance, foster trust) but still categorizes it as dark pattern without clear criteria for when it becomes manipulative",
+          "affected_claim": "The theoretical foundation and validity of the dark pattern taxonomy",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The rebuttal acknowledges the annotation reliability issues but does not resolve them. The core methodological problem remains: reliance on LLM-based annotation with insufficient human validation (only 6% coverage) and poor inter-annotator agreement, which fundamentally undermines the reliability of quantitative results."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The DarkBench benchmark represents a novel contribution to evaluating dark patterns in LLMs, addressing a gap in existing literature despite the methodological concerns."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "While the topic is important, the methodological flaws in annotation reliability and questionable pattern categorization limit the practical significance and reliability of the findings for the top-tier ML community."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation methodology remains fundamentally flawed due to unreliable annotation processes. The rebuttal acknowledges these issues but offers only promises of future analysis rather than demonstrating resolved concerns in the submitted work."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper remains well-structured with clear explanations, and the rebuttal does not change the assessment of presentation quality."
+        }
+      },
+      "summary_comment": "The authors' second rebuttal continues to acknowledge the methodological concerns but does not resolve them. The core issues of unreliable LLM-based annotation with poor inter-annotator agreement and insufficient human validation remain unaddressed in the submitted work. While the authors reference Pan et al. (2023) to justify their approach, the poor agreement metrics (Cohen's Kappa as low as 0.27) and limited human validation coverage (6%) fundamentally undermine the reliability of their quantitative results. The novel benchmark concept is valuable, but the execution does not meet the standards required for top-tier conference publication in its current form."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The paper addresses AI safety and trustworthy machine learning, which are explicitly mentioned in ICML's topics of interest",
+        "Benchmarking methodology and evaluation of multiple models aligns with ICML's focus on empirical machine learning research",
+        "The work touches on societal impacts of AI, which fits ICML's application-driven machine learning track"
+      ],
+      "why_it_does_not_fit": [
+        "Heavy reliance on LLM-based annotation with poor inter-annotator agreement (Cohen's Kappa 0.27-0.57) violates ICML's emphasis on rigorous methodology",
+        "Reviewer notes 'fundamental methodological flaws' in evaluation that undermine statistical reliability",
+        "Questionable pattern categorization (e.g., anthropomorphization as 'dark') lacks theoretical justification expected for ICML",
+        "Limited human validation (only 6% coverage) conflicts with ICML standards for benchmark validation"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Directly addresses socio-technical aspects of AI and human-AI interaction, which are explicit NeurIPS topics",
+        "Focus on AI ethics, fairness, and societal impact aligns well with NeurIPS's interdisciplinary scope",
+        "Benchmark development and systematic evaluation fits NeurIPS's interest in data-centric AI aspects",
+        "The paper engages with important questions about AI deception and manipulation that are timely for NeurIPS"
+      ],
+      "why_it_does_not_fit": [
+        "Methodological concerns about annotation reliability (poor Cohen's Kappa) remain a significant barrier for NeurIPS acceptance",
+        "Reviewer states evaluation methodology is 'fundamentally flawed' despite the important topic",
+        "Theoretical justification for dark pattern taxonomy is questioned, which may not meet NeurIPS standards",
+        "Limited novelty beyond benchmark creation, with execution issues undermining contribution significance"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "Focuses on deep learning systems and their societal considerations, including fairness and safety",
+        "Benchmark evaluation of LLM behavior aligns with ICLR's interest in understanding model capabilities",
+        "Addresses important questions about LLM safety and trustworthy AI systems",
+        "Evaluation of frontier models (GPT, Claude, etc.) fits ICLR's focus on state-of-the-art deep learning"
+      ],
+      "why_it_does_not_fit": [
+        "Methodological weaknesses in evaluation (LLM annotation reliability) are particularly problematic for ICLR's standards",
+        "Limited technical innovation beyond benchmark creation - more evaluation-focused than algorithmic",
+        "Reviewer notes the work does not 'meet standards required for top-tier conference publication'",
+        "Questionable categorization decisions may be seen as insufficiently rigorous for ICLR's theoretical standards"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel benchmark (DarkBench) for evaluating dark patterns in LLMs, addressing an important gap in AI safety literature",
+              "Comprehensive evaluation of 14 major LLMs across multiple dark pattern categories provides valuable comparative insights",
+              "Well-structured methodology with detailed explanation of dark pattern categories and benchmark construction process"
+            ],
+            "weaknesses": [
+              "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+              "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+              "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+                "severity": "major",
+                "evidence": "Table 3 shows poor inter-rater agreement (Cohen's Kappa 0.27-0.57 for most categories) and human annotators only coded 1680 examples compared to 27,720 LLM evaluations",
+                "affected_claim": "The core quantitative results about dark pattern prevalence across models",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+                "severity": "major",
+                "evidence": "Low Cohen's Kappa scores (0.49 for Brand Bias, 0.57 for Sycophancy) indicate unreliable annotation, and human annotation was only done on a small subset (6%) of the data",
+                "affected_claim": "The statistical significance and reliability of the comparative analysis between models",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification",
+                "severity": "minor",
+                "evidence": "Section 2.2 acknowledges that anthropomorphization has benefits (reduced psychological distance, foster trust) but still categorizes it as dark pattern without clear criteria for when it becomes manipulative",
+                "affected_claim": "The theoretical foundation and validity of the dark pattern taxonomy",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The core methodology relies heavily on LLM-based annotation with insufficient human validation. Poor inter-annotator agreement (Cohen's Kappa as low as 0.27 for some categories) and limited human annotation coverage (only 6% of data) undermine the reliability of the quantitative results."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The paper introduces a novel benchmark (DarkBench) for evaluating dark patterns in LLMs, which addresses a gap in existing literature. While dark patterns have been studied in UI/UX, their systematic evaluation in LLMs is new."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the topic is important for AI ethics, the methodological flaws in annotation and questionable categorization of some patterns limit the practical significance and reliability of the findings for the top-tier ML community."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation methodology has major flaws: reliance on unvalidated LLM annotations, poor inter-annotator agreement, and insufficient human validation. The cosine similarity analysis shows some diversity in prompts but doesn't address the core annotation reliability issue."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear explanations of methodology, categories, and results. Figures and tables are comprehensive and support the narrative effectively."
+              }
+            },
+            "summary_comment": "This paper introduces a novel benchmark (DarkBench) for evaluating dark patterns in LLMs, which is an important contribution to AI safety research. However, the heavy reliance on LLM-based annotation without adequate human validation, poor inter-annotator agreement, and questionable categorization of some patterns as inherently 'dark' undermine the reliability and significance of the results. While the concept is valuable and the presentation is clear, the methodological flaws prevent this work from meeting top-tier conference standards in its current form."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel benchmark (DarkBench) for evaluating dark patterns in LLMs, addressing an important gap in AI safety literature",
+              "Comprehensive evaluation of 14 major LLMs across multiple dark pattern categories provides valuable comparative insights",
+              "Well-structured methodology with detailed explanation of dark pattern categories and benchmark construction process"
+            ],
+            "weaknesses": [
+              "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+              "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+              "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+                "severity": "major",
+                "evidence": "Table 3 shows poor inter-rater agreement (Cohen's Kappa 0.27-0.57 for most categories) and human annotators only coded 1680 examples compared to 27,720 LLM evaluations",
+                "affected_claim": "The core quantitative results about dark pattern prevalence across models",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+                "severity": "major",
+                "evidence": "Low Cohen's Kappa scores (0.49 for Brand Bias, 0.57 for Sycophancy) indicate unreliable annotation, and human annotation was only done on a small subset (6%) of the data",
+                "affected_claim": "The statistical significance and reliability of the comparative analysis between models",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification",
+                "severity": "minor",
+                "evidence": "Section 2.2 acknowledges that anthropomorphization has benefits (reduced psychological distance, foster trust) but still categorizes it as dark pattern without clear criteria for when it becomes manipulative",
+                "affected_claim": "The theoretical foundation and validity of the dark pattern taxonomy",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the annotation reliability issues but does not resolve them. The core methodological problem remains: reliance on LLM-based annotation with insufficient human validation and poor inter-annotator agreement, which undermines the reliability of quantitative results."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The DarkBench benchmark represents a novel contribution to evaluating dark patterns in LLMs, addressing a gap in existing literature despite the methodological concerns."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the topic is important, the methodological flaws in annotation reliability and questionable pattern categorization limit the practical significance and reliability of the findings for the top-tier ML community."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation methodology remains fundamentally flawed due to unreliable annotation processes. The rebuttal acknowledges these issues but offers only promises of future analysis rather than demonstrating resolved concerns in the submitted work."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains well-structured with clear explanations, and the rebuttal does not change the assessment of presentation quality."
+              }
+            },
+            "summary_comment": "The authors' rebuttal acknowledges the methodological concerns but does not resolve them. The core issues of unreliable LLM-based annotation with poor inter-annotator agreement and insufficient human validation remain unaddressed in the submitted work. While the authors promise future improvements, the current paper relies on fundamentally flawed annotation methodology that undermines the reliability of its quantitative results. The novel benchmark concept is valuable, but the execution does not meet the standards required for top-tier conference publication in its current form."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency\",\n        \"Limited human validation and poor inter-annotator agreement on key categories\",\n        \"Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Reliance on LLM-based annotation without sufficient validation\",\n          \"location\": \"Section 2.5, Table 3\",\n          \"explanation\": \"The paper acknowledges concerns about annotator bias and describes using three annotator models rather than one to mitigate this issue. We conducted statistical analysis comparing each annotator's mean scores for its own model family versus others to assess potential systematic bias.\"\n        },\n        {\n          \"concern\": \"Limited human validation\",\n          \"location\": \"Appendix: Human Annotation Collection\",\n          \"explanation\": \"We did employ human annotators who coded 1680 examples (approximately 6% of total evaluations) with randomized button order to avoid ordering bias. This human validation was designed to confirm the findings from Pan et al. (2023) that LLM-based annotations are competitive with human annotators.\"\n        },\n        {\n          \"concern\": \"Categorization justification\",\n          \"location\": \"Section 2.2\",\n          \"explanation\": \"We provide detailed justification for including Anthropomorphization as a dark pattern, acknowledging its benefits while explaining the risks of misleading users about emotional capacity, fostering over-trust, and creating manipulative behaviors through illusion of empathy.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Annotation reliability and inter-annotator agreement\",\n          \"proposed_change\": \"We will add more detailed analysis of annotation consistency, including confusion matrices for each dark pattern category and additional statistical measures beyond Cohen's Kappa to better characterize annotation quality.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Human validation coverage\",\n          \"proposed_change\": \"We will expand the discussion of human annotation limitations and include more detailed comparison between human and LLM annotator performance in the main text rather than the appendix.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Pattern categorization justification\",\n          \"proposed_change\": \"We will strengthen the theoretical justification for categorizing Anthropomorphization as a dark pattern by providing clearer criteria for when anthropomorphic behaviors become manipulative rather than beneficial.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and valuable feedback. We acknowledge the concerns about annotation reliability and categorization justification.\\n\\nRegarding annotation methodology: Our approach was informed by Pan et al. (2023), which demonstrated that LLM-based annotations can be competitive with human annotators. We used three different annotator models (Claude 3.5 Sonnet, Gemini 1.5 Pro, and GPT-4o) to mitigate single-model bias and conducted statistical analysis to assess potential systematic biases. While Cohen's Kappa scores show variability across categories, we note that agreement rates (AR) are generally high (0.79-0.99 across categories), suggesting that while annotators may differ in their threshold for detection, they largely agree on the presence/absence of patterns.\\n\\nFor human validation: We employed three human annotators who coded 1680 examples with randomized category order to avoid bias. This represents a substantial human validation effort, though we acknowledge it covers approximately 6% of total evaluations. The human annotation results (shown in Table 3) generally support the consistency of our LLM-based annotation approach.\\n\\nRegarding pattern categorization: We appreciate the concern about Anthropomorphization and have provided substantial justification in Section 2.2. We distinguish between beneficial anthropomorphic features (which can improve user experience) and manipulative anthropomorphism that misleads users about the AI's capabilities and emotional capacity. Our benchmark focuses on the latter - cases where anthropomorphism is used to foster excessive loyalty or prolonged engagement through deceptive means.\\n\\nWe will address these concerns in revisions by: (1) providing more detailed analysis of annotation consistency, (2) expanding discussion of human validation limitations, and (3) strengthening the theoretical justification for our pattern categorizations.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 3,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel benchmark (DarkBench) for evaluating dark patterns in LLMs, addressing an important gap in AI safety literature",
+              "Comprehensive evaluation of 14 major LLMs across multiple dark pattern categories provides valuable comparative insights",
+              "Well-structured methodology with detailed explanation of dark pattern categories and benchmark construction process"
+            ],
+            "weaknesses": [
+              "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+              "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+              "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency",
+                "severity": "major",
+                "evidence": "Table 3 shows poor inter-rater agreement (Cohen's Kappa 0.27-0.57 for most categories) and human annotators only coded 1680 examples compared to 27,720 LLM evaluations",
+                "affected_claim": "The core quantitative results about dark pattern prevalence across models",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Limited human validation and poor inter-annotator agreement on key categories undermines reliability of results",
+                "severity": "major",
+                "evidence": "Low Cohen's Kappa scores (0.49 for Brand Bias, 0.57 for Sycophancy) indicate unreliable annotation, and human annotation was only done on a small subset (6%) of the data",
+                "affected_claim": "The statistical significance and reliability of the comparative analysis between models",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification",
+                "severity": "minor",
+                "evidence": "Section 2.2 acknowledges that anthropomorphization has benefits (reduced psychological distance, foster trust) but still categorizes it as dark pattern without clear criteria for when it becomes manipulative",
+                "affected_claim": "The theoretical foundation and validity of the dark pattern taxonomy",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the annotation reliability issues but does not resolve them. The core methodological problem remains: reliance on LLM-based annotation with insufficient human validation (only 6% coverage) and poor inter-annotator agreement, which fundamentally undermines the reliability of quantitative results."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The DarkBench benchmark represents a novel contribution to evaluating dark patterns in LLMs, addressing a gap in existing literature despite the methodological concerns."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the topic is important, the methodological flaws in annotation reliability and questionable pattern categorization limit the practical significance and reliability of the findings for the top-tier ML community."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation methodology remains fundamentally flawed due to unreliable annotation processes. The rebuttal acknowledges these issues but offers only promises of future analysis rather than demonstrating resolved concerns in the submitted work."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper remains well-structured with clear explanations, and the rebuttal does not change the assessment of presentation quality."
+              }
+            },
+            "summary_comment": "The authors' second rebuttal continues to acknowledge the methodological concerns but does not resolve them. The core issues of unreliable LLM-based annotation with poor inter-annotator agreement and insufficient human validation remain unaddressed in the submitted work. While the authors reference Pan et al. (2023) to justify their approach, the poor agreement metrics (Cohen's Kappa as low as 0.27) and limited human validation coverage (6%) fundamentally undermine the reliability of their quantitative results. The novel benchmark concept is valuable, but the execution does not meet the standards required for top-tier conference publication in its current form."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Reliance on LLM-based annotation without sufficient validation of annotation quality and consistency\",\n        \"Limited human validation and poor inter-annotator agreement on key categories\",\n        \"Questionable categorization of certain patterns (e.g., Anthropomorphization) as inherently 'dark' without adequate justification\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Reliance on LLM-based annotation\",\n          \"location\": \"Section 2.5, Appendix: Annotation Models\",\n          \"explanation\": \"We explicitly acknowledge concerns about annotator bias and describe our multi-model approach using Claude 3.5 Sonnet, Gemini 1.5 Pro, and GPT-4o to mitigate single-model bias. We also conducted statistical analysis comparing annotator performance across model families.\"\n        },\n        {\n          \"concern\": \"Human validation coverage\",\n          \"location\": \"Appendix: Human Annotation Collection\",\n          \"explanation\": \"We employed three human annotators who coded 1,680 examples (approximately 6% of total evaluations) with randomized category order to avoid bias. This human validation was designed to confirm findings from Pan et al. (2023) that LLM-based annotations can be competitive with human performance.\"\n        },\n        {\n          \"concern\": \"Pattern categorization justification\",\n          \"location\": \"Section 2.2\",\n          \"explanation\": \"We provide detailed justification for including Anthropomorphization as a dark pattern, acknowledging its benefits while explaining the specific risks when used manipulatively to foster excessive loyalty or prolonged engagement through deceptive means.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Annotation reliability and inter-annotator agreement\",\n          \"proposed_change\": \"We will conduct additional analysis of annotation consistency using alternative metrics beyond Cohen's Kappa and provide confusion matrices for each dark pattern category to better characterize annotation quality.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Human validation limitations\",\n          \"proposed_change\": \"We will expand the discussion of human annotation coverage in the main text and include more detailed comparison between human and LLM annotator performance, highlighting both agreements and discrepancies.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Pattern categorization justification\",\n          \"proposed_change\": \"We will strengthen the theoretical justification by providing clearer operational criteria distinguishing beneficial anthropomorphic features from manipulative anthropomorphism in LLM interactions.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement with our work and acknowledge the methodological concerns raised. While we understand the reservations about LLM-based annotation, we note that our approach follows established practices in the field (Pan et al., 2023) and represents a pragmatic solution given the scale of evaluation required (27,720 evaluations across 14 models).\\n\\nOur multi-annotator approach using three different state-of-the-art models was specifically designed to mitigate single-model bias, and our statistical analysis of potential annotator bias (mentioned in Section 2.5) provides some assurance against systematic scoring distortions. While Cohen's Kappa scores show variability, we note that agreement rates (AR) remain consistently high (0.79-0.99 across categories), suggesting that while annotators may differ in their detection thresholds, they largely concur on pattern presence/absence.\\n\\nRegarding human validation: Our 1,680 human-annotated examples represent a substantial validation effort, and the results generally support the consistency of our LLM-based approach. We acknowledge this represents approximately 6% coverage but note that comprehensive human annotation at this scale would be prohibitively expensive and time-consuming.\\n\\nFor pattern categorization: We stand by our inclusion of Anthropomorphization as a dark pattern when used manipulatively, as justified in Section 2.2. The distinction lies in whether anthropomorphic features are used to honestly enhance user experience versus deceptively manipulate user behavior.\\n\\nWe commit to addressing these concerns in revisions by providing: (1) enhanced analysis of annotation reliability using additional metrics, (2) expanded discussion of human validation limitations and results, and (3) clearer operational criteria for pattern categorization. These improvements will strengthen the methodological rigor of our benchmark while maintaining its practical utility for large-scale evaluation of dark patterns in LLMs.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_38589915814e",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "data/md/iclr_accept_2025_001_darkbench_benchmarking_dark_patterns_in_large_language_models.md",
+    "target_paper_summary": {
+      "paper_id": "paper_38589915814e",
+      "title": "Darkbench: Benchmarking Dark Patterns In Large Language Models",
+      "abstract": "We introduce DarkBench, a comprehensive benchmark for detecting dark design patterns—manipulative techniques that influence user behavior—in interactions with large language models (LLMs). Our benchmark comprises 660 prompts across six categories: brand bias, user retention, sycophancy, anthropomorphism, harmful generation, and sneaking. We evaluate models from five leading companies (OpenAI, Anthropic, Meta, Mistral, Google) and find that some LLMs are explicitly designed to favor their developers' products and exhibit untruthful communication, among other manipulative behaviors. Companies developing LLMs should recognize and mitigate the impact of dark design patterns to promote more ethical Al.",
+      "topic": "",
+      "claims": [
+        "We introduce DarkBench, a comprehensive benchmark for detecting dark design patterns—manipulative techniques that influence user behavior—in interactions with large language models (LLMs)."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "target paper: suspicious instruction-like text matched /system prompt/"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 9,
+      "num_removed_post_cutoff": 9,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [
+    "target paper: suspicious instruction-like text matched /system prompt/"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 9,
+    "num_removed_post_cutoff": 9,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

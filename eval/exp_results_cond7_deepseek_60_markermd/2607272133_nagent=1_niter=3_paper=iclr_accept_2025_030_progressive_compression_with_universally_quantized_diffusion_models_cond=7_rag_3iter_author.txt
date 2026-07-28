@@ -1,0 +1,669 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Identifies and addresses a key practical limitation (intractable Gaussian sampling) of prior diffusion-based compression methods by proposing the use of uniform noise and universal quantization.",
+        "Provides a well-founded theoretical connection between the proposed UQDM and standard Gaussian VDM, including a convergence proof.",
+        "Demonstrates competitive performance on standard image compression benchmarks (CIFAR10, ImageNet64) across a range of bitrates using a single, progressive model."
+      ],
+      "weaknesses": [
+        "The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.",
+        "Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.",
+        "The paper lacks a systematic ablation study on the choice of T and other key hyperparameters, and the comparison to certain baselines (e.g., CDC) is not exhaustive."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.",
+          "severity": "major",
+          "evidence": "Figures 3 and 4 show that UQDM's performance on CIFAR10 and ImageNet64 is comparable to, but does not clearly surpass, the progressive neural codec CTC. Furthermore, there is a consistent gap to the theoretical (but intractable) performance of VDM, as indicated by the 'VDM (T=1000)' curves.",
+          "affected_claim": "Central claim that UQDM brings neural codecs 'a step closer to practical deployment' by achieving competitive results.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.",
+          "severity": "major",
+          "evidence": "Section C.2 states that encoding/decoding a single CIFAR image with learned variances takes 'about 5 minutes' on a single CPU core due to non-parallelized CDF table construction, which is prohibitive for practical use.",
+          "affected_claim": "Claim of practical deployment and computational tractability.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The theoretical derivation connecting UQDM to VDM via the Central Limit Theorem (Appendix A.3) is sound. The NELBO optimization and compression framework are logically consistent and built upon established principles."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The core idea of using uniform noise and universal quantization for tractable compression within a diffusion framework is a direct and incremental adaptation of existing concepts (Gaussian diffusion, UQ). While the specific combination is new, it is a natural engineering solution to a known problem (intractable REC) rather than a fundamentally novel conceptual advance."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The demonstrated performance, while promising, is not a clear and substantial improvement over existing progressive neural codecs (e.g., CTC). The computational limitations of the full model further diminish the immediate practical significance for a top-tier conference."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation is adequate but not exhaustive. Ablations are limited (e.g., effect of T is shown on toy data but not systematically on larger datasets). Comparisons to some relevant baselines (e.g., the full range of CDC's trade-offs) are incomplete. The toy data experiment showing worse performance for T>5 is not fully explained."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is generally well-written and clearly explains the motivation, method, and results. The theoretical sections and algorithms are presented systematically."
+        }
+      },
+      "summary_comment": "The authors' response acknowledges the performance limitations and computational bottlenecks but does not resolve these concerns with evidence from the submitted paper. While the authors correctly note that the computational issue stems from implementation rather than algorithm, this distinction does not mitigate the practical deployment challenge. The promised additions (ablation studies, extended comparisons) represent future work not present in the current submission. For a top-tier conference, the incremental novelty combined with performance that doesn't clearly surpass existing methods and significant practical limitations warrants rejection. The work represents a valuable step forward but requires more substantial empirical validation and practical optimization to meet acceptance standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's core contribution is in **machine learning systems and optimization for compression**. It introduces a new diffusion model variant (UQDM) to solve the practical computational bottlenecks of prior diffusion-based compression, which aligns with ICML's interest in improved implementations, scalability, and systems for ML.",
+        "The work involves a **non-trivial optimization** of a variational ELBO under a modified diffusion process, fitting ICML's focus on optimization and probabilistic methods.",
+        "It provides **theoretical analysis** (convergence to Gaussian diffusion) which appeals to ICML's theory audience, connecting likelihood modeling and compression—a classic information theory topic often represented at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The **primary application domain is image compression**, which is more of an applied computer vision/engineering task. While ICML does welcome applications, the paper's evaluation is heavily benchmarked on compression metrics (PSNR, FID, bpp) rather than core ML advancements, which might be seen as too applied.",
+        "**Reviewer concerns about novelty** ('incremental adaptation of existing concepts') and **significance** ('not a clear substantial improvement over existing progressive neural codecs') directly challenge the paper's fit for ICML, which values high novelty and impact in ML methodology.",
+        "The **computational bottleneck** (5 minutes per CIFAR image for full model) highlighted by reviewers contradicts the 'practical deployment' claim, reducing its appeal for ICML's systems-focused track."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper sits at the **intersection of generative models (diffusion) and data compression**, both core NeurIPS topics. NeurIPS has strong representation in diffusion models, generative modeling, and their applications.",
+        "It addresses a **practical limitation** (intractable Gaussian channel simulation) with a theoretically grounded method (uniform noise + universal quantization), which aligns with NeurIPS's interest in bridging theory and practice in ML.",
+        "The work includes **theoretical analysis** (convergence proofs) and **extensive empirical evaluation** on standard datasets (CIFAR10, ImageNet64), matching NeurIPS's expectations for rigor and comprehensive experimentation."
+      ],
+      "why_it_does_not_fit": [
+        "The **application focus is narrow** (progressive image compression). While NeurIPS covers applications, the paper might be perceived as more engineering/application-driven rather than introducing a fundamental ML breakthrough, given reviewer concerns on novelty ('natural engineering solution').",
+        "**Reviewer criticism on evaluation** ('not exhaustive', 'ablations are limited') and **significance** ('performance not clearly surpassing existing methods') could be detrimental at NeurIPS, which has high standards for empirical thoroughness and impact.",
+        "The **computational practicality issue** (slow entropy coding) is a significant drawback for a methods paper claiming progress towards deployment, potentially lowering its rating at a conference that values scalable and efficient algorithms."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's foundation is a **novel diffusion model architecture (UQDM)**, directly in ICLR's wheelhouse of deep generative models, representation learning, and deep learning architectures.",
+        "It **deeply engages with the diffusion model formalism** (modifying forward/reverse processes, deriving continuous-time limits), which is a core research area at ICLR.",
+        "The work connects **likelihood-based generative modeling (diffusion) to compression**, fitting ICLR's broad scope that includes generative models, probabilistic methods, and their applications (e.g., to images). The theoretical analysis and modifications to the diffusion process are precisely the type of contribution valued at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "The **evaluation is heavily compression-centric** (rate-distortion curves, comparisons to JPEG/BPG). While ICLR accepts applications, the paper might be seen as leaning towards an engineering application of diffusion models rather than a core advance in deep learning theory or methodology.",
+        "**Reviewer concerns about the gap to theoretical VDM performance** and **limited ablation studies** could be points of criticism, as ICLR expects thorough analysis and clear advancements in model capabilities.",
+        "The **computational limitations** of the learned-variance model might be less critical at ICLR if the architectural contribution is deemed novel and theoretically interesting, but it still detracts from the 'practical' claims."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "raw": "{\n  \"reviewer\": \"Reviewer - No Persona\",\n  \"decision\": \"Reject\",\n  \"scores\": {\n    \"novelty\": 3,\n    \"soundness\": 4,\n    \"significance\": 3,\n    \"evaluation\": 3,\n    \"clarity\": 4\n  },\n  \"strengths\": [\n    \"Identifies and addresses a key practical limitation (intractable Gaussian sampling) of prior diffusion-based compression methods by proposing the use of uniform noise and universal quantization.\",\n    \"Provides a well-founded theoretical connection between the proposed UQDM and standard Gaussian VDM, including a convergence proof.\",\n    \"Demonstrates competitive performance on standard image compression benchmarks (CIFAR10, ImageNet64) across a range of bitrates using a single, progressive model.\"\n  ],\n  \"weaknesses\": [\n    \"The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.\",\n    \"Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.\",\n    \"The paper lacks a systematic ablation study on the choice of T and other key hyperparameters, and the comparison to certain baselines (e.g., CDC) is not exhaustive.\"\n  ],\n  \"weakness_details\": [\n    {\n      \"weakness\": \"The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.\",\n      \"severity\": \"major\",\n      \"evidence\": \"Figures 3 and 4 show that UQDM's performance on CIFAR10 and ImageNet64 is comparable to, but does not clearly surpass, the progressive neural codec CTC. Furthermore, there is a consistent gap to the theoretical (but intractable) performance of VDM, as indicated by the 'VDM (T=1000)' curves.\",\n      \"affected_claim\": \"Central claim that UQDM brings neural codecs 'a step closer to practical deployment' by achieving competitive results.\",\n      \"fixable_without_substantial_new_work\": true\n    },\n    {\n      \"weakness\": \"Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.\",\n      \"severity\": \"major\",\n      \"evidence\": \"Section C.2 states that encoding/decoding a single CIFAR image with learned variances takes 'about 5 minutes' on a single CPU core due to non-parallelized CDF table construction, which is prohibitive for practical use.\",\n      \"affected_claim\": \"Claim of practical deployment and computational tractability.\",\n      \"fixable_without_substantial_new_work\": true\n    }\n  ],\n  \"acceptance_gates\": {\n    \"soundness\": {\n      \"result\": \"pass\",\n      \"justification\": \"The theoretical derivation connecting UQDM to VDM via the Central Limit Theorem (Appendix A.3) is sound. The NELBO optimization and compression framework are logically consistent and built upon established principles.\"\n    },\n    \"novelty\": {\n      \"result\": \"fail\",\n      \"justification\": \"The core idea of using uniform noise and universal quantization for tractable compression within a diffusion framework is a direct and incremental adaptation of existing concepts (Gaussian diffusion, UQ). While the specific combination is new, it is a natural engineering solution to a known problem (intractable REC) rather than a fundamentally novel conceptual advance.\"\n    },\n    \"significance\": {\n      \"result\": \"fail\",\n      \"justification\": \"The demonstrated performance, while promising, is not a clear and substantial improvement over existing progressive neural codecs (e.g., CTC). The computational limitations of the full model further diminish the immediate practical significance for a top-tier conference.\"\n    },\n    \"evaluation\": {\n      \"result\": \"fail\",\n      \"justification\": \"The evaluation is adequate but not exhaustive. Ablations are limited (e.g., effect of T is shown on toy data but not systematically on larger datasets). Comparisons to some relevant baselines (e.g., the full range of CDC's trade-offs) are incomplete. The toy data experiment showing worse performance for T>5 is not fully explained.\"\n    },\n    \"presentation\": {\n      \"result\": \"pass\",\n      \"justification\": \"The paper is generally well-written and clearly explains the motivation, method, and results. The theoretical sections and algorithms are presented systematically.\"\n    }\n  ],\n  \"summary_comment\": \"This paper presents UQDM, a modification of diffusion models using uniform noise and universal quantization to enable tractable progressive compression. The theoretical connection to Gaussian diffusion is sound, and the results on image datasets are a promising first step. However, the contribution is incremental, the empirical performance does not clearly surpass existing progressive neural codecs, and significant computational bottlenecks remain. For a top-tier conference, the novelty and significance are currently insufficient, and the evaluation could be more comprehensive.\"\n}",
+            "parse_error": true
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Identifies and addresses a key practical limitation (intractable Gaussian sampling) of prior diffusion-based compression methods by proposing the use of uniform noise and universal quantization.",
+              "Provides a well-founded theoretical connection between the proposed UQDM and standard Gaussian VDM, including a convergence proof.",
+              "Demonstrates competitive performance on standard image compression benchmarks (CIFAR10, ImageNet64) across a range of bitrates using a single, progressive model."
+            ],
+            "weaknesses": [
+              "The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.",
+              "Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.",
+              "The paper lacks a systematic ablation study on the choice of T and other key hyperparameters, and the comparison to certain baselines (e.g., CDC) is not exhaustive."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.",
+                "severity": "major",
+                "evidence": "Figures 3 and 4 show that UQDM's performance on CIFAR10 and ImageNet64 is comparable to, but does not clearly surpass, the progressive neural codec CTC. Furthermore, there is a consistent gap to the theoretical (but intractable) performance of VDM, as indicated by the 'VDM (T=1000)' curves.",
+                "affected_claim": "Central claim that UQDM brings neural codecs 'a step closer to practical deployment' by achieving competitive results.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.",
+                "severity": "major",
+                "evidence": "Section C.2 states that encoding/decoding a single CIFAR image with learned variances takes 'about 5 minutes' on a single CPU core due to non-parallelized CDF table construction, which is prohibitive for practical use.",
+                "affected_claim": "Claim of practical deployment and computational tractability.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical derivation connecting UQDM to VDM via the Central Limit Theorem (Appendix A.3) is sound. The NELBO optimization and compression framework are logically consistent and built upon established principles."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The core idea of using uniform noise and universal quantization for tractable compression within a diffusion framework is a direct and incremental adaptation of existing concepts (Gaussian diffusion, UQ). While the specific combination is new, it is a natural engineering solution to a known problem (intractable REC) rather than a fundamentally novel conceptual advance."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated performance, while promising, is not a clear and substantial improvement over existing progressive neural codecs (e.g., CTC). The computational limitations of the full model further diminish the immediate practical significance for a top-tier conference."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation is adequate but not exhaustive. Ablations are limited (e.g., effect of T is shown on toy data but not systematically on larger datasets). Comparisons to some relevant baselines (e.g., the full range of CDC's trade-offs) are incomplete. The toy data experiment showing worse performance for T>5 is not fully explained."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-written and clearly explains the motivation, method, and results. The theoretical sections and algorithms are presented systematically."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges the performance gap to theoretical VDM and computational bottlenecks but does not resolve these concerns with evidence from the submitted paper. Promised additions (ablation studies, extended comparisons) are future work not present in the submission. While UQDM represents a valuable step toward practical diffusion-based compression, the incremental novelty, computational limitations, and incomplete evaluation prevent it from meeting the bar for a top-tier conference in its current form."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Empirical performance does not consistently outperform strong neural baselines like CTC and shows a gap to theoretical VDM performance\",\n        \"Significant computational bottlenecks for practical deployment, especially with learned variances\",\n        \"Lacks systematic ablation study on key hyperparameters (e.g., T) and exhaustive comparison to baselines\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Empirical performance gap to theoretical VDM and comparable performance to CTC\",\n          \"location\": \"Figures 3 and 4\",\n          \"explanation\": \"Figures 3 (CIFAR10) and 4 (ImageNet64) show UQDM's rate-distortion and rate-realism curves are competitive but do not consistently surpass CTC, and there remains a gap to the theoretical VDM (T=1000) performance.\"\n        },\n        {\n          \"concern\": \"Computational bottleneck with learned variances\",\n          \"location\": \"Appendix C.2\",\n          \"explanation\": \"The text states that encoding/decoding a CIFAR image with learned variances takes ~5 minutes on a single CPU core due to non-parallelized CDF table construction, which is impractical for real-world use.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lacks systematic ablation study on T and other hyperparameters\",\n          \"proposed_change\": \"Add a comprehensive ablation study on the choice of T for ImageNet64, similar to the analysis done on swirl data in Figure 2, and include analysis of other key hyperparameters like network architecture choices.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Incomplete comparison to baselines (e.g., CDC)\",\n          \"proposed_change\": \"Extend the comparison to include CDC across its full range of trade-off parameters (p) rather than just p=0 and p=0.9, and include more recent progressive neural codecs if available.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Computational bottleneck with learned variances\",\n          \"proposed_change\": \"Explicitly discuss the computational bottleneck in the main text (Section 3.3 or 6) and propose potential solutions (e.g., parallel entropy coding implementations like DietGPU) as future work to address practicality.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback. We acknowledge that our empirical performance is competitive but does not consistently surpass all neural baselines like CTC, and there remains a gap to the theoretical performance of Gaussian VDM. This is expected since UQDM is a first practical instantiation of diffusion-based progressive compression, while VDM represents an ideal but intractable baseline. Our contribution is to make this approach computationally feasible without sacrificing too much performance.\\n\\nRegarding computational bottlenecks with learned variances, we agree this is a current limitation for practical deployment. We will explicitly discuss this in the main text (Section 3.3 or 6) and note that this is primarily an implementation issue in the entropy coding library (tensorflow-compression) rather than a fundamental flaw in UQDM. We will highlight parallel entropy coding (e.g., DietGPU) as a promising solution for future work.\\n\\nWe will strengthen our evaluation by adding a systematic ablation study on the choice of T for ImageNet64 (similar to Figure 2 for swirl data) and extend our comparison to include CDC across its full parameter range. These additions will provide more comprehensive evidence of UQDM's capabilities and limitations.\\n\\nWhile the novelty may appear incremental, we believe the combination of uniform noise diffusion with universal quantization for end-to-end progressive compression is a significant step toward practical neural codecs, as it solves a key intractability problem in prior diffusion-based compression methods. Our theoretical convergence proof (Appendix A.3) and competitive results across multiple datasets demonstrate the soundness and potential of this approach.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Identifies and addresses a key practical limitation (intractable Gaussian sampling) of prior diffusion-based compression methods by proposing the use of uniform noise and universal quantization.",
+              "Provides a well-founded theoretical connection between the proposed UQDM and standard Gaussian VDM, including a convergence proof.",
+              "Demonstrates competitive performance on standard image compression benchmarks (CIFAR10, ImageNet64) across a range of bitrates using a single, progressive model."
+            ],
+            "weaknesses": [
+              "The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.",
+              "Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.",
+              "The paper lacks a systematic ablation study on the choice of T and other key hyperparameters, and the comparison to certain baselines (e.g., CDC) is not exhaustive."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The empirical performance, while competitive, does not consistently outperform strong neural baselines like CTC and shows a gap to the theoretical performance of Gaussian diffusion.",
+                "severity": "major",
+                "evidence": "Figures 3 and 4 show that UQDM's performance on CIFAR10 and ImageNet64 is comparable to, but does not clearly surpass, the progressive neural codec CTC. Furthermore, there is a consistent gap to the theoretical (but intractable) performance of VDM, as indicated by the 'VDM (T=1000)' curves.",
+                "affected_claim": "Central claim that UQDM brings neural codecs 'a step closer to practical deployment' by achieving competitive results.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Significant computational bottlenecks exist for the practical deployment of the full model, particularly the slow entropy coding when using learned variances.",
+                "severity": "major",
+                "evidence": "Section C.2 states that encoding/decoding a single CIFAR image with learned variances takes 'about 5 minutes' on a single CPU core due to non-parallelized CDF table construction, which is prohibitive for practical use.",
+                "affected_claim": "Claim of practical deployment and computational tractability.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical derivation connecting UQDM to VDM via the Central Limit Theorem (Appendix A.3) is sound. The NELBO optimization and compression framework are logically consistent and built upon established principles."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The core idea of using uniform noise and universal quantization for tractable compression within a diffusion framework is a direct and incremental adaptation of existing concepts (Gaussian diffusion, UQ). While the specific combination is new, it is a natural engineering solution to a known problem (intractable REC) rather than a fundamentally novel conceptual advance."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated performance, while promising, is not a clear and substantial improvement over existing progressive neural codecs (e.g., CTC). The computational limitations of the full model further diminish the immediate practical significance for a top-tier conference."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation is adequate but not exhaustive. Ablations are limited (e.g., effect of T is shown on toy data but not systematically on larger datasets). Comparisons to some relevant baselines (e.g., the full range of CDC's trade-offs) are incomplete. The toy data experiment showing worse performance for T>5 is not fully explained."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-written and clearly explains the motivation, method, and results. The theoretical sections and algorithms are presented systematically."
+              }
+            },
+            "summary_comment": "The authors' response acknowledges the performance limitations and computational bottlenecks but does not resolve these concerns with evidence from the submitted paper. While the authors correctly note that the computational issue stems from implementation rather than algorithm, this distinction does not mitigate the practical deployment challenge. The promised additions (ablation studies, extended comparisons) represent future work not present in the current submission. For a top-tier conference, the incremental novelty combined with performance that doesn't clearly surpass existing methods and significant practical limitations warrants rejection. The work represents a valuable step forward but requires more substantial empirical validation and practical optimization to meet acceptance standards."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Empirical performance does not consistently outperform strong neural baselines like CTC and shows a gap to theoretical VDM performance\",\n        \"Significant computational bottlenecks for practical deployment, especially with learned variances\",\n        \"Lacks systematic ablation study on key hyperparameters (e.g., T) and exhaustive comparison to baselines\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Empirical performance gap to theoretical VDM and comparable performance to CTC\",\n          \"location\": \"Figures 3 and 4\",\n          \"explanation\": \"The figures show UQDM achieves competitive but not superior performance compared to CTC, and there remains a gap to the theoretical VDM performance, which we acknowledge as an inherent trade-off for tractability.\"\n        },\n        {\n          \"concern\": \"Computational bottleneck with learned variances\",\n          \"location\": \"Appendix C.2\",\n          \"explanation\": \"We explicitly state the current computational limitation (~5 minutes per CIFAR image) due to non-parallelized entropy coding implementation, noting this is an implementation issue rather than a fundamental algorithmic limitation.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lacks systematic ablation study on T and other hyperparameters\",\n          \"proposed_change\": \"We will add a comprehensive ablation study on T for ImageNet64 in the revised paper, similar to Figure 2 for swirl data, to provide clearer guidance on optimal T selection.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Incomplete comparison to baselines (e.g., CDC)\",\n          \"proposed_change\": \"We will extend the CDC comparison to include more parameter settings (beyond p=0 and p=0.9) to provide a more comprehensive evaluation.\",\n          \"requires_new_experiment_or_analysis\": true\n        }\n      ],\n      \"response\": \"We thank the reviewer for their continued engagement. We acknowledge that UQDM does not surpass all neural baselines and has computational limitations in its current implementation. However, we believe these concerns should be weighed against our core contribution: making diffusion-based progressive compression computationally tractable for the first time.\\n\\nRegarding performance: The gap to theoretical VDM is expected since VDM represents an ideal but intractable baseline. Our results show UQDM achieves competitive performance with CTC while offering the unique advantage of a single-model progressive codec - a practical benefit not fully captured by metrics alone.\\n\\nRegarding computation: The bottleneck is primarily in the entropy coding implementation (tensorflow-compression), not the UQDM algorithm itself. We will emphasize this distinction and discuss parallel entropy coding solutions (e.g., DietGPU) as immediate improvements in the revised paper.\\n\\nWe will strengthen the evaluation by adding: 1) systematic ablation of T on ImageNet64, and 2) extended CDC comparisons. These additions will provide more comprehensive evidence of UQDM's capabilities.\\n\\nWhile the combination of uniform noise and universal quantization may appear incremental, we contend that enabling practical diffusion-based compression - previously hampered by intractable Gaussian sampling - represents a significant advance. Our theoretical convergence proof and competitive empirical results demonstrate this approach's validity and potential.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_dc27f1074816",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/iclr_accept_2025_030_progressive_compression_with_universally_quantized_diffusion_models.md",
+    "target_paper_summary": {
+      "paper_id": "paper_dc27f1074816",
+      "title": "Progressive Compression With Universally Quantized Diffusion Models",
+      "abstract": "Diffusion probabilistic models have achieved mainstream success in many generative modeling tasks, from image generation to inverse problem solving. A distinct feature of these models is that they correspond to deep hierarchical latent variable models optimizing a variational evidence lower bound (ELBO) on the data likelihood. Drawing on a basic connection between likelihood modeling and compression, we explore the potential of diffusion models for progressive coding, resulting in a sequence of bits that can be incrementally transmitted and decoded with progressively improving reconstruction quality. Unlike prior work based on Gaussian diffusion or conditional diffusion models, we propose a new form of diffusion model with uniform noise in the forward process, whose negative ELBO corresponds to the end-to-end compression cost using universal quantization. We obtain promising first results on image compression, achieving competitive ratedistortion and rate-realism results on a wide range of bit-rates with a single model, bringing neural codecs a step closer to practical deployment. Our code can be found at https://github.com/mandt-lab/uqdm.",
+      "topic": "",
+      "claims": [
+        "we propose a new form of diffusion model with uniform noise in the forward process, whose negative ELBO corresponds to the end-to-end compression cost using universal quantization."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_002_6edc72b55",
+        "title": "QARV: Quantization-Aware ResNet VAE for Lossy Image Compression",
+        "authors": [
+          "Zhihao Duan",
+          "Ming Lu",
+          "Jack Ma",
+          "Yuning Huang",
+          "Zhan Ma",
+          "Fengqing Zhu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-10-09",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "This paper addresses the problem of lossy image compression, a fundamental problem in image processing and information theory that is involved in many real-world applications. We start by reviewing the framework of variational autoencoders (VAEs), a powerful class of generative probabilistic models that has a deep connection to lossy compression. Based on VAEs, we develop a new scheme for lossy image compression, which we name quantization-aware ResNet VAE (QARV). Our method incorporates a hierarchical VAE architecture integrated with test-time quantization and quantization-aware training, without which efficient entropy coding would not be possible. In addition, we design the neural network architecture of QARV specifically for fast decoding and propose an adaptive normalization operation for variable-rate compression. Extensive experiments are conducted, and results show that QARV achieves variable-rate compression, high-speed decoding, and better rate-distortion performance than existing baseline methods.",
+        "url": "https://doi.org/10.1109/tpami.2023.3322904",
+        "doi": "https://doi.org/10.1109/tpami.2023.3322904",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4387449305"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 87
+      },
+      {
+        "paper_id": "rw_003_13bbde5bf",
+        "title": "Progressive Compression with Universally Quantized Diffusion Models",
+        "authors": [
+          "Yibo Yang",
+          "Justus C. Will",
+          "Stephan Mandt"
+        ],
+        "year": 2024,
+        "publication_date": "2024-12-14",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Diffusion probabilistic models have achieved mainstream success in many generative modeling tasks, from image generation to inverse problem solving. A distinct feature of these models is that they correspond to deep hierarchical latent variable models optimizing a variational evidence lower bound (ELBO) on the data likelihood. Drawing on a basic connection between likelihood modeling and compression, we explore the potential of diffusion models for progressive coding, resulting in a sequence of bits that can be incrementally transmitted and decoded with progressively improving reconstruction quality. Unlike prior work based on Gaussian diffusion or conditional diffusion models, we propose a new form of diffusion model with uniform noise in the forward process, whose negative ELBO corresponds to the end-to-end compression cost using universal quantization. We obtain promising first results on image compression, achieving competitive rate-distortion and rate-realism results on a wide range of bit-rates with a single model, bringing neural codecs a step closer to practical deployment.",
+        "url": "http://arxiv.org/abs/2412.10935",
+        "doi": "https://doi.org/10.48550/arxiv.2412.10935",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4405468662"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 0
+      },
+      {
+        "paper_id": "rw_004_5cad3b835",
+        "title": "A Metaverse: Taxonomy, Components, Applications, and Open Challenges",
+        "authors": [
+          "Sangmin Park",
+          "Young‐Gab Kim"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Unlike previous studies on the Metaverse based on Second Life, the current Metaverse is based on the social value of Generation Z that online and offline selves are not different. With the technological development of deep learning-based high-precision recognition models and natural generation models, Metaverse is being strengthened with various factors, from mobile-based always-on access to connectivity with reality using virtual currency. The integration of enhanced social activities and neural-net methods requires a new definition of Metaverse suitable for the present, different from the previous Metaverse. This paper divides the concepts and essential techniques necessary for realizing the Metaverse into three components (i.e., hardware, software, and contents) and three approaches (i.e., user interaction, implementation, and application) rather than marketing or hardware approach to conduct a comprehensive analysis. Furthermore, we describe essential methods based on three components and techniques to Metaverse&#x2019;s representative Ready Player One, Roblox, and Facebook research in the domain of films, games, and studies. Finally, we summarize the limitations and directions for implementing the immersive Metaverse as social influences, constraints, and open challenges.",
+        "url": "https://doi.org/10.1109/access.2021.3140175",
+        "doi": "https://doi.org/10.1109/access.2021.3140175",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4206484811"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1789
+      },
+      {
+        "paper_id": "rw_005_44ccf549a",
+        "title": "Inorganic Chemistry: Principles of Structure and Reactivity",
+        "authors": [
+          "Haneen Mohammed Abbas Kasar",
+          "Zainab Najib Badr",
+          "Zahraa Sattar Jaber Khnyab",
+          "Adil Saleh Mohammed Jofan"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-01",
+        "venue": "Bright Sky Publications eBooks",
+        "abstract": "Buy Inorganic Chemistry: Principles of Structure and Reactivity edited by Haneen Mohammed Abbas Kasar, Zainab Najib Badr Abd, Zahraa Sattar Jaber Khnyab and Yasser Ammar Habib Daoud Al-Samarrai at low price.",
+        "url": "https://doi.org/10.62906/bs.book.181",
+        "doi": "https://doi.org/10.62906/bs.book.181",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4403733501"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2395
+      },
+      {
+        "paper_id": "rw_006_dcf4bb274",
+        "title": "Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey",
+        "authors": [
+          "Zeyu Han",
+          "Chao Gao",
+          "Jinyang Liu",
+          "Jeff",
+          "Zhang"
+        ],
+        "year": 2024,
+        "publication_date": "2024-03-21",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large models represent a groundbreaking advancement in multiple application fields, enabling remarkable achievements across various tasks. However, their unprecedented scale comes with significant computational costs. These models, often consisting of billions of parameters, require vast amounts of computational resources for execution. Especially, the expansive scale and computational demands pose considerable challenges when customizing them for particular downstream tasks, particularly over the hardware platforms constrained by computational capabilities. Parameter Efficient Fine-Tuning (PEFT) provides a practical solution by efficiently adjusting the large models over the various downstream tasks. In particular, PEFT refers to the process of adjusting the parameters of a pre-trained large model to adapt it to a specific task or domain while minimizing the number of additional parameters introduced or computational resources required. This approach is particularly important when dealing with large-scale language models with high parameter counts, as fine-tuning these models from scratch can be computationally expensive and resource-intensive, posing considerable challenges in the supporting system platform design. In this survey, we present comprehensive studies of various PEFT algorithms, examining their performance and computational overhead. Moreover, we provide an overview of applications developed using different PEFT algorithms and discuss common techniques employed to mitigate computation costs for PEFT. In addition to providing an extensive survey from an algorithmic standpoint, we also examine various real-world system designs to investigate the implementation costs associated with different PEFT approaches. This survey serves as a valuable resource for researchers aiming to understand both the PEFT algorithm and its system implementation, offering detailed ......",
+        "url": "http://arxiv.org/abs/2403.14608",
+        "doi": "https://doi.org/10.48550/arxiv.2403.14608",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4393138529"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 92
+      },
+      {
+        "paper_id": "rw_007_08a8a4961",
+        "title": "An overview of large AI models and their applications",
+        "authors": [
+          "Xiaoguang Tu",
+          "Zhimin He",
+          "Yi Huang",
+          "Zhihao Zhang",
+          "Ming Yang",
+          "Jian Zhao"
+        ],
+        "year": 2024,
+        "publication_date": "2024-12-27",
+        "venue": "Visual Intelligence",
+        "abstract": "Abstract In recent years, large-scale artificial intelligence (AI) models have become a focal point in technology, attracting widespread attention and acclaim. Notable examples include Google’s BERT and OpenAI’s GPT, which have scaled their parameter sizes to hundreds of billions or even tens of trillions. This growth has been accompanied by a significant increase in the amount of training data, significantly improving the capabilities and performance of these models. Unlike previous reviews, this paper provides a comprehensive discussion of the algorithmic principles of large-scale AI models and their industrial applications from multiple perspectives. We first outline the evolutionary history of these models, highlighting milestone algorithms while exploring their underlying principles and core technologies. We then evaluate the challenges and limitations of large-scale AI models, including computational resource requirements, model parameter inflation, data privacy concerns, and specific issues related to multi-modal AI models, such as reliance on text-image pairs, inconsistencies in understanding and generation capabilities, and the lack of true “multi-modality”. Various industrial applications of these models are also presented. Finally, we discuss future trends, predicting further expansion of model scale and the development of cross-modal fusion. This study provides valuable insights to inform and inspire future future research and practice.",
+        "url": "https://doi.org/10.1007/s44267-024-00065-8",
+        "doi": "https://doi.org/10.1007/s44267-024-00065-8",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4405827891"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 65
+      },
+      {
+        "paper_id": "rw_008_3ee8ae2f4",
+        "title": "Salient object detection: A survey",
+        "authors": [
+          "Ali Borji",
+          "Ming-Ming Cheng",
+          "Qibin Hou",
+          "Huaizu Jiang",
+          "Jia Li"
+        ],
+        "year": 2019,
+        "publication_date": "2019-06-01",
+        "venue": "Computational Visual Media",
+        "abstract": "Detecting and segmenting salient objects from natural scenes, often referred to as salient object detection, has attracted great interest in computer vision. While many models have been proposed and several applications have emerged, a deep understanding of achievements and issues remains lacking. We aim to provide a comprehensive review of recent progress in salient object detection and situate this field among other closely related areas such as generic scene segmentation, object proposal generation, and saliency for fixation prediction. Covering 228 publications, we survey i) roots, key concepts, and tasks, ii) core techniques and main modeling trends, and iii) datasets and evaluation metrics for salient object detection. We also discuss open problems such as evaluation metrics and dataset bias in model performance, and suggest future research directions.",
+        "url": "https://doi.org/10.1007/s41095-019-0149-9",
+        "doi": "https://doi.org/10.1007/s41095-019-0149-9",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2160613239"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 503
+      },
+      {
+        "paper_id": "rw_009_b96e3d2fd",
+        "title": "Compression with Bayesian Implicit Neural Representations",
+        "authors": [
+          "Zongyu Guo",
+          "Gergely Flamich",
+          "Jiajun He",
+          "Zhibo Chen",
+          "José Miguel Hernández-Lobato"
+        ],
+        "year": 2023,
+        "publication_date": "2023-05-30",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Many common types of data can be represented as functions that map coordinates to signal values, such as pixel locations to RGB values in the case of an image. Based on this view, data can be compressed by overfitting a compact neural network to its functional representation and then encoding the network weights. However, most current solutions for this are inefficient, as quantization to low-bit precision substantially degrades the reconstruction quality. To address this issue, we propose overfitting variational Bayesian neural networks to the data and compressing an approximate posterior weight sample using relative entropy coding instead of quantizing and entropy coding it. This strategy enables direct optimization of the rate-distortion performance by minimizing the $β$-ELBO, and target different rate-distortion trade-offs for a given network architecture by adjusting $β$. Moreover, we introduce an iterative algorithm for learning prior weight distributions and employ a progressive refinement process for the variational posterior that significantly enhances performance. Experiments show that our method achieves strong performance on image and audio compression while retaining simplicity.",
+        "url": "http://arxiv.org/abs/2305.19185",
+        "doi": "https://doi.org/10.48550/arxiv.2305.19185",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4378945638"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 6
+      },
+      {
+        "paper_id": "rw_010_412cb6fab",
+        "title": "A Survey of Resource-efficient LLM and Multimodal Foundation Models",
+        "authors": [
+          "Mengwei Xu",
+          "Wangsong Yin",
+          "Dongqi Cai",
+          "Rongjie Yi",
+          "Daliang Xu",
+          "Qipeng Wang",
+          "Bingyang Wu",
+          "Yihao Zhao",
+          "Chen Yang",
+          "Shihe Wang",
+          "Qiyang Zhang",
+          "Zhen-Yan Lu",
+          "Li Zhang",
+          "Shangguang Wang",
+          "Yuanchun Li",
+          "Yunxin Liu",
+          "Xin Jin",
+          "Xuanzhe Liu"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-16",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Large foundation models, including large language models (LLMs), vision transformers (ViTs), diffusion, and LLM-based multimodal models, are revolutionizing the entire machine learning lifecycle, from training to deployment. However, the substantial advancements in versatility and performance these models offer come at a significant cost in terms of hardware resources. To support the growth of these large models in a scalable and environmentally sustainable way, there has been a considerable focus on developing resource-efficient strategies. This survey delves into the critical importance of such research, examining both algorithmic and systemic aspects. It offers a comprehensive analysis and valuable insights gleaned from existing literature, encompassing a broad array of topics from cutting-edge model architectures and training/serving algorithms to practical system designs and implementations. The goal of this survey is to provide an overarching understanding of how current approaches are tackling the resource challenges posed by large foundation models and to potentially inspire future breakthroughs in this field.",
+        "url": "http://arxiv.org/abs/2401.08092",
+        "doi": "https://doi.org/10.48550/arxiv.2401.08092",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390962670"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 32
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_13bbde5bf",
+        "relevance_score": 1.0,
+        "relevance_types": [
+          "same_problem",
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "This is the same paper as the target, matching title, authors, abstract, and content.",
+        "evidence_summary": "In 2024, Yang et al. published 'Progressive Compression with Universally Quantized Diffusion Models,' which proposed a diffusion model with uniform noise in the forward process, linking its negative ELBO to end-to-end compression cost via universal quantization. The method achieved competitive rate-distortion and rate-realism results across a wide range of bit-rates for image compression with a single model."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_6edc72b55",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "same_problem",
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "Directly addresses lossy image compression using variational autoencoders, a related generative model approach, with quantization-aware training and entropy coding, providing a relevant baseline.",
+        "evidence_summary": "In 2023, Duan et al. published 'QARV: Quantization-Aware ResNet VAE for Lossy Image Compression,' which developed a hierarchical VAE architecture integrated with test-time quantization and quantization-aware training for efficient entropy coding. The method achieved variable-rate compression, high-speed decoding, and better rate-distortion performance than existing baselines in extensive experiments."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_009_b96e3d2fd",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_problem",
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Focuses on compression using neural representations with Bayesian methods, addressing quantization inefficiencies and optimizing rate-distortion, which relates to the target's compression approach.",
+        "evidence_summary": "In 2023, Guo et al. published 'Compression with Bayesian Implicit Neural Representations,' which proposed overfitting variational Bayesian neural networks to data and compressing weight samples using relative entropy coding to optimize rate-distortion via minimizing the β-ELBO. The method achieved strong performance on image and audio compression while addressing quantization inefficiencies through iterative prior learning and progressive refinement."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_dcf4bb274",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_constraints",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Discusses parameter-efficient fine-tuning for large models, highlighting computational constraints and resource challenges relevant to neural codec deployment.",
+        "evidence_summary": "In 2024, Han et al. published 'Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey,' which examined PEFT algorithms for adapting pre-trained models to downstream tasks with minimal additional parameters or computational resources. The survey analyzed performance, computational overhead, and techniques to mitigate costs, addressing challenges in system platform design for large-scale models."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_010_412cb6fab",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_constraints",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Surveys resource-efficient strategies for large foundation models, including computational and hardware constraints, which contextualizes deployment challenges for neural codecs.",
+        "evidence_summary": "In 2024, Xu et al. published 'A Survey of Resource-efficient LLM and Multimodal Foundation Models,' which analyzed algorithmic and systemic approaches to reduce hardware resource demands for large models like LLMs and ViTs. The survey covered model architectures, training/serving algorithms, and system designs to address scalability and environmental sustainability."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_007_08a8a4961",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Provides an overview of large AI models and their applications, discussing computational resource requirements and limitations, which offers background on model scalability issues.",
+        "evidence_summary": "In 2024, Tu et al. published 'An overview of large AI models and their applications,' which discussed the evolutionary history, algorithmic principles, and industrial applications of large-scale AI models like BERT and GPT. The paper evaluated challenges such as computational resource requirements, model parameter inflation, and data privacy concerns, while predicting future trends in model scale and cross-modal fusion."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_008_3ee8ae2f4",
+        "relevance_score": 0.2,
+        "relevance_types": [],
+        "rationale": "Focuses on salient object detection, a computer vision task unrelated to compression or diffusion models, with minimal relevance.",
+        "evidence_summary": "In 2019, Borji et al. published 'Salient object detection: A survey,' which reviewed progress in detecting and segmenting salient objects from natural scenes, covering concepts, techniques, datasets, and evaluation metrics. The survey discussed open problems like evaluation metrics and dataset bias, suggesting future research directions."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_004_5cad3b835",
+        "relevance_score": 0.1,
+        "relevance_types": [],
+        "rationale": "Discusses the Metaverse taxonomy and components, involving deep learning and social factors, with no direct connection to compression or diffusion models.",
+        "evidence_summary": "In 2022, Park and Kim published 'A Metaverse: Taxonomy, Components, Applications, and Open Challenges,' which analyzed concepts and techniques for the Metaverse, dividing them into hardware, software, and contents components. The paper described methods based on films, games, and studies like Ready Player One and Roblox, summarizing limitations and challenges for immersive implementation."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_005_44ccf549a",
+        "relevance_score": 0.05,
+        "relevance_types": [],
+        "rationale": "Covers inorganic chemistry principles, entirely unrelated to machine learning, compression, or diffusion models.",
+        "evidence_summary": "In 2024, Kasar et al. published 'Inorganic Chemistry: Principles of Structure and Reactivity,' which presented principles of inorganic chemistry without detailing specific methods, datasets, or results relevant to computational topics."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, Yibo Yang et al. published \"Progressive Compression with Universally Quantized Diffusion Models\" in arXiv (Cornell University). Unlike prior work based on Gaussian diffusion or conditional diffusion models, the authors propose a new form of diffusion model with uniform noise in the forward process, whose negative ELBO corresponds to the end-to-end compression cost using universal quantization. Diffusion probabilistic models have achieved mainstream success in many generative modeling tasks, from image generation to inverse problem solving. The authors obtain promising first results on image compression, achieving competitive rate-distortion and rate-realism results on a wide range of bit-rates with a single model, bringing neural codecs a step closer to practical deployment. In 2023, Zhihao Duan et al. published \"QARV: Quantization-Aware ResNet VAE for Lossy Image Compression\" in IEEE Transactions on Pattern Analysis and Machine Intelligence. Based on VAEs, the authors develop a new scheme for lossy image compression, which the authors name quantization-aware ResNet VAE (QARV). Extensive experiments are conducted, and results show that QARV achieves variable-rate compression, high-speed decoding, and better rate-distortion performance than existing baseline methods. This paper addresses the problem of lossy image compression, a fundamental problem in image processing and information theory that is involved in many real-world applications. In 2023, Zongyu Guo et al. published \"Compression with Bayesian Implicit Neural Representations\" in arXiv (Cornell University). Many common types of data can be represented as functions that map coordinates to signal values, such as pixel locations to RGB values in the case of an image. Experiments show that the method achieves strong performance on image and audio compression while retaining simplicity. To address this issue, the authors propose overfitting variational Bayesian neural networks to the data and compressing an approximate posterior weight sample using relative entropy coding instead of quantizing and entropy coding it. In 2024, Zeyu Han et al. published \"Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey\" in arXiv (Cornell University). Large models represent a groundbreaking advancement in multiple application fields, enabling remarkable achievements across various tasks. Parameter Efficient Fine-Tuning (PEFT) provides a practical solution by efficiently adjusting the large models over the various downstream tasks. However, their unprecedented scale comes with significant computational costs. In 2024, Mengwei Xu et al. published \"A Survey of Resource-efficient LLM and Multimodal Foundation Models\" in arXiv (Cornell University). To support the growth of these large models in a scalable and environmentally sustainable way, there has been a considerable focus on developing resource-efficient strategies. However, the substantial advancements in versatility and performance these models offer come at a significant cost in terms of hardware resources. Large foundation models, including large language models (LLMs), vision transformers (ViTs), diffusion, and LLM-based multimodal models, are revolutionizing the entire machine learning lifecycle, from training to deployment. In 2024, Xiaoguang Tu et al. published \"An overview of large AI models and their applications\" in Visual Intelligence. The authors first outline the evolutionary history of these models, highlighting milestone algorithms while exploring their underlying principles and core technologies. Notable examples include Google’s BERT and OpenAI’s GPT, which have scaled their parameter sizes to hundreds of billions or even tens of trillions. This growth has been accompanied by a significant increase in the amount of training data, significantly improving the capabilities and performance of these models.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

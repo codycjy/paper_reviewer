@@ -1,0 +1,108 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of using Optimal Transport (OT) to define multivariate ranks for Conformal Prediction (CP) is highly novel and addresses a significant limitation in the CP literature.",
+        "The paper provides theoretical guarantees for the proposed OT-CP framework, demonstrating that it preserves distribution-free coverage even with approximations of the OT map, which is crucial for practical applicability.",
+        "The experimental evaluation is thorough, benchmarking against relevant multivariate CP baselines on a diverse set of datasets and showing superior performance, particularly in terms of region size for a given coverage."
+      ],
+      "weaknesses": [
+        "The computational cost associated with solving OT problems, especially in higher dimensions and with a large number of target points, is a notable practical limitation. While acknowledged, the trade-off exploration feels somewhat cursory.",
+        "The parameter sensitivity (epsilon and number of target points) needs more detailed guidance for users. The current discussion implies a trial-and-error approach, which can be challenging in real-world applications without clear heuristics or adaptive strategies."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach to extend Conformal Prediction to multivariate settings by leveraging Optimal Transport to define a meaningful ranking in higher dimensions. The idea is bold and addresses a fundamental challenge in CP. The theoretical guarantees, even with approximated maps, are a strong point and show a deep understanding of CP's underlying principles. While the computational costs and parameter tuning are practical hurdles, the novelty and potential impact of this method on the field of uncertainty quantification are immense. This work clearly pushes the boundaries of Conformal Prediction and opens up many exciting avenues for future research. Minor methodological imperfections regarding computational efficiency or parameter tuning are acceptable given the strong novelty and significance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a theoretically sound framework for extending conformal prediction to multivariate settings by leveraging optimal transport theory. The generalization of univariate ranks and quantiles to higher dimensions through Kantorovich ranks is a well-motivated approach.",
+        "The paper rigorously proves distribution-free coverage guarantees for the proposed OT-CP method, even when using approximated transport maps, which is crucial for practical applicability and is a significant theoretical contribution in multivariate conformal prediction.",
+        "The experimental evaluation is comprehensive, using a recently released benchmark dataset (Dheur et al., 2025) across various datasets and comparing OT-CP against relevant multivariate conformal prediction baselines. The analysis of hyperparameters (m and ε) provides valuable practical insights."
+      ],
+      "weaknesses": [
+        "While the theoretical guarantees are strong, the practical computational cost of estimating optimal transport maps, especially in higher dimensions (\"curse of dimensionality\"), is acknowledged but could be further elaborated. The paper mentions it incurs a \"higher train / calibration time cost\" but a more detailed analysis of scalability with dimension and sample size would strengthen the practical recommendations.",
+        "The paper uses a specific method for generating the uniform grid on the sphere (Gaussian based mapping, Basu, 2016). While this is a plausible choice, a brief discussion on alternative methods for discretizing the target distribution and their potential impact on performance or computational cost would be beneficial, perhaps in the appendix."
+      ],
+      "summary_comment": "This paper presents a robust and theoretically well-founded method, OT-CP, for multivariate conformal prediction. It skillfully integrates optimal transport theory to generalize the concept of ranking and quantiles to higher dimensions, preserving the crucial distribution-free coverage guarantees of conformal prediction. The finite-sample coverage proof, even with approximated transport maps, is a significant technical achievement, making the method broadly applicable. The evaluation is thorough and uses a pertinent benchmark, showing that OT-CP performs well against existing baselines despite the expected increase in computational cost. While the computational aspects could be further detailed, the methodological soundness and strong theoretical underpinning make this a valuable contribution to the field. The paper adheres to high standards of rigor and is clearly written."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant practical limitation of Conformal Prediction (CP) by extending it to multivariate settings, which is a common challenge in real-world ML applications where outputs are often vectorial.",
+        "The proposed OT-CP method offers a theoretically sound framework for defining multivariate ranks using optimal transport, ensuring distribution-free coverage guarantees even with finite data samples, which is a crucial property for practical reliability.",
+        "The empirical evaluation is thorough, using a recently released benchmark of 24 diverse regression datasets. The comparisons against well-motivated baselines (M-CP, Merge-CP with Mahalanobis) and the discussion of computational trade-offs provide valuable insights for practitioners."
+      ],
+      "weaknesses": [
+        "The computational cost associated with optimal transport, especially in higher dimensions and with larger grid sizes (`m`), could be a bottleneck for real-time applications or very large datasets. While authors acknowledge this, more explicit guidance on when this method becomes infeasible would be beneficial.",
+        "The paper mentions that default parameters are used for competing methods, but a more detailed exploration or an ablation study of the sensitivity of OT-CP to its hyperparameters (entropic regularization `ε` and grid size `m`) would strengthen the practical guidance. The current ablation is in the appendix and focuses on coverage, but region size and computation time sensitivity would also be valuable."
+      ],
+      "summary_comment": "This paper presents a strong contribution by extending Conformal Prediction to multivariate outputs using optimal transport. The problem is very relevant to practical machine learning, and the authors provide a principled, theoretically sound solution with finite-sample coverage guarantees. The empirical validation across a broad range of datasets is convincing, demonstrating superior performance compared to existing baselines. While computational cost in high dimensions is a concern, the authors acknowledge this and the overall practical impact of enabling reliable multivariate uncertainty quantification is high. The clarity of the theoretical sections and the experimental setup is commendable, making the work accessible to practitioners interested in robust uncertainty measures."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel method (OT-CP) for multivariate conformal prediction using optimal transport, which aligns perfectly with ICML's interest in 'general machine learning' and 'probabilistic methods'.",
+        "The theoretical contribution of extending conformal prediction with distribution-free coverage guarantees to multivariate settings using optimal transport is significant for ICML, which values 'theory of machine learning'. Reviewers consistently highlight the 'theoretical soundness' and 'distribution-free coverage guarantees' as strong points (Reviewer A, B, C).",
+        "The paper provides a thorough experimental evaluation, benchmarking against state-of-the-art methods on diverse datasets. This empirical validation of a novel method is highly valued at ICML, as noted by reviewers praising the 'thorough' and 'comprehensive' experimental evaluation (Reviewer A, B, C).",
+        "The integration of optimal transport, a method related to 'optimization' and 'probabilistic methods', for a practical machine learning problem (conformal prediction) makes it a strong fit for ICML's interdisciplinary nature.",
+        "The paper demonstrates 'superior performance overall' compared to baselines, which is a key indicator of a strong submission for ICML (Summary, Lines 413-415)."
+      ],
+      "why_it_does_not_fit": [
+        "The computational cost, especially in higher dimensions, is a significant practical limitation acknowledged by the authors and all reviewers (Reviewer A, B, C). While the paper addresses the theoretical aspect of this, the 'trade-off exploration feels somewhat cursory' (Reviewer A) and 'could be further elaborated' (Reviewer B), making it less ideal for submissions heavily focused on system-level performance or extreme scalability.",
+        "The parameter sensitivity (epsilon and number of target points) lacks detailed guidance for users, suggesting a 'trial-and-error approach' (Reviewer A) or a need for 'more explicit guidance on when this method becomes infeasible' (Reviewer C). This could be seen as a minor weakness for a conference that also values immediate practical applicability.",
+        "While the paper's topic is relevant, the 'Others' classification often implies a broader scope, whereas this paper is quite specialized in a subfield of ML. For ICML, it fits well under 'general ML' and 'probabilistic methods', but its niche might be a very slight misalignment if interpreted strictly within 'Others'."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core contribution, extending conformal prediction to multivariate settings using optimal transport, is a novel and significant advancement in 'General machine learning: core contributions in supervised and unsupervised methods' and 'Probabilistic methods', both listed as NeurIPS topics.",
+        "NeurIPS greatly values strong theoretical foundations. Reviewers highlight the paper's 'theoretically sound framework' and 'rigorous proofs' for 'distribution-free coverage guarantees' even with approximated maps (Reviewer B, C), which is a key strength for this venue.",
+        "The problem of multivariate uncertainty quantification is a central challenge in machine learning, making the paper's 'potential impact ... immense' (Reviewer A) and highly relevant to NeurIPS's focus on foundational ML research.",
+        "The experimental evaluation on a newly released benchmark dataset is comprehensive and supports the paper's claims, aligning with NeurIPS's focus on empirical validation (Reviewer A, B, C).",
+        "The paper provides 'new insights in terms of limitations' for existing methods and proposes a solution that 'enhances the flexibility and scope of conformal prediction' (Lines 60-63), which is explicitly welcomed by NeurIPS's topic information."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the computational cost associated with optimal transport, especially in higher dimensions, is a recognized limitation (Reviewer A, B, C). While NeurIPS appreciates theoretical depth, practical scalability is increasingly important, and the current discussion might be deemed insufficient for a venue that also emphasizes 'SysML Infrastructure' or large-scale applications.",
+        "The discussion on hyperparameter tuning for 'epsilon and number of target points' is noted by reviewers as needing 'more detailed guidance' (Reviewer A) and could pose practical challenges. NeurIPS often seeks contributions that offer clear pathways to real-world deployment, and this aspect could be improved.",
+        "While the paper is interdisciplinary in nature (CP + Optimal Transport), and NeurIPS welcomes such submissions, the 'Others' topic implies a very broad range, and the paper's specific focus, while strong, is well within the conventional 'General machine learning' and 'Probabilistic methods' categories for NeurIPS, making the 'Others' classification somewhat generic."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

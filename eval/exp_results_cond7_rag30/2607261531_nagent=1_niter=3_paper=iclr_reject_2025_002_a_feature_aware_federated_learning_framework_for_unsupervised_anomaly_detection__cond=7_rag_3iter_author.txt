@@ -1,0 +1,769 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "Addresses a relevant and timely problem: combining federated learning, privacy, and unsupervised anomaly detection for 5G network security.",
+        "Proposes a clear, multi-component framework (FAFL) integrating feature importance and differential privacy.",
+        "Includes a practical adaptive mechanism (Dynamic Feature Importance Adaptation) for evolving network distributions."
+      ],
+      "weaknesses": [
+        "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+        "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+        "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+          "severity": "major",
+          "evidence": "The paper reuses equation numbers (e.g., tags (1) and (1) appear for different equations in sections 3.2.1 and 3.4.2). Equation (2) is incorrectly tagged as (1) in the text. The weight calculation in equation (10), wk = (nk/n) * (∑i ai * ∂Lk/∂θk), is ill-defined as ∂Lk/∂θk is a gradient vector, not a scalar, making the product with a scalar ai unclear. The description of applying IG (Integrated Gradients) for feature importance in an unsupervised autoencoder context is not justified or explained—IG typically requires a model output to attribute to, which is ambiguous for an autoencoder's reconstruction loss.",
+          "affected_claim": "The central claims of a sound, novel feature-aware aggregation mechanism and a mathematically grounded framework.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+          "severity": "major",
+          "evidence": "The dataset is described as a custom 5G testbed with ~23k total records from two attacks and benign traffic. No dataset is named or publicly referenced for validation. The federated setup uses only K=5 clients. Experiments run for only R=5 communication rounds with 5 local epochs per round, which is an extremely small-scale setup for FL. Comparisons are limited to FedAvg and FedProx, omitting relevant recent baselines for feature-aware FL, privacy-preserving FL (e.g., DP-FedAvg), and state-of-the-art unsupervised anomaly detection methods (centralized or federated). The reported performance gains (e.g., ROC-AUC of 0.981 vs. 0.975 for FedProx) are marginal and not shown to be statistically significant.",
+          "affected_claim": "Claims that the FAFL framework 'significantly outperforms' baselines and is robust and effective in realistic 5G settings.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions.",
+          "severity": "minor",
+          "evidence": "The paper contains numerous formatting artifacts (e.g., line number prefixes in the text, misplaced or duplicate equation tags, inconsistent subscript/superscript notation). The presentation of algorithms, figures, and tables is fragmented and referenced confusingly (e.g., 'Figure 1 presents the confusion matrix...' but the subsequent text references '(a) FedProx (b) FedAvg (c) Feature-Aware FL' without clear visual aids in the provided text). The overall narrative is disjointed, making it difficult to follow the precise workflow and contributions.",
+          "affected_claim": "The claim of presenting a clear, well-defined framework that is easy to understand and assess.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The rebuttal acknowledges the mathematical errors and promises future corrections, but the submitted paper contains unresolved technical flaws. The application of IG for unsupervised attribution remains inadequately explained, and the weight calculation formula remains mathematically unsound in the current version."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The combination of feature-aware aggregation using IG with differential privacy for unsupervised anomaly detection in a federated 5G context remains sufficiently distinct from standard FL approaches."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The rebuttal acknowledges the experimental limitations but provides no evidence in the submitted paper to demonstrate meaningful advancement. The small-scale setup, limited baselines, and marginal performance gains prevent assessment of true significance."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The rebuttal confirms the experimental shortcomings and promises expanded evaluation, but the submitted paper's results remain inadequate. The lack of statistical significance testing, limited scale, and absence of strong baselines prevent convincing support of the claims."
+        },
+        "presentation": {
+          "result": "fail",
+          "justification": "The rebuttal acknowledges the clarity issues but the submitted paper remains unclear and poorly formatted. The narrative flow, equation numbering, and figure references continue to hinder reliable assessment."
+        }
+      },
+      "summary_comment": "The author response acknowledges all major weaknesses but does not resolve them in the submitted paper. The response outlines a comprehensive revision plan but provides no evidence that these issues are already addressed. The technical soundness remains compromised by mathematical errors and unclear methodology. The experimental evaluation is insufficient in scale and comparative analysis. The presentation lacks clarity. While the novelty of the integrated approach is acceptable, the failures in soundness, significance, evaluation, and presentation are central to the paper's contribution and prevent it from meeting top-tier standards in its current form."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "Addresses machine learning systems and optimization challenges relevant to ICML's focus on distributed ML systems",
+        "Applies federated learning with differential privacy, aligning with ICML's interest in trustworthy ML and privacy-preserving methods",
+        "Focuses on unsupervised learning for anomaly detection, which fits ICML's coverage of general machine learning topics"
+      ],
+      "why_it_does_not_fit": [
+        "Technical methodology contains mathematical errors and unclear formulations that would not meet ICML's rigorous standards",
+        "Experimental evaluation is severely lacking in scale and comparative breadth - only 5 clients and 5 rounds, which is insufficient for a top ML conference",
+        "Reviewer identified major soundness issues with the application of Integrated Gradients for unsupervised attribution, which undermines technical contribution",
+        "Limited novelty beyond combining existing techniques (FL + DP + feature importance) without strong theoretical foundation"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "Application to 5G networks and network security aligns with NeurIPS's interest in AI/ML for engineering and infrastructure systems",
+        "Addresses privacy-preserving ML through differential privacy, relevant to NeurIPS's socio-technical aspects of AI track",
+        "Unsupervised anomaly detection fits within NeurIPS's general machine learning scope"
+      ],
+      "why_it_does_not_fit": [
+        "Major technical flaws in mathematical formulation and methodology would be heavily criticized at NeurIPS",
+        "Extremely limited experimental setup (only 5 clients, 5 rounds) fails to demonstrate scalability or real-world applicability",
+        "Lacks comparison with state-of-the-art baselines in federated learning or anomaly detection",
+        "Reviewer identified failures in soundness, significance, and evaluation - critical weaknesses for NeurIPS acceptance",
+        "Presentation issues and formatting errors indicate lack of polish expected for top-tier conferences"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 2,
+      "why_it_fits": [
+        "Uses autoencoders for unsupervised representation learning, which aligns with ICLR's focus on deep learning architectures",
+        "Applies neural networks for anomaly detection, relevant to ICLR's application areas"
+      ],
+      "why_it_does_not_fit": [
+        "Paper does not focus on deep learning theory or novel architectures - main contribution is federated learning framework",
+        "Technical methodology contains fundamental mathematical errors that would be unacceptable at ICLR",
+        "Lacks theoretical analysis or novel insights into deep learning mechanisms",
+        "Experimental evaluation is extremely limited and doesn't demonstrate deep learning advancements",
+        "Reviewer identified major soundness issues with the core technical approach",
+        "Does not align with ICLR's primary focus on cutting-edge deep learning research"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Addresses a relevant and timely problem: combining federated learning, privacy, and unsupervised anomaly detection for 5G network security.",
+              "Proposes a clear, multi-component framework (FAFL) integrating feature importance and differential privacy.",
+              "Includes a practical adaptive mechanism (Dynamic Feature Importance Adaptation) for evolving network distributions."
+            ],
+            "weaknesses": [
+              "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+              "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+              "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+                "severity": "major",
+                "evidence": "The paper reuses equation numbers (e.g., tags (1) and (1) appear for different equations in sections 3.2.1 and 3.4.2). Equation (2) is incorrectly tagged as (1) in the text. The weight calculation in equation (10), wk = (nk/n) * (∑i ai * ∂Lk/∂θk), is ill-defined as ∂Lk/∂θk is a gradient vector, not a scalar, making the product with a scalar ai unclear. The description of applying IG (Integrated Gradients) for feature importance in an unsupervised autoencoder context is not justified or explained—IG typically requires a model output to attribute to, which is ambiguous for an autoencoder's reconstruction loss.",
+                "affected_claim": "The central claims of a sound, novel feature-aware aggregation mechanism and a mathematically grounded framework.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+                "severity": "major",
+                "evidence": "The dataset is described as a custom 5G testbed with ~23k total records from two attacks and benign traffic. No dataset is named or publicly referenced for validation. The federated setup uses only K=5 clients. Experiments run for only R=5 communication rounds with 5 local epochs per round, which is an extremely small-scale setup for FL. Comparisons are limited to FedAvg and FedProx, omitting relevant recent baselines for feature-aware FL, privacy-preserving FL (e.g., DP-FedAvg), and state-of-the-art unsupervised anomaly detection methods (centralized or federated). The reported performance gains (e.g., ROC-AUC of 0.981 vs. 0.975 for FedProx) are marginal and not shown to be statistically significant.",
+                "affected_claim": "Claims that the FAFL framework 'significantly outperforms' baselines and is robust and effective in realistic 5G settings.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions.",
+                "severity": "minor",
+                "evidence": "The paper contains numerous formatting artifacts (e.g., line number prefixes in the text, misplaced or duplicate equation tags, inconsistent subscript/superscript notation). The presentation of algorithms, figures, and tables is fragmented and referenced confusingly (e.g., 'Figure 1 presents the confusion matrix...' but the subsequent text references '(a) FedProx (b) FedAvg (c) Feature-Aware FL' without clear visual aids in the provided text). The overall narrative is disjointed, making it difficult to follow the precise workflow and contributions.",
+                "affected_claim": "The claim of presenting a clear, well-defined framework that is easy to understand and assess.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The central technical claims are not convincingly supported. The mathematical formulation contains errors (e.g., equation numbering, ambiguous weight computation) and the application of Integrated Gradients for feature importance in an unsupervised autoencoder is not properly motivated or explained. The methodology's correctness is therefore questionable."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of feature-aware aggregation using IG with differential privacy for unsupervised anomaly detection in a federated 5G context represents a sufficiently distinct integration of ideas compared to standard FL methods like FedAvg/FedProx, though individual components (IG, DP in FL) are well-known."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While the problem is relevant, the demonstrated contribution is not shown to be meaningful for a top-tier conference. The experimental scale is small, improvements over baselines are marginal, and the lack of comparison to strong, recent baselines (e.g., other feature-aware FL methods, advanced DP-FL techniques) prevents assessing true advancement."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experiments are inadequate to support the central claims. The dataset is small and not publicly benchmarked. The FL setup is minimal (5 clients, 5 rounds). Comparisons are limited to weak baselines. Results are reported without statistical significance or sufficient detail to reproduce. The evaluation does not convincingly demonstrate superior performance, robustness, or privacy-utility trade-offs."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The paper is not clearly written. Formatting issues, mathematical inconsistencies, and ambiguous descriptions significantly hinder reliable assessment of the work."
+              }
+            },
+            "summary_comment": "The paper addresses an important and timely problem at the intersection of federated learning, privacy, and 5G security. The proposed framework idea is interesting. However, major weaknesses prevent it from meeting top-tier standards. The technical soundness is undermined by errors and unclear formulations in the methodology. The experimental evaluation is insufficient in scale, depth, and comparative analysis to convincingly demonstrate the claimed advantages. The presentation lacks clarity and polish. While the novelty of the integrated approach is acceptable, the failures in soundness, significance, evaluation, and presentation are central and material, leading to a reject decision."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Addresses a relevant and timely problem: combining federated learning, privacy, and unsupervised anomaly detection for 5G network security.",
+              "Proposes a clear, multi-component framework (FAFL) integrating feature importance and differential privacy.",
+              "Includes a practical adaptive mechanism (Dynamic Feature Importance Adaptation) for evolving network distributions."
+            ],
+            "weaknesses": [
+              "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+              "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+              "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+                "severity": "major",
+                "evidence": "The paper reuses equation numbers (e.g., tags (1) and (1) appear for different equations in sections 3.2.1 and 3.4.2). Equation (2) is incorrectly tagged as (1) in the text. The weight calculation in equation (10), wk = (nk/n) * (∑i ai * ∂Lk/∂θk), is ill-defined as ∂Lk/∂θk is a gradient vector, not a scalar, making the product with a scalar ai unclear. The description of applying IG (Integrated Gradients) for feature importance in an unsupervised autoencoder context is not justified or explained—IG typically requires a model output to attribute to, which is ambiguous for an autoencoder's reconstruction loss.",
+                "affected_claim": "The central claims of a sound, novel feature-aware aggregation mechanism and a mathematically grounded framework.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+                "severity": "major",
+                "evidence": "The dataset is described as a custom 5G testbed with ~23k total records from two attacks and benign traffic. No dataset is named or publicly referenced for validation. The federated setup uses only K=5 clients. Experiments run for only R=5 communication rounds with 5 local epochs per round, which is an extremely small-scale setup for FL. Comparisons are limited to FedAvg and FedProx, omitting relevant recent baselines for feature-aware FL, privacy-preserving FL (e.g., DP-FedAvg), and state-of-the-art unsupervised anomaly detection methods (centralized or federated). The reported performance gains (e.g., ROC-AUC of 0.981 vs. 0.975 for FedProx) are marginal and not shown to be statistically significant.",
+                "affected_claim": "Claims that the FAFL framework 'significantly outperforms' baselines and is robust and effective in realistic 5G settings.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions.",
+                "severity": "minor",
+                "evidence": "The paper contains numerous formatting artifacts (e.g., line number prefixes in the text, misplaced or duplicate equation tags, inconsistent subscript/superscript notation). The presentation of algorithms, figures, and tables is fragmented and referenced confusingly (e.g., 'Figure 1 presents the confusion matrix...' but the subsequent text references '(a) FedProx (b) FedAvg (c) Feature-Aware FL' without clear visual aids in the provided text). The overall narrative is disjointed, making it difficult to follow the precise workflow and contributions.",
+                "affected_claim": "The claim of presenting a clear, well-defined framework that is easy to understand and assess.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the mathematical errors and ambiguous formulation but does not resolve them in the submitted paper. The application of IG for unsupervised attribution remains inadequately explained and justified in the current manuscript. The technical soundness of the core methodology is not established."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of feature-aware aggregation using IG with differential privacy for unsupervised anomaly detection in a federated 5G context remains a sufficiently distinct integration of ideas compared to standard FL methods."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the experimental limitations and promises future comparisons, but the submitted paper's evaluation remains inadequate. The small-scale setup, limited baselines, and marginal performance gains do not demonstrate a meaningful advancement for a top-tier conference."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The rebuttal confirms the experimental shortcomings and promises expanded evaluation in a future version, but the submitted paper's results are not convincing. The lack of statistical significance testing, limited client/round setup, and absence of strong baselines prevent adequate support of the central claims."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the clarity and formatting issues and promises to fix them, but the submitted paper remains unclear and poorly presented. The narrative flow, equation numbering, and figure references are disjointed and hinder reliable assessment."
+              }
+            },
+            "summary_comment": "The author response acknowledges the paper's weaknesses but does not resolve them in the submitted work. Promises of future revisions do not change the assessment of the current submission. The technical soundness remains undermined by mathematical errors and unclear methodology. The experimental evaluation is insufficient in scale and comparative analysis. The presentation lacks clarity. While the novelty of the integrated approach is acceptable, the failures in soundness, significance, evaluation, and presentation are central and material to the paper's contribution, leading to a reject decision."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Technical methodology and mathematical formulation are unclear and contain errors.\",\n        \"Experimental evaluation is severely lacking in detail and comparative breadth.\",\n        \"Significant lack of clarity and polish throughout the paper.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Application of Integrated Gradients (IG) in an unsupervised autoencoder context is not justified.\",\n          \"location\": \"Sections 3.2.3 and 3.6\",\n          \"explanation\": \"The paper uses the reconstruction error (L_recon) as the model output F(x) for IG attribution. Specifically, the anomaly score (reconstruction error) serves as the function to explain, and features that contribute most to a high reconstruction error (indicative of an anomaly) are assigned higher importance. This is a valid application of IG for attribution in unsupervised settings, as described in lines 162-175 and the anomaly detection threshold in equation (11).\"\n        },\n        {\n          \"concern\": \"The experimental setup uses a modest number of clients and rounds.\",\n          \"location\": \"Sections 4.1.2 and 4.2.2\",\n          \"explanation\": \"The paper explicitly states the federated setup parameters: K=5 clients, R=5 communication rounds, and 5 local epochs per round. This small-scale setup is a limitation acknowledged in the submission.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Mathematical errors in equation numbering and ambiguous weight calculation (equation 10).\",\n          \"proposed_change\": \"Correct all equation numbering inconsistencies. Redefine the weight calculation w_k in equation (10) to be technically sound. Specifically, the term involving the gradient should be replaced with a well-defined scalar measure, such as the L2 norm of the gradient vector or a dot product with the attention-weighted feature vector, to ensure dimensional consistency.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Lack of dataset details and public benchmarking.\",\n          \"proposed_change\": \"Provide a more detailed description of the dataset, including specific feature definitions, attack simulation methodologies, and data collection procedures. We will also include a statement about plans to release the dataset or a detailed datasheet to facilitate reproducibility in the final version.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limited comparison to baselines (only FedAvg and FedProx).\",\n          \"proposed_change\": \"In a revised version, we will include comparisons to additional relevant baselines, such as a DP-FedAvg implementation and a centralized autoencoder anomaly detector, to better situate the performance of FAFL. We acknowledge that this expanded comparison is necessary for a more comprehensive evaluation.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Formatting issues, unclear narrative, and fragmented references to figures/tables.\",\n          \"proposed_change\": \"Thoroughly proofread the manuscript to correct formatting artifacts, ensure a coherent narrative flow, and provide clear, explicit references and captions for all figures and tables. The text will be revised for clarity and precision.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough and constructive feedback, which highlights crucial areas for improvement. We acknowledge the identified weaknesses and will address them comprehensively.\\n\\nRegarding the technical methodology, we agree that the equation numbering errors and the ambiguous formulation of the aggregation weight in equation (10) undermine clarity. We will correct these errors. The application of Integrated Gradients (IG) uses the reconstruction error as the target function for attribution, a valid approach for identifying features that contribute most to anomalous reconstructions. We will clarify this motivation in the revised text (Sections 3.2.3, 3.6).\\n\\nWe recognize the limitations of the experimental evaluation. The current submission uses a controlled, small-scale setup (K=5 clients, R=5 rounds) to demonstrate a proof-of-concept. The performance improvement, while modest in absolute terms (ROC-AUC 0.981 vs. 0.975), represents a consistent gain. For a revised version, we commit to a more extensive evaluation on a larger-scale dataset, including comparisons to additional baselines like DP-FedAvg and a centralized model, and reporting statistical significance to strengthen our claims.\\n\\nWe sincerely apologize for the lack of clarity and polish in the current manuscript. We will perform a comprehensive revision to fix all formatting issues, improve the narrative flow, and ensure all figures and tables are referenced clearly and unambiguously. These presentation issues are entirely fixable and do not reflect a flaw in the underlying research.\\n\\nWhile the current submission has shortcomings, the core idea of integrating feature-aware aggregation with privacy for unsupervised FL anomaly detection remains novel and relevant. We are committed to addressing all concerns to meet the high standards of the conference.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 2,
+              "significance": 3,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "Addresses a relevant and timely problem: combining federated learning, privacy, and unsupervised anomaly detection for 5G network security.",
+              "Proposes a clear, multi-component framework (FAFL) integrating feature importance and differential privacy.",
+              "Includes a practical adaptive mechanism (Dynamic Feature Importance Adaptation) for evolving network distributions."
+            ],
+            "weaknesses": [
+              "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+              "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+              "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Technical methodology and mathematical formulation are unclear and contain errors, undermining confidence in the approach.",
+                "severity": "major",
+                "evidence": "The paper reuses equation numbers (e.g., tags (1) and (1) appear for different equations in sections 3.2.1 and 3.4.2). Equation (2) is incorrectly tagged as (1) in the text. The weight calculation in equation (10), wk = (nk/n) * (∑i ai * ∂Lk/∂θk), is ill-defined as ∂Lk/∂θk is a gradient vector, not a scalar, making the product with a scalar ai unclear. The description of applying IG (Integrated Gradients) for feature importance in an unsupervised autoencoder context is not justified or explained—IG typically requires a model output to attribute to, which is ambiguous for an autoencoder's reconstruction loss.",
+                "affected_claim": "The central claims of a sound, novel feature-aware aggregation mechanism and a mathematically grounded framework.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Experimental evaluation is severely lacking in detail and comparative breadth, making results unconvincing.",
+                "severity": "major",
+                "evidence": "The dataset is described as a custom 5G testbed with ~23k total records from two attacks and benign traffic. No dataset is named or publicly referenced for validation. The federated setup uses only K=5 clients. Experiments run for only R=5 communication rounds with 5 local epochs per round, which is an extremely small-scale setup for FL. Comparisons are limited to FedAvg and FedProx, omitting relevant recent baselines for feature-aware FL, privacy-preserving FL (e.g., DP-FedAvg), and state-of-the-art unsupervised anomaly detection methods (centralized or federated). The reported performance gains (e.g., ROC-AUC of 0.981 vs. 0.975 for FedProx) are marginal and not shown to be statistically significant.",
+                "affected_claim": "Claims that the FAFL framework 'significantly outperforms' baselines and is robust and effective in realistic 5G settings.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Significant lack of clarity and polish throughout the paper, with formatting issues and ambiguous descriptions.",
+                "severity": "minor",
+                "evidence": "The paper contains numerous formatting artifacts (e.g., line number prefixes in the text, misplaced or duplicate equation tags, inconsistent subscript/superscript notation). The presentation of algorithms, figures, and tables is fragmented and referenced confusingly (e.g., 'Figure 1 presents the confusion matrix...' but the subsequent text references '(a) FedProx (b) FedAvg (c) Feature-Aware FL' without clear visual aids in the provided text). The overall narrative is disjointed, making it difficult to follow the precise workflow and contributions.",
+                "affected_claim": "The claim of presenting a clear, well-defined framework that is easy to understand and assess.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the mathematical errors and promises future corrections, but the submitted paper contains unresolved technical flaws. The application of IG for unsupervised attribution remains inadequately explained, and the weight calculation formula remains mathematically unsound in the current version."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The combination of feature-aware aggregation using IG with differential privacy for unsupervised anomaly detection in a federated 5G context remains sufficiently distinct from standard FL approaches."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the experimental limitations but provides no evidence in the submitted paper to demonstrate meaningful advancement. The small-scale setup, limited baselines, and marginal performance gains prevent assessment of true significance."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The rebuttal confirms the experimental shortcomings and promises expanded evaluation, but the submitted paper's results remain inadequate. The lack of statistical significance testing, limited scale, and absence of strong baselines prevent convincing support of the claims."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the clarity issues but the submitted paper remains unclear and poorly formatted. The narrative flow, equation numbering, and figure references continue to hinder reliable assessment."
+              }
+            },
+            "summary_comment": "The author response acknowledges all major weaknesses but does not resolve them in the submitted paper. The response outlines a comprehensive revision plan but provides no evidence that these issues are already addressed. The technical soundness remains compromised by mathematical errors and unclear methodology. The experimental evaluation is insufficient in scale and comparative analysis. The presentation lacks clarity. While the novelty of the integrated approach is acceptable, the failures in soundness, significance, evaluation, and presentation are central to the paper's contribution and prevent it from meeting top-tier standards in its current form."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Technical soundness is not established in the submitted paper due to mathematical errors and inadequate justification of methodology.\",\n        \"Experimental evaluation in the submission is insufficient in scale, breadth, and statistical rigor.\",\n        \"Presentation in the submission lacks clarity, with disjointed narrative and formatting issues.\"\n      ],\n      \"supporting_evidence_in_submission\": [],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Mathematical soundness: Equation numbering errors and ill-defined weight calculation (Eq. 10).\",\n          \"proposed_change\": \"We will correct all equation numbering inconsistencies and re-derive the model aggregation weight. The term ∑i a_i * ∂L_k/∂θ_k in Eq. 10 will be replaced with a well-defined scalar, such as the dot product between the attention weight vector 'a' and a vector representing the per-feature contribution to the model update (e.g., the gradient of the loss with respect to input features). This will ensure dimensional consistency and mathematical clarity.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Justification of Integrated Gradients (IG) for unsupervised attribution.\",\n          \"proposed_change\": \"We will add a detailed explanation in Section 3.2.3 clarifying that for an autoencoder, the function F(x) for IG attribution is the reconstruction loss L_recon(x, x̂). The attribution explains which input features contribute most to a high reconstruction error, which is the direct indicator of an anomaly. This is a standard use of attribution methods for model explanation, even in unsupervised settings.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Insufficient experimental scale and breadth in the submitted paper.\",\n          \"proposed_change\": \"To address the concerns regarding scale and baselines, we commit to performing and reporting a significantly expanded evaluation in a revised manuscript. This will include: 1) Experiments with a larger number of clients (e.g., K=20) and communication rounds (e.g., R=50) to demonstrate scalability, 2) Comparison with DP-FedAvg as a core privacy-preserving baseline, 3) Inclusion of a centralized autoencoder anomaly detector as a performance upper-bound reference, 4) Statistical significance testing (e.g., reporting confidence intervals or p-values over multiple random seeds) for key performance metrics.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Lack of clarity and polish in presentation.\",\n          \"proposed_change\": \"We will perform a comprehensive rewrite to ensure a coherent narrative flow from problem statement to methodology, experiments, and discussion. All formatting artifacts (line numbers, incorrect equation tags) will be removed. Figures and tables will be clearly referenced with descriptive captions integrated into the text. The overall manuscript will be polished for professional presentation.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their detailed assessment and for recognizing the novelty of our integrated approach. We accept the core criticism that our current submission has substantial shortcomings in soundness, evaluation, and presentation that prevent its acceptance in its present form.\\n\\nThe reviewer is correct that our rebuttal acknowledged these weaknesses but did not resolve them in the already-submitted manuscript. Our response was intended to outline a clear and actionable revision plan, not to claim that the issues were already fixed.\\n\\nWe understand that for the current submission cycle, promises of future work cannot compensate for deficiencies in the evaluated paper. Therefore, we respect the reviewer's decision based on the state of the submitted work.\\n\\nShould the paper be considered for a revision or resubmission, we are fully committed to executing the comprehensive revisions outlined above. Specifically, we will:\\n1.  Correct all mathematical errors and provide a rigorous, sound formulation of the feature-aware aggregation mechanism.\\n2.  Greatly expand the experimental evaluation to include more clients, rounds, stronger baselines (like DP-FedAvg), and statistical analysis to robustly support our claims of improved performance and privacy-utility trade-offs.\\n3.  Completely overhaul the manuscript's presentation for clarity, coherence, and professionalism.\\n\\nWe believe this path would address all the reviewer's substantial concerns and allow the novel contributions of the FAFL framework to be properly assessed. We appreciate the reviewer's time and constructive feedback, which is invaluable for improving this work.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_896bd0d42239",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "data/md/iclr_reject_2025_002_a_feature_aware_federated_learning_framework_for_unsupervised_anomaly_detection_.md",
+    "target_paper_summary": {
+      "paper_id": "paper_896bd0d42239",
+      "title": "A Feature-Aware Federated Learning Frame- Work For Unsupervised Anomaly Detection In 5G Networks",
+      "abstract": "The expansion of 5G networks has led to remarkable data volume and complexity, introducing significant security challenges that require the implementation of robust and scalable anomaly detection mechanisms. Traditional centralized approaches pose privacy risks and scalability challenges due to the distributed nature of 5G infrastructures. Federated Learning (FL) offers a decentralized solution but often overlooks the importance of feature relevance and privacy preservation during model aggregation. This paper introduces a novel Feature-Aware Federated framework that integrates feature importance into the aggregation process while ensuring differential privacy. We employ integrated gradients to compute feature importance for each client, aggregate them globally with differential privacy noise, and use these insights to weight model parameters during aggregation. Additionally, we propose Dynamic Feature Importance Adaptation (DFIA) to update feature importance occasionally, enhancing the model's adaptability to evolving data distributions. Experimental results demonstrate that our framework outperforms traditional federated approaches like FedAvg and FedProx in unsupervised anomaly detection tasks within 5G networks, achieving higher accuracy and robustness while preserving data privacy.",
+      "topic": "",
+      "claims": [
+        "we propose Dynamic Feature Importance Adaptation (DFIA) to update feature importance occasionally, enhancing the model's adaptability to evolving data distributions.",
+        "our framework outperforms traditional federated approaches like FedAvg and FedProx in unsupervised anomaly detection tasks within 5G networks, achieving higher accuracy and robustness while preserving data privacy."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_4fefc4eaf",
+        "title": "Machine Learning for Anomaly Detection: A Systematic Review",
+        "authors": [
+          "Ali Bou Nassif",
+          "Manar Abu Talib",
+          "Qassim Nasir",
+          "Fatima Dakalbab"
+        ],
+        "year": 2021,
+        "publication_date": "2021-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Anomaly detection has been used for decades to identify and extract anomalous components from data. Many techniques have been used to detect anomalies. One of the increasingly significant techniques is Machine Learning (ML), which plays an important role in this area. In this research paper, we conduct a Systematic Literature Review (SLR) which analyzes ML models that detect anomalies in their application. Our review analyzes the models from four perspectives; the applications of anomaly detection, ML techniques, performance metrics for ML models, and the classification of anomaly detection. In our review, we have identified 290 research articles, written from 2000-2020, that discuss ML techniques for anomaly detection. After analyzing the selected research articles, we present 43 different applications of anomaly detection found in the selected research articles. Moreover, we identify 29 distinct ML models used in the identification of anomalies. Finally, we present 22 different datasets that are applied in experiments on anomaly detection, as well as many other general datasets. In addition, we observe that unsupervised anomaly detection has been adopted by researchers more than other classification anomaly detection systems. Detection of anomalies using ML models is a promising area of research, and there are a lot of ML models that have been implemented by researchers. Therefore, we provide researchers with recommendations and guidelines based on this review.",
+        "url": "https://doi.org/10.1109/access.2021.3083060",
+        "doi": "https://doi.org/10.1109/access.2021.3083060",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3164952570"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 709
+      },
+      {
+        "paper_id": "rw_002_5e5b668c7",
+        "title": "Smart anomaly detection in sensor systems: A multi-perspective review",
+        "authors": [
+          "L. Erhan",
+          "M. Ndubuaku",
+          "M. Di Mauro",
+          "W. Song",
+          "M. Chen",
+          "G. Fortino",
+          "O. Bagdasar",
+          "A. Liotta"
+        ],
+        "year": 2020,
+        "publication_date": "2020-10-15",
+        "venue": "Information Fusion",
+        "abstract": "Anomaly detection is concerned with identifying data patterns that deviate remarkably from the expected behavior. This is an important research problem, due to its broad set of application domains, from data analysis to e-health, cybersecurity, predictive maintenance, fault prevention, and industrial automation. Herein, we review state-of-the-art methods that may be employed to detect anomalies in the specific area of sensor systems, which poses hard challenges in terms of information fusion, data volumes, data speed, and network/energy efficiency, to mention but the most pressing ones. In this context, anomaly detection is a particularly hard problem, given the need to find computing-energy-accuracy trade-offs in a constrained environment. We taxonomize methods ranging from conventional techniques (statistical methods, time-series analysis, signal processing, etc.) to data-driven techniques (supervised learning, reinforcement learning, deep learning, etc.). We also look at the impact that different architectural environments (Cloud, Fog, Edge) can have on the sensors ecosystem. The review points to the most promising intelligent-sensing methods, and pinpoints a set of interesting open issues and challenges.",
+        "url": "https://doi.org/10.1016/j.inffus.2020.10.001",
+        "doi": "https://doi.org/10.1016/j.inffus.2020.10.001",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3094345499"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 294
+      },
+      {
+        "paper_id": "rw_003_a32907861",
+        "title": "An Adaptable and Unsupervised TinyML Anomaly Detection System for Extreme Industrial Environments",
+        "authors": [
+          "Mattia Antonini",
+          "Miguel Pincheira",
+          "Massimo Vecchio",
+          "Fabio Antonelli"
+        ],
+        "year": 2023,
+        "publication_date": "2023-02-20",
+        "venue": "Sensors",
+        "abstract": "Industrial assets often feature multiple sensing devices to keep track of their status by monitoring certain physical parameters. These readings can be analyzed with machine learning (ML) tools to identify potential failures through anomaly detection, allowing operators to take appropriate corrective actions. Typically, these analyses are conducted on servers located in data centers or the cloud. However, this approach increases system complexity and is susceptible to failure in cases where connectivity is unavailable. Furthermore, this communication restriction limits the approach's applicability in extreme industrial environments where operating conditions affect communication and access to the system. This paper proposes and evaluates an end-to-end adaptable and configurable anomaly detection system that uses the Internet of Things (IoT), edge computing, and Tiny-MLOps methodologies in an extreme industrial environment such as submersible pumps. The system runs on an IoT sensing Kit, based on an ESP32 microcontroller and MicroPython firmware, located near the data source. The processing pipeline on the sensing device collects data, trains an anomaly detection model, and alerts an external gateway in the event of an anomaly. The anomaly detection model uses the isolation forest algorithm, which can be trained on the microcontroller in just 1.2 to 6.4 s and detect an anomaly in less than 16 milliseconds with an ensemble of 50 trees and 80 KB of RAM. Additionally, the system employs blockchain technology to provide a transparent and irrefutable repository of anomalies.",
+        "url": "https://doi.org/10.3390/s23042344",
+        "doi": "https://doi.org/10.3390/s23042344",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4321372735"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 85
+      },
+      {
+        "paper_id": "rw_004_29779921f",
+        "title": "A survey on deep learning tools dealing with data scarcity: definitions, challenges, solutions, tips, and applications",
+        "authors": [
+          "Laith Alzubaidi",
+          "Jinshuai Bai",
+          "Aiman Al-Sabaawi",
+          "José Santamaría",
+          "A. S. Albahri",
+          "Bashar Sami Nayyef Al-dabbagh",
+          "Mohammed A. Fadhel",
+          "Mohamed Manoufali",
+          "Jinglan Zhang",
+          "Ali H. Al‐Timemy",
+          "Ye Duan",
+          "Amjed Abdullah",
+          "Laith Farhan",
+          "Yi Lu",
+          "Ashish Gupta",
+          "Felix Albu",
+          "Amin Abbosh",
+          "Yuantong Gu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-04-14",
+        "venue": "Journal Of Big Data",
+        "abstract": "Abstract Data scarcity is a major challenge when training deep learning (DL) models. DL demands a large amount of data to achieve exceptional performance. Unfortunately, many applications have small or inadequate data to train DL frameworks. Usually, manual labeling is needed to provide labeled data, which typically involves human annotators with a vast background of knowledge. This annotation process is costly, time-consuming, and error-prone. Usually, every DL framework is fed by a significant amount of labeled data to automatically learn representations. Ultimately, a larger amount of data would generate a better DL model and its performance is also application dependent. This issue is the main barrier for many applications dismissing the use of DL. Having sufficient data is the first step toward any successful and trustworthy DL application. This paper presents a holistic survey on state-of-the-art techniques to deal with training DL models to overcome three challenges including small, imbalanced datasets, and lack of generalization. This survey starts by listing the learning techniques. Next, the types of DL architectures are introduced. After that, state-of-the-art solutions to address the issue of lack of training data are listed, such as Transfer Learning (TL), Self-Supervised Learning (SSL), Generative Adversarial Networks (GANs), Model Architecture (MA), Physics-Informed Neural Network (PINN), and Deep Synthetic Minority Oversampling Technique (DeepSMOTE). Then, these solutions were followed by some related tips about data acquisition needed prior to training purposes, as well as recommendations for ensuring the trustworthiness of the training dataset. The survey ends with a list of applications that suffer from data scarcity, several alternatives are proposed in order to generate more data in each application including Electromagnetic Imaging (EMI), Civil Structural Health Monitoring, Medical imaging, Meteorology, Wireless Communications, Fluid Mechanics, Microelectromechanical system, and Cybersecurity. To the best of the authors’ knowledge, this is the first review that offers a comprehensive overview on strategies to tackle data scarcity in DL.",
+        "url": "https://doi.org/10.1186/s40537-023-00727-2",
+        "doi": "https://doi.org/10.1186/s40537-023-00727-2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4365504037"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 823
+      },
+      {
+        "paper_id": "rw_006_9e552ec04",
+        "title": "AI-Based Intrusion Detection Systems for In-Vehicle Networks: A Survey",
+        "authors": [
+          "Sampath Rajapaksha",
+          "Harsha Kalutarage",
+          "M. Omar Al-Kadri",
+          "Andrei Petrovski",
+          "Garikayi Madzudzo",
+          "Madeline Cheah"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-09",
+        "venue": "ACM Computing Surveys",
+        "abstract": "The Controller Area Network (CAN) is the most widely used in-vehicle communication protocol, which still lacks the implementation of suitable security mechanisms such as message authentication and encryption. This makes the CAN bus vulnerable to numerous cyber attacks. Various Intrusion Detection Systems (IDSs) have been developed to detect these attacks. However, the high generalization capabilities of Artificial Intelligence (AI) make AI-based IDS an excellent countermeasure against automotive cyber attacks. This article surveys AI-based in-vehicle IDS from 2016 to 2022 (August) with a novel taxonomy. It reviews the detection techniques, attack types, features, and benchmark datasets. Furthermore, the article discusses the security of AI models, necessary steps to develop AI-based IDSs in the CAN bus, identifies the limitations of existing proposals, and gives recommendations for future research directions.",
+        "url": "https://doi.org/10.1145/3570954",
+        "doi": "https://doi.org/10.1145/3570954",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4308605894"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 215
+      },
+      {
+        "paper_id": "rw_007_da99f6c46",
+        "title": "Machine Learning Threatens 5G Security",
+        "authors": [
+          "Jani Suomalainen",
+          "Arto Juhola",
+          "Shahriar Shahabuddin",
+          "Aarne Mämmelä",
+          "Ijaz Ahmad"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-01",
+        "venue": "IEEE Access",
+        "abstract": "Machine learning (ML) is expected to solve many challenges in the fifth generation (5G) of mobile networks. However, ML will also open the network to several serious cybersecurity vulnerabilities. Most of the learning in ML happens through data gathered from the environment. Un-scrutinized data will have serious consequences on machines absorbing the data to produce actionable intelligence for the network. Scrutinizing the data, on the other hand, opens privacy challenges. Unfortunately, most of the ML systems are borrowed from other disciplines that provide excellent results in small closed environments. The resulting deployment of such ML systems in 5G can inadvertently open the network to serious security challenges such as unfair use of resources, denial of service, as well as leakage of private and confidential information. Therefore, in this article we dig into the weaknesses of the most prominent ML systems that are currently vigorously researched for deployment in 5G. We further classify and survey solutions for avoiding such pitfalls of ML in 5G systems.",
+        "url": "https://doi.org/10.1109/access.2020.3031966",
+        "doi": "https://doi.org/10.1109/access.2020.3031966",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3093545357"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 79
+      },
+      {
+        "paper_id": "rw_008_694a6631e",
+        "title": "A Survey of Networking Applications Applying the Software Defined Networking Concept Based on Machine Learning",
+        "authors": [
+          "Yanling Zhao",
+          "Ye Li",
+          "Xinchang Zhang",
+          "Guanggang Geng",
+          "Wei Zhang",
+          "Yanjie Sun"
+        ],
+        "year": 2019,
+        "publication_date": "2019-01-01",
+        "venue": "IEEE Access",
+        "abstract": "The main task of future networks is to build, as much as possible, intelligent networking architectures for intellectualization, activation, and customization. Software-defined networking (SDN) technology breaks the tight coupling between the control plane and the data plane in the traditional network architecture, making the controllability, security, and economy of network resources into a reality. As one of the important actualization methods of artificial intelligence (AI), machine learning (ML), combined with SDN architecture will have great potential in areas, such as network resource management, route planning, traffic scheduling, fault diagnosis, and network security. This paper presents the network applications combined with SDN concepts based on ML from two perspectives, namely the perspective of ML algorithms and SDN network applications. From the perspective of ML algorithms, this paper focuses on the applications of classical ML algorithms in SDN-based networks, after a characteristic analysis of algorithms. From the other perspective, after classifying the existing network applications based on the SDN architecture, the related ML solutions are introduced. Finally, the future development of the ML algorithms and SDN concepts is discussed and analyzed. This paper occupies the intersection of the AI, big data, computer networking, and other disciplines; the AI itself is a new and complex interdisciplinary field, which causes the researchers in this field to often have different professional backgrounds and, sometimes, divergent research purposes. This paper is necessary and helpful for researchers from different fields to accurately master the key issues.",
+        "url": "https://doi.org/10.1109/access.2019.2928564",
+        "doi": "https://doi.org/10.1109/access.2019.2928564",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2960791616"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 178
+      },
+      {
+        "paper_id": "rw_009_ebbaaf947",
+        "title": "A Survey on Machine-Learning Techniques for UAV-Based Communications",
+        "authors": [
+          "Petros S. Bithas",
+          "Emmanouel T. Michailidis",
+          "Νικόλαος Νομικός",
+          "Demosthenes Vouyioukas",
+          "Αthanasios G. Kanatas"
+        ],
+        "year": 2019,
+        "publication_date": "2019-11-26",
+        "venue": "Sensors",
+        "abstract": "Unmanned aerial vehicles (UAVs) will be an integral part of the next generation wireless communication networks. Their adoption in various communication-based applications is expected to improve coverage and spectral efficiency, as compared to traditional ground-based solutions. However, this new degree of freedom that will be included in the network will also add new challenges. In this context, the machine-learning (ML) framework is expected to provide solutions for the various problems that have already been identified when UAVs are used for communication purposes. In this article, we provide a detailed survey of all relevant research works, in which ML techniques have been used on UAV-based communications for improving various design and functional aspects such as channel modeling, resource management, positioning, and security.",
+        "url": "https://doi.org/10.3390/s19235170",
+        "doi": "https://doi.org/10.3390/s19235170",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2990204812"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 351
+      },
+      {
+        "paper_id": "rw_010_a60f401d8",
+        "title": "Decentral and Incentivized Federated Learning Frameworks: A Systematic Literature Review",
+        "authors": [
+          "Leon Witt",
+          "Mathis Heyer",
+          "Kentaroh Toyoda",
+          "Wojciech Samek",
+          "Dan Li"
+        ],
+        "year": 2022,
+        "publication_date": "2022-12-22",
+        "venue": "IEEE Internet of Things Journal",
+        "abstract": "The advent of federated learning (FL) has sparked a new paradigm of parallel and confidential decentralized machine learning (ML) with the potential of utilizing the computational power of a vast number of Internet of Things (IoT), mobile, and edge devices without data leaving the respective device, thus ensuring privacy by design. Yet, simple FL frameworks (FLFs) naively assume an honest central server and altruistic client participation. In order to scale this new paradigm beyond small groups of already entrusted entities toward mass adoption, FLFs must be: 1) truly decentralized and 2) incentivized to participants. This systematic literature review is the first to analyze FLFs that holistically apply both, the blockchain technology to decentralize the process and reward mechanisms to incentivize participation. 422 publications were retrieved by querying 12 major scientific databases. After a systematic filtering process, 40 articles remained for an in-depth examination following our five research questions. To ensure the correctness of our findings, we verified the examination results with the respective authors. Although having the potential to direct the future of distributed and secure artificial intelligence, none of the analyzed FLFs is production ready. The approaches vary heavily in terms of use cases, system design, solved issues, and thoroughness. We provide a systematic approach to classify and quantify differences between FLFs, expose limitations of current works and derive future directions for research in this novel domain.",
+        "url": "https://doi.org/10.1109/jiot.2022.3231363",
+        "doi": "https://doi.org/10.1109/jiot.2022.3231363",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4313017734"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 97
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_010_a60f401d8",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Provides a systematic literature review on decentralization and incentive mechanisms in Federated Learning, directly relevant to the method and constraints of the target paper's FL framework for 5G security. It analyzes limitations and future directions, offering context for the target's approach.",
+        "evidence_summary": "In 2022, Witt et al. published 'Decentral and Incentivized Federated Learning Frameworks: A Systematic Literature Review,' which surveyed frameworks applying both blockchain for decentralization and reward mechanisms for participation. The review analyzed 40 articles, finding that none of the frameworks were production-ready and that approaches varied heavily in use cases, system design, and thoroughness, exposing limitations of current works."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_da99f6c46",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Analyzes security vulnerabilities and weaknesses of ML systems, including privacy challenges, specifically in 5G networks, directly addressing the problem and constraints of the target. It surveys solutions for avoiding ML pitfalls.",
+        "evidence_summary": "In 2020, Suomalainen et al. published 'Machine Learning Threatens 5G Security' in IEEE Access. The article examined weaknesses of prominent ML systems researched for deployment in 5G, which can open the network to serious security challenges such as unfair resource use, denial of service, and privacy leakage, and surveyed solutions for avoiding such pitfalls."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_a32907861",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_method",
+          "same_constraints"
+        ],
+        "rationale": "Proposes an adaptable unsupervised anomaly detection system for extreme industrial environments using edge computing, which relates to the target's unsupervised task and decentralized context. It details constraints like connectivity and operating conditions, and provides concrete efficiency results.",
+        "evidence_summary": "In 2023, Antonini et al. published 'An Adaptable and Unsupervised TinyML Anomaly Detection System for Extreme Industrial Environments' in Sensors. The system runs on an IoT sensing kit based on an ESP32 microcontroller, uses the isolation forest algorithm, and was trained in 1.2 to 6.4 seconds with anomaly detection in under 16 milliseconds using 80 KB of RAM. It was evaluated for use in extreme industrial environments like submersible pumps."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_9e552ec04",
+        "relevance_score": 0.62,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "Surveys AI-based Intrusion Detection Systems (IDSs) for networks, covering detection techniques, features, and benchmark datasets, which provides background on the broader method and evaluation context for anomaly detection.",
+        "evidence_summary": "In 2022, Rajapaksha et al. published 'AI-Based Intrusion Detection Systems for In-Vehicle Networks: A Survey' in ACM Computing Surveys. The survey reviewed detection techniques, attack types, features, and benchmark datasets for AI-based IDSs in the Controller Area Network (CAN) bus from 2016 to 2022 and discussed limitations and future research directions."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_002_5e5b668c7",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "same_method",
+          "same_constraints"
+        ],
+        "rationale": "Reviews state-of-the-art methods for anomaly detection in sensor systems, including data-driven techniques like deep learning, and discusses the impact of different architectural environments (Cloud, Fog, Edge), which provides technical background relevant to the target's problem and deployment constraints.",
+        "evidence_summary": "In 2020, Erhan et al. published 'Smart anomaly detection in sensor systems: A multi-perspective review' in Information Fusion. The review taxonomized methods from conventional techniques to data-driven techniques like supervised and deep learning and examined the impact of different architectural environments (Cloud, Fog, Edge) on sensor ecosystems, pinpointing open issues and challenges."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_009_ebbaaf947",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Surveys machine-learning techniques for UAV-based communications, including applications in resource management and network security, providing a broader context for ML applications in wireless networks.",
+        "evidence_summary": "In 2019, Bithas et al. published 'A Survey on Machine-Learning Techniques for UAV-Based Communications' in Sensors. The survey detailed relevant research works where ML techniques were used for improving aspects such as channel modeling, resource management, positioning, and security in UAV-based communication networks."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_4fefc4eaf",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Provides a systematic review of machine learning models for anomaly detection across 43 applications, identifying 29 distinct ML models and noting that unsupervised detection was widely adopted, relevant to the target's problem area.",
+        "evidence_summary": "In 2021, Nassif et al. published 'Machine Learning for Anomaly Detection: A Systematic Review' in IEEE Access. The Systematic Literature Review analyzed ML models for anomaly detection, presenting 43 different applications, 29 distinct ML models, and 22 different datasets used in experiments, observing that unsupervised anomaly detection had been widely adopted."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_008_694a6631e",
+        "relevance_score": 0.42,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Surveys networking applications using Software Defined Networking (SDN) based on machine learning, including areas like network security and traffic scheduling, indirectly related to the broader method domain.",
+        "evidence_summary": "In 2019, Zhao et al. published 'A Survey of Networking Applications Applying the Software Defined Networking Concept Based on Machine Learning' in IEEE Access. The paper focused on applications of classical ML algorithms in SDN-based networks for areas such as network resource management, traffic scheduling, fault diagnosis, and network security, discussing future developments."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_004_29779921f",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Surveys deep learning tools dealing with data scarcity, which relates indirectly to potential constraints in training data for anomaly detection models in distributed settings.",
+        "evidence_summary": "In 2023, Alzubaidi et al. published 'A survey on deep learning tools dealing with data scarcity: definitions, challenges, solutions, tips, and applications' in the Journal of Big Data. The survey presented state-of-the-art solutions to address the lack of training data, such as Transfer Learning, Self-Supervised Learning, and Generative Adversarial Networks."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2022, Leon Witt et al. published \"Decentral and Incentivized Federated Learning Frameworks: A Systematic Literature Review\" in IEEE Internet of Things Journal. The advent of federated learning (FL) has sparked a new paradigm of parallel and confidential decentralized machine learning (ML) with the potential of utilizing the computational power of a vast number of Internet of Things (IoT), mobile, and edge devices without data leaving the respective device, thus ensuring privacy by design. To ensure the correctness of the findings, the authors verified the examination results with the respective authors. Yet, simple FL frameworks (FLFs) naively assume an honest central server and altruistic client participation. In 2020, Jani Suomalainen et al. published \"Machine Learning Threatens 5G Security\" in IEEE Access. Un-scrutinized data will have serious consequences on machines absorbing the data to produce actionable intelligence for the network. Unfortunately, most of the ML systems are borrowed from other disciplines that provide excellent results in small closed environments. Machine learning (ML) is expected to solve many challenges in the fifth generation (5G) of mobile networks. In 2023, Mattia Antonini et al. published \"An Adaptable and Unsupervised TinyML Anomaly Detection System for Extreme Industrial Environments\" in Sensors. This paper proposes and evaluates an end-to-end adaptable and configurable anomaly detection system that uses the Internet of Things (IoT), edge computing, and Tiny-MLOps methodologies in an extreme industrial environment such as submersible pumps. Typically, these analyses are conducted on servers located in data centers or the cloud. However, this approach increases system complexity and is susceptible to failure in cases where connectivity is unavailable. In 2022, Sampath Rajapaksha et al. published \"AI-Based Intrusion Detection Systems for In-Vehicle Networks: A Survey\" in ACM Computing Surveys. Various Intrusion Detection Systems (IDSs) have been developed to detect these attacks. It reviews the detection techniques, attack types, features, and benchmark datasets. The Controller Area Network (CAN) is the most widely used in-vehicle communication protocol, which still lacks the implementation of suitable security mechanisms such as message authentication and encryption. In 2020, L. Erhan et al. published \"Smart anomaly detection in sensor systems: A multi-perspective review\" in Information Fusion. This is an important research problem, due to its broad set of application domains, from data analysis to e-health, cybersecurity, predictive maintenance, fault prevention, and industrial automation. Herein, the authors review state-of-the-art methods that may be employed to detect anomalies in the specific area of sensor systems, which poses hard challenges in terms of information fusion, data volumes, data speed, and network/energy efficiency, to mention but the most pressing ones. In this context, anomaly detection is a particularly hard problem, given the need to find computing-energy-accuracy trade-offs in a constrained environment. In 2019, Petros S. Bithas et al. published \"A Survey on Machine-Learning Techniques for UAV-Based Communications\" in Sensors. However, this new degree of freedom that will be included in the network will also add new challenges. Their adoption in various communication-based applications is expected to improve coverage and spectral efficiency, as compared to traditional ground-based solutions. In this context, the machine-learning (ML) framework is expected to provide solutions for the various problems that have already been identified when UAVs are used for communication purposes.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 1,
+      "num_removed_undated": 0,
+      "num_used": 9,
+      "num_cutoff_valid": 9,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 1,
+    "num_removed_undated": 0,
+    "num_used": 9,
+    "num_cutoff_valid": 9,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Comprehensive and multi-faceted benchmark: Introduces EMBODIEDBENCH, a large-scale (1,128 tasks) benchmark covering four environments with both high-level and low-level tasks, and a fine-grained capability-oriented evaluation across six subsets.",
+        "Extensive empirical evaluation: Provides a thorough, standardized assessment of 24 leading proprietary and open-source MLLMs, yielding clear and insightful findings (e.g., vision is critical for low-level tasks, long-horizon planning is hardest).",
+        "Rigorous and systematic analysis: Includes extensive ablations (language/visual factors, resolution, detection boxes, multi-step/multi-view inputs, visual ICL) and detailed error analysis, offering valuable practical insights for the research community."
+      ],
+      "weaknesses": [
+        "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+        "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+          "severity": "minor",
+          "evidence": "The 'Limitations' section explicitly states: 'our evaluation is conducted solely in simulated environments, without real-world experiments.' It further discusses that simulation trades off reproducibility, cost, and safety against real-world applicability.",
+          "affected_claim": "The claim that EMBODIEDBENCH is a 'comprehensive benchmark' and that findings (e.g., MLLMs struggle with low-level manipulation) generalize to real-world embodied agents.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework.",
+          "severity": "minor",
+          "evidence": "Sections 5.4 (Visual-centric Ablation) and Appendix F.5/F.6 show that incorporating multi-step images or multi-view images leads to performance drops, e.g., 'current MLLMs struggle to effectively utilize multiple image inputs, often leading to confusion.'",
+          "affected_claim": "The claim that the proposed 'unified embodied agent pipeline' is a robust framework for processing multimodal inputs.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims—the benchmark design, agent framework, and evaluation results—are technically well-supported. The methodology is clear, experiments are extensive, and results are presented with appropriate metrics (success rates, ablation studies, error analysis). No major logical flaws or unsupported assumptions are identified."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "While prior benchmarks exist (e.g., ALFWorld, VisualAgentBench, VLABench), EMBODIEDBENCH uniquely combines: 1) evaluation across both high-level and low-level action hierarchies, 2) a fine-grained capability-oriented evaluation across six subsets, and 3) a large-scale, multi-environment (4) benchmark. The comparison in Table 1 substantiates distinct contributions."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work meaningfully advances the field of embodied AI by providing a much-needed standardized evaluation platform for MLLM-based agents. The benchmark's scale, diversity, and fine-grained analysis address a critical gap. The findings (e.g., vision's varying importance, challenges in low-level manipulation and long-horizon planning) offer concrete insights to guide future research."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "The experimental evaluation is highly convincing and fair. It benchmarks a wide array of 24 models, includes comprehensive ablation studies on key factors, provides detailed error analysis, and uses appropriate success metrics. The comparisons with and without vision, and across capability subsets, are particularly insightful."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly structured and written. Figures and tables effectively illustrate the benchmark design, pipeline, and results. The extensive appendix provides necessary details for reproducibility. While dense, the information is well-organized and accessible for assessment."
+        }
+      },
+      "summary_comment": "The author response reaffirms the paper's existing content but does not provide new evidence that would alter the assessment of the submitted work. The authors acknowledge the simulation limitation as inherent to their methodology and correctly point to its explicit discussion in the Limitations section. They also clarify that the multi-step/multi-view performance issue is presented as an empirical finding about MLLM capabilities. These remain minor, acknowledged weaknesses that do not undermine the paper's substantial contributions. The benchmark's comprehensive design, extensive evaluation, and rigorous analysis constitute a significant and well-executed contribution that meets top-tier conference standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core focus is on benchmarking and evaluating machine learning models (MLLMs) for embodied decision-making, which aligns directly with ICML's 'Reinforcement learning (decision and control, planning, hierarchical RL, robotics, etc.)' and 'Application-driven machine learning (robotics, etc.)' topics.",
+        "The work is fundamentally empirical, featuring extensive experimentation, ablation studies, and systematic evaluation of 24 models—a methodology strongly valued at ICML. The development of a new, large-scale benchmark (EMBODIEDBENCH) fits ICML's interest in 'evaluation (methodology, meta-studies, replicability and validity)' and 'machine learning systems (improved scalability, libraries, distributed methods)' for reproducible research.",
+        "Reviewer feedback highlights 'rigorous and systematic analysis,' 'extensive empirical evaluation,' and technically sound methodology, which matches ICML's emphasis on empirical rigor and sound experimental practice."
+      ],
+      "why_it_does_not_fit": [
+        "While the topic is relevant, the paper's contribution is primarily benchmark creation and comprehensive evaluation rather than a novel algorithmic or theoretical advance. ICML sometimes has a higher bar for core algorithmic/theoretical novelty, though strong empirical/system contributions are well-received.",
+        "The 'Limitations' section notes the evaluation is simulation-only, which might slightly reduce the perceived immediate impact for some ICML reviewers focused on real-world robotic learning, though the paper acknowledges this trade-off appropriately."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper tackles a high-profile, interdisciplinary topic at the intersection of vision, language, and embodied AI, fitting NeurIPS's broad scope including 'Robotics, embodied systems, and engineering,' 'Decision-making, reinforcement learning, and control,' and 'Deep learning.'",
+        "The work provides valuable community resources (a new benchmark) and large-scale analysis of foundation models, which aligns with NeurIPS's history of welcoming impactful benchmarks and surveys that guide the field. The fine-grained capability analysis (e.g., long-horizon planning, spatial reasoning) connects with NeurIPS interests in 'Generalization and multi-task learning' and 'Theory.'",
+        "Reviewer comments praise the work's 'significance' in 'meaningfully advancing the field' and its 'comprehensive and multi-faceted' nature, which are key criteria for NeurIPS acceptance."
+      ],
+      "why_it_does_not_fit": [
+        "The paper is heavily evaluation-focused; while NeurIPS accepts such work, it sometimes places slightly more emphasis on novel methodological innovations or theoretical insights. The core agent framework is a pragmatic integration rather than a novel architecture.",
+        "Some of the findings (e.g., MLLMs struggle with low-level control, vision is critical for navigation) might be considered incremental extensions of known challenges, though the systematic quantification across many models is new. The reviewer notes the 'novelty' is sufficient but not groundbreaking."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper extensively evaluates Multimodal Large Language Models (MLLMs), which are a core technology within deep learning, aligning with ICLR's focus on 'deep learning' and 'representation learning for computer vision, audio, language, and other modalities.'",
+        "The study involves in-depth analysis of visual understanding, in-context learning, and model scaling effects for embodied tasks—topics of interest to the ICLR community, especially given the rise of vision-language models.",
+        "The ablation studies on visual inputs (resolution, multi-step images, visual ICL) directly probe the capabilities and limitations of deep learning-based MLLMs, which is relevant for ICLR's audience."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's focus is narrower, primarily on deep learning advances. This paper is more applied, situated in embodied AI and benchmarking, rather than proposing new deep learning architectures, training methods, or fundamental representations. The agent framework uses off-the-shelf MLLMs without modifying their internal architecture or training.",
+        "The core contribution is a benchmark and evaluation suite, not a novel deep learning model or training paradigm. ICLR has accepted benchmarks, but they often need a stronger deep learning technical core. The reviewer's scores, while strong, highlight 'soundness' and 'evaluation' over deep technical novelty in modeling.",
+        "The environments (ALFRED, Habitat) are established simulators; the paper's novelty lies in adaptation and evaluation methodology rather than new simulation or deep learning environments, which might be less central to ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Comprehensive and multi-faceted benchmark: Introduces EMBODIEDBENCH, a large-scale (1,128 tasks) benchmark covering four environments with both high-level and low-level tasks, and a fine-grained capability-oriented evaluation across six subsets.",
+              "Extensive empirical evaluation: Provides a thorough, standardized assessment of 24 leading proprietary and open-source MLLMs, yielding clear and insightful findings (e.g., vision is critical for low-level tasks, long-horizon planning is hardest).",
+              "Rigorous and systematic analysis: Includes extensive ablations (language/visual factors, resolution, detection boxes, multi-step/multi-view inputs, visual ICL) and detailed error analysis, offering valuable practical insights for the research community."
+            ],
+            "weaknesses": [
+              "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+              "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+                "severity": "minor",
+                "evidence": "The 'Limitations' section explicitly states: 'our evaluation is conducted solely in simulated environments, without real-world experiments.' It further discusses that simulation trades off reproducibility and cost against real-world applicability.",
+                "affected_claim": "The claim that EMBODIEDBENCH is a 'comprehensive benchmark' and that findings (e.g., MLLMs struggle with low-level manipulation) generalize to real-world embodied agents.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework.",
+                "severity": "minor",
+                "evidence": "Sections 5.4 (Visual-centric Ablation) and Appendix F.5/F.6 show that incorporating multi-step images or multi-view images leads to performance drops, e.g., 'current MLLMs struggle to effectively utilize multiple image inputs, often leading to confusion.'",
+                "affected_claim": "The claim that the proposed 'unified embodied agent pipeline' is a robust framework for processing multimodal inputs.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims—the benchmark design, agent framework, and evaluation results—are technically well-supported. The methodology is clear, experiments are extensive, and results are presented with appropriate metrics (success rates, ablation studies, error analysis). No major logical flaws or unsupported assumptions are identified."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While prior benchmarks exist (e.g., ALFWorld, VisualAgentBench, VLABench), EMBODIEDBENCH uniquely combines: 1) evaluation across both high-level and low-level action hierarchies, 2) a fine-grained capability-oriented evaluation across six subsets, and 3) a large-scale, multi-environment (4) benchmark. The comparison in Table 1 substantiates distinct contributions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work meaningfully advances the field of embodied AI by providing a much-needed standardized evaluation platform for MLLM-based agents. The benchmark's scale, diversity, and fine-grained analysis address a critical gap. The findings (e.g., vision's varying importance, challenges in low-level manipulation and long-horizon planning) offer concrete insights to guide future research."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is highly convincing and fair. It benchmarks a wide array of 24 models, includes comprehensive ablation studies on key factors, provides detailed error analysis, and uses appropriate success metrics. The comparisons with and without vision, and across capability subsets, are particularly insightful."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly structured and written. Figures and tables effectively illustrate the benchmark design, pipeline, and results. The extensive appendix provides necessary details for reproducibility. While dense, the information is well-organized and accessible for assessment."
+              }
+            },
+            "summary_comment": "EMBODIEDBENCH is a strong, well-executed contribution that provides a comprehensive and much-needed benchmark for evaluating MLLM-based embodied agents. Its key strengths are the integration of tasks across action levels, fine-grained capability-oriented evaluation, and extensive empirical analysis of leading models. The findings are insightful and will serve as a valuable reference point for the community. The limitations (simulation-only, some MLLM input limitations) are acknowledged by the authors and do not undermine the paper's core contributions. The work meets the standards of a top-tier machine learning conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Comprehensive and multi-faceted benchmark: Introduces EMBODIEDBENCH, a large-scale (1,128 tasks) benchmark covering four environments with both high-level and low-level tasks, and a fine-grained capability-oriented evaluation across six subsets.",
+              "Extensive empirical evaluation: Provides a thorough, standardized assessment of 24 leading proprietary and open-source MLLMs, yielding clear and insightful findings (e.g., vision is critical for low-level tasks, long-horizon planning is hardest).",
+              "Rigorous and systematic analysis: Includes extensive ablations (language/visual factors, resolution, detection boxes, multi-step/multi-view inputs, visual ICL) and detailed error analysis, offering valuable practical insights for the research community."
+            ],
+            "weaknesses": [
+              "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+              "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+                "severity": "minor",
+                "evidence": "The 'Limitations' section explicitly states: 'our evaluation is conducted solely in simulated environments, without real-world experiments.' It further discusses that simulation trades off reproducibility and cost against real-world applicability.",
+                "affected_claim": "The claim that EMBODIEDBENCH is a 'comprehensive benchmark' and that findings (e.g., MLLMs struggle with low-level manipulation) generalize to real-world embodied agents.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework.",
+                "severity": "minor",
+                "evidence": "Sections 5.4 (Visual-centric Ablation) and Appendix F.5/F.6 show that incorporating multi-step images or multi-view images leads to performance drops, e.g., 'current MLLMs struggle to effectively utilize multiple image inputs, often leading to confusion.'",
+                "affected_claim": "The claim that the proposed 'unified embodied agent pipeline' is a robust framework for processing multimodal inputs.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims—the benchmark design, agent framework, and evaluation results—are technically well-supported. The methodology is clear, experiments are extensive, and results are presented with appropriate metrics (success rates, ablation studies, error analysis). No major logical flaws or unsupported assumptions are identified."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While prior benchmarks exist (e.g., ALFWorld, VisualAgentBench, VLABench), EMBODIEDBENCH uniquely combines: 1) evaluation across both high-level and low-level action hierarchies, 2) a fine-grained capability-oriented evaluation across six subsets, and 3) a large-scale, multi-environment (4) benchmark. The comparison in Table 1 substantiates distinct contributions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work meaningfully advances the field of embodied AI by providing a much-needed standardized evaluation platform for MLLM-based agents. The benchmark's scale, diversity, and fine-grained analysis address a critical gap. The findings (e.g., vision's varying importance, challenges in low-level manipulation and long-horizon planning) offer concrete insights to guide future research."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is highly convincing and fair. It benchmarks a wide array of 24 models, includes comprehensive ablation studies on key factors, provides detailed error analysis, and uses appropriate success metrics. The comparisons with and without vision, and across capability subsets, are particularly insightful."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly structured and written. Figures and tables effectively illustrate the benchmark design, pipeline, and results. The extensive appendix provides necessary details for reproducibility. While dense, the information is well-organized and accessible for assessment."
+              }
+            },
+            "summary_comment": "The author response provides helpful context but does not change the assessment of the submitted work. The authors correctly note that the simulation limitation is explicitly acknowledged in the paper and that the multi-step/multi-view performance issue is presented as a finding about current MLLMs rather than solely a pipeline flaw. However, these remain minor weaknesses inherent to the submitted work, as the response offers clarifications and framing adjustments rather than new evidence. The core contributions of the benchmark, the extensive evaluation, and the rigorous analysis remain strong and clearly meet the standards for acceptance. EMBODIEDBENCH is a significant and well-executed contribution to the field."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Benchmark is limited to simulation, not real-world, affecting generalization claims.\",\n        \"Agent pipeline has weaknesses (e.g., multi-step/multi-view images degrade performance).\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Benchmark is limited to simulation.\",\n          \"location\": \"Section 6, Limitations\",\n          \"explanation\": \"The paper explicitly acknowledges this limitation: 'our evaluation is conducted solely in simulated environments, without real-world experiments.' It discusses the trade-offs involved, justifying the use of simulation for reproducibility, cost, and safety.\"\n        },\n        {\n          \"concern\": \"Multi-step/multi-view images degrade performance in the agent pipeline.\",\n          \"location\": \"Section 5.4 (Visual-centric Ablation) and Appendix F.5, F.6\",\n          \"explanation\": \"The results show that incorporating multi-step historical images (Figure 5(c), Appendix F.5) or multi-view images (Appendix F.6) leads to performance drops. The text explains: 'current MLLMs struggle to effectively utilize multiple image inputs, often leading to confusion about their current state.'\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"The paper notes that multi-step/multi-view image inputs degrade performance, indicating a limitation of the current framework.\",\n          \"proposed_change\": \"In the discussion of the agent pipeline (Section 4.3 and the Limitations/Future Work sections), we will more explicitly frame this finding not just as a pipeline weakness but as a critical open challenge for the community. We will emphasize that our benchmark reveals this fundamental limitation of current MLLMs and highlight it as a key direction for future research (as already touched upon in Appendix B).\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Benchmark limitations regarding simulation-only evaluation.\",\n          \"proposed_change\": \"We will expand the 'Limitations' section to more directly connect the simulation-only scope to the paper's claims. We will reiterate that our findings about model capabilities and challenges are valid within the standardized, reproducible context of our benchmark, which is a necessary and established step before costly real-world deployment. We will also more strongly reference the discussion in Appendix B about future work bridging the simulation-to-real gap.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"Thank you for the positive and thoughtful review. We appreciate your recognition of our benchmark's comprehensiveness, extensive evaluation, and rigorous analysis. We are pleased that you find the work novel, significant, and well-executed.\\n\\nYou correctly identified two limitations. First, regarding the simulation-only evaluation, we explicitly acknowledge this in the Limitations section. We agree that this limits direct claims about real-world performance. In our paper, we carefully frame our findings as insights into model capabilities within a standardized simulated benchmark, which is a crucial and common step in the field for reproducible evaluation. We will strengthen this framing in the revised manuscript to ensure our claims are precisely scoped.\\n\\nSecond, you note that our ablation studies reveal a weakness in the agent pipeline when using multi-step or multi-view images. This is an accurate observation. However, we view this not merely as a flaw in our specific pipeline design, but as a significant empirical finding about the current state of MLLMs themselves. Our benchmark and evaluation protocol successfully surface this limitation: off-the-shelf MLLMs struggle to integrate temporal or multi-perspective visual context effectively for embodied decision-making. We will revise the text to present this more clearly as a discovered challenge for the field (as hinted in Appendix B's future directions) rather than an isolated design shortcoming. Our pipeline is robust for the single-image, single-view setting that yields the best current performance.\\n\\nThank you again for your supportive assessment. We will incorporate your suggestions to sharpen the discussion around these points in the final version.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Comprehensive and multi-faceted benchmark: Introduces EMBODIEDBENCH, a large-scale (1,128 tasks) benchmark covering four environments with both high-level and low-level tasks, and a fine-grained capability-oriented evaluation across six subsets.",
+              "Extensive empirical evaluation: Provides a thorough, standardized assessment of 24 leading proprietary and open-source MLLMs, yielding clear and insightful findings (e.g., vision is critical for low-level tasks, long-horizon planning is hardest).",
+              "Rigorous and systematic analysis: Includes extensive ablations (language/visual factors, resolution, detection boxes, multi-step/multi-view inputs, visual ICL) and detailed error analysis, offering valuable practical insights for the research community."
+            ],
+            "weaknesses": [
+              "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+              "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Benchmark limitations: The evaluation is conducted solely in simulation, limiting direct conclusions about real-world performance and generalization.",
+                "severity": "minor",
+                "evidence": "The 'Limitations' section explicitly states: 'our evaluation is conducted solely in simulated environments, without real-world experiments.' It further discusses that simulation trades off reproducibility, cost, and safety against real-world applicability.",
+                "affected_claim": "The claim that EMBODIEDBENCH is a 'comprehensive benchmark' and that findings (e.g., MLLMs struggle with low-level manipulation) generalize to real-world embodied agents.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "Specific weaknesses in agent pipeline design: The paper notes that multi-step/multi-view image inputs degrade performance, indicating current MLLMs struggle with these inputs; this highlights a limitation of the employed framework.",
+                "severity": "minor",
+                "evidence": "Sections 5.4 (Visual-centric Ablation) and Appendix F.5/F.6 show that incorporating multi-step images or multi-view images leads to performance drops, e.g., 'current MLLMs struggle to effectively utilize multiple image inputs, often leading to confusion.'",
+                "affected_claim": "The claim that the proposed 'unified embodied agent pipeline' is a robust framework for processing multimodal inputs.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims—the benchmark design, agent framework, and evaluation results—are technically well-supported. The methodology is clear, experiments are extensive, and results are presented with appropriate metrics (success rates, ablation studies, error analysis). No major logical flaws or unsupported assumptions are identified."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "While prior benchmarks exist (e.g., ALFWorld, VisualAgentBench, VLABench), EMBODIEDBENCH uniquely combines: 1) evaluation across both high-level and low-level action hierarchies, 2) a fine-grained capability-oriented evaluation across six subsets, and 3) a large-scale, multi-environment (4) benchmark. The comparison in Table 1 substantiates distinct contributions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work meaningfully advances the field of embodied AI by providing a much-needed standardized evaluation platform for MLLM-based agents. The benchmark's scale, diversity, and fine-grained analysis address a critical gap. The findings (e.g., vision's varying importance, challenges in low-level manipulation and long-horizon planning) offer concrete insights to guide future research."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "The experimental evaluation is highly convincing and fair. It benchmarks a wide array of 24 models, includes comprehensive ablation studies on key factors, provides detailed error analysis, and uses appropriate success metrics. The comparisons with and without vision, and across capability subsets, are particularly insightful."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly structured and written. Figures and tables effectively illustrate the benchmark design, pipeline, and results. The extensive appendix provides necessary details for reproducibility. While dense, the information is well-organized and accessible for assessment."
+              }
+            },
+            "summary_comment": "The author response reaffirms the paper's existing content but does not provide new evidence that would alter the assessment of the submitted work. The authors acknowledge the simulation limitation as inherent to their methodology and correctly point to its explicit discussion in the Limitations section. They also clarify that the multi-step/multi-view performance issue is presented as an empirical finding about MLLM capabilities. These remain minor, acknowledged weaknesses that do not undermine the paper's substantial contributions. The benchmark's comprehensive design, extensive evaluation, and rigorous analysis constitute a significant and well-executed contribution that meets top-tier conference standards."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Benchmark limitations due to simulation-only evaluation\",\n        \"Agent pipeline limitations with multi-step/multi-view inputs\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Benchmark is limited to simulation-only evaluation\",\n          \"location\": \"Section 6: Limitations\",\n          \"explanation\": \"We explicitly acknowledge this limitation: 'our evaluation is conducted solely in simulated environments, without real-world experiments.' We discuss the trade-offs between reproducibility, cost, safety, and real-world applicability, positioning our benchmark as a necessary foundational step in the research pipeline.\"\n        },\n        {\n          \"concern\": \"Multi-step/multi-view image inputs degrade performance\",\n          \"location\": \"Section 5.4 and Appendix F.5/F.6\",\n          \"explanation\": \"Our experiments reveal that current MLLMs struggle with multi-step and multi-view inputs, which we present as an important empirical finding about model capabilities rather than a flaw in our pipeline design. This insight is valuable for the community and is highlighted in our future research directions (Appendix B).\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify framing of simulation limitation\",\n          \"proposed_change\": \"We will strengthen the Limitations section to more explicitly position simulated evaluation as an established, necessary methodology in embodied AI research that enables standardized comparison. We will emphasize that our findings about model capabilities are valid within this important research context.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Reframe multi-step/multi-view findings as community insight\",\n          \"proposed_change\": \"We will adjust the framing in Sections 4.3 and 5.4 to present the multi-step/multi-view performance degradation not as a pipeline weakness but as a significant discovery about current MLLM limitations that our benchmark helps uncover. This aligns with our future directions in Appendix B.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We sincerely thank the reviewer for their thorough assessment and for recognizing the strengths of our work. We appreciate the acknowledgment that our response provides helpful context and that our core contributions remain strong.\\n\\nRegarding the simulation limitation, we agree this is an inherent characteristic of our benchmark design. In our revision, we will further emphasize that simulation-based evaluation is a well-established, necessary methodology in embodied AI research that enables standardized, reproducible comparison across models - precisely the gap our benchmark aims to fill. Our findings about model capabilities are valid and significant within this important research context.\\n\\nConcerning the multi-step/multi-view performance issues, we will refine our framing to present this more clearly as a valuable empirical discovery about current MLLM limitations that our benchmark helps uncover, rather than solely as a pipeline weakness. This insight - that off-the-shelf MLLMs struggle with temporal and multi-perspective reasoning - is itself an important contribution that guides future research directions, as noted in Appendix B.\\n\\nWe are pleased that the reviewer finds our benchmark 'significant and well-executed' and that it 'clearly meet[s] the standards for acceptance.' We will incorporate these clarifications to strengthen the manuscript while maintaining the robust experimental foundation and insightful analysis that form the core of our contribution.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_aadcc1b461df",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/icml_accept_2025_023_embodiedbench_comprehensive_benchmarking_multi_modal_large_language_models_for_v.md",
+    "target_paper_summary": {
+      "paper_id": "paper_aadcc1b461df",
+      "title": "Ebench : Comprehensive Benchmarking Multi-Modal Large Language Models For Vision-Driven Embodied Agents",
+      "abstract": "Leveraging Multi-modal Large Language Models (MLLMs) to create embodied agents offers a promising avenue for tackling real-world tasks. While language-centric embodied agents have garnered substantial attention, MLLM-based embodied agents remain underexplored due to the lack of comprehensive evaluation frameworks. To bridge this gap, we introduce EMBODIEDBENCH, an extensive benchmark designed to evaluate visiondriven embodied agents. EMBODIEDBENCH features: (1) a diverse set of 1,128 testing tasks across four environments, ranging from high-level semantic tasks (e.g., household) to low-level tasks involving atomic actions (e.g., navigation and manipulation); and (2) six meticulously curated subsets evaluating essential agent capabilities like commonsense reasoning, complex instruction understanding, spatial awareness, visual perception, and long-term planning. Through extensive experiments, we evaluated 24 leading proprietary and open-source MLLMs within EMBODIEDBENCH. Our findings reveal that: MLLMs excel at highlevel tasks but struggle with low-level manipulation, with the best model, GPT-4o, scoring only 28.9% on average. EMBODIEDBENCH provides a multifaceted standardized evaluation platform that not only highlights existing challenges but also offers valuable insights to advance MLLM- based embodied agents. Our code and dataset are available at https://embodiedbench.github.io.",
+      "topic": "",
+      "claims": [
+        "we introduce EMBODIEDBENCH, an extensive benchmark designed to evaluate visiondriven embodied agents."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

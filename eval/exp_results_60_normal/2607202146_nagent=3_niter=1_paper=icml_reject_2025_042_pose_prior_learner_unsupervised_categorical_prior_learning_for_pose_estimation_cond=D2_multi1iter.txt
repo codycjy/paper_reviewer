@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of unsupervised categorical prior learning for pose estimation through a hierarchical memory is highly novel and addresses a significant challenge in the field.",
+        "The paper demonstrates that learned priors can outperform human-defined priors, challenging conventional wisdom and offering a more robust approach to pose estimation.",
+        "The iterative inference strategy for occluded scenes, leveraging the learned prior and hierarchical memory, is a creative and effective solution to a challenging practical problem.",
+        "The quantitative and qualitative evaluations are comprehensive, covering various human and animal datasets, and demonstrating the broad applicability of PPL."
+      ],
+      "weaknesses": [
+        "While the concept of the hierarchical memory is explained, some of the technical details around how the 'compositional parts' are truly represented and aggregated could be further elaborated for deeper understanding.",
+        "The paper acknowledges the limitation of 2D priors, which is a significant practical constraint for real-world applications involving 3D postures and rotations. While it's a future work direction, its current impact is limited by this."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach to unsupervised pose estimation by introducing the concept of learning categorical priors in a self-supervised manner. The use of a hierarchical memory to distill a general pose prior from prototypical poses is a brilliant idea, pushing the boundaries of what's possible without extensive human annotations. The finding that learned priors can even surpass human-defined ones is particularly exciting and has significant implications for future research. While there are minor imperfections in the current 2D limitation, the boldness and potential impact of this work far outweigh those concerns. The iterative inference for occluded images further demonstrates the practical utility and robustness of the proposed method. This is exactly the kind of forward-thinking and creative research that significantly advances the field."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel approach to unsupervised categorical pose prior learning using a hierarchical memory, which is a sound methodological contribution.",
+        "The evaluation is thorough and comprehensive, comparing PPL against several competitive baselines on multiple datasets (Human3.6m, Taichi, CUB-200-2011) and demonstrating superior performance. The ablation studies are also well-conducted and provide insightful analysis.",
+        "The iterative inference strategy for occluded scenes is a notable contribution, showcasing the model's robustness and its ability to leverage learned priors for refinement, which is well-supported by experimental results and visualizations."
+      ],
+      "weaknesses": [
+        "While the concept of object topological relationships (connectivity) is introduced, the mechanism by which the `link regularization loss` or the overall architecture ensures that the learned connectivity accurately reflects `fixed and rigid` relationships (e.g., maintaining arm length) appears implicitly rather than explicitly enforced. Further discussion or a dedicated ablation on this aspect would strengthen this claim.",
+        "The paper mentions that the keypoint prior `T is decoded from a hierarchical memory M storing compositional parts of prototypical poses` (lines 175-176) and later, `PPL pools the k vectors of each memory bank into one vector… decoded by MIXdec into N points of our keypoint prior T` (lines 255-257). However, the description of how `T` (the general categorical pose prior) itself is initialized or evolves during training is slightly ambiguous before it's 'decoded' from memory. Clarifying this initial state and direct learning mechanism of the overarching `T` would improve clarity."
+      ],
+      "summary_comment": "This paper presents PPL, a novel method for unsupervised categorical prior learning in pose estimation. The core idea of using a hierarchical memory to distill a general pose prior from prototypical poses is innovative and well-articulated. The experimental results are compelling, demonstrating significant improvements over existing baselines and strong performance in challenging occluded scenarios. The ablation studies provide valuable insights into the components of PPL. While there are minor ambiguities regarding the explicit enforcement of rigid connectivity and the initial evolution of the keypoint prior, these do not undermine the overall soundness and impressive empirical validation of the proposed method. The contributions are significant for the field of unsupervised pose estimation."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant practical challenge: learning categorical pose priors in an unsupervised manner, which is crucial for reducing annotation burdens and improving generalization in real-world applications.",
+        "PPL demonstrates strong empirical performance, outperforming several competitive baselines on established human and animal pose estimation benchmarks, even surpassing methods that use human-defined priors. This is a very compelling result.",
+        "The iterative inference strategy for occluded scenes is a clear practical benefit, showing PPL's robustness and ability to leverage learned priors to infer missing information, which is common in practical deployments.",
+        "The ablation studies are thorough and provide valuable insights, particularly the finding that learned priors can be more effective than human-defined ones and the critical role of connectivity priors. This contributes to better understanding of the method and the domain."
+      ],
+      "weaknesses": [
+        "While the paper clearly states that PPL learns 2D priors, it acknowledges that this is a limitation given the real-world is 3D. A more detailed discussion or preliminary ideas on how 3D capabilities might be integrated would strengthen the practical relevance for more complex scenarios.",
+        "The explanation of the `M` memory module and its hierarchical structure, particularly the distinction between different embedding spaces for memory banks, could be clearer. A more intuitive example or a simplified diagram would help practitioners grasp its specifics faster."
+      ],
+      "summary_comment": "This paper presents a highly practical and impactful contribution to unsupervised pose estimation. The Pose Prior Learner (PPL) effectively learns categorical pose priors from unannotated data, which is a major step towards reducing reliance on expensive human annotations. The empirical results are convincing, demonstrating superior performance even against methods with human-defined priors and showing strong robustness in occluded scenes, a critical factor for real-world deployment. The iterative inference mechanism for occlusion is a particularly well-motivated and effective practical component. While the 2D limitation is acknowledged, the overall significance and practical utility of PPL are undeniable. The thorough ablation studies also provide valuable insights into the method's components. This work is directly relevant to practitioners seeking to develop more autonomous and robust pose estimation systems."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel method for 'unsupervised categorical prior learning' for pose estimation, falling under 'general machine learning' and 'deep learning (architectures, generative models, theory, etc.)' topics, and demonstrating innovative techniques applicable to computer vision.",
+        "The core contribution is methodological, introducing PPL with a hierarchical memory for unsupervised prior learning, which aligns with ICML's focus on advancing machine learning techniques and systems.",
+        "Reviewer A highlights the 'highly novel' core idea and its significant implications, while Reviewer B notes the 'novel approach' and 'sound methodological contribution'. This strong novelty is highly valued by ICML.",
+        "The comprehensive evaluation and ablation studies, demonstrating superior performance on several benchmarks and robustness in occluded scenes, indicate strong empirical rigor, fitting ICML's emphasis on thorough experimental validation. Reviewer B specifically praised the 'thorough and comprehensive' evaluation and 'well-conducted ablation studies'.",
+        "The paper's clear articulation of the problem, proposed solution, and experimental results, as noted by all reviewers (scores of 4 for clarity), indicates good presentation suitable for ICML's audience."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper acknowledges the limitation of learning 2D priors for 3D real-world applications, this could be perceived as a potential weakness for a top-tier conference that values addressing complex real-world problems more holistically. Reviewers A and C both pointed this out.",
+        "Reviewer B mentioned ambiguity regarding the explicit enforcement of 'fixed and rigid' connectivity in the loss function and the initial evolution of the keypoint prior. Such minor ambiguities in methodological rigor might warrant slight clarification.",
+        "Reviewer A noted that some technical details around how 'compositional parts' are truly represented and aggregated in the hierarchical memory could be further elaborated for deeper understanding. This could impact the perceived completeness of the theoretical contribution for some ICML reviewers."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'unsupervised categorical prior learning' and 'pose estimation', which explicitly falls under NeurIPS topics like 'Computer vision', 'General machine learning: core contributions in supervised and unsupervised methods', and potentially 'Deep learning'.",
+        "The contribution focuses on a novel machine learning method (PPL) for unsupervised learning, which aligns with NeurIPS's interest in foundational advances in machine learning, particularly regarding learning from unannotated data.",
+        "Reviewers lauded the novelty of the approach, with Reviewer A stating it's 'highly novel' and Reviewer B noting it as a 'novel approach to unsupervised categorical pose prior learning'. This strong novelty is a good fit for NeurIPS.",
+        "The paper provides extensive quantitative and qualitative evaluations on multiple datasets, showing significant improvements and robustness in occluded scenes, which demonstrates robust methodology and empirical validation, a key aspect for NeurIPS. Reviewer B particularly highlights the 'thorough and comprehensive' evaluation.",
+        "The paper's clarity and structure, receiving good scores from all reviewers, make it accessible to a broad NeurIPS audience, which includes interdisciplinary researchers."
+      ],
+      "why_it_does_not_fit": [
+        "The primary limitation is the focus on 2D priors, while NeurIPS often emphasizes methods that can address the complexity of real-world 3D scenarios, particularly in computer vision and robotics. Reviewers A and C identified this as a significant practical constraint.",
+        "Reviewer A suggested that the technical details of the hierarchical memory's 'compositional parts' representation could be more elaborated, and Reviewer B pointed out ambiguities in how the keypoint prior initializes and evolves. For NeurIPS, which often values deep theoretical understanding, these minor ambiguities could be refined.",
+        "While the paper is strong, it might face competition from papers with more direct connections to theoretical advances in learning theory or probabilistic methods, areas where NeurIPS has a very strong presence, though 'general machine learning' is broad enough to include this work."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's focus on 'unsupervised categorical prior learning' and 'pose estimation' with 'hierarchical memory' and 'image reconstruction' connects well with ICLR topics such as 'unsupervised, self-supervised, semi-supervised, and supervised representation learning', 'generative models', and 'applications to robotics, autonomy, planning' (related to pose estimation).",
+        "The use of deep learning architectures (CNNs, MLP-Mixer blocks) and the learning of representations (hierarchical memory for prototypical poses) are central to ICLR's interests. Reviewer A explicitly mentions 'pushing the boundaries of what's possible' without annotation, which aligns with ICLR's innovative focus.",
+        "The novelty of learning priors in an unsupervised manner and demonstrating that they outperform human-defined ones is a significant advance in representation learning, a core area for ICLR. All reviewers highlight the novelty as a key strength.",
+        "The methodology, including novel loss functions and an iterative inference strategy, is robust and thoroughly evaluated. The ablation studies provide insights into the architecture's components, appealing to ICLR's emphasis on mechanism understanding. Reviewer B stated the 'novel approach' and 'sound methodological contribution'.",
+        "The paper's clear explanations and strong empirical results, including visualizations of learned priors, make it suitable for ICLR's audience who value both conceptual and practical insights into deep learning models."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR has a strong emphasis on deep learning theory and architectures. While this paper uses deep learning, the theoretical underpinnings of the hierarchical memory and prior distillation could be further deepened and formalized to better align with some ICLR expectations, as suggested by Reviewer A's comment on elaborating 'compositional parts'.",
+        "The explicit limitation to 2D priors, as mentioned by all reviewers, makes the practical applications less comprehensive than some other, more 3D-centric pose estimation works often seen at ICLR, especially those applied to robotics or embodied AI which typically operate in 3D space.",
+        "Reviewer B's concern about the implicit enforcement of fixed connectivity and the ambiguity in the initial evolution of the keypoint prior suggests areas where the theoretical or architectural justification could be more explicit, which ICLR reviewers often scrutinize for deep learning methods."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

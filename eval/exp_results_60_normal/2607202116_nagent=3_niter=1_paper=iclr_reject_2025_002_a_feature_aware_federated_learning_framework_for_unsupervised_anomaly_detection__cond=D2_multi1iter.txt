@@ -1,0 +1,126 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of integrating feature importance into Federated Learning aggregation, especially for unsupervised anomaly detection in 5G, is highly novel and addresses a critical gap in existing FL methods.",
+        "The incorporation of Differential Privacy during feature importance aggregation is a clever way to maintain privacy while still leveraging important feature insights, balancing two often conflicting goals.",
+        "The Dynamic Feature Importance Adaptation (DFIA) mechanism is forward-looking, enhancing the model's ability to adapt to evolving data distributions, which is crucial for dynamic environments like 5G networks.",
+        "The paper tackles a significant real-world problem (5G network security) with a creative, privacy-preserving, and adaptive machine learning solution."
+      ],
+      "weaknesses": [
+        "While the approach is generally sound, the mathematical formulation for the attention weights in section 3.4.1 (Eq. 8, 9, 10) seems a bit underdeveloped and could benefit from a more rigorous derivation or explanation of how the attention weights precisely impact the aggregation beyond just multiplying by gradients (L_k/theta_k). There's a jump between 'attention weight for each feature' and 'aggregation weight for client k'.",
+        "The experimental setup, while showing strong results, uses a relatively small dataset (22,932 records) and only 5 clients. More extensive evaluation with larger, more diverse datasets and a higher number of clients would solidify the claims regarding scalability and robustness in real-world 5G scenarios."
+      ],
+      "summary_comment": "This paper presents a truly innovative approach to federated learning for unsupervised anomaly detection in 5G networks. The idea of using Integrated Gradients to compute feature importance at the client level, applying differential privacy during aggregation, and then using these insights for a feature-aware model aggregation, topped with dynamic adaptation, is excellent. It addresses key limitations of traditional FL (homogeneity assumption, lack of feature relevance, static models) in a privacy-preserving manner. While some minor details in the mathematical formulation and the scale of experimentation could be more robust, the novelty and potential significance of this framework are exceptionally high. It clearly pushes the boundaries of federated learning applications, and I am excited by the creative, unconventional thinking demonstrated here. This work is highly valuable for inspiring future research in secure and adaptive decentralized AI systems, particularly in critical infrastructure domains like 5G networks."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a well-structured and logically sound methodology, combining Federated Learning, feature importance using Integrated Gradients, Differential Privacy, and dynamic adaptation.",
+        "The experimental evaluation is comprehensive, comparing the proposed FAFL framework against strong baselines (FedAvg, FedProx) using appropriate metrics (ROC-AUC, Precision, Recall, F1-score, Accuracy) and a custom dataset relevant to 5G networks.",
+        "The inclusion of Differential Privacy (DP) for feature importance aggregation directly addresses privacy concerns in FL beyond just raw data sharing, which is a critical aspect for real-world deployment, and the evaluation of its impact on performance is valuable."
+      ],
+      "weaknesses": [
+        "The formulation of the aggregation weight $w_k$ in equation (10) appears problematic. The term `partial Lk / partial theta_k` is a gradient, not a scalar value. Multiplying by `ai` (attention weight) and then summing over `i` before multiplying by `nk/n` is not a standard or clearly interpretable weighting scheme for model parameters. This needs clearer justification or correction for mathematical rigor.",
+        "The sensitivity ∆ of the feature importance is assumed to be 1 'due to normalization'. While normalization helps, a clear derivation or empirical justification for this sensitivity bound is necessary for a rigorous privacy analysis under Differential Privacy. Without this, the privacy guarantees might be overestimated."
+      ],
+      "summary_comment": "This paper proposes a Feature-Aware Federated Learning (FAFL) framework for unsupervised anomaly detection in 5G networks. The core idea of incorporating feature importance, derived from Integrated Gradients, into the aggregation process, along with Differential Privacy and dynamic adaptation, is novel and relevant for the targeted application. The methodology is generally sound, although the aggregation weight formulation could benefit from more precise mathematical justification. The experimental setup is robust, comparing against appropriate baselines and using relevant metrics on a custom 5G dataset. The results demonstrate clear performance improvements while maintaining privacy. The study's focus on practical issues like data heterogeneity and privacy in 5G environments adds to its significance. Overall, despite a minor concern regarding the mathematical formulation of an aggregation weight and the justification of sensitivity for DP, the paper presents a strong contribution with rigorous evaluation."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and relevant problem: anomaly detection in 5G networks, where traditional centralized methods face significant privacy and scalability challenges.",
+        "The FAFL framework introduces a relevant and practical approach by integrating feature importance (via Integrated Gradients) and dynamic adaptation into federated learning, which directly addresses the heterogeneity and evolving nature of real-world 5G data.",
+        "The experimental evaluation is clear and demonstrates a measurable improvement over established baselines (FedAvg, FedProx) using a custom 5G dataset, highlighting the practical benefits of the proposed method while maintaining privacy."
+      ],
+      "weaknesses": [
+        "While the approach is sound, the novelty of individual components (FL, Autoencoders, Integrated Gradients, Differential Privacy) is moderate. The main novelty lies in their specific combination and application to this problem, but a deeper dive into how this combination is more than the sum of its parts could be beneficial.",
+        "The description of the '5G testbed environment' and 'relevant features extracted' is quite high-level. More details on the specific characteristics of the data, the types of attacks, and how the features were engineered would strengthen the evaluation and help practitioners understand its applicability. For example, knowing the exact definitions of 'packet size' or 'interarrival time' features (e.g., mean, max, variance) would be useful."
+      ],
+      "summary_comment": "This paper presents a strong practical contribution to anomaly detection in 5G networks, an area with clear and pressing needs. The proposed Feature-Aware Federated Learning (FAFL) framework effectively tackles the challenges of data privacy, heterogeneity, and dynamic environments by cleverly integrating feature importance, differential privacy, and dynamic adaptation into a federated learning setup. The results, showing superior performance over standard FL methods on a real-world 5G dataset, are convincing and demonstrate the real-world relevance and effectiveness of the approach. While the individual components are not radically new, their thoughtful combination and application to this specific context are significant. The paper is well-written and easy to follow, making its contributions accessible to practitioners. Addressing some details on the dataset and feature engineering would further strengthen the work's practical impact."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core topic of general machine learning, specifically federated learning with unsupervised anomaly detection, aligns well with ICML's broad scope in machine learning, which includes 'general machine learning' and 'trustworthy machine learning' (privacy, robustness).",
+        "The methodology includes 'optimization' (Federated Learning algorithms like FedAvg, FedProx) and 'probabilistic methods' (Differential Privacy for noise addition), which are explicit topics of interest for ICML.",
+        "The paper provides a significant methodological contribution by integrating feature importance, differential privacy, and dynamic adaptation into FL, addressing critical challenges of data heterogeneity, privacy, and adaptability. This type of novel algorithmic development is highly valued.",
+        "Reviewer A highlights the 'highly novel' idea of integrating feature importance into FL aggregation for unsupervised anomaly detection in 5G, and the 'clever way to maintain privacy' with DP. This strong novelty is a good fit for ICML, which seeks cutting-edge research.",
+        "The experimental validation and comparative analysis against strong baselines (FedAvg, FedProx) using relevant metrics demonstrate robust evaluation, a characteristic often expected by ICML."
+      ],
+      "why_it_does_not_fit": [
+        "While the application to 5G networks is an 'application-driven machine learning' aspect, the primary focus of the paper is on the algorithmic improvements to Federated Learning and not solely on the 5G domain itself. ICML has a broader scope for fundamental ML research.",
+        "Reviewer B points out a potential issue with the mathematical formulation of the aggregation weight (Eq. 10) and the justification for the sensitivity bound in DP. Such concerns about mathematical rigor, if not addressed adequately, could be a drawback for a high-tier venue like ICML that values theoretical soundness.",
+        "Reviewer A notes that the experimental setup uses a 'relatively small dataset' and 'only 5 clients', suggesting that while the results are strong, more extensive evaluation might be needed to fully solidify claims regarding scalability and robustness for a top-tier general ML conference."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses 'General machine learning: core contributions in supervised and unsupervised methods' by proposing a novel unsupervised anomaly detection framework within a federated learning setting.",
+        "The incorporation of Differential Privacy aligns with NeurIPS's interest in 'Socio-technical aspects of AI' and 'Human interaction in AI systems', particularly concerning privacy preservation.",
+        "The methodology involves 'Optimization' (Federated Learning algorithms) and 'Probabilistic methods' (Differential Privacy), both explicitly listed as NeurIPS topics.",
+        "The focus on 5G networks, a critical infrastructure, implicitly links to 'AI/ML for physical sciences' or 'AI/ML for sustainability' (network efficiency/security), demonstrating an application of ML in an important domain.",
+        "The reviewer comments consistently praise the novelty of the combined approach and its relevance to real-world problems like 5G network security, fitting NeurIPS's appreciation for interdisciplinary submissions and in-depth analysis that provides new insights.",
+        "Reviewer A emphasizes the 'truly innovative approach' and the 'exceptionally high' novelty and significance, which strongly aligns with NeurIPS's focus on groundbreaking research."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, while the application to 5G networks is relevant, NeurIPS also often seeks deeper theoretical contributions or broader applicability beyond a specific domain. The application-driven nature, while a strength, may not be the primary driver for acceptance if the core ML innovation isn't sufficiently broad.",
+        "The identified weaknesses regarding mathematical rigor in the aggregation weight formulation (Reviewer B) and the justification of the DP sensitivity bound could be critical. NeurIPS places a high value on the theoretical soundness and rigorous analysis of proposed methods.",
+        "The scale of the experimental evaluation (small dataset, few clients) raised by Reviewer A might be a concern for NeurIPS, which often expects comprehensive empirical validation for claims of robustness and scalability, especially for a real-world application."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper uses Autoencoders, a type of deep learning architecture, for unsupervised anomaly detection which is relevant to ICLR's focus on 'deep learning' and 'unsupervised, self-supervised, semi-supervised, and supervised representation learning'.",
+        "The methodology integrates 'probabilistic methods' (Differential Privacy for noise in aggregation) and 'optimization' (Federated Learning algorithms), both of which are listed as ICLR topics.",
+        "The use of Integrated Gradients, an interpretability technique, combined with feature importance, touches upon aspects of 'visualization or interpretation of learned representations', which is a relevant topic.",
+        "Reviewer comments, particularly from Reviewer A, highlight the 'creative, unconventional thinking' and the 'highly novel' approach, which generally aligns with ICLR's pursuit of cutting-edge research, especially in deep learning innovations.",
+        "The application to 5G network security could be considered an 'application to robotics, autonomy, planning' or a 'general machine learning' application, fitting ICLR's broad application scope."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning (Autoencoders) is used, the primary novelty and contribution of the paper are in the federated learning framework and its components (feature importance, DP, dynamic adaptation), rather than a fundamental breakthrough in deep learning architectures or theory itself. ICLR often prioritizes novel insights *into deep learning*.",
+        "The core contribution is more about an advanced federated learning *system* applied to a real-world problem, which might be a slightly weaker fit for ICLR compared to venues with a broader scope for general ML or systems ML.",
+        "The discussion about issues in mathematical rigor (Reviewer B concerning Eq. 10 and DP sensitivity) could be a more significant concern for ICLR, which values rigorous theoretical understanding underpinning deep learning models.",
+        "Reviewer C notes that the 'novelty of individual components... is moderate. The main novelty lies in their specific combination'. While this combination is valuable, ICLR often looks for more foundational novelty in deep learning methods or theory."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

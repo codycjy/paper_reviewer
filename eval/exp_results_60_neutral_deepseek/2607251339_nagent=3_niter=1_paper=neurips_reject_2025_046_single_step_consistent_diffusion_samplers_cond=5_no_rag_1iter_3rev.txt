@@ -1,0 +1,118 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a genuinely novel idea: applying consistency distillation and training to the problem of sampling from unnormalized distributions, enabling single-step or few-step sampling. This is a significant conceptual leap that has not been explored before.",
+        "The proposed SCDS method is highly ambitious, as it learns a single-step sampler from scratch without the need for a pre-trained teacher model or a dataset, fully amortizing the exploration cost into training.",
+        "The paper demonstrates a substantial practical impact by drastically reducing the number of network function evaluations (NFEs) at inference time (e.g., from 128+ steps to 1 step), which is a crucial advancement for resource-constrained applications."
+      ],
+      "weaknesses": [
+        "The theoretical justification, while present (Theorem 1), could be more comprehensive, particularly regarding the convergence guarantees and the interplay between the SDE-based sampling loss and the ODE-based self-consistency loss during joint training in SCDS.",
+        "The experimental evaluation, while extensive, shows that the single-step SCDS performance is sometimes weaker than the distilled CDDS, suggesting potential instabilities or optimization challenges in the fully self-taught setting that warrant deeper analysis."
+      ],
+      "summary_comment": "This paper presents a highly novel and impactful contribution by introducing consistent diffusion samplers for efficient single-step sampling from unnormalized distributions. The core idea of extending consistency models to this setting, especially the self-consistent training approach (SCDS), is both creative and forward-thinking. While some methodological aspects could be further strengthened theoretically, the potential to dramatically accelerate a fundamental task in machine learning, as demonstrated by the empirical results, makes this a strong candidate for acceptance. The significance and novelty far outweigh the minor weaknesses."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a rigorous theoretical foundation, including a theorem (Theorem 1) with a proof in the appendix, which guarantees the convergence properties of the proposed method.",
+        "The experimental evaluation is extensive, covering a variety of synthetic and real-world tasks of different dimensionalities, and uses multiple established metrics (Sinkhorn distance, ESS, |log Z|, ELBO) for a comprehensive comparison against strong baselines.",
+        "The technical contribution is methodologically sound, carefully building upon and extending the framework of controlled diffusion processes and consistency models to the novel setting of sampling from unnormalized densities without pre-collected datasets."
+      ],
+      "weaknesses": [
+        "While the cost-benefit analysis for the total number of function evaluations is provided, a more detailed breakdown of the computational overhead during training for SCDS compared to baseline samplers would strengthen the practical assessment.",
+        "The performance of the proposed SCDS method in single-step mode is noted to be generally less accurate than the teacher-dependent CDDS on some tasks, suggesting room for improvement in the self-training paradigm for complex distributions."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and technically rigorous approach to single-step sampling from unnormalized distributions. The proposed CDDS and SCDS methods are well-motivated extensions of consistency models into the sampling domain. The theoretical analysis is correct, and the experimental evaluation is thorough and convincing, demonstrating significant computational savings while maintaining competitive sample quality. The strengths in soundness and evaluation outweigh the moderate novelty, making this a solid contribution worthy of acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and significant problem: reducing the computational cost of sampling from unnormalized distributions, which is a core bottleneck in many applied fields.",
+        "The proposed methods (CDDS and SCDS) offer a substantial speed-up (single-step sampling), with a clear and convincing analysis of the computational trade-offs and break-even point, demonstrating strong practical impact.",
+        "The experimental evaluation is extensive, covering diverse synthetic and real-world tasks, and clearly shows the methods can achieve competitive quality with a drastic reduction in network function evaluations (NFEs).",
+        "The paper is well-structured and clearly written, making the contributions and the relationship between the two proposed methods easy to understand."
+      ],
+      "weaknesses": [
+        "The theoretical guarantee (Theorem 1) is provided for CDDS, but the paper would benefit from a more detailed discussion of the limitations and potential failure modes of the self-distillation approach (SCDS) in high-dimensional or complex multi-modal settings.",
+        "While the cost-benefit analysis is excellent, the evaluation could be strengthened by including runtime comparisons (wall-clock time) alongside NFE counts, as the per-step overhead of the more complex model (conditioned on step size) might affect the practical speed-up."
+      ],
+      "summary_comment": "This paper presents a strong and practical contribution. It successfully transfers the concept of consistency models to the challenging setting of sampling from unnormalized densities, enabling massive (100x) reductions in inference-time cost. The significance is high, as efficient sampling is a fundamental need across machine learning and sciences. The methods are sound, clearly motivated, and evaluated on a comprehensive set of benchmarks. The paper is well-written and provides an honest discussion of trade-offs (e.g., CDDS vs. SCDS). The minor weaknesses do not outweigh the clear practical value and solid execution. Recommended for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Topic Fit: The paper's core focus is on developing efficient sampling algorithms for unnormalized distributions, which falls directly under 'general machine learning' and 'probabilistic methods' in ICML's topics of interest. It also intersects with 'optimization' and 'theory of machine learning'.",
+        "Contribution Fit: The paper makes a strong methodological contribution by introducing two novel algorithms (CDDS and SCDS) that bridge diffusion-based sampling and consistency models. This type of algorithmic/methodological innovation is highly valued at ICML.",
+        "Rigor Fit: Reviewer B praised the rigorous theoretical foundation (Theorem 1) and extensive experimental evaluation. ICML strongly values papers with solid theory and comprehensive experiments.",
+        "Significance: All reviewers highlighted the high practical significance of drastically reducing sampling steps. ICML welcomes impactful research that advances core ML methodologies."
+      ],
+      "why_it_does_not_fit": [
+        "Novelty Perception: While very novel, Reviewer B noted 'moderate novelty', suggesting the work is a principled extension of existing ideas (consistency models + diffusion samplers). This might be slightly less groundbreaking than some ICML papers, but the cross-pollination is still strong.",
+        "Presentation/Specific Focus: The paper is tightly focused on a specific sampling problem. While this is a strength, it might lack the extremely broad appeal of some ICML best papers, which often introduce entirely new paradigms."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Topic Fit: The work aligns with several NeurIPS tracks, including 'General machine learning', 'Probabilistic methods', 'Optimization', and 'Theory'. The application to scientific problems (e.g., Bayesian inference) connects to 'AI/ML for physical sciences' and 'AI/ML for health'.",
+        "Contribution Fit: NeurIPS values novel algorithmic ideas with strong empirical validation. The paper's core idea of enabling single-step sampling via consistency is novel and well-validated across diverse benchmarks.",
+        "Practical Impact: Reviewer C emphasized the high practical significance. NeurIPS has a strong track of publishing research with clear computational benefits and real-world applicability.",
+        "Reviewer Sentiment: All three reviewers recommended 'Accept', indicating the paper is seen as solid, novel, and impactful by a diverse panel—a strong indicator for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "Methodological Breadth: The contribution is deep but somewhat narrow, focused squarely on accelerating a specific class of samplers. It may not have the interdisciplinary 'buzz' or connection to emerging subfields (e.g., LLMs, robotics) that some NeurIPS highlights possess.",
+        "Theoretical Depth: While sound, the theory (Theorem 1) is specific to distillation error. NeurIPS sometimes favors papers with more extensive theoretical analysis or connections to broader principles. Reviewer 1's comment about wanting 'more comprehensive' theory hints at this."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Topic Fit: The paper uses neural networks to parameterize controls and consistency functions, which fits ICLR's focus on deep learning. The connection to diffusion models and generative modeling is relevant.",
+        "Methodology: The core technique involves training neural networks via novel objectives (consistency loss, self-consistency loss), which aligns with ICLR's interest in new deep learning training paradigms."
+      ],
+      "why_it_does_not_fit": [
+        "Primary Focus Mismatch: ICLR's central focus is on representation learning and deep learning architectures. This paper's primary contribution is to the field of Bayesian inference and Monte Carlo sampling. The neural network is a tool to solve a sampling problem, not the main object of study.",
+        "Contribution Type: ICLR typically highlights advances in deep learning models (architectures, training methods) for perception, generation, or reasoning. This paper is better characterized as an advance in computational statistics using deep learning as an engine.",
+        "Reviewer Feedback Context: None of the reviewers framed the work as a contribution to deep learning per se. They praised its novelty for sampling, its rigor, and its practicality—metrics more aligned with ICML/NeurIPS.",
+        "Risk: Submitting to ICLR would be riskier because reviewers might question if the deep learning component is sufficiently central or innovative from a deep learning perspective."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

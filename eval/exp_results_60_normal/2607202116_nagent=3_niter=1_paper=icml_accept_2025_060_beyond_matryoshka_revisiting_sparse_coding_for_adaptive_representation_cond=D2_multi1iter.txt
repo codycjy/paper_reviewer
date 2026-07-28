@@ -1,0 +1,124 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of using sparse coding for adaptive representation learning as an alternative to MRL is genuinely novel and conceptually elegant, offering a fresh perspective on a critical problem.",
+        "The paper demonstrates significant practical advantages of CSR over MRL across various modalities (image, text, multimodal) in terms of accuracy, retrieval speed, and training time, indicating a high potential for real-world impact.",
+        "The introduction of a contrastive loss in conjunction with sparse autoencoding directly addresses the discriminative power of the sparse representations, which is a clever way to enhance the utility of the learned features beyond mere reconstruction."
+      ],
+      "weaknesses": [
+        "While the theoretical guarantees of NCL are cited, the specific mechanisms by which it alleviates 'dead latents' in the multimodal alignment space are not fully explored or empirically demonstrated, leaving some open questions regarding its nuanced effects.",
+        "The comparison of retrieval time, while impressive for CSR, relies on hardware/software optimizations (cuBLAS vs. cuSPARSE) that might not be universally reproducible or optimal across all systems. A more hardware-agnostic analysis of computational complexity or a broader benchmarking across different GPU architectures might strengthen the claims."
+      ],
+      "summary_comment": "This paper presents a highly novel and impactful approach to adaptive representation learning using Contrastive Sparse Representation (CSR). The idea of leveraging sparse coding as an alternative to Matryoshka Representation Learning (MRL) is a significant conceptual leap, offering superior performance in terms of accuracy, retrieval speed, and training efficiency across diverse modalities. While there are minor imperfections in the empirical justification for 'dead latent' mitigation in multimodal settings and the generalizability of retrieval speed comparisons, the overall innovation and the demonstrated advantages are compelling. The work is forward-thinking and has the potential to inspire substantial future research in efficient representation learning. It directly addresses a critical challenge in large-scale ML systems and provides a practical, high-fidelity solution."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a comprehensive and rigorous evaluation across multiple modalities (image, text, multimodal) and thoroughly compares CSR with strong baselines, including MRL and its variants, SVD, and random features. The detailed experimental setups and hyperparameter tables in the appendix further bolster the reproducibility and validity of the results.",
+        "The core idea of leveraging sparse coding for adaptive representation learning, particularly as an alternative to MRL, is a technically sound and well-motivated approach. The paper clearly articulates the advantages of sparse vectors for efficiency and scalability, and the combination of sparse autoencoding with contrastive learning is a sensible design choice.",
+        "The paper includes a detailed empirical analysis of various factors affecting CSR's performance, such as backbone size, hidden representation dimension, and the contribution of different loss components. This meticulous investigation provides valuable insights into the method's behavior and informs practical deployment."
+      ],
+      "weaknesses": [
+        "While the paper leverages a theoretical guarantee from an external work (Wang et al., 2024) for the non-negative contrastive loss, the direct connection between this theoretical guarantee and the observed reduction in 'dead dimensions' and enhanced overall model performance could be more explicitly elaborated. A deeper theoretical dive or dedicated analysis of 'identifiable and disentangled features' in the context of CSR's sparse latent space would strengthen this claim.",
+        "The paper acknowledges the 'dead latents' problem, especially in multimodal settings under stringent sparsity, as a limitation. While a direction for future work is mentioned, a more thorough discussion or preliminary investigation into specific strategies for mitigating this issue within the multimodal context would be beneficial, even if not fully solved."
+      ],
+      "summary_comment": "This paper introduces Contrastive Sparse Representation (CSR), a novel method for adaptive representation learning that utilizes sparse coding. The core idea is to sparsify pre-trained embeddings using a lightweight autoencoding and task-aware contrastive objective, offering a compelling alternative to Matryoshka Representation Learning (MRL). The proposed method boasts significant advantages in terms of fidelity, retrieval cost, and training cost, outperforming MRL across various benchmarks. The evaluation is exceptionally strong, covering image, text, and multimodal tasks with detailed comparisons against state-of-the-art methods. The empirical analysis of factors influencing performance is thorough and insightful. While the theoretical connection to 'dead latents' could be stronger and the multimodal dead latent issue more deeply explored, the overall methodological soundness and comprehensive experimental validation make a strong case for the paper's contribution. It demonstrates a rigorous approach to a practical problem in representation learning.",
+      "final_decision": "Accept"
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and relevant problem in machine learning: generating adaptive representations for efficient inference, especially in large-scale systems. The proposed CSR method offers a compelling alternative to MRL by leveraging sparse coding for better trade-offs between accuracy and efficiency.",
+        "The empirical evaluation is extensive and convincing, covering image, text, and multimodal benchmarks. The direct comparison with MRL and other baselines, particularly concerning retrieval time, accuracy, and training time, clearly demonstrates the superiority and practical benefits of CSR.",
+        "The method is lightweight and designed to be applied on top of *frozen* pre-trained embeddings, significantly reducing training overhead compared to MRL which requires full model retraining. This plug-and-play capability is a major advantage for real-world application with large foundation models.",
+        "The paper provides a detailed analysis of various factors affecting performance, such as hidden representation dimension and the contribution of different loss components. The insightful discussion on the trade-offs and potential reasons for observed behaviors (e.g., retrieval speed with larger 'h') is valuable."
+      ],
+      "weaknesses": [
+        "While the paper acknowledges the 'dead latents' problem, especially in multimodal settings, and proposes partial mitigation, it remains an acknowledged limitation. A clearer discussion on the implications for practical deployment or potential strategies for more complete resolution would further strengthen the paper.",
+        "The theoretical motivation for the non-negative contrastive loss (NCL) relies on a theorem from a prior work, which is cited but not fully elaborated on or provided with sufficient context within this paper. A brief intuitive explanation or a more direct link between NCL's theoretical guarantees and the observed empirical benefits in this specific sparse context would enhance clarity for practitioners."
+      ],
+      "summary_comment": "This paper presents Contrastive Sparse Representation (CSR), a novel and highly practical approach to adaptive representation learning. It directly tackles the critical challenge of balancing representation quality, retrieval efficiency, and training costs, which is paramount in industrial applications of deep learning. The core idea of leveraging sparse coding on frozen pre-trained embeddings is elegant and demonstrated to be significantly superior to existing Matryoshka Representation Learning (MRL) methods across various modalities. The extensive empirical validation, clear problem articulation, and honest discussion of limitations make this a strong contribution to the field. Practitioners in search, retrieval, and large-scale AI systems will find this work highly relevant and impactful. The ability to achieve substantial speedups without compromising accuracy and with minimal training overhead is a game-changer. The identified 'dead latents' issue is a reasonable limitation for future work and does not detract from the immediate practical value."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's topic of 'Contrastive Sparse Representation (CSR) for adaptive representation learning' aligns perfectly with ICML's stated topics, especially 'general machine learning' (e.g., representation learning, online learning), 'deep learning' (architectures, theory), and 'optimization' (sparse methods).",
+        "The contribution offers a novel method (CSR) as an alternative to MRL, with extensive empirical validation and analysis, which ICML values for both foundational advancements and practical applications. Reviewers consistently highlight the 'genuinely novel and conceptually elegant' idea (Reviewer A) and 'technically sound' approach (Reviewer B).",
+        "The strong empirical results across image, text, and multimodal benchmarks, demonstrating superiority in accuracy, retrieval speed, and training time over state-of-the-art MRL, aligns with ICML's interest in 'evaluation' and 'application-driven machine learning' with 'innovative techniques'. Reviewers (A, B, C) all praise the 'extensive and convincing' empirical evaluation.",
+        "The paper addresses a critical challenge in large-scale ML systems (latency-sensitive applications, efficiency, fidelity), making it highly significant and relevant to the ICML community interested in efficient and trustworthy machine learning.",
+        "The methodology is well-articulated, combining sparse autoencoding with a task-aware contrastive objective, which demonstrates a rigorous approach to modifying representation learning pipelines."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper cites theoretical guarantees for the Non-Negative Contrastive Loss (NCL) from an external work, reviewers (A, B, C) note that the direct connection between this theory and the observed empirical benefits in the sparse context could be more explicitly elaborated or 'more deeply explored' (Reviewer B). ICML often values strong theoretical foundations in novel methods.",
+        "Reviewer A points out that the impressive retrieval time comparison 'relies on hardware/software optimizations (cuBLAS vs. cuSPARSE) that might not be universally reproducible or optimal across all systems,' which, while a minor point, could indicate a slight gap in broad methodological rigor for some ICML audiences interested in architecture-agnostic performance."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on 'efficient and flexible representation learning' directly aligns with NeurIPS's interest in 'General machine learning: core contributions in supervised and unsupervised methods' and 'Data-centric aspects of AI'. Reviewer C emphasizes the 'highly practical and relevant problem' of adaptive representations for efficient inference.",
+        "The comprehensive empirical evaluation across multiple modalities (computer vision, language, multimodal) and comparison against state-of-the-art contributes well to NeurIPS's broad scope, which explicitly lists 'Computer vision', 'Language and multimodal language models', 'AI/ML for physical sciences', 'AI/ML for health and biotechnology', and more.",
+        "The work highlights a strong methodological contribution by proposing Contrastive Sparse Representation (CSR) as a 'novel' (Reviewer A) and 'technically sound' (Reviewer B) approach that leverages sparse coding, which fits NeurIPS's emphasis on new and original research.",
+        "The detailed experimental analysis, including studies on backbone size, hidden representation dimension, and loss components, provides valuable insights into the method's behavior, aligning with NeurIPS's encouragement of 'in-depth analysis of existing methods that provide new insights.'",
+        "The use of contrastive learning and autoencoders, popular topics at NeurIPS, further strengthens the fit, as the paper combines these elements in a novel way for sparse representations."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the theoretical grounding for the non-negative contrastive loss and its specific impact on 'dead latents' is cited from an external work and could benefit from deeper integration or a dedicated theoretical contribution within the paper itself to fully satisfy NeurIPS's stronger theoretical leanings.",
+        "The paper acknowledges the 'dead latents' problem, especially in multimodal settings, as a limitation for future work. While acceptable, for NeurIPS, a more robust discussion or preliminary exploration of solutions for this acknowledged limitation, particularly in the multimodal context that NeurIPS covers, would enhance its appeal.",
+        "While the paper is strong empirically, its primary contribution is a novel method with strong empirical results rather than a purely theoretical breakthrough, which might be less emphasized by some more theory-focused NeurIPS reviewers, although NeurIPS also welcomes interdisciplinary and practical contributions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core methodology, Contrastive Sparse Representation (CSR), involves 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' and 'generative models' (through autoencoders), which are explicitly listed topics for ICLR.",
+        "The work directly addresses foundational deep learning concepts like representation learning, embedding compression, and efficiency, which are central to ICLR's mission of publishing 'cutting-edge research on all aspects of deep learning'.",
+        "The emphasis on 'sparse autoencoders,' which ICLR lists (indirectly through representation learning), and the use of 'probabilistic methods' (non-negative contrastive loss, akin to Bayesian methods), aligns well with ICLR's technical themes.",
+        "The application across 'computer vision, audio, language, and other modalities' (image, text, multimodal) is also explicitly mentioned in ICLR's topic list, demonstrating broad appeal to the ICLR community.",
+        "The focus on 'efficiency' and 'scalability' for large-scale systems aligns with ICLR's interest in 'large-scale learning and non-convex optimization', and 'infrastructure, software libraries, hardware'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper uses deep learning extensively and touches on architectures, its primary focus is not on developing new 'architectures' for deep learning or novel 'deep learning theory', but rather an efficient method for learning representations within existing deep learning frameworks. This might make it slightly less aligned with some of ICLR's more architecture-focused content.",
+        "Reviewers (A, B, C) consistently point out the lack of deeper theoretical elaboration linking the NCL guarantee to 'dead latent' mitigation. ICLR often seeks strong theoretical justifications for novel deep learning techniques, and this aspect could be viewed as a weakness in that context.",
+        "The practical aspects of 'retrieval speedup' tied to specific hardware/software (cuBLAS vs. cuSPARSE) might be less of a primary focus for ICLR compared to the conceptual novelty or theoretical underpinnings of the deep learning method itself, as noted by Reviewer A."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

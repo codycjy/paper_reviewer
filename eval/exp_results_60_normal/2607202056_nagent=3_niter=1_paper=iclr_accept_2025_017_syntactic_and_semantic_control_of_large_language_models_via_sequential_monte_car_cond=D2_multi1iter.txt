@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of using Sequential Monte Carlo (SMC) for controlled LM generation, especially for jointly handling both efficient and expensive potentials, is highly novel and offers a principled probabilistic perspective on a critical problem.",
+        "The paper demonstrates significant practical impact, enabling smaller open-source LMs to outperform much larger and even fine-tuned closed-source models across four diverse and challenging domains. This is a crucial finding for democratizing advanced LM capabilities.",
+        "The rigorous ablation studies and empirical validation of algorithmic components (weight correction, expensive potentials, resampling) are excellent, clearly illustrating the contribution of each element and grounding the performance improvements in the probabilistic framework (e.g., KL divergence analysis)."
+      ],
+      "weaknesses": [
+        "The mathematical notation in Section 2, particularly around the re-expression of importance weights (Eq. 7a-7d), could be clarified. Some steps in the derivation feel a bit dense and could benefit from more explicit explanations.",
+        "While the paper makes a strong case for the efficiency benefits with fewer particles, direct comparisons of *total computational real-world cost* (e.g., wall-clock time or dollar cost) across all methods for reaching comparable performance targets would strengthen the evaluation further beyond just ms/token."
+      ],
+      "summary_comment": "This paper presents a truly innovative and forward-thinking approach to controlled language model generation using Sequential Monte Carlo. The probabilistic framing of constraints as potential functions, combined with an SMC architecture that adaptively leverages both cheap and expensive signals, is a significant intellectual leap. The results are compelling, showing that this method allows smaller models to achieve performance comparable to or better than much larger, fine-tuned LMs across diverse, challenging tasks. The detailed empirical evaluations, including ablations and KL divergence analysis, provide strong support for the proposed framework. While some of the mathematical explanations could be slightly expanded, the core idea, its practical impact, and its potential to push the field forward are outstanding. This work represents a clear advancement in the field and should inspire a new direction for constrained generation."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper provides a rigorous probabilistic formulation of controlled generation as sampling from a product of experts distribution, clearly outlining the challenges and limitations of existing approaches (locally constrained decoding and sample reranking).",
+        "The proposed Sequential Monte Carlo (SMC) framework is methodologically sound, effectively integrating efficient and expensive potentials, and includes crucial components like weight correction and adaptive resampling, which are well-motivated from a theoretical perspective.",
+        "The experimental evaluation is exceptionally thorough and convincing, comparing the proposed Full SMC method against a comprehensive set of ablations and baselines across four diverse and challenging domains. The results demonstrate significant practical improvements and effective resource utilization.",
+        "The empirical validation of the probabilistic perspective is a strong point, showing that performance gains are directly linked to better approximation of the target posterior distribution and higher correlation between estimated probabilities and downstream performance. This strengthens the theoretical foundation of the work."
+      ],
+      "weaknesses": [
+        "While the paper emphasizes programmable potentials and proposals, it could elaborate more on the practical aspects and challenges of designing effective `Φeff` and `Φexp` for new domains, beyond the examples provided. A discussion on how users might systematically approach this design process would be beneficial.",
+        "The discussion on the computational overhead focuses primarily on 'cost per token' and 'dollars per hour', which is helpful, but a more detailed breakdown of the time complexity and memory footprint of the SMC steps (especially for expensive potentials and their parallelism across particles) would further enhance the methodological rigor."
+      ],
+      "summary_comment": "This paper presents a robust and well-validated Sequential Monte Carlo (SMC) framework for controlled generation from large language models. The theoretical foundations are clearly laid out, framing the problem as sampling from a global product of experts distribution, which effectively addresses limitations of existing methods. The introduction of weight correction, expensive potentials, and adaptive resampling are key methodological contributions that are rigorously justified. The experimental design is a major strength, providing extensive comparisons across diverse domains and ablations, conclusively demonstrating that SMC significantly enhances performance, allows smaller models to compete with larger ones, and makes more efficient use of computational resources. Moreover, the paper successfully validates its probabilistic perspective by linking performance improvements to better posterior approximation. The clarity of presentation is generally high, making the complex probabilistic concepts accessible. This work represents a significant step forward in principled and practical controlled text generation."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly practical and relevant problem: controlled generation from LMs under diverse constraints. The ability to integrate flexible, real-world signals (type-checking, test case execution, simulations) is a clear win for practitioners.",
+        "The empirical evaluation is exceptionally thorough and convincing. Comparing SMC against numerous alternatives and ablations on four challenging, distinct domains with different LM sizes (including outperforming larger and fine-tuned models) provides strong evidence for the method's effectiveness and robustness.",
+        "The work demonstrates that the proposed SMC approach enables smaller, open-source LMs to achieve performance comparable to or better than significantly larger and even proprietary fine-tuned models, which has substantial practical implications for cost and accessibility.",
+        "The explicit validation of the probabilistic perspective (KL divergence, correlation with performance) strongly supports the theoretical underpinnings and provides insights into *why* the method works, which is valuable for understanding and further development."
+      ],
+      "weaknesses": [
+        "While the paper highlights that expensive potentials can be run on CPU and often don't need to be computed at every token, a more detailed breakdown or analysis of the *total* computational cost (beyond 'milliseconds per token') for end-to-end generation across the benchmarks would further strengthen the practical claims.",
+        "The paper briefly mentions 'cheap stochastic approximations' to local product of distributions for efficient potentials, but doesn't elaborate much on their nature or impact. Given the practical focus, a bit more detail on how these approximations are constructed and their trade-offs would be beneficial."
+      ],
+      "summary_comment": "This paper presents a highly significant and well-executed contribution to the field of controlled language model generation. The problem it addresses—generating text that conforms to complex syntactic and semantic constraints—is a critical challenge for real-world LM applications. The proposed Sequential Monte Carlo (SMC) architecture offers a flexible and efficient way to integrate diverse constraints, including those that are complex or costly to evaluate. The strength of this work lies in its rigorous empirical evaluation across four distinct and challenging domains, convincingly demonstrating that SMC allows smaller, open-source LMs to achieve impressive performance, often outperforming much larger or fine-tuned models. The ablations and the validation of the underlying probabilistic theory further solidify its findings. For practitioners, this work offers a promising and practical framework for developing more reliable and constrained LM-powered applications, potentially reducing reliance on massive proprietary models. The clarity of the writing and the depth of the evaluation make this an excellent paper.",
+      "justification_for_scores": "Novelty: (4) While SMC itself isn't new, its application and specialization for flexible and diverse controlled LM generation, especially with programmable potentials and dynamic resource reallocation, is a strong novel contribution in this context (building on Lew et al. (2023) but significantly extending their work). \nSoundness: (4) The probabilistic framework is clearly laid out, and the derivation of importance weights and the SMC algorithm is sound. The experimental setup supports the claims well, and the ablation studies contribute significantly to its robustness.\nSignificance: (5) The practical impact is immense. Enabling smaller LMs to outperform larger/fine-tuned ones under complex constraints is a game-changer for accessibility, cost, and specific application domains. The ability to integrate real-world constraint checks directly into the generation process solves a major pain point.\nEvaluation: (5) The evaluation is a standout. Four diverse and challenging domains, multiple baselines (including strong ones like Sample-Rerank and existing locally constrained decoding), ablations for each algorithmic component, and analysis varying LM size and particle count make the results highly convincing. The inclusion of KL divergence estimates for probabilistic validation adds further depth.\nClarity: (4) The paper is generally well-written and easy to follow. The introduction clearly motivates the problem, and the technical sections are structured logically. The figures and tables effectively convey results. Some minor technical details could be expanded, but overall, it's very clear."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic of general machine learning, specifically controlled generation from LMs by formulating it as a probabilistic conditioning problem using Sequential Monte Carlo (SMC), aligns perfectly with ICML's stated interests in 'general machine learning' and 'probabilistic methods'.",
+        "The detailed methodological contribution, including the development of an architecture for controlled LM generation based on SMC, the integration of efficient and expensive potentials, weight correction, and adaptive resampling, falls squarely within ICML topics like 'deep learning (architectures, generative models)', 'optimization', and 'probabilistic methods'.",
+        "The extensive empirical evaluation across four challenging, diverse domains (Python code generation, text-to-SQL, goal inference, and molecule synthesis) showcases innovative techniques and application-driven machine learning, which is a key focus area for ICML.",
+        "The rigorous ablation studies and empirical validation of algorithmic components, including the linking of performance improvements to better posterior approximation via KL divergence, demonstrates strong theoretical grounding and sound evaluation methodology, both highly valued at ICML, as highlighted by Reviewer A's praise for 'rigorous ablation studies and empirical validation' and Reviewer B's note on 'empirical validation of the probabilistic perspective'.",
+        "The paper demonstrates significant practical impact by enabling smaller open-source LMs to outperform much larger and fine-tuned models, a contribution that would be highly valued by the ICML community, as noted explicitly by all reviewers for its 'significant practical impact' and 'democratizing advanced LM capabilities'."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is clear, Reviewer A mentions that 'The mathematical notation in Section 2, particularly around the re-expression of importance weights (Eq. 7a-7d), could be clarified' and Reviewer B suggests 'a more detailed breakdown of the time complexity and memory footprint of the SMC steps' could enhance rigor. These minor points, while not major deterrents for ICML, indicate areas for potential polishing."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'General machine learning: core contributions in supervised and unsupervised methods' by proposing a novel Sequential Monte Carlo framework for controlled language model generation, which is a core ML problem.",
+        "The use of probabilistic methods, specifically Sequential Monte Carlo for intractable distributions and framing the problem as sampling from a product of experts, aligns well with NeurIPS's stated interest in 'Probabilistic methods'.",
+        "The application domains — Python code generation, text-to-SQL, goal inference, and molecule synthesis — demonstrate the utility of AI/ML in various areas, including 'AI/ML for physical sciences' (molecular synthesis), 'Robotics, embodied systems, and engineering' (goal inference for planning), and 'Language and multimodal language models' (text-to-SQL, code generation), all of which are topics of interest for NeurIPS.",
+        "The theoretical rigor, exemplified by the formulation of controlled generation as probabilistic conditioning and the validation of performance through KL divergence, fits NeurIPS's emphasis on foundational and theoretical advancements, as noted by Reviewer B's comment on 'rigorous probabilistic formulation' and 'methodologically sound' SMC framework.",
+        "The proven ability to enable smaller models to achieve superior performance with minimal overhead represents a significant contribution to 'SysML Infrastructure' and resource efficiency, which is highly relevant to the NeurIPS community.",
+        "The paper's interdisciplinary nature, blending advanced probabilistic inference with practical applications in language models for structured output, is precisely the kind of 'interdisciplinary submissions that do not fit neatly into existing categories' that NeurIPS encourages."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer A noted that 'The mathematical notation in Section 2... could benefit from more explicit explanations', and Reviewer B would appreciate 'a more detailed breakdown of the time complexity and memory footprint'. While the overall clarity and rigor are high, these minor points suggest that some sections might require a slightly deeper dive to fully satisfy a theoretically-oriented NeurIPS audience accustomed to dense mathematical presentations."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on 'controlled generation from Large Language Models' and its deep exploration of techniques for improving their output quality directly addresses 'all aspects of deep learning' which is the primary focus of ICLR.",
+        "The core methodology involves 'probabilistic methods (Bayesian methods, variational inference, sampling, UQ, etc.)' through the use of Sequential Monte Carlo to handle intractable distributions, aligning with ICLR's topics.",
+        "The application of these techniques to 'representation learning for computer vision, audio, language, and other modalities' is evident in the paper's diverse domains, including code generation (language understanding), text-to-SQL (language interpretation), and molecular synthesis (structured representation).",
+        "The demonstration that smaller open-source LMs can outperform larger and fine-tuned models is a significant result for the practical deployment of deep learning, a point highlighted by all reviewers, with Reviewer C specifically mentioning 'practical implications for cost and accessibility'.",
+        "The algorithmic contributions, such as weight correction, expensive potentials, and adaptive resampling, inherently touch upon 'optimization' and 'large-scale learning and non-convex optimization' challenges in the context of deep learning models.",
+        "The paper's strong empirical results that enable smaller models to achieve impressive performance contribute positively to the discussion around 'datasets and benchmarks' and 'infrastructure, software libraries, hardware, etc.' as it offers a practical path for more efficient LM usage.",
+        "The work builds upon the framework of Lew et al. (2023) and integrates with a language model probabilistic programming language, indicating a focus on 'infrastructure, software libraries, hardware, etc.' relevant to ICLR.",
+        "Reviewer A explicitly notes the 'truly innovative and forward-thinking approach to controlled language model generation', emphasizing the paper's novelty in applying SMC to this deep learning problem, making it a strong fit for ICLR's reputation for cutting-edge research."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is highly relevant to deep learning, some reviewers suggested expanding on computational costs beyond 'cost per token' or providing more detail on stochastic approximations. ICLR often values studies that dive deep into the specific architecture and training aspects of deep learning models, which, while present, isn't the primary focus over the probabilistic inference mechanism itself.",
+        "The paper's contribution is primarily methodological in probabilistic inference for LMs rather than introducing novel deep learning architectures or training paradigms, which are often a core emphasis at ICLR, as reflected in the 'architectures, generative models, theory' topics."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

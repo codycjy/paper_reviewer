@@ -1,0 +1,121 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of meticulously controlling for 'subtlety and style' in reward model benchmarking is genuinely novel and addresses a critical gap in the field. This goes beyond existing benchmarks that primarily focus on distinguishing responses from LMs of varying power.",
+        "The explicit demonstration of a strong correlation between RM-BENCH performance (especially 'Hard Accuracy') and policy model performance, including style-controlled and downstream tasks, is a significant finding. This helps establish RM-BENCH as a more reliable and actionable tool.",
+        "The comprehensive evaluation of nearly 40 diverse reward models, revealing substantial shortcomings even in SOTA models when faced with subtle errors or style biases, highlights the profound impact and challenge RM-BENCH presents to the community. The insights into DPO models and multi-objective RMs are also valuable."
+      ],
+      "weaknesses": [
+        "The reliance on GPT-4o for all response generations introduces a potential source of bias, as the benchmark itself might inadvertently favor reward models that implicitly align with GPT-4o's internal 'preferences' or style, even if no explicit GPT-4o-based RM is tested. While acknowledged, its impact on the benchmark's objectivity could be more deeply explored or mitigated.",
+        "The success rate of the 'many-shot jailbreak' technique for injecting subtle errors, particularly in the chat domain, is noted to be less than ideal (52.1%). This indicates a significant labor cost and potential limitations in scaling the dataset, which could be a bottleneck for future expansion or generalization to more diverse error types."
+      ],
+      "summary_comment": "This paper presents a highly novel and significant contribution to the field of LLM alignment. The introduction of RM-BENCH, specifically designed to assess reward models' sensitivity to subtle content changes and resistance to style biases, directly addresses a critical limitation of existing benchmarks. The findings, particularly the low performance of state-of-the-art models and the strong correlation with policy model performance, are thought-provoking and will undoubtedly spur new research directions. The authors have consistently and adequately addressed my concerns regarding the GPT-4o bias and the jailbreaking success rate by acknowledging these limitations as valuable avenues for future work and outlining concrete plans to mitigate them (e.g., diversifying generation models and scaling up jailbreak examples). These are minor methodological imperfections given the boldness and potential impact of the core idea, and the authors' proactive stance on future improvements strengthens the paper's overall appeal. The paper is well-written, and the methodology, metrics, and evaluation results are clearly presented. This work clearly pushes the field forward by emphasizing crucial, often overlooked, aspects of reward model evaluation."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a well-designed benchmark (RM-BENCH) that addresses critical limitations of existing reward model evaluations, particularly by focusing on sensitivity to subtle content changes and robustness against style biases. This moves beyond simply distinguishing between strong and weak LLM outputs.",
+        "The methodology for constructing RM-BENCH is thorough and systematic. Generating `chosen` and `rejected` responses from the same powerful LLM (gpt-4o) and introducing subtle errors or stylistic variations directly addresses the identified weaknesses of previous benchmarks.",
+        "The introduction of the \"Style-Substance Evaluation Matrix\" and the metrics (Easy, Normal, Hard Accuracy) provides a nuanced and rigorous way to quantify a reward model's performance in disentangling content from style, which is a significant methodological contribution.",
+        "The correlation analysis with policy model performance, especially the 'Hard Accuracy' with 'style-controlled' scores and downstream task performance, robustly demonstrates the practical relevance and utility of RM-BENCH for selecting effective reward models."
+      ],
+      "weaknesses": [
+        "The dependence on gpt-4o for generating both chosen and rejected responses, as well as the stylistic variations, introduces a potential bias. While the authors acknowledged this and stated plans for future diversification, the current version of the benchmark is still inherently influenced by gpt-4o's characteristics.",
+        "The scalability discussion in Appendix D for domains without ground truth highlights a significant practical challenge, as the 'many-shot jailbreak' technique currently has a low success rate (52.1%). This implies a high manual effort for data validation, which could limit the benchmark's long-term sustainability and expansion across varied, non-ground-truth domains without further investment in increasing success rates."
+      ],
+      "summary_comment": "The authors have consistently addressed my concerns regarding the potential biases from gpt-4o dependence and the scalability of the data construction method. They have reiterated their reasoning for the current design choices (consistency for isolating effects) and their clear plans for future diversification of generative models. They also consistently acknowledge the scalability challenges and outline a plausible strategy for improvement (increasing in-context examples). While these issues persist in the current iteration, their thorough discussion and proposed roadmap for future work mitigate my concerns to an acceptable level, particularly in light of the significant contributions of the benchmark's unique evaluation framework. The paper remains a methodologically sound and significant contribution, and I maintain my decision to accept it."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "Addresses a critical and timely problem: The paper highlights a significant practical issue in RM evaluation, namely the lack of sensitivity to subtle differences and robustness against style biases, which directly impacts the effectiveness of RLHF and other alignment techniques. This problem is highly relevant to practitioners working on aligning LLMs.",
+        "Strong correlation with policy model performance: A key contribution is demonstrating that RM-BENCH metrics (especially Hard Accuracy) correlate well with downstream policy model performance, offering a more reliable signal for selecting reward models than previous benchmarks. This is invaluable for guiding model development and deployment.",
+        "Comprehensive and well-structured evaluation: The benchmark includes diverse domains (Chat, Code, Math, Safety) and systematically assesses reward models across different style variations (concise, detailed, markdown). The introduction of Easy, Normal, and Hard Accuracy metrics provides a nuanced and actionable way to understand model performance and limitations."
+      ],
+      "weaknesses": [
+        "Potential for GPT-4o bias: While acknowledged in the appendix and addressed by the authors in their rebuttal as a future work item, the initial dataset generation being heavily reliant on GPT-4o still carries the possibility of an implicit bias towards GPT-4o's internal preferences or generation style that might go undetected by reward models not specifically trained on it. This concern remains, although the commitment to diversify generation sources is positive.",
+        "Scalability challenges for non-ground-truth domains: The low success rate (52.1%) of the 'many-shot jailbreak technique' for non-ground-truth domains currently requires significant manual effort, limiting immediate scalability. While the authors' plan to increase in-context examples to improve the success rate is a good long-term strategy, the current iteration presents a practical constraint for broad, rapid expansion."
+      ],
+      "summary_comment": "This paper introduces RM-BENCH, a highly significant and practically relevant benchmark for evaluating reward models. It tackles the crucial problem of current reward models being sensitive to subtle content changes and robust to style biases, which are critical for effective LLM alignment. The rigorous methodology for constructing chosen and rejected responses with subtle differences and controlled style variations is commendable. The paper clearly demonstrates that RM-BENCH metrics, particularly 'Hard Accuracy,' correlate strongly with downstream policy model performance, making it a valuable tool for practitioners to select and improve reward models. The evaluation of numerous state-of-the-art models revealing their weaknesses against style bias and in challenging domains like Math and Code provides important insights for future research. The authors' rebuttal acknowledges the concerns regarding GPT-4o bias and scalability, outlining reasonable plans for future work to address these. While these issues represent current limitations, they do not diminish the immediate practical value and strong methodological contributions of RM-BENCH. The clarity of presentation and well-motivated experimental design make this a strong contribution to the field."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper introduces a novel benchmark for evaluating reward models, which is a core component in general machine learning techniques like Reinforcement Learning from Human Feedback (RLHF), explicitly mentioned in ICML's topics of interest.",
+        "The focus on 'subtlety and style' in reward model evaluation, exploring sensitivity to subtle content changes and robustness to style biases, aligns well with ICML's interest in evaluation methodology and meta-studies, as well as trustworthy machine learning (e.g., reliability, robustness).",
+        "The comprehensive evaluation of nearly 40 reward models, including deep learning architectures (sequence-classification reward models, DPO models), fits within ICML's deep learning and general machine learning topics.",
+        "The demonstration that RM-BENCH correlates with policy model (aligned language model) performance speaks to ICML's interest in application-driven machine learning, particularly where innovative techniques are driven by end-user needs (e.g., healthcare, social sciences, which benefit from better LLM alignment).",
+        "The methodological rigor in constructing the benchmark, including the 'Style-Substance Evaluation Matrix' and metrics (Easy, Normal, Hard Accuracy), reflects a strong contribution to evaluation methodology, a topic of interest for ICML (Reviewer B: 'methodologically sound and significant contribution')."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is methodologically sound, the novel contributions are primarily in benchmarking and evaluation, rather than proposing a new machine learning algorithm or theoretical framework, which can sometimes be a stronger focus for ICML.",
+        "The reliance on GPT-4o for dataset generation introduces a potential bias that, while acknowledged and planned for future mitigation, presents a current limitation in the benchmark's generalizability across all reward models, as noted by all reviewers. ICML often seeks highly robust and generalizable methods."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's topic of benchmarking reward models for Language Models (LLMs) is highly relevant to NeurIPS, which directly lists 'Language and multimodal language models' and 'General machine learning: core contributions in supervised and unsupervised methods' as topics.",
+        "The evaluation of reward model robustness against style biases and sensitivity to subtle changes directly addresses socio-technical aspects of AI and human interaction in AI systems, as reward models are proxies for human values and preferences.",
+        "The correlation analysis between RM-BENCH performance and policy model performance in downstream tasks (math, code, safety) aligns with NeurIPS's interest in 'AI/ML for physical sciences' (math/code) and 'AI/ML for health and biotechnology' / 'AI/ML for social sciences' (safety).",
+        "NeurIPS welcomes 'interdisciplinary submissions that do not fit neatly into existing categories' and 'in-depth analysis of existing methods that provide new insights in terms of their limitations or behavior.' RM-BENCH provides exactly this type of in-depth analysis for reward models.",
+        "The paper provides a significant contribution to the foundational understanding and evaluation of reward models, which are critical for Reinforcement Learning from Human Feedback (RLHF), aligning with NeurIPS's strong interest in 'Decision-making, reinforcement learning, and control'."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, while the contribution is methodologically strong and impactful, it is centered on evaluation rather than proposing a fundamentally new learning algorithm or theoretical advancement, which can sometimes be preferred by NeurIPS.",
+        "The identified challenges with the 'many-shot jailbreak' technique's low success rate for injecting errors in non-ground-truth domains suggest a practical hurdle in scaling the benchmark, which could be seen as a limitation in the immediate broad applicability of the current dataset (Reviewer B). NeurIPS often looks for broadly applicable and scalable solutions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper directly addresses 'deep learning' aspects through its focus on reward models which are typically deep neural networks, and evaluates various model types including DPO models and sequence classifiers, fitting perfectly within ICLR's core mandate.",
+        "The benchmark is crucial for 'reinforcement learning' and 'representation learning for computer vision, audio, language, and other modalities' by evaluating systems that guide language model alignment through human feedback.",
+        "The problem of 'style over substance' and biases in reward models, and RM-BENCH's attempt to mitigate this, relates to ICLR's interest in 'societal considerations including fairness, safety, privacy' and 'visualization or interpretation of learned representations' through robust evaluation.",
+        "The use of GPT-4o for generating responses and the thorough examination of reward models, including state-of-the-art DPO models, demonstrates a strong connection to practical advancements in deep learning models and their applications (Reviewer A: 'insights into DPO models and multi-objective RMs are also valuable')."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central to reward models, the paper's primary contribution is a new benchmark and evaluation methodology rather than a novel deep learning architecture, training algorithm, or theoretical insight specific to deep learning. ICLR often prioritizes architectural or algorithmic innovations in deep learning.",
+        "The 'Others' classification often implies a broader ML scope, while ICLR has a more concentrated focus on deep learning. Although reward models are deep learning models, the paper's emphasis is on their evaluation properties (subtlety, style, correlation) rather than novel deep learning methodology for building them.",
+        "The noted limitations regarding the potential GPT-4o bias in data generation (all reviewers) and the scalability of the 'jailbreak' method for data creation (Reviewer B) might raise concerns for ICLR, which values robust and unbiased benchmarks for deep learning research."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

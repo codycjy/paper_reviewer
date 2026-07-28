@@ -1,0 +1,204 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of direct preference judgment using the training model's logits is highly novel and presents a creative alternative to external reward models or LLM-as-a-judge.",
+        "The paper introduces a comprehensive, iterative framework (SPA) for data-efficient alignment, cleverly combining self-generating preference data with a noise-aware learning mechanism.",
+        "Results are highly impressive, showing that SPA achieves superior performance using only 3.3% of human labels, outperforming strong baselines and even full-dataset training in some metrics.",
+        "The work demonstrates strong significance by offering a practical solution to the expensive bottleneck of human preference annotation, potentially enabling wider application of alignment."
+      ],
+      "weaknesses": [
+        "The soundness of the linear extrapolation method for de-coupled noise detection, while motivated by prior work, could benefit from a deeper theoretical justification or more extensive ablation showing its necessity over simpler confidence thresholds.",
+        "Some experimental details are deferred to the appendix, and the sensitivity of key hyperparameters (like λ, K%, α) is not fully explored, which could affect reproducibility."
+      ],
+      "summary_comment": "This paper proposes a novel and highly impactful framework (SPA) for efficient LLM alignment. Its core innovation—direct preference judgment and iterative, noise-aware self-improvement with minimal seed data—represents a significant conceptual advance. The experimental results are compelling, demonstrating state-of-the-art performance on standard benchmarks with a fraction of the human data. While some methodological components could be explored in greater depth, the overall novelty, practical significance, and strong empirical validation make this a clear accept. The work is bold, forward-thinking, and has the potential to inspire substantial follow-up research."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper proposes a novel iterative framework (SPA) that effectively reduces the need for large human-annotated preference data by leveraging direct preference judgment from model logits and self-refinement techniques.",
+        "Extensive and rigorous experimental evaluation demonstrates significant improvements over strong baselines (e.g., PairRM, LLM-as-judge) across multiple benchmarks (AlpacaEval 2.0, MT-Bench) and model architectures.",
+        "The method includes a noise-aware learning algorithm with de-coupled noise detection, which is well-motivated and empirically validated through ablation studies."
+      ],
+      "weaknesses": [
+        "The paper does not fully address the potential length bias introduced by SPA, as models tend to generate longer responses, which could confound some win rate improvements despite length-controlled results.",
+        "The theoretical justification for the linear extrapolation in de-coupled noise detection (Eq. 12) is somewhat brief and relies on a citation without detailed explanation."
+      ],
+      "summary_comment": "SPA presents a methodologically sound and highly effective approach for LLM alignment with minimal human data. The experiments are comprehensive, well-designed, and convincingly demonstrate superiority over state-of-the-art baselines. While minor issues like length bias and theoretical grounding exist, the overall rigor, novelty, and practical significance warrant acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a critical practical problem: reducing the need for large-scale human-annotated preference data for LLM alignment, which is costly and time-consuming.",
+        "Demonstrates strong empirical results: achieves superior performance on AlpacaEval 2.0 and MT-Bench with only 3.3% of human-labeled data, outperforming baselines using full datasets or external reward models.",
+        "Proposes a well-motivated and reproducible framework: combines direct preference judgment from model logits with a noise-aware learning algorithm, providing clear implementation details and code release."
+      ],
+      "weaknesses": [
+        "The method tends to increase response length, which may be undesirable in some applications, though the paper shows improvements in length-controlled metrics.",
+        "Ablation studies show that some components (e.g., decoupled noise detection) are critical for performance, suggesting the framework might be sensitive to hyperparameter choices."
+      ],
+      "summary_comment": "SPA presents a highly practical and effective solution for LLM alignment with minimal human feedback. Its significance is underscored by substantial performance gains on standard benchmarks using only a fraction of the data required by prior methods. The approach is sound, well-evaluated, and clearly communicated, with strong potential for real-world impact. While minor issues like length bias exist, they are acknowledged and partially addressed. The work merits acceptance for its contribution to efficient and scalable alignment techniques."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Topic aligns well with ICML's focus on machine learning systems and optimization - paper presents a novel framework for efficient LLM alignment",
+        "Strong empirical results on standard benchmarks (AlpacaEval 2.0, MT-Bench) demonstrate practical significance",
+        "Methodological contributions in noise-aware learning and iterative refinement match ICML's interest in algorithmic innovations"
+      ],
+      "why_it_does_not_fit": [
+        "More focused on NLP/LLM applications rather than core machine learning theory",
+        "While novel, the theoretical grounding of some components (linear extrapolation for noise detection) could be stronger for ICML's standards",
+        "Reviewers noted some experimental details deferred to appendix, which might not meet ICML's typical rigor expectations"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' interdisciplinary focus on AI systems and practical applications",
+        "Addresses a critical problem in human-AI alignment with significant real-world implications",
+        "Strong empirical evaluation across multiple models and benchmarks aligns with NeurIPS' emphasis on rigorous experimentation",
+        "Novel combination of direct preference judgment and noise-aware learning represents conceptual advance"
+      ],
+      "why_it_does_not_fit": [
+        "Some methodological components (like length bias issues) could benefit from deeper theoretical analysis",
+        "While innovative, the approach builds on existing preference optimization literature rather than being completely groundbreaking"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Direct relevance to ICLR's focus on deep learning and representation learning for language models",
+        "Novel approach to LLM alignment using model's intrinsic knowledge rather than external reward models",
+        "Strong experimental results demonstrate effectiveness across multiple model architectures"
+      ],
+      "why_it_does_not_fit": [
+        "Less emphasis on fundamental deep learning theory compared to application-focused contributions",
+        "ICLR typically prefers more theoretical or architectural innovations in deep learning rather than optimization frameworks",
+        "The paper's focus is more on alignment methodology than core deep learning advancements"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Novelty)",
+          "review": {
+            "reviewer": "Reviewer A - Novelty Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "The core idea of direct preference judgment using the training model's logits is highly novel and presents a creative alternative to external reward models or LLM-as-a-judge.",
+              "The paper introduces a comprehensive, iterative framework (SPA) for data-efficient alignment, cleverly combining self-generating preference data with a noise-aware learning mechanism.",
+              "Results are highly impressive, showing that SPA achieves superior performance using only 3.3% of human labels, outperforming strong baselines and even full-dataset training in some metrics.",
+              "The work demonstrates strong significance by offering a practical solution to the expensive bottleneck of human preference annotation, potentially enabling wider application of alignment."
+            ],
+            "weaknesses": [
+              "The soundness of the linear extrapolation method for de-coupled noise detection, while motivated by prior work, could benefit from a deeper theoretical justification or more extensive ablation showing its necessity over simpler confidence thresholds.",
+              "Some experimental details are deferred to the appendix, and the sensitivity of key hyperparameters (like λ, K%, α) is not fully explored, which could affect reproducibility."
+            ],
+            "summary_comment": "This paper proposes a novel and highly impactful framework (SPA) for efficient LLM alignment. Its core innovation—direct preference judgment and iterative, noise-aware self-improvement with minimal seed data—represents a significant conceptual advance. The experimental results are compelling, demonstrating state-of-the-art performance on standard benchmarks with a fraction of the human data. While some methodological components could be explored in greater depth, the overall novelty, practical significance, and strong empirical validation make this a clear accept. The work is bold, forward-thinking, and has the potential to inspire substantial follow-up research."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 2 (Rigor)",
+          "review": {
+            "reviewer": "Reviewer B - Rigor Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper proposes a novel iterative framework (SPA) that effectively reduces the need for large human-annotated preference data by leveraging direct preference judgment from model logits and self-refinement techniques.",
+              "Extensive and rigorous experimental evaluation demonstrates significant improvements over strong baselines (e.g., PairRM, LLM-as-judge) across multiple benchmarks (AlpacaEval 2.0, MT-Bench) and model architectures.",
+              "The method includes a noise-aware learning algorithm with de-coupled noise detection, which is well-motivated and empirically validated through ablation studies."
+            ],
+            "weaknesses": [
+              "The paper does not fully address the potential length bias introduced by SPA, as models tend to generate longer responses, which could confound some win rate improvements despite length-controlled results.",
+              "The theoretical justification for the linear extrapolation in de-coupled noise detection (Eq. 12) is somewhat brief and relies on a citation without detailed explanation."
+            ],
+            "summary_comment": "SPA presents a methodologically sound and highly effective approach for LLM alignment with minimal human data. The experiments are comprehensive, well-designed, and convincingly demonstrate superiority over state-of-the-art baselines. While minor issues like length bias and theoretical grounding exist, the overall rigor, novelty, and practical significance warrant acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        },
+        {
+          "reviewer": "Reviewer 3 (Practical)",
+          "review": {
+            "reviewer": "Reviewer C - Practicality Focused",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Addresses a critical practical problem: reducing the need for large-scale human-annotated preference data for LLM alignment, which is costly and time-consuming.",
+              "Demonstrates strong empirical results: achieves superior performance on AlpacaEval 2.0 and MT-Bench with only 3.3% of human-labeled data, outperforming baselines using full datasets or external reward models.",
+              "Proposes a well-motivated and reproducible framework: combines direct preference judgment from model logits with a noise-aware learning algorithm, providing clear implementation details and code release."
+            ],
+            "weaknesses": [
+              "The method tends to increase response length, which may be undesirable in some applications, though the paper shows improvements in length-controlled metrics.",
+              "Ablation studies show that some components (e.g., decoupled noise detection) are critical for performance, suggesting the framework might be sensitive to hyperparameter choices."
+            ],
+            "summary_comment": "SPA presents a highly practical and effective solution for LLM alignment with minimal human feedback. Its significance is underscored by substantial performance gains on standard benchmarks using only a fraction of the data required by prior methods. The approach is sound, well-evaluated, and clearly communicated, with strong potential for real-world impact. While minor issues like length bias exist, they are acknowledged and partially addressed. The work merits acceptance for its contribution to efficient and scalable alignment techniques."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

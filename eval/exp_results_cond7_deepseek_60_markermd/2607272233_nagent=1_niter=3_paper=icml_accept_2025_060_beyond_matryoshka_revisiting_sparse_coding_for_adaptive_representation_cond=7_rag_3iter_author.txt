@@ -1,0 +1,368 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Proposes a novel and practical alternative to Matryoshka Representation Learning (MRL) using sparse coding that achieves superior performance with significantly lower training costs",
+        "Comprehensive evaluation across multiple modalities (vision, text, multimodal) with consistent improvements over strong baselines",
+        "Strong empirical results showing 61x speedup in retrieval while maintaining competitive accuracy compared to full representations"
+      ],
+      "weaknesses": [
+        "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+        "Dead latent problem persists in multimodal settings despite contrastive learning enhancements"
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+          "severity": "minor",
+          "evidence": "The author response acknowledges this limitation and proposes to add conceptual framing in a future revision, but the submitted paper itself lacks a formal theoretical comparison between sparse and dense truncation mechanisms. The empirical results (Figs. 4-6, Table 11) demonstrate the advantage but do not provide a theoretical foundation for why high-dimensional sparsification should inherently outperform dimensional truncation.",
+          "affected_claim": "Claim that sparse representations are fundamentally superior to dense truncation approaches",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "Dead latent problem persists in multimodal settings despite contrastive learning enhancements",
+          "severity": "minor",
+          "evidence": "The authors explicitly acknowledge this limitation in the submitted paper (Section 5.3, 6, D.4, Fig. 8, Table 2) and the rebuttal correctly identifies this evidence. The concern is resolved as the limitation is properly documented and discussed in the original work.",
+          "affected_claim": "Effectiveness of CSR in multimodal settings, particularly under high sparsity constraints",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The methodology is well-grounded, experiments are properly conducted, and limitations are appropriately documented. The authors' acknowledgment of the dead latent issue demonstrates scientific rigor."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The application of sparse autoencoders with contrastive learning for adaptive representation learning remains novel and represents a meaningful contribution to the field."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The demonstrated training efficiency gains (orders of magnitude faster than MRL) and inference speed improvements (61x speedup) with competitive performance constitute a substantial practical advance."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Evaluation is extensive and rigorous across multiple modalities and benchmarks. The comprehensive nature of the experiments provides strong support for the claims."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured and clearly written. Limitations are appropriately discussed, and the proposed revisions would further improve clarity."
+        }
+      },
+      "summary_comment": "The authors' response confirms that one weakness (dead latents in multimodal settings) is properly documented in the submitted paper. The other weakness (theoretical justification) remains but is minor and fixable through conceptual framing in future revisions. The paper's core strengths—novelty, strong empirical results, and practical significance—are undiminished. The submission meets the standard for acceptance at a top-tier conference."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on efficient representation learning, adaptive inference cost, and retrieval acceleration aligns strongly with ICML's interests in 'machine learning systems' and 'general machine learning'.",
+        "The core methodological contribution combines sparse autoencoding (a probabilistic/representation learning method) with contrastive learning, fitting within ICML's topics of 'probabilistic methods' and 'representation learning'.",
+        "The extensive empirical evaluation across multiple modalities (vision, text, multimodal) with rigorous benchmarks is well-suited for ICML's emphasis on solid experimentation and practical impact in applications like search and retrieval."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus is highly applied and systems-oriented, with less emphasis on formal theoretical contributions, which might be slightly less aligned with ICML's strong tradition in learning theory compared to its systems track.",
+        "Reviewers noted a 'limited theoretical justification' for why sparse representations outperform dense truncation. While the empirical results are strong, the relative lack of a theoretical foundation might lower its appeal to some ICML theory-focused reviewers.",
+        "The core idea of sparsifying pre-trained embeddings is elegant but may be perceived as a clever application of existing sparse coding and autoencoder techniques rather than a radical new theoretical direction."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The work sits perfectly at the intersection of several high-profile NeurIPS topics: 'AI/ML for creatives' (retrieval for generative AI), 'SysML Infrastructure' (efficient embeddings and retrieval systems), 'Data-centric aspects of AI' (adaptive representations), and 'Deep learning' (sparse autoencoders).",
+        "NeurIPS has a strong track record of accepting influential papers on efficient inference, representation learning (e.g., contrastive learning), and practical systems for large-scale ML, which this paper exemplifies.",
+        "The paper's 'plug-and-play' approach to compressing foundation models without retraining addresses a critical real-world need highlighted by the reviewer as a 'substantial practical advance', aligning with NeurIPS's interest in impactful, scalable ML.",
+        "The comprehensive evaluation across language (MTEB), vision (ImageNet), and multimodal (COCO, Flickr) benchmarks matches NeurIPS's broad, interdisciplinary scope."
+      ],
+      "why_it_does_not_fit": [
+        "The potential lack of deep theoretical novelty, as pointed out by the reviewer, could be a minor point of misalignment in a venue that, while embracing strong empirical work, also values foundational theoretical insights.",
+        "The 'dead latent' problem acknowledged in multimodal settings, while documented, indicates an open methodological challenge that might be seen as an area for future improvement rather than a fully resolved contribution."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core technical engine is the Sparse Autoencoder (SAE), a method with deep roots in representation learning and interpretability research that is highly popular and topical at ICLR.",
+        "The application to pre-trained foundation models (CLIP, NV-Embed) and the goal of improving their efficiency via representation sparsification aligns with ICLR's focus on 'deep learning', 'unsupervised/self-supervised representation learning', and 'applications'.",
+        "The combination of a reconstructive autoencoding loss with a contrastive loss is a natural fit for ICLR's interest in hybrid and multi-objective training paradigms for representation learning."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's focus is predominantly on deep learning and representation learning fundamentals. While this paper uses deep models, its primary contribution is a systems-level efficiency solution for retrieval and inference, which may be slightly less core to ICLR than to NeurIPS or the systems track of ICML.",
+        "The reviewer's concern about limited theoretical justification might carry more weight at ICLR, where many papers combine strong empirical results with significant theoretical analysis or novel architectural insights.",
+        "The paper is not primarily about advancing the architecture or theory of deep models themselves, but rather about a post-hoc compression method applied to them. This could place it on the periphery of ICLR's main focus areas compared to work on new model architectures or training objectives."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel and practical alternative to Matryoshka Representation Learning (MRL) using sparse coding that achieves superior performance with significantly lower training costs",
+              "Comprehensive evaluation across multiple modalities (vision, text, multimodal) with consistent improvements over strong baselines",
+              "Strong empirical results showing 61x speedup in retrieval while maintaining competitive accuracy compared to full representations"
+            ],
+            "weaknesses": [
+              "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+              "Dead latent problem persists in multimodal settings despite contrastive learning enhancements",
+              "Comparison with some modern sparse representation methods could be more extensive"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+                "severity": "minor",
+                "evidence": "The paper provides empirical evidence but lacks a comprehensive theoretical analysis of why sparse activation patterns in high-dimensional space are more effective than dense truncation for the same number of active dimensions",
+                "affected_claim": "Claim that sparse representations are fundamentally superior to dense truncation approaches",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Dead latent problem persists in multimodal settings despite contrastive learning enhancements",
+                "severity": "minor",
+                "evidence": "Figure 8 shows that dead latents remain a significant issue in image-text alignment space, with performance degradation corresponding to increased dead dimensions",
+                "affected_claim": "Effectiveness of CSR in multimodal settings, particularly under high sparsity constraints",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The methodology is well-grounded in sparse autoencoder literature, experiments are properly conducted with appropriate statistical measures, and results are consistent across multiple modalities and datasets"
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of sparse coding as an alternative to MRL for adaptive representation learning is novel, and the combination of sparse autoencoding with contrastive learning for this purpose represents a meaningful contribution"
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The method achieves practical improvements in training efficiency (orders of magnitude faster than MRL) and inference speed (61x speedup) while maintaining competitive performance, which is highly relevant for real-world applications"
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Extensive evaluation across image, text, and multimodal benchmarks with thorough comparisons to state-of-the-art methods, including detailed ablation studies and efficiency analysis"
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured with clear figures and tables, though some technical details could be more thoroughly explained"
+              }
+            },
+            "summary_comment": "This paper presents a compelling alternative to Matryoshka Representation Learning using sparse coding techniques. The proposed CSR method demonstrates significant advantages in training efficiency, inference speed, and performance preservation across multiple modalities. While some theoretical underpinnings could be strengthened, the empirical results are strong and the practical implications for efficient representation learning are substantial. The work meets top-tier conference standards."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel and practical alternative to Matryoshka Representation Learning (MRL) using sparse coding that achieves superior performance with significantly lower training costs",
+              "Comprehensive evaluation across multiple modalities (vision, text, multimodal) with consistent improvements over strong baselines",
+              "Strong empirical results showing 61x speedup in retrieval while maintaining competitive accuracy compared to full representations"
+            ],
+            "weaknesses": [
+              "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+              "Dead latent problem persists in multimodal settings despite contrastive learning enhancements"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+                "severity": "minor",
+                "evidence": "The author response correctly identifies that the justification in the submitted paper is primarily empirical. The rebuttal provides a conceptual framing of CSR as 'non-linear, instance-specific feature selection' versus MRL's 'linear, fixed-order selection', which is supported by results in Figures 4-6 and Table 11 on operational efficiency. While this insight strengthens the interpretation, it remains partially grounded in post-hoc analysis rather than a formal theoretical comparison presented in the original paper. The reviewer's core concern about limited formal justification is acknowledged but not fully resolved by existing text.",
+                "affected_claim": "Claim that sparse representations are fundamentally superior to dense truncation approaches",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Dead latent problem persists in multimodal settings despite contrastive learning enhancements",
+                "severity": "minor",
+                "evidence": "The authors explicitly acknowledge this limitation in the paper (Section 5.3, 6, D.4, Fig. 8, Table 2) and the rebuttal correctly points to this evidence. The concern is therefore resolved as the submitted work already documents the issue and treats it as a known limitation for future work, not a claim undermined by its presence.",
+                "affected_claim": "Effectiveness of CSR in multimodal settings, particularly under high sparsity constraints",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The methodology is well-grounded, experiments are properly conducted, and the authors' rebuttal clarifies that observed limitations are documented and discussed, not hidden flaws."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of sparse autoencoders with contrastive learning for adaptive representation learning, positioned as a direct and superior alternative to MRL, remains novel."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated training and inference efficiency gains, validated across multiple benchmarks, constitute a meaningful advance with clear practical impact."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation remains extensive, rigorous, and convincing. The rebuttal does not change this assessment as no new experiments are promised; the existing evidence is strong."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clear and well-structured. The rebuttal confirms that the discussed limitations are present in the text, indicating the presentation is sufficiently comprehensive."
+              }
+            },
+            "summary_comment": "The authors' rebuttal successfully addresses one minor weakness (documented limitation of dead latents) and provides a clarifying conceptual interpretation for another. The core strengths of the paper—novelty, strong empirical results, and practical significance—remain undiminished. The submission clearly meets the standard for acceptance at a top-tier conference."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited theoretical justification for why sparse representations outperform dense truncation (MRL) at the same active dimension count.\",\n        \"Dead latent problem persists in multimodal settings despite enhancements.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Empirical evidence for why sparse representations outperform dense truncation\",\n          \"location\": \"Section 4, Figures 4 and 5\",\n          \"explanation\": \"The paper empirically demonstrates that CSR, employing a high-dimensional sparse projection (h >> d, e.g., h=4d), achieves superior performance compared to dense MRL truncations at the same active dimension (k). Section 4.2 and Figure 4 show that larger backbone dimensions (d) correlate with higher CSR fidelity, indicating CSR leverages high-dimensional expressivity. Figure 5 shows a performance peak at h=4d, and Section 4.4 (Figure 6) illustrates that the NCL objective helps increase feature identifiability and reduce dead neurons, which is linked to Theorem 5. Table 11 and Section E.4 provide an operational insight: sparse multiplication with high h can lead to fewer effective floating-point operations due to reduced index overlaps, offering a practical runtime advantage.\"\n        },\n        {\n          \"concern\": \"Dead latent issue in multimodal settings\",\n          \"location\": \"Section D.4, Figure 8, Table 2\",\n          \"explanation\": \"The paper acknowledges the dead latent issue as a current limitation, particularly for multimodal alignment tasks under high sparsity. Table 2 shows the performance gap between CSR and MRL narrows as sparsity increases in multimodal tasks, and Figure 8 demonstrates a corresponding increase in the fraction of dead latents. This is discussed as an open challenge in Section 6 and Section D.4.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited theoretical justification for sparse vs. dense performance advantage.\",\n          \"proposed_change\": \"We will expand the discussion in Section 3.2.2 (or a dedicated subsection in the analysis) to connect the empirical results to existing theoretical intuitions. The core idea is that projecting into a higher-dimensional space (h=4d) and enforcing sparsity acts as a form of over-parameterization, allowing the model to learn a richer, more orthogonal set of basis features (as encouraged by NCL) from which only the most salient K are selected per sample. This can be seen as a form of non-linear feature selection, which is more expressive than simple linear truncation of the original dense space (MRL). We will cite relevant work on feature selection and overcomplete sparse representations to strengthen this conceptual argument.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Dead latent problem in multimodal settings.\",\n          \"proposed_change\": \"We will revise Sections 5.3, 6, and D.4 to provide a clearer discussion of this limitation. We will hypothesize that the multimodal representation space (CLIP-style alignment) may have a different geometry or entanglement that makes sparsity more challenging and that task-specific contrastive signals might need further tuning. We will clearly state that mitigating dead latents in cross-modal alignment is an important direction for future work, distinct from the strong results shown for single-modality tasks.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and insightful feedback. We address the concerns as follows:\\n\\n1.  **Theoretical Justification for Sparse Advantage**: The reviewer correctly notes that the core advantage of CSR over dense truncation (MRL) is primarily presented empirically. Our results show that using a deliberately overcomplete hidden dimension (h=4d) with a Top-K selection mechanism consistently outperforms truncating the original space at dimension K. We agree this observation merits deeper conceptual grounding. We will expand our discussion (e.g., in Section 3 or the analysis) to frame this as a form of *non-linear, instance-specific feature selection*. MRL performs a *linear, fixed-order* selection (the first K dimensions). CSR's projection into a higher-dimensional space, trained with reconstructive and NCL objectives, learns a set of features where the \\\"importance\\\" order is instance-dependent. The Top-K operation then selects the most salient features *for each input*, which our results suggest is a more efficient use of a budget of K active values. The empirical reduction of dead neurons with NCL (Fig. 6, linked to Theorem 5's guarantee on feature identifiability) supports that this learned basis is more expressive. We will incorporate this interpretation and cite relevant literature on overcomplete representations to strengthen our justification.\\n\\n2.  **Persistent Dead Latents in Multimodal Settings**: We agree and explicitly acknowledge this limitation in Sections 5.3, 6, and D.4. Figure 8 and Table 2 show that while CSR offers significant gains, the dead latent issue remains pronounced for image-text alignment at high sparsity, unlike in single-modality tasks. This suggests that compressing aligned multimodal spaces may present unique challenges. In the revised manuscript, we will more clearly separate this specific limitation from our main contributions, which are strongly validated across vision and language tasks. We will discuss potential reasons (e.g., different feature distribution in aligned spaces) and highlight this as a key area for future research, as stated in the conclusion.\\n\\nWe appreciate the reviewer's recognition of our method's practical strengths—significant training efficiency, inference speedup, and robust performance. We are confident that addressing the above points will further improve the paper's conceptual clarity.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 4,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Proposes a novel and practical alternative to Matryoshka Representation Learning (MRL) using sparse coding that achieves superior performance with significantly lower training costs",
+              "Comprehensive evaluation across multiple modalities (vision, text, multimodal) with consistent improvements over strong baselines",
+              "Strong empirical results showing 61x speedup in retrieval while maintaining competitive accuracy compared to full representations"
+            ],
+            "weaknesses": [
+              "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+              "Dead latent problem persists in multimodal settings despite contrastive learning enhancements"
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Limited theoretical justification for why sparse representations outperform dense truncation at the same active dimension count",
+                "severity": "minor",
+                "evidence": "The author response acknowledges this limitation and proposes to add conceptual framing in a future revision, but the submitted paper itself lacks a formal theoretical comparison between sparse and dense truncation mechanisms. The empirical results (Figs. 4-6, Table 11) demonstrate the advantage but do not provide a theoretical foundation for why high-dimensional sparsification should inherently outperform dimensional truncation.",
+                "affected_claim": "Claim that sparse representations are fundamentally superior to dense truncation approaches",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "Dead latent problem persists in multimodal settings despite contrastive learning enhancements",
+                "severity": "minor",
+                "evidence": "The authors explicitly acknowledge this limitation in the submitted paper (Section 5.3, 6, D.4, Fig. 8, Table 2) and the rebuttal correctly identifies this evidence. The concern is resolved as the limitation is properly documented and discussed in the original work.",
+                "affected_claim": "Effectiveness of CSR in multimodal settings, particularly under high sparsity constraints",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The methodology is well-grounded, experiments are properly conducted, and limitations are appropriately documented. The authors' acknowledgment of the dead latent issue demonstrates scientific rigor."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of sparse autoencoders with contrastive learning for adaptive representation learning remains novel and represents a meaningful contribution to the field."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The demonstrated training efficiency gains (orders of magnitude faster than MRL) and inference speed improvements (61x speedup) with competitive performance constitute a substantial practical advance."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation is extensive and rigorous across multiple modalities and benchmarks. The comprehensive nature of the experiments provides strong support for the claims."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clearly written. Limitations are appropriately discussed, and the proposed revisions would further improve clarity."
+              }
+            },
+            "summary_comment": "The authors' response confirms that one weakness (dead latents in multimodal settings) is properly documented in the submitted paper. The other weakness (theoretical justification) remains but is minor and fixable through conceptual framing in future revisions. The paper's core strengths—novelty, strong empirical results, and practical significance—are undiminished. The submission meets the standard for acceptance at a top-tier conference."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited theoretical justification for the superiority of sparse over dense truncation, requiring a conceptual argument to be integrated into the original paper.\",\n        \"Dead latent problem in multimodal settings (acknowledged and resolved).\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Documentation of the dead latent limitation in multimodal settings\",\n          \"location\": \"Section 5.3, Section 6, Section D.4, Figure 8, Table 2\",\n          \"explanation\": \"The submitted paper explicitly discusses the persistence of dead neurons in the multimodal alignment space as a recognized limitation and an open challenge, particularly under high sparsity. The analysis in these sections does not overclaim effectiveness in this specific scenario, and correctly frames it as a fruitful area for future work.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited theoretical justification for why high-dimensional sparsification outperforms simple dimensional truncation.\",\n          \"proposed_change\": \"In the camera-ready version, we will integrate the conceptual framing from our rebuttal into the main text (e.g., in Section 3.2 or a new subsection under Analysis). We will more formally describe CSR's mechanism as performing \\\"non-linear, instance-specific feature selection\\\" from an overcomplete basis. We will contrast this with MRL's \\\"linear, fixed-order truncation\\\", arguing that the former allows for a more expressive and adaptive use of the budget of K active values. This discussion will be grounded in the empirical evidence from the paper (Figs. 4-6, Table 11). We will also strengthen references to the theoretical literature on overcomplete sparse representations and feature identifiability (e.g., linking Theorem 5 and the role of NCL more directly to mitigating dead neurons).\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their considered evaluation and for confirming that our rebuttal successfully addressed the main concerns. We are pleased that the documented discussion of the dead latent limitation in multimodal tasks is seen as sufficient. Regarding the nature of the advantage of sparse representations, we agree with the reviewer's final assessment: a more explicit conceptual framing of the core mechanism would strengthen the paper, and it is feasible to integrate this into the existing manuscript without new experiments. As noted in our proposed revision, we will enhance the main text to clearly articulate CSR as a form of non-linear, instance-specific feature selection from an overcomplete basis, contrasting it with the linear, fixed-order selection of MRL. This explanation will unify the empirical observations regarding performance, overcomplete hidden dimensions (h=4d), and the role of the NCL objective in promoting an identifiable, disentangled feature basis. We are confident these revisions will provide the deeper theoretical insight the reviewer sought. Thank you for your constructive feedback.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_fdd3ff6c701c",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/icml_accept_2025_060_beyond_matryoshka_revisiting_sparse_coding_for_adaptive_representation.md",
+    "target_paper_summary": {
+      "paper_id": "paper_fdd3ff6c701c",
+      "title": "Tiansheng Wen 1 2 Yifei Wang 3 Zequn Zeng 1 Zhong Peng 1 Yudi Su 1 Xinyang Liu 1 Bo Chen 1 Hongwei Liu 1 Stefanie Jegelka 3 4 Chenyu You 2",
+      "abstract": "Many large-scale systems rely on high-quality deep representations (embeddings) to facilitate tasks like retrieval, search, and generative modeling. Matryoshka Representation Learning (MRL) recently emerged as a solution for adaptive embedding lengths, but it requires full model retraining and suffers from noticeable performance degradations at short lengths. In this paper, we show that *sparse coding* offers a compelling alternative for achieving adaptive representation with minimal overhead and higher fidelity. We propose Contrastive Sparse Representation (CSR), a method that sparsifies pre-trained embeddings\n*Equal contribution 1National Key Laboratory of Radar Signal Processing, Xidian University, Xi'an, China 2Stony Brook University, New York, USA 3MIT CSAIL, MA, USA 4TU Munich. Correspondence to: Bo Chen <bchen@mail.xidian.edu.cn>, Hongwei Liu <hwliu@xidian.edu.cn>.\n\ninto a high-dimensional but *selectively activated* feature space. By leveraging lightweight autoencoding and task-aware contrastive objectives, CSR preserves semantic quality while allowing flexible, cost-effective inference at different sparsity levels. Extensive experiments on image, text, and multimodal benchmarks demonstrate that CSR consistently outperforms MRL in terms of both accuracy and retrieval speed—often by large margins—while also cutting training time to a fraction of that required by MRL. Our results establish sparse coding as a powerful paradigm for adaptive representation learning in real-world applications where efficiency and fidelity are both paramount. Code is available at this https URL.",
+      "topic": "",
+      "claims": [
+        "we show that *sparse coding* offers a compelling alternative for achieving adaptive representation with minimal overhead and higher fidelity.",
+        "We propose Contrastive Sparse Representation (CSR), a method that sparsifies pre-trained embeddings *Equal contribution 1National Key Laboratory of Radar Signal Processing, Xidian University, Xi'an, China 2Stony Brook University, New York, USA 3MIT CSAIL, MA, USA 4TU Munich."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 9,
+      "num_removed_post_cutoff": 9,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 9,
+    "num_removed_post_cutoff": 9,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

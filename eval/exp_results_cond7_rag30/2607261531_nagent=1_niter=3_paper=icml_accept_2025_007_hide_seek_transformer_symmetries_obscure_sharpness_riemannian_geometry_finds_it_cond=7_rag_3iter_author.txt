@@ -1,0 +1,368 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a novel and principled Riemannian geometry approach to address transformer symmetries, providing a general framework for symmetry-invariant sharpness measures.",
+        "Strong empirical results demonstrate that geodesic sharpness recovers correlation with generalization on transformers (ImageNet and MNLI) where previous measures fail.",
+        "The theoretical connection showing that existing adaptive sharpness is a first-order approximation of geodesic sharpness is insightful and well-justified."
+      ],
+      "weaknesses": [
+        "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+        "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+          "severity": "minor",
+          "evidence": "Section C.3 states that for ⟨·, ·⟩inv, Step 3) requires solving a Sylvester equation cubic in h, which may bottleneck for very large h, though h is usually small (e.g., h=64 in experiments).",
+          "affected_claim": "Practical scalability of geodesic sharpness to extremely large transformers.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility.",
+          "severity": "major",
+          "evidence": "Table 1 shows τ = -0.7 for ImageNet and τ = +0.38 for MNLI, indicating inconsistent correlation signs across tasks.",
+          "affected_claim": "Universal predictive utility of geodesic sharpness for generalization.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The theoretical framework is grounded in Riemannian geometry, with careful derivations (e.g., Christoffel symbols, geodesics) and empirical validation on multiple tasks. The connection to adaptive sharpness as a first-order approximation is mathematically sound."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The application of quotient manifolds and Riemannian geometry to transformer symmetries is novel. The paper generalizes beyond prior work (e.g., adaptive sharpness) and addresses previously unhandled GL(h) symmetries."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "This work meaningfully advances the field by resolving the lack of correlation between sharpness and generalization in transformers, with strong results on large-scale vision and language models."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Experiments on diagonal nets, ImageNet, and MNLI are comprehensive and convincing. Ablation studies (Appendix G) and invariance checks (Section 6.2) strengthen the empirical support."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured and clearly written, with helpful illustrations and appendices. Some geometric concepts are technical but adequately explained."
+        }
+      },
+      "summary_comment": "The author response effectively addresses the computational cost concern by highlighting that the mix metric avoids Sylvester solves and is computationally efficient, which is already supported by evidence in the submitted paper (Section C.3). However, the varying sign of correlation across tasks remains an unresolved limitation inherent to the empirical findings. Despite this, the paper's core contribution—establishing a strong, consistent correlation where prior measures failed—is significant and well-supported. The response does not change the substantive assessment of the submitted work."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core focus on sharpness and generalization prediction using advanced geometric methods fits well within ICML's 'machine learning theory' and 'optimization' tracks.",
+        "The application to real-world transformers (vision and language) aligns with ICML's interest in 'application-driven machine learning' and the analysis of modern architectures like deep learning.",
+        "The work provides a principled theoretical framework (Riemannian geometry) with novel empirical validation, matching ICML's emphasis on rigorous methodology and innovative techniques."
+      ],
+      "why_it_does_not_fit": [
+        "The paper is highly theoretical and geometry-heavy, which might be less accessible to a broad ICML audience focused on empirical algorithmics and applications.",
+        "The central finding—a restored correlation between sharpness and generalization—is more of a diagnostic insight than a new optimization algorithm or training method, which are often higher impact at ICML.",
+        "While empirically validated, the computational complexity (e.g., solving Sylvester equations) for some metrics could be seen as a practical limitation for large-scale systems, a concern often raised at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The work fundamentally addresses a foundational question in deep learning theory (generalization) through a novel geometric lens, which is a perfect fit for NeurIPS's core interests.",
+        "The application spans multiple domains (vision, language) and model families (transformers), aligning with NeurIPS's broad, interdisciplinary scope in AI.",
+        "The paper's strong empirical results on large-scale models (CLIP, BERT) and datasets (ImageNet, MNLI) demonstrate significant impact, which is highly valued at NeurIPS.",
+        "The combination of theory (Riemannian geometry) and practice (efficient approximations, algorithmic implementation) is typical of high-quality NeurIPS submissions."
+      ],
+      "why_it_does_not_fit": [
+        "The varying sign of the correlation (positive vs. negative) across tasks, noted as a major limitation, introduces interpretability issues that might be viewed as a significant caveat at a top-tier venue.",
+        "The paper's technical depth in differential geometry might be considered niche for some NeurIPS reviewers, though the conference does welcome such theoretical contributions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper studies the internal geometry and loss landscapes of deep neural networks, particularly transformers, which is a core interest of ICLR.",
+        "The work directly contributes to understanding representation learning and deep learning theory, key topics for ICLR.",
+        "The focus on attention mechanisms and transformer symmetries is highly relevant given ICLR's emphasis on modern deep learning architectures."
+      ],
+      "why_it_does_not_fit": [
+        "While transformers are studied, the paper's primary contribution is not a new deep learning model, architecture, or training algorithm, which are often the focus at ICLR.",
+        "The Riemannian geometry framework, while powerful, might be perceived as distant from the empirical, architecture-focused mainstream of ICLR.",
+        "The work is more about analyzing and diagnosing existing models (sharpness measurement) rather than proposing a new learning method or representation, which can sometimes have lower impact at ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a novel and principled Riemannian geometry approach to address transformer symmetries, providing a general framework for symmetry-invariant sharpness measures.",
+              "Strong empirical results demonstrate that geodesic sharpness recovers correlation with generalization on transformers (ImageNet and MNLI) where previous measures fail.",
+              "The theoretical connection showing that existing adaptive sharpness is a first-order approximation of geodesic sharpness is insightful and well-justified."
+            ],
+            "weaknesses": [
+              "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+              "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+                "severity": "minor",
+                "evidence": "Section C.3 states that for ⟨·, ·⟩inv, Step 3) requires solving a Sylvester equation cubic in h, which may bottleneck for very large h, though h is usually small (e.g., h=64 in experiments).",
+                "affected_claim": "Practical scalability of geodesic sharpness to extremely large transformers.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility.",
+                "severity": "major",
+                "evidence": "Table 1 shows τ = -0.7 for ImageNet and τ = +0.38 for MNLI, indicating inconsistent correlation signs across tasks.",
+                "affected_claim": "Universal predictive utility of geodesic sharpness for generalization.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical framework is grounded in Riemannian geometry, with careful derivations (e.g., Christoffel symbols, geodesics) and empirical validation on multiple tasks. The connection to adaptive sharpness as a first-order approximation is mathematically sound."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of quotient manifolds and Riemannian geometry to transformer symmetries is novel. The paper generalizes beyond prior work (e.g., adaptive sharpness) and addresses previously unhandled GL(h) symmetries."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This work meaningfully advances the field by resolving the lack of correlation between sharpness and generalization in transformers, with strong results on large-scale vision and language models."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments on diagonal nets, ImageNet, and MNLI are comprehensive and convincing. Ablation studies (Appendix G) and invariance checks (Section 6.2) strengthen the empirical support."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clearly written, with helpful illustrations and appendices. Some geometric concepts are technical but adequately explained."
+              }
+            },
+            "summary_comment": "This paper makes a significant contribution by introducing a Riemannian geometry framework to handle transformer symmetries, restoring the correlation between sharpness and generalization. The approach is novel, theoretically grounded, and empirically validated on large-scale tasks. While the varying sign of correlation across tasks and computational costs are noted, the strengths outweigh these concerns for a top-tier conference."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a novel and principled Riemannian geometry approach to address transformer symmetries, providing a general framework for symmetry-invariant sharpness measures.",
+              "Strong empirical results demonstrate that geodesic sharpness recovers correlation with generalization on transformers (ImageNet and MNLI) where previous measures fail.",
+              "The theoretical connection showing that existing adaptive sharpness is a first-order approximation of geodesic sharpness is insightful and well-justified."
+            ],
+            "weaknesses": [
+              "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+              "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+                "severity": "minor",
+                "evidence": "Section C.3 states that for ⟨·, ·⟩inv, Step 3) requires solving a Sylvester equation cubic in h, which may bottleneck for very large h, though h is usually small (e.g., h=64 in experiments).",
+                "affected_claim": "Practical scalability of geodesic sharpness to extremely large transformers.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility.",
+                "severity": "major",
+                "evidence": "Table 1 shows τ = -0.7 for ImageNet and τ = +0.38 for MNLI, indicating inconsistent correlation signs across tasks.",
+                "affected_claim": "Universal predictive utility of geodesic sharpness for generalization.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical framework is grounded in Riemannian geometry, with careful derivations (e.g., Christoffel symbols, geodesics) and empirical validation on multiple tasks. The connection to adaptive sharpness as a first-order approximation is mathematically sound."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of quotient manifolds and Riemannian geometry to transformer symmetries is novel. The paper generalizes beyond prior work (e.g., adaptive sharpness) and addresses previously unhandled GL(h) symmetries."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This work meaningfully advances the field by resolving the lack of correlation between sharpness and generalization in transformers, with strong results on large-scale vision and language models."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments on diagonal nets, ImageNet, and MNLI are comprehensive and convincing. Ablation studies (Appendix G) and invariance checks (Section 6.2) strengthen the empirical support."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clearly written, with helpful illustrations and appendices. Some geometric concepts are technical but adequately explained."
+              }
+            },
+            "summary_comment": "The author response clarifies that the computational cost of the inv metric is mitigated by the mix metric, which avoids Sylvester solves and is recommended for large-scale use. However, the varying sign of correlation across tasks remains an unresolved limitation, as it is an inherent empirical finding rather than a fixable flaw. Despite this, the paper's novel contribution—restoring strong correlation where prior measures failed—and its rigorous theoretical and empirical foundation justify acceptance. The response does not change the substantive assessment of the submitted work."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Computational cost of solving Sylvester equations for one of the proposed metrics (⟨·, ·⟩inv) could be a bottleneck for very large models.\",\n        \"The sign of the correlation between geodesic sharpness and generalization varies across tasks (negative on ImageNet, positive on MNLI), which limits interpretability and practical utility.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The computational cost for the inv metric involves solving a Sylvester equation.\",\n          \"location\": \"Section C.3 (Complexity)\",\n          \"explanation\": \"The paper acknowledges this cost, noting the solve is cubic in the hidden dimension h, but mitigates this by: (1) stating h is usually small (e.g., 64 in experiments), (2) introducing an alternative metric ⟨·, ·⟩mix that avoids this solve entirely through simple matrix multiplications, and (3) arguing that the main computational bottleneck remains the forward/backward passes.\"\n        },\n        {\n          \"concern\": \"The sign of correlation varies across tasks.\",\n          \"location\": \"Section 7 (Remarks, Limitations & Future Work), Table 1\",\n          \"explanation\": \"The paper explicitly discusses this observation in the limitations section, noting the sign is 'somewhat at odds with the common view' and varies depending on the setting. It frames this not as a failure of the method, but as a newly revealed phenomenon: prior measures found weak or no correlation for transformers, whereas geodesic sharpness finds a strong, consistent (within-task) correlation, opening questions for future study.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify the practical scalability and metric choice recommendation.\",\n          \"proposed_change\": \"We will add a sentence in Section 7 or the conclusion explicitly recommending the ⟨·, ·⟩mix metric for large-scale applications due to its lower computational overhead and stable numerics, as hinted in Section 7.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Expand discussion on the varying correlation sign to improve clarity and situate the finding.\",\n          \"proposed_change\": \"We will enhance the discussion in Section 7 to more directly contrast our consistent within-task correlations with the prior inconsistent or absent correlations for transformers. We will also hypothesize more concretely that the sign may depend on task-specific factors like data distribution or optimization geometry, motivating this as a key direction for future work.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and insightful comments. We address the two main concerns below.\\n\\n**1. Computational Cost & Metric Choice:** The reviewer correctly identifies that solving the Sylvester equation for the `inv` metric (Eq. 9) has cubic cost in the head dimension `h`. As noted in Section C.3, `h` is typically small (64 in our experiments), making this step non-bottlenecking. Crucially, we propose a second, equally valid metric, `mix` (Eq. 10), which requires only efficient matrix multiplications for the horizontal projection, sidestepping the Sylvester solve entirely. Our results show that both metrics perform strongly, with `mix` sometimes yielding slightly better correlation (e.g., on BERT). Therefore, practitioners concerned with scalability can default to the `mix` metric. We will clarify this practical recommendation in the revised manuscript.\\n\\n**2. Varying Sign of Correlation:** The reviewer raises an important point about the inconsistent sign of correlation (negative on ImageNet, positive on MNLI). We view this not as a flaw in our measure, but as a significant empirical discovery. Prior work (Andriushchenko et al., 2023) found that adaptive sharpness showed *weak or no correlation* for transformers. Our geodesic sharpness, by properly accounting for symmetries, *uncovers a strong and consistent correlation within each task*. The fact that this correlation can be positive or negative indicates that the relationship between flatness and generalization is more nuanced than previously assumed and may depend on task-specific factors (data distribution, model size, optimization trajectory). This finding opens new research questions, as noted in Section 7. Our contribution is to provide a corrected measure that makes this underlying relationship visible for the first time in transformers. We will expand the discussion in Section 7 to frame this finding more clearly.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 5,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a novel and principled Riemannian geometry approach to address transformer symmetries, providing a general framework for symmetry-invariant sharpness measures.",
+              "Strong empirical results demonstrate that geodesic sharpness recovers correlation with generalization on transformers (ImageNet and MNLI) where previous measures fail.",
+              "The theoretical connection showing that existing adaptive sharpness is a first-order approximation of geodesic sharpness is insightful and well-justified."
+            ],
+            "weaknesses": [
+              "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+              "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The computational cost of solving Sylvester equations for the inv metric may be prohibitive for very large models, though mitigated by the mix metric.",
+                "severity": "minor",
+                "evidence": "Section C.3 states that for ⟨·, ·⟩inv, Step 3) requires solving a Sylvester equation cubic in h, which may bottleneck for very large h, though h is usually small (e.g., h=64 in experiments).",
+                "affected_claim": "Practical scalability of geodesic sharpness to extremely large transformers.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The sign of correlation between sharpness and generalization varies across tasks (negative for ImageNet, positive for MNLI), which limits interpretability and practical utility.",
+                "severity": "major",
+                "evidence": "Table 1 shows τ = -0.7 for ImageNet and τ = +0.38 for MNLI, indicating inconsistent correlation signs across tasks.",
+                "affected_claim": "Universal predictive utility of geodesic sharpness for generalization.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The theoretical framework is grounded in Riemannian geometry, with careful derivations (e.g., Christoffel symbols, geodesics) and empirical validation on multiple tasks. The connection to adaptive sharpness as a first-order approximation is mathematically sound."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The application of quotient manifolds and Riemannian geometry to transformer symmetries is novel. The paper generalizes beyond prior work (e.g., adaptive sharpness) and addresses previously unhandled GL(h) symmetries."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "This work meaningfully advances the field by resolving the lack of correlation between sharpness and generalization in transformers, with strong results on large-scale vision and language models."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments on diagonal nets, ImageNet, and MNLI are comprehensive and convincing. Ablation studies (Appendix G) and invariance checks (Section 6.2) strengthen the empirical support."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured and clearly written, with helpful illustrations and appendices. Some geometric concepts are technical but adequately explained."
+              }
+            },
+            "summary_comment": "The author response effectively addresses the computational cost concern by highlighting that the mix metric avoids Sylvester solves and is computationally efficient, which is already supported by evidence in the submitted paper (Section C.3). However, the varying sign of correlation across tasks remains an unresolved limitation inherent to the empirical findings. Despite this, the paper's core contribution—establishing a strong, consistent correlation where prior measures failed—is significant and well-supported. The response does not change the substantive assessment of the submitted work."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Computational cost of solving Sylvester equations for one of the proposed metrics (⟨·, ·⟩inv) could be a bottleneck for very large models.\",\n        \"The sign of the correlation between geodesic sharpness and generalization varies across tasks (negative on ImageNet, positive on MNLI), which limits interpretability and practical utility.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"The computational cost for the inv metric involves solving a Sylvester equation.\",\n          \"location\": \"Section C.3 (Complexity)\",\n          \"explanation\": \"The paper acknowledges this cost, noting the solve is cubic in the hidden dimension h, but mitigates this by: (1) stating h is usually small (e.g., 64 in experiments), (2) introducing an alternative metric ⟨·, ·⟩mix that avoids this solve entirely through simple matrix multiplications, and (3) arguing that the main computational bottleneck remains the forward/backward passes.\"\n        },\n        {\n          \"concern\": \"The sign of correlation varies across tasks.\",\n          \"location\": \"Section 7 (Remarks, Limitations & Future Work), Table 1\",\n          \"explanation\": \"The paper explicitly discusses this observation in the limitations section, noting the sign is 'somewhat at odds with the common view' and varies depending on the setting. It frames this not as a failure of the method, but as a newly revealed phenomenon: prior measures found weak or no correlation for transformers, whereas geodesic sharpness finds a strong, consistent (within-task) correlation, opening questions for future study.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Clarify the practical scalability and metric choice recommendation.\",\n          \"proposed_change\": \"We will add a sentence in Section 7 or the conclusion explicitly recommending the ⟨·, ·⟩mix metric for large-scale applications due to its lower computational overhead and stable numerics, as hinted in Section 7.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Expand discussion on the varying correlation sign to improve clarity and situate the finding.\",\n          \"proposed_change\": \"We will enhance the discussion in Section 7 to more directly contrast our consistent within-task correlations with the prior inconsistent or absent correlations for transformers. We will also hypothesize more concretely that the sign may depend on task-specific factors like data distribution or optimization geometry, motivating this as a key direction for future work.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and insightful comments. We address the two main concerns below.\\n\\n**1. Computational Cost & Metric Choice:** The reviewer correctly identifies that solving the Sylvester equation for the `inv` metric (Eq. 9) has cubic cost in the head dimension `h`. As noted in Section C.3, `h` is typically small (64 in our experiments), making this step non-bottlenecking. Crucially, we propose a second, equally valid metric, `mix` (Eq. 10), which requires only efficient matrix multiplications for the horizontal projection, sidestepping the Sylvester solve entirely. Our results show that both metrics perform strongly, with `mix` sometimes yielding slightly better correlation (e.g., on BERT). Therefore, practitioners concerned with scalability can default to the `mix` metric. We will clarify this practical recommendation in the revised manuscript.\\n\\n**2. Varying Sign of Correlation:** The reviewer raises an important point about the inconsistent sign of correlation (negative on ImageNet, positive on MNLI). We view this not as a flaw in our measure, but as a significant empirical discovery. Prior work (Andriushchenko et al., 2023) found that adaptive sharpness showed *weak or no correlation* for transformers. Our geodesic sharpness, by properly accounting for symmetries, *uncovers a strong and consistent correlation within each task*. The fact that this correlation can be positive or negative indicates that the relationship between flatness and generalization is more nuanced than previously assumed and may depend on task-specific factors (data distribution, model size, optimization trajectory). This finding opens new research questions, as noted in Section 7. Our contribution is to provide a corrected measure that makes this underlying relationship visible for the first time in transformers. We will expand the discussion in Section 7 to frame this finding more clearly.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_123e74a6905a",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "data/md/icml_accept_2025_007_hide_seek_transformer_symmetries_obscure_sharpness_riemannian_geometry_finds_it.md",
+    "target_paper_summary": {
+      "paper_id": "paper_123e74a6905a",
+      "title": "Hide & Seek: Transformer Symmetries Obscure Sharpness & Riemannian Geometry Finds It",
+      "abstract": "The concept of sharpness has been successfully applied to traditional architectures like MLPs and CNNs to predict their generalization. For transformers, however, recent work reported weak correlation between flatness and generalization. We argue that existing sharpness measures fail for transformers, because they have much richer symmetries in their attention mechanism that induce directions in parameter space along which the network or its loss remain identical. We posit that sharpness must account fully for these symmetries, and thus we redefine it on a quotient manifold that results from quotienting out the transformer symmetries, thereby removing their ambiguities. Leveraging tools from Riemannian geometry, we propose a fully general notion of sharpness in terms of a geodesic ball on the symmetrycorrected quotient manifold. In practice, we need to approximate the geodesics. Doing so up to first order yields existing adaptive sharpness measures, and we demonstrate that including higher-order terms is crucial to recover correlation with generalization. We present results on diagonal nets with synthetic data and show that our geodesic sharpness reveals strong correlation with generalization for real-world transformers on both text and image classification tasks.",
+      "topic": "",
+      "claims": [
+        "we propose a fully general notion of sharpness in terms of a geodesic ball on the symmetrycorrected quotient manifold.",
+        "we demonstrate that including higher-order terms is crucial to recover correlation with generalization.",
+        "We present results on diagonal nets with synthetic data and show that our geodesic sharpness reveals strong correlation with generalization for real-world transformers on both text and image classification tasks."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 8,
+      "num_removed_post_cutoff": 7,
+      "num_removed_undated": 1,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 8,
+    "num_removed_post_cutoff": 7,
+    "num_removed_undated": 1,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

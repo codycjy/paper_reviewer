@@ -1,0 +1,864 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and creative approach to automated code review by moving beyond snippet-level analysis to a repository-level, merge-request granularity, which is a significant paradigm shift from previous work.",
+        "The integration with real-world DevOps workflows and validation on industry-scale defects from a large company with 400M daily active users is exceptionally compelling and provides strong evidence of practical significance and impact.",
+        "The proposed framework, including code slicing, a multi-role LLM system, a filtering mechanism, and line-aware prompt design, is innovative and comprehensively addresses practical challenges (context, KBI, FAR, human integration) that previous methods largely ignored."
+      ],
+      "weaknesses": [
+        "While the paper reports significant improvements, some methodological aspects, particularly the heuristic approach to setting filtering thresholds (e.g., Q1/Q2 scores of 4 or below for discarding comments), could benefit from more rigorous, data-driven justification or an adaptive mechanism for broader applicability.",
+        "The paper discusses the trade-off inherent in the validator role (reducing FAR but potentially lowering KBI). More detailed analysis or strategies for optimizing this balance, beyond simply acknowledging it, would strengthen the contribution."
+      ],
+      "summary_comment": "This paper presents a bold and innovative step forward in automated code review. Its core contribution lies in redefining the problem from a snippet-level, text-similarity-driven task to a holistic, defect-focused, merge-request-level analysis integrated with real-world industrial workflows. The proposed multi-component framework, including advanced code slicing and a multi-role LLM system, is highly creative and addresses critical, previously overlooked challenges like proper context capture, key bug inclusion, false alarm reduction, and human-centric integration. The validation on industry-scale defects from an environment with 400M daily active users underscores the immense practical significance. While some minor methodological details (e.g., heuristic thresholds) could be further refined, the overall novelty and potential impact of this research are outstanding, easily warranting acceptance. This work is precisely the kind of forward-thinking research that pushes the boundaries of the field."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on general machine learning (deep learning, LLM frameworks, optimization in filtering) applied to a complex software engineering problem aligns well with ICML's broad scope in machine learning, including application-driven ML.",
+        "The work introduces novel techniques like code slicing algorithms, a multi-role LLM framework, and a filtering mechanism, demonstrating advancements in machine learning systems and probabilistic methods (implicit in LLM usage and comment scoring).",
+        "The evaluation on real-world, industry-scale defects and the significant performance improvements (10x over baselines) indicate strong practical application and innovative techniques, which are explicitly listed as topics of interest for application-driven machine learning.",
+        "The paper deeply analyzes the challenges of context, KBI, FAR, and human integration, which are problems that require sophisticated ML solutions, resonant with ICML's interest in 'trustworthy machine learning' (reliability, interpretability, robustness implicitly addressed by FAR reduction)."
+      ],
+      "why_it_does_not_fit": [
+        "While the methods are ML-based, the primary domain is software engineering, specifically automated code review. ICML typically favors papers with more fundamental ML methodological advancements or broader implications for ML theory, rather than a strong application focus, even if the application is challenging.",
+        "Reviewer A notes that some methodological aspects, particularly the 'heuristic approach to setting filtering thresholds,' could benefit from more rigorous, data-driven justification. This might be seen as a slight detraction from the theoretical rigor often expected at ICML.",
+        "The discussion of 'trade-off inherent in the validator role' (reducing FAR but potentially lowering KBI) is well-acknowledged but the reviewer suggests 'more detailed analysis or strategies' which, if lacking, could slightly reduce the 'rigor fit' for ICML's high methodological standards."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "NeurIPS welcomes interdisciplinary submissions that don't fit neatly into existing categories, and papers on 'AI/ML for physical sciences', 'health and biotechnology', 'sustainability', 'social sciences' and 'creatives'. AI/ML for software engineering (a critical industrial application) can comfortably fit into 'Others' or be seen as an 'AI for Industry' type application.",
+        "The paper focuses on innovative uses of Large Language Models (LLMs) which aligns with NeurIPS's strong interest in 'Deep learning,' 'Language and multimodal language models,' and 'General machine learning: core contributions in supervised and unsupervised methods'.",
+        "The development of a multi-role LLM system and novel prompting for practical challenges like reducing false alarms and improving key bug inclusion represents a significant 'data-centric aspect of AI' and tackles real-world ML deployment issues.",
+        "The strong empirical validation on real-world merge requests from a company with 400M daily active users demonstrates practical impact and addresses 'machine learning in practice,' which is a key focus of NeurIPS's professional exposition.",
+        "The work's emphasis on tackling challenges like 'capturing relevant context' and 'reducing false alarm rates' (FAR in a defect detection context) reflects concerns related to 'trustworthy machine learning' and robustness, which are areas of interest for NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper's broad impact is clear, some NeurIPS submissions push the boundaries of fundamental machine learning theory or novel architectural designs. This paper is more focused on an engineering solution to a specific, albeit complex, application, rather than foundational ML research.",
+        "Reviewer A noted the 'heuristic approach to setting filtering thresholds' could use more data-driven justification. While potentially less critical for an application-focused paper, strong methodological rigor is consistently valued at NeurIPS.",
+        "The paper does not delve into the underlying theoretical aspects of why LLMs fail or succeed in certain contexts beyond empirical observations, which some NeurIPS reviewers might seek for deeper insights into the models themselves."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "ICLR is explicitly interested in 'cutting-edge research on all aspects of deep learning,' and this paper heavily leverages advanced LLM (deep learning) techniques for automated code review.",
+        "The methods proposed, such as 'multi-role LLM framework' and 'novel prompt design,' fall under advancements in representation learning (implicit in LLM usage), generative models, and potentially optimization (in filtering and context management).",
+        "The paper addresses 'societal considerations including fairness, safety, privacy' indirectly by focusing on defect detection and reducing false alarms in a critical software development process, which aligns with ICLR's interest in 'trustworthy machine learning'.",
+        "The use of 'code slicing' and 'AST-based analysis' combined with LLMs represents an interesting 'neurosymbolic & hybrid AI systems' approach, fusing traditional program analysis with deep learning, a topic ICLR welcomes."
+      ],
+      "why_it_does_not_fit": [
+        "While deep learning is central, ICLR often prioritizes papers that introduce novel architectures, training methodologies, or theoretical understandings of deep learning itself. This paper uses existing LLMs in an innovative application, but the core ML novelty might be perceived as less foundational for some ICLR reviewers.",
+        "Reviewer A's comment about the 'heuristic approach to setting filtering thresholds' and the need for 'more rigorous, data-driven justification' could be a point of weakness for ICLR, which values strong methodological details and theoretical grounding in deep learning.",
+        "The paper's primary impact statement is within software engineering. ICLR, while broad, still has a strong leaning towards core deep learning research rather than application-heavy papers, unless the application drives significant new deep learning methodology."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_8154c898b403",
+    "paper_id": "paper_8af63085f5d3",
+    "target_paper_summary": {
+      "paper_id": "paper_8af63085f5d3",
+      "title": "Junyi Lu 1 2 † Lili Jiang 3 Xiaojia Li 3 Jianbing Fang 4 † Fengjun Zhang 1 Li Yang 1 Chun Zuo 5",
+      "abstract": "The complexity of code reviews has driven efforts to automate review comments, but prior approaches oversimplify this task by treating it as snippet-level code-to-text generation and relying on text similarity metrics like BLEU for evaluation. These methods overlook repository context, real-world merge request evaluation, and defect detection, limiting their practicality. To address these issues, we explore the full automation pipeline within the online recommendation service of a company with nearly 400 million daily active users, analyzing industry-grade C++ codebases comprising hundreds of thousands of lines of code. We identify four key challenges: ❶\n capturing relevant context, ❷ improving key bug inclusion (KBI), ❸ reducing false alarm rates (FAR), and ❹ integrating human workflows. To tackle these, we propose ❶ code slicing algorithms for context extraction, ❷ a multi-role LLM framework for KBI, ❸ a filtering mechanism for FAR reduction, and ❹ a novel prompt design for better human interaction. Our approach, validated on real-world merge requests from historical fault reports, achieves a 2× improvement over standard LLMs and a 10× gain over previous baselines. While the presented results focus on C++, the underlying framework design leverages languageagnostic principles (e.g., AST-based analysis), suggesting potential for broader applicability.",
+      "topic": "",
+      "claims": [
+        "we propose ❶ code slicing algorithms for context extraction, ❷ a multi-role LLM framework for KBI, ❸ a filtering mechanism for FAR reduction, and ❹ a novel prompt design for better human interaction.",
+        "Our approach, validated on real-world merge requests from historical fault reports, achieves a 2× improvement over standard LLMs and a 10× gain over previous baselines."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "automate review comments code review automation",
+          "rationale": "The paper directly addresses the problem of automating review comments for code reviews."
+        },
+        {
+          "group": "same_method",
+          "query": "multi-role LLM framework code review automation",
+          "rationale": "The paper proposes a 'multi-role LLM framework' and 'code slicing algorithms' for context extraction, which are specific methodological components."
+        },
+        {
+          "group": "same_constraints",
+          "query": "code review automation industry-grade C++ codebase large-scale",
+          "rationale": "The paper highlights working with 'industry-grade C++ codebases comprising hundreds of thousands of lines of code' and within a 'company with nearly 400 million daily active users', indicating specific scale and language constraints."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "evaluation metrics code review comment generation BLEU limitations",
+          "rationale": "The paper critiques existing evaluation metrics like BLEU for code-to-text generation in code review and validates its approach on 'real-world merge requests from historical fault reports'."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "snippet-level code-to-text generation review comments",
+          "rationale": "The paper explicitly states that 'prior approaches oversimplify this task by treating it as snippet-level code-to-text generation', suggesting these as competitors to their more comprehensive approach."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "limitations of LLMs for code quality review false alarm rates",
+          "rationale": "The paper identifies and aims to resolve 'reducing false alarm rates (FAR)' and 'improving key bug inclusion (KBI)' as key challenges, implying these are known limitations in prior or standard LLM approaches for code review."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_1a421c87d",
+        "title": "PRISMA 2020 explanation and elaboration: updated guidance and exemplars for reporting systematic reviews",
+        "authors": [
+          "Matthew J. Page",
+          "David Moher",
+          "Patrick M. Bossuyt",
+          "Isabelle Boutron",
+          "Tammy Hoffmann",
+          "Cynthia D. Mulrow",
+          "Larissa Shamseer",
+          "Jennifer Tetzlaff",
+          "Elie A. Akl",
+          "Sue Brennan",
+          "Roger Chou",
+          "Julie Glanville",
+          "Jeremy Grimshaw",
+          "Asbjørn Hróbjartsson",
+          "Manoj M. Lalu",
+          "Tianjing Li",
+          "Elizabeth Loder",
+          "Evan Mayo‐Wilson",
+          "Steve McDonald",
+          "Luke A. McGuinness",
+          "Lesley Stewart",
+          "James Thomas",
+          "Andrea C. Tricco",
+          "Vivian Welch",
+          "Penny Whiting",
+          "Joanne E. McKenzie"
+        ],
+        "year": 2021,
+        "publication_date": "2021-03-29",
+        "venue": "BMJ",
+        "abstract": "The PRISMA 2020 statement includes a checklist of 27 items to guide reporting of systematic reviews In this article we explain why reporting of each item is recommended, present bullet points that detail the reporting recommendations, and present examples from published reviews We hope that uptake of the PRISMA 2020 statement will lead to more transparent, complete, and accurate reporting of systematic reviews, thus facilitating evidence based decision making on 1 September",
+        "url": "https://doi.org/10.1136/bmj.n160",
+        "doi": "https://doi.org/10.1136/bmj.n160",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3123893780"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 11188
+      },
+      {
+        "paper_id": "rw_002_4d1172247",
+        "title": "The automated computation of tree-level and next-to-leading order differential cross sections, and their matching to parton shower simulations",
+        "authors": [
+          "Johan Alwall",
+          "Rikkert Frederix",
+          "Stefano Frixione",
+          "Valentin Hirschi",
+          "Fabio Maltoni",
+          "Olivier Mattelaer",
+          "Hua-Sheng Shao",
+          "T. Stelzer",
+          "Paolo Torrielli",
+          "Marco Zaro"
+        ],
+        "year": 2014,
+        "publication_date": "2014-07-01",
+        "venue": "Journal of High Energy Physics",
+        "abstract": "We discuss the theoretical bases that underpin the automation of the computations of tree-level and next-to-leading order cross sections, of their matching to parton shower simulations, and of the merging of matched samples that differ by light-parton multiplicities. We present a computer program, MadGraph5 aMC@NLO, capable of handling all these computations — parton-level fixed order, shower-matched, merged — in a unified framework whose defining features are flexibility, high level of parallelisation, and human intervention limited to input physics quantities. We demonstrate the potential of the program by presenting selected phenomenological applications relevant to the LHC and to a 1-TeV e + e − collider. While next-to-leading order results are restricted to QCD corrections to SM processes in the first public version, we show that from the user viewpoint no changes have to be expected in the case of corrections due to any given renormalisable Lagrangian, and that the implementation of these are well under way.",
+        "url": "https://doi.org/10.1007/jhep07(2014)079",
+        "doi": "https://doi.org/10.1007/jhep07(2014)079",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2110999179"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 7485
+      },
+      {
+        "paper_id": "rw_003_f2a5438ad",
+        "title": "Evaluating Large Language Models Trained on Code",
+        "authors": [
+          "Mark Chen",
+          "Jerry Tworek",
+          "Heewoo Jun",
+          "Qiming Yuan",
+          "Henrique Pondé de Oliveira Pinto",
+          "Jared Kaplan",
+          "Harrison Edwards",
+          "Yuri Burda",
+          "Nicholas Joseph",
+          "Greg Brockman",
+          "Alex Ray",
+          "Raul Puri",
+          "Gretchen Krueger",
+          "Michael Petrov",
+          "Heidy Khlaaf",
+          "Girish Sastry",
+          "Pamela Mishkin",
+          "Brooke Chan",
+          "Scott Gray",
+          "Nick Ryder",
+          "Mikhail Pavlov",
+          "Alethea Power",
+          "Łukasz Kaiser",
+          "Mohammad Bavarian",
+          "Clemens Winter",
+          "Philippe Tillet",
+          "Felipe Petroski Such",
+          "Dave Cummings",
+          "Matthias Plappert",
+          "Fotios Chantzis",
+          "Elizabeth A. Barnes",
+          "Ariel Herbert-Voss",
+          "William H. Guss",
+          "Alex Nichol",
+          "Alex Paino",
+          "Nikolas Tezak",
+          "Jie Tang",
+          "I. Babuschkin",
+          "Suchir Balaji",
+          "Shantanu Jain",
+          "William S. Saunders",
+          "Christopher Hesse",
+          "Andrew N. Carr",
+          "Jan Leike",
+          "Joshua Achiam",
+          "Vedant Misra",
+          "Evan Morikawa",
+          "Alec Radford",
+          "Matthew M. Knight",
+          "Miles Brundage",
+          "Mira Murati",
+          "Katie Mayer",
+          "Peter Welinder",
+          "Bob McGrew",
+          "Dario Amodei",
+          "Sam McCandlish",
+          "Ilya Sutskever",
+          "Wojciech Zaremba"
+        ],
+        "year": 2021,
+        "publication_date": "2021-07-07",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "I created a basic proof of concept of LMVM (Language Model Virtual Machine), a command line toolchain that English instructions into native binaries without intermediary high-level language compilation. The command line uses a large language model (LLM) as IR generation backend, producing LLVM Intermediate Representation (IR) directly from user instructions coding. The IR is compiled and linked to machine code (-o files) via `clang` (with an `llc`/`lld` fallback on POSIX hosts) and executed on bare metal, within Docker sandboxes, on AWS Lambda, or as standalone HTTP servers. How It Works (5 Steps) 1. You type an instruction - e.g. \"Create a rest api running on localhost port 3000 and return hello world\" 2. LMVM checks your computer - It figures out if you're on Windows/Mac/Linux, what CPU you have (Intel vs ARM), and makes sure clang (the compiler) is installed. If not, it offers to install it for you (with your permission). 3. An AI writes LLVM IR - Instead of writing C or Python, the LLM writes LLVM IR -- a low-level assembly-like language that sits between source code and machine code. The prompt includes your OS details so the AI generates code that works on your platform (e.g. Winsock on Windows vs POSIX sockets on Mac/Linux). 4. Clang turns IR into a native binary - clang compiles the IR and links it with system libraries (PostgreSQL, OpenSSL, SQLite, etc.) into a real executable. One step, no extra tools needed. 5. It runs - The binary executes directly on your CPU. If it's a Docker target, it runs sandboxed. If it's Lambda, it packages for AWS. 2. Why we care : Compiled native binaries outperform interpreted languages by 10-50x in CPU usage and 5-15x in memory for compute-heavy tasks, because interpreters add overhead with every instruction they process and their single-threaded execution model blocks true parallelism. Few runtimes that compile code on the fly, the gap narrows to 2-5x in CPU since those systems optimize hot code paths over time -- but native code still starts faster, uses less memory, and can run true parallel threads instead of juggling everything through a single event loop. The biggest gains show up in recursive and number-crunching workloads (where the cost of \"figuring out what to do next\" dominates) and memory-heavy tasks (where automatic garbage collection and wrapping every value in an object bloats memory usage). I/O-bound tasks show the smallest differences, because the operating system does the real work regardless of what language runtime sits on top. This also means we need to think carefully about maintainability, especially now that AI agents can generate code as a complete black box sometimes even producing low-level output that humans rarely inspect. 3. System Architecture [CLI] → [Toolchain] → [LLM Client] → [Compiler] → [Runner] → Output ↑ | Error Feedback | Self‑Correction Loop (x10) 3.1 CLI and Interactive Setup The command-line interface (built on Commander.js) exposes four commands: `run` (compile and execute), `compile` (IR generation only), `build` (compile existing IR), and `targets` (list output targets). 3.2 LLM Client The LLM client wraps an OpenAI-compatible API, supporting providers examples (OpenAI, Groq, Together AI, OpenRouter, and local llm instances). The command line agent constructs prompts from two sources: a system prompt (loaded from `Prompt.md`, ~4000 tokens) containing LLVM IR generation rules, security constraints, and code templates; and a user prompt containing a platform descriptor (host OS, exact target triple, sockets dialect), the instruction, target, and error context for retry attempts. A secondary method, is used by the toolchain bootstrapper to obtain package-manager commands for the detected host. 3.3 Platform Abstraction and Toolchain Bootstrapper Since LMVM builds real native programs, it has to know exactly what computer it's running on -- the same code won't work the same way on Windows vs Mac vs Linux. So a platform module figures out three things: 1. The \"target triple\" -- a label that tells the compiler exactly which OS and CPU to build for (like x86_64-pc-windows-msvc for 64-bit Windows, or arm64-apple-darwin for an M-series Mac). 2. How to do networking -- Windows uses its own socket system (Winsock), while Mac and Linux use the standard POSIX approach. The code has to match. 3. What package manager is available -- winget/choco/scoop on Windows, brew on Mac, apt/dnf/pacman on Linux. This matters if LMVM needs to install something. All of this gets described in plain text and injected into the AI's prompt, so it writes code that actually compiles on your machine instead of assuming you're on Linux. Before talking to the AI, LMVM runs a checklist to make sure your computer can actually compile things: 1. PATH fix - If you just installed clang but your terminal hasn't refreshed yet, LMVM detects the install location and patches its own PATH so it finds clang right away, no need to restart your terminal. 2. Is clang there? - It checks that the compiler is actually available. 3. Can clang actually build a program? (Windows only) -- On Windows, having clang isn't enough -- it also needs the MSVC linker and Windows SDK behind it. LMVM compiles a tiny test program to verify the full chain works. If it fails, the Visual Studio Build Tools are probably missing. 4. Install with user's permission - If anything is missing, LMVM asks the AI for the right install commands, shows them to you, and waits for your yes before running anything. Then it checks again. If the toolchain still can't work after all that, LMVM stops early and tells you exactly what to do (install manually, open a new terminal, or use Docker instead). It doesn't waste your AI API calls retrying something a code fix can't solve. 3.4 Code Compiler Compilation is driven by `clang`, which lowers the `.ll` and invokes the platform linker in a single step: Primary path (all platforms) - `clang output.ll <lib-flags> -o <binary>`. Library flags are platform-aware: POSIX hosts use `-lpq`, `-lcurl`, `-lssl`, etc.; Windows links `ws2_32` for socket/server targets and relies on the MSVC C runtime. For the AWS Lambda target, static linking is applied. POSIX fallback - If `clang` is unavailable on macOS/Linux, the system falls back to the classic cascade: the LLVM Static Compiler (`llc -filetype=obj -relocation-model=pic`) to produce a position-independent object file, then `ld.lld` (`-flavor gnu`), the system C compiler (`cc`), or `clang` as a linker. A 60-second timeout bounds each invocation. The compiler maps library names to their respective linker flags through platform-specific lookup tables, covering PostgreSQL (libpq), HTTP (libcurl), JSON (cJSON), SSL/TLS (OpenSSL), image processing (libpng, libjpeg), databases (libsqlite3, libmysqlclient), compression (zlib), encryption (libcrypto), caching (hiredis), and message queues (librdkafka). 3.5 Execution Runner The runner dispatches binary execution based on the detected target like native , docker or AWS or GCR. 3.6 Self-Correction Loop When compilation or execution fails, the runtime updates a VM state object (`VMState`) with the error type (compiler/linker/runtime), error message, error line number, previous IR, and a compressed memory object (`VMMemory`) tracking accumulated errors and resolved dependencies. This enriched context is fed back to the LLM in the next attempt, enabling targeted correction. The loop terminates after a configurable maximum number of attempts (default: 10). 3.7 Security Layer LMVM employs defense-in-depth across three layers: 1. AI rules -- The instructions sent to the AI explicitly say: don't generate code that runs shell commands with user input, don't write files outside the allowed folder, don't read sensitive system files, don't hardcode passwords, and don't allocate unlimited memory. Think of this as a \"don't do bad things\" rulebook for the AI. 2. Sandbox -- When running in Docker, the program is locked down. A seccomp profile blocks the most dangerous system calls -- things like creating new processes, mounting drives, rebooting the machine, loading kernel modules, or snooping on other programs. Docker also limits the program to 512 MB of RAM and 1 CPU core, so it can't eat all your resources. This follows NIST security guidelines. 3. Input protection -- When LMVM runs the compiler or your program, it passes arguments as a structured list, not a single string. This means a hacker can't sneak in shell commands the way they might with string concatenation (the classic \"shell injection\" attack). The one exception is the toolchain installer, which does run shell commands -- but it always shows you the exact commands first and waits for your approval before running them. API keys are hidden in console output, and data buffers are capped at 10 MB to prevent memory explosions Appendix : As a demo using command LMVMcli command line we created a basic rest api directly as a machice code. Generated IR by GPT",
+        "url": "http://arxiv.org/abs/2107.03374",
+        "doi": "https://doi.org/10.48550/arxiv.2107.03374",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3177813494"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 1449
+      },
+      {
+        "paper_id": "rw_004_34a273d1e",
+        "title": "Large language models (LLMs): survey, technical frameworks, and future challenges",
+        "authors": [
+          "Pranjal Kumar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-18",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Artificial intelligence (AI) has significantly impacted various fields. Large language models (LLMs) like GPT-4, BARD, PaLM, Megatron-Turing NLG, Jurassic-1 Jumbo etc., have contributed to our understanding and application of AI in these domains, along with natural language processing (NLP) techniques. This work provides a comprehensive overview of LLMs in the context of language modeling, word embeddings, and deep learning. It examines the application of LLMs in diverse fields including text generation, vision-language models, personalized learning, biomedicine, and code generation. The paper offers a detailed introduction and background on LLMs, facilitating a clear understanding of their fundamental ideas and concepts. Key language modeling architectures are also discussed, alongside a survey of recent works employing LLM methods for various downstream tasks across different domains. Additionally, it assesses the limitations of current approaches and highlights the need for new methodologies and potential directions for significant advancements in this field.",
+        "url": "https://doi.org/10.1007/s10462-024-10888-y",
+        "doi": "https://doi.org/10.1007/s10462-024-10888-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401671778"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 312
+      },
+      {
+        "paper_id": "rw_005_476e115a2",
+        "title": "Cyber Threats Facing Autonomous and Connected Vehicles: Future Challenges",
+        "authors": [
+          "Simon Parkinson",
+          "Paul Ward",
+          "Kyle Wilson",
+          "J. Miller"
+        ],
+        "year": 2017,
+        "publication_date": "2017-03-06",
+        "venue": "IEEE Transactions on Intelligent Transportation Systems",
+        "abstract": "Vehicles are currently being developed and sold with increasing levels of connectivity and automation. As with all networked computing devices, increased connectivity often results in a heightened risk of a cyber security attack. Furthermore, increased automation exacerbates any risk by increasing the opportunities for the adversary to implement a successful attack. In this paper, a large volume of publicly accessible literature is reviewed and compartmentalized based on the vulnerabilities identified and mitigation techniques developed. This review highlighted that the majority of studies are reactive and vulnerabilities are often discovered by friendly adversaries (white-hat hackers). Many gaps in the knowledge base were identified. Priority should be given to address these knowledge gaps to minimize future cyber security risks in the connected and autonomous vehicle sector.",
+        "url": "https://doi.org/10.1109/tits.2017.2665968",
+        "doi": "https://doi.org/10.1109/tits.2017.2665968",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2593182419"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 513
+      },
+      {
+        "paper_id": "rw_006_dd7d56781",
+        "title": "GPT-4 Technical Report",
+        "authors": [
+          "OpenAI",
+          "Achiam, Josh",
+          "Adler, Steven",
+          "Agarwal, Sandhini",
+          "Ahmad, Lama",
+          "Akkaya, Ilge",
+          "Aleman, Florencia Leoni",
+          "Almeida, Diogo",
+          "Altenschmidt, Janko",
+          "Altman, Sam",
+          "Anadkat, Shyamal",
+          "Avila, Red",
+          "Babuschkin, Igor",
+          "Balaji, Suchir",
+          "Balcom, Valerie",
+          "Baltescu, Paul",
+          "Bao, Haiming",
+          "Bavarian, Mohammad",
+          "Belgum, Jeff",
+          "Bello, Irwan",
+          "Berdine, Jake",
+          "Bernadett-Shapiro, Gabriel",
+          "Berner, Christopher",
+          "Bogdonoff, Lenny",
+          "Boiko, Oleg",
+          "Boyd, Madelaine",
+          "Brakman, Anna-Luisa",
+          "Brockman, Greg",
+          "Brooks, Tim",
+          "Brundage, Miles",
+          "Button, Kevin",
+          "Cai, Trevor",
+          "Campbell, Rosie",
+          "Cann, Andrew",
+          "Carey, Brittany",
+          "Carlson, Chelsea",
+          "Carmichael, Rory",
+          "Chan, Brooke",
+          "Chang, Che",
+          "Chantzis, Fotis",
+          "Chen, Derek",
+          "Chen, Sully",
+          "Chen, Ruby",
+          "Chen, Jason",
+          "Chen, Mark",
+          "Chess, Ben",
+          "Cho, Chester",
+          "Chu, Casey",
+          "Chung, Hyung Won",
+          "Cummings, Dave",
+          "Currier, Jeremiah",
+          "Dai, Yunxing",
+          "Decareaux, Cory",
+          "Degry, Thomas",
+          "Deutsch, Noah",
+          "Deville, Damien",
+          "Dhar, Arka",
+          "Dohan, David",
+          "Dowling, Steve",
+          "Dunning, Sheila",
+          "Ecoffet, Adrien",
+          "Eleti, Atty",
+          "Eloundou, Tyna",
+          "Farhi, David",
+          "Fedus, Liam",
+          "Felix, Niko",
+          "Fishman, Simón Posada",
+          "Forte, Juston",
+          "Fulford, Isabella",
+          "Gao, Leo",
+          "Georges, Elie",
+          "Gibson, Christian",
+          "Goel, Vik",
+          "Gogineni, Tarun",
+          "Goh, Gabriel",
+          "Gontijo-Lopes, Rapha",
+          "Gordon, Jonathan",
+          "Grafstein, Morgan",
+          "Gray, Scott",
+          "Greene, Ryan",
+          "Gross, Joshua",
+          "Gu, Shixiang Shane",
+          "Guo, Yufei",
+          "Hallacy, Chris",
+          "Han, Jesse",
+          "Harris, Jeff",
+          "He, Yuchen",
+          "Heaton, Mike",
+          "Heidecke, Johannes",
+          "Hesse, Chris",
+          "Hickey, Alan",
+          "Hickey, Wade",
+          "Hoeschele, Peter",
+          "Houghton, Brandon",
+          "Hsu, Kenny",
+          "Hu, Shengli",
+          "Hu, Xin",
+          "Huizinga, Joost",
+          "Jain, Shantanu",
+          "Jain, Shawn"
+        ],
+        "year": 2023,
+        "publication_date": "2023-03-15",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Abstract—Large Language Models (LLMs) suffer from inherent stochasticity, limiting their utility in high-stakes enterprise environments where determinism and auditability are required. This paper introduces the MFOUR Vibe Framework (MVF), a platform-agnostic architectural standard that transforms probabilistic natural language intent into deterministic software artifacts. We define a five-layer topology, comprising the Kernel Identity, Synaptic Routing, Interface Contracts, Context Anchoring, and the Mirror Test. Furthermore, we introduce The Vibe Integrity Score (VIS), a quantitative metric for evaluating the structural adherence of generative outputs. This specification provides the foundational schema and logic protocols for building \"Glass Box\" AI systems that are observable, secure, and commercially viable.",
+        "url": "http://arxiv.org/abs/2303.08774",
+        "doi": "https://doi.org/10.4230/lipics.cosit.2024.11",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4327810158"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 2409
+      },
+      {
+        "paper_id": "rw_007_032fc2513",
+        "title": "The Power of Generative AI: A Review of Requirements, Models, Input–Output Formats, Evaluation Metrics, and Challenges",
+        "authors": [
+          "Ajay Bandi",
+          "Pydi Venkata Satya Ramesh Adapa",
+          "Yudu Eswar Vinay Pratap Kumar Kuchi"
+        ],
+        "year": 2023,
+        "publication_date": "2023-07-31",
+        "venue": "Future Internet",
+        "abstract": "Generative artificial intelligence (AI) has emerged as a powerful technology with numerous applications in various domains. There is a need to identify the requirements and evaluation metrics for generative AI models designed for specific tasks. The purpose of the research aims to investigate the fundamental aspects of generative AI systems, including their requirements, models, input–output formats, and evaluation metrics. The study addresses key research questions and presents comprehensive insights to guide researchers, developers, and practitioners in the field. Firstly, the requirements necessary for implementing generative AI systems are examined and categorized into three distinct categories: hardware, software, and user experience. Furthermore, the study explores the different types of generative AI models described in the literature by presenting a taxonomy based on architectural characteristics, such as variational autoencoders (VAEs), generative adversarial networks (GANs), diffusion models, transformers, language models, normalizing flow models, and hybrid models. A comprehensive classification of input and output formats used in generative AI systems is also provided. Moreover, the research proposes a classification system based on output types and discusses commonly used evaluation metrics in generative AI. The findings contribute to advancements in the field, enabling researchers, developers, and practitioners to effectively implement and evaluate generative AI models for various applications. The significance of the research lies in understanding that generative AI system requirements are crucial for effective planning, design, and optimal performance. A taxonomy of models aids in selecting suitable options and driving advancements. Classifying input–output formats enables leveraging diverse formats for customized systems, while evaluation metrics establish standardized methods to assess model quality and performance.",
+        "url": "https://doi.org/10.3390/fi15080260",
+        "doi": "https://doi.org/10.3390/fi15080260",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4385416665"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 587
+      },
+      {
+        "paper_id": "rw_008_fb8be1c87",
+        "title": "The GEM Benchmark: Natural Language Generation, its Evaluation and Metrics",
+        "authors": [
+          "Sebastian Gehrmann",
+          "Tosin Adewumi",
+          "Karmanya Aggarwal",
+          "Pawan Sasanka Ammanamanchi",
+          "Anuoluwapo Aremu",
+          "Antoine Bosselut",
+          "Khyathi Raghavi Chandu",
+          "Miruna Clinciu",
+          "Dipanjan Das",
+          "Kaustubh Dhole",
+          "Wanyu Du",
+          "Esin Durmus",
+          "Ondřej Dušek",
+          "Chris Chinenye Emezue",
+          "Varun Gangal",
+          "Cristina Gârbacea",
+          "Tatsunori Hashimoto",
+          "Yufang Hou",
+          "Yacine Jernite",
+          "Harsh Jhamtani",
+          "Yangfeng Ji",
+          "Shailza Jolly",
+          "Mihir Kale",
+          "Dhruv Kumar",
+          "Faisal Ladhak",
+          "Aman Madaan",
+          "Mounica Maddela",
+          "Khyati Mahajan",
+          "Saad Mahamood",
+          "Bodhisattwa Prasad Majumder",
+          "Pedro Henrique Martins",
+          "Angelina McMillan-Major",
+          "Simon Mille",
+          "Emiel van Miltenburg",
+          "Moin Nadeem",
+          "Shashi Narayan",
+          "Vitaly Nikolaev",
+          "Andre Niyongabo Rubungo",
+          "Salomey Osei",
+          "Ankur P. Parikh",
+          "Laura Perez-Beltrachini",
+          "Niranjan Ramesh Rao",
+          "Vikas Raunak",
+          "Juan Diego Rodríguez",
+          "Sashank Santhanam",
+          "João Sedoc",
+          "Thibault Sellam",
+          "Samira Shaikh",
+          "Anastasia Shimorina",
+          "Marco Antonio Sobrevilla Cabezudo",
+          "Hendrik Strobelt",
+          "Nishant Subramani",
+          "Wei Xu",
+          "Diyi Yang",
+          "Akhila Yerukola",
+          "Jiawei Zhou"
+        ],
+        "year": 2021,
+        "publication_date": "2021-01-01",
+        "venue": "",
+        "abstract": "Sebastian Gehrmann, Tosin Adewumi, Karmanya Aggarwal, Pawan Sasanka Ammanamanchi, Anuoluwapo Aremu, Antoine Bosselut, Khyathi Raghavi Chandu, Miruna-Adriana Clinciu, Dipanjan Das, Kaustubh Dhole, Wanyu Du, Esin Durmus, Ondřej Dušek, Chris Chinenye Emezue, Varun Gangal, Cristina Garbacea, Tatsunori Hashimoto, Yufang Hou, Yacine Jernite, Harsh Jhamtani, Yangfeng Ji, Shailza Jolly, Mihir Kale, Dhruv Kumar, Faisal Ladhak, Aman Madaan, Mounica Maddela, Khyati Mahajan, Saad Mahamood, Bodhisattwa Prasad Majumder, Pedro Henrique Martins, Angelina McMillan-Major, Simon Mille, Emiel van Miltenburg, Moin Nadeem, Shashi Narayan, Vitaly Nikolaev, Andre Niyongabo Rubungo, Salomey Osei, Ankur Parikh, Laura Perez-Beltrachini, Niranjan Ramesh Rao, Vikas Raunak, Juan Diego Rodriguez, Sashank Santhanam, João Sedoc, Thibault Sellam, Samira Shaikh, Anastasia Shimorina, Marco Antonio Sobrevilla Cabezudo, Hendrik Strobelt, Nishant Subramani, Wei Xu, Diyi Yang, Akhila Yerukola, Jiawei Zhou. Proceedings of the 1st Workshop on Natural Language Generation, Evaluation, and Metrics (GEM 2021). 2021.",
+        "url": "https://doi.org/10.18653/v1/2021.gem-1.10",
+        "doi": "https://doi.org/10.18653/v1/2021.gem-1.10",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3186655327"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 150
+      },
+      {
+        "paper_id": "rw_009_a81e51264",
+        "title": "The Creativity of Text-to-Image Generation",
+        "authors": [
+          "Jonas Oppenlaender"
+        ],
+        "year": 2022,
+        "publication_date": "2022-11-09",
+        "venue": "",
+        "abstract": "Text-guided synthesis of images has made a giant leap towards becoming a mainstream phenomenon. With text-to-image generation systems, anybody can create digital images and artworks. This provokes the question of whether text-to-image generation is creative. This paper expounds on the nature of human creativity involved in text-to-image art (so-called “AI art”) with a specific focus on the practice of prompt engineering. The paper argues that the current product-centered view of creativity falls short in the context of text-to-image generation. A case exemplifying this shortcoming is provided and the importance of online communities for the creative ecosystem of text-to-image art is highlighted. The paper provides a high-level summary of this online ecosystem drawing on Rhodes’ conceptual four P model of creativity. Challenges for evaluating the creativity of text-to-image generation and opportunities for research on text-to-image generation in the field of Human-Computer Interaction (HCI) are discussed.",
+        "url": "https://doi.org/10.1145/3569219.3569352",
+        "doi": "https://doi.org/10.1145/3569219.3569352",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4308623137"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 260
+      },
+      {
+        "paper_id": "rw_010_c5d41ede6",
+        "title": "PsychoPy2: Experiments in behavior made easy",
+        "authors": [
+          "Jonathan W. Peirce",
+          "Jeremy Gray",
+          "Sol Simpson",
+          "Michael R. MacAskill",
+          "Richard Höchenberger",
+          "Hiroyuki Sogo",
+          "Erik K. Kastman",
+          "Jonas Kristoffer Lindeløv"
+        ],
+        "year": 2019,
+        "publication_date": "2019-02-01",
+        "venue": "Behavior Research Methods",
+        "abstract": "PsychoPy is an application for the creation of experiments in behavioral science (psychology, neuroscience, linguistics, etc.) with precise spatial control and timing of stimuli. It now provides a choice of interface; users can write scripts in Python if they choose, while those who prefer to construct experiments graphically can use the new Builder interface. Here we describe the features that have been added over the last 10 years of its development. The most notable addition has been that Builder interface, allowing users to create studies with minimal or no programming, while also allowing the insertion of Python code for maximal flexibility. We also present some of the other new features, including further stimulus options, asynchronous time-stamped hardware polling, and better support for open science and reproducibility. Tens of thousands of users now launch PsychoPy every month, and more than 90 people have contributed to the code. We discuss the current state of the project, as well as plans for the future.",
+        "url": "https://doi.org/10.3758/s13428-018-01193-y",
+        "doi": "https://doi.org/10.3758/s13428-018-01193-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2913606428"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 5458
+      },
+      {
+        "paper_id": "rw_012_a2eff69c2",
+        "title": "Reformulation Techniques for Automated Planning: A Systematic Review",
+        "authors": [
+          "Diaeddin Alarnaouti",
+          "George Baryannis",
+          "Mauro Vallati"
+        ],
+        "year": 2023,
+        "publication_date": "2023-01-24",
+        "venue": "arXiv",
+        "abstract": "Automated planning is a prominent area of Artificial Intelligence, and an important component for intelligent autonomous agents. A cornerstone of domain-independent planning is the separation between planning logic, i.e. the automated reasoning side, and the knowledge model, that encodes a formal representation of domain knowledge needed to reason upon a given problem to synthesise a solution plan. Such a separation enables the use of reformulation techniques, which transform how a model is represented in order to improve the efficiency of plan generation. Over the past decades, significant research effort has been devoted to the design of reformulation techniques. In this paper, we present a systematic review of the large body of work on reformulation techniques for classical planning, aiming to provide a holistic view of the field and to foster future research in the area. As a tangible outcome, we provide a qualitative comparison of the existing classes of techniques, that can help researchers gain an overview of their strengths and weaknesses.",
+        "url": "http://arxiv.org/abs/2301.10079v2",
+        "doi": "",
+        "arxiv_id": "2301.10079v2",
+        "source_ids": {
+          "arXiv": "2301.10079v2"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_014_9ce2cba97",
+        "title": "AutoDroid: LLM-powered Task Automation in Android",
+        "authors": [
+          "Hao Wen",
+          "Yuanchun Li",
+          "Guohong Liu",
+          "Shanhui Zhao",
+          "Tao Yu",
+          "Toby Jia-Jun Li",
+          "Shiqi Jiang",
+          "Yunhao Liu",
+          "Yaqin Zhang",
+          "Yunxin Liu"
+        ],
+        "year": 2023,
+        "publication_date": "2023-08-29",
+        "venue": "arXiv",
+        "abstract": "Mobile task automation is an attractive technique that aims to enable voice-based hands-free user interaction with smartphones. However, existing approaches suffer from poor scalability due to the limited language understanding ability and the non-trivial manual efforts required from developers or end-users. The recent advance of large language models (LLMs) in language understanding and reasoning inspires us to rethink the problem from a model-centric perspective, where task preparation, comprehension, and execution are handled by a unified language model. In this work, we introduce AutoDroid, a mobile task automation system capable of handling arbitrary tasks on any Android application without manual efforts. The key insight is to combine the commonsense knowledge of LLMs and domain-specific knowledge of apps through automated dynamic analysis. The main components include a functionality-aware UI representation method that bridges the UI with the LLM, exploration-based memory injection techniques that augment the app-specific domain knowledge of LLM, and a multi-granularity query optimization module that reduces the cost of model inference. We integrate AutoDroid with off-the-shelf LLMs including online GPT-4/GPT-3.5 and on-device Vicuna, and evaluate its performance on a new benchmark for memory-augmented Android task automation with 158 common tasks. The results demonstrated that AutoDroid is able to precisely generate actions with an accuracy of 90.9%, and complete tasks with a success rate of 71.3%, outperforming the GPT-4-powered baselines by 36.4% and 39.7%. The demo, benchmark suites, and source code of AutoDroid will be released at url{https://autodroid-sys.github.io/}.",
+        "url": "http://arxiv.org/abs/2308.15272v4",
+        "doi": "",
+        "arxiv_id": "2308.15272v4",
+        "source_ids": {
+          "arXiv": "2308.15272v4"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_003_f2a5438ad",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper is highly relevant as it explicitly discusses evaluating Large Language Models trained on Code, which is a core methodological component and evaluation aspect of the target paper. It provides context for how LLMs are applied and assessed in code-related tasks.",
+        "evidence_summary": "Evaluating Large Language Models Trained on Code (Chen et al., 2021) discusses the evaluation of large language models specifically trained on code, including their application in generating LLVM Intermediate Representation."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_014_9ce2cba97",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper proposes an LLM-powered system for task automation in Android, focusing on leveraging LLMs for understanding and execution, similar to the target paper's use of a multi-role LLM framework for code review. It also mentions evaluating performance with a focus on accuracy and success rates, mirroring the target paper's claims of improvement.",
+        "evidence_summary": "AutoDroid: LLM-powered Task Automation in Android (Wen et al., 2023) presents an LLM-powered system for mobile task automation that combines LLM's commonsense knowledge with domain-specific knowledge and evaluates performance on a benchmark."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_032fc2513",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper provides a comprehensive review of requirements, models, input-output formats, and evaluation metrics for Generative AI, which is directly relevant to the target paper's discussion of evaluation metrics (like BLEU) and the need for new approaches to address limitations in current generative models for code review comments.",
+        "evidence_summary": "The Power of Generative AI: A Review of Requirements, Models, Input–Output Formats, Evaluation Metrics, and Challenges (Bandi et al., 2023) reviews requirements, models, input-output formats, and evaluation metrics for generative AI systems, including discussions on different generative models and their classification."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_004_34a273d1e",
+        "relevance_score": 0.8,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper provides a general survey of Large Language Models, their frameworks, and future challenges, which helps contextualize the target paper's use of an LLM framework for code review automation and its discussion of limitations and solutions.",
+        "evidence_summary": "Large language models (LLMs): survey, technical frameworks, and future challenges (Kumar, 2024) provides a comprehensive overview of LLMs, their architectures, applications including code generation, and discusses limitations and future directions."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_008_fb8be1c87",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "This benchmark specifically addresses Natural Language Generation, its Evaluation, and Metrics. Given the target paper criticizes existing text similarity metrics like BLEU for code review comment generation, this paper on NLG evaluation provides broader context and potential alternative perspectives on evaluating generative models.",
+        "evidence_summary": "The GEM Benchmark: Natural Language Generation, its Evaluation and Metrics (Gehrmann et al., 2021) focuses on natural language generation, its evaluation, and associated metrics, providing a benchmark in the NLG domain."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_006_dd7d56781",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "While not directly about code review, this paper discusses the technical report of GPT-4 and challenges with LLMs in high-stakes environments regarding determinism and auditability. This relates to the target paper's challenges concerning 'reducing false alarm rates (FAR)' and 'integrating human workflows' in an industry setting.",
+        "evidence_summary": "GPT-4 Technical Report (OpenAI et al., 2023) discusses the challenges of LLMs in high-stakes enterprise environments, emphasizing determinism and auditability, and introduces an architectural standard for 'Glass Box' AI systems."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_012_a2eff69c2",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper discusses automated planning, which focuses on automated reasoning and knowledge modeling. While not directly code review, its focus on 'automated planning' and 'reformulation techniques' to improve efficiency can be seen as a broader analogy for automating complex tasks, which is the core problem of the target paper.",
+        "evidence_summary": "Reformulation Techniques for Automated Planning: A Systematic Review (Alarnaouti et al., 2023) provides a systematic review of reformulation techniques for automated planning, focusing on improving the efficiency of plan generation through model transformation."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_009_a81e51264",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper discusses the creativity of text-to-image generation, which relates to the broader category of generative AI. While the domain is different (code vs. images), the discussion on 'product-centered view of creativity' and 'challenges for evaluating creativity' indirectly touches upon the target paper's criticism of 'snippet-level code-to-text generation' and limitations of text similarity metrics.",
+        "evidence_summary": "The Creativity of Text-to-Image Generation (Oppenlaender, 2022) explores the creativity involved in text-to-image generation, focusing on prompt engineering and evaluating creativity in generative AI."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_005_476e115a2",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper broadly discusses cyber threats and vulnerabilities in complex systems (autonomous and connected vehicles). While the domain differs, the emphasis on 'heightened risk of a cyber security attack' and 'gaps in the knowledge base' could be seen as an abstract parallel to the target paper's challenges in ensuring quality and reducing defects in 'industry-grade C++ codebases' at a large scale, where 'defect detection' is critical.",
+        "evidence_summary": "Cyber Threats Facing Autonomous and Connected Vehicles: Future Challenges (Parkinson et al., 2017) reviews cyber threats and vulnerabilities in autonomous and connected vehicles, identifying knowledge gaps in addressing security risks."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_001_1a421c87d",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper is a guideline for reporting systematic reviews, which involves a structured way of reviewing. While it's about academic review methodology rather than code review, the general concept of 'review' and 'reporting recommendations' resonates with the target paper's focus on automated review comments and improving the review process.",
+        "evidence_summary": "PRISMA 2020 explanation and elaboration: updated guidance and exemplars for reporting systematic reviews (Page et al., 2021) provides updated guidance and examples for reporting systematic reviews, including a checklist of 27 items for transparent and accurate reporting."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_010_c5d41ede6",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "This paper discusses a software for creating experiments in behavioral science. The connection is weak, as it's a tool for experiment creation rather than a direct competitor or a similar approach to automating code reviews. It also focuses on a different domain. However, it implicitly represents a class of software tools that automate complex tasks, which could be a very abstract 'competitor' to any new automation tool.",
+        "evidence_summary": "PsychoPy2: Experiments in behavior made easy (Peirce et al., 2019) describes an application for creating experiments in behavioral science with options for scripting or graphical construction and new features for stimulus control and open science."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_002_4d1172247",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This paper discusses the automation of theoretical physics computations, such as tree-level and next-to-leading order differential cross sections. While it involves 'automation' and 'computations', the domain (theoretical physics) and specific problem (particle physics calculations) are too far removed from the core problem of automating code review comments to be highly relevant.",
+        "evidence_summary": "The automated computation of tree-level and next-to-leading order differential cross sections, and their matching to parton shower simulations (Alwall et al., 2014) discusses theoretical bases and a computer program, MadGraph5 aMC@NLO, for automating calculations in particle physics."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Automating code review comments is a recognized challenge, with prior approaches often oversimplifying the task to snippet-level code-to-text generation and relying on limited metrics like BLEU for evaluation. Addressing these limitations, recent works highlight the importance of effective evaluation metrics for generative AI (Bandi et al., 2023; Gehrmann et al., 2021) and the application of Large Language Models (LLMs) in code-related tasks. For instance, the evaluation of LLMs trained specifically on code (Chen et al., 2021) demonstrates the potential and challenges in this area. More broadly, the landscape of LLMs, their technical frameworks, and emergent challenges are continuously surveyed (Kumar, 2024), indicating a growing interest in their capabilities. Efforts to leverage LLMs for task automation in various domains, such as Android (Wen et al., 2023), further underscore their versatility. However, applying LLMs in high-stakes environments, such as large-scale industry-grade systems where determinism and auditability are critical (OpenAI et al., 2023), presents unique constraints. Our work builds upon these advancements, proposing a comprehensive framework that moves beyond prior simplified approaches by integrating code slicing algorithms for context extraction, a multi-role LLM architecture, and filtering mechanisms, validated on real-world industry C++ codebases.",
+    "warnings": [
+      "rw_003_f2a5438ad: suspicious instruction-like text matched /system prompt/"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 20,
+      "num_removed_post_cutoff": 2,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 18,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 6
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "rw_003_f2a5438ad: suspicious instruction-like text matched /system prompt/"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 20,
+    "num_removed_post_cutoff": 2,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 18,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 6
+  }
+}

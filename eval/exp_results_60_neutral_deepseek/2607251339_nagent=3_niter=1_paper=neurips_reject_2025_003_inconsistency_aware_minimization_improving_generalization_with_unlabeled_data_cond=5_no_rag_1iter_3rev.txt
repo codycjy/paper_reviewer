@@ -1,0 +1,121 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a genuinely novel generalization measure, 'local inconsistency', derived from an information-geometric perspective and computable from a single model using only unlabeled data. This addresses a significant practical gap.",
+        "Proposes a novel optimization framework, Inconsistency-Aware Minimization (IAM), with two variants that directly incorporate the new measure into the training objective.",
+        "Demonstrates broad applicability by showing efficacy not only in standard supervised learning but also in semi-supervised and self-supervised settings, leveraging the key advantage of using unlabeled data.",
+        "Provides a strong theoretical foundation by connecting local inconsistency to the Fisher Information Matrix and loss Hessian, and offers an informal generalization bound.",
+        "Shows empirical promise where traditional sharpness measures fail, particularly on larger models with data augmentation, suggesting the measure captures complementary information."
+      ],
+      "weaknesses": [
+        "The theoretical connection, especially the informal generalization bound and the relation to inconsistency, relies on several heuristic approximations and assumptions. A more rigorous formalization would strengthen the contribution.",
+        "While the empirical evaluation is solid on standard benchmarks (CIFAR-10/100), it lacks validation on larger-scale or more diverse datasets to fully demonstrate scalability and broad impact."
+      ],
+      "summary_comment": "This paper presents a highly novel and significant contribution. The core idea of 'local inconsistency' as a label-free, single-model measure of generalization sensitivity is both creative and practically valuable. The proposed IAM framework successfully translates this idea into an effective optimization method that matches or exceeds strong baselines like SAM. The extension to semi- and self-supervised learning is a particularly strong point, showcasing the method's unique advantage. While some theoretical parts are heuristic and large-scale validation is needed, the overall novelty, potential impact, and promising empirical results are exceptionally strong. The paper aligns perfectly with a vision of pushing the field forward with bold, unconventional ideas."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel and practical generalization measure, 'local inconsistency', that is computable from a single model using only unlabeled data, addressing a key limitation of existing metrics like disagreement and inconsistency.",
+        "Provides a strong and convincing empirical evaluation across diverse settings (supervised, semi-supervised, self-supervised learning) with clear performance improvements over strong baselines like SAM and SGD.",
+        "Establishes sound theoretical connections between the proposed measure and well-known concepts like the Fisher Information Matrix and the loss Hessian, grounding the work in established information geometry."
+      ],
+      "weaknesses": [
+        "The theoretical generalization bound (Theorem 1) is presented as informal and relies on a heuristic assumption (Eq. 13) that connects the loss increase to the KL divergence; a more rigorous derivation would strengthen the theoretical contribution.",
+        "The analysis of the relationship between local inconsistency and the inconsistency from Johnson and Zhang [15] (Section 4.4, Appendix B) relies on assumptions about the parameter posterior (e.g., isotropic covariance) that may not hold precisely in practice."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and empirically rigorous contribution. The proposed 'local inconsistency' measure is novel and practical, and the Inconsistency-Aware Minimization (IAM) framework demonstrates significant and convincing performance gains across multiple learning paradigms. While the theoretical analysis could be more rigorous, the strong experimental validation and the practical advantages of the method justify acceptance. The work provides a solid and valuable advance in understanding and improving generalization."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper introduces a novel and practical generalization measure, local inconsistency, that can be computed with a single model using only unlabeled data, addressing a critical real-world constraint.",
+        "The method (IAM) is evaluated thoroughly across diverse and relevant settings including standard supervised learning, semi-supervised learning, and self-supervised learning, demonstrating broad practical applicability.",
+        "The presentation is exceptionally clear, with well-motivated connections to theory (Fisher Information, Hessian, inconsistency) and a lucid explanation of practical implementation and advantages."
+      ],
+      "weaknesses": [
+        "The theoretical connection (e.g., Theorem 1) and the relationship to existing inconsistency are presented informally or heuristically, which somewhat limits the rigor of the theoretical contribution.",
+        "While computational advantages are claimed, the empirical evaluation does not include a direct runtime/memory cost comparison versus methods like SAM or calculating full inconsistency, making the practical efficiency claim less substantiated."
+      ],
+      "summary_comment": "This paper presents a practically valuable contribution: a new generalization measure computable from unlabeled data with a single model, and an effective optimization method (IAM) built upon it. The work is well-motivated, clearly written, and demonstrates strong empirical results across multiple learning paradigms. The significance is high due to its applicability in label-scarce scenarios. While the theory could be more rigorous, the practical impact, clear communication, and convincing empirical validation justify acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper focuses on generalization in deep learning, which aligns perfectly with ICML's emphasis on theoretical understanding and practical applications of machine learning",
+        "The work connects information geometry (Fisher Information Matrix) and optimization (novel minimization methods), which are core ICML topics",
+        "Strong empirical evaluation on standard benchmarks (CIFAR-10/100) with proper statistical reporting meets ICML's standards for experimental rigor",
+        "The combination of theoretical analysis and practical algorithms fits ICML's balanced approach between theory and practice"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical contributions are somewhat heuristic (informal generalization bound, approximations in relationships) which might not meet the highest theoretical standards expected at ICML",
+        "While novel, the work builds substantially on existing sharpness-aware minimization literature rather than presenting a completely new paradigm",
+        "The evaluation lacks very large-scale experiments or diverse application domains that would strengthen the contribution for ICML"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's focus on generalization measures and optimization methods aligns perfectly with NeurIPS's core interests in deep learning theory and practice",
+        "The extension to semi-supervised and self-supervised learning scenarios addresses current hot topics in the NeurIPS community",
+        "The practical advantage of using unlabeled data resonates with NeurIPS's emphasis on real-world applicability and data-efficient methods",
+        "The interdisciplinary nature (connecting information geometry, optimization, and generalization) fits NeurIPS's broad, interdisciplinary scope"
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical analysis, while solid, relies on some heuristic approximations that might be scrutinized more heavily at NeurIPS",
+        "The empirical evaluation, while comprehensive, focuses primarily on vision tasks and could benefit from more diverse application domains for NeurIPS"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The focus on deep learning generalization and optimization methods directly aligns with ICLR's core mission",
+        "The connection to representation learning through the self-supervised learning experiments fits ICLR's emphasis on deep representation learning",
+        "The theoretical connections to Fisher Information and loss landscape geometry are relevant to ICLR's interests in understanding deep learning",
+        "The empirical results on standard deep learning benchmarks (CIFAR) meet ICLR's experimental standards"
+      ],
+      "why_it_does_not_fit": [
+        "ICLR typically expects stronger theoretical contributions or more fundamental insights into deep learning, whereas this work's theory is more heuristic",
+        "The paper doesn't primarily focus on architectural innovations or deep learning-specific phenomena that often characterize top ICLR papers",
+        "The computational efficiency claims are not thoroughly evaluated, which might be expected for a methods paper at ICLR"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

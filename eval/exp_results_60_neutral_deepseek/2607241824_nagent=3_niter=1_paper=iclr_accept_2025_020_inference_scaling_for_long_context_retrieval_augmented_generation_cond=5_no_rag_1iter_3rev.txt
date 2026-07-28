@@ -1,0 +1,119 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel and systematic framework for inference scaling in RAG, moving beyond simple document quantity scaling to include in-context learning and iterative prompting",
+        "Demonstrates compelling empirical results with up to 58.9% performance gains, showing that RAG performance can scale almost linearly with computation when optimally allocated",
+        "Presents the innovative concept of 'inference scaling laws for RAG' and develops a practical computation allocation model that generalizes well across domains and context lengths"
+      ],
+      "weaknesses": [
+        "The proposed IterDRAG method shows performance drops on some datasets at lower context budgets (e.g., HotpotQA at 16k tokens), suggesting inconsistency across task types",
+        "Limited discussion of computational overhead and practical deployment considerations for the iterative approach, especially with multiple LLM calls per query",
+        "Some experimental results show diminishing returns beyond 1M tokens, indicating potential limitations in how effectively LLMs utilize ultra-long contexts"
+      ],
+      "summary_comment": "This paper makes a significant contribution by introducing a novel framework for optimizing inference computation in long-context RAG. The concept of inference scaling laws and the computation allocation model are innovative and forward-thinking. While there are some methodological inconsistencies and practical deployment concerns, the core ideas are transformative and could inspire substantial future work in efficient RAG systems. The nearly linear scaling relationship demonstrated is particularly exciting for the field."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Comprehensive experimental design with systematic exploration of inference parameters (documents, shots, iterations) across multiple datasets",
+        "Strong methodological rigor in establishing inference scaling laws and developing a quantitative computation allocation model",
+        "Convincing empirical results showing up to 58.9% performance gains with optimal compute allocation"
+      ],
+      "weaknesses": [
+        "The computation allocation model's generalization to unseen domains shows some variability (e.g., HotpotQA results more variable than Bamboogle)",
+        "Limited discussion of computational costs and practical deployment considerations for the proposed iterative methods",
+        "Some aspects of the scaling analysis (particularly beyond 1M tokens) show diminishing returns that warrant further investigation"
+      ],
+      "summary_comment": "This paper provides a rigorous investigation of inference scaling in long-context RAG, demonstrating nearly linear performance gains with optimal compute allocation. The methodology is sound, with extensive experiments supporting the claims. The proposed computation allocation model is well-formulated and validated through ablation studies and generalization tests. While novelty is moderate (building on existing RAG and scaling concepts), the technical execution and empirical validation are excellent. The work makes a significant contribution by providing quantitative guidance for optimizing test-time compute in retrieval-augmented generation systems."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a highly practical and relevant problem: optimizing inference compute allocation for long-context RAG systems",
+        "Comprehensive experimental evaluation across multiple datasets and configurations, demonstrating clear performance gains",
+        "Proposes a novel computation allocation model that accurately predicts optimal configurations and generalizes well to unseen domains"
+      ],
+      "weaknesses": [
+        "The proposed IterDRAG method relies on constrained decoding to generate sub-queries, which may not be readily available or straightforward to implement in all practical settings",
+        "While the computation allocation model shows strong predictive power, its formulation (Equation 2) could be more intuitively explained for practitioners"
+      ],
+      "summary_comment": "This paper makes a significant contribution to the practical deployment of long-context RAG systems by systematically investigating how to optimally allocate inference computation. The introduction of DRAG and IterDRAG strategies provides flexible ways to scale test-time compute beyond simply increasing document quantity. The comprehensive experiments demonstrate substantial performance gains (up to 58.9%) across multiple benchmarks. The proposed computation allocation model is particularly valuable as it allows practitioners to predict optimal configurations for given compute budgets. While the methods require some implementation effort, the practical impact and thorough evaluation make this a strong candidate for acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's focus on machine learning systems and optimization - paper addresses inference computation scaling which is a core systems problem",
+        "Excellent methodological rigor with comprehensive experiments across multiple datasets, fitting ICML's emphasis on empirical validation",
+        "Novel contribution in developing inference scaling laws and computation allocation model, which represents theoretical advancement in understanding RAG performance scaling"
+      ],
+      "why_it_does_not_fit": [
+        "While technically strong, the work is more applied/systems-focused than theoretical, which might not fully match ICML's preference for foundational machine learning contributions",
+        "Primary focus on RAG systems rather than core ML algorithms, potentially making it more suitable for applied ML venues",
+        "Reviewer comments note methodological inconsistencies across datasets (e.g., IterDRAG performance drops on HotpotQA at lower budgets)"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Perfect alignment with NeurIPS' interdisciplinary focus on AI systems, combining retrieval, generation, and computation optimization",
+        "Strong empirical results with up to 58.9% gains demonstrate significant impact on knowledge-intensive tasks, fitting NeurIPS' emphasis on transformative applications",
+        "The inference scaling laws concept represents novel theoretical insight into how RAG performance scales with computation, contributing to fundamental understanding"
+      ],
+      "why_it_does_not_fit": [
+        "Some aspects are more engineering-focused (computation allocation) than pure research, though the scaling laws provide theoretical contribution",
+        "Limited discussion of broader societal implications or ethical considerations, which NeurIPS increasingly values",
+        "Reviewer noted diminishing returns beyond 1M tokens, suggesting limitations in ultra-long context utilization"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong relevance to ICLR's focus on representation learning and deep learning architectures for RAG systems",
+        "Excellent evaluation on benchmark QA datasets using state-of-the-art LLMs (Gemini 1.5), fitting ICLR's emphasis on cutting-edge deep learning applications",
+        "Contributions to in-context learning and iterative prompting strategies align with ICLR's interests in advanced prompting techniques"
+      ],
+      "why_it_does_not_fit": [
+        "Primary focus is on inference computation scaling rather than architectural innovations or representation learning, which are more core to ICLR",
+        "More systems/optimization focused than typical ICLR papers, which tend to emphasize novel architectures or learning paradigms",
+        "Reviewer comments highlight practical deployment concerns and computational overhead, which are less central to ICLR's research focus"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

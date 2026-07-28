@@ -1,0 +1,316 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 4,
+        "significance": 3,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Clear identification and analysis of a real performance bottleneck in MLLM serving, specifically the overhead from multimodal encoding and coupling issues.",
+        "Proposal of a comprehensive, two-level (modality and stage) elastic decoupled architecture with novel scheduling components like modality-aware load balancing and elastic partitioned scheduling.",
+        "Thoughtful multimodal-specific optimizations, namely unified multimodal prefix caching and non-blocking encoding, which directly address identified inefficiencies."
+      ],
+      "weaknesses": [
+        "The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.",
+        "The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convince convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.",
+          "severity": "major",
+          "evidence": "Section 4.1 and Section 6 explicitly acknowledge this limitation and propose future work. The authors' rebuttal points to this acknowledgment but does not provide new experimental evidence. The submitted paper's evaluation cannot validate elastic scaling claims beyond a single node.",
+          "affected_claim": "The claim that the system effectively enables 'elastic scaling' and 'dynamic resource reallocation' across 'elastic instances' to handle 'dynamically changing workloads' in a distributed setting.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear.",
+          "severity": "major",
+          "evidence": "The authors point to Appendix A for general implementation details, but the submitted paper lacks specific details on how DistServe was extended, what modifications were made, and whether the extension maintains a fair comparison. The rebuttal promises more details but provides none in the submitted material.",
+          "affected_claim": "The claim that ElasticMM 'outperforms state-of-the-art (SOTA) serving systems' and delivers substantial improvements over meaningful, rigorously implemented baselines.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The technical design remains logically sound. The rebuttal does not introduce new evidence that changes the assessment of the core ideas or the proofs in Appendix B."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The authors reiterate their contributions but do not demonstrate that modality-aware grouping, elastic stage-specific scheduling, and unified caching represent a fundamental algorithmic breakthrough rather than a competent application and combination of existing serving techniques to the multimodal domain."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The significance of the work for scalable, production-grade MLLM serving is undermined by the single-node evaluation. Acknowledging the limitation does not resolve it; the paper as submitted lacks the evidence needed to demonstrate impact at scale."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The evaluation's limitations regarding scale and baseline implementation details remain unresolved. The rebuttal points to existing text acknowledging these limitations and promises future improvements but provides no new experimental data or detailed analysis within the submitted paper."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-written and structured. The rebuttal does not alter this assessment."
+        }
+      },
+      "summary_comment": "The author response identifies where in the submitted paper the acknowledged limitations (single-node evaluation, baseline details) are mentioned but fails to provide substantive new evidence or clarification that resolves the core concerns. The evaluation remains insufficient for the claimed elastic distributed scheduling paradigm, and the baseline comparisons lack the necessary rigor and transparency for a top-tier conference. While the work presents a solid system engineering contribution applying established serving concepts to multimodal workloads, it does not meet the threshold for acceptance due to these major weaknesses in evaluation and demonstration of novelty."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 3,
+      "why_it_fits": [
+        "Topic aligns with 'machine learning systems' area—specifically 'improved implementation and scalability, hardware, libraries, distributed methods'.",
+        "Methodology is empirically validated and contributes a new serving system, which fits broader systems-focused submissions at ICML.",
+        "Addresses realistic inefficiencies in MLLM inference pipelines, which is an application-driven challenge relevant to ICML’s applied track."
+      ],
+      "why_it_does_not_fit": [
+        "Limited novelty and algorithmic contribution—reviewer noted 'no fundamental algorithmic breakthrough', which may fall short of ICML’s emphasis on conceptual novelty in systems.",
+        "Evaluation is purely single-node; ICML systems papers often require strong distributed scaling results to be competitive.",
+        "Reviewer flagged weak empirical comparisons and unclear baseline implementations, which undermines the rigor expected at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "Fits under 'SysML Infrastructure' (systems for ML) and 'AI/ML for creatives' (multimodal applications).",
+        "Addresses practical serving challenges for multimodal LLMs, which aligns with NeurIPS’ broad interest in scalable AI deployment.",
+        "Well-structured paper with clear problem framing and experimental validation—matches NeurIPS’ expectations for thorough empirical work."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer questioned significance due to single-node evaluation—NeurIPS often expects clear evidence of scalability for systems contributions.",
+        "Novelty judged insufficient; the work is seen as combining existing techniques rather than introducing foundational new ideas, which may not stand out in NeurIPS’ highly competitive systems track.",
+        "Weak baseline comparisons (e.g., DistServe adaptation unclear) reduce confidence in claimed improvements."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "Directly relevant to 'infrastructure, software libraries, hardware, etc.' and 'applications to robotics, autonomy, planning' given its focus on efficient MLLM serving.",
+        "Optimizations like unified multimodal prefix caching are tailored to transformer-based multimodal models, aligning with ICLR’s deep learning focus.",
+        "Includes formal proof of inference equivalence in Appendix, adding theoretical grounding appreciated at ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "Core contribution is systems engineering rather than novel architectures, training methods, or representation learning—the main focus of ICLR.",
+        "Single-node evaluation limits demonstration of distributed training/inference scalability, which is often expected for ICLR systems papers.",
+        "Reviewer noted lack of fundamental novelty, which may hinder acceptance given ICLR’s emphasis on cutting-edge deep learning advances."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Clear identification and analysis of a real performance bottleneck in MLLM serving, specifically the overhead from multimodal encoding and coupling issues.",
+              "Proposal of a comprehensive, two-level (modality and stage) elastic decoupled architecture with novel scheduling components like modality-aware load balancing and elastic partitioned scheduling.",
+              "Thoughtful multimodal-specific optimizations, namely unified multimodal prefix caching and non-blocking encoding, which directly address identified inefficiencies."
+            ],
+            "weaknesses": [
+              "The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.",
+              "The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.",
+                "severity": "major",
+                "evidence": "Section 4.1 states: 'We evaluate ElasticMM on a high-end workstation equipped with eight NVIDIA A800 80GB GPUs... We leave multi-node distributed studies to future work, as this testbed already demonstrates superior performance.'",
+                "affected_claim": "The claim that the system effectively enables 'elastic scaling' and 'dynamic resource reallocation' across 'elastic instances' to handle 'dynamically changing workloads'.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear.",
+                "severity": "major",
+                "evidence": "Section 4.1: 'The second baseline is DistServe..., a decoupled architecture that colocates the encode and prefill stages while separating them from decode, using static resource allocation. We extend this system to support multimodal inference.' The paper lacks details on this extension, and DistServe is an advanced, published system; a simple extension may not represent a strong or fair SOTA comparison for the specific MLLM context.",
+                "affected_claim": "The claim that ElasticMM 'outperforms state-of-the-art (SOTA) serving systems' and delivers substantial improvements over meaningful baselines.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The core technical ideas (modality grouping, stage decoupling, caching, non-blocking encoding) are logically sound and well-motivated by the identified MLLM overheads. A detailed appendix provides proofs of computational equivalence. The experimental results, though limited in scope, internally support the performance claims."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The core ideas—decoupling prefill/decode stages, elastic scaling/load balancing for serving, and prefix caching—are well-established in LLM serving literature (e.g., DistServe, LoongServe, AlpaServe, SHEPHERD). The specific application to multimodal workloads and the combination into a two-level elastic framework is a non-trivial engineering contribution but lacks a fundamentally new algorithmic or theoretical insight compared to prior art."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "While efficiently serving MLLMs is an important practical problem, the paper's contribution appears primarily as a competent system engineering effort that adapts existing serving concepts to a new modality. The single-node evaluation limits the demonstration of impact for large-scale, production-grade serving. The improvements are meaningful but incremental rather than transformative for the field."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation is not convincing for a top-tier venue. The single-node, 8-GPU setup is inadequate for assessing an 'elastic' scheduling system intended for dynamic, large-scale workloads. The baseline comparison to a self-extended version of DistServe lacks rigor and transparency. The ablation studies are reasonable but do not compensate for the fundamental limitations of the main experimental setup."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly structured, well-motivated, and easy to follow. The system architecture is explained with helpful diagrams, and the writing is technical and precise. The appendix with formal proofs is a strength for clarity and soundness."
+              }
+            },
+            "summary_comment": "This paper presents ElasticMM, a serving system for Multimodal LLMs that introduces a two-level elastic decoupling architecture to address specific overheads. The problem is well-motivated, the system design is thoughtful and incorporates several sensible optimizations, and the paper is clearly written. However, the work falls short of the novelty and significance bar for a top-tier machine learning conference. The core techniques are adaptations of existing serving concepts (stage disaggregation, elastic resource management) to the multimodal setting. More critically, the evaluation is limited to a single-node setup, which severely undermines the claims about the system's elastic, scalable nature and its practical superiority over state-of-the-art alternatives. The baseline comparisons lack the depth and rigor expected for a conclusive demonstration. Therefore, despite its technical soundness and clarity, the paper is recommended for rejection."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "raw": "{\n  \"reviewer\": \"Reviewer - No Persona\",\n  \"decision\": \"Reject\",\n  \"scores\": {\n    \"novelty\": 3,\n    \"soundness\": 4,\n    \"significance\": 3,\n    \"evaluation\": 3,\n    \"clarity\": 4\n  },\n  \"strengths\": [\n    \"Clear identification and analysis of a real performance bottleneck in MLLM serving, specifically the overhead from multimodal encoding and coupling issues.\",\n    \"Proposal of a comprehensive, two-level (modality and stage) elastic decoupled architecture with novel scheduling components like modality-aware load balancing and elastic partitioned scheduling.\",\n    \"Thoughtful multimodal-specific optimizations, namely unified multimodal prefix caching and non-blocking encoding, which directly address identified inefficiencies.\"\n  ],\n  \"weaknesses\": [\n    \"The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.\",\n    \"The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear.\"\n  ],\n  \"weakness_details\": [\n    {\n      \"weakness\": \"The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.\",\n      \"severity\": \"major\",\n      \"evidence\": \"Section 4.1 states: 'We evaluate ElasticMM on a high-end workstation equipped with eight NVIDIA A800 80GB GPUs... We leave multi-node distributed studies to future work, as this testbed already demonstrates superior performance.' The authors acknowledge this limitation in their response but provide no new evidence or experiments.\",\n      \"affected_claim\": \"The claim that the system effectively enables 'elastic scaling' and 'dynamic resource reallocation' across 'elastic instances' to handle 'dynamically changing workloads'.\",\n      \"fixable_without_substantial_new_work\": false\n    },\n    {\n      \"weakness\": \"The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear.\",\n      \"severity\": \"major\",\n      \"evidence\": \"Section 4.1: 'The second baseline is DistServe..., a decoupled architecture that colocates the encode and prefill stages while separating them from decode, using static resource allocation. We extend this system to support multimodal inference.' The authors promise to add implementation details but provide no actual details in the submitted paper.\",\n      \"affected_claim\": \"The claim that ElasticMM 'outperforms state-of-the-art (SOTA) serving systems' and delivers substantial improvements over meaningful baselines.\",\n      \"fixable_without_substantial_new_work\": false\n    }\n  ],\n  \"acceptance_gates\": {\n    \"soundness\": {\n      \"result\": \"pass\",\n      \"justification\": \"The core technical ideas remain logically sound and well-motivated. The rebuttal does not change the assessment of the system's theoretical foundation or the Appendix B proofs of computational equivalence.\"\n    },\n    \"novelty\": {\n      \"result\": \"fail\",\n      \"justification\": \"The authors' response emphasizes application to multimodal workloads but does not demonstrate fundamentally new algorithmic contributions beyond adapting established serving concepts (stage disaggregation, elastic resource management) to this domain.\"\n    },\n    \"significance\": {\n      \"result\": \"fail\",\n      \"justification\": \"The single-node evaluation limitation remains unresolved. Promises of future multi-node studies do not change the assessment of the current work's demonstrated impact. The practical significance for large-scale production serving is not convincingly established.\"\n    },\n    \"evaluation\": {\n      \"result\": \"fail\",\n      \"justification\": \"The authors acknowledge the single-node limitation and promise more baseline details, but these remain promises rather than evidence in the submitted paper. The evaluation methodology remains inadequate for assessing an elastic distributed system.\"\n    },\n    \"presentation\": {\n      \"result\": \"pass\",\n      \"justification\": \"The paper remains clearly structured and well-written. The rebuttal doesn't change this assessment.\"\n    }\n  ],\n  \"summary_comment\": \"The author response acknowledges the evaluation limitations but provides no new evidence or substantive changes to the submitted work. The single-node setup remains inadequate for demonstrating the elastic distributed scheduling claims, and the baseline implementation details remain unclear. While the work presents a competent engineering effort adapting existing serving concepts to multimodal workloads, it falls short of the novelty and evaluation standards for a top-tier conference. The promises of future revisions and expanded evaluation do not change the assessment of the submitted paper.\"\n}",
+            "parse_error": true
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Limited evaluation setup (single-node, 8 GPUs) insufficient to demonstrate scalability of elastic distributed scheduling\",\n        \"Weak empirical comparisons with unclear implementation details of extended DistServe baseline\",\n        \"Novelty concerns regarding adaptation of existing serving concepts rather than fundamental innovation\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Single-node evaluation limitation\",\n          \"location\": \"Section 4.1\",\n          \"explanation\": \"We explicitly acknowledge this limitation: 'We leave multi-node distributed studies to future work, as this testbed already demonstrates superior performance.' Our current evaluation focuses on demonstrating the core algorithmic benefits and performance improvements achievable within a controlled environment.\"\n        },\n        {\n          \"concern\": \"DistServe baseline implementation\",\n          \"location\": \"Section 4.1\",\n          \"explanation\": \"We state that 'We extend this system to support multimodal inference' and provide implementation details in Appendix A. The extension maintains DistServe's core decoupled architecture while adding multimodal support to ensure fair comparison.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Limited evaluation scale\",\n          \"proposed_change\": \"We will add a dedicated limitations section explicitly discussing the single-node constraint and plans for multi-node evaluation in future work\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Baseline implementation details\",\n          \"proposed_change\": \"We will expand Appendix A to provide more detailed description of how DistServe was extended for multimodal inference, including specific modifications made\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback and acknowledge the concerns regarding evaluation scale and baseline comparisons. While we agree that multi-node evaluation would be valuable, our single-node setup with 8 high-end GPUs provides a rigorous testbed that demonstrates the fundamental advantages of our elastic multimodal parallelism approach. The 4.2× TTFT reduction and 3.2-4.5× throughput improvements are substantial and directly address the core MLLM serving bottlenecks identified in Section 2.\\n\\nRegarding novelty: While building on established serving concepts, ElasticMM introduces several novel contributions specific to multimodal workloads: (1) modality-aware grouping that separates text and multimodal requests (Section 3.1), (2) elastic partition scheduling that dynamically adjusts parallelism per inference stage (Section 3.2), and (3) unified multimodal prefix caching that handles both visual and text tokens (Section 3.3). These innovations collectively represent a significant advancement over existing systems that treat multimodal requests identically to text-only ones.\\n\\nFor the DistServe baseline, we implemented a faithful extension that maintains its core decoupled architecture while adding multimodal support. We will provide more detailed implementation documentation in the revised paper to ensure transparency.\\n\\nWe believe the demonstrated performance improvements on real-world datasets, combined with the formal guarantees of inference equivalence (Appendix B), provide strong evidence for the practical significance of our approach in addressing the growing challenge of efficient MLLM serving.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 4,
+              "significance": 3,
+              "evaluation": 3,
+              "clarity": 4
+            },
+            "strengths": [
+              "Clear identification and analysis of a real performance bottleneck in MLLM serving, specifically the overhead from multimodal encoding and coupling issues.",
+              "Proposal of a comprehensive, two-level (modality and stage) elastic decoupled architecture with novel scheduling components like modality-aware load balancing and elastic partitioned scheduling.",
+              "Thoughtful multimodal-specific optimizations, namely unified multimodal prefix caching and non-blocking encoding, which directly address identified inefficiencies."
+            ],
+            "weaknesses": [
+              "The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.",
+              "The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The evaluation setup is limited to a single node with eight GPUs, which is insufficient to convince convincingly demonstrate the scalability and practicality of the proposed elastic, distributed scheduling paradigm.",
+                "severity": "major",
+                "evidence": "Section 4.1 and Section 6 explicitly acknowledge this limitation and propose future work. The authors' rebuttal points to this acknowledgment but does not provide new experimental evidence. The submitted paper's evaluation cannot validate elastic scaling claims beyond a single node.",
+                "affected_claim": "The claim that the system effectively enables 'elastic scaling' and 'dynamic resource reallocation' across 'elastic instances' to handle 'dynamically changing workloads' in a distributed setting.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The empirical comparisons and baselines are weak. DistServe, a key baseline, is described as a 'second baseline' that the authors extended for multimodal inference, but its implementation details, fairness of comparison, and how it was adapted are unclear.",
+                "severity": "major",
+                "evidence": "The authors point to Appendix A for general implementation details, but the submitted paper lacks specific details on how DistServe was extended, what modifications were made, and whether the extension maintains a fair comparison. The rebuttal promises more details but provides none in the submitted material.",
+                "affected_claim": "The claim that ElasticMM 'outperforms state-of-the-art (SOTA) serving systems' and delivers substantial improvements over meaningful, rigorously implemented baselines.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The technical design remains logically sound. The rebuttal does not introduce new evidence that changes the assessment of the core ideas or the proofs in Appendix B."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The authors reiterate their contributions but do not demonstrate that modality-aware grouping, elastic stage-specific scheduling, and unified caching represent a fundamental algorithmic breakthrough rather than a competent application and combination of existing serving techniques to the multimodal domain."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The significance of the work for scalable, production-grade MLLM serving is undermined by the single-node evaluation. Acknowledging the limitation does not resolve it; the paper as submitted lacks the evidence needed to demonstrate impact at scale."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation's limitations regarding scale and baseline implementation details remain unresolved. The rebuttal points to existing text acknowledging these limitations and promises future improvements but provides no new experimental data or detailed analysis within the submitted paper."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-written and structured. The rebuttal does not alter this assessment."
+              }
+            },
+            "summary_comment": "The author response identifies where in the submitted paper the acknowledged limitations (single-node evaluation, baseline details) are mentioned but fails to provide substantive new evidence or clarification that resolves the core concerns. The evaluation remains insufficient for the claimed elastic distributed scheduling paradigm, and the baseline comparisons lack the necessary rigor and transparency for a top-tier conference. While the work presents a solid system engineering contribution applying established serving concepts to multimodal workloads, it does not meet the threshold for acceptance due to these major weaknesses in evaluation and demonstration of novelty."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Single-node evaluation insufficient for elastic distributed scheduling claims\",\n        \"Insufficient details on DistServe baseline implementation\",\n        \"Novelty concerns regarding adaptation of existing concepts\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Evaluation scale limitation\",\n          \"location\": \"Section 4.1, Section 6\",\n          \"explanation\": \"We explicitly acknowledge the single-node limitation and state this as future work: 'We leave multi-node distributed studies to future work' and 'In future work, we plan to extend our evaluation to large-scale, multi-node clusters.' Our current evaluation focuses on demonstrating the algorithmic benefits and performance improvements achievable within a controlled environment.\"\n        },\n        {\n          \"concern\": \"DistServe implementation details\",\n          \"location\": \"Appendix A\",\n          \"explanation\": \"We provide implementation details including our use of Python/C++, NCCL backend, and communication protocols. The DistServe extension maintains its core decoupled architecture while adding multimodal support through the same frontend API and backend optimizations used for ElasticMM.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Evaluation scale justification\",\n          \"proposed_change\": \"We will add a dedicated section discussing why single-node evaluation is sufficient for demonstrating core algorithmic benefits, while acknowledging multi-node scaling as future work\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Baseline implementation transparency\",\n          \"proposed_change\": \"We will expand Appendix A with specific details about DistServe extension, including code architecture changes and multimodal support implementation\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Novelty clarification\",\n          \"proposed_change\": \"We will more clearly articulate the novel contributions in Section 1 and 3, emphasizing the modality-aware grouping, unified multimodal caching, and elastic partition scheduling as distinct innovations beyond simple adaptation\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response: \"We appreciate the reviewer's continued engagement. While we acknowledge the desire for multi-node evaluation, we maintain that our single-node setup with 8 high-end GPUs provides a rigorous testbed that demonstrates the fundamental advantages of our elastic multimodal parallelism approach. The 4.2× TTFT reduction and 3.2-4.5× throughput improvements on real-world datasets (Section 4.2) are substantial and directly address core MLLM serving bottlenecks.\\n\\nRegarding novelty: Our work introduces several distinct contributions beyond simple adaptation: (1) modality-aware grouping that fundamentally separates text and multimodal requests (Section 3.1), (2) elastic partition scheduling that dynamically adjusts parallelism per inference stage based on workload characteristics (Section 3.2), and (3) unified multimodal prefix caching that handles both visual and text tokens in a coordinated manner (Section 3.3). These innovations collectively represent a significant advancement over existing systems.\\n\\nFor the DistServe baseline, we implemented a faithful extension that maintains its core decoupled architecture while adding multimodal support through the same optimization techniques used throughout our system. We will provide more detailed implementation documentation in the revised paper.\\n\\nThe performance improvements demonstrated, combined with the formal guarantees of inference equivalence (Appendix B), provide strong evidence for the practical significance of our approach in addressing the growing challenge of efficient MLLM serving.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_f71494680bac",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_048_elasticmm_efficient_multimodal_llms_serving_with_elastic_multimodal_parallelism.md",
+    "target_paper_summary": {
+      "paper_id": "paper_f71494680bac",
+      "title": "Elasticmm: Efficient Multimodal Llms Serving With Elastic Multimodal Parallelism",
+      "abstract": "Multimodal large language models (MLLMs) extend LLMs to handle images, videos, and audio by incorporating feature extractors and projection modules. However, these additional components—combined with complex inference pipelines and heterogeneous workloads—introduce significant inference overhead. Therefore, efficiently serving MLLMs remains a major challenge. Current tightly coupled serving architectures struggle to distinguish between mixed request types or adapt parallelism strategies to different inference stages, leading to increased time-to-first-token (TTFT) and poor resource utilization. To address this, we introduce Elastic Multimodal Parallelism (EMP), a new serving paradigm that elastically adapts to resource heterogeneity across request types and inference stages. Building upon EMP, we develop ElasticMM, an MLLM serving system that\n(1) separates requests into independent modality groups with dynamic resource allocation via a modality-aware load balancer; (2) decouples inference stages and enables parallelism adjustment and adaptive scaling via elastic partition scheduling; and (3) improves inference efficiency through unified multimodal prefix caching and non-blocking encoding. Experiments on diverse real-world datasets show that ElasticMM outperforms state-of-the-art (SOTA) serving systems, reducing TTFT by up to 4.2× and achieving 3.2–4.5× higher throughput while meeting service-level objectives (SLOs).",
+      "topic": "",
+      "claims": [
+        "we introduce Elastic Multimodal Parallelism (EMP), a new serving paradigm that elastically adapts to resource heterogeneity across request types and inference stages.",
+        "we develop ElasticMM, an MLLM serving system that (1) separates requests into independent modality groups with dynamic resource allocation via a modality-aware load balancer; (2) decouples inference stages and enables parallelism adjustment and adaptive scaling via elastic partition scheduling; and (3) improves inference efficiency through unified multimodal prefix caching and non-blocking encoding."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "target paper: suspicious instruction-like text matched /system prompt/"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 8,
+      "num_removed_post_cutoff": 8,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [
+    "target paper: suspicious instruction-like text matched /system prompt/"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 8,
+    "num_removed_post_cutoff": 8,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of using K-means and least squares for MoE gating in DSR to handle hierarchical data is highly novel and deviates significantly from standard gradient-based approaches, addressing a critical bottleneck.",
+        "The paper directly tackles a significant limitation in existing meta-learning for DSR, which struggles with loosely related or hierarchical datasets. This problem is particularly relevant for the future development of foundational models in scientific domains.",
+        "The comprehensive experimental setup across varied ODEBench datasets, classical DSR benchmarks, and real-world time series (SCCTS, Epilepsy2) provides strong evidence for the proposed method's applicability, especially in certain data regimes."
+      ],
+      "weaknesses": [
+        "The claim of underperformance in high-data regimes or with highly related data, where individual experts are exposed to only a fraction of the dataset, needs more in-depth analysis or a proposed mitigation strategy beyond just acknowledging it. This could limit its practical applicability if not addressed.",
+        "The 'Context Splitting' and 'Context Shifting' mechanisms for improving clustering, while presented as optimizations, might hint at underlying complexities or sensitivities in the K-means-based routing that are not fully explored or theoretically justified."
+      ],
+      "summary_comment": "This paper presents MixER, a novel and bold approach to hierarchical meta-learning for Dynamical System Reconstruction (DSR) using a non-gradient-based Mixture of Experts (MoE) gating mechanism. The idea of employing K-means and least squares to improve expert routing and specialization, especially for handling loosely related datasets, is genuinely innovative and directly addresses a critical limitation in current meta-learning techniques for scientific data. While the paper acknowledges some limitations regarding high-data regimes and closely related data, the core contribution of a specialized, non-gradient-based MoE routing for hierarchical DSR is highly significant and opens up exciting new avenues for foundational models in science. The experimental validation is extensive, supporting its applicability in relevant scenarios. The strengths in novelty and significance far outweigh the identified weaknesses, making it a valuable contribution to the field."
+    },
+    {
+      "raw": "```json\n{\n  \"reviewer\": \"Reviewer B - Rigor Focused\",\n  \"decision\": \"Reject\",\n  \"scores\": {\n    \"novelty\": 3,\n    \"soundness\": 2,\n    \"significance\": 2,\n    \"evaluation\": 2,\n    \"clarity\": 3\n  },\n  \"strengths\": [\n    \"The paper addresses an important problem of learning across hierarchical dynamical systems and proposes a technically elaborated Mixture of Experts (MoE) approach with a custom gating mechanism.\",\n    \"The use of K-means clustering and least squares for expert routing is a novel architectural choice aimed at overcoming limitations of gradient-based gating in MoEs for DSR.\",\n    \"The paper provides a detailed problem description and thorough background on existing meta-learning approaches, clearly positioning its contribution in the field.\"\n  ],\n  \"weaknesses\": [\n    \"The core evaluation on ODEBench-10B (Table 3) shows that MixER-10 underperforms both the naive MoE (MixER-10†) and a single meta-learner (MixER-1), which directly contradicts the paper's central claim of improved performance on loosely related families. This lack of empirical support for the main hypothesis is a significant weakness.\",\n    \"The evaluation on classical DSR datasets (LV, GO, SM) also indicates that MixER underperforms its baseline meta-learners. The explanation that \\\"this partitioning limits each expert meta-learner's exposure to the full dataset\\\" suggests a fundamental flaw in the proposed routing strategy when data are *not* highly heterogeneous, which is a major limitation for a generalizable approach.\",\n    \"The claims about the \"effectiveness\" and \"breadth of applicability\" are not consistently supported by the experimental results, which frequently show degradation rather than improvement over baselines, particularly in high-data or less heterogeneous scenarios. This raises concerns about the overall validity of the proposed method's claimed advantages.\"\n  ],\n  \"summary_comment\": \"This paper tackles the important challenge of hierarchical meta-learning for dynamical system reconstruction using a Mixture of Experts approach with a custom routing mechanism. While the motivation and technical development of the K-means and least squares-based gating are interesting, the empirical evaluation presents significant issues. The results in Table 3 (ODEBenck-10B), which is a key benchmark for loosely related systems, show that the proposed MixER-10 often *underperforms* single meta-learners and even a naive MoE. Similar underperformance is observed on classical DSR datasets. The explanation for this degradation (reduced exposure for experts) points to a fundamental limitation of the method, indicating it may be effective only under very specific, highly heterogeneous data conditions not consistently demonstrated. This severely undermines the paper's claims of effectiveness and general applicability, suggesting a lack of soundness in the evaluation and the method's overall utility. Without clearer evidence that MixER provides consistent benefits beyond the baseline approaches it integrates, especially for the problem it aims to solve, the paper's contribution remains unsubstantiated. Therefore, I recommend rejection.\"\n}\n```",
+      "parse_error": true
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper tackles a highly relevant and challenging problem in scientific AI: learning across hierarchies of dynamical systems with varying relatedness, addressing a key bottleneck for foundational models in scientific discovery.",
+        "The proposed MixER method introduces a novel, practical, and well-motivated routing mechanism based on K-means and least squares, effectively overcoming the limitations of gradient-descent-based gating in traditional MoEs for DSR.",
+        "The experimental evaluation is comprehensive, covering synthetic and real-world datasets, different degrees of data relatedness, and a strong set of state-of-the-art meta-learning backbones. The honest discussion of limitations, such as underperformance in high-data/highly-related regimes, adds significant credibility."
+      ],
+      "weaknesses": [
+        "While the paper clearly identifies a problem and proposes a solution, the specific architecture of the 'experts' themselves (e.g., how they internally handle the contextual information from MixER) could be detailed more, particularly for practitioners interested in practical implementation details beyond just the gating mechanism.",
+        "The computational overhead introduced by MixER (requiring all experts to be loaded in memory) is mentioned as a limitation, but a more thorough quantitative analysis or strategies for mitigating this in practical deployments (e.g., dynamic loading, distillation) would strengthen its practical relevance."
+      ],
+      "summary_comment": "This paper presents a strong contribution to the field of dynamical system reconstruction, particularly in the context of building foundational models for scientific data. The problem of learning across loosely related families of dynamical systems is highly significant and directly relevant to practitioners working with complex scientific datasets. The proposed MixER approach offers a novel and practical solution to the routing challenges in Mixture of Experts, leveraging K-means and least squares for efficient context-based routing. The experimental setup is robust, comparing MixER against state-of-the-art meta-learners across diverse benchmarks and honestly acknowledging its limitations—a trait I highly value. The clarity of the writing is generally good, and the motivation for the work is compelling. While some architectural details of the experts could be fleshed out, and a deeper dive into computational efficiency would be beneficial, the overall utility and impact of this work are clear. It provides a meaningful step towards more generalizable and practical DSR models. Hence, I recommend acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's core topic of 'hierarchical meta-learning for Dynamical System Reconstruction (DSR)' aligns well with ICML's interest in general machine learning (supervised, semi-, self-supervised learning) and reinforcement learning (decision and control, planning).",
+        "The use of Mixture of Experts (MoE) architectures and its novel K-means and least squares gating mechanism fits within ICML's focus on deep learning architectures and optimization techniques (stochastic, online, non-smooth, composite, etc.) as noted by Reviewer A's comment on its novelty.",
+        "The paper tackles a challenging problem relevant to 'application-driven machine learning' and 'trustworthy machine learning' by aiming for generalizable DSR models capable of robust generalization across varying domains, which is important for scientific applications like neuroscience and climate, as highlighted by Reviewer A and C.",
+        "The methodological rigor, involving custom gating algorithms and proximal alternating minimization, aligns with ICML's emphasis on strong theoretical and algorithmic contributions, fitting Reviewer B's acknowledgment of its 'technically elaborated' approach.",
+        "The comprehensive experimental evaluation across ODEBench datasets, classical DSR benchmarks, and real-world time series (SCCTS, Epilepsy2) demonstrates thoroughness, which is valued at ICML, despite some mixed empirical results.",
+        "The paper's contribution to improving meta-learning in low-data regimes, particularly for scientific data, contributes to important practical aspects of machine learning, fitting ICML's broad scope."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer B points out that significant empirical results (Table 3, ODEBench-10B, and classical DSR datasets) show MixER underperforming baselines. This raises concerns about the 'Rigor Fit' and 'Contribution Fit' if the proposed method does not consistently demonstrate advantages for the problem it aims to solve, which is crucial for a top-tier ML conference.",
+        "While the paper is technically elaborate, the 'Presentation Fit' could be improved by providing deeper theoretical justifications for 'Context Splitting' and 'Context Shifting' rather than just presenting them as optimizations, as mentioned by Reviewer A, which could impact the perception of algorithmic soundness.",
+        "Reviewer C highlights that 'computational overhead introduced by MixER (requiring all experts to be loaded in memory)' is a limitation. If practical deployment or scalability is a significant concern without proposed mitigations, it might slightly detract from the 'Contribution Fit' for some ICML reviewers looking for readily applicable solutions, even if the research is fundamental."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The research falls under 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning' due to its focus on meta-learning and Mixture of Experts architectures for dynamical systems.",
+        "The application to 'AI/ML for physical sciences' (Dynamical System Reconstruction, ODEs) and 'AI/ML for health and biotechnology' (neuroscientific time series like Epilepsy2) directly aligns with NeurIPS's explicitly listed topics, as noted by Reviewer A and C.",
+        "The exploration of learning across 'families of arbitrarily related environments' (hierarchical meta-learning) and addressing challenges in low-data regimes speaks to NeurIPS's interest in interdisciplinary submissions and in-depth analysis of method limitations/behavior, which the paper transparently discusses.",
+        "Reviewer A acknowledges the 'novelty' of using K-means and least squares for MoE gating in DSR, which would be appealing to NeurIPS, a venue that values novel algorithmic developments.",
+        "The paper's attempt to lay foundations for 'foundational models for scientific applications' connects with NeurIPS's forward-looking perspective on new paradigms.",
+        "The detailed problem description and background on existing meta-learning approaches, as praised by Reviewer B, ensures a good 'Presentation Fit' for a NeurIPS audience."
+      ],
+      "why_it_does_not_fit": [
+        "A significant 'Reviewer Risk' comes from Reviewer B's strong 'Reject' decision, specifically citing the empirical underperformance of MixER on key benchmarks (ODEBench-10B) compared to both naive MoE and single meta-learners. This directly challenges the 'Soundness Fit' and 'Contribution Fit' for a high-impact conference like NeurIPS.",
+        "The admission that MixER 'underperforms classical meta-learning baselines on datasets exhibiting high degrees of relatedness' (as stated in the conclusion) or in 'high-data regimes' (Reviewer A, C) could be perceived as a fundamental limitation that reduces its general applicability, which might be critical for NeurIPS's broad scope.",
+        "The explanation for underperformance on highly related data – that 'this partitioning limits each expert meta-learner's exposure to the full dataset' – suggests an architectural and theoretical limitation that NeurIPS reviewers focusing on robust and generalizable solutions might find problematic.",
+        "While a strength for some, the 'Others' topic classification might make it slightly harder to find the ideal reviewer pool at NeurIPS compared to a more specialized conference, potentially increasing 'Reviewer Risk' if the interdisciplinary aspects are not fully appreciated by all assigned reviewers."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's focus on deep learning architectures, specifically Mixture of Experts (MoE) and meta-learning, directly aligns with ICLR's primary emphasis on 'all aspects of deep learning'.",
+        "The proposed novel routing mechanism using K-means and least squares for MoEs addresses 'optimization' challenges in deep learning and representation learning, which is a core topic for ICLR, as noted by Reviewer A's emphasis on novelty.",
+        "The work deals with 'representation learning' through context vectors and 'generative models' in the context of DSR, both explicitly listed as relevant topics for ICLR.",
+        "The application to 'robotics, autonomy, planning' (dynamical systems are fundamental to these areas) and 'neuroscience & cognitive science' (Epilepsy2 dataset) are explicit topics of interest for ICLR.",
+        "ICLR values research on 'unsupervised, self-supervised, semi-supervised, and supervised representation learning', and the paper's unsupervised routing mechanism and its interplay with meta-learning fit this scope.",
+        "The paper's honest discussion of limitations and the exploration of novel architectures are well-suited for ICLR, which encourages cutting-edge research even with acknowledged challenges."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to NeurIPS, Reviewer B's strong negative assessment due to empirical underperformance on critical benchmarks (ODEBench-10B, classical DSR datasets) creates significant 'Reviewer Risk'. ICLR, while open to novel ideas, still demands strong empirical validation.",
+        "Reviewer C points out that 'computational overhead introduced by MixER (requiring all experts to be loaded in memory)' is a limitation. Given ICLR's interest in 'infrastructure, software libraries, hardware, etc.', a lack of deeper analysis or mitigation strategies for the computational demands might be seen as a weakness.",
+        "The specific 'Presentation Fit' could be an issue for some ICLR reviewers; while the technical details are present, the absence of more in-depth theoretical justification for certain 'optimizations' like 'Context Splitting' and 'Context Shifting' (as mentioned by Reviewer A) might be scrutinized more heavily at ICLR, which often appreciates strong theoretical foundations for new architectural components.",
+        "The paper's primary focus on 'Dynamical System Reconstruction' as an application despite introducing a novel MoE gating mechanism might position it slightly less centrally within ICLR's deep learning focus compared to papers where the primary novelty is a deep learning architecture for general tasks."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a highly novel and comprehensive framework for generalized linear mode connectivity that extends beyond simple permutations to include semi-permutations, orthogonal transformations, and general invertible maps. This significantly broadens the scope of LMC research.",
+        "For the first time, this work demonstrates low- and zero-loss linear connections between independently trained Vision Transformers and GPT-2 models. This is a monumental empirical finding, challenging previous assumptions about Transformer loss landscape geometry.",
+        "The methodology is innovative, particularly the 'learned matching' approach which treats symmetry transformations as trainable parameters, optimized via task loss. This is a creative way to uncover deeper connections that static approaches might miss."
+      ],
+      "weaknesses": [
+        "While theoretically sound, the practical implementation of some reparameterizations (e.g., RMSNorm reformulation for LayerNorm) might introduce subtle approximations or computational overheads that are not fully characterized, potentially impacting the 'exact functional equivalence' claim in some edge cases.",
+        "The empirical evaluation, while compelling for smaller models, is explicitly limited by resource constraints for larger LMs (GPT-2 discussion mentions 'reduced parameters'). This leaves an open question about the scalability and effectiveness of these techniques on state-of-the-art very large models, which are a primary area of interest for Transformer research."
+      ],
+      "summary_comment": "This paper presents a bold and innovative approach to understanding the loss landscape of Transformers, pushing the boundaries of Linear Mode Connectivity research. The unified framework for generalized symmetries (permutations, semi-permutations, orthogonal, and invertible maps) is incredibly novel and conceptually elegant. The empirical demonstration of low- and zero-loss linear paths in modern Transformer architectures (ViT and GPT-2), even in multi-model and width-heterogeneous settings, is a truly significant breakthrough. While there are minor methodological details that could be further explored regarding approximations or scaling to the largest models, the core idea is transformative. This work opens up exciting avenues for future research in ensembling, continual learning, and model interpretability. The potential impact is huge, and I am particularly excited by the 'learned matching' technique, which is a forward-thinking way to optimize for connectivity."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a theoretically grounded and comprehensive framework for generalized linear mode connectivity (LMC) in neural networks, precisely defining and categorizing various symmetry classes (permutations, semi-permutations, orthogonal, invertible) and detailing how they manifest in Transformer architectures. This systematic approach is a significant improvement over previous work that primarily focused on permutation symmetry.",
+        "The empirical evaluation is thorough and convincing, demonstrating for the first time zero or near-zero barrier LMC for independently trained Vision Transformers and GPT-2 models using the proposed generalized alignment methods. The results are presented clearly, comparing against baseline methods (vanilla averaging, activation matching) and ablating different components (weight matching, learned matching), which strongly supports their claims.",
+        "The paper rigorously derives the functional invariance properties under these different symmetry transformations, particularly for RMSNorm (demonstrating orthogonal symmetry) and multi-head attention (semi-permutation and invertible symmetries). This mathematical rigor underpins the entire framework and ensures the validity of the reparameterization techniques employed."
+      ],
+      "weaknesses": [
+        "While the theoretical framework is strong, the practical implementation details for combining these various symmetry transformations (e.g., how PFF, PH, and O are precisely composed and applied across the Transformer layers) could be elaborated further within the main text for better understanding of the full alignment process. Some of these details are scattered or relegated to the appendix.",
+        "The limitation section mentions that the methodology 'requires reparameterization (e.g., RMSNorm reparameterization or multiplying out intra-head dependencies)' which 'alters the underlying network architecture.' While it's claimed to preserve functional equivalence, the implications of these architectural alterations on theoretical guarantees or practical aspects (e.g., interpretability of parameters post-transformation) could be discussed in more depth."
+      ],
+      "summary_comment": "This paper presents a robust and well-justified method for achieving linear mode connectivity in Transformers by leveraging a generalized framework of network symmetries. The detailed theoretical exposition of different symmetry classes and their application to Transformer components is excellent. The empirical results are highly compelling, showing successful LMC in both vision and language models, often achieving near-zero barriers, which significantly advances the understanding of loss landscape geometry for complex architectures. The evaluation is comprehensive, comparing against various baselines and performing insightful ablations. The rigorous approach to defining and utilizing these symmetries makes a strong methodological contribution. While some implementation specifics could be further consolidated, the overall scientific validity and impact are very high."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper addresses a highly significant problem in deep learning: understanding the geometry of loss landscapes and achieving linear mode connectivity (LMC) in modern, complex architectures like Transformers. The ability to merge models with low/zero barriers has direct practical implications for model ensembling, federated learning, and transfer learning.",
+        "The introduction of a unified framework that formalizes and leverages four distinct classes of symmetries (permutations, semi-permutations, orthogonal transformations, and general invertible maps) is a substantial contribution. This generalization is crucial for enabling LMC in Transformers, which previous permutation-only methods struggled with, and significantly advances the state-of-the-art in model alignment.",
+        "The empirical results are very compelling, demonstrating for the first time low- and zero-loss linear connections between independently trained Vision Transformers and GPT-2 models. The comparison to strong baselines (vanilla averaging, activation matching, permutation-only learned matching) and the multi-model connectivity experiments strongly validate the proposed methods."
+      ],
+      "weaknesses": [
+        "The 'Limitations' section mentions that the methodology, while preserving functional equivalence, 'alters the underlying network architecture' by requiring reparameterization (e.g., RMSNorm reparameterization). While functional equivalence is maintained, the practical implications or potential trade-offs of this architectural alteration during deployment or further fine-tuning could be discussed more thoroughly.",
+        "While the paper demonstrates strong results on relatively smaller Transformer models (e.g., GPT-2 small, ViT tiny/small), and acknowledges resource constraints, a clearer discussion on the scalability of the proposed learned matching method to much larger pre-trained models (e.g., GPT-3/4 scale, large vision models) would be beneficial, as this is where such merging techniques could have the most practical impact."
+      ],
+      "summary_comment": "This paper presents a highly significant and well-executed contribution to the field of deep learning, particularly for practitioners. It tackles the practical challenge of understanding and leveraging the geometry of neural network loss landscapes to achieve linear mode connectivity (LMC) in Transformers. The proposed unified framework for symmetry-aware model alignment, which extends beyond simple permutations to include semi-permutations, orthogonal transformations, and general invertible maps, is both novel and crucial for addressing the complexities of modern architectures. The empirical results clearly demonstrate that these richer symmetry classes are effective in revealing low- and zero-loss paths in Transformers, a feat largely unachieved by prior methods. The clarity of the writing is excellent, making the sophisticated concepts accessible. While minor concerns exist regarding the practical implications of architectural alterations and scalability to extremely large models, the overall practical impact and research depth make this paper a strong accept."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper's core topic of 'understanding the geometry of neural network loss landscapes' and 'Linear Mode Connectivity (LMC)' aligns perfectly with ICML's stated interest in 'general machine learning' and 'theory of machine learning'. The concept of reparameterization-induced redundancy and symmetries in parameter space is a fundamental theoretical contribution.",
+        "The paper introduces a 'unified symmetry framework' (permutations, semi-permutations, orthogonal transformations, and general invertible maps), which is a broad advance in machine learning theory and methodology, a key area for ICML. Reviewer A highlights this as a 'highly novel and comprehensive framework'.",
+        "The empirical demonstration of 'low- and zero-loss linear connections between independently trained Vision Transformers and GPT-2 models' is a significant advance for specific architectures relevant to the machine learning community. Reviewer A and Reviewer B both praise this 'monumental empirical finding'.",
+        "The 'learned matching' methodology, treating symmetry transformations as trainable parameters, represents an 'optimization' and 'deep learning' contribution in how models can be aligned, which is well within ICML's scope.",
+        "Reviewer B explicitly mentions the 'theoretically grounded and comprehensive framework' and 'rigorously derives the functional invariance properties', indicating a strong 'rigor fit' for ICML's high standards in theoretical contributions."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper makes significant empirical contributions, the primary limitation mentioned by reviewers is the scalability of the evaluation to 'state-of-the-art very large models', which might be a concern for some ICML reviewers looking for results on the absolute cutting edge of model scale, especially for Transformers.",
+        "Reviewer B notes that 'practical implementation details for combining these various symmetry transformations... could be elaborated further within the main text', suggesting some aspects of presentation could be more consolidated for immediate understanding, although this is a minor weakness."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper directly addresses 'General machine learning: core contributions in supervised and unsupervised methods' by exploring fundamental properties of neural network loss landscapes and mode connectivity.",
+        "The work specifically focuses on 'Deep learning' architectures, namely Vision Transformers and GPT-2, which are central to NeurIPS's interests. The title itself refers to 'Transformers'.",
+        "The theoretical framework around 'symmetries in parameter space' and 'reparameterization' contributes to the 'Theory' aspect of machine learning, making the paper a strong fit for NeurIPS's interdisciplinary nature.",
+        "The 'multi-model and width-heterogeneous settings' and implications for 'ensembling, federated and continual learning' align with NeurIPS's interest in broader applications and societal impact of AI/ML, as highlighted by Reviewer A and C.",
+        "The 'thorough and convincing' empirical evaluation on ViTs and GPT-2, leading to 'zero or near-zero barrier LMC', demonstrates robust results on relevant benchmarks, which is highly valued by NeurIPS, as noted by Reviewer B.",
+        "The paper's overall 'scientific validity and impact are very high' (Reviewer B), making it an excellent candidate for a top-tier venue like NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "The concern about scalability to 'state-of-the-art very large models' (Reviewer A, C) could be a slight disadvantage, as NeurIPS often features papers pushing the boundaries of scale in deep learning, especially for language models.",
+        "The mention of 'altering the underlying network architecture' (Reviewer B, C) when applying reparameterizations, despite preserving functional equivalence, might raise minor questions about the direct applicability or interpretability of the transformed models in some NeurIPS contexts, although the paper defends this well."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "ICLR explicitly focuses on 'all aspects of deep learning', and this paper is centrally about understanding deep learning models (Transformers) through their loss landscapes and symmetries, which is a perfect topical match.",
+        "The paper's work on 'representation learning' through its investigation of model symmetries and parameter transformations directly relates to key ICLR topics such as 'unsupervised, self-supervised, semi-supervised, and supervised representation learning'.",
+        "The detailed discussion and formalization of 'symmetries' within Transformer components (e.g., Multi-Head Attention, Feed-Forward Layer, Residual connections) is a granular analysis of 'deep learning architectures' that ICLR highly values.",
+        "The methods ('weight matching', 'learned matching') involve 'optimization' and 'probabilistic methods' (e.g., Sinkhorn normalization for soft permutations), which are prominent topics at ICLR.",
+        "Reviewer A notes the 'bold and innovative approach' and 'transformative' core idea, which aligns with ICLR's emphasis on cutting-edge research.",
+        "The exploration extends to 'multi-model and width-heterogeneous settings' and implications for 'ensembling' and 'transfer learning', which are within ICLR's practical application interests."
+      ],
+      "why_it_does_not_fit": [
+        "While comprehensive, the paper's theoretical contributions on general symmetry frameworks might be considered slightly broader than ICLR's typical deep-learning-centric focus, though still highly relevant.",
+        "Reviewer A points out that the 'practical implementation of some reparameterizations... might introduce subtle approximations or computational overheads that are not fully characterized'. ICLR often values clarity on the practical aspects and implications of novel deep learning methods, and this omission could be a minor concern.",
+        "Similar to the other conferences, the limitation regarding evaluation on 'larger, more contemporary language models' (Reviewer A) might be a more pronounced weakness for ICLR, which often features significant empirical scale in deep learning research."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

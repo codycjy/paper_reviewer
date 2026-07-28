@@ -1,0 +1,773 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper successfully scales the Memory Mosaics architecture to a frontier model scale (9.9B parameters, 1T tokens), demonstrating its viability for real-world, large-scale applications, which is a significant engineering and algorithmic achievement.",
+        "Rigorous and comprehensive evaluation across three carefully designed dimensions (persistent knowledge, new knowledge storage, and in-context learning) clearly isolates and demonstrates superior capabilities in out-of-distribution and in-context learning compared to transformers, with convincing evidence.",
+        "Provides strong empirical analysis showing that the advantages of Memory Mosaics v2 (e.g., in-context learning, long-context tasks) cannot be easily replicated by simply training transformers on more data (e.g., up to 8x), making a compelling case for the architectural innovation beyond just scaling."
+      ],
+      "weaknesses": [
+        "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+        "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+          "severity": "minor",
+          "evidence": "The evaluation primarily uses in-house trained transformers as baseline and references some public base models (e.g., Llama2-7B, Mistral-base) in Appendix Table 11. The analysis in Appendix D justifies omitting memory compression baselines (Mamba, RWKV) because they 'fail by construction' on the new-knowledge tasks. However, a more direct comparison with other leading long-context or memory-augmented architectures discussed in the RAG evidence or recent literature could strengthen the claims of novelty and effectiveness.",
+          "affected_claim": "The claim of superior performance on new-knowledge and in-context learning tasks relative to the state-of-the-art.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed.",
+          "severity": "minor",
+          "evidence": "Table 2 shows FLOPs/token comparisons, and Appendix E mentions that efficiency is not the primary goal. The paper acknowledges future directions for reducing cost via techniques like fuzzy hashing and hierarchical memory. However, a deeper discussion of the asymptotic memory and compute complexity (O(n) in context length for full associative memory retrieval) versus transformers (O(n²) for attention) in practical settings for the implemented 3-level design would be valuable. The current analysis is sufficient but could be more thorough.",
+          "affected_claim": "General claims about the scalability and practicality of the architecture for very long contexts.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are well-supported. The paper provides rigorous experiments across three evaluation dimensions, controls for parameters/compute, includes ablation studies (e.g., removing long-term memory), and demonstrates statistical significance. The architectural modifications (adaptive bandwidth, gated feature extractor, 3-level memory) are logically motivated and empirically validated."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The work extends the original Memory Mosaics idea (Zhang et al., 2025) with significant architectural innovations (Memory Mosaics v2) and demonstrates its effectiveness at an unprecedented scale (llama-8B scale, 1T tokens). While based on prior associative memory concepts, the specific combination of scaling, architectural tweaks, and the demonstration of superior in-context learning compared to transformers on real-world tasks constitutes a distinct contribution. The RAG evidence shows related uses of 'mosaic' but in different contexts (neuromorphic systems, graph processing, biology), not directly overlapping with this work."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "The work meaningfully advances the field by scaling an alternative, more transparent architecture to competitive sizes and showing clear advantages in crucial capabilities like in-context learning and new-knowledge storage. The finding that these advantages are not easily replicable by simply scaling transformer data highlights a potential paradigm shift and opens new research directions. The three-dimensional evaluation framework is also a valuable contribution for assessing model capabilities."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Experiments are comprehensive, fair, and convincing. The paper evaluates on standard benchmarks (persistent knowledge), challenging new tasks (RULER for new-knowledge), and classic in-context learning tasks. It controls for model size, training data, and computational budget. Results show clear, significant advantages for Memory Mosaics v2 in out-of-distribution scenarios. Ablation studies and failure mode analyses (e.g., transformer with long-short-term attention) strengthen the conclusions."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and well-structured. The three evaluation dimensions provide a logical framework. Figures and tables are informative. The supplementary material provides extensive details on training, prompts, and additional results. Some minor areas could be slightly clearer (e.g., precise interaction of the three memory levels), but overall, the work is sufficiently clear for reliable assessment."
+        }
+      },
+      "summary_comment": "The author's rebuttal correctly points to existing evidence (Appendix Table 11 comparisons with several public models, Table 2 and Appendix E efficiency analyses) that partially addresses the concerns. However, the rebuttal does not fully resolve them: the comparisons, while existing, are not as comprehensive as a direct head-to-head with the most recent specialized long-context or memory-augmented models, and the computational analysis stops short of a formal asymptotic trade-off discussion. The rebuttal acknowledges these as areas for improvement via future edits, which does not change the assessment of the submitted paper. Since both weaknesses were originally classified as minor and the core contributions remain strong and well-supported, the decision remains Accept."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong topic fit: ICML covers general machine learning, deep learning architectures, and in-context/out-of-distribution learning—all central to this paper's focus on scaling associative memory networks.",
+        "Rigorous empirical evaluation: The paper provides extensive experiments scaling to 10B parameters and 1T tokens, matching ICML's emphasis on solid empirical work.",
+        "Architectural innovation: The modifications to associative memory (adaptive bandwidth, gated extractor, 3-level memory) represent a meaningful contribution to model architecture, fitting ICML's scope.",
+        "Methodological contribution: The three-dimensional evaluation framework provides a novel way to assess model capabilities, particularly for compositional and in-context learning."
+      ],
+      "why_it_does_not_fit": [
+        "Potential mismatch in theoretical depth: Reviewer noted the computational trade-off analysis could be deeper; ICML often values strong theoretical analysis alongside empirical results.",
+        "Somewhat incremental on original idea: While scaling is significant, the core Memory Mosaics concept was recently published (2025), possibly making this more of an engineering/scale demonstration than a fundamental breakthrough.",
+        "Limited comparison to SOTA: Reviewer noted the paper doesn't compare against the most recent long-context or associative memory models, which might be expected at ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent topic alignment: NeurIPS explicitly lists 'generalization and multi-task learning', 'deep learning', and 'AI/ML for language' as topics—directly matching this paper's focus on in-context learning and compositional capabilities.",
+        "Significant scale contribution: Scaling novel architectures to llama-8B scale with 1T tokens is exactly the type of large-scale, impactful work NeurIPS seeks.",
+        "Strong empirical evidence: The comprehensive evaluation across three dimensions (persistent knowledge, new knowledge, in-context learning) with clear superiority over transformers fits NeurIPS's emphasis on rigorous experimentation.",
+        "Interdisciplinary appeal: The work connects machine learning with cognitive science concepts (associative memory), aligning with NeurIPS's interdisciplinary nature."
+      ],
+      "why_it_does_not_fit": [
+        "Not directly addressing emerging hot topics: While relevant, the paper doesn't heavily engage with current NeurIPS focal points like safety, alignment, or societal impacts (though the checklist shows awareness).",
+        "Somewhat specialized architecture focus: The paper deeply explores one specific architectural variant rather than broader principles applicable across many models.",
+        "Limited theoretical analysis: Reviewer noted computational trade-offs aren't fully explored; NeurIPS often appreciates both empirical and theoretical contributions."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Deep learning architecture focus: ICLR specializes in deep learning innovations, and Memory Mosaics v2 represents a novel alternative to transformer architecture.",
+        "In-context learning relevance: ICLR covers representation learning and meta-learning, which connect to this paper's in-context learning evaluations.",
+        "Generative modeling aspects: The associative memory mechanism relates to probabilistic methods and causal reasoning listed in ICLR topics.",
+        "Large-scale experimentation: Training on 1T tokens and scaling to 10B parameters fits ICLR's interest in scalable deep learning methods."
+      ],
+      "why_it_does_not_fit": [
+        "Not exclusively deep learning focused: While the architecture uses deep components, the core contribution is more about associative memory systems than deep learning per se.",
+        "Weak connection to representation learning: The paper doesn't deeply analyze learned representations or disentanglement despite mentioning these concepts.",
+        "Limited novelty in deep learning mechanisms: The architectural modifications (gated extractor, adaptive bandwidth) are incremental rather than revolutionary deep learning innovations.",
+        "Better fit elsewhere: Given its scale and empirical focus, this work might be better received at NeurIPS or ICML than ICLR's more specialized deep learning venue."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper successfully scales the Memory Mosaics architecture to a frontier model scale (9.9B parameters, 1T tokens), demonstrating its viability for real-world, large-scale applications, which is a significant engineering and algorithmic achievement.",
+              "Rigorous and comprehensive evaluation across three carefully designed dimensions (persistent knowledge, new knowledge storage, and in-context learning) clearly isolates and demonstrates superior capabilities in out-of-distribution and in-context learning compared to transformers, with convincing evidence.",
+              "Provides strong empirical analysis showing that the advantages of Memory Mosaics v2 (e.g., in-context learning, long-context tasks) cannot be easily replicated by simply training transformers on more data (e.g., up to 8x), making a compelling case for the architectural innovation beyond just scaling."
+            ],
+            "weaknesses": [
+              "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+              "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+                "severity": "minor",
+                "evidence": "The evaluation primarily uses in-house trained transformers as baselines and references some public base models (e.g., Llama2-7B, Mistral-base) in Appendix Table 11. The analysis in Appendix D justifies omitting memory compression baselines (Mamba, RWKV) because they 'fail by construction' on the new-knowledge tasks. However, a more direct comparison with other leading long-context or memory-augmented architectures discussed in the RAG evidence or recent literature could strengthen the claims of novelty and effectiveness.",
+                "affected_claim": "The claim of superior performance on new-knowledge and in-context learning tasks relative to the state-of-the-art.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed.",
+                "severity": "minor",
+                "evidence": "Table 2 shows FLOPs/token comparisons, and Appendix E mentions that efficiency is not the primary goal. The paper acknowledges future directions for reducing cost via techniques like fuzzy hashing and hierarchical memory. However, a deeper discussion of the asymptotic memory and compute complexity (O(n) in context length for full associative memory retrieval) versus transformers (O(n²) for attention) in practical settings for the implemented 3-level design would be valuable. The current analysis is sufficient but could be more thorough.",
+                "affected_claim": "General claims about the scalability and practicality of the architecture for very long contexts.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are well-supported. The paper provides rigorous experiments across three evaluation dimensions, controls for parameters/compute, includes ablation studies (e.g., removing long-term memory), and demonstrates statistical significance. The architectural modifications (adaptive bandwidth, gated feature extractor, 3-level memory) are logically motivated and empirically validated."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The work extends the original Memory Mosaics idea (Zhang et al., 2025) with significant architectural innovations (Memory Mosaics v2) and demonstrates its effectiveness at an unprecedented scale (llama-8B scale, 1T tokens). While based on prior associative memory concepts, the specific combination of scaling, architectural tweaks, and the demonstration of superior in-context learning compared to transformers on real-world tasks constitutes a distinct contribution. The RAG evidence shows related uses of 'mosaic' but in different contexts (neuromorphic systems, graph processing, biology), not directly overlapping with this work."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work meaningfully advances the field by scaling an alternative, more transparent architecture to competitive sizes and showing clear advantages in crucial capabilities like in-context learning and new-knowledge storage. The finding that these advantages are not easily replicable by simply scaling transformer data highlights a potential paradigm shift and opens new research directions. The three-dimensional evaluation framework is also a valuable contribution for assessing model capabilities."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, fair, and convincing. The paper evaluates on standard benchmarks (persistent knowledge), challenging new tasks (RULER for new-knowledge), and classic in-context learning tasks. It controls for model size, training data, and computational budget. Results show clear, significant advantages for Memory Mosaics v2 in out-of-distribution scenarios. Ablation studies and failure mode analyses (e.g., transformer with long-short-term attention) strengthen the conclusions."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The three evaluation dimensions provide a logical framework. Figures and tables are informative. The supplementary material provides extensive details on training, prompts, and additional results. Some minor areas could be slightly clearer (e.g., precise interaction of the three memory levels), but overall, the work is sufficiently clear for reliable assessment."
+              }
+            },
+            "summary_comment": "This is a strong paper that makes a significant contribution. It successfully scales the Memory Mosaics architecture to a frontier model scale and provides compelling evidence of its superior capabilities in in-context learning and new-knowledge storage/retrieval compared to transformers, advantages not easily replicated by simply scaling transformer data. The three-dimensional evaluation is rigorous and well-designed. While minor weaknesses exist (e.g., broader baseline comparisons, deeper efficiency analysis), they do not undermine the central contributions. The work meets the high standards of a top-tier machine learning conference and is recommended for acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper successfully scales the Memory Mosaics architecture to a frontier model scale (9.9B parameters, 1T tokens), demonstrating its viability for real-world, large-scale applications, which is a significant engineering and algorithmic achievement.",
+              "Rigorous and comprehensive evaluation across three carefully designed dimensions (persistent knowledge, new knowledge storage, and in-context learning) clearly isolates and demonstrates superior capabilities in out-of-distribution and in-context learning compared to transformers, with convincing evidence.",
+              "Provides strong empirical analysis showing that the advantages of Memory Mosaics v2 (e.g., in-context learning, long-context tasks) cannot be easily replicated by simply training transformers on more data (e.g., up to 8x), making a compelling case for the architectural innovation beyond just scaling."
+            ],
+            "weaknesses": [
+              "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+              "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+                "severity": "minor",
+                "evidence": "The evaluation primarily uses in-house trained transformers as baseline and references some public base models (e.g., Llama2-7B, Mistral-base) in Appendix Table 11. The analysis in Appendix D justifies omitting memory compression baselines (Mamba, RWKV) because they 'fail by construction' on the new-knowledge tasks. However, a more direct comparison with other leading long-context or memory-augmented architectures discussed in the RAG evidence or recent literature could strengthen the claims of novelty and effectiveness.",
+                "affected_claim": "The claim of superior performance on new-knowledge and in-context learning tasks relative to the state-of-the-art.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed.",
+                "severity": "minor",
+                "evidence": "Table 2 shows FLOPs/token comparisons, and Appendix E mentions that efficiency is not the primary goal. The paper acknowledges future directions for reducing cost via techniques like fuzzy hashing and hierarchical memory. However, a deeper discussion of the asymptotic memory and compute complexity (O(n) in context length for full associative memory retrieval) versus transformers (O(n²) for attention) in practical settings for the implemented 3-level design would be valuable. The current analysis is sufficient but could be more thorough.",
+                "affected_claim": "General claims about the scalability and practicality of the architecture for very long contexts.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are well-supported. The paper provides rigorous experiments across three evaluation dimensions, controls for parameters/compute, includes ablation studies (e.g., removing long-term memory), and demonstrates statistical significance. The architectural modifications (adaptive bandwidth, gated feature extractor, 3-level memory) are logically motivated and empirically validated."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The work extends the original Memory Mosaics idea (Zhang et al., 2025) with significant architectural innovations (Memory Mosaics v2) and demonstrates its effectiveness at an unprecedented scale (llama-8B scale, 1T tokens). While based on prior associative memory concepts, the specific combination of scaling, architectural tweaks, and the demonstration of superior in-context learning compared to transformers on real-world tasks constitutes a distinct contribution. The RAG evidence shows related uses of 'mosaic' but in different contexts (neuromorphic systems, graph processing, biology), not directly overlapping with this work."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work meaningfully advances the field by scaling an alternative, more transparent architecture to competitive sizes and showing clear advantages in crucial capabilities like in-context learning and new-knowledge storage. The finding that these advantages are not easily replicable by simply scaling transformer data highlights a potential paradigm shift and opens new research directions. The three-dimensional evaluation framework is also a valuable contribution for assessing model capabilities."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, fair, and convincing. The paper evaluates on standard benchmarks (persistent knowledge), challenging new tasks (RULER for new-knowledge), and classic in-context learning tasks. It controls for model size, training data, and computational budget. Results show clear, significant advantages for Memory Mosaics v2 in out-of-distribution scenarios. Ablation studies and failure mode analyses (e.g., transformer with long-short-term attention) strengthen the conclusions."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The three evaluation dimensions provide a logical framework. Figures and tables are informative. The supplementary material provides extensive details on training, prompts, and additional results. Some minor areas could be slightly clearer (e.g., precise interaction of the three memory levels), but overall, the work is sufficiently clear for reliable assessment."
+              }
+            },
+            "summary_comment": "The author's rebuttal acknowledges the two minor weaknesses but does not resolve them as they rely on evidence not present in the submitted paper (promised future edits and expanded discussion). The rebuttal correctly points to existing comparisons with public models and the efficiency analysis already provided. However, these do not fully address the concerns about broader state-of-the-art positioning or deeper computational trade-off analysis. Since these were originally classified as minor, fixable issues, and the promises demonstrate they are acknowledged, they do not undermine the paper's core contributions. The paper's strengths—successful large-scale demonstration, rigorous three-dimensional evaluation, and compelling evidence of architectural advantages not replicable by data scaling—remain intact and meet top-tier conference standards. The decision remains Accept."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited comparison against recent state-of-the-art long-context and memory-augmented models\",\n        \"Incomplete exploration of computational efficiency trade-offs\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited comparison against recent state-of-the-art models\",\n          \"location\": \"Section 5.2 and Appendix Table 11\",\n          \"explanation\": \"The paper does include comparisons with several public models including Llama2-7B, Mistral-base, Mixtral-base, Together-base, LongLoRA-base, Yarn-base, and LWM-base on the RULER benchmark, showing Memory Mosaics v2's superiority across all task lengths. Appendix D also provides detailed justification for why memory compression models (Mamba, RWKV) are not suitable baselines for the specific evaluation dimensions used.\"\n        },\n        {\n          \"concern\": \"Computational efficiency trade-offs\",\n          \"location\": \"Table 2 and Appendix E\",\n          \"explanation\": \"The paper provides FLOPs/token comparisons showing Memory Mosaics v2 requires 18.9B FLOPs/token compared to 16.7B for transformers, and discusses parameter counts. It also shows that removing long-term memory reduces cost to 15.6B FLOPs/token while maintaining performance on persistent-knowledge tasks. The paper explicitly states that model efficiency is not the primary goal but provides efficiency comparisons.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Broader baseline comparisons\",\n          \"proposed_change\": \"In the revision, we will expand the discussion in Section 5.2 to more explicitly position our work relative to other recent long-context architectures and memory-augmented models, acknowledging their different design trade-offs while emphasizing the unique capabilities demonstrated by our evaluation framework.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Computational efficiency analysis\",\n          \"proposed_change\": \"We will enhance the discussion in Section 8 on future directions to include a more detailed analysis of the asymptotic complexity trade-offs between our 3-level memory design and standard transformers, specifically addressing how the O(n) memory retrieval cost balances against the performance benefits in practical long-context scenarios.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and constructive feedback. We appreciate the recognition of our contributions in scaling Memory Mosaics to frontier model scale and the rigorous three-dimensional evaluation framework.\\n\\nRegarding the comparison with state-of-the-art models, we agree that additional contextualization would strengthen the paper. While our primary focus was on controlled comparisons with transformers trained under identical conditions (data, compute, hyperparameters) to isolate architectural effects, we will expand the discussion to more explicitly position our results relative to other contemporary approaches. The RULER benchmark comparisons in Appendix Table 11 already show Memory Mosaics v2 outperforming several public models, but we can provide more detailed analysis of how our architectural choices differ from and complement other long-context and memory-augmented approaches.\\n\\nFor computational efficiency, we acknowledge that a deeper complexity analysis would be valuable. While our current analysis focuses on empirical FLOPs and parameter counts, we will enhance the discussion in Section 8 to include a more formal treatment of the asymptotic trade-offs, particularly how our 3-level memory design balances the O(n) retrieval cost against the performance benefits demonstrated. The paper already identifies future directions for efficiency improvements (fuzzy hashing, hierarchical memory), and we can strengthen this discussion with more specific complexity analysis.\\n\\nThese improvements will enhance the paper's positioning and practical implications while preserving the core contributions that the reviewer rightly identifies as meeting top-tier conference standards.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper successfully scales the Memory Mosaics architecture to a frontier model scale (9.9B parameters, 1T tokens), demonstrating its viability for real-world, large-scale applications, which is a significant engineering and algorithmic achievement.",
+              "Rigorous and comprehensive evaluation across three carefully designed dimensions (persistent knowledge, new knowledge storage, and in-context learning) clearly isolates and demonstrates superior capabilities in out-of-distribution and in-context learning compared to transformers, with convincing evidence.",
+              "Provides strong empirical analysis showing that the advantages of Memory Mosaics v2 (e.g., in-context learning, long-context tasks) cannot be easily replicated by simply training transformers on more data (e.g., up to 8x), making a compelling case for the architectural innovation beyond just scaling."
+            ],
+            "weaknesses": [
+              "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+              "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The paper does not directly compare its results against the most recent state-of-the-art long-context or associative memory models (e.g., other recent long-context LLMs, advanced recurrent architectures) beyond basic transformers and selected public models, leaving some questions about the absolute state-of-the-art positioning.",
+                "severity": "minor",
+                "evidence": "The evaluation primarily uses in-house trained transformers as baseline and references some public base models (e.g., Llama2-7B, Mistral-base) in Appendix Table 11. The analysis in Appendix D justifies omitting memory compression baselines (Mamba, RWKV) because they 'fail by construction' on the new-knowledge tasks. However, a more direct comparison with other leading long-context or memory-augmented architectures discussed in the RAG evidence or recent literature could strengthen the claims of novelty and effectiveness.",
+                "affected_claim": "The claim of superior performance on new-knowledge and in-context learning tasks relative to the state-of-the-art.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The computational efficiency trade-off is not fully explored; while the architecture shows performance benefits, it inherently requires storing and computing over all KV pairs in memory (for long-term memory), which has implications for inference cost and memory usage at very long contexts, which is only partly addressed.",
+                "severity": "minor",
+                "evidence": "Table 2 shows FLOPs/token comparisons, and Appendix E mentions that efficiency is not the primary goal. The paper acknowledges future directions for reducing cost via techniques like fuzzy hashing and hierarchical memory. However, a deeper discussion of the asymptotic memory and compute complexity (O(n) in context length for full associative memory retrieval) versus transformers (O(n²) for attention) in practical settings for the implemented 3-level design would be valuable. The current analysis is sufficient but could be more thorough.",
+                "affected_claim": "General claims about the scalability and practicality of the architecture for very long contexts.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are well-supported. The paper provides rigorous experiments across three evaluation dimensions, controls for parameters/compute, includes ablation studies (e.g., removing long-term memory), and demonstrates statistical significance. The architectural modifications (adaptive bandwidth, gated feature extractor, 3-level memory) are logically motivated and empirically validated."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The work extends the original Memory Mosaics idea (Zhang et al., 2025) with significant architectural innovations (Memory Mosaics v2) and demonstrates its effectiveness at an unprecedented scale (llama-8B scale, 1T tokens). While based on prior associative memory concepts, the specific combination of scaling, architectural tweaks, and the demonstration of superior in-context learning compared to transformers on real-world tasks constitutes a distinct contribution. The RAG evidence shows related uses of 'mosaic' but in different contexts (neuromorphic systems, graph processing, biology), not directly overlapping with this work."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The work meaningfully advances the field by scaling an alternative, more transparent architecture to competitive sizes and showing clear advantages in crucial capabilities like in-context learning and new-knowledge storage. The finding that these advantages are not easily replicable by simply scaling transformer data highlights a potential paradigm shift and opens new research directions. The three-dimensional evaluation framework is also a valuable contribution for assessing model capabilities."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Experiments are comprehensive, fair, and convincing. The paper evaluates on standard benchmarks (persistent knowledge), challenging new tasks (RULER for new-knowledge), and classic in-context learning tasks. It controls for model size, training data, and computational budget. Results show clear, significant advantages for Memory Mosaics v2 in out-of-distribution scenarios. Ablation studies and failure mode analyses (e.g., transformer with long-short-term attention) strengthen the conclusions."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The three evaluation dimensions provide a logical framework. Figures and tables are informative. The supplementary material provides extensive details on training, prompts, and additional results. Some minor areas could be slightly clearer (e.g., precise interaction of the three memory levels), but overall, the work is sufficiently clear for reliable assessment."
+              }
+            },
+            "summary_comment": "The author's rebuttal correctly points to existing evidence (Appendix Table 11 comparisons with several public models, Table 2 and Appendix E efficiency analyses) that partially addresses the concerns. However, the rebuttal does not fully resolve them: the comparisons, while existing, are not as comprehensive as a direct head-to-head with the most recent specialized long-context or memory-augmented models, and the computational analysis stops short of a formal asymptotic trade-off discussion. The rebuttal acknowledges these as areas for improvement via future edits, which does not change the assessment of the submitted paper. Since both weaknesses were originally classified as minor and the core contributions remain strong and well-supported, the decision remains Accept."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Limited comparison against recent state-of-the-art long-context and memory-augmented models\",\n        \"Incomplete exploration of computational efficiency trade-offs\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Limited comparison against recent state-of-the-art models\",\n          \"location\": \"Section 5.2 and Appendix Table 11\",\n          \"explanation\": \"The paper includes comparisons with multiple public models (Llama2-7B, Mistral-base, Mixtral-base, Together-base, LongLoRA-base, Yarn-base, LWM-base) on the RULER benchmark, demonstrating Memory Mosaics v2's superior performance across all task lengths despite using shorter generation lengths (32 vs 128 tokens).\"\n        },\n        {\n          \"concern\": \"Computational efficiency trade-offs\",\n          \"location\": \"Table 2 and Section 5.1\",\n          \"explanation\": \"The paper provides explicit FLOPs/token comparisons showing Memory Mosaics v2 requires 18.9B FLOPs/token compared to 16.7B for transformers, and demonstrates that removing long-term memory reduces computational cost to 15.6B FLOPs/token while maintaining performance on persistent-knowledge tasks. Appendix E further shows efficiency comparisons under matched FLOPs and parameter budgets.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Broader state-of-the-art positioning\",\n          \"proposed_change\": \"We will expand the discussion in Section 5.2 to more explicitly contextualize our results relative to other contemporary long-context approaches, highlighting both the unique capabilities demonstrated by our evaluation framework and the architectural differences that enable these advantages.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Computational complexity analysis\",\n          \"proposed_change\": \"We will enhance Section 8's discussion of future directions to include a more formal analysis of the asymptotic complexity trade-offs between our 3-level memory design and standard attention mechanisms, specifically addressing how the O(n) retrieval cost balances against performance benefits in practical long-context scenarios.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and for maintaining the Accept decision. We appreciate the recognition that our core contributions—successful large-scale demonstration, rigorous three-dimensional evaluation, and evidence of architectural advantages not replicable by data scaling—remain intact.\\n\\nRegarding the comparisons with state-of-the-art models, we note that our evaluation framework was specifically designed to isolate architectural effects through controlled comparisons with transformers trained under identical conditions. The existing comparisons in Appendix Table 11 already demonstrate Memory Mosaics v2's superiority over multiple public models across all RULER task lengths. However, we acknowledge that expanded discussion of how our approach differs from and complements other contemporary architectures would strengthen the paper's positioning.\\n\\nFor computational efficiency, our current analysis provides empirical FLOPs comparisons and shows that our architecture can achieve transformer-level performance with reduced computation when long-term memory is removed. The explicit complexity analysis suggested would indeed enhance the discussion of scalability, and we will address this in the revision.\\n\\nWe are pleased that the reviewer recognizes these as minor concerns that do not undermine our core contributions. The promised revisions will address these points while preserving the paper's strong experimental foundation and novel contributions to scalable associative memory architectures.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_ad60af9919a2",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/neurips_accept_2025_017_memory_mosaics_at_scale.md",
+    "target_paper_summary": {
+      "paper_id": "paper_ad60af9919a2",
+      "title": "Memory Mosaics At Scale",
+      "abstract": "Memory Mosaics [Zhang et al., 2025], networks of associative memories, have demonstrated appealing compositional and in-context learning capabilities on medium-scale networks (GPT-2 scale) and synthetic small datasets. This work shows that these favorable properties remain when we scale memory mosaics to large language model sizes (llama-8B scale) and real-world datasets. To this end, we scale memory mosaics to 10B size, we train them on one trillion tokens, we introduce a couple architectural modifications (\"*memory mosaics v2*\"), we assess their capabilities across three evaluation dimensions: training-knowledge storage, new-knowledge storage, and in-context learning. Throughout the evaluation, memory mosaics v2 match transformers on the learning of training knowledge (first dimension) and significantly outperforms transformers on carrying out new tasks at inference time (second and third dimensions). These improvements cannot be easily replicated by simply increasing the training data for transformers. A memory mosaics v2 trained on one trillion tokens still perform better on these tasks than a transformer trained on eight trillion tokens.",
+      "topic": "",
+      "claims": [
+        "we introduce a couple architectural modifications (\"*memory mosaics v2*\"), we assess their capabilities across three evaluation dimensions: training-knowledge storage, new-knowledge storage, and in-context learning."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_9f8efda37",
+        "title": "Detection of mosaic and population-level structural variants with Sniffles2",
+        "authors": [
+          "Moritz Smolka",
+          "Luis F. Paulin",
+          "Christopher M. Grochowski",
+          "Dominic W. Horner",
+          "Medhat Mahmoud",
+          "Sairam Behera",
+          "Ester Kalef-Ezra",
+          "Mira Gandhi",
+          "Karl Hong",
+          "Davut Pehli̇van",
+          "Sonja W. Scholz",
+          "Claudia M.B. Carvalho",
+          "Christos Proukakis",
+          "Fritz J. Sedlazeck"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-02",
+        "venue": "Nature Biotechnology",
+        "abstract": "Calling structural variations (SVs) is technically challenging, but using long reads remains the most accurate way to identify complex genomic alterations. Here we present Sniffles2, which improves over current methods by implementing a repeat aware clustering coupled with a fast consensus sequence and coverage-adaptive filtering. Sniffles2 is 11.8 times faster and 29% more accurate than state-of-the-art SV callers across different coverages (5-50×), sequencing technologies (ONT and HiFi) and SV types. Furthermore, Sniffles2 solves the problem of family-level to population-level SV calling to produce fully genotyped VCF files. Across 11 probands, we accurately identified causative SVs around MECP2, including highly complex alleles with three overlapping SVs. Sniffles2 also enables the detection of mosaic SVs in bulk long-read data. As a result, we identified multiple mosaic SVs in brain tissue from a patient with multiple system atrophy. The identified SV showed a remarkable diversity within the cingulate cortex, impacting both genes involved in neuron function and repetitive elements.",
+        "url": "https://doi.org/10.1038/s41587-023-02024-y",
+        "doi": "https://doi.org/10.1038/s41587-023-02024-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390500910"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 454
+      },
+      {
+        "paper_id": "rw_002_646f14351",
+        "title": "Mauve: Multiple Alignment of Conserved Genomic Sequence With Rearrangements",
+        "authors": [
+          "Aaron E. Darling",
+          "Bob Mau",
+          "Frederick R. Blattner",
+          "Nicole T. Perna"
+        ],
+        "year": 2004,
+        "publication_date": "2004-07-01",
+        "venue": "Genome Research",
+        "abstract": "As genomes evolve, they undergo large-scale evolutionary processes that present a challenge to sequence comparison not posed by short sequences. Recombination causes frequent genome rearrangements, horizontal transfer introduces new sequences into bacterial chromosomes, and deletions remove segments of the genome. Consequently, each genome is a mosaic of unique lineage-specific segments, regions shared with a subset of other genomes and segments conserved among all the genomes under consideration. Furthermore, the linear order of these segments may be shuffled among genomes. We present methods for identification and alignment of conserved genomic DNA in the presence of rearrangements and horizontal transfer. Our methods have been implemented in a software package called Mauve. Mauve has been applied to align nine enterobacterial genomes and to determine global rearrangement structure in three mammalian genomes. We have evaluated the quality of Mauve alignments and drawn comparison to other methods through extensive simulations of genome evolution.",
+        "url": "https://doi.org/10.1101/gr.2289704",
+        "doi": "https://doi.org/10.1101/gr.2289704",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1991330646"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 5244
+      },
+      {
+        "paper_id": "rw_003_c76e1b2c7",
+        "title": "Long-Range Temporal Correlations and Scaling Behavior in Human Brain Oscillations",
+        "authors": [
+          "Klaus Linkenkaer‐Hansen",
+          "Vadim V. Nikouline",
+          "J. Matias Palva",
+          "Risto J. Ilmoniemi"
+        ],
+        "year": 2001,
+        "publication_date": "2001-02-15",
+        "venue": "Journal of Neuroscience",
+        "abstract": "The human brain spontaneously generates neural oscillations with a large variability in frequency, amplitude, duration, and recurrence. Little, however, is known about the long-term spatiotemporal structure of the complex patterns of ongoing activity. A central unresolved issue is whether fluctuations in oscillatory activity reflect a memory of the dynamics of the system for more than a few seconds. We investigated the temporal correlations of network oscillations in the normal human brain at time scales ranging from a few seconds to several minutes. Ongoing activity during eyes-open and eyes-closed conditions was recorded with simultaneous magnetoencephalography and electroencephalography. Here we show that amplitude fluctuations of 10 and 20 Hz oscillations are correlated over thousands of oscillation cycles. Our analyses also indicated that these amplitude fluctuations obey power-law scaling behavior. The scaling exponents were highly invariant across subjects. We propose that the large variability, the long-range correlations, and the power-law scaling behavior of spontaneous oscillations find a unifying explanation within the theory of self-organized criticality, which offers a general mechanism for the emergence of correlations and complex dynamics in stochastic multiunit systems. The demonstrated scaling laws pose novel quantitative constraints on computational models of network oscillations. We argue that critical-state dynamics of spontaneous oscillations may lend neural networks capable of quick reorganization during processing demands.",
+        "url": "https://doi.org/10.1523/jneurosci.21-04-01370.2001",
+        "doi": "https://doi.org/10.1523/jneurosci.21-04-01370.2001",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2139852582"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1206
+      },
+      {
+        "paper_id": "rw_004_4235783f5",
+        "title": "Mosaic",
+        "authors": [
+          "Steffen Maaß",
+          "Changwoo Min",
+          "Sanidhya Kashyap",
+          "Woon-Hak Kang",
+          "Mohan Kumar",
+          "Taesoo Kim"
+        ],
+        "year": 2017,
+        "publication_date": "2017-04-17",
+        "venue": "",
+        "abstract": "Processing a one trillion-edge graph has recently been demonstrated by distributed graph engines running on clusters of tens to hundreds of nodes. In this paper, we employ a single heterogeneous machine with fast storage media (e.g., NVMe SSD) and massively parallel coprocessors (e.g., Xeon Phi) to reach similar dimensions. By fully exploiting the heterogeneous devices, we design a new graph processing engine, named Mosaic, for a single machine. We propose a new locality-optimizing, space-efficient graph representation---Hilbert-ordered tiles, and a hybrid execution model that enables vertex-centric operations in fast host processors and edge-centric operations in massively parallel coprocessors.",
+        "url": "https://doi.org/10.1145/3064176.3064191",
+        "doi": "https://doi.org/10.1145/3064176.3064191",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2606413522"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 170
+      },
+      {
+        "paper_id": "rw_005_f83998511",
+        "title": "Soil Moisture Memory in Climate Models",
+        "authors": [
+          "Randal D. Koster",
+          "Max J. Suárez"
+        ],
+        "year": 2001,
+        "publication_date": "2001-12-01",
+        "venue": "Journal of Hydrometeorology",
+        "abstract": "Water balance considerations at the soil surface lead to an equation that relates the autocorrelation of soil moisture in climate models to 1) seasonality in the statistics of the atmospheric forcing, 2) the variation of evaporation with soil moisture, 3) the variation of runoff with soil moisture, and 4) correlation between the atmospheric forcing and antecedent soil moisture, as perhaps induced by land-atmosphere feedback. Geographical variations in the relative strengths of these factors, which can be established through analysis of model diagnostics, lead to geographical variations in simulated soil moisture memory. The use of the equation to characterize controls on soil moisture memory is demonstrated with data from the modeling system of the National Aeronautics and Space Administration Seasonal-to-Interannual Prediction Project.",
+        "url": "https://doi.org/10.1175/1525-7541(2001)002<0558:smmicm>2.0.co;2",
+        "doi": "https://doi.org/10.1175/1525-7541(2001)002<0558:smmicm>2.0.co;2",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W1963950134"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 499
+      },
+      {
+        "paper_id": "rw_006_75b283065",
+        "title": "Montage: a grid-enabled engine for delivering custom science-grade mosaics on demand",
+        "authors": [
+          "G. Bruce Berriman",
+          "Ewa Deelman",
+          "John Good",
+          "Joseph C. Jacob",
+          "Daniel S. Katz",
+          "Carl Kesselman",
+          "A. C. Laity",
+          "Thomas A. Prince",
+          "Gurmeet Singh",
+          "Mei-Hu Su"
+        ],
+        "year": 2004,
+        "publication_date": "2004-09-16",
+        "venue": "Proceedings of SPIE, the International Society for Optical Engineering/Proceedings of SPIE",
+        "abstract": "This paper describes the design of a grid-enabled version of Montage, an astronomical image mosaic service, suitable for large scale processing of the sky. All the re-projection jobs can be added to a pool of tasks and performed by as many processors as are available, exploiting the parallelization inherent in the Montage architecture. We show how we can describe the Montage application in terms of an abstract workflow so that a planning tool such as Pegasus can derive an executable workflow that can be run in the Grid environment. The execution of the workflow is performed by the workflow manager DAGMan and the associated Condor-G. The grid processing will support tiling of images to a manageable size when the input images can no longer be held in memory. Montage will ultimately run operationally on the Teragrid. We describe science applications of Montage, including its application to science product generation by Spitzer Legacy Program teams and large-scale, all-sky image processing projects.",
+        "url": "https://doi.org/10.1117/12.550551",
+        "doi": "https://doi.org/10.1117/12.550551",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2058791854"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 149
+      },
+      {
+        "paper_id": "rw_007_78aeb76b3",
+        "title": "Mosaic VSGs and the Scale of Trypanosoma brucei Antigenic Variation",
+        "authors": [
+          "James P. J. Hall",
+          "Huanhuan Wang",
+          "J. David Barry"
+        ],
+        "year": 2013,
+        "publication_date": "2013-07-11",
+        "venue": "PLoS Pathogens",
+        "abstract": "A main determinant of prolonged Trypanosoma brucei infection and transmission and success of the parasite is the interplay between host acquired immunity and antigenic variation of the parasite variant surface glycoprotein (VSG) coat. About 0.1% of trypanosome divisions produce a switch to a different VSG through differential expression of an archive of hundreds of silent VSG genes and pseudogenes, but the patterns and extent of the trypanosome diversity phenotype, particularly in chronic infection, are unclear. We applied longitudinal VSG cDNA sequencing to estimate variant richness and test whether pseudogenes contribute to antigenic variation. We show that individual growth peaks can contain at least 15 distinct variants, are estimated computationally to comprise many more, and that antigenically distinct 'mosaic' VSGs arise from segmental gene conversion between donor VSG genes or pseudogenes. The potential for trypanosome antigenic variation is probably much greater than VSG archive size; mosaic VSGs are core to antigenic variation and chronic infection.",
+        "url": "https://doi.org/10.1371/journal.ppat.1003502",
+        "doi": "https://doi.org/10.1371/journal.ppat.1003502",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2041308771"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 132
+      },
+      {
+        "paper_id": "rw_008_9734d74e6",
+        "title": "metaFlye: scalable long-read metagenome assembly using repeat graphs",
+        "authors": [
+          "Mikhail Kolmogorov",
+          "Derek M. Bickhart",
+          "Bahar Behsaz",
+          "Alexey Gurevich",
+          "Mikhail Rayko",
+          "Sung Bong Shin",
+          "Kristen L. Kuhn",
+          "Jeffrey Yuan",
+          "Evgeny Polevikov",
+          "Timothy P. L. Smith",
+          "Pavel A. Pevzner"
+        ],
+        "year": 2020,
+        "publication_date": "2020-10-05",
+        "venue": "Nature Methods",
+        "abstract": "",
+        "url": "https://doi.org/10.1038/s41592-020-00971-x",
+        "doi": "https://doi.org/10.1038/s41592-020-00971-x",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3091506611"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1146
+      },
+      {
+        "paper_id": "rw_009_e5795e8ce",
+        "title": "Mosaic: in-memory computing and routing for small-world spike-based neuromorphic systems",
+        "authors": [
+          "Thomas Dalgaty",
+          "Filippo Moro",
+          "Yiğit Demirağ",
+          "Alessio De Prà",
+          "Giacomo Indiveri",
+          "Elisa Vianello",
+          "Melika Payvand"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-02",
+        "venue": "Nature Communications",
+        "abstract": "The brain's connectivity is locally dense and globally sparse, forming a small-world graph-a principle prevalent in the evolution of various species, suggesting a universal solution for efficient information routing. However, current artificial neural network circuit architectures do not fully embrace small-world neural network models. Here, we present the neuromorphic Mosaic: a non-von Neumann systolic architecture employing distributed memristors for in-memory computing and in-memory routing, efficiently implementing small-world graph topologies for Spiking Neural Networks (SNNs). We've designed, fabricated, and experimentally demonstrated the Mosaic's building blocks, using integrated memristors with 130 nm CMOS technology. We show that thanks to enforcing locality in the connectivity, routing efficiency of Mosaic is at least one order of magnitude higher than other SNN hardware platforms. This is while Mosaic achieves a competitive accuracy in a variety of edge benchmarks. Mosaic offers a scalable approach for edge systems based on distributed spike-based computing and in-memory routing.",
+        "url": "https://doi.org/10.1038/s41467-023-44365-x",
+        "doi": "https://doi.org/10.1038/s41467-023-44365-x",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390510698"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 54
+      },
+      {
+        "paper_id": "rw_010_d93f868f3",
+        "title": "Spatial Relational Memory Requires Hippocampal Adult Neurogenesis",
+        "authors": [
+          "David Dupret",
+          "Jean‐Michel Revest",
+          "Muriel Koehl",
+          "François Ichas",
+          "Francesca De Giorgi",
+          "Pierre Costet",
+          "Djoher Nora Abrous",
+          "Pier Vincenzo Piazza"
+        ],
+        "year": 2008,
+        "publication_date": "2008-04-08",
+        "venue": "PLoS ONE",
+        "abstract": "The dentate gyrus of the hippocampus is one of the few regions of the mammalian brain where new neurons are generated throughout adulthood. This adult neurogenesis has been proposed as a novel mechanism that mediates spatial memory. However, data showing a causal relationship between neurogenesis and spatial memory are controversial. Here, we developed an inducible transgenic strategy allowing specific ablation of adult-born hippocampal neurons. This resulted in an impairment of spatial relational memory, which supports a capacity for flexible, inferential memory expression. In contrast, less complex forms of spatial knowledge were unaltered. These findings demonstrate that adult-born neurons are necessary for complex forms of hippocampus-mediated learning.",
+        "url": "https://doi.org/10.1371/journal.pone.0001959",
+        "doi": "https://doi.org/10.1371/journal.pone.0001959",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2010053974"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 589
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_009_e5795e8ce",
+        "relevance_score": 0.9,
+        "relevance_types": [
+          "same_method",
+          "same_constraints"
+        ],
+        "rationale": "The paper discusses Mosaic, a neuromorphic architecture emphasizing in-memory computing and routing for spiking neural networks, which relates to the associative memory networks and architectural innovations in the target.",
+        "evidence_summary": "In 2024, Dalgaty et al. published 'Mosaic: in-memory computing and routing for small-world spike-based neuromorphic systems' in Nature Communications, introducing a non-von Neumann systolic architecture that uses distributed memristors for in-memory computing and routing to implement small-world graph topologies for Spiking Neural Networks. The authors designed, fabricated, and demonstrated the building blocks with integrated memristors in 130 nm CMOS technology, achieving at least one order of magnitude higher routing efficiency than other SNN hardware platforms while maintaining competitive accuracy in edge benchmarks."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_004_4235783f5",
+        "relevance_score": 0.75,
+        "relevance_types": [
+          "same_method",
+          "constraints"
+        ],
+        "rationale": "The paper presents Mosaic, a graph processing engine for single heterogeneous machines, which relates to scaling computational methods and handling large-scale data similar to the target's focus on scaling memory mosaics to 10B parameters with architectural modifications.",
+        "evidence_summary": "In 2017, Maa et al. published 'Mosaic', a graph processing engine designed for a single heterogeneous machine with fast storage media and massively parallel coprocessors. They proposed a locality-optimizing, space-efficient graph representation called Hilbert-ordered tiles and a hybrid execution model that enables vertex-centric operations in host processors and edge-centric operations in coprocessors."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_008_9734d74e6",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "The paper introduces metaFlye, a method for scalable long-read metagenome assembly using repeat graphs, which involves graph-based computational approaches relevant to network structures in memory mosaics.",
+        "evidence_summary": "In 2020, Kolmogorov et al. published 'metaFlye: scalable long-read metagenome assembly using repeat graphs' in Nature Methods, presenting an engine for assembling metagenomes with long reads through the use of repeat graphs."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_006_75b283065",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "The paper describes Montage, a grid-enabled engine for delivering custom science-grade mosaics, which shares the term 'mosaic' and involves large-scale processing, providing background on mosaic-based systems.",
+        "evidence_summary": "In 2004, Berriman et al. published 'Montage: a grid-enabled engine for delivering custom science-grade mosaics on demand' in Proceedings of SPIE, detailing a service for astronomical image mosaicking that uses parallel processing and workflow management for large-scale sky processing."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_010_d93f868f3",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "The paper investigates spatial relational memory and hippocampal adult neurogenesis, which relates to memory mechanisms and learning capabilities, offering biological context for memory systems.",
+        "evidence_summary": "In 2008, Dupret et al. published 'Spatial Relational Memory Requires Hippocampal Adult Neurogenesis' in PLoS ONE, demonstrating through inducible transgenic ablation that adult-born hippocampal neurons are necessary for complex forms of spatial relational memory but not for less complex spatial knowledge."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_003_c76e1b2c7",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "The paper studies long-range temporal correlations and scaling behavior in human brain oscillations, which relates to network dynamics and self-organized criticality concepts that may inform memory network designs.",
+        "evidence_summary": "In 2001, Linkenkaer-Hansen et al. published 'Long-Range Temporal Correlations and Scaling Behavior in Human Brain Oscillations' in Journal of Neuroscience, showing that amplitude fluctuations of 10 and 20 Hz oscillations are correlated over thousands of cycles and exhibit power-law scaling behavior, proposing an explanation through self-organized criticality theory."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_f83998511",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "useful_background"
+        ],
+        "rationale": "The paper analyzes soil moisture memory in climate models, discussing memory persistence and factors influencing it, which provides a conceptual link to memory systems in computational models.",
+        "evidence_summary": "In 2001, Koster and Suárez published 'Soil Moisture Memory in Climate Models' in Journal of Hydrometeorology, deriving an equation that relates soil moisture autocorrelation to atmospheric forcing statistics, evaporation, runoff variations, and land-atmosphere feedback, with geographical variations in memory demonstrated using NASA model data."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_007_78aeb76b3",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "The paper examines mosaic VSGs in Trypanosoma brucei antigenic variation, using 'mosaic' in a biological context that is tangentially related to compositional structures.",
+        "evidence_summary": "In 2013, Hall et al. published 'Mosaic VSGs and the Scale of Trypanosoma brucei Antigenic Variation' in PLoS Pathogens, showing that antigenically distinct mosaic VSGs arise from segmental gene conversion and contribute to trypanosome diversity and chronic infection, with variant richness estimated via longitudinal cDNA sequencing."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_001_9f8efda37",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "The paper presents Sniffles2 for detecting mosaic structural variants in genomics, sharing the term 'mosaic' but in a completely different domain with no direct relevance to computational memory networks.",
+        "evidence_summary": "In 2024, Smolka et al. published 'Detection of mosaic and population-level structural variants with Sniffles2' in Nature Biotechnology, introducing a method that uses repeat-aware clustering and consensus sequencing to detect structural variants more accurately and faster than state-of-the-art callers, including mosaic SVs in bulk long-read data."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_002_646f14351",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "weakly_related"
+        ],
+        "rationale": "The paper introduces Mauve for genomic sequence alignment with rearrangements, using 'mosaic' indirectly in describing genome segments, but it is far removed from the target's computational memory focus.",
+        "evidence_summary": "In 2004, Darling et al. published 'Mauve: Multiple Alignment of Conserved Genomic Sequence With Rearrangements' in Genome Research, presenting methods to identify and align conserved genomic DNA in the presence of rearrangements and horizontal transfer, applied to enterobacterial and mammalian genomes."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2024, Dalgaty et al. published 'Mosaic: in-memory computing and routing for small-world spike-based neuromorphic systems' in Nature Communications, introducing a non-von Neumann systolic architecture that uses distributed memristors for in-memory computing and routing to implement small-world graph topologies for Spiking Neural Networks, with demonstrated building blocks in 130 nm CMOS technology achieving high routing efficiency and competitive accuracy in edge benchmarks. In 2017, Maa et al. published 'Mosaic', a graph processing engine for single heterogeneous machines, proposing Hilbert-ordered tiles for locality optimization and a hybrid execution model combining vertex-centric and edge-centric operations. In 2020, Kolmogorov et al. published 'metaFlye: scalable long-read metagenome assembly using repeat graphs' in Nature Methods, presenting an engine for assembling metagenomes with long reads through repeat graphs. In 2004, Berriman et al. published 'Montage: a grid-enabled engine for delivering custom science-grade mosaics on demand' in Proceedings of SPIE, detailing a service for astronomical image mosaicking that uses parallel processing and workflow management for large-scale sky processing. In 2008, Dupret et al. published 'Spatial Relational Memory Requires Hippocampal Adult Neurogenesis' in PLoS ONE, showing that adult-born hippocampal neurons are necessary for complex spatial relational memory. In 2001, Linkenkaer-Hansen et al. published 'Long-Range Temporal Correlations and Scaling Behavior in Human Brain Oscillations' in Journal of Neuroscience, demonstrating correlated amplitude fluctuations and power-law scaling in brain oscillations, explained by self-organized criticality.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

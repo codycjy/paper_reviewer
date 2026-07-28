@@ -1,0 +1,123 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a fundamentally novel concept (In-Run Data Shapley) that eliminates the need for computationally prohibitive model retraining",
+        "Provides dramatic efficiency improvements with near-zero runtime overhead for first-order approximation, making foundation model data attribution feasible",
+        "Offers fresh insights into pretraining data dynamics, including stage-dependent contributions and copyright implications beyond memorization"
+      ],
+      "weaknesses": [
+        "The method requires validation data to be available before training, which may limit applicability in some real-world scenarios",
+        "Extension to optimizers like Adam is noted as challenging and left for future work, potentially limiting immediate applicability",
+        "The approximation accuracy relies on Taylor expansion assumptions that may not hold equally well across all model architectures and training regimes"
+      ],
+      "summary_comment": "This paper introduces a groundbreaking approach to data attribution that fundamentally rethinks how we measure data contributions in large-scale models. The In-Run Data Shapley concept is highly novel and addresses a critical computational bottleneck in the field. While some methodological extensions remain for future work, the core idea is sound and the efficiency gains are transformative. The paper's significance is exceptional, as it enables data attribution at foundation model scale for the first time and provides novel insights into pretraining dynamics and copyright implications. The evaluation is convincing with strong empirical results, and the technical contributions are substantial. This work has the potential to significantly advance the field of data attribution and foundation model understanding."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper presents a mathematically rigorous derivation of In-Run Data Shapley, with careful justification via Shapley axioms and Taylor expansions. The logical structure is sound.",
+        "The efficiency innovations ('ghost' techniques) for computing gradient dot-products and gradient-Hessian-gradient products are significant technical contributions. The paper provides clear, detailed derivations and validates the computational claims with thorough runtime experiments (Table 1).",
+        "The experimental evaluation is comprehensive and convincing. The authors perform fidelity checks against Monte Carlo estimates (Figure 1), demonstrate practical applications (data curation, stage-dependence, copyright implications), and include comparisons to baselines like influence functions, providing strong empirical support for their method's utility.",
+        "The work addresses a well-identified and important limitation of classic Retraining-based Data Shapley (computational infeasibility and inability to attribute to a specific run) with a principled solution, creating a clear path to scaling data attribution to foundation models."
+      ],
+      "weaknesses": [
+        "While the core idea of attributing contributions per training iteration is not entirely new (connection to TracIN-Ideal is acknowledged), the full formulation as In-Run Shapley and the efficient computation techniques are the primary novel contributions. Some aspects of the conceptual shift from 'algorithm-level' to 'model-specific' attribution might be debated in terms of which is more fundamental.",
+        "The paper's clarity could be slightly improved in some technical sections (e.g., the transition between the utility function defined on batch B_t and the full dataset D_tr in Section 3, and the detailed derivation of the 'ghost gradient-Hessian-gradient' technique in the appendix). However, the main arguments and algorithmic ideas are clearly conveyed."
+      ],
+      "summary_comment": "This paper presents a methodologically sound and highly significant contribution. The authors successfully tackle the computational and conceptual limitations of Retraining-based Data Shapley by introducing In-Run Data Shapley, a well-motivated framework for model-specific data attribution. The theoretical derivations are correct and elegantly leverage the linearity of the Shapley value and Taylor approximations. The key technical achievement is the development of highly efficient 'ghost' computation techniques that make the method scalable, with minimal overhead. The experimental evaluation is rigorous, providing strong evidence for the method's fidelity, efficiency, and practical utility through insightful case studies. While the core iterative attribution concept has precedents, the full Shapley-based formulation and the computational breakthroughs represent a substantial advance. The paper meets high standards of soundness and evaluation, justifying acceptance."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Addresses a critical real-world problem of computationally feasible data attribution for foundation models with immediate practical relevance",
+        "Develops highly efficient 'ghost' computation techniques that enable near-zero overhead data attribution during training",
+        "Provides compelling empirical validation across multiple case studies showing practical applications in data curation, training dynamics analysis, and copyright implications",
+        "Offers clear theoretical connections between the proposed method and existing approaches like TracIN, providing valuable conceptual insights"
+      ],
+      "weaknesses": [
+        "Limited validation on truly large-scale foundation models, with most experiments conducted on GPT-2 and Pythia-410M rather than current state-of-the-art models",
+        "Requires validation data to be available before training, which may limit applicability in some real-world scenarios where validation data emerges post-training",
+        "The paper's technical complexity might make it challenging for practitioners without deep optimization expertise to implement the 'ghost' techniques"
+      ],
+      "summary_comment": "This paper makes a significant practical contribution by solving the critical scalability problem that has prevented Data Shapley from being applied to foundation models. The authors' efficient computation techniques enable data attribution with minimal overhead, and the case studies demonstrate compelling real-world applications in data curation, copyright analysis, and training dynamics. While some limitations exist regarding model scale and implementation complexity, the paper's practical impact potential is substantial, and the technical approach is sound and well-validated."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Strong alignment with ICML's focus on optimization and efficient computation - the paper develops novel 'ghost' techniques for computing gradient dot-products and Hessian-vector products efficiently",
+        "Addresses core machine learning problems of data valuation and attribution, which falls under ICML's 'general machine learning' and 'trustworthy ML' topics",
+        "Provides rigorous mathematical derivations and theoretical foundations, matching ICML's preference for sound methodological contributions",
+        "Excellent empirical evaluation with comprehensive experiments on runtime, fidelity, and practical applications"
+      ],
+      "why_it_does_not_fit": [
+        "While technically strong, the paper's focus on data attribution is somewhat specialized and may not appeal to ICML's broad audience as much as more general ML topics",
+        "The application domain (language models and copyright implications) leans more toward NeurIPS/ICLR's focus areas than ICML's core optimization/theory focus",
+        "Reviewer comments note some technical complexity that might limit immediate practical impact for ICML's diverse audience"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "Excellent fit with NeurIPS' interdisciplinary focus - bridges ML theory, systems optimization, and societal implications (copyright, data curation)",
+        "Addresses timely problems in foundation models and large-scale ML, which are core NeurIPS topics",
+        "Strong empirical results with practical applications in data curation and copyright analysis align well with NeurIPS' emphasis on real-world impact",
+        "The paper's insights into pretraining data dynamics and copyright implications directly contribute to NeurIPS' interest in socio-technical aspects of AI"
+      ],
+      "why_it_does_not_fit": [
+        "The core technical contribution (efficient computation methods) is more optimization-focused than some NeurIPS papers that emphasize novel architectures or learning paradigms",
+        "While the copyright implications are discussed, the primary contribution is methodological rather than purely societal/ethical"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Strong alignment with ICLR's focus on deep learning and representation learning - the method is specifically designed for neural network training",
+        "Applications to language models (GPT-2, Pythia) fit well within ICLR's domain interests",
+        "The technical approach leverages gradient-based optimization and backpropagation, core topics for ICLR",
+        "Case studies on language model pretraining directly relevant to ICLR audience"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's primary contribution is more about efficient computation and data valuation than novel deep learning architectures or representation learning methods",
+        "ICLR tends to favor more fundamental advances in deep learning theory or architectures, while this work is more of an efficient implementation advance",
+        "The copyright and societal implications discussion may be less central to ICLR's core focus compared to NeurIPS"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

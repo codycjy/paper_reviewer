@@ -1,0 +1,121 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of leveraging Transformers for inter-agent communication in Traffic Signal Control (TSC), treating it as a sequence problem with spatial dependencies, is highly novel and innovative. This is a fresh perspective compared to existing GNN-based approaches.",
+        "The proposed architecture's ability to handle variable road network topologies and intersection sizes without requiring specific model adaptions is a significant advancement. This addresses a major practical challenge in deploying TSC solutions.",
+        "The automated pipeline for generating diverse road networks and traffic demands for training is a crucial contribution. It effectively tackles the data scarcity issue in real-world TSC and enables robust training and testing for generalizability."
+      ],
+      "weaknesses": [
+        "While the concept of using 'minimal state information' is appealing for real-world deployment, the evaluation does not sufficiently compare its performance against 'full observation' in complex, dynamic, or multi-network scenarios. The claim of sufficiency needs stronger evidence beyond simple networks.",
+        "The experimental evaluation on complex and multi-network scenarios appears somewhat preliminary, with the statement that the 'model has yet to show convergence with these advanced settings.' This limits the confidence in the model's performance and generalizability for the most challenging real-world applications."
+      ],
+      "summary_comment": "This paper presents a truly novel and ambitious approach to Traffic Signal Control by framing inter-agent communication as a sequence problem and utilizing a Transformer architecture. The idea of adopting concepts from point cloud processing for permutation-invariant lane encoding and handling variable network topologies is forward-thinking and addresses a critical limitation in current TSC models. While the evaluation, particularly on complex and multi-network scenarios, seems to be an ongoing effort and some claims about minimal state information need stronger empirical backing, the fundamental novelty and potential impact of this method are exceptional. The automated data generation pipeline is also a standout contribution for enabling future research in this direction. This work pushes the boundaries of how we think about multi-agent coordination in dynamic environments and has the potential to inspire a new generation of TSC algorithms. Minor imperfections in evaluation are acceptable given the strong novelty and significance."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 2,
+        "significance": 3,
+        "evaluation": 2,
+        "clarity": 3
+      },
+      "strengths": [
+        "The paper introduces an interesting architectural idea of using a Transformer for inter-agent communication in Traffic Signal Control, particularly with varying road network topologies, which addresses a practical challenge.",
+        "The proposed method for generating diverse synthetic environments for training is a valuable contribution, reducing reliance on limited real-world data and enhancing the potential for generalizability.",
+        "The idea of investigating the impact of minimal state information and its potential for competitive performance is significant for real-world deployment where expensive sensor technology might not be available."
+      ],
+      "weaknesses": [
+        "The evaluation section (Section 3) is severely lacking in rigor and detail. For instance, in Section 3.1 and 3.2, no quantitative results for actual performance (e.g., average waiting time, throughput) are provided, only qualitative statements about convergence or comparisons to an undefined 'static traffic control baseline'. Figure 5 shows positive results, but it's only for a single 'simple network' and the baseline's specifics are missing. There is no comparison against existing state-of-the-art methods in a fair and standardized manner, which is crucial for establishing the method's efficacy.",
+        "The experimental design lacks crucial details for reproducibility and scientific validity. Specifics on hyperparameter tuning, model architecture details (e.g., number of layers, hidden dimensions for Transformer and MLPs), and the exact environment configurations (e.g., traffic demands for 'simple' vs. 'complex' networks) are either absent or insufficiently described. The claims about 'insignificant performance differences' between models or the 'performance does not seem to depend at all on the state knowledge' are made without presenting the numerical evidence or appropriate statistical analysis to back them up."
+      ],
+      "summary_comment": "This paper presents an interesting architectural approach for multi-agent traffic signal control using Transformers for inter-agent communication and a point-cloud inspired lane encoding. The proposed method for generating synthetic environments is also a good contribution. However, the paper suffers from significant methodological weaknesses in its evaluation. The experimental results are largely qualitative, lack concrete quantitative metrics for performance comparison against established baselines (beyond a poorly defined 'static' one), and do not provide sufficient detail to assess the claims of efficacy or reproducibility. Without a robust and comprehensive evaluation, the claims of the method's effectiveness, particularly in handling varying network topologies and minimal state information, remain unsubstantiated. Therefore, the paper cannot be accepted in its current form."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a highly significant real-world problem (Traffic Signal Control) with substantial economic, environmental, and social impact. The motivation is very strong and clearly articulated.",
+        "The approach of modeling inter-agent communication as a sequence problem using Transformers, combined with a permutation-invariant lane encoding (PointNet-inspired), provides a novel and practical way to handle variable road network topologies encountered in real-world deployments.",
+        "The demonstration that competitive performance can be achieved with 'minimal state information' (e.g., from public map providers) is an excellent practical contribution. This significantly lowers the barrier to real-world implementation by reducing reliance on expensive sensor infrastructure.",
+        "The development of an automated pipeline for generating varied road networks and traffic demands is a crucial practical step towards making these RL approaches robust and generalizable, overcoming data scarcity issues."
+      ],
+      "weaknesses": [
+        "While the 'Multi-Network' section mentions training on several networks, it states that the model 'has yet to show convergence with these advanced settings'. This significantly limits the empirical evidence for the generalization claims, which is a major motivation for the approach. More robust multi-network evaluation and convergence proof is needed.",
+        "The paper lacks comparison to existing state-of-the-art RL-based TSC methods in its primary evaluations (e.g., in Sections 3.1 and 3.2). While some related works are listed, the performance is mostly compared against a static baseline, which makes it hard to gauge the true competitive performance of the proposed Transformer model against other adaptive solutions."
+      ],
+      "summary_comment": "This paper presents a very promising and practically relevant approach to Traffic Signal Control using Multi-Agent Reinforcement Learning and Transformers. The motivation behind tackling dynamic, varied network topologies and reducing reliance on expensive sensor data is extremely strong and directly addresses key barriers to real-world deployment. The architectural choices, particularly the permutation-invariant lane encoding and the Transformer for inter-agent communication, are well-motivated for their robustness to variable inputs. The finding about the sufficiency of minimal state information is highly significant for practitioners. While the experimental evaluation could be strengthened by providing more concrete evidence of generalization across multiple networks (beyond just convergence for a single complex network) and comparing against a broader set of strong baselines, the overall practical impact and clarity of the contributions are excellent. The paper makes a solid advance for the field."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper introduces a novel deep learning architecture using Transformers and PointNet-inspired encoding for multi-agent reinforcement learning (MARL) in Traffic Signal Control (TSC), which aligns well with ICML's focus on deep learning, reinforcement learning, and general machine learning.",
+        "The use of permutation-invariant lane encoding and a Transformer for inter-agent communication to handle variable road network topologies is an innovative technical contribution that fits ICML's interest in novel architectures and methods (Reviewer A, C).",
+        "The development of an automated pipeline for generating diverse synthetic environments addresses a significant practical challenge in RL research, which can be seen as an 'application-driven machine learning' contribution that ICML values.",
+        "The investigation into minimal state information for competitive performance relates to practical deployment challenges and resource efficiency, which fits within the 'trustworthy machine learning' theme regarding reliability and potentially deployment efficiency."
+      ],
+      "why_it_does_not_fit": [
+        "A major weakness, highlighted by all reviewers, is the insufficiency of the experimental evaluation, particularly the lack of quantitative comparisons against strong state-of-the-art RL baselines in complex or multi-network scenarios. ICML typically expects robust empirical validation. (Reviewer B, C)",
+        "The statement that the model 'has yet to show convergence with these advanced settings' for multi-network training significantly limits the confidence in its generalizability, which is a core claim and a key aspect often scrutinized at ICML for novel methods (Reviewer A, C).",
+        "Reviewer B explicitly states that the evaluation section 'is severely lacking in rigor and detail' and that claims are made 'without presenting the numerical evidence or appropriate statistical analysis', which points to a potential lack of methodological rigor required for a top-tier conference like ICML."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper's general topic of multi-agent reinforcement learning for Traffic Signal Control, particularly with its novel architectural contributions (Transformers for inter-agent communication, PointNet-inspired lane encoding), aligns with NeurIPS's broad interest in deep learning, general machine learning, and decision-making/reinforcement learning.",
+        "The concept of handling variable network topologies and the focus on reducing reliance on expensive sensory data for real-world deployment make the work relevant to 'AI/ML for physical sciences' (traffic control being an application in urban infrastructure) and 'data-centric aspects of AI' by providing a robust synthetic data generation pipeline (Reviewer A, C).",
+        "NeurIPS welcomes interdisciplinary submissions and in-depth analysis of existing methods. The paper's novel approach to spatial dependencies in MARL using sequence modeling could be seen as pushing boundaries in how communication is handled in multi-agent systems.",
+        "The emphasis on practical challenges like variable network topologies and minimal state information for deployment addresses 'socio-technical aspects of AI' by considering real-world constraints and impact (Reviewer C)."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the most significant drawback for NeurIPS is the weak and incomplete experimental evaluation. Reviewer B judges the paper as a 'Reject' due to 'significant methodological weaknesses' and the lack of 'concrete quantitative metrics for performance comparison against established baselines'. This level of empirical deficiency is generally not acceptable for NeurIPS.",
+        "The paper's ambition to generalize across diverse environments is not fully substantiated, with the admission that the 'model has yet to show convergence with these advanced settings' (multi-network training), which would raise flags at NeurIPS regarding the robustness of the proposed solution (Reviewer C).",
+        "While the topic is relevant, the overall rigor of the experimental section (e.g., lack of hyperparameter details, lack of statistical analysis mentioned by Reviewer B) falls short of the high standards expected for NeurIPS, particularly for a paper introducing a novel architecture."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core contribution of using a Transformer architecture for inter-agent communication in a multi-agent reinforcement learning context directly aligns with ICLR's strong focus on deep learning, representation learning (permutation-invariant lane encoding), and reinforcement learning (Reviewer A, C).",
+        "The novel modeling of inter-agent spatial dependencies as a 2D sequence problem and the inspiration from point cloud processing for robust representation learning (PointNet encoder) are highly relevant to 'representation learning for computer vision, audio, language, and other modalities' and 'learning on graphs and other geometries & topologies', which are key topics for ICLR (Reviewer A).",
+        "The ability of the architecture to handle variable input sizes (number of intersections and lane types) is a significant technical strength related to robustness and generalizability which ICLR often values in deep learning models (Reviewer A, C).",
+        "The automated data generation pipeline contributes to 'datasets and benchmarks' and supports the training of deep learning models, aligning with ICLR's scope."
+      ],
+      "why_it_does_not_fit": [
+        "Despite the strong architectural novelty, the experimental validation is a substantial weakness. Reviewer B explicitly states that 'no quantitative results for actual performance are provided' for key scenarios and criticizes the lack of comparison against 'existing state-of-the-art methods in a fair and standardized manner'. ICLR, while valuing novelty, still requires rigorous empirical results.",
+        "The admission that the model 'has yet to show convergence with these advanced settings' for multi-network scenarios undermines the claims of generalizability, which is a critical aspect for deep learning models, especially those designed for variable topologies (Reviewer C).",
+        "The lack of detailed experimental setup and parameterization, as pointed out by Reviewer B ('lack[s] crucial details for reproducibility and scientific validity'), would likely be a significant concern for ICLR reviewers who value replicability of deep learning research."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

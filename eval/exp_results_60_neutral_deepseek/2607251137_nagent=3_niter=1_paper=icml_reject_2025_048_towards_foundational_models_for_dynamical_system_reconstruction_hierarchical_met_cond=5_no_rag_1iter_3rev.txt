@@ -1,0 +1,122 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 3,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a fundamentally novel routing mechanism (MixER) that combines K-means clustering with least squares for MoEs in dynamical systems, a significant departure from gradient-based gating.",
+        "Tackles the highly relevant and challenging problem of hierarchical meta-learning across loosely related families of dynamical systems, pushing the boundary beyond single-system meta-learning.",
+        "Provides extensive empirical validation across a diverse set of benchmarks, including synthetic ODEs, classical DSR datasets, and real-world time series, demonstrating the breadth of applicability."
+      ],
+      "weaknesses": [
+        "The method underperforms compared to single meta-learners and naive MoEs on closely related, high-data regimes, indicating a limitation in the current design for certain data types.",
+        "The computational demands and memory footprint are inherently higher than baseline methods, as all experts must be loaded simultaneously, which could limit accessibility."
+      ],
+      "summary_comment": "This paper presents a highly novel and ambitious approach to hierarchical meta-learning for dynamical systems. The core innovation of replacing gradient-based MoE gating with a K-means/least-squares algorithm is creative and addresses a clear limitation. While the evaluation reveals performance trade-offs in high-data regimes, the novelty, potential impact on foundational scientific models, and the compelling demonstration on heterogeneous datasets make it a strong candidate for acceptance. The work opens up important new research directions."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Methodologically sound and rigorous approach, employing proximal alternating minimization and a novel gating update algorithm integrating K-means and least squares, with clear algorithmic descriptions.",
+        "Comprehensive and convincing experimental evaluation across diverse datasets (synthetic ODEs, classical benchmarks, real-world time series) with thorough comparisons against state-of-the-art baselines.",
+        "Honest and detailed analysis of both the strengths and limitations of the proposed method, including underperformance in high-data/high-relatedness regimes, which adds credibility."
+      ],
+      "weaknesses": [
+        "The proposed method is shown to underperform compared to single meta-learners on closely related datasets (e.g., LV, GO, SM), raising questions about its general applicability beyond loosely related families.",
+        "The computational and memory overhead of simultaneously loading all experts is noted as a limitation, which could hinder practical deployment, though the experimental validation appears solid."
+      ],
+      "summary_comment": "The paper presents MixER, a novel Mixture-of-Experts layer for hierarchical dynamical system reconstruction. The work is methodologically rigorous, with a well-motivated custom gating algorithm. The experimental evaluation is extensive, convincing, and includes fair comparisons. The authors provide a balanced and honest discussion of the method's limitations. While the novelty is strong but not groundbreaking, the soundness of the reasoning, the robustness of the evaluation, and the clear articulation of contributions and trade-offs justify acceptance. The paper provides a solid technical contribution to the field of meta-learning for dynamical systems."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 5
+      },
+      "strengths": [
+        "The paper tackles a practically relevant and well-motivated problem: learning across hierarchies of loosely related dynamical systems, which is important for real-world scientific applications where data is heterogeneous and scarce. The need for models that can handle multi-family datasets without manual partitioning is clear.",
+        "The proposed MixER model is a clever and practical integration of MoE with a custom K-means/least squares routing algorithm, addressing a key limitation of gradient-based gating for this domain. The approach is well-explained and motivated by empirical failures of naive methods.",
+        "Extensive and thorough experimental evaluation across multiple datasets (synthetic ODEs, classical benchmarks, and real-world time series) convincingly demonstrates the method's strengths in low-data, loosely related regimes and honestly documents its limitations in high-data, closely related scenarios. The paper provides clear evidence of where the method works and where it does not.",
+        "The paper is exceptionally well-written, with clear structure, good use of figures and tables, and a balanced discussion of both successes and failures. The problem statement, motivation, and solution are communicated with great clarity."
+      ],
+      "weaknesses": [
+        "While the method is shown to work well on loosely related families, it underperforms compared to single meta-learners on classical benchmarks (LV, GO, SM) where data is closely related. The authors acknowledge this, but it limits the immediate general applicability of MixER as a one-size-fits-all solution. The practical utility is somewhat restricted to specific data regimes.",
+        "The computational cost and memory overhead of maintaining multiple experts is mentioned as a limitation, which could hinder deployment in resource-constrained settings despite the promised open-source release. The trade-off between performance gain and resource consumption could be analyzed more quantitatively for practitioners."
+      ],
+      "summary_comment": "This is a strong, practical contribution that addresses a meaningful problem in dynamical system reconstruction. The paper is exceptionally clear, well-motivated, and provides a convincing solution (MixER) with a novel routing mechanism. The experimental evaluation is comprehensive, honest about limitations, and demonstrates real utility in scenarios with hierarchical, loosely related data. While the method is not universally superior (it struggles on highly related datasets), its significance lies in extending meta-learning to handle multi-family learning, a step towards more foundational scientific models. The clarity, sound methodology, and practical relevance justify acceptance."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper addresses meta-learning and mixture of experts, both core topics at ICML",
+        "Focuses on dynamical system reconstruction with applications to scientific domains like neuroscience and physics, aligning with ICML's interest in application-driven ML",
+        "Introduces novel optimization techniques (K-means + least squares routing) that contribute to ML methodology",
+        "Provides extensive experimental validation across multiple datasets, meeting ICML's standards for empirical rigor"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus on dynamical systems reconstruction is somewhat specialized and may not align with ICML's broader ML focus",
+        "Reviewers noted the method underperforms in high-data regimes, which may limit its general appeal to ICML's diverse audience",
+        "The computational overhead of maintaining multiple experts simultaneously may be concerning for ICML's practical ML audience",
+        "While novel, the approach builds heavily on existing meta-learning work rather than introducing fundamentally new ML paradigms"
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "Excellent fit for NeurIPS' interdisciplinary focus, bridging ML with neuroscience, physics, and scientific applications",
+        "Addresses hierarchical learning and foundational models, topics of high interest at NeurIPS",
+        "Novel integration of traditional ML techniques (K-means) with deep learning approaches aligns with NeurIPS' interest in innovative methodologies",
+        "Strong emphasis on interpretability and feature analysis through context vectors, matching NeurIPS' focus on understanding ML systems"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's primary focus on dynamical systems may be too domain-specific for NeurIPS' broad audience",
+        "Limited performance on closely related datasets may reduce the perceived impact for NeurIPS' general ML audience",
+        "While methodologically sound, the approach may not represent the cutting-edge theoretical advancement often favored at NeurIPS"
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "Addresses meta-learning and adaptation, which are relevant to ICLR's focus on representation learning and transfer",
+        "Includes work on deep learning architectures (MoE) and their optimization, fitting ICLR's technical focus",
+        "Applications to time series data and sequential modeling align with ICLR's interests in these domains"
+      ],
+      "why_it_does_not_fit": [
+        "The paper's focus on dynamical systems reconstruction is quite distant from ICLR's core emphasis on deep learning and representation learning",
+        "Limited connection to the main themes of ICLR (deep learning architectures, representation learning, generative models)",
+        "The methodological contribution (K-means routing) may not be seen as sufficiently deep learning-focused for ICLR",
+        "Reviewer concerns about performance in high-data regimes may be particularly problematic for ICLR's standards"
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

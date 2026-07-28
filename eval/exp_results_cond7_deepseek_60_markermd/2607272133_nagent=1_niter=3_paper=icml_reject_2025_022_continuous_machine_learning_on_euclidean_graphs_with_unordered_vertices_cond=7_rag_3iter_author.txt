@@ -1,0 +1,745 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 4,
+        "soundness": 2,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 2
+      },
+      "strengths": [
+        "The paper poses a well-defined and theoretically challenging problem: finding a complete, continuous, invertible, and polynomial-time computable invariant for Euclidean graphs under rigid motions. The problem formulation (Problem 1.1) is clear and addresses a gap in combining expressivity, robustness, and computational feasibility.",
+        "The paper introduces a novel and intricate hierarchy of invariant descriptors (SRD, SPD, PDD, NCD) and corresponding metrics (NBM, EMD). The concept of the Nested Centered Distribution (NCD) appears to be a new theoretical construct designed to achieve completeness.",
+        "The application of the proposed invariants to large molecular databases (QM9, GD) is ambitious. The paper claims a practical demonstration of the theoretical ideas by distinguishing all chemically different molecules in extensive datasets, suggesting potential impact in cheminformatics."
+      ],
+      "weaknesses": [
+        "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+        "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c)."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+          "severity": "major",
+          "evidence": "The definitions for invariants and metrics (e.g., Definition 3.3, 3.5, 4.1, 4.3) introduce complex nested structures with matrices of signed distances, unordered sets, and base sequences. The proofs in Appendix D rely on lemmas from prior work (e.g., Lemma D.2 cites Dekster & Wilker 1987, Lemma D.3 cites it loosely for reconstruction) without full exposition. For instance, the proof sketch for reconstructing the graph from NCD (Proof of Theorem D.1(b), lines 1164-1178) is an informal description, not a formal, verifiable algorithm. The claimed polynomial-time reconstruction (condition 1.1(d)) is not clearly demonstrated; the description in Theorem D.1(a) gives complexity O(n^2 m^{h+1}) for computing NCD, but the reconstruction step, which involves degenerate-case handling and solving systems of equations, is not detailed with a concrete algorithm and its complexity analysis.",
+          "affected_claim": "The core claim of solving Problem 1.1, i.e., providing a complete invariant with all properties (a)-(d), especially invertibility and polynomial-time computability.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c).",
+          "severity": "major",
+          "evidence": "The main experimental results (Table 4, Table 5, Figures 4, 9) do not validate the central theoretical contributions. Table 4 shows high accuracy in predicting chemical elements using only radial distances (SRD), which is a simple task far removed from the challenge of complete graph isomorphism. Table 5 lists a few example pairs distinguished by different invariants, but this is not a comprehensive evaluation over the entire QM9/GD dataset to empirically prove the invariant is complete. There is no runtime analysis for computing the complete NCD(G;3) on the 134k+ QM9 molecules; the claim 'a few hours on a modest desktop' is vague. Figures 4 and 9 show correlations between NCDs of different orders but do not demonstrate the metric's properties or effectiveness for downstream tasks like retrieval or clustering. No comparison is made to standard geometric graph isomorphism methods or ML baselines.",
+          "affected_claim": "The practical significance, evaluation, and claim of solving Problem 1.1 for real-world molecular databases.",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "fail",
+          "justification": "The rebuttal reiterates the theoretical basis but does not resolve the concern regarding the submitted paper's lack of self-contained, rigorous proofs. The author states that 'the reconstruction algorithm explicitly uses' a standard distance geometry result and refers to lines in the appendix. However, the referenced lines (1164-1178) remain an informal sketch, not a concrete, verifiable algorithm with a clear complexity analysis that handles all cases (including degeneracies). The claim that they 'will revise the text to make this process more explicit' is a promise of future work, not evidence that the current submission contains the missing rigorous exposition. The concern about soundness remains unresolved."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "The rebuttal reaffirms the novelty; the initial assessment stands."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The author agrees that direct validation is needed and outlines experiments they 'will add,' including runtime plots, statistical completeness checks, Lipschitz tests, and baseline comparisons. These are not present in the submitted manuscript. Therefore, the paper does not currently demonstrate a significant, validated contribution."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The rebuttal proposes adding systematic experiments but does not identify any existing evidence in the paper that addresses the deficiencies. The statement 'We will add: (1) runtime plots... (2) a statistical report... (3) Lipschitz continuity tests... (4) comparisons...' confirms that the necessary empirical validation is absent from the current submission. The evaluation gate remains failed."
+        },
+        "presentation": {
+          "result": "fail",
+          "justification": "The author acknowledges the need for clearer presentation and commits to revisions (simplifying notation, adding examples, fixing formatting). The response does not clarify or reinterpret the existing convoluted text in a way that resolves the readability issue for the reviewer. The promise to improve does not change the assessment of the submitted work."
+        }
+      },
+      "summary_comment": "The author's second rebuttal provides a clearer restatement of the theoretical rationale and a more specific list of planned experimental additions. However, it again consists largely of promises for future revisions ('we will revise,' 'we will add'). According to the rebuttal assessment rules, these promises do not resolve the concerns about the submitted paper. The critical issues remain: (1) The theoretical development in the appendices lacks the clarity and self-contained rigor needed to confidently verify the claimed solution to Problem 1.1. (2) The experimental section does not contain the systematic validation required to support the claims of completeness, polynomial-time performance, Lipschitz continuity, or practical significance. As the paper stands, it does not meet the acceptance gates for soundness, significance, evaluation, or presentation. The decision is Reject."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 4,
+      "why_it_fits": [
+        "The paper addresses a fundamental problem in geometric machine learning (complete invariant for Euclidean graphs) which aligns with ICML's focus on core ML theory and algorithms.",
+        "The work develops polynomial-time algorithms for graph invariants, which fits ICML's interest in computationally efficient methods.",
+        "The application to molecular graphs connects to ICML's application-driven ML track, particularly in scientific domains like chemistry."
+      ],
+      "why_it_does_not_fit": [
+        "The theoretical development lacks rigor and clarity in proofs (as noted by reviewers), which contradicts ICML's emphasis on sound theoretical foundations.",
+        "Experimental evaluation is weak and doesn't properly validate the theoretical claims, which is crucial for ICML's standards.",
+        "The paper's presentation is dense and notation-heavy, making it difficult to assess its contributions clearly."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The problem of geometric graph representation learning aligns well with NeurIPS' interests in geometric deep learning and equivariant representations.",
+        "The focus on continuous, Lipschitz-stable invariants connects to NeurIPS' interest in robust and stable learning methods.",
+        "Application to molecular data fits NeurIPS' interdisciplinary focus on AI for science."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the theoretical soundness issues and weak experimental validation would be concerns for NeurIPS.",
+        "The paper lacks comparison to modern neural network approaches for geometric learning, which are more common at NeurIPS.",
+        "The computational complexity (O(m^{n+1})) may be prohibitive for practical applications, limiting its impact."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The focus on complete invariants for geometric graphs strongly aligns with ICLR's emphasis on representation learning.",
+        "The theoretical framework for Euclidean graph embeddings connects to ICLR's interests in geometric and topological aspects of deep learning.",
+        "The application to molecular representation learning fits ICLR's growing focus on scientific applications of ML."
+      ],
+      "why_it_does_not_fit": [
+        "The paper doesn't use or connect to deep learning methods, which are central to ICLR's focus.",
+        "The approach is more classical/algorithmic rather than learning-based, which may limit its appeal to ICLR audience.",
+        "Experimental validation is insufficient for ICLR's standards, particularly the lack of comparison to neural network baselines."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper poses a well-defined and theoretically challenging problem: finding a complete, continuous, invertible, and polynomial-time computable invariant for Euclidean graphs under rigid motions. The problem formulation (Problem 1.1) is clear and addresses a gap in combining expressivity, robustness, and computational feasibility.",
+              "The paper introduces a novel and intricate hierarchy of invariant descriptors (SRD, SPD, PDD, NCD) and corresponding metrics (NBM, EMD). The concept of the Nested Centered Distribution (NCD) appears to be a new theoretical construct designed to achieve completeness.",
+              "The application of the proposed invariants to large molecular databases (QM9, GD) is ambitious. The paper claims a practical demonstration of the theoretical ideas by distinguishing all chemically different molecules in extensive datasets, suggesting potential impact in cheminformatics."
+            ],
+            "weaknesses": [
+              "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+              "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c)."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+                "severity": "major",
+                "evidence": "The definitions for invariants and metrics (e.g., Definition 3.3, 3.5, 4.1, 4.3) introduce complex nested structures with matrices of signed distances, unordered sets, and base sequences. The proofs in Appendix D rely on lemmas from prior work (e.g., Lemma D.2 cites Dekster & Wilker 1987, Lemma D.3 cites it loosely for reconstruction) without full exposition. For instance, the proof sketch for reconstructing the graph from NCD (Proof of Theorem D.1(b), lines 1164-1178) is an informal description, not a formal, verifiable algorithm. The claimed polynomial-time reconstruction (condition 1.1(d)) is not clearly demonstrated; the description in Theorem D.1(a) gives complexity O(n^2 m^{h+1}) for computing NCD, but the reconstruction step, which involves degenerate-case handling and solving systems of equations, is not detailed with a concrete algorithm and its complexity analysis.",
+                "affected_claim": "The core claim of solving Problem 1.1, i.e., providing a complete invariant with all properties (a)-(d), especially invertibility and polynomial-time computability.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c).",
+                "severity": "major",
+                "evidence": "The main experimental results (Table 4, Table 5, Figures 4, 9) do not validate the central theoretical contributions. Table 4 shows high accuracy in predicting chemical elements using only radial distances (SRD), which is a simple task far removed from the challenge of complete graph isomorphism. Table 5 lists a few example pairs distinguished by different invariants, but this is not a comprehensive evaluation over the entire QM9/GD dataset to empirically prove the invariant is complete. There is no runtime analysis for computing the complete NCD(G;3) on the 134k+ QM9 molecules; the claim 'a few hours on a modest desktop' is vague. Figures 4 and 9 show correlations between NCDs of different orders but do not demonstrate the metric's properties or effectiveness for downstream tasks like retrieval or clustering. No comparison is made to standard geometric graph isomorphism methods or ML baselines.",
+                "affected_claim": "The practical significance, evaluation, and claim of solving Problem 1.1 for real-world molecular databases.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The soundness of the central theoretical results is in serious doubt. The paper proposes a complex invariant and reconstruction procedure but fails to provide clear, self-contained, and rigorous proofs. The exposition is dense, definitions are intricate, and the proofs in the appendix rely heavily on external lemmas without full justification. The polynomial-time reconstruction algorithm is only sketchily described, making its correctness and complexity hard to assess. Given the high stakes of claiming a solution to a problem with connections to graph isomorphism, the lack of clarity and rigorous proof undermines confidence in the technical correctness."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The paper presents a novel approach. The formulation of Problem 1.1 as a package of completeness, Lipschitz continuity, invertibility, and polynomial-time computability is distinctive. The proposed hierarchy of invariants culminating in the Nested Centered Distribution (NCD) appears to be a new theoretical construction, not directly covered in the related work, which surveys GNNs, graph kernels, and point cloud learning but not this specific invariant structure aiming for full geometric completeness."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "If the claims were fully substantiated, the significance would be high as it would provide a foundational tool for geometric machine learning on unordered data. However, due to the major weaknesses in soundness and evaluation, the demonstrated contribution is uncertain. The experimental results are insufficient to establish that the method meaningfully advances the field over existing geometric deep learning or graph isomorphism techniques. The application to molecular databases is presented but not rigorously benchmarked or compared against state-of-the-art methods."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The evaluation is inadequate. It does not provide a systematic empirical validation of the core theoretical claims. There are no experiments measuring the Lipschitz constant, the accuracy of the reconstruction algorithm, the scalability of computing NCD for large m, or a comparison of the NBM metric against other distances for tasks like nearest-neighbor search or clustering. The experiments on molecular data focus on a tangential task (element prediction) and offer only anecdotal evidence for the main claim of distinguishing all molecules."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The paper is not clearly written. The definitions are notationally heavy and difficult to parse. The logical flow from motivations to definitions to theorems is convoluted. Key concepts (like the 'strength' σ, the 'max metric', the nested construction) are introduced rapidly without sufficient intuition. The appendix is lengthy and dense, suggesting the core ideas are not presented with sufficient clarity in the main body. The paper contains formatting errors and incomplete sentences (e.g., page 2, line 114: 'not for a finite size[Pozdnyakov...]'), further reducing readability."
+              }
+            },
+            "summary_comment": "The paper tackles an important and theoretically well-motivated problem: developing a complete, continuous, invertible, and polynomial-time computable invariant for Euclidean graphs with unordered vertices. The proposed Nested Centered Distribution is a novel theoretical construct. However, the submission fails to meet the standards of a top-tier machine learning conference due to major weaknesses. (1) Soundness: The theoretical development is not presented with sufficient rigor and clarity; the proofs are sketchy and rely on external references, making it impossible to reliably assess the correctness of the central claims. (2) Evaluation: The experimental validation is weak and does not convincingly demonstrate the solution to Problem 1.1. The experiments on molecular databases focus on a simple subtask and lack the systematic benchmarking needed to support the paper's ambitious claims. (3) Presentation: The writing is dense, notationally complex, and often unclear, hindering the assessment of the work. While the idea is interesting, the combination of unverified theoretical soundness, insufficient empirical evidence, and poor presentation leads to a reject decision."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper poses a well-defined and theoretically challenging problem: finding a complete, continuous, invertible, and polynomial-time computable invariant for Euclidean graphs under rigid motions. The problem formulation (Problem 1.1) is clear and addresses a gap in combining expressivity, robustness, and computational feasibility.",
+              "The paper introduces a novel and intricate hierarchy of invariant descriptors (SRD, SPD, PDD, NCD) and corresponding metrics (NBM, EMD). The concept of the Nested Centered Distribution (NCD) appears to be a new theoretical construct designed to achieve completeness.",
+              "The application of the proposed invariants to large molecular databases (QM9, GD) is ambitious. The paper claims a practical demonstration of the theoretical ideas by distinguishing all chemically different molecules in extensive datasets, suggesting potential impact in cheminformatics."
+            ],
+            "weaknesses": [
+              "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+              "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c)."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+                "severity": "major",
+                "evidence": "The definitions for invariants and metrics (e.g., Definition 3.3, 3.5, 4.1, 4.3) introduce complex nested structures with matrices of signed distances, unordered sets, and base sequences. The proofs in Appendix D rely on lemmas from prior work (e.g., Lemma D.2 cites Dekster & Wilker 1987, Lemma D.3 cites it loosely for reconstruction) without full exposition. For instance, the proof sketch for reconstructing the graph from NCD (Proof of Theorem D.1(b), lines 1164-1178) is an informal description, not a formal, verifiable algorithm. The claimed polynomial-time reconstruction (condition 1.1(d)) is not clearly demonstrated; the description in Theorem D.1(a) gives complexity O(n^2 m^{h+1}) for computing NCD, but the reconstruction step, which involves degenerate-case handling and solving systems of equations, is not detailed with a concrete algorithm and its complexity analysis.",
+                "affected_claim": "The core claim of solving Problem 1.1, i.e., providing a complete invariant with all properties (a)-(d), especially invertibility and polynomial-time computability.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c).",
+                "severity": "major",
+                "evidence": "The main experimental results (Table 4, Table 5, Figures 4, 9) do not validate the central theoretical contributions. Table 4 shows high accuracy in predicting chemical elements using only radial distances (SRD), which is a simple task far removed from the challenge of complete graph isomorphism. Table 5 lists a few example pairs distinguished by different invariants, but this is not a comprehensive evaluation over the entire QM9/GD dataset to empirically prove the invariant is complete. There is no runtime analysis for computing the complete NCD(G;3) on the 134k+ QM9 molecules; the claim 'a few hours on a modest desktop' is vague. Figures 4 and 9 show correlations between NCDs of different orders but do not demonstrate the metric's properties or effectiveness for downstream tasks like retrieval or clustering. No comparison is made to standard geometric graph isomorphism methods or ML baselines.",
+                "affected_claim": "The practical significance, evaluation, and claim of solving Problem 1.1 for real-world molecular databases.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The author's rebuttal acknowledges the issue but does not resolve it based on the submitted material. The response states the definitions and proofs are 'rigorous' but promises to revise the text to provide 'more intuitive explanations, step-by-step proofs, and a clearer description.' This is a promise of future revision, not evidence that the current submission contains the missing rigorous proofs and clear algorithm description. The reviewer's concern about the lack of self-contained, verifiable proofs for core claims remains entirely valid for the submitted paper."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The rebuttal reaffirms the novelty of the problem formulation and the NCD construct. The reviewer's initial assessment of novelty remains unchanged."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The author agrees the experimental validation needs strengthening and promises to add systematic tests for completeness, runtime, and Lipschitz continuity. However, these are not present in the submitted paper. The current evaluation lacks the evidence required to substantiate the method's significance and practical impact, so the gate remains failed."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The rebuttal proposes new experiments but does not point to any existing evidence in the paper that addresses the weaknesses. The author explicitly states they 'will add' runtime benchmarks, systematic completeness tests, and Lipschitz continuity analysis. Therefore, the concerns about inadequate experimental validation are unresolved for the current submission."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The rebuttal acknowledges the presentation is unclear and promises revisions. It does not clarify or reinterpret the existing, convoluted text in a way that resolves the readability issue for the reviewer. The promise to improve definitions and fix formatting is a commitment to future work, not a resolution of the flaw in the submitted manuscript."
+              }
+            },
+            "summary_comment": "The author's rebuttal is constructive and cooperative, acknowledging the key weaknesses in theoretical clarity and experimental validation and outlining plans for revision. However, following the assessment rules, a rebuttal must resolve a concern by pointing to specific, checkable evidence in the submitted paper or by providing a logical clarification that corrects a reviewer misunderstanding. The author's responses largely consist of promises for future improvements (e.g., 'we will add,' 'we will revise,' 'we will provide'). These do not alter the assessment of the submitted work. Therefore, all major weaknesses and acceptance gate failures stand as originally identified. The paper, in its current form, lacks the rigorous theoretical presentation and convincing empirical validation required for acceptance at a top-tier conference. The decision remains Reject."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"The central claims of soundness are insufficiently supported due to dense, notation-heavy definitions and lack of rigorous, self-contained proofs for core lemmas and theorems.\",\n        \"The experimental evaluation is weak and does not convincingly support the novel contributions, focusing on tangential tasks (e.g., element prediction with SRD) and lacking systematic validation of completeness, runtime, or Lipschitz continuity.\",\n        \"The presentation is unclear, with convoluted definitions, formatting errors, and insufficient intuition for key concepts.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Definitions in Sections 3, 4, and Appendix B are dense and overly reliant on notation, making them difficult to parse.\",\n          \"location\": \"Sections 3, 4, Appendix B\",\n          \"explanation\": \"The definitions (e.g., Def. 3.3, 3.5, 4.1, 4.3, B.1–B.6) introduce nested structures, matrices of signed distances, and base sequences with minimal intuitive explanation, hindering readability.\"\n        },\n        {\n          \"concern\": \"Theoretical proofs in Appendix D rely on external references without full exposition, making soundness hard to verify.\",\n          \"location\": \"Appendix D (e.g., Lemmas D.2, D.3)\",\n          \"explanation\": \"Critical steps (e.g., point reconstruction via Lemma D.2 from Dekster & Wilker 1987) are not self-contained, and the reconstruction algorithm (Theorem D.1(b)) is described informally without a concrete polynomial-time procedure.\"\n        },\n        {\n          \"concern\": \"Experimental results do not validate core claims: no runtime for NCD computation, no systematic test of completeness on QM9/GD, and no demonstration of Lipschitz continuity.\",\n          \"location\": \"Section 5, Table 4, Table 5, Figures 4, 9\",\n          \"explanation\": \"Table 4 focuses on element prediction with SRD, not graph isomorphism; Table 5 provides anecdotal examples without full-dataset validation; Figures 4/9 show correlations but not metric properties or scalability.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of rigorous, self-contained proofs for core theoretical claims (completeness, invertibility, polynomial-time reconstruction).\",\n          \"proposed_change\": \"Provide detailed, step-by-step proofs in the main text or appendix for key results (e.g., Theorem 4.6/D.1), including a concrete algorithm for reconstruction from NCD and its time complexity analysis, reducing reliance on external lemmas.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Inadequate experimental validation of completeness, runtime, and Lipschitz continuity.\",\n          \"proposed_change\": \"Conduct systematic experiments: (1) measure time to compute NCD(G;n) for varying m on QM9/GD; (2) test whether NCD distinguishes all non-isomorphic graphs in these databases; (3) validate Lipschitz continuity by perturbing graphs and measuring NBM/EMD changes.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Poor presentation and clarity of definitions.\",\n          \"proposed_change\": \"Rewrite definitions (e.g., NCD, NBM) with more intuitive explanations, examples, and diagrams; fix formatting errors; streamline the narrative to improve readability.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough and constructive feedback. We acknowledge that the theoretical presentation and experimental validation need strengthening to meet the high standards of ICML. Below, we address the concerns point by point.\\n\\n**Soundness and Theoretical Clarity:** The definitions and proofs in Sections 3–4 and Appendices B–D are indeed technical, but they are rigorous and build on established geometric principles. For example, the reconstruction process in Theorem 4.6(b)/D.1(b) uses the fact that a point in ℝⁿ is uniquely determined by its distances to n+1 affinely independent points (a classic result in distance geometry), and the polynomial-time complexity follows from the explicit algorithmic steps (e.g., O(n³) for solving linear systems per vertex). We will revise the text to provide more intuitive explanations, step-by-step proofs, and a clearer description of the reconstruction algorithm, reducing reliance on external references where possible.\\n\\n**Experimental Evaluation:** The experiments in Section 5 were intended to demonstrate the practical utility of the invariant hierarchy, but we agree that they should more directly validate the core claims. We will add: (1) runtime benchmarks for computing NCD(G;3) on QM9/GD subsets with varying m; (2) a systematic test showing that NCD distinguishes all chemically distinct molecules in these databases (e.g., by computing NBM for all pairs and confirming no false positives/negatives); (3) an analysis of Lipschitz continuity by measuring max NBM changes under ε-perturbations. These additions will substantiate our claims of completeness, polynomial-time computability, and robustness.\\n\\n**Presentation:** We will revise the manuscript to improve clarity: simplifying notations, adding illustrative examples (e.g., for NCD construction), and fixing formatting issues. We will also move highly technical proofs to a supplementary document to maintain focus in the main text.\\n\\nWe believe these revisions will fully address the reviewer's concerns and demonstrate that our work provides a sound, novel, and significant solution to Problem 1.1.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 4,
+              "soundness": 2,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 2
+            },
+            "strengths": [
+              "The paper poses a well-defined and theoretically challenging problem: finding a complete, continuous, invertible, and polynomial-time computable invariant for Euclidean graphs under rigid motions. The problem formulation (Problem 1.1) is clear and addresses a gap in combining expressivity, robustness, and computational feasibility.",
+              "The paper introduces a novel and intricate hierarchy of invariant descriptors (SRD, SPD, PDD, NCD) and corresponding metrics (NBM, EMD). The concept of the Nested Centered Distribution (NCD) appears to be a new theoretical construct designed to achieve completeness.",
+              "The application of the proposed invariants to large molecular databases (QM9, GD) is ambitious. The paper claims a practical demonstration of the theoretical ideas by distinguishing all chemically different molecules in extensive datasets, suggesting potential impact in cheminformatics."
+            ],
+            "weaknesses": [
+              "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+              "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c)."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The central claims of soundness are insufficiently supported. Definitions in Sections 3, 4, and Appendix B are dense, overly reliant on notation, and lack clarity and careful justification. The theoretical proofs in the appendix, while extensive, are difficult to follow, and the paper lacks rigorous, self-contained proofs for core lemmas like the completeness of NCD (Theorem 4.6/D.1) and the polynomial-time reconstruction algorithm. Instead, it heavily references prior works for critical steps (like Lemmas D.2, D.3). This makes the soundness of the central results highly uncertain.",
+                "severity": "major",
+                "evidence": "The definitions for invariants and metrics (e.g., Definition 3.3, 3.5, 4.1, 4.3) introduce complex nested structures with matrices of signed distances, unordered sets, and base sequences. The proofs in Appendix D rely on lemmas from prior work (e.g., Lemma D.2 cites Dekster & Wilker 1987, Lemma D.3 cites it loosely for reconstruction) without full exposition. For instance, the proof sketch for reconstructing the graph from NCD (Proof of Theorem D.1(b), lines 1164-1178) is an informal description, not a formal, verifiable algorithm. The claimed polynomial-time reconstruction (condition 1.1(d)) is not clearly demonstrated; the description in Theorem D.1(a) gives complexity O(n^2 m^{h+1}) for computing NCD, but the reconstruction step, which involves degenerate-case handling and solving systems of equations, is not detailed with a concrete algorithm and its complexity analysis.",
+                "affected_claim": "The core claim of solving Problem 1.1, i.e., providing a complete invariant with all properties (a)-(d), especially invertibility and polynomial-time computability.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The experimental evaluation is weak and does not convincingly support the novel contributions or the stated solution to Problem 1.1. The performance on QM9/GD (Table 4, Table 5) focuses on element prediction using simple SRD, a task not central to the paper's main problem. The key claims—'distinguish all chemically different graphs' and 'few hours on a modest desktop'—lack crucial experimental detail: no concrete runtime for computing NCD(G;n) on large m is reported, no comparison to baseline isomorphism algorithms (e.g., geometric or combinatorial), and the evidence for 'all graphs distinguished' is anecdotal (Table 5) rather than a systematic statistical report. The experiments do not show the Lipschitz property claimed in Theorem 4.6(c).",
+                "severity": "major",
+                "evidence": "The main experimental results (Table 4, Table 5, Figures 4, 9) do not validate the central theoretical contributions. Table 4 shows high accuracy in predicting chemical elements using only radial distances (SRD), which is a simple task far removed from the challenge of complete graph isomorphism. Table 5 lists a few example pairs distinguished by different invariants, but this is not a comprehensive evaluation over the entire QM9/GD dataset to empirically prove the invariant is complete. There is no runtime analysis for computing the complete NCD(G;3) on the 134k+ QM9 molecules; the claim 'a few hours on a modest desktop' is vague. Figures 4 and 9 show correlations between NCDs of different orders but do not demonstrate the metric's properties or effectiveness for downstream tasks like retrieval or clustering. No comparison is made to standard geometric graph isomorphism methods or ML baselines.",
+                "affected_claim": "The practical significance, evaluation, and claim of solving Problem 1.1 for real-world molecular databases.",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "fail",
+                "justification": "The rebuttal reiterates the theoretical basis but does not resolve the concern regarding the submitted paper's lack of self-contained, rigorous proofs. The author states that 'the reconstruction algorithm explicitly uses' a standard distance geometry result and refers to lines in the appendix. However, the referenced lines (1164-1178) remain an informal sketch, not a concrete, verifiable algorithm with a clear complexity analysis that handles all cases (including degeneracies). The claim that they 'will revise the text to make this process more explicit' is a promise of future work, not evidence that the current submission contains the missing rigorous exposition. The concern about soundness remains unresolved."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The rebuttal reaffirms the novelty; the initial assessment stands."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The author agrees that direct validation is needed and outlines experiments they 'will add,' including runtime plots, statistical completeness checks, Lipschitz tests, and baseline comparisons. These are not present in the submitted manuscript. Therefore, the paper does not currently demonstrate a significant, validated contribution."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The rebuttal proposes adding systematic experiments but does not identify any existing evidence in the paper that addresses the deficiencies. The statement 'We will add: (1) runtime plots... (2) a statistical report... (3) Lipschitz continuity tests... (4) comparisons...' confirms that the necessary empirical validation is absent from the current submission. The evaluation gate remains failed."
+              },
+              "presentation": {
+                "result": "fail",
+                "justification": "The author acknowledges the need for clearer presentation and commits to revisions (simplifying notation, adding examples, fixing formatting). The response does not clarify or reinterpret the existing convoluted text in a way that resolves the readability issue for the reviewer. The promise to improve does not change the assessment of the submitted work."
+              }
+            },
+            "summary_comment": "The author's second rebuttal provides a clearer restatement of the theoretical rationale and a more specific list of planned experimental additions. However, it again consists largely of promises for future revisions ('we will revise,' 'we will add'). According to the rebuttal assessment rules, these promises do not resolve the concerns about the submitted paper. The critical issues remain: (1) The theoretical development in the appendices lacks the clarity and self-contained rigor needed to confidently verify the claimed solution to Problem 1.1. (2) The experimental section does not contain the systematic validation required to support the claims of completeness, polynomial-time performance, Lipschitz continuity, or practical significance. As the paper stands, it does not meet the acceptance gates for soundness, significance, evaluation, or presentation. The decision is Reject."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Theoretical soundness is undermined by dense, unclear definitions and lack of self-contained, rigorous proofs for core claims (completeness, invertibility, polynomial-time reconstruction).\",\n        \"Experimental evaluation is inadequate: lacks systematic validation of completeness, runtime, Lipschitz continuity, and comparisons to baselines.\",\n        \"Presentation is poor, with convoluted definitions and formatting errors.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Definitions (e.g., NCD, NBM) are notation-heavy and lack intuitive explanations, hindering verification.\",\n          \"location\": \"Sections 3, 4, Appendix B\",\n          \"explanation\": \"The definitions rely on nested structures (e.g., Def. 3.5, B.2) and complex metrics (Def. 4.3, B.5) without sufficient examples or diagrams to aid understanding.\"\n        },\n        {\n          \"concern\": \"Proofs for core theorems (e.g., Thm. 4.6/D.1) are sketchy and depend on external lemmas without full exposition.\",\n          \"location\": \"Appendix D (e.g., proof of Thm. D.1(b))\",\n          \"explanation\": \"The reconstruction algorithm is described informally (lines 1164–1178), and critical steps (e.g., handling degenerate cases via Lemma D.2/D.3) are not self-contained, making soundness hard to assess.\"\n        },\n        {\n          \"concern\": \"Experiments focus on tangential tasks (element prediction with SRD) and lack evidence for completeness, runtime, or Lipschitz continuity.\",\n          \"location\": \"Section 5, Tables 4–5, Figures 4, 9\",\n          \"explanation\": \"Table 4 shows SRD-based element prediction, not graph isomorphism; Table 5 provides anecdotal examples without full-dataset validation; no runtime data for NCD computation or Lipschitz tests are provided.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Theoretical proofs are not self-contained or rigorous enough.\",\n          \"proposed_change\": \"Provide detailed, step-by-step proofs in the main text or appendix for all key results, including a concrete algorithm for reconstruction from NCD and its complexity analysis, reducing reliance on external references.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Experimental validation is insufficient for core claims.\",\n          \"proposed_change\": \"Add systematic experiments: (1) runtime benchmarks for NCD computation on QM9/GD subsets; (2) test of completeness by checking all pairs of non-isomorphic graphs; (3) validation of Lipschitz continuity via controlled perturbations; (4) comparisons to geometric graph isomorphism baselines.\",\n          \"requires_new_experiment_or_analysis\": true\n        },\n        {\n          \"concern\": \"Definitions and presentation are unclear.\",\n          \"proposed_change\": \"Revise definitions with intuitive explanations, examples, and diagrams; fix formatting errors; streamline the narrative to improve readability.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their detailed feedback and acknowledge that the current presentation and experimental validation need improvement. However, we emphasize that the theoretical foundations are sound and based on established geometric principles. Below, we clarify key points to address the concerns without relying on promises of future work.\\n\\n**Theoretical Soundness:** The completeness and invertibility of NCD (Thm. 4.6(b)/D.1(b)) follow from the fact that a point in ℝⁿ is uniquely determined by its distances to n+1 affinely independent points (a standard result in distance geometry). The reconstruction algorithm explicitly uses this: for a base sequence A of n vertices spanning ℝⁿ, any other vertex q is reconstructed by solving a linear system from its distances to A ∪ {0} (via Gram matrix decomposition, Lemma D.2). The time complexity O(n²mʰ⁺¹) in Thm. 4.6(a)/D.1(a) accounts for computing all NCD components, including O(n³) per base sequence for determinant/Gram matrix operations. We will revise the text to make this process more explicit and self-contained.\\n\\n**Experimental Validation:** While the submitted experiments focused on showcasing the invariant hierarchy's utility, we agree that direct validation of core claims is needed. We will add: (1) runtime plots for NCD(G;3) computation vs. m on QM9 subsets; (2) a statistical report confirming that NCD distinguishes all non-isomorphic graphs in QM9 (by checking NBM > 0 for all pairs); (3) Lipschitz continuity tests by measuring max ΔNBM under ε-perturbations; (4) comparisons to baseline methods (e.g., geometric hashing) for isomorphism detection. These additions will empirically substantiate our claims.\\n\\n**Presentation:** We will revise the manuscript to simplify notations, add illustrative examples (e.g., step-by-step NCD construction for a small graph), and fix formatting issues to improve clarity.\\n\\nWe believe these clarifications and planned revisions demonstrate that our work meets the high standards of ICML, providing a novel, sound, and significant solution to Problem 1.1.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_82be8980ac96",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/icml_reject_2025_022_continuous_machine_learning_on_euclidean_graphs_with_unordered_vertices.md",
+    "target_paper_summary": {
+      "paper_id": "paper_82be8980ac96",
+      "title": "Continuous Machine Learning On Euclidean Graphs With Unordered Vertices",
+      "abstract": "000 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 Molecular graphs can change their chemical properties under non-rigid deformations in Euclidean space. Hence it is vitally important to distinguish rigid classes of molecular graphs under compositions of translations and rotations. Also, robust outputs of machine learning on molecular graphs embedded in Euclidean space should continuously change under perturbations, motivated by atomic vibrations and experimental noise. We developed a complete invariant that can be inverted back to an embedded graph, uniquely under rigid motion, and has a Lipschitz continuous distance satisfying all metric axioms. For a fixed dimension, the invariant and metric can be computed in polynomial time of the number m of unordered vertices and hence avoiding exponentially many permutations. The new invariants distinguish all chemically different graphs in the world's largest databases of 3D molecules in a few hours on a modest desktop.",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_4f56be447",
+        "title": "Dynamic Graph CNN for Learning on Point Clouds",
+        "authors": [
+          "Yue Wang",
+          "Yongbin Sun",
+          "Ziwei Liu",
+          "Sanjay E. Sarma",
+          "Michael M. Bronstein",
+          "Justin Solomon"
+        ],
+        "year": 2019,
+        "publication_date": "2019-10-10",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "Point clouds provide a flexible geometric representation suitable for countless applications in computer graphics; they also comprise the raw output of most 3D data acquisition devices. While hand-designed features on point clouds have long been proposed in graphics and vision, however, the recent overwhelming success of convolutional neural networks (CNNs) for image analysis suggests the value of adapting insight from CNN to the point cloud world. Point clouds inherently lack topological information, so designing a model to recover topology can enrich the representation power of point clouds. To this end, we propose a new neural network module dubbed EdgeConv suitable for CNN-based high-level tasks on point clouds, including classification and segmentation. EdgeConv acts on graphs dynamically computed in each layer of the network. It is differentiable and can be plugged into existing architectures. Compared to existing modules operating in extrinsic space or treating each point independently, EdgeConv has several appealing properties: It incorporates local neighborhood information; it can be stacked applied to learn global shape properties; and in multi-layer systems affinity in feature space captures semantic characteristics over potentially long distances in the original embedding. We show the performance of our model on standard benchmarks, including ModelNet40, ShapeNetPart, and S3DIS.",
+        "url": "https://doi.org/10.1145/3326362",
+        "doi": "https://doi.org/10.1145/3326362",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2979750740"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 6816
+      },
+      {
+        "paper_id": "rw_002_c1b55a83f",
+        "title": "Machine learning &amp; artificial intelligence in the quantum domain: a review of recent progress",
+        "authors": [
+          "Vedran Dunjko",
+          "Hans J. Briegel"
+        ],
+        "year": 2018,
+        "publication_date": "2018-03-05",
+        "venue": "Reports on Progress in Physics",
+        "abstract": "Quantum information technologies, on the one hand, and intelligent learning systems, on the other, are both emergent technologies that are likely to have a transformative impact on our society in the future. The respective underlying fields of basic research-quantum information versus machine learning (ML) and artificial intelligence (AI)-have their own specific questions and challenges, which have hitherto been investigated largely independently. However, in a growing body of recent work, researchers have been probing the question of the extent to which these fields can indeed learn and benefit from each other. Quantum ML explores the interaction between quantum computing and ML, investigating how results and techniques from one field can be used to solve the problems of the other. Recently we have witnessed significant breakthroughs in both directions of influence. For instance, quantum computing is finding a vital application in providing speed-ups for ML problems, critical in our 'big data' world. Conversely, ML already permeates many cutting-edge technologies and may become instrumental in advanced quantum technologies. Aside from quantum speed-up in data analysis, or classical ML optimization used in quantum experiments, quantum enhancements have also been (theoretically) demonstrated for interactive learning tasks, highlighting the potential of quantum-enhanced learning agents. Finally, works exploring the use of AI for the very design of quantum experiments and for performing parts of genuine research autonomously, have reported their first successes. Beyond the topics of mutual enhancement-exploring what ML/AI can do for quantum physics and vice versa-researchers have also broached the fundamental issue of quantum generalizations of learning and AI concepts. This deals with questions of the very meaning of learning and intelligence in a world that is fully described by quantum mechanics. In this review, we describe the main ideas, recent developments and progress in a broad spectrum of research investigating ML and AI in the quantum domain.",
+        "url": "https://doi.org/10.1088/1361-6633/aab406",
+        "doi": "https://doi.org/10.1088/1361-6633/aab406",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2792315573"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1046
+      },
+      {
+        "paper_id": "rw_003_ddd73c06f",
+        "title": "Graph-Based Deep Learning for Medical Diagnosis and Analysis: Past, Present and Future",
+        "authors": [
+          "David Ahmedt‐Aristizabal",
+          "Mohammad Ali Armin",
+          "Simon Denman",
+          "Clinton Fookes",
+          "Lars Petersson"
+        ],
+        "year": 2021,
+        "publication_date": "2021-07-12",
+        "venue": "Sensors",
+        "abstract": "With the advances of data-driven machine learning research, a wide variety of prediction problems have been tackled. It has become critical to explore how machine learning and specifically deep learning methods can be exploited to analyse healthcare data. A major limitation of existing methods has been the focus on grid-like data; however, the structure of physiological recordings are often irregular and unordered, which makes it difficult to conceptualise them as a matrix. As such, graph neural networks have attracted significant attention by exploiting implicit information that resides in a biological system, with interacting nodes connected by edges whose weights can be determined by either temporal associations or anatomical junctions. In this survey, we thoroughly review the different types of graph architectures and their applications in healthcare. We provide an overview of these methods in a systematic manner, organized by their domain of application including functional connectivity, anatomical structure, and electrical-based analysis. We also outline the limitations of existing techniques and discuss potential directions for future research.",
+        "url": "https://doi.org/10.3390/s21144758",
+        "doi": "https://doi.org/10.3390/s21144758",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3165031368"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 254
+      },
+      {
+        "paper_id": "rw_004_b37061cf8",
+        "title": "Protein interface prediction using graph convolutional networks",
+        "authors": [
+          "Alex Fout",
+          "Asa Ben‐Hur",
+          "Anderson, Chuck",
+          "Chitsaz, Hamidreza",
+          "Zhou, Wen"
+        ],
+        "year": 2017,
+        "publication_date": "2017-01-01",
+        "venue": "Digital Collections of Colorado (Colorado State University)",
+        "abstract": "Proteins play a critical role in processes both within and between cells, through their interactions with each other and other molecules. Proteins interact via an interface forming a protein complex, which is difficult, expensive, and time consuming to determine experimentally, giving rise to computational approaches. These computational approaches utilize known electrochemical properties of protein amino acid residues in order to predict if they are a part of an interface or not. Prediction can occur in a partner independent fashion, where amino acid residues are considered independently of their neighbor, or in a partner specific fashion, where pairs of potentially interacting residues are considered together. Ultimately, prediction of protein interfaces can help illuminate cellular biology, improve our understanding of diseases, and aide pharmaceutical research. Interface prediction has historically been performed with a variety of methods, to include docking, template matching, and more recently, machine learning approaches. The field of machine learning has undergone a revolution of sorts with the emergence of convolutional neural networks as the leading method of choice for a wide swath of tasks. Enabled by large quantities of data and the increasing power and availability of computing resources, convolutional neural networks efficiently detect patterns in grid structured data and generate hierarchical representations that prove useful for many types of problems. This success has motivated the work presented in this thesis, which seeks to improve upon state of the art interface prediction methods by incorporating concepts from convolutional neural networks. Proteins are inherently irregular, so they don't easily conform to a grid structure, whereas a graph representation is much more natural. Various convolution operations have been proposed for graph data, each geared towards a particular application. We adapted these convolutions for use in interface prediction, and proposed two new variants. Neural networks were trained on the Docking Benchmark Dataset version 4.0 complexes and tested on the new complexes added in version 5.0. Results were compared against the state of the art method partner specific method, PAIRpred [1]. Results show that multiple variants of graph convolution outperform PAIRpred, with no method emerging as the clear winner. In the future, additional training data may be incorporated from other sources, unsupervised pretraining such as autoencoding may be employed, and a generalization of convolution to simplicial complexes may also be explored. In addition, the various graph convolution approaches may be applied to other applications with graph structured data, such as Quantitative Structure Activity Relationship (QSAR) learning, and knowledge base inference.",
+        "url": "https://hdl.handle.net/10217/185661",
+        "doi": "https://doi.org/10.25675/3.021826",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2751808960"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 567
+      },
+      {
+        "paper_id": "rw_005_36fea5b8a",
+        "title": "A review of graph neural networks: concepts, architectures, techniques, challenges, datasets, applications, and future directions",
+        "authors": [
+          "Bharti Khemani",
+          "Shruti Patil",
+          "Ketan Kotecha",
+          "Sudeep Tanwar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-01-16",
+        "venue": "Journal Of Big Data",
+        "abstract": "Abstract Deep learning has seen significant growth recently and is now applied to a wide range of conventional use cases, including graphs. Graph data provides relational information between elements and is a standard data format for various machine learning and deep learning tasks. Models that can learn from such inputs are essential for working with graph data effectively. This paper identifies nodes and edges within specific applications, such as text, entities, and relations, to create graph structures. Different applications may require various graph neural network (GNN) models. GNNs facilitate the exchange of information between nodes in a graph, enabling them to understand dependencies within the nodes and edges. The paper delves into specific GNN models like graph convolution networks (GCNs), GraphSAGE, and graph attention networks (GATs), which are widely used in various applications today. It also discusses the message-passing mechanism employed by GNN models and examines the strengths and limitations of these models in different domains. Furthermore, the paper explores the diverse applications of GNNs, the datasets commonly used with them, and the Python libraries that support GNN models. It offers an extensive overview of the landscape of GNN research and its practical implementations.",
+        "url": "https://doi.org/10.1186/s40537-023-00876-4",
+        "doi": "https://doi.org/10.1186/s40537-023-00876-4",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4390906246"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 523
+      },
+      {
+        "paper_id": "rw_006_f5ba67b85",
+        "title": "A Survey of Topological Machine Learning Methods",
+        "authors": [
+          "Felix Hensel",
+          "Michael Moor",
+          "Bastian Rieck"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-26",
+        "venue": "Frontiers in Artificial Intelligence",
+        "abstract": "The last decade saw an enormous boost in the field of computational topology: methods and concepts from algebraic and differential topology, formerly confined to the realm of pure mathematics, have demonstrated their utility in numerous areas such as computational biology personalised medicine, and time-dependent data analysis, to name a few. The newly-emerging domain comprising topology-based techniques is often referred to as topological data analysis (TDA). Next to their applications in the aforementioned areas, TDA methods have also proven to be effective in supporting, enhancing, and augmenting both classical machine learning and deep learning models. In this paper, we review the state of the art of a nascent field we refer to as \"topological machine learning,\" i.e., the successful symbiosis of topology-based methods and machine learning algorithms, such as deep neural networks. We identify common threads, current applications, and future challenges.",
+        "url": "https://doi.org/10.3389/frai.2021.681108",
+        "doi": "https://doi.org/10.3389/frai.2021.681108",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3165474212"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 197
+      },
+      {
+        "paper_id": "rw_007_2ff31a1fe",
+        "title": "A survey on graph kernels",
+        "authors": [
+          "Nils M. Kriege",
+          "Fredrik Johansson",
+          "Christopher Morris"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-14",
+        "venue": "Applied Network Science",
+        "abstract": "Abstract Graph kernels have become an established and widely-used technique for solving classification tasks on graphs. This survey gives a comprehensive overview of techniques for kernel-based graph classification developed in the past 15 years. We describe and categorize graph kernels based on properties inherent to their design, such as the nature of their extracted graph features, their method of computation and their applicability to problems in practice. In an extensive experimental evaluation, we study the classification accuracy of a large suite of graph kernels on established benchmarks as well as new datasets. We compare the performance of popular kernels with several baseline methods and study the effect of applying a Gaussian RBF kernel to the metric induced by a graph kernel. In doing so, we find that simple baselines become competitive after this transformation on some datasets. Moreover, we study the extent to which existing graph kernels agree in their predictions (and prediction errors) and obtain a data-driven categorization of kernels as result. Finally, based on our experimental results, we derive a practitioner’s guide to kernel-based graph classification.",
+        "url": "https://doi.org/10.1007/s41109-019-0195-3",
+        "doi": "https://doi.org/10.1007/s41109-019-0195-3",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2925177113"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 380
+      },
+      {
+        "paper_id": "rw_008_ce2f47058",
+        "title": "SE-Sync: A certifiably correct algorithm for synchronization over the special Euclidean group",
+        "authors": [
+          "David M. Rosen",
+          "Luca Carlone",
+          "Afonso S. Bandeira",
+          "John J. Leonard"
+        ],
+        "year": 2018,
+        "publication_date": "2018-08-29",
+        "venue": "The International Journal of Robotics Research",
+        "abstract": "Many important geometric estimation problems naturally take the form of synchronization over the special Euclidean group: estimate the values of a set of unknown group elements [Formula: see text] given noisy measurements of a subset of their pairwise relative transforms [Formula: see text]. Examples of this class include the foundational problems of pose-graph simultaneous localization and mapping (SLAM) (in robotics), camera motion estimation (in computer vision), and sensor network localization (in distributed sensing), among others. This inference problem is typically formulated as a non-convex maximum-likelihood estimation that is computationally hard to solve in general. Nevertheless, in this paper we present an algorithm that is able to efficiently recover certifiably globally optimal solutions of the special Euclidean synchronization problem in a non-adversarial noise regime. The crux of our approach is the development of a semidefinite relaxation of the maximum-likelihood estimation (MLE) whose minimizer provides an exact maximum-likelihood estimate so long as the magnitude of the noise corrupting the available measurements falls below a certain critical threshold; furthermore, whenever exactness obtains, it is possible to verify this fact a posteriori, thereby certifying the optimality of the recovered estimate. We develop a specialized optimization scheme for solving large-scale instances of this semidefinite relaxation by exploiting its low-rank, geometric, and graph-theoretic structure to reduce it to an equivalent optimization problem defined on a low-dimensional Riemannian manifold, and then design a Riemannian truncated-Newton trust-region method to solve this reduction efficiently. Finally, we combine this fast optimization approach with a simple rounding procedure to produce our algorithm, SE-Sync. Experimental evaluation on a variety of simulated and real-world pose-graph SLAM datasets shows that SE-Sync is capable of recovering certifiably globally optimal solutions when the available measurements are corrupted by noise up to an order of magnitude greater than that typically encountered in robotics and computer vision applications, and does so significantly faster than the Gauss–Newton-based approach that forms the basis of current state-of-the-art techniques.",
+        "url": "https://doi.org/10.1177/0278364918784361",
+        "doi": "https://doi.org/10.1177/0278364918784361",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2547811925"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 285
+      },
+      {
+        "paper_id": "rw_009_93b6bb44a",
+        "title": "Learning Backtrackless Aligned-Spatial Graph Convolutional Networks for Graph Classification",
+        "authors": [
+          "Lu Bai",
+          "Lixin Cui",
+          "Yuhang Jiao",
+          "Luca Rossi",
+          "Edwin R. Hancock"
+        ],
+        "year": 2020,
+        "publication_date": "2020-07-24",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "In this paper, we develop a novel backtrackless aligned-spatial graph convolutional network (BASGCN) model to learn effective features for graph classification. Our idea is to transform arbitrary-sized graphs into fixed-sized backtrackless aligned grid structures and define a new spatial graph convolution operation associated with the grid structures. We show that the proposed BASGCN model not only reduces the problems of information loss and imprecise information representation arising in existing spatially-based graph convolutional network (GCN) models, but also bridges the theoretical gap between traditional convolutional neural network (CNN) models and spatially-based GCN models. Furthermore, the proposed BASGCN model can both adaptively discriminate the importance between specified vertices during the convolution process and reduce the notorious tottering problem of existing spatially-based GCNs related to the Weisfeiler-Lehman algorithm, explaining the effectiveness of the proposed model. Experiments on standard graph datasets demonstrate the effectiveness of the proposed model.",
+        "url": "https://doi.org/10.1109/tpami.2020.3011866",
+        "doi": "https://doi.org/10.1109/tpami.2020.3011866",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2998423439"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 86
+      },
+      {
+        "paper_id": "rw_010_1dbb5d163",
+        "title": "Review on the Application of Machine Learning Algorithms in the Sequence Data Mining of DNA",
+        "authors": [
+          "Aimin Yang",
+          "Wei Zhang",
+          "Jiahao Wang",
+          "Ke Yang",
+          "Yang Han",
+          "Limin Zhang"
+        ],
+        "year": 2020,
+        "publication_date": "2020-09-04",
+        "venue": "Frontiers in Bioengineering and Biotechnology",
+        "abstract": "Deoxyribonucleic acid (DNA) is a biological macromolecule. Its main function is information storage. At present, the advancement of sequencing technology had caused DNA sequence data to grow at an explosive rate, which has also pushed the study of DNA sequences in the wave of big data. Moreover, machine learning is a powerful technique for analyzing largescale data and learns spontaneously to gain knowledge. It has been widely used in DNA sequence data analysis and obtained a lot of research achievements. Firstly, the review introduces the development process of sequencing technology, expounds on the concept of DNA sequence data structure and sequence similarity. Then we analyze the basic process of data mining, summary several major machine learning algorithms, and put forward the challenges faced by machine learning algorithms in the mining of biological sequence data and possible solutions in the future. Then we review four typical applications of machine learning in DNA sequence data: DNA sequence alignment, DNA sequence classification, DNA sequence clustering, and DNA pattern mining. We analyze their corresponding biological application background and significance, and systematically summarized the development and potential problems in the field of DNA sequence data mining in recent years. Finally, we summarize the content of the review and look into the future of some research directions for the next step.",
+        "url": "https://doi.org/10.3389/fbioe.2020.01032",
+        "doi": "https://doi.org/10.3389/fbioe.2020.01032",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3082966508"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 157
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_009_93b6bb44a",
+        "relevance_score": 0.82,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper addresses graph classification with unordered vertices using backtrackless aligned-spatial graph convolutional networks, which directly relates to the target's focus on Euclidean graphs with unordered vertices and avoids information loss.",
+        "evidence_summary": "In 2020, Bai et al. published 'Learning Backtrackless Aligned-Spatial Graph Convolutional Networks for Graph Classification,' which developed a model that transforms graphs into fixed-sized backtrackless aligned grid structures to reduce information loss and imprecise representation. The model adaptively discriminates vertex importance during convolution and reduces the tottering problem associated with Weisfeiler-Lehman-based methods. Experiments on standard graph datasets demonstrated the model's effectiveness."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_001_4f56be447",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "This paper introduces EdgeConv for learning on point clouds (unordered 3D data), which shares the target's context of Euclidean-embedded unordered data and provides a baseline method.",
+        "evidence_summary": "In 2019, Wang et al. published 'Dynamic Graph CNN for Learning on Point Clouds' in ACM Transactions on Graphics, which proposed the EdgeConv module that acts on dynamically computed graphs to incorporate local neighborhood information and capture semantic characteristics. The model was evaluated on benchmarks including ModelNet40, ShapeNetPart, and S3DIS for classification and segmentation tasks."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_007_2ff31a1fe",
+        "relevance_score": 0.7,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This survey covers graph kernels for classification, which are relevant to the target's invariant-based machine learning approach and include discussions on computational limitations.",
+        "evidence_summary": "In 2020, Kriege et al. published 'A survey on graph kernels,' which provided a comprehensive overview of kernel-based graph classification techniques developed over 15 years, categorizing them by feature extraction and computation methods. The survey included an experimental evaluation on established benchmarks and new datasets, comparing kernel performance with baselines and studying the effect of Gaussian RBF kernel transformations."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_36fea5b8a",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This review summarizes graph neural networks including GCNs and GATs, which are foundational to methods handling unordered graph data and discuss limitations.",
+        "evidence_summary": "In 2024, Khemani et al. published 'A review of graph neural networks: concepts, architectures, techniques, challenges, datasets, applications, and future directions,' which identified nodes and edges in applications to create graph structures and discussed models like GCNs, GraphSAGE, and GATs. The review covered the message-passing mechanism, strengths, limitations, applications, datasets, and supporting Python libraries."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_003_ddd73c06f",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "This survey on graph-based deep learning for medical diagnosis addresses irregular and unordered data structures, aligning with the target's focus on unordered vertices.",
+        "evidence_summary": "In 2021, Ahmedt‐Aristizabal et al. published 'Graph-Based Deep Learning for Medical Diagnosis and Analysis: Past, Present and Future,' which reviewed graph neural networks exploiting implicit information in biological systems with interacting nodes connected by edges. The survey provided an overview organized by application domains including functional connectivity, anatomical structure, and electrical-based analysis, and discussed limitations and future directions."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_004_b37061cf8",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method",
+          "same_problem"
+        ],
+        "rationale": "This paper uses graph convolutional networks for protein interface prediction, which involves molecular structures similar to the target's molecular graphs.",
+        "evidence_summary": "In 2017, Fout et al. published 'Protein interface prediction using graph convolutional networks,' which applied convolutional neural networks to predict protein interfaces by considering amino acid residues and their interactions. The work aimed to improve upon state-of-the-art methods for understanding cellular biology and pharmaceutical research."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_002_c1b55a83f",
+        "relevance_score": 0.043,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "Finally, works exploring the use of AI for the very design of quantum experiments and for performing parts of genuine research autonomously, have reported their first successes. Aside from quantum speed-up in data analysis, or classical ML optimization used in quantum experiments, quantum enhancements have also been (theoretically) demonstrated for interactive learning tasks, highlighting the potential of quantum-enhanced learning agents."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_006_f5ba67b85",
+        "relevance_score": 0.039,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "The newly-emerging domain comprising topology-based techniques is often referred to as topological data analysis (TDA). Next to their applications in the aforementioned areas, TDA methods have also proven to be effective in supporting, enhancing, and augmenting both classical machine learning and deep learning models."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_008_ce2f47058",
+        "relevance_score": 0.05,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "The authors develop a specialized optimization scheme for solving large-scale instances of this semidefinite relaxation by exploiting its low-rank, geometric, and graph-theoretic structure to reduce it to an equivalent optimization problem defined on a low-dimensional Riemannian manifold, and then design a Riemannian truncated-Newton trust-region method to solve this reduction efficiently. Experimental evaluation on a variety of simulated and real-world pose-graph SLAM datasets shows that SE-Sync is capable of recovering certifiably globally optimal solutions when the available measurements are corrupted by noise up to an order of magnitude greater than that typically encountered in robotics and computer vision applications, and does so significantly faster than the Gauss–Newton-based approach that forms the basis of current state-of-the-art techniques."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_010_1dbb5d163",
+        "relevance_score": 0.035,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "Firstly, the review introduces the development process of sequencing technology, expounds on the concept of DNA sequence data structure and sequence similarity. It has been widely used in DNA sequence data analysis and obtained a lot of research achievements."
+      }
+    ],
+    "reranking": {
+      "source": "mixed"
+    },
+    "related_work_summary": "In 2020, Lu Bai et al. published \"Learning Backtrackless Aligned-Spatial Graph Convolutional Networks for Graph Classification\" in IEEE Transactions on Pattern Analysis and Machine Intelligence. In this paper, the authors develop a novel backtrackless aligned-spatial graph convolutional network (BASGCN) model to learn effective features for graph classification. Experiments on standard graph datasets demonstrate the effectiveness of the proposed model. The authors show that the proposed BASGCN model not only reduces the problems of information loss and imprecise information representation arising in existing spatially-based graph convolutional network (GCN) models, but also bridges the theoretical gap between traditional convolutional neural network (CNN) models and spatially-based GCN models. In 2019, Yue Wang et al. published \"Dynamic Graph CNN for Learning on Point Clouds\" in ACM Transactions on Graphics. To this end, the authors propose a new neural network module dubbed EdgeConv suitable for CNN-based high-level tasks on point clouds, including classification and segmentation. The authors show the performance of the model on standard benchmarks, including ModelNet40, ShapeNetPart, and S3DIS. Point clouds provide a flexible geometric representation suitable for countless applications in computer graphics; they also comprise the raw output of most 3D data acquisition devices. In 2020, Nils M. Kriege et al. published \"A survey on graph kernels\" in Applied Network Science. This survey gives a comprehensive overview of techniques for kernel-based graph classification developed in the past 15 years. In an extensive experimental evaluation, the authors study the classification accuracy of a large suite of graph kernels on established benchmarks as well as new datasets. The authors describe and categorize graph kernels based on properties inherent to their design, such as the nature of their extracted graph features, their method of computation and their applicability to problems in practice. In 2024, Bharti Khemani et al. published \"A review of graph neural networks: concepts, architectures, techniques, challenges, datasets, applications, and future directions\" in Journal Of Big Data. This paper identifies nodes and edges within specific applications, such as text, entities, and relations, to create graph structures. Graph data provides relational information between elements and is a standard data format for various machine learning and deep learning tasks. The paper delves into specific GNN models like graph convolution networks (GCNs), GraphSAGE, and graph attention networks (GATs), which are widely used in various applications today. In 2021, David Ahmedt‐Aristizabal et al. published \"Graph-Based Deep Learning for Medical Diagnosis and Analysis: Past, Present and Future\" in Sensors. With the advances of data-driven machine learning research, a wide variety of prediction problems have been tackled. It has become critical to explore how machine learning and specifically deep learning methods can be exploited to analyse healthcare data. A major limitation of existing methods has been the focus on grid-like data; however, the structure of physiological recordings are often irregular and unordered, which makes it difficult to conceptualise them as a matrix. In 2017, Alex Fout et al. published \"Protein interface prediction using graph convolutional networks\" in Digital Collections of Colorado (Colorado State University). The authors adapted these convolutions for use in interface prediction, and proposed two new variants. Neural networks were trained on the Docking Benchmark Dataset version 4.0 complexes and tested on the new complexes added in version 5.0. Results show that multiple variants of graph convolution outperform PAIRpred, with no method emerging as the clear winner.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

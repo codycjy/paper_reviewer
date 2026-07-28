@@ -1,0 +1,627 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 5,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "Provides a novel theoretical foundation by proving that negative eigenvalues are necessary and sufficient for LRNNs to perform state-tracking tasks like parity and modular counting, extending prior work beyond the diagonal case.",
+        "Offers a simple and effective modification to existing LRNN architectures (Mamba, DeltaNet) that enhances expressivity without computational overhead, supported by theoretical proofs and extensive empirical validation.",
+        "Demonstrates practical significance through large-scale language modeling experiments (up to 1.3B parameters), showing improved performance on code and math tasks while maintaining stability.",
+        "Connects formal language theory with deep learning, proving that LRNNs with extended eigenvalue ranges can learn any regular language, addressing a known limitation of Transformers and diagonal LRNNs."
+      ],
+      "weaknesses": [
+        "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+        "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+        "Empirical gains on standard language modeling benchmarks (e.g., lm-harness) are mixed, with improvements primarily observed in code/math tasks, suggesting the benefit may be task-specific."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+          "severity": "minor",
+          "evidence": "Section 6 (Limitations) states: 'Our modification is not directly compatible with a numerical technique used by some diagonal LRNNs such as Mamba2, GLA and mLSTM... which rely on positive state-transition matrices to compute cumulative products in log space.'",
+          "affected_claim": "Claim that the modification generically improves LRNNs without overhead.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+          "severity": "minor",
+          "evidence": "Section 6 (Future work) notes: 'Moreover, the theoretical expressivity of DeltaNet [−1, 1] with multiple layers is still unclear. We showed that it can solve addition modulo m... but we do not know if it can also solve other word problems, such as the ones for the symmetric groups S^n with n ≥ 3.'",
+          "affected_claim": "Claim that LRNNs with extended eigenvalues can model complex state-tracking (e.g., S^5).",
+          "fixable_without_substantial_new_work": false
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "Theorems are rigorously proven (e.g., Theorems 1-4 in appendices), and experiments on synthetic tasks (parity, S^5) and large-scale LM training validate the central claims without instability. The rebuttal confirms the paper already contains explicit acknowledgments of limitations."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "Extends Sarrof et al. (2024) beyond diagonal LRNNs to non-diagonal cases (e.g., DeltaNet) and provides the first empirical proof that negative eigenvalues enable state-tracking in practice, with new theoretical results on regular language recognition."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "Addresses a core limitation of efficient sequence models (LRNNs) in state-tracking, with implications for tasks like code evaluation; large-scale experiments show promise for real-world impact. The rebuttal appropriately clarifies the focus on state-tracking tasks."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Comprehensive experiments on synthetic tasks (Chomsky hierarchy, S^5), length extrapolation, and 1.3B-parameter LMs with multiple seeds and baselines (Transformers, sLSTM) fairly support the claims. The mixed results on standard LM benchmarks are acknowledged but do not undermine the core contributions."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is well-structured, with clear theorems, figures, and tables; minor typos (e.g., broken URL in abstract) do not hinder understanding. The rebuttal confirms the authors will address clarity points in revision."
+        }
+      },
+      "summary_comment": "The authors' rebuttal appropriately acknowledges the limitations we identified and confirms they are already addressed in the submitted paper (Section 6). The concerns about log-space incompatibility and theoretical expressivity of multi-layer DeltaNet remain minor and do not materially affect the central contributions. The paper makes a strong contribution by theoretically and empirically demonstrating that extending the eigenvalue range of LRNN state-transition matrices to [-1,1] unlocks state-tracking capabilities. The proofs are sound, the modification is simple yet powerful, and the large-scale experiments confirm practical utility. The work clearly advances the field of efficient sequence modeling and meets top-tier conference standards."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit": 9,
+      "why_it_fits": "The paper presents strong theoretical foundations (e.g., Theorems 1-4) on the expressivity of linear RNNs, which aligns with ICML's focus on machine learning theory. The work extends prior results (Sarrof et al., 2024) and provides novel insights into the limitations of existing architectures (Mamba, DeltaNet) and how to overcome them. The large-scale experiments (up to 1.3B parameters) demonstrate practical significance, and the connection to formal language theory adds depth. The paper also includes rigorous proofs in the appendices, which is typical for ICML.",
+      "why_it_does_not_fit": "The paper's focus on recurrent architectures and state-space models might be slightly less aligned with ICML's recent emphasis on deep learning and transformers, though theory and foundational contributions are still valued. The modification is not directly applicable to all LRNNs (e.g., those using log-space computation like Mamba2), which might limit its broad impact."
+    },
+    "NeurIPS": {
+      "fit": 9,
+      "why_it_fits": "NeurIPS highly values work on neural network theory and architecture improvements, especially those with empirical validation at scale. This paper's combination of theory (e.g., proving necessity of negative eigenvalues for state-tracking) and large-scale experiments (1.3B parameters) fits well. The focus on length extrapolation and formal language capabilities is also aligned with NeurIPS' interest in reasoning and generalization. The clear narrative from theory to practice strengthens its suitability.",
+      "why_it_does_not_fit": "The paper might be seen as incremental over Sarrof et al. (2024) in some aspects, though the extension to non-diagonal cases and empirical validation are significant. The mixed results on standard language modeling benchmarks (e.g., lm-harness) could slightly reduce its appeal for a broader NeurIPS audience focused on general-purpose models."
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Provides a novel theoretical foundation by proving that negative eigenvalues are necessary and sufficient for LRNNs to perform state-tracking tasks like parity and modular counting, extending prior work beyond the diagonal case.",
+              "Offers a simple and effective modification to existing LRNN architectures (Mamba, DeltaNet) that enhances expressivity without computational overhead, supported by theoretical proofs and extensive empirical validation.",
+              "Demonstrates practical significance through large-scale language modeling experiments (up to 1.3B parameters), showing improved performance on code and math tasks while maintaining stability.",
+              "Connects formal language theory with deep learning, proving that LRNNs with extended eigenvalue ranges can learn any regular language, addressing a known limitation of Transformers and diagonal LRNNs."
+            ],
+            "weaknesses": [
+              "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+              "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+              "Empirical gains on standard language modeling benchmarks (e.g., lm-harness) are mixed, with improvements primarily observed in code/math tasks, suggesting the benefit may be task-specific."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+                "severity": "minor",
+                "evidence": "Section 6 (Limitations) states: 'Our modification is not directly compatible with a numerical technique used by some diagonal LRNNs such as Mamba2, GLA and mLSTM... which rely on positive state-transition matrices to compute cumulative products in log space.'",
+                "affected_claim": "Claim that the modification generically improves LRNNs without overhead.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+                "severity": "minor",
+                "evidence": "Section 6 (Future work) notes: 'Moreover, the theoretical expressivity of DeltaNet [−1, 1] with multiple layers is still unclear. We showed that it can solve addition modulo m... but we do not know if it can also solve other word problems, such as the ones for the symmetric groups S^n with n ≥ 3.'",
+                "affected_claim": "Claim that LRNNs with extended eigenvalues can model complex state-tracking (e.g., S^5).",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "Theorems are rigorously proven (e.g., Theorems 1-4 in appendices), and experiments on synthetic tasks (parity, S^5) and large-scale LM training validate the central claims without instability."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Extends Sarrof et al. (2024) beyond diagonal LRNNs to non-diagonal cases (e.g., DeltaNet) and provides the first empirical proof that negative eigenvalues enable state-tracking in practice, with new theoretical results on regular language recognition."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Addresses a core limitation of efficient sequence models (LRNNs) in state-tracking, with implications for tasks like code evaluation; large-scale experiments show promise for real-world impact."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on synthetic tasks (Chomsky hierarchy, S^5), length extrapolation, and 1.3B-parameter LMs with multiple seeds and baselines (Transformers, sLSTM) fairly support the claims."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured, with clear theorems, figures, and tables; minor typos (e.g., broken URL in abstract) do not hinder understanding."
+              }
+            },
+            "summary_comment": "This paper makes a strong contribution by theoretically and empirically demonstrating that extending the eigenvalue range of LRNN state-transition matrices to [-1,1] unlocks state-tracking capabilities. The proofs are sound, the modification is simple yet powerful, and the large-scale experiments confirm practical utility. While some architectural limitations and theoretical open questions remain, the work clearly advances the field of efficient sequence modeling."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Provides a novel theoretical foundation by proving that negative eigenvalues are necessary and sufficient for LRNNs to perform state-tracking tasks like parity and modular counting, extending prior work beyond the diagonal case.",
+              "Offers a simple and effective modification to existing LRNN architectures (Mamba, DeltaNet) that enhances expressivity without computational overhead, supported by theoretical proofs and extensive empirical validation.",
+              "Demonstrates practical significance through large-scale language modeling experiments (up to 1.3B parameters), showing improved performance on code and math tasks while maintaining stability.",
+              "Connects formal language theory with deep learning, proving that LRNNs with extended eigenvalue ranges can learn any regular language, addressing a known limitation of Transformers and diagonal LRNNs."
+            ],
+            "weaknesses": [
+              "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+              "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+              "Empirical gains on standard language modeling benchmarks (e.g., lm-harness) are mixed, with improvements primarily observed in code/math tasks, suggesting the benefit may be task-specific."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+                "severity": "minor",
+                "evidence": "Section 6 (Limitations) states: 'Our modification is not directly compatible with a numerical technique used by some diagonal LRNNs such as Mamba2, GLA and mLSTM... which rely on positive state-transition matrices to compute cumulative products in log space.'",
+                "affected_claim": "Claim that the modification generically improves LRNNs without overhead.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+                "severity": "minor",
+                "evidence": "Section 6 (Future work) notes: 'Moreover, the theoretical expressivity of DeltaNet [−1, 1] with multiple layers is still unclear. We showed that it can solve addition modulo m... but we do not know if it can also solve other word problems, such as the ones for the symmetric groups S^n with n ≥ 3.'",
+                "affected_claim": "Claim that LRNNs with extended eigenvalues can model complex state-tracking (e.g., S^5).",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "Theorems are rigorously proven (e.g., Theorems 1-4 in appendices), and experiments on synthetic tasks (parity, S^5) and large-scale LM training validate the central claims without instability. The rebuttal confirms the paper already contains explicit acknowledgments of limitations."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Extends Sarrof et al. (2024) beyond diagonal LRNNs to non-diagonal cases (e.g., DeltaNet) and provides the first empirical proof that negative eigenvalues enable state-tracking in practice, with new theoretical results on regular language recognition."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Addresses a core limitation of efficient sequence models (LRNNs) in state-tracking, with implications for tasks like code evaluation; large-scale experiments show promise for real-world impact. The rebuttal appropriately clarifies the focus on state-tracking tasks."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on synthetic tasks (Chomsky hierarchy, S^5), length extrapolation, and 1.3B-parameter LMs with multiple seeds and baselines (Transformers, sLSTM) fairly support the claims. The mixed results on standard LM benchmarks are acknowledged but do not undermine the core contributions."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured, with clear theorems, figures, and tables; minor typos (e.g., broken URL in abstract) do not hinder understanding. The rebuttal confirms the authors will address clarity points in revision."
+              }
+            },
+            "summary_comment": "The authors' rebuttal appropriately acknowledges the limitations we identified and confirms they are already addressed in the submitted paper (Section 6). The concerns about log-space incompatibility and theoretical expressivity of multi-layer DeltaNet remain minor and do not materially affect the central contributions. The paper makes a strong contribution by theoretically and empirically demonstrating that extending the eigenvalue range of LRNN state-transition matrices to [-1,1] unlocks state-tracking capabilities. The proofs are sound, the modification is simple yet powerful, and the large-scale experiments confirm practical utility. The work clearly advances the field of efficient sequence modeling and meets top-tier conference standards."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Incompatibility with LRNNs using log-space computation for positive eigenvalues (e.g., Mamba2, GLA)\",\n        \"Unclear theoretical expressivity for multi-layer DeltaNet on symmetric groups S^n (n>=3)\",\n        \"Mixed empirical gains on standard language modeling benchmarks\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Incompatibility with log-space computation techniques\",\n          \"location\": \"Section 6 (Limitations)\",\n          \"explanation\": \"The paper explicitly acknowledges this limitation: 'Our modification is not directly compatible with a numerical technique used by some diagonal LRNNs such as Mamba2, GLA and mLSTM. In particular, these models rely on positive state-transition matrices to compute cumulative products in log space...'\"\n        },\n        {\n          \"concern\": \"Unclear theoretical expressivity for multi-layer DeltaNet on symmetric groups\",\n          \"location\": \"Section 6 (Future work)\",\n          \"explanation\": \"The paper states: 'Moreover, the theoretical expressivity of DeltaNet [−1, 1] with multiple layers is still unclear. We showed that it can solve addition modulo m... but we do not know if it can also solve other word problems, such as the ones for the symmetric groups S^n with n ≥ 3.'\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Incompatibility with log-space computation techniques\",\n          \"proposed_change\": \"Add discussion of potential workarounds (e.g., separating absolute values and signs for log-space computation) in Limitations section.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Unclear theoretical expressivity for multi-layer DeltaNet\",\n          \"proposed_change\": \"Explicitly state this as a limitation and direction for future work in the main text.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback and positive assessment of our work. We address the concerns below:\\n\\n1) **Incompatibility with log-space computation**: We acknowledge this limitation in Section 6. Our modification specifically targets architectures like Mamba and DeltaNet that do not rely on log-space computation. For affected architectures (Mamba2, GLA), we mention potential workarounds (e.g., separating magnitude and sign computations) as future work.\\n\\n2) **Theoretical expressivity for multi-layer DeltaNet**: We explicitly note in Section 6 that the expressivity of multi-layer DeltaNet [−1,1] on symmetric groups S^n (n≥3) remains an open question. Our current theoretical results (Theorems 3-4) focus on single-layer expressivity and multi-layer recognition of arbitrary regular languages via the Krohn-Rhodes decomposition.\\n\\n3) **Mixed empirical gains**: While gains on standard LM benchmarks are modest, our primary contribution is enabling state-tracking—a known weakness of LRNNs. The improved performance on code/math tasks (Figure 5) aligns with this focus. We will clarify this motivation in the revision.\\n\\nWe are pleased that the reviewer finds our theoretical proofs sound and our empirical validation comprehensive. The proposed modifications are minimal and will be incorporated to improve clarity.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 5,
+              "significance": 4,
+              "evaluation": 4,
+              "clarity": 4
+            },
+            "strengths": [
+              "Provides a novel theoretical foundation by proving that negative eigenvalues are necessary and sufficient for LRNNs to perform state-tracking tasks like parity and modular counting, extending prior work beyond the diagonal case.",
+              "Offers a simple and effective modification to existing LRNN architectures (Mamba, DeltaNet) that enhances expressivity without computational overhead, supported by theoretical proofs and extensive empirical validation.",
+              "Demonstrates practical significance through large-scale language modeling experiments (up to 1.3B parameters), showing improved performance on code and math tasks while maintaining stability.",
+              "Connects formal language theory with deep learning, proving that LRNNs with extended eigenvalue ranges can learn any regular language, addressing a known limitation of Transformers and diagonal LRNNs."
+            ],
+            "weaknesses": [
+              "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+              "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+              "Empirical gains on standard language modeling benchmarks (e.g., lm-harness) are mixed, with improvements primarily observed in code/math tasks, suggesting the benefit may be task-specific."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The modification is incompatible with LRNNs that rely on log-space computation for positive eigenvalues (e.g., Mamba2, GLA), limiting its immediate applicability to some architectures.",
+                "severity": "minor",
+                "evidence": "Section 6 (Limitations) states: 'Our modification is not directly compatible with a numerical technique used by some diagonal LRNNs such as Mamba2, GLA and mLSTM... which rely on positive state-transition matrices to compute cumulative products in log space.'",
+                "affected_claim": "Claim that the modification generically improves LRNNs without overhead.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The theoretical expressivity results for multi-layer DeltaNet with negative eigenvalues, particularly for symmetric groups S^n with n>=3, remain unclear and are left as future work.",
+                "severity": "minor",
+                "evidence": "Section 6 (Future work) notes: 'Moreover, the theoretical expressivity of DeltaNet [−1, 1] with multiple layers is still unclear. We showed that it can solve addition modulo m... but we do not know if it can also solve other word problems, such as the ones for the symmetric groups S^n with n ≥ 3.'",
+                "affected_claim": "Claim that LRNNs with extended eigenvalues can model complex state-tracking (e.g., S^5).",
+                "fixable_without_substantial_new_work": false
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "Theorems are rigorously proven (e.g., Theorems 1-4 in appendices), and experiments on synthetic tasks (parity, S^5) and large-scale LM training validate the central claims without instability. The rebuttal confirms the paper already contains explicit acknowledgments of limitations."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Extends Sarrof et al. (2024) beyond diagonal LRNNs to non-diagonal cases (e.g., DeltaNet) and provides the first empirical proof that negative eigenvalues enable state-tracking in practice, with new theoretical results on regular language recognition."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Addresses a core limitation of efficient sequence models (LRNNs) in state-tracking, with implications for tasks like code evaluation; large-scale experiments show promise for real-world impact. The rebuttal appropriately clarifies the focus on state-tracking tasks."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Comprehensive experiments on synthetic tasks (Chomsky hierarchy, S^5), length extrapolation, and 1.3B-parameter LMs with multiple seeds and baselines (Transformers, sLSTM) fairly support the claims. The mixed results on standard LM benchmarks are acknowledged but do not undermine the core contributions."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is well-structured, with clear theorems, figures, and tables; minor typos (e.g., broken URL in abstract) do not hinder understanding. The rebuttal confirms the authors will address clarity points in revision."
+              }
+            },
+            "summary_comment": "The authors' rebuttal appropriately acknowledges the limitations we identified and confirms they are already addressed in the submitted paper (Section 6). The concerns about log-space incompatibility and theoretical expressivity of multi-layer DeltaNet remain minor and do not materially affect the central contributions. The paper makes a strong contribution by theoretically and empirically demonstrating that extending the eigenvalue range of LRNN state-transition matrices to [-1,1] unlocks state-tracking capabilities. The proofs are sound, the modification is simple yet powerful, and the large-scale experiments confirm practical utility. The work clearly advances the field of efficient sequence modeling and meets top-tier conference standards."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer - No Persona\",\n      \"main_issues_identified\": [\n        \"Incompatibility with LRNNs using log-space computation\",\n        \"Unclear theoretical expressivity for multi-layer DeltaNet on symmetric groups\",\n        \"Mixed empirical gains on standard language modeling benchmarks\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Incompatibility with log-space computation techniques\",\n          \"location\": \"Section 6 (Limitations)\",\n          \"explanation\": \"The paper explicitly states: 'Our modification is not directly compatible with a numerical technique used by some diagonal LRNNs such as Mamba2, GLA and mLSTM. In particular, these models rely on positive state-transition matrices to compute cumulative products in log space...'\"\n        },\n        {\n          \"concern\": \"Unclear theoretical expressivity for multi-layer DeltaNet\",\n          \"location\": \"Section 6 (Future work)\",\n          \"explanation\": \"The paper acknowledges: 'Moreover, the theoretical expressivity of DeltaNet [−1, 1] with multiple layers is still unclear. We showed that it can solve addition modulo m... but we do not know if it can also solve other word problems, such as the ones for the symmetric groups S^n with n ≥ 3.'\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Mixed empirical gains on standard benchmarks\",\n          \"proposed_change\": \"Clarify in the main text that the primary benefit is for state-tracking tasks (e.g., code/math) rather than general language modeling, aligning with the theoretical focus.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and for noting that our paper already addresses the identified limitations in Section 6. We are pleased that the reviewer finds our work sound, novel, significant, and well-presented.\\n\\nRegarding the mixed empirical gains on standard language modeling benchmarks: We will revise the text to clarify that our primary contribution is enabling state-tracking capabilities—a known weakness of LRNNs—rather than claiming universal improvement across all tasks. The improved performance on code and math tasks (Figure 5) demonstrates this focused benefit, which aligns with our theoretical results.\\n\\nWe note that the reviewer's acceptance gates all pass, and we appreciate the acknowledgment that our work 'clearly advances the field of efficient sequence modeling.' We will ensure the final version maintains this clarity while incorporating the minor suggested revisions.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_f409b2b36b9f",
+    "conference": "ICLR",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "openreview_md/iclr_accept_2025_046_unlocking_state_tracking_in_linear_rnns_through_negative_eigenvalues.md",
+    "target_paper_summary": {
+      "paper_id": "paper_f409b2b36b9f",
+      "title": "Unlocking State-Tracking In Linear Rnns Through Negative Eigenvalues",
+      "abstract": "Linear Recurrent Neural Networks (LRNNs) such as Mamba, RWKV, GLA, mL-\nSTM, and DeltaNet have emerged as efficient alternatives to Transformers for long sequences. However, both Transformers and LRNNs struggle to perform state-tracking, which may impair performance in tasks such as code evaluation. In one forward pass, current architectures are unable to solve even parity, the simplest state-tracking task, which non-linear RNNs can handle effectively. Recently, Sarrof et al. (2024) demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to [0, 1] and that incorporating negative values can resolve this issue. We extend this result to non-diagonal LRNNs such as DeltaNet. We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo 3. Notably, we also prove that LRNNs can learn any regular language when their state-transition matrices are products of identity minus vector outer product matrices, each with eigenvalues in the range [−1, 1]. Our experiments confirm that extending the eigenvalue range of Mamba and DeltaNet to include negative values not only enables them to solve parity but consistently improves their performance on state-tracking tasks. We also show that state-tracking enabled LRNNs can be pretrained stably and efficiently at scale (1.3B parameters), achieving competitive performance on language modeling and showing promise on code and math tasks.",
+      "topic": "",
+      "claims": [
+        "We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo 3."
+      ]
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_d0aa42221",
+        "title": "Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues",
+        "authors": [
+          "Riccardo Grazzi",
+          "Julien Siems",
+          "Arber Zela",
+          "Jörg K. H. Franke",
+          "Frank Hutter",
+          "Massimiliano Pontil"
+        ],
+        "year": 2024,
+        "publication_date": "2024-11-19",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Linear Recurrent Neural Networks (LRNNs) such as Mamba, RWKV, GLA, mLSTM, and DeltaNet have emerged as efficient alternatives to Transformers for long sequences. However, both Transformers and LRNNs struggle to perform state-tracking, which may impair performance in tasks such as code evaluation. In one forward pass, current architectures are unable to solve even parity, the simplest state-tracking task, which non-linear RNNs can handle effectively. Recently, Sarrof et al. (2024) demonstrated that the failure of LRNNs like Mamba to solve parity stems from restricting the value range of their diagonal state-transition matrices to $[0, 1]$ and that incorporating negative values can resolve this issue. We extend this result to non-diagonal LRNNs such as DeltaNet. We prove that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, while non-triangular matrices are needed to count modulo $3$. Notably, we also prove that LRNNs can learn any regular language when their state-transition matrices are products of identity minus vector outer product matrices, each with eigenvalues in the range $[-1, 1]$. Our experiments confirm that extending the eigenvalue range of Mamba and DeltaNet to include negative values not only enables them to solve parity but consistently improves their performance on state-tracking tasks. We also show that state-tracking enabled LRNNs can be pretrained stably and efficiently at scale (1.3B parameters), achieving competitive performance on language modeling and showing promise on code and math tasks.",
+        "url": "http://arxiv.org/abs/2411.12537",
+        "doi": "https://doi.org/10.48550/arxiv.2411.12537",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4404573957"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1
+      },
+      {
+        "paper_id": "rw_002_a79d63cdc",
+        "title": "Learning to (Learn at Test Time): RNNs with Expressive Hidden States",
+        "authors": [
+          "Yu Sun",
+          "Xinhao Li",
+          "Karan Dalal",
+          "Jiarui Xu",
+          "Arjun Vikram",
+          "Genghan Zhang",
+          "Yann Dubois",
+          "Xinlei Chen",
+          "Xiaolong Wang",
+          "Oluwasanmi Koyejo",
+          "Tatsunori Hashimoto",
+          "Carlos Guestrin"
+        ],
+        "year": 2024,
+        "publication_date": "2024-07-05",
+        "venue": "arXiv (Cornell University)",
+        "abstract": "Self-attention performs well in long context but has quadratic complexity. Existing RNN layers have linear complexity, but their performance in long context is limited by the expressive power of their hidden states. We present a practical framework for instantiating sequence modeling layers with linear complexity and expressive hidden states. The key idea is to make the hidden state a machine learning model itself, and the update rule a step of self-supervised learning. Since the hidden state is updated by training even on test sequences, our layers are called Test-Time Training (TTT) layers. We consider two instantiations: TTT-Linear and TTT-MLP, whose hidden state is a linear model and a two-layer MLP respectively. We evaluate our instantiations at the scale of 125M to 1.3B parameters, comparing with a strong Transformer and Mamba, a modern RNN. Similar to Transformer, TTT-Linear and TTT-MLP can keep reducing perplexity by conditioning on more tokens, while Mamba cannot after 16k context. TTT-MLP still faces challenges in memory I/O, but shows larger potential in long context, pointing to a promising direction for future research.",
+        "url": "http://arxiv.org/abs/2407.04620",
+        "doi": "https://doi.org/10.48550/arxiv.2407.04620",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4400435102"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 14
+      },
+      {
+        "paper_id": "rw_003_1a4eeafbc",
+        "title": "Physics-informed linear regression is competitive with two Machine Learning methods in residential building MPC",
+        "authors": [
+          "Felix Bünning",
+          "Benjamin Huber",
+          "Adrian Schalbetter",
+          "Ahmed Aboudonia",
+          "Mathias Hudoba de Badyn",
+          "Philipp Heer",
+          "Roy S. Smith",
+          "John Lygeros"
+        ],
+        "year": 2022,
+        "publication_date": "2022-01-21",
+        "venue": "Applied Energy",
+        "abstract": "Because physics-based building models are difficult to obtain as each building is individual, there is an increasing interest in generating models suitable for building MPC directly from measurement data. Machine learning methods have been widely applied to this problem and validated mostly in simulation; there are, however, few studies on a direct comparison of different models or validation in real buildings to be found in the literature. Methods that are indeed validated in application often lead to computationally complex non-convex optimization problems. Here we compare physics-informed Autoregressive–Moving-Average with Exogenous Inputs (ARMAX) models to Machine Learning models based on Random Forests and Input Convex Neural Networks and the resulting convex MPC schemes in experiments on a practical building application with the goal of minimizing energy consumption while maintaining occupant comfort, and in a numerical case study. The building has a water-based emission system and is located in temperate climate. We demonstrate that Predictive Control leads to savings between 26% and 49% of heating and cooling energy, compared to the building’s baseline hysteresis controller. Moreover, we show that all model types lead to satisfactory control performance in terms of constraint satisfaction and energy reduction. However, we also see that the physics-informed ARMAX models have a lower computational burden, and a superior sample efficiency compared to the Machine Learning based models. Moreover, even if abundant training data is available, the ARMAX models have a significantly lower prediction error than the Machine Learning models, which indicates that the encoded physics-based prior of the former cannot independently be found by the latter.",
+        "url": "https://doi.org/10.1016/j.apenergy.2021.118491",
+        "doi": "https://doi.org/10.1016/j.apenergy.2021.118491",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4205772176"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 102
+      },
+      {
+        "paper_id": "rw_004_26a16047b",
+        "title": "AI enabled sign language recognition and VR space bidirectional communication using triboelectric smart glove",
+        "authors": [
+          "Feng Wen",
+          "Zixuan Zhang",
+          "Tianyiyi He",
+          "Chengkuo Lee"
+        ],
+        "year": 2021,
+        "publication_date": "2021-09-10",
+        "venue": "Nature Communications",
+        "abstract": "Sign language recognition, especially the sentence recognition, is of great significance for lowering the communication barrier between the hearing/speech impaired and the non-signers. The general glove solutions, which are employed to detect motions of our dexterous hands, only achieve recognizing discrete single gestures (i.e., numbers, letters, or words) instead of sentences, far from satisfying the meet of the signers' daily communication. Here, we propose an artificial intelligence enabled sign language recognition and communication system comprising sensing gloves, deep learning block, and virtual reality interface. Non-segmentation and segmentation assisted deep learning model achieves the recognition of 50 words and 20 sentences. Significantly, the segmentation approach splits entire sentence signals into word units. Then the deep learning model recognizes all word elements and reversely reconstructs and recognizes sentences. Furthermore, new/never-seen sentences created by new-order word elements recombination can be recognized with an average correct rate of 86.67%. Finally, the sign language recognition results are projected into virtual space and translated into text and audio, allowing the remote and bidirectional communication between signers and non-signers.",
+        "url": "https://doi.org/10.1038/s41467-021-25637-w",
+        "doi": "https://doi.org/10.1038/s41467-021-25637-w",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3197059061"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 483
+      },
+      {
+        "paper_id": "rw_005_4763ee9d6",
+        "title": "Hands-on reservoir computing: a tutorial for practical implementation",
+        "authors": [
+          "Matteo Cucchi",
+          "Steven Abreu",
+          "Giuseppe Ciccone",
+          "Daniel Brunner",
+          "Hans Kleemann"
+        ],
+        "year": 2022,
+        "publication_date": "2022-07-01",
+        "venue": "Neuromorphic Computing and Engineering",
+        "abstract": "Abstract This manuscript serves a specific purpose: to give readers from fields such as material science, chemistry, or electronics an overview of implementing a reservoir computing (RC) experiment with her/his material system. Introductory literature on the topic is rare and the vast majority of reviews puts forth the basics of RC taking for granted concepts that may be nontrivial to someone unfamiliar with the machine learning field (see for example reference Lukoševičius (2012 Neural Networks: Tricks of the Trade (Berlin: Springer) pp 659–686). This is unfortunate considering the large pool of material systems that show nonlinear behavior and short-term memory that may be harnessed to design novel computational paradigms. RC offers a framework for computing with material systems that circumvents typical problems that arise when implementing traditional, fully fledged feedforward neural networks on hardware, such as minimal device-to-device variability and control over each unit/neuron and connection. Instead, one can use a random, untrained reservoir where only the output layer is optimized, for example, with linear regression. In the following, we will highlight the potential of RC for hardware-based neural networks, the advantages over more traditional approaches, and the obstacles to overcome for their implementation. Preparing a high-dimensional nonlinear system as a well-performing reservoir for a specific task is not as easy as it seems at first sight. We hope this tutorial will lower the barrier for scientists attempting to exploit their nonlinear systems for computational tasks typically carried out in the fields of machine learning and artificial intelligence. A simulation tool to accompany this paper is available online 7 7 https://github.com/stevenabreu7/handson_reservoir . .",
+        "url": "https://doi.org/10.1088/2634-4386/ac7db7",
+        "doi": "https://doi.org/10.1088/2634-4386/ac7db7",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4283773174"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 197
+      },
+      {
+        "paper_id": "rw_006_34a273d1e",
+        "title": "Large language models (LLMs): survey, technical frameworks, and future challenges",
+        "authors": [
+          "Pranjal Kumar"
+        ],
+        "year": 2024,
+        "publication_date": "2024-08-18",
+        "venue": "Artificial Intelligence Review",
+        "abstract": "Artificial intelligence (AI) has significantly impacted various fields. Large language models (LLMs) like GPT-4, BARD, PaLM, Megatron-Turing NLG, Jurassic-1 Jumbo etc., have contributed to our understanding and application of AI in these domains, along with natural language processing (NLP) techniques. This work provides a comprehensive overview of LLMs in the context of language modeling, word embeddings, and deep learning. It examines the application of LLMs in diverse fields including text generation, vision-language models, personalized learning, biomedicine, and code generation. The paper offers a detailed introduction and background on LLMs, facilitating a clear understanding of their fundamental ideas and concepts. Key language modeling architectures are also discussed, alongside a survey of recent works employing LLM methods for various downstream tasks across different domains. Additionally, it assesses the limitations of current approaches and highlights the need for new methodologies and potential directions for significant advancements in this field.",
+        "url": "https://doi.org/10.1007/s10462-024-10888-y",
+        "doi": "https://doi.org/10.1007/s10462-024-10888-y",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4401671778"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 318
+      },
+      {
+        "paper_id": "rw_008_c6eae890d",
+        "title": "A review on computer vision systems in monitoring of poultry: A welfare perspective",
+        "authors": [
+          "Cedric Okinda",
+          "Innocent Nyalala",
+          "Tchalla Korohou",
+          "Celestine Okinda",
+          "Jintao Wang",
+          "Tracy Achieng",
+          "Patrick Wamalwa",
+          "Tai Mang",
+          "Mingxia Shen"
+        ],
+        "year": 2020,
+        "publication_date": "2020-01-01",
+        "venue": "Artificial Intelligence in Agriculture",
+        "abstract": "Monitoring of poultry welfare-related bio-processes and bio-responses is vital in welfare assessment and management of welfare-related factors. With the current development in information technologies, computer vision has become a promising tool in the real-time automation of poultry monitoring systems due to its non-intrusive and non-invasive properties, and its ability to present a wide range of information. Hence, it can be applied to monitor several bio-processes and bio-responses. This review summarizes the current advances in poultry monitoring techniques based on computer vision systems, i.e., conventional machine learning-based and deep learning-based systems. A detailed presentation on the machine learning-based system was presented, i.e., pre-processing, segmentation, feature extraction, feature selection, and dimension reduction, and modeling. Similarly, deep learning approaches in poultry monitoring were also presented. Lastly, the challenges and possible solutions presented by researches in poultry monitoring, such as variable illumination conditions, occlusion problems, and lack of augmented and labeled poultry datasets, were discussed.",
+        "url": "https://doi.org/10.1016/j.aiia.2020.09.002",
+        "doi": "https://doi.org/10.1016/j.aiia.2020.09.002",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3084142211"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 155
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_001_d0aa42221",
+        "relevance_score": 1.0,
+        "relevance_types": [
+          "same_problem",
+          "same_method"
+        ],
+        "rationale": "This is the exact paper identified as the target, sharing the same title, abstract, authors (Riccardo Grazzi et al.), and central arguments regarding state-tracking failure in LRNNs due to eigenvalue range restrictions.",
+        "evidence_summary": "In 2024, Grazzi, Siems, Zela, Franke, Hutter, and Pontil published 'Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues' on arXiv. The paper proves that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, and that non-triangular matrices are needed to count modulo 3. The work also demonstrates that extending the eigenvalue range of Mamba and DeltaNet to include negative values enables them to solve parity and improves performance on state-tracking tasks, while such LRNNs with specific matrix products can learn any regular language."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_002_a79d63cdc",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This paper addresses the expressive power and long-context limitations of RNNs, specifically benchmarking against Mamba, which is a central LRNN discussed in the target paper, offering a relevant performance baseline and a contrasting architectural approach.",
+        "evidence_summary": "In 2024, Sun, Li, Dalal, Xu, Vikram, Zhang, Dubois, and Chen published 'Learning to (Learn at Test Time): RNNs with Expressive Hidden States' on arXiv. The paper introduces TTT layers, where the hidden state is a machine learning model updated by training on test sequences, instantiating TTT-Linear and TTT-MLP. It evaluates these at scales up to 1.3B parameters, comparing against a Transformer and Mamba, and finds that while TTT layers can reduce perplexity with more context, Mamba cannot after a 16k context length, highlighting a limitation in long-context performance."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_003_1a4eeafbc",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "While in a different domain, this paper discusses the comparison of linear models (specifically physics-informed ARMAX) against non-linear machine learning methods for model predictive control, providing a useful background on the trade-offs between linear and non-linear modeling, which is conceptually relevant to the target's discussion of linear vs. non-linear RNNs.",
+        "evidence_summary": "In 2022, Bünning, Huber, Schalbetter, Aboudonia, Hudoba de Badyn, Heer, Smith, and Lygeros published 'Physics-informed linear regression is competitive with two Machine Learning methods in residential building MPC' in Applied Energy. The paper compares physics-informed ARMAX models to Random Forests and Input Convex Neural Networks for model predictive control in a real building application. It demonstrates that ARMAX models achieve satisfactory control performance with a lower computational burden and superior sample efficiency compared to the machine learning-based models, even when abundant training data is available."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_4763ee9d6",
+        "relevance_score": 0.43,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "This tutorial provides background on Reservoir Computing, an alternative RNN method known for computing with nonlinear systems, offering a useful contrast to the linear RNNs discussed in the target paper and highlighting broader implementation challenges in neuromorphic hardware.",
+        "evidence_summary": "In 2022, Cucchi, Abreu, Ciccone, Brunner, and Kleemann published 'Hands-on reservoir computing: a tutorial for practical implementation' in Neuromorphic Computing and Engineering. The work serves as an introductory guide to implementing reservoir computing (RC) with material systems, which uses a random, untrained reservoir and optimizes only the output layer. It highlights the potential of RC and the obstacles in preparing a nonlinear system as a well-performing reservoir for a specific task."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_006_34a273d1e",
+        "relevance_score": 0.38,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "This survey broadly covers large language models (LLMs), a domain where long context and efficient sequence modeling are central concerns, providing relevant background on the application context mentioned in the target paper, such as language modeling, code generation, and biomedicine.",
+        "evidence_summary": "In 2024, Kumar published 'Large language models (LLMs): survey, technical frameworks, and future challenges' in Artificial Intelligence Review. This comprehensive overview examines the application of LLMs in text generation, vision-language models, personalized learning, biomedicine, and code generation. The work discusses key language modeling architectures and surveys recent methods for downstream tasks across different domains, while also assessing the limitations of current approaches."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_004_26a16047b",
+        "relevance_score": 0.28,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "This paper uses deep learning models, specifically non-segmentation and segmentation approaches, for sequence recognition (sign language sentences), sharing a high-level methodological similarity with sequence modeling tasks discussed in the target paper.",
+        "evidence_summary": "In 2021, Wen, Zhang, He, and Lee published 'AI enabled sign language recognition and VR space bidirectional communication using triboelectric smart glove' in Nature Communications. The paper proposes a sign language recognition system using sensing gloves and a deep learning block, achieving recognition of 50 words and 20 sentences. It introduces a segmentation approach that splits sentence signals into word units for recognition and reconstruction, and reports an average correct rate of 86.67% for recognizing new sentences created by recombining word elements."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_008_c6eae890d",
+        "relevance_score": 0.053,
+        "relevance_types": [
+          "related_work"
+        ],
+        "rationale": "LLM omitted this candidate; appended in cleaned candidate order to preserve the rerank input set.",
+        "evidence_summary": "With the current development in information technologies, computer vision has become a promising tool in the real-time automation of poultry monitoring systems due to its non-intrusive and non-invasive properties, and its ability to present a wide range of information. Lastly, the challenges and possible solutions presented by researches in poultry monitoring, such as variable illumination conditions, occlusion problems, and lack of augmented and labeled poultry datasets, were discussed."
+      }
+    ],
+    "reranking": {
+      "source": "mixed"
+    },
+    "related_work_summary": "In 2024, Grazzi, Siems, Zela, Franke, Hutter, and Pontil published 'Unlocking State-Tracking in Linear RNNs Through Negative Eigenvalues' on arXiv. They proved that finite precision LRNNs with state-transition matrices having only positive eigenvalues cannot solve parity, and demonstrated that extending the eigenvalue range of Mamba and DeltaNet to include negative values enables parity solving and improves state-tracking performance, with further results on learning regular languages.\n\nIn 2024, Sun, Li, Dalal, Xu, Vikram, Zhang, Dubois, and Chen published 'Learning to (Learn at Test Time): RNNs with Expressive Hidden States' on arXiv. They introduced TTT layers with hidden states as trainable models, comparing TTT-Linear and TTT-MLP at scales up to 1.3B parameters against a Transformer and Mamba. Their results showed that while TTT layers could reduce perplexity with more context, Mamba was unable to do so beyond a 16k context length.\n\nIn 2022, Bünning, Huber, Schalbetter, Aboudonia, Hudoba de Badyn, Heer, Smith, and Lygeros published 'Physics-informed linear regression is competitive with two Machine Learning methods in residential building MPC' in Applied Energy. They compared physics-informed ARMAX models to Random Forests and Input Convex Neural Networks in a real building application, finding ARMAX models provided satisfactory control with lower computational burden and better sample efficiency.\n\nIn 2022, Cucchi, Abreu, Ciccone, Brunner, and Kleemann published 'Hands-on reservoir computing: a tutorial for practical implementation' in Neuromorphic Computing and Engineering. The tutorial offers a guide for implementing reservoir computing, which uses a random, untrained reservoir with a trained output layer, and discusses the challenges in preparing a nonlinear system for specific tasks.\n\nIn 2024, Kumar published 'Large language models (LLMs): survey, technical frameworks, and future challenges' in Artificial Intelligence Review. This survey provides an overview of LLM applications in domains like text generation, biomedicine, and code generation, and discusses the limitations of current approaches.\n\nIn 2021, Wen, Zhang, He, and Lee published 'AI enabled sign language recognition and VR space bidirectional communication using triboelectric smart glove' in Nature Communications. They developed a system using sensing gloves and deep learning for sign language recognition, employing segmentation to split sentences into words and achieving an 86.67% correct rate on new, recombined sentences.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 3,
+      "num_removed_undated": 0,
+      "num_used": 7,
+      "num_cutoff_valid": 7,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 3,
+    "num_removed_undated": 0,
+    "num_used": 7,
+    "num_cutoff_valid": 7,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

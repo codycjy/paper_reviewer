@@ -1,0 +1,83 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of leveraging the LLM's own logits for direct preference judgment and iterative self-annotation with noise refinement is highly novel and addresses a critical bottleneck in LLM alignment (data scarcity).",
+        "The paper achieves impressive results, demonstrating superior alignment performance with a remarkably small fraction of human-labeled data (3.3% of Ultrafeedback), significantly outperforming strong baselines and even models trained on full datasets.",
+        "The introduction of 'de-coupled noise detection' utilizing a linearly extrapolated prediction from current and reference models is a clever and innovative way to refine generated preference labels, providing robustness to the self-annotation process."
+      ],
+      "weaknesses": [
+        "While the concept of using a 'more strongly aligned LLM' (πθe) for de-coupled noise detection is interesting, the linear extrapolation of logits (Eq. 12) to approximate such a model feels a bit heuristic and lacks strong theoretical justification for why this specific linear combination optimally represents 'stronger alignment' beyond an empirical observation, though the authors' explanation linking it to varying KL terms is helpful.",
+        "The paper notes a tendency for SPA to increase response length. While a length-controlled win rate is provided, the direct impact on user experience and the generalizability of the proposed length-mitigation technique (RLHFlow heuristic) to broader contexts could still be explored more deeply. The acknowledgement that more sophisticated and generalizable length-controlling mechanisms would be an interesting future direction is appreciated."
+      ],
+      "summary_comment": "This paper presents SPA, a highly novel and impactful framework for efficient LLM alignment, tackling the prohibitive cost of human-annotated preference data. The idea of direct preference judgment from LLM logits and iterative self-annotation with a sophisticated noise refinement mechanism (de-coupled noise detection) is genuinely innovative. The experimental results are compelling, demonstrating state-of-the-art performance with dramatically reduced data requirements, which is a major step forward for the field. The authors' clarification regarding the theoretical motivation for the linear extrapolation of logits, linking it to KL term variations in RLHF, helps to strengthen that aspect. While some aspects of the practical implications of increased response length could still benefit from further extensive analysis, the overall effectiveness and bold approach make this work highly significant. Minor methodological imperfections are acceptable given the strong novelty and potential for inspiring future research in efficient alignment strategies."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel framework (SPA) for efficient LLM alignment, which aligns well with ICML's interest in 'general machine learning' and 'deep learning' (architectures, generative models, theory). Specifically, the method directly addresses the challenge of data scarcity in preference learning for LLMs.",
+        "The core technical contributions, such as direct preference judgment from LLM logits and a noise-aware preference learning algorithm with de-coupled noise detection, demonstrate methodological innovation relevant to ICML's focus on new algorithms and theoretical underpinnings in machine learning.",
+        "The experimental results, showing superior alignment performance on benchmarks like AlpacaEval 2.0 and MT-Bench with significantly reduced human-labeled data, represent a strong empirical contribution. ICML values significant advancements that push the state-of-the-art.",
+        "The paper provides a detailed algorithmic description (Algorithm 1) and mathematical formulations (Eq. 7-12) for its proposed methods, indicating a level of rigor that is typically appreciated at ICML.",
+        "The reviewer highlights the 'highly novel and impactful framework' and 'genuinely innovative' aspects, particularly for addressing 'data scarcity,' which aligns with ICML's emphasis on cutting-edge research and solving critical problems in ML.",
+        "The reviewer notes that the authors' clarification on the theoretical motivation for linear extrapolation of logits, linking it to KL term variations in RLHF, strengthens the theoretical grounding, which is important for ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer points out that the linear extrapolation of logits for de-coupled noise detection feels 'a bit heuristic and lacks strong theoretical justification' for optimality. While a clarification was provided, a deeper theoretical treatment or analysis of this component could further strengthen its fit with ICML's theory focus.",
+        "Although the paper addresses the length bias issue with length-controlled metrics and a mitigation technique, the reviewer suggests that the 'direct impact on user experience and the generalizability of the proposed length-mitigation technique (RLHFlow heuristic) to broader contexts could still be explored more deeply.' This indicates a potential area for more comprehensive practical evaluation, which can sometimes be a point of scrutiny for ICML papers seeking broad applicability."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper directly addresses a significant practical and research challenge in 'Language and multimodal language models' (LLM alignment) and 'Data-centric aspects of AI' (reducing data annotation cost), which are explicit topics of interest for NeurIPS.",
+        "The methodology, involving iterative self-annotation and novel noise refinement (de-coupled noise detection), aligns with NeurIPS's interest in 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning'.",
+        "The strong empirical results on standard LLM benchmarks (AlpacaEval 2.0, MT-Bench) with substantially less human supervision fulfill NeurIPS's expectation for 'new and original research' that demonstrates tangible performance improvements.",
+        "The discussion of the method's 'societal impact' (efficient training, ethical considerations) resonates with NeurIPS's growing emphasis on 'Socio-technical aspects of AI'.",
+        "The reviewer's comments on the 'highly novel and impactful framework' and its ability to achieve 'superior alignment performance with a remarkably small fraction of human-labeled data' are strong indicators of its relevance and potential impact, which NeurIPS values.",
+        "The interdisciplinary nature of addressing both the machine learning algorithm design and the practical challenges of LLM deployment makes it a strong candidate for NeurIPS, which 'welcomes interdisciplinary submissions'."
+      ],
+      "why_it_does_not_fit": [
+        "Similar to ICML, the reviewer notes that the theoretical justification for the linear extrapolation in de-coupled noise detection, while empirically effective, 'lacks strong theoretical justification for why this specific linear combination optimally represents 'stronger alignment'.' NeurIPS often appreciates a balance of strong empirical results with robust theoretical understanding.",
+        "While the paper's focus is on LLM alignment, the emphasis is heavily on the algorithmic aspect rather than broader 'AI/ML for physical sciences', 'health and biotechnology', or other specific application areas that might be highlighted at NeurIPS beyond language models themselves.",
+        "The 'minor methodological imperfections' mentioned by the reviewer, even if deemed acceptable by them, could still be a point of minor contention for some NeurIPS reviewers looking for flawless methodological rigor, especially given the conference's strong theoretical bent."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper's focus on 'efficient LLM alignment using only a very small amount of human-annotated preference data' directly aligns with ICLR's interest in 'representation learning for ... language' and 'large-scale learning', particularly given the deep learning context of LLMs.",
+        "The proposed method, SPA, extensively involves fine-tuning LLMs with variants of DPO, which falls under 'reinforcement learning' (implicitly through preference learning), 'optimization' (DPO objective), and 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' due to its iterative self-annotation.",
+        "The integration of a 'noise-aware preference learning algorithm' and 'de-coupled noise detection' demonstrates methodological innovation in the deep learning space, which is a core interest of ICLR.",
+        "The comprehensive experimental evaluation on established LLM benchmarks (AlpacaEval 2.0, MT-Bench) and ablation studies showcasing the effectiveness of SPA's components provide strong empirical evidence, a key criterion for ICLR.",
+        "The reviewer's commendation of the 'highly novel' and 'genuinely innovative' aspects of the framework, especially its solution to 'data scarcity' in LLM alignment, is perfectly aligned with ICLR's mission to publish cutting-edge research in deep learning.",
+        "The paper explores the practical improvement of LLM alignment, an 'application to robotics, autonomy, planning' or 'gaming' in a broader sense, as aligned LLMs are crucial for these domains. While not explicit, the utility of better aligned LLMs has broad applicability."
+      ],
+      "why_it_does_not_fit": [
+        "The paper acknowledges a 'tendency for SPA to increase response length', which, while addressed by length-controlled metrics, is a practical limitation that might be viewed more critically by ICLR reviewers who prioritize robust real-world applicability of deep learning models.",
+        "The reviewer's point about the 'heuristic' nature and 'lack of strong theoretical justification' for the linear extrapolation in de-coupled noise detection could be a minor drawback for ICLR, which also values theoretical understanding in deep learning methods.",
+        "While the methods are innovative within LLM alignment, the paper doesn't delve into novel neural network architectures or very foundational deep learning theory, which are often significant contributions at ICLR, placing it more in the 'application-leaning' deep learning category rather than foundational architecture."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

@@ -1,0 +1,216 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 5
+      },
+      "strengths": [
+        "Proposes a novel and effective learning paradigm (SPIDER) for blind face restoration, which simultaneously injects semantic prior before degradation removal to preserve identity-relevant features.",
+        "Rigorous and comprehensive evaluation across multiple synthetic and real-world benchmarks, including a challenging surveillance dataset, demonstrating clear superiority over strong state-of-the-art baselines.",
+        "Excellent clarity in writing, with well-structured explanations of the main concept, framework, and ablation studies supported by clear figures and tables."
+      ],
+      "weaknesses": [
+        "The training and inference pipeline is complex, involving two separate training stages and reliance on preprocessing with GFPGAN for LLM input, which may affect reproducibility and efficiency.",
+        "While the t-SNE visualization provides some insight, an in-depth analysis of the failure cases or a more thorough discussion on the specific limitations of the proposed DRM mechanism would strengthen the paper."
+      ],
+      "summary_comment": "This paper presents SPIDER, a convincing and well-executed approach for blind face restoration. The core idea of injecting prior before degradation removal is novel and well-motivated. The experiments are extensive, fair, and demonstrate strong improvements, particularly on severe and real-world degradations. The paper is exceptionally clear. The main contributions are a novel paradigm that works, comprehensive evaluations, and clear ablation studies justifying design choices. The weaknesses are relatively minor regarding pipeline complexity and a desire for deeper failure analysis. The work significantly advances the field and is ready for publication."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper addresses a core machine learning problem (blind face restoration) with a novel algorithmic contribution, aligning with ICML's focus on general machine learning, deep learning, and probabilistic methods.",
+        "The methodology combines vision-language models, diffusion models, and a novel two-stage training paradigm, which is technically sophisticated and fits ICML's interest in innovative machine learning techniques.",
+        "The paper includes extensive quantitative evaluation with standard metrics (FID, PSNR, SSIM, LPIPS) and ablation studies, demonstrating rigorous experimental methodology valued at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The work is highly application-focused on computer vision (face restoration) with significant domain-specific engineering (e.g., face-oriented prompts, surveillance dataset SCface). ICML tends to favor more generalizable ML contributions over domain-specific applications unless they introduce fundamental new learning principles.",
+        "The novelty is primarily in the architecture and training paradigm for a specific task, rather than a fundamental theoretical or algorithmic advance. Reviewer 1 noted the pipeline complexity but not a deep theoretical contribution.",
+        "While the method uses diffusion models, the core innovation is not in advancing diffusion theory or optimization, but in a clever application design for a specific vision problem. This might be seen as more of an engineering contribution than a core ML advance."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper strongly aligns with NeurIPS's computer vision and deep learning tracks. Blind face restoration is a canonical vision problem, and the use of VLMs (LLaVA), diffusion models, and cross-modal learning fits squarely within current NeurIPS trends.",
+        "The work demonstrates clear SOTA results on challenging real-world datasets (surveillance, WIDER), which NeurIPS values, especially for applications with practical impact.",
+        "The paper is well-written and includes comprehensive experiments, ablation studies, and visualizations (t-SNE), meeting NeurIPS's high standards for empirical rigor and clarity.",
+        "The proposed 'simultaneous prior injection and degradation removal' paradigm is presented as a novel learning strategy that could be generalized, aligning with NeurIPS's interest in new methodological paradigms."
+      ],
+      "why_it_does_not_fit": [
+        "The contribution, while effective and novel for the task, might be perceived as incremental relative to the rapidly advancing field of diffusion-based restoration (e.g., building directly on FaithDiff, DiffBIR). The core idea of changing the order of operations, while impactful, is not a radical departure.",
+        "The paper does not include broader societal impact discussions (marked NA in checklist), which NeurIPS increasingly emphasizes, though this is not a strict requirement.",
+        "Despite strong results, the approach is quite specialized to face images and may have limited direct applicability to other vision domains without significant modification."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "This paper is an excellent fit for ICLR. The core contribution revolves around representation learning and deep generative models (diffusion models) for restoration, which is central to ICLR's focus.",
+        "The method extensively uses and modifies foundational deep learning components: pretrained diffusion models (Stable Diffusion), vision-language models (LLaVA, CLIP), and a novel training paradigm involving cross-modal feature manipulation. This is exactly the type of deep learning systems work ICLR features.",
+        "The paper's emphasis on leveraging 'prior' (semantic, diffusion) aligns perfectly with ICLR's listed topics: representation learning, generative models, unsupervised/self-supervised learning, and applications to vision.",
+        "The empirical evaluation is thorough and includes analysis of learned representations (t-SNE visualizations), which resonates with ICLR's culture of understanding how and why deep models work."
+      ],
+      "why_it_does_not_fit": [
+        "There is no major theoretical contribution or novel theoretical analysis of the proposed method. The paper is empirically driven, which is common at ICLR, but the absence of theory might place it slightly below the most theoretically groundbreaking submissions.",
+        "The reliance on a very large pretrained VLM (LLaVA-v1.5-13B) and a preprocessing step (GFPGAN) for inference adds engineering complexity. While ICLR accepts systems papers, the core algorithmic novelty is slightly entangled with these large external dependencies."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_696d0520c804",
+    "paper_id": "paper_67d9b2510239",
+    "target_paper_summary": {
+      "paper_id": "paper_67d9b2510239",
+      "title": "Spider: Boosting Blind Face Restoration Via Simultaneous Prior Injection And Degradation Removal",
+      "abstract": "1 Existing blind face restoration (BFR) methods suffer from drastic performance drop 2 under severe degradations. A common strategy is to first remove degradations and 3 then restore the face by fully harnessing generative prior. However, this sequential 4 pipeline risks discarding subtle but crucial cues from already limited low-quality 5 (LQ) inputs. To address this, we ingeniously introduce a new learning paradigm: 6 simultaneous prior injection and degradation removal (SPIDER). Unlike existing 7 approaches, SPIDER injects semantic prior before degradation removal, thereby 8 preserving identity-relevant features and mitigating the impact of corrupted LQ 9 features. SPIDER consists of two key modules: (1) a prior injection module that 10 distills purified degradation-unaware semantic control tokens from vision-language 11 models, and (2) a degradation removal module equipped with an image-to-text 12 degradation mapper and a degradation remover that refines distorted features into 13 robust representations. Extensive experiments on both synthetic and real-world 14 datasets, including challenging surveillance scenarios, demonstrate SPIDER's clear 15 superiority over state-of-the-art BFR methods. 17 Blind Face Restoration (BFR) is a challenging task that aims to recover high-quality (HQ) face 18 images from low-quality (LQ) ones that suffer from unknown and complex degradations such as low 19 resolution [3, 6], blur [48], noise [13, 28], and JPEG compression [5]. This is an inherently ill-posed 20 problem as the information loss caused by the degradations leads to an overwhelming number of 21 plausible HQ solutions consistent with the same LQ input. To mitigate the ill-posedness, recent 22 studies have explored various prior-based methods to produce high-fidelity outputs. 23 As illustrated in Figure 1, existing prior-based BFR methods fall into three main paradigms: 1) 24 Continuous generative prior (e.g., GFPGAN [36], which learns accurate latent codes via GAN inver25 sion to reconstruct HQ faces with high fidelity; 2) Discrete generative prior (e.g., Codeformer [52], 26 DAEFR [30]), which uses vector quantization to map degraded inputs into semantic tokens and 27 harness a fixed HQ codebook for high-quality restoration; and 3) Diffusion-based conditional genera28 tion (e.g., DiffBIR [18], FaithDiff [2]), which reframes the restoration into conditional generation 29 employing the powerful expressiveness of diffusion prior to achieve significant improvement",
+      "topic": "",
+      "claims": []
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "blind face restoration OR BFR face image enhancement degradation",
+          "rationale": "The paper focuses on blind face restoration (BFR) from degraded inputs, so searching for papers on the same problem should include the core terminology."
+        },
+        {
+          "group": "same_method",
+          "query": "prior injection degradation removal vision-language models semantic tokens",
+          "rationale": "SPIDER's method involves simultaneous prior injection and degradation removal using vision-language models and semantic tokens, so the query targets papers with similar techniques."
+        },
+        {
+          "group": "same_constraints",
+          "query": "blind face restoration severe degradations surveillance low-quality inputs",
+          "rationale": "The paper addresses BFR under severe degradations and real-world scenarios like surveillance, so constraints include input quality and deployment settings."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "blind face restoration benchmark dataset metrics PSNR SSIM FID",
+          "rationale": "Benchmark papers for BFR typically define datasets, metrics (e.g., PSNR, SSIM, FID), and baseline comparisons, which are relevant for evaluation."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "blind face restoration generative prior GFPGAN Codeformer DiffBIR",
+          "rationale": "The paper cites existing methods like GFPGAN, Codeformer, and DiffBIR as competitors; prior work using generative prior could challenge novelty claims."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "blind face restoration limitations identity preservation degradation removal failure cases",
+          "rationale": "To find counterevidence, search for papers discussing limitations in BFR, such as identity loss or degradation removal issues, which may expose weaknesses."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+          "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests"
+        ]
+      },
+      "arXiv": {
+        "status": "failed",
+        "retrieved": 0,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_method: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+          "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+          "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+        ]
+      }
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [
+      "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+      "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_method: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+      "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+      "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 0,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "OpenAlex query failed for same_problem: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_method: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for same_constraints: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for benchmark_baseline: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for novelty_competitor: HTTP 429 Too Many Requests",
+    "OpenAlex query failed for limitations_counterevidence: HTTP 429 Too Many Requests",
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_method: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+    "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+    "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 0,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

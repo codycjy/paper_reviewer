@@ -1,0 +1,125 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer A - Novelty Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 5,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The core idea of using graphlets and their orbits as interpretable units for GNN explanations is highly novel and addresses a critical gap in human-interpretable XAI for graphs. It leverages existing domain knowledge (graphlets in various scientific fields) in a new context.",
+        "UO-Explainer provides a unified framework for both model-level and instance-level explanations, which is a significant advancement over existing methods that often specialize in one or the other. This holistic view enhances the overall understanding of GNN decisions.",
+        "The empirical results demonstrate strong performance, particularly in identifying ground truth patterns on synthetic datasets and achieving high fidelity on real-world datasets, indicating the practical utility of the proposed method."
+      ],
+      "weaknesses": [
+        "While the approach allows for user-defined graphlets, the current implementation (and a stated limitation) focuses on 2-5 node graphlets. This might be restrictive for complex GNN behaviors that rely on larger, more intricate patterns. The computational cost for larger graphlets is a concern.",
+        "The greedy approach for class-orbit score learning, while practical for reducing randomness, might miss optimal or meaningfully different combinations of orbits, potentially limiting the completeness of the model-level explanation."
+      ],
+      "summary_comment": "This paper presents UO-Explainer, a truly novel approach to GNN explainability that prioritizes human interpretability by leveraging graphlets and their orbits. The unified framework for both model- and instance-level explanations is a significant contribution, providing a more coherent understanding of GNN predictions. The idea is bold and forward-thinking, addressing a crucial need for domain experts to integrate their prior knowledge directly into explanations. While there might be some minor methodological points to refine (e.g., the limitation to small graphlets or the greedy selection), the core concept is exceptionally strong and has the potential to inspire substantial future work in interpretable graph machine learning. The experimental results, especially on synthetic datasets for model-level explanations, are highly convincing regarding the method's ability to capture ground truth patterns. The significance and novelty of this work strongly outweigh any minor imperfections."
+    },
+    {
+      "reviewer": "Reviewer B - Rigor Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper proposes a novel and sound approach to GNN explainability by leveraging graphlets and their orbits as human-interpretable units. This addresses a key limitation of many existing methods that often produce less intuitive explanations.",
+        "The evaluation is thorough and comprehensive, covering both synthetic and real-world datasets and evaluating both model-level and instance-level explanations. The quantitative results demonstrate consistent superior performance of UO-Explainer compared to baselines across various metrics.",
+        "The unified framework for providing both model-level and instance-level explanations is a significant contribution, as most previous works focus on only one. This dual perspective offers a more complete understanding of GNN decision-making, which is valuable for real-world applications."
+      ],
+      "weaknesses": [
+        "The greedy approach for class-orbit score learning (Algorithm 2) could be further analyzed for its optimality and potential limitations. While the paper states that the number of selected orbits did not exceed 5 in experiments, a more formal justification or sensitivity analysis for this stopping criterion would strengthen the methodological rigor.",
+        "The time complexity analysis for extracting orbit existence in preprocessing states O(|V| d^k-1) and then follows with the statement that 'it is computationally expensive' and that randomized sampling is used. While the trade-off is acknowledged and evaluated, a more detailed discussion on the impact of this sampling on the theoretical completeness or potential biases in the derived orbit existences would be beneficial."
+      ],
+      "summary_comment": "This paper presents UO-Explainer, a well-conceived and rigorously evaluated approach to GNN explainability. The core idea of using orbits within graphlets as interpretable units is novel and highly relevant for achieving human-understandable explanations. The unified framework for both model-level and instance-level explanations is a valuable contribution. The experimental results convincingly demonstrate the superior performance of UO-Explainer on a wide range of datasets. While minor concerns exist regarding the theoretical completeness of the greedy algorithm and the exact impact of sampling in the initial preprocessing step, these do not overshadow the overall strong methodological soundness and empirical success of the proposed method. The paper is clearly written and easy to follow. This is a solid contribution to the field of GNN explainability."
+    },
+    {
+      "reviewer": "Reviewer C - Practicality Focused",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper addresses a significant and timely problem in GNN explainability by focusing on human interpretability and a unified framework (model-level and instance-level explanations). This is a practical pain point for practitioners trying to deploy GNNs in real-world scenarios.",
+        "The proposal to use graphlets and orbits as user-defined, human-interpretable units for explanation is a strong, practically relevant idea. It allows domain experts to inject their prior knowledge, making the explanations more actionable.",
+        "The comprehensive experimental evaluation on both synthetic and real-world datasets, including a case study on a gene dataset, strongly supports the claims of the paper regarding UO-Explainer's performance and interpretability. The comparison against numerous baselines is convincing."
+      ],
+      "weaknesses": [
+        "The reliance on pre-defined 2-5 node graphlets and their orbits, while making explanations interpretable, might be a limiting factor for real-world graphs where crucial patterns could be larger or more complex. The paper acknowledges this limitation but the practical impact of this constraint could be more deeply discussed (e.g., when does this limitation become critical?).",
+        "While the concept of orbit basis learning is introduced, the specific details and potential sensitivities of this process (e.g., how robust is the learned basis to different initializations, or how does the choice of GNN model affect the learned bases?) could be elaborated further."
+      ],
+      "summary_comment": "This paper presents UO-Explainer, a novel and practically relevant method for generating human-interpretable explanations for GNNs. The key idea of using graphlets and orbits as user-defined explanation units is compelling, as it allows domain experts to steer interpretability based on their prior knowledge. The paper clearly articulates the problem of lacking human-interpretable and unified explanations in existing GNN explainability methods. The proposed method provides both model-level and instance-level explanations, which is a significant advantage for practical applications. The experimental evaluation is extensive, well-structured, and demonstrates UO-Explainer's superior performance in terms of explainability metrics across various datasets. The discussion of time complexity and the case study further strengthen the paper's practical appeal. While the reliance on small graphlets might be a limitation for very complex patterns, the overall contribution is significant and well-supported."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel method leveraging graphlets and orbits for GNN explainability, which falls under 'general machine learning' (active learning, clustering, online learning, ranking, supervised, semi- and self-supervised learning, time series analysis, etc.) and 'deep learning' (architectures, generative models, theory, etc.) as applied to GNNs.",
+        "The focus on human interpretability in GNN explanations directly aligns with the 'trustworthy machine learning' topic (reliability, causality, fairness, interpretability, privacy, robustness, safety, etc.) which is a key area of interest for ICML.",
+        "The method provides both model-level and instance-level explanations, offering a unified framework that enhances the understanding of GNN decisions, a significant methodological contribution fitting ICML's emphasis on advancing machine learning techniques.",
+        "The extensive experimental evaluation on both synthetic and real-world datasets, demonstrating superior performance against baselines, aligns with ICML's requirement for rigorous empirical validation.",
+        "Reviewer A noted the 'highly novel' and 'bold and forward-thinking' core idea, which is well-suited for ICML's emphasis on cutting-edge research.",
+        "Reviewer B highlighted the 'novel and sound approach' and the 'thorough and comprehensive' evaluation, indicating strong methodological rigor and empirical success, which are highly valued at ICML."
+      ],
+      "why_it_does_not_fit": [
+        "The stated limitation of the current implementation to 2-5 node graphlets could be seen as a minor limitation, as complex real-world GNN behaviors might rely on larger patterns, which might slightly reduce its scope for 'general machine learning' problems (Reviewer A, C).",
+        "Reviewer B and C pointed out that a more formal justification or sensitivity analysis for the greedy approach in class-orbit score learning and the impact of sampling in the preprocessing step could strengthen methodological rigor, which ICML often highly values."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper addresses GNN explainability, which is highly relevant to 'General machine learning: core contributions in supervised and unsupervised methods' and 'Deep learning,' given GNNs are a prominent deep learning architecture.",
+        "The concept of 'human interaction in AI systems' and 'socio-technical aspects of AI' is touched upon through the focus on user-defined, human-interpretable explanation units, which aligns with NeurIPS's broad interdisciplinary scope.",
+        "The application of GNNs in areas like social networks (LastFM-Asia), molecules (mention in intro), and gene networks (case study) also aligns with NeurIPS's specific 'AI/ML for physical sciences' and 'AI/ML for health and biotechnology' topics.",
+        "The interdisciplinary nature of leveraging graphlets from various scientific fields for ML explainability fits NeurIPS's welcoming stance towards 'interdisciplinary submissions that do not fit neatly into existing categories'.",
+        "Reviewer A praised the 'truly novel approach' that ‘addresses a critical gap in human-interpretable XAI for graphs’ and 'has the potential to inspire substantial future work,' which is highly valued by NeurIPS for pushing boundaries.",
+        "The paper provides a 'unified framework for both model-level and instance-level explanations,' which can be considered an 'in-depth analysis of existing methods' (explainability methods) providing new insights into their limitations."
+      ],
+      "why_it_does_not_fit": [
+        "While the paper is strong, its primary focus is on a specific technical problem within GNNs (explainability) rather than a broader theoretical contribution or a fundamental new machine learning paradigm that NeurIPS sometimes emphasizes.",
+        "Reviewer B mentioned lacking a 'more formal justification or sensitivity analysis' for certain methodological choices. While not critical, NeurIPS often appreciates a very high level of theoretical rigor alongside empirical results.",
+        "The limitation to 2-5 node graphlets, acknowledged by all reviewers, might be perceived as a constraint on the universality of the approach for extremely complex graph structures, which are prevalent in many NeurIPS-relevant domains."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The core methodology revolves around Graph Neural Networks (GNNs) and their explainability, directly aligning with ICLR's primary focus on 'all aspects of deep learning' and applications in 'machine vision, computational biology, speech recognition, text understanding, gaming, and robotics'.",
+        "The paper explores 'unsupervised, self-supervised, semi-supervised, and supervised representation learning' implicitly through the GNN framework and explicitly by interpreting these representations.",
+        "The use of 'graphlets' and 'orbits' as interpretable units also touches upon 'learning on graphs and other geometries & topologies', a specific topic of interest for ICLR.",
+        "The strong empirical results on both synthetic and real-world datasets, including a case study on a gene dataset, align with ICLR's focus on demonstrating practical effectiveness in various applications, particularly 'applications to physical sciences (physics, chemistry, biology, etc.)'.",
+        "Reviewer C highlighted the 'practical pain point for practitioners trying to deploy GNNs in real-world scenarios' and the 'practically relevant idea' for human interpretability, resonating with ICLR's application-oriented facet.",
+        "The contribution of a 'unified framework to provide both model-level and instance-level explanations' showcases a comprehensive approach to understanding deep learning models, which is a significant methodological contribution for ICLR."
+      ],
+      "why_it_does_not_fit": [
+        "While relevant, the paper's main novelty is in GNN explainability rather than proposing a entirely new deep learning architecture or a fundamental theoretical breakthrough in representation learning, areas where ICLR often seeks leading contributions.",
+        "The acknowledged limitation that 'the motifs we can employ as explanatory units are limited to 2-5 node graphlets' might be a concern for ICLR, which often deals with highly complex and larger graph structures where such small graphlets might not be sufficient (Reviewer A, C).",
+        "Reviewer B mentioned that the greedy approach for class-orbit score learning could use 'more formal justification or sensitivity analysis'. While ICLR is empirical, a weaker theoretical underpinning compared to alternative methods might be a minor drawback."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": null,
+  "rag_warnings": [],
+  "cutoff_report": {}
+}

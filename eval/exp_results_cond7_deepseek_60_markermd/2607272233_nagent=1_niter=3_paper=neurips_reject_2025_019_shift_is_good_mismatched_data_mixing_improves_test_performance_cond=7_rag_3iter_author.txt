@@ -1,0 +1,814 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Reject",
+      "scores": {
+        "novelty": 3,
+        "soundness": 3,
+        "significance": 2,
+        "evaluation": 2,
+        "clarity": 4
+      },
+      "strengths": [
+        "The paper introduces a thought-provoking and counterintuitive core idea: that mismatched training and test data mixing proportions can, in many scenarios, improve test performance—'positive distribution shift'.",
+        "The work provides a systematic theoretical analysis across several learning models (power law, memorization, transfer) and derives closed-form expressions for optimal mixing ratios and performance improvements in these settings.",
+        "The paper is well-structured and clearly written, with an engaging introduction that effectively motivates the problem."
+      ],
+      "weaknesses": [
+        "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+        "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+        "The connection to related work is underdeveloped, and the claim of novelty ('shift is almost always good') feels overstated given prior literature on optimizing training distributions."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+          "severity": "major",
+          "evidence": "Section 5 describes a single synthetic experiment with a GPT-2 architecture model on a constructed skill composition task. The main claims are supported by theoretical derivations and simple illustrative plots (Figures 1-2), but there is no validation on standard benchmarks, modern large-scale models, or complex real-world tasks where distribution shift is a critical concern. The evidence from the paper does not convincingly demonstrate that the predicted improvements are substantial or attainable in practical settings. The author's response acknowledges this is a 'proof-of-concept' and agrees further validation would strengthen the case, but this does not resolve the issue for the submitted paper.",
+          "affected_claim": "The central claim that 'mismatched data mixing improves test performance' and is generically beneficial.",
+          "fixable_without_substantial_new_work": false
+        },
+        {
+          "weakness": "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+          "severity": "minor",
+          "evidence": "The paper analyzes orthogonal power law (Section 3), orthogonal memorization (Section 4), standard transfer (Section 6.1), and data mixing transfer (Model 6.2) separately, deriving optimal q* and L* for each. Section 7 attempts a general statement but concludes with a measure-zero argument. The work feels more like a collection of examples demonstrating a phenomenon rather than a cohesive theory with a general principle or actionable algorithm for practitioners. The author's response clarifies the intended progression from examples to the general result in Section 7, but this structural intent does not fully mitigate the perception of fragmentation in the submitted work.",
+          "affected_claim": "The claim to 'systematically study the benefit' and provide a characterization applicable to 'a variety of scenarios'.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central theoretical claims appear technically sound. The mathematical derivations for the specified models are logically presented. The author's response does not alter this assessment."
+        },
+        "novelty": {
+          "result": "fail",
+          "justification": "The author's response clarifies that the primary novelty is the systematic theoretical characterization specifically for mixture proportion mismatch, providing closed-form optimal mixing ratios. While this focus is more specific than some prior work, the core idea—that training on a distribution different from the test distribution can be beneficial—is well-established (e.g., González and Abu-Mostafa, 2015; Canatar et al., 2021, as cited). The incremental nature of the contribution (detailed analysis of a specific sub-problem) does not meet the high novelty bar for a top-tier conference."
+        },
+        "significance": {
+          "result": "fail",
+          "justification": "The demonstrated contribution does not meaningfully advance the field. The analysis remains confined to stylized, simplified models, and the practical implications are unclear and insufficiently validated. The author's response accurately frames the current experiment as a 'proof-of-concept' and suggests future large-scale validation, but this acknowledges that the submitted work lacks the empirical grounding necessary to establish significance. The theoretical insights, while interesting, are not shown to have substantial impact on real-world ML practice."
+        },
+        "evaluation": {
+          "result": "fail",
+          "justification": "The experimental support remains weak. The single synthetic experiment is narrow in scope and does not provide convincing evidence that the derived principles lead to substantial, reliable gains on challenging, standard benchmarks. The author's response does not present new evidence from the submitted paper to address this concern; it only promises future work."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "The paper is clearly written and well-structured. The author's response does not alter this assessment."
+        }
+      },
+      "summary_comment": "The author's response provides helpful clarifications about the intended contributions but does not materially change the assessment of the submitted paper. The core issues remain unresolved: (1) novelty is incremental relative to established work on training distribution optimization; (2) significance is limited by the highly stylized theoretical analysis and lack of compelling empirical validation on real-world problems; and (3) evaluation is insufficient to support the broad claims. While the theoretical derivations are sound and the writing is clear, these major weaknesses prevent the paper from meeting the high standard required for a top-tier conference. The decision remains Reject."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The core topic of analyzing optimal data mixing for machine learning falls squarely under ICML's scope of 'general machine learning' and 'optimization'.",
+        "The paper provides a theoretical analysis across several learning models (power law, memorization, transfer), which aligns with ICML's interest in theory of machine learning.",
+        "The work investigates a fundamental question about training and test distribution relationships, which is a core ML topic within ICML's focus."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about lack of thorough empirical validation are significant given ICML's strong emphasis on empirical methodology and validation.",
+        "The reviewer notes the theoretical findings feel 'fragmented' across multiple models, which may limit the impact and cohesion expected at ICML.",
+        "The reviewer's judgment that novelty may not meet the 'high novelty bar' for a top-tier conference suggests a potential mismatch with ICML's standards, despite the topic fit."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 6,
+      "why_it_fits": [
+        "The paper connects to data-centric aspects of AI and relates to topics in generalization and multi-task learning, which are within NeurIPS's listed topics.",
+        "The discussion of skill composition in Section 5 relates to language and multimodal models, which is explicitly mentioned in NeurIPS's scope.",
+        "The theoretical analysis of learning curves and performance scaling aligns with NeurIPS's interest in fundamental ML research."
+      ],
+      "why_it_does_not_fit": [
+        "Reviewer concerns about 'lack of thorough empirical validation' are particularly problematic for NeurIPS, which values strong empirical backing even for theoretical work.",
+        "The reviewer's judgment on 'significance' being insufficient given the 'stylized, simplified models' suggests the work may not have the broad impact NeurIPS seeks.",
+        "The reviewer notes that connection to related work is 'underdeveloped', which is important for NeurIPS submissions that should properly contextualize their contributions.",
+        "The single synthetic experiment (Section 5) may not provide sufficient empirical validation for NeurIPS standards, despite being called a 'proof-of-concept'."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 5,
+      "why_it_fits": [
+        "The paper's discussion of skill composition and language models in Section 5 relates directly to ICLR's focus on representation learning for language.",
+        "The theoretical analysis of learning curves could be relevant to ICLR's interest in learning theory and optimization.",
+        "The connection to transfer learning in Section 6 aligns with ICLR's topics on transfer learning and meta-learning."
+      ],
+      "why_it_does_not_fit": [
+        "The paper's primary focus on general mixture distributions rather than deep learning specifically makes it a weaker fit for ICLR's core deep learning focus.",
+        "The reviewer's concern about 'lack of thorough empirical validation' is particularly critical for ICLR, which heavily emphasizes empirical results in deep learning.",
+        "The theoretical models (power law, memorization) are not specifically tied to deep learning architectures or phenomena unique to deep networks.",
+        "The reviewer's assessment that the work feels more like 'a collection of examples' rather than a cohesive theory may not align well with ICLR's preference for deep, unified contributions to deep learning."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a thought-provoking and counterintuitive core idea: that mismatched training and test data mixing proportions can, in many scenarios, improve test performance—'positive distribution shift'.",
+              "The work provides a systematic theoretical analysis across several learning models (power law, memorization, transfer) and derives closed-form expressions for optimal mixing ratios and performance improvements in these settings.",
+              "The paper is well-structured and clearly written, with an engaging introduction that effectively motivates the problem."
+            ],
+            "weaknesses": [
+              "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+              "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+              "The connection to related work is underdeveloped, and the claim of novelty ('shift is almost always good') feels overstated given prior literature on optimizing training distributions."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+                "severity": "major",
+                "evidence": "Section 5 describes a single synthetic experiment with a GPT-2 architecture model on a constructed skill composition task. The main claims are supported by theoretical derivations and simple illustrative plots (Figures 1-2), but there is no validation on standard benchmarks, modern large-scale models, or complex real-world tasks where distribution shift is a critical concern. The evidence from the paper does not convincingly demonstrate that the predicted improvements are substantial or attainable in practical settings.",
+                "affected_claim": "The central claim that 'mismatched data mixing improves test performance' and is generically beneficial.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+                "severity": "minor",
+                "evidence": "The paper analyzes orthogonal power law (Section 3), orthogonal memorization (Section 4), standard transfer (Section 6.1), and data mixing transfer (Model 6.2) separately, deriving optimal q* and L* for each. Section 7 attempts a general statement but concludes with a measure-zero argument. The work feels more like a collection of examples demonstrating a phenomenon rather than a cohesive theory with a general principle or actionable algorithm for practitioners.",
+                "affected_claim": "The claim to 'systematically study the benefit' and provide a characterization applicable to 'a variety of scenarios'.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central theoretical claims appear technically sound. The mathematical derivations for the specified models (e.g., Proposition 3.2, Theorem 4.2) are logically presented, and the paper states that full proofs are provided in the appendix. While some assumptions are strong (e.g., orthogonal components, specific error decay forms), the reasoning within those models seems correct."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The core idea—that training on a distribution different from the test distribution can be beneficial—is not new. ###RAG_EVIDENCE### shows prior work (e.g., González and Abu-Mostafa, 2015) explicitly demonstrates mismatched training can outperform matched training, and Canatar et al. (2021) discusses optimizing training distributions. The paper's contribution is a more detailed theoretical exploration focused specifically on mixture proportions, but this is an incremental extension rather than a paradigm shift. The claim in Section 7 that benefit is 'almost always' the case is a strong statement, but its practical novelty is limited as it is a theoretical observation about a specific setup."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution does not meaningfully advance the field for a top-tier conference. The analysis is confined to stylized, simplified models (orthogonal tasks with power law/ memorization error). The practical implications are unclear and insufficiently validated. While the intuition is interesting, the paper lacks evidence that the insights lead to significant improvements in real-world ML systems or provide a generally useful methodology beyond the analyzed special cases."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experimental support is weak and does not adequately support the central claims. The single synthetic experiment in Section 5 is a proof-of-concept but is narrow in scope. There are no comparisons to strong baselines or prior methods for data mixture optimization (e.g., from related work on data mixing laws). The evaluation does not convincingly show that the proposed mismatched mixing leads to substantial, reliable gains on challenging, standard benchmarks."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The problem setup is explained carefully, the models are defined, and the theoretical results are stated clearly. Figures and examples help illustrate the concepts. The presentation is sufficient for reliable assessment of the work."
+              }
+            },
+            "summary_comment": "This paper presents a theoretically interesting observation: that mismatching training and test mixture proportions can sometimes reduce test error. The analysis is clean and the writing is clear. However, the novelty is limited given prior work on optimizing training distributions, the significance is hampered by the highly stylized nature of the analyzed models and lack of compelling empirical validation on real-world problems, and the evaluation is insufficient to support the paper's broad claims. For a top-tier conference, the contribution falls short of the required impact, as it offers more of a conceptual exploration than a practical advance. The weaknesses in novelty, significance, and evaluation are major and central to the paper's contribution, leading to a reject decision."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a thought-provoking and counterintuitive core idea: that mismatched training and test data mixing proportions can, in many scenarios, improve test performance—'positive distribution shift'.",
+              "The work provides a systematic theoretical analysis across several learning models (power law, memorization, transfer) and derives closed-form expressions for optimal mixing ratios and performance improvements in these settings.",
+              "The paper is well-structured and clearly written, with an engaging introduction that effectively motivates the problem."
+            ],
+            "weaknesses": [
+              "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+              "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+              "The connection to related work is underdeveloped, and the claim of novelty ('shift is almost always good') feels overstated given prior literature on optimizing training distributions."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+                "severity": "major",
+                "evidence": "Section 5 describes a single synthetic experiment with a GPT-2 architecture model on a constructed skill composition task. The main claims are supported by theoretical derivations and simple illustrative plots (Figures 1-2), but there is no validation on standard benchmarks, modern large-scale models, or complex real-world tasks where distribution shift is a critical concern. The evidence from the paper does not convincingly demonstrate that the predicted improvements are substantial or attainable in practical settings. The author's response acknowledges this is a 'proof-of-concept' and agrees further validation would strengthen the case, but this does not resolve the issue for the submitted paper.",
+                "affected_claim": "The central claim that 'mismatched data mixing improves test performance' and is generically beneficial.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+                "severity": "minor",
+                "evidence": "The paper analyzes orthogonal power law (Section 3), orthogonal memorization (Section 4), standard transfer (Section 6.1), and data mixing transfer (Model 6.2) separately, deriving optimal q* and L* for each. Section 7 attempts a general statement but concludes with a measure-zero argument. The work feels more like a collection of examples demonstrating a phenomenon rather than a cohesive theory with a general principle or actionable algorithm for practitioners. The author's response clarifies the intended progression from examples to the general result in Section 7, but this structural intent does not fully mitigate the perception of fragmentation in the submitted work.",
+                "affected_claim": "The claim to 'systematically study the benefit' and provide a characterization applicable to 'a variety of scenarios'.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central theoretical claims appear technically sound. The mathematical derivations for the specified models are logically presented. The author's response does not alter this assessment."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The author's response clarifies that the primary novelty is the systematic theoretical characterization *specifically for mixture proportion mismatch*, providing closed-form optimal mixing ratios. While this focus is more specific than some prior work, the core idea—that training on a distribution different from the test distribution can be beneficial—is well-established (e.g., González and Abu-Mostafa, 2015; Canatar et al., 2021, as cited). The incremental nature of the contribution (detailed analysis of a specific sub-problem) does not meet the high novelty bar for a top-tier conference."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution does not meaningfully advance the field. The analysis remains confined to stylized, simplified models, and the practical implications are unclear and insufficiently validated. The author's response accurately frames the current experiment as a 'proof-of-concept' and suggests future large-scale validation, but this acknowledges that the submitted work lacks the empirical grounding necessary to establish significance. The theoretical insights, while interesting, are not shown to have substantial impact on real-world ML practice."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experimental support remains weak. The single synthetic experiment is narrow in scope and does not provide convincing evidence that the derived principles lead to substantial, reliable gains on challenging, standard benchmarks. The author's response does not present new evidence from the submitted paper to address this concern; it only promises future work."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The author's response does not alter this assessment."
+              }
+            },
+            "summary_comment": "The author's response clarifies the intended contributions and acknowledges areas for future work, but it does not fundamentally change the assessment of the submitted paper. The core issues remain: novelty is incremental relative to prior work on optimizing training distributions, significance is limited by the highly stylized nature of the analysis and lack of compelling empirical validation on real-world problems, and evaluation is insufficient. For a top-tier conference, these are major weaknesses that prevent the paper from meeting the required standard. The decision remains Reject."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of thorough empirical validation on real-world benchmarks and modern large-scale models.\",\n        \"Claim of novelty (\\\"shift is almost always good\\\") is overstated given prior literature.\",\n        \"Fragmented presentation across multiple models without a unifying, broadly applicable algorithm.\",\n        \"Significance questioned due to stylized models and unclear practical impact.\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Fragmented presentation across multiple models.\",\n          \"location\": \"Section 1, Section 7\",\n          \"explanation\": \"The paper explicitly aims to systematically study the phenomenon across different learning curves (e.g., power law, memorization, transfer) as a way to demonstrate its generality, as stated in the introduction: \\\"Specifically, we systematically study the benefit of such distribution shift... We consider different per-component learning curves... In Section 3 we consider... In Section 4 we consider... In Section 6 we consider...\\\" Furthermore, Section 7 (\\\"It's Almost Always Better to Mismatch\\\") provides a unifying mathematical justification showing the condition for no benefit is measure-zero, tying together the previous specific analyses under a general principle.\"\n        },\n        {\n          \"concern\": \"Novelty claim overstated relative to prior work.\",\n          \"location\": \"Section 8 (Related Works)\",\n          \"explanation\": \"The paper acknowledges related work but distinguishes its specific contribution. For example, lines 316-327 cite González and Abu-Mostafa (2015) and Canatar et al. (2021), explicitly noting: \\\"Unlike in our paper, they do not restrict to changing the train distribution only through data mixing, so their results do not fit our framework. On the other hand, we explicitly characterize the positive distribution shift...\\\" The core novelty is the systematic theoretical characterization *specifically for mixture proportion mismatch*, providing closed-form optimal mixing ratios and quantitative improvements, which was not done in the cited works. The observation that mismatch can be beneficial is not claimed as entirely new, but its detailed analysis in this focused framework is.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of thorough empirical validation on real-world benchmarks.\",\n          \"proposed_change\": \"Add a discussion in the limitations section (or expand the experimental discussion) to explicitly acknowledge that the current empirical validation is a focused proof-of-concept (skill composition) and that further validation on larger-scale, standard benchmarks would strengthen the practical case. We can frame the current results as motivating such future studies rather than claiming comprehensive empirical proof.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Significance questioned due to stylized models.\",\n          \"proposed_change\": \"In the introduction and/or conclusion, clarify the intended contribution and scope more precisely. We can state that the primary contribution is a theoretical framework and analysis that reveals a fundamental, counter-intuitive principle (optimal training distribution is often not the test distribution), providing analytical tools and intuition to guide future practical data mixture strategies. We can also more explicitly connect the stylized models (power law, memorization) to phenomena observed in scaling laws and compositional reasoning in LLMs.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Fragmented presentation without a unifying algorithm.\",\n          \"proposed_change\": \"Enhance the narrative in Section 7 to more clearly position it as the unifying theoretical insight derived from the preceding specific analyses. We could add a brief summary paragraph or table after Section 7 that synthesizes the key conditions for positive shift across the different models, emphasizing the common thread that the conservation condition (Condition 7.1) is highly restrictive and generically violated.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thoughtful feedback, which highlights the core contributions and areas where we can improve the presentation and framing of our work. We address the main concerns below.\\n\\n**1. Empirical Validation & Practical Significance:** We agree that further empirical validation on diverse, complex benchmarks would strengthen the practical impact of our findings. Our current experimental section (Section 5) serves as a concrete proof-of-concept in a controlled compositional reasoning setting, directly inspired by the theoretical memorization model (Section 4). The result empirically demonstrates that the principle of beneficial mismatch can indeed manifest in a realistic language modeling task. We acknowledge in the paper that this is a synthetic task. A valuable addition for future work, which we can emphasize more clearly in a revision, would be to test the derived principles (e.g., from Corollary 3.3) on large-scale data mixture curation for foundation models. Our theoretical results provide a formal basis and quantitative predictions for such future empirical studies.\\n\\n**2. Novelty Relative to Prior Work:** We respectfully clarify that our primary novelty is not merely the observation that mismatch *can* be beneficial—this point is indeed noted in prior work, which we cite. Our novel contributions are: (a) providing a *systematic theoretical characterization* of this phenomenon *specifically for mixture proportion mismatch*; (b) deriving *closed-form optimal mixing ratios* and *quantitative improvement bounds* for multiple canonical learning models (power law, memorization, transfer); and (c) proving a general measure-zero result (Section 7) showing the non-optimality of matched training is generic, not an isolated curiosity. Prior works either consider broader distribution shifts (not just mixtures) or provide numerical optimization methods without closed-form characterization. We will revise the text to make this distinction in contributions more explicit.\\n\\n**3. Fragmented Presentation & Unifying Insight:** The paper's structure is designed to first establish the phenomenon in concrete, interpretable models (Sections 3-4,6) before culminating in the general theoretical result (Section 7). Section 7 is the unifying insight: Condition 7.1 is a stringent conservation law that is violated generically. The preceding sections are illustrative instantiations of this violation for specific, practically relevant error functions. We will revise to better highlight this progression, perhaps with a synthesizing discussion, to present a cohesive narrative from examples to generality.\\n\\n**4. Significance of Stylized Models:** The power law and memorization models are not arbitrary; they are fundamental abstractions for learning curves and skill acquisition, respectively, with direct relevance to modern ML (e.g., scaling laws, compositional generalization). Our analysis transforms an intuitive guess into a precise, quantifiable strategy. The significance lies in establishing a foundational principle with analytical tools that can guide data mixture design—a problem of immense practical importance in era of large, multi-source datasets. We will more clearly articulate this motivation and potential impact in the revision.\\n\\nIn summary, we believe the paper makes a clear theoretical contribution by rigorously analyzing a practically important yet under-explored facet of distribution shift. We will incorporate the reviewer's suggestions to better position our work relative to prior art, clarify the scope and implications, and strengthen the narrative cohesion.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Reject",
+            "scores": {
+              "novelty": 3,
+              "soundness": 3,
+              "significance": 2,
+              "evaluation": 2,
+              "clarity": 4
+            },
+            "strengths": [
+              "The paper introduces a thought-provoking and counterintuitive core idea: that mismatched training and test data mixing proportions can, in many scenarios, improve test performance—'positive distribution shift'.",
+              "The work provides a systematic theoretical analysis across several learning models (power law, memorization, transfer) and derives closed-form expressions for optimal mixing ratios and performance improvements in these settings.",
+              "The paper is well-structured and clearly written, with an engaging introduction that effectively motivates the problem."
+            ],
+            "weaknesses": [
+              "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+              "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+              "The connection to related work is underdeveloped, and the claim of novelty ('shift is almost always good') feels overstated given prior literature on optimizing training distributions."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "Lack of thorough empirical validation and grounding in real-world, large-scale machine learning scenarios limits the practical significance of the claimed benefits.",
+                "severity": "major",
+                "evidence": "Section 5 describes a single synthetic experiment with a GPT-2 architecture model on a constructed skill composition task. The main claims are supported by theoretical derivations and simple illustrative plots (Figures 1-2), but there is no validation on standard benchmarks, modern large-scale models, or complex real-world tasks where distribution shift is a critical concern. The evidence from the paper does not convincingly demonstrate that the predicted improvements are substantial or attainable in practical settings. The author's response acknowledges this is a 'proof-of-concept' and agrees further validation would strengthen the case, but this does not resolve the issue for the submitted paper.",
+                "affected_claim": "The central claim that 'mismatched data mixing improves test performance' and is generically beneficial.",
+                "fixable_without_substantial_new_work": false
+              },
+              {
+                "weakness": "The theoretical findings, while interesting, are presented in a somewhat fragmented manner across multiple models, and the paper lacks a unifying insight or algorithm that could be broadly applied.",
+                "severity": "minor",
+                "evidence": "The paper analyzes orthogonal power law (Section 3), orthogonal memorization (Section 4), standard transfer (Section 6.1), and data mixing transfer (Model 6.2) separately, deriving optimal q* and L* for each. Section 7 attempts a general statement but concludes with a measure-zero argument. The work feels more like a collection of examples demonstrating a phenomenon rather than a cohesive theory with a general principle or actionable algorithm for practitioners. The author's response clarifies the intended progression from examples to the general result in Section 7, but this structural intent does not fully mitigate the perception of fragmentation in the submitted work.",
+                "affected_claim": "The claim to 'systematically study the benefit' and provide a characterization applicable to 'a variety of scenarios'.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central theoretical claims appear technically sound. The mathematical derivations for the specified models are logically presented. The author's response does not alter this assessment."
+              },
+              "novelty": {
+                "result": "fail",
+                "justification": "The author's response clarifies that the primary novelty is the systematic theoretical characterization specifically for mixture proportion mismatch, providing closed-form optimal mixing ratios. While this focus is more specific than some prior work, the core idea—that training on a distribution different from the test distribution can be beneficial—is well-established (e.g., González and Abu-Mostafa, 2015; Canatar et al., 2021, as cited). The incremental nature of the contribution (detailed analysis of a specific sub-problem) does not meet the high novelty bar for a top-tier conference."
+              },
+              "significance": {
+                "result": "fail",
+                "justification": "The demonstrated contribution does not meaningfully advance the field. The analysis remains confined to stylized, simplified models, and the practical implications are unclear and insufficiently validated. The author's response accurately frames the current experiment as a 'proof-of-concept' and suggests future large-scale validation, but this acknowledges that the submitted work lacks the empirical grounding necessary to establish significance. The theoretical insights, while interesting, are not shown to have substantial impact on real-world ML practice."
+              },
+              "evaluation": {
+                "result": "fail",
+                "justification": "The experimental support remains weak. The single synthetic experiment is narrow in scope and does not provide convincing evidence that the derived principles lead to substantial, reliable gains on challenging, standard benchmarks. The author's response does not present new evidence from the submitted paper to address this concern; it only promises future work."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is clearly written and well-structured. The author's response does not alter this assessment."
+              }
+            },
+            "summary_comment": "The author's response provides helpful clarifications about the intended contributions but does not materially change the assessment of the submitted paper. The core issues remain unresolved: (1) novelty is incremental relative to established work on training distribution optimization; (2) significance is limited by the highly stylized theoretical analysis and lack of compelling empirical validation on real-world problems; and (3) evaluation is insufficient to support the broad claims. While the theoretical derivations are sound and the writing is clear, these major weaknesses prevent the paper from meeting the high standard required for a top-tier conference. The decision remains Reject."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Lack of empirical validation on real-world benchmarks and large-scale models\",\n        \"Incremental novelty relative to prior work on training distribution optimization\",\n        \"Limited practical significance due to stylized theoretical analysis\",\n        \"Weak experimental evaluation with single synthetic experiment\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Incremental novelty relative to prior work\",\n          \"location\": \"Section 8 (Related Works), Section 1, Section 7\",\n          \"explanation\": \"Our paper explicitly distinguishes its contribution from prior work by focusing specifically on mixture proportion mismatch rather than general distribution shifts. We provide the first systematic theoretical characterization of optimal mixing ratios and quantitative improvement bounds for this specific problem across multiple learning models, going beyond the existence results and numerical optimizations in prior work. The general measure-zero result in Section 7 establishes a fundamental theoretical principle that was not previously demonstrated.\"\n        },\n        {\n          \"concern\": \"Limited practical significance\",\n          \"location\": \"Section 1, Section 5, Section 7\",\n          \"explanation\": \"The power law and memorization models are not arbitrary abstractions but directly model phenomena observed in real ML systems (scaling laws, compositional reasoning). Section 5 provides an experimental demonstration connecting our theoretical framework to realistic language modeling scenarios. The quantitative predictions (e.g., 20-25% improvements in Corollary 3.3) demonstrate potentially substantial practical impact if applied to large-scale data mixing problems.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Lack of empirical validation on real-world benchmarks\",\n          \"proposed_change\": \"We will add explicit discussion in the limitations section acknowledging that while our theoretical framework provides fundamental principles and quantitative predictions, and our experiment demonstrates feasibility in a controlled setting, validation on larger-scale real-world benchmarks represents important future work. We will frame our current contribution as establishing the theoretical foundation for such applied studies.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Fragmented presentation across models\",\n          \"proposed_change\": \"We will enhance the narrative flow by adding a synthesizing discussion that explicitly connects the specific models (Sections 3-4,6) to the general principle in Section 7, showing how each represents a concrete instantiation where the conservation condition (Condition 7.1) is violated. We will also create a summary table comparing the conditions for positive shift across different models.\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Perceived incremental novelty\",\n          \"proposed_change\": \"We will revise the introduction and related works sections to more clearly articulate the specific gap we fill: while prior work showed mismatch can be beneficial in general or provided numerical methods, we provide the first systematic theoretical analysis focused specifically on mixture proportions with closed-form solutions and a general measure-zero result. We will emphasize that our contribution is the detailed characterization, not merely the observation that mismatch can help.\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We appreciate the reviewer's continued engagement with our work. We address the remaining concerns below.\\n\\n**Empirical Validation:** We acknowledge that comprehensive validation on diverse real-world benchmarks would strengthen the practical impact. However, our paper makes a primarily theoretical contribution: we establish fundamental principles and provide quantitative predictions for data mixture optimization. The experiment in Section 5 serves as a concrete demonstration that these principles can manifest in realistic settings (language model compositional reasoning), providing empirical support for the theoretical framework. We will clarify in revisions that large-scale application represents an important direction for future work building on our theoretical foundation.\\n\\n**Novelty and Significance:** Our contribution is not merely that mismatch can be beneficial—this is indeed noted in prior work. Our novel contributions are: (1) the first systematic theoretical analysis focused specifically on mixture proportion mismatch (as opposed to general distribution shifts); (2) closed-form optimal mixing ratios and quantitative improvement bounds for multiple canonical learning models; and (3) a general measure-zero result showing that beneficial mismatch is generic rather than exceptional. These provide actionable insights and analytical tools that were not available in prior work, which either showed existence without characterization or provided numerical methods without theoretical guarantees.\\n\\n**Theoretical Models and Practical Relevance:** The power law and memorization models are not arbitrary abstractions but directly capture phenomena central to modern ML: scaling laws follow power patterns, and skill acquisition in compositional tasks exhibits memorization-like behavior. Our quantitative predictions (e.g., 20-25% sample complexity improvements in Corollary 3.3) demonstrate that the benefits could be substantial if applied to large-scale data mixing problems. The significance lies in providing a theoretical foundation for optimizing data mixtures—a problem of growing importance in the era of large, multi-source datasets.\\n\\n**Structural Cohesion:** We will enhance the paper's narrative to better show how the specific models (Sections 3-4,6) are concrete instantiations of the general principle in Section 7 (that the conservation condition is generically violated). Each section demonstrates different manifestations of this violation for practically relevant error functions, culminating in the general theoretical result.\\n\\nWe believe our work provides a valuable theoretical foundation for data mixture optimization with clear practical implications, and we will revise to better articulate these contributions and their significance.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_271f94336a2a",
+    "conference": "NEURIPS",
+    "year": 2025,
+    "decision": "reject",
+    "paper_dir": "openreview_md/neurips_reject_2025_019_shift_is_good_mismatched_data_mixing_improves_test_performance.md",
+    "target_paper_summary": {
+      "paper_id": "paper_271f94336a2a",
+      "title": "Shift Is Good: Mismatched Data Mixing Improves Test Performance",
+      "abstract": "Anonymous Author(s)\nAffiliation Address email",
+      "topic": "",
+      "claims": []
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_13ec3b71d",
+        "title": "Incorporation of rubidium cations into perovskite solar cells improves photovoltaic performance",
+        "authors": [
+          "Michael Saliba",
+          "Taisuke Matsui",
+          "Konrad Domanski",
+          "Ji‐Youn Seo",
+          "Amita Ummadisingu",
+          "Shaik M. Zakeeruddin",
+          "Juan‐Pablo Correa‐Baena",
+          "Wolfgang Tress",
+          "Antonio Abate",
+          "Anders Hagfeldt",
+          "Michaël Grätzel"
+        ],
+        "year": 2016,
+        "publication_date": "2016-09-30",
+        "venue": "Science",
+        "abstract": "Improving the stability of perovskite solar cells Inorganic-organic perovskite solar cells have poor long-term stability because ultraviolet light and humidity degrade these materials. Bella et al. show that coating the cells with a water-proof fluorinated polymer that contains pigments to absorb ultraviolet light and re-emit it in the visible range can boost cell efficiency and limit photodegradation. The performance and stability of inorganic-organic perovskite solar cells are also limited by the size of the cations required for forming a correct lattice. Saliba et al. show that the rubidium cation, which is too small to form a perovskite by itself, can form a lattice with cesium and organic cations. Solar cells based on these materials have efficiencies exceeding 20% for over 500 hours if given environmental protection by a polymer coating. Science , this issue pp. 203 and 206",
+        "url": "https://doi.org/10.1126/science.aah5557",
+        "doi": "https://doi.org/10.1126/science.aah5557",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2527042386"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 3668
+      },
+      {
+        "paper_id": "rw_002_bd16acd07",
+        "title": "Cesium-containing triple cation perovskite solar cells: improved stability, reproducibility and high efficiency",
+        "authors": [
+          "Michael Saliba",
+          "Taisuke Matsui",
+          "Ji-Youn Seo",
+          "Konrad Domanski",
+          "Juan‐Pablo Correa‐Baena",
+          "Mohammad Khaja Nazeeruddin",
+          "Shaik M. Zakeeruddin",
+          "Wolfgang Tress",
+          "Antonio Abate",
+          "Anders Hagfeldt",
+          "Michaël Grätzel"
+        ],
+        "year": 2016,
+        "publication_date": "2016-01-01",
+        "venue": "Energy & Environmental Science",
+        "abstract": "Today's best perovskite solar cells use a mixture of formamidinium and methylammonium as the monovalent cations. With the addition of inorganic cesium, the resulting triple cation perovskite compositions are thermally more stable, contain less phase impurities and are less sensitive to processing conditions. This enables more reproducible device performances to reach a stabilized power output of 21.1% and ∼18% after 250 hours under operational conditions. These properties are key for the industrialization of perovskite photovoltaics.",
+        "url": "https://doi.org/10.1039/c5ee03874j",
+        "doi": "https://doi.org/10.1039/c5ee03874j",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2301656337"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 5383
+      },
+      {
+        "paper_id": "rw_003_3ca00eb55",
+        "title": "Business Model Design and the Performance of Entrepreneurial Firms",
+        "authors": [
+          "Christoph Zott",
+          "Raphael Amit"
+        ],
+        "year": 2007,
+        "publication_date": "2007-03-28",
+        "venue": "Organization Science",
+        "abstract": "We focus on the design of an organization’s set of boundary-spanning transactions—business model design—and ask how business model design affects the performance of entrepreneurial firms. By extending and integrating theoretical perspectives that inform the study of boundary-spanning organization design, we propose hypotheses about the impact of efficiency-centered and novelty-centered business model design on the performance of entrepreneurial firms. To test these hypotheses, we developed and analyzed a unique data set of 190 entrepreneurial firms that were publicly listed on U.S. and European stock exchanges. The empirical results show that novelty-centered business model design matters to the performance of entrepreneurial firms. Our analysis also shows that this positive relationship is remarkably stable across time, even under varying environmental regimes. Additionally, we find indications of potential diseconomies of scope in design; that is, entrepreneurs’ attempts to incorporate both efficiency- and novelty-centered design elements into their business models may be counterproductive.",
+        "url": "https://doi.org/10.1287/orsc.1060.0232",
+        "doi": "https://doi.org/10.1287/orsc.1060.0232",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2103810259"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1681
+      },
+      {
+        "paper_id": "rw_004_1b0d192ba",
+        "title": "Towards 6G wireless communication networks: vision, enabling technologies, and new paradigm shifts",
+        "authors": [
+          "Xiaohu You",
+          "Cheng‐Xiang Wang",
+          "Jie Huang",
+          "Xiqi Gao",
+          "Zaichen Zhang",
+          "Mao Wang",
+          "Yongming Huang",
+          "Chuan Zhang",
+          "Yanxiang Jiang",
+          "Jiaheng Wang",
+          "Min Zhu",
+          "Bin Sheng",
+          "Dongming Wang",
+          "Zhiwen Pan",
+          "Pengcheng Zhu",
+          "Yang Yang",
+          "Zening Liu",
+          "Ping Zhang",
+          "Xiaofeng Tao",
+          "Shaoqian Li",
+          "Zhi Chen",
+          "Xinying Ma",
+          "I Chih‐Lin",
+          "Shuangfeng Han",
+          "Ke Li",
+          "Chengkang Pan",
+          "Zhimin Zheng",
+          "Lajos Hanzo",
+          "Xuemin Shen",
+          "Yingjie Jay Guo",
+          "Zhiguo Ding",
+          "Harald Haas",
+          "Wen Tong",
+          "Peiying Zhu",
+          "Ganghua Yang",
+          "Jun Wang",
+          "Erik G. Larsson",
+          "Hien Quoc Ngo",
+          "Wei Hong",
+          "Haiming Wang",
+          "Debin Hou",
+          "Jixin Chen",
+          "Zhe Chen",
+          "Zhang‐Cheng Hao",
+          "Geoffrey Ye Li",
+          "Rahim Tafazolli",
+          "Yue Gao",
+          "H. Vincent Poor",
+          "Gerhard Fettweis",
+          "Ying‐Chang Liang"
+        ],
+        "year": 2020,
+        "publication_date": "2020-11-24",
+        "venue": "Science China Information Sciences",
+        "abstract": "Abstract The fifth generation (5G) wireless communication networks are being deployed worldwide from 2020 and more capabilities are in the process of being standardized, such as mass connectivity, ultra-reliability, and guaranteed low latency. However, 5G will not meet all requirements of the future in 2030 and beyond, and sixth generation (6G) wireless communication networks are expected to provide global coverage, enhanced spectral/energy/cost efficiency, better intelligence level and security, etc. To meet these requirements, 6G networks will rely on new enabling technologies, i.e., air interface and transmission technologies and novel network architecture, such as waveform design, multiple access, channel coding schemes, multi-antenna technologies, network slicing, cell-free architecture, and cloud/fog/edge computing. Our vision on 6G is that it will have four new paradigm shifts. First, to satisfy the requirement of global coverage, 6G will not be limited to terrestrial communication networks, which will need to be complemented with non-terrestrial networks such as satellite and unmanned aerial vehicle (UAV) communication networks, thus achieving a space-air-ground-sea integrated communication network. Second, all spectra will be fully explored to further increase data rates and connection density, including the sub-6 GHz, millimeter wave (mmWave), terahertz (THz), and optical frequency bands. Third, facing the big datasets generated by the use of extremely heterogeneous networks, diverse communication scenarios, large numbers of antennas, wide bandwidths, and new service requirements, 6G networks will enable a new range of smart applications with the aid of artificial intelligence (AI) and big data technologies. Fourth, network security will have to be strengthened when developing 6G networks. This article provides a comprehensive survey of recent advances and future trends in these four aspects. Clearly, 6G with additional technical requirements beyond those of 5G will enable faster and further communications to the extent that the boundary between physical and cyber worlds disappears.",
+        "url": "https://doi.org/10.1007/s11432-020-2955-6",
+        "doi": "https://doi.org/10.1007/s11432-020-2955-6",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3110989801"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1953
+      },
+      {
+        "paper_id": "rw_005_6c17b884d",
+        "title": "Improved Estimation of the Specific Attenuation and Backscatter Differential Phase over Short Rain Paths",
+        "authors": [
+          "Ricardo Reinoso-Rondinel",
+          "Christine Unal",
+          "H.W.J. Russchenberg"
+        ],
+        "year": 2018,
+        "publication_date": "2018-10-09",
+        "venue": "Journal of Atmospheric and Oceanic Technology",
+        "abstract": "Abstract In radar polarimetry, the differential phase consists of the propagation differential phase and the backscatter differential phase . While is commonly used for attenuation correction (i.e., estimation of the specific attenuation A and specific differential phase ), recent studies have demonstrated that can provide information concerning the dominant size of raindrops. However, the estimation of and is not straightforward given their coupled nature and the noisy behavior of , especially over short paths. In this work, the impacts of estimating on the estimation of A over short paths, using the extended version of the ZPHI method, are examined. Special attention is given to the optimization of the parameter α that connects and A . In addition, an improved technique is proposed to compute from and in rain. For these purposes, diverse storm events observed by a polarimetric X-band radar in the Netherlands are used. Statistical analysis based on the minimum errors associated with the optimization of α and the consistency between and A showed that more accurate and stable α and A are obtained if is estimated at range resolution, which is not possible by conventional range filtering techniques. Accurate estimates were able to depict the spatial variability of dominant raindrop size in the observed storms. By following the presented study, the ZPHI method and its variations can be employed without the need for considering long paths, leading to localized and accurate estimation of A and .",
+        "url": "https://doi.org/10.1175/jtech-d-17-0219.1",
+        "doi": "https://doi.org/10.1175/jtech-d-17-0219.1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2896333791"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 2415
+      },
+      {
+        "paper_id": "rw_006_a7465b6c0",
+        "title": "Improving the Accuracy of Demographic and Molecular Clock Model Comparison While Accommodating Phylogenetic Uncertainty",
+        "authors": [
+          "Guy Baele",
+          "Philippe Lemey",
+          "Trevor Bedford",
+          "Andrew Rambaut",
+          "Marc A. Suchard",
+          "Alexander V. Alekseyenko"
+        ],
+        "year": 2012,
+        "publication_date": "2012-03-07",
+        "venue": "Molecular Biology and Evolution",
+        "abstract": "Recent developments in marginal likelihood estimation for model selection in the field of Bayesian phylogenetics and molecular evolution have emphasized the poor performance of the harmonic mean estimator (HME). Although these studies have shown the merits of new approaches applied to standard normally distributed examples and small real-world data sets, not much is currently known concerning the performance and computational issues of these methods when fitting complex evolutionary and population genetic models to empirical real-world data sets. Further, these approaches have not yet seen widespread application in the field due to the lack of implementations of these computationally demanding techniques in commonly used phylogenetic packages. We here investigate the performance of some of these new marginal likelihood estimators, specifically, path sampling (PS) and stepping-stone (SS) sampling for comparing models of demographic change and relaxed molecular clocks, using synthetic data and real-world examples for which unexpected inferences were made using the HME. Given the drastically increased computational demands of PS and SS sampling, we also investigate a posterior simulation-based analogue of Akaike's information criterion (AIC) through Markov chain Monte Carlo (MCMC), a model comparison approach that shares with the HME the appealing feature of having a low computational overhead over the original MCMC analysis. We confirm that the HME systematically overestimates the marginal likelihood and fails to yield reliable model classification and show that the AICM performs better and may be a useful initial evaluation of model choice but that it is also, to a lesser degree, unreliable. We show that PS and SS sampling substantially outperform these estimators and adjust the conclusions made concerning previous analyses for the three real-world data sets that we reanalyzed. The methods used in this article are now available in BEAST, a powerful user-friendly software package to perform Bayesian evolutionary analyses.",
+        "url": "https://doi.org/10.1093/molbev/mss084",
+        "doi": "https://doi.org/10.1093/molbev/mss084",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2098998255"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 1216
+      },
+      {
+        "paper_id": "rw_007_c25f3ff3e",
+        "title": "30 Years of Lithium‐Ion Batteries",
+        "authors": [
+          "Matthew Li",
+          "Jun Lü",
+          "Zhongwei Chen",
+          "Khalil Amine"
+        ],
+        "year": 2018,
+        "publication_date": "2018-06-14",
+        "venue": "Advanced Materials",
+        "abstract": "Over the past 30 years, significant commercial and academic progress has been made on Li-based battery technologies. From the early Li-metal anode iterations to the current commercial Li-ion batteries (LIBs), the story of the Li-based battery is full of breakthroughs and back tracing steps. This review will discuss the main roles of material science in the development of LIBs. As LIB research progresses and the materials of interest change, different emphases on the different subdisciplines of material science are placed. Early works on LIBs focus more on solid state physics whereas near the end of the 20th century, researchers began to focus more on the morphological aspects (surface coating, porosity, size, and shape) of electrode materials. While it is easy to point out which specific cathode and anode materials are currently good candidates for the next-generation of batteries, it is difficult to explain exactly why those are chosen. In this review, for the reader a complete developmental story of LIB should be clearly drawn, along with an explanation of the reasons responsible for the various technological shifts. The review will end with a statement of caution for the current modern battery research along with a brief discussion on beyond lithium-ion battery chemistries.",
+        "url": "https://doi.org/10.1002/adma.201800561",
+        "doi": "https://doi.org/10.1002/adma.201800561",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2808025896"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 5980
+      },
+      {
+        "paper_id": "rw_008_37382e4f6",
+        "title": "The Subread aligner: fast, accurate and scalable read mapping by seed-and-vote",
+        "authors": [
+          "Yang Liao",
+          "Gordon K. Smyth",
+          "Wei Shi"
+        ],
+        "year": 2013,
+        "publication_date": "2013-04-03",
+        "venue": "Nucleic Acids Research",
+        "abstract": "Read alignment is an ongoing challenge for the analysis of data from sequencing technologies. This article proposes an elegantly simple multi-seed strategy, called seed-and-vote, for mapping reads to a reference genome. The new strategy chooses the mapped genomic location for the read directly from the seeds. It uses a relatively large number of short seeds (called subreads) extracted from each read and allows all the seeds to vote on the optimal location. When the read length is <160 bp, overlapping subreads are used. More conventional alignment algorithms are then used to fill in detailed mismatch and indel information between the subreads that make up the winning voting block. The strategy is fast because the overall genomic location has already been chosen before the detailed alignment is done. It is sensitive because no individual subread is required to map exactly, nor are individual subreads constrained to map close by other subreads. It is accurate because the final location must be supported by several different subreads. The strategy extends easily to find exon junctions, by locating reads that contain sets of subreads mapping to different exons of the same gene. It scales up efficiently for longer reads.",
+        "url": "https://doi.org/10.1093/nar/gkt214",
+        "doi": "https://doi.org/10.1093/nar/gkt214",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2110905563"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 3406
+      },
+      {
+        "paper_id": "rw_009_b0a31bb3d",
+        "title": "Electrically tunable dielectric materials and strategies to improve their performances",
+        "authors": [
+          "Ling Bing Kong",
+          "S. Li",
+          "T.S. Zhang",
+          "Jiwei Zhai",
+          "Freddy Boey",
+          "Jielin Ma"
+        ],
+        "year": 2010,
+        "publication_date": "2010-05-07",
+        "venue": "Progress in Materials Science",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.pmatsci.2010.04.004",
+        "doi": "https://doi.org/10.1016/j.pmatsci.2010.04.004",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2026046752"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 306
+      },
+      {
+        "paper_id": "rw_010_fa5fda430",
+        "title": "Testing for an Unusual Distribution of Rare Variants",
+        "authors": [
+          "Benjamin M. Neale",
+          "Manuel A. Rivas",
+          "Benjamin F. Voight",
+          "David Altshuler",
+          "Bernie Devlin",
+          "Marju Orho‐Melander",
+          "Sekar Kathiresan",
+          "Shaun Purcell",
+          "Kathryn Roeder",
+          "Mark J. Daly"
+        ],
+        "year": 2011,
+        "publication_date": "2011-03-03",
+        "venue": "PLoS Genetics",
+        "abstract": "Technological advances make it possible to use high-throughput sequencing as a primary discovery tool of medical genetics, specifically for assaying rare variation. Still this approach faces the analytic challenge that the influence of very rare variants can only be evaluated effectively as a group. A further complication is that any given rare variant could have no effect, could increase risk, or could be protective. We propose here the C-alpha test statistic as a novel approach for testing for the presence of this mixture of effects across a set of rare variants. Unlike existing burden tests, C-alpha, by testing the variance rather than the mean, maintains consistent power when the target set contains both risk and protective variants. Through simulations and analysis of case/control data, we demonstrate good power relative to existing methods that assess the burden of rare variants in individuals.",
+        "url": "https://doi.org/10.1371/journal.pgen.1001322",
+        "doi": "https://doi.org/10.1371/journal.pgen.1001322",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2159998163"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "related_work"
+        ],
+        "citation_count": 599
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_004_1b0d192ba",
+        "relevance_score": 0.65,
+        "relevance_types": [
+          "same_problem",
+          "novelty_competitor"
+        ],
+        "rationale": "Discusses paradigm shifts in wireless networks, aligning with the target's focus on shifts and performance improvement through novel approaches.",
+        "evidence_summary": "In 2020, You et al. published 'Towards 6G wireless communication networks: vision, enabling technologies, and new paradigm shifts', which outlined four paradigm shifts for future networks, including space-air-ground-sea integration and full spectrum exploration. The paper emphasized enabling technologies like waveform design, multiple access, and multi-antenna systems to achieve global coverage and enhanced efficiency."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_003_3ca00eb55",
+        "relevance_score": 0.6,
+        "relevance_types": [
+          "same_problem",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Examines design impacts on performance, relevant to the target's theme of improving outcomes through design changes, with evidence on limitations.",
+        "evidence_summary": "In 2007, Zott and Amit published 'Business Model Design and the Performance of Entrepreneurial Firms', which analyzed how efficiency-centered and novelty-centered designs affect firm performance using a dataset of 190 firms. They found that novelty-centered design positively impacts performance, but combining both design elements may be counterproductive."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_006_a7465b6c0",
+        "relevance_score": 0.55,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "Focuses on improving accuracy in model comparison, analogous to the target's performance improvement theme, with methodological details.",
+        "evidence_summary": "In 2012, Baele et al. published 'Improving the Accuracy of Demographic and Molecular Clock Model Comparison While Accommodating Phylogenetic Uncertainty', which evaluated marginal likelihood estimators like path sampling and stepping-stone sampling using synthetic and real-world data. They demonstrated that these methods outperform the harmonic mean estimator in model comparison accuracy."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_005_6c17b884d",
+        "relevance_score": 0.5,
+        "relevance_types": [
+          "same_method",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Addresses improved estimation techniques over short paths, relevant to performance enhancement with constraints.",
+        "evidence_summary": "In 2018, Reinoso-Rondinel et al. published 'Improved Estimation of the Specific Attenuation and Backscatter Differential Phase over Short Rain Paths', which proposed techniques for accurate estimation of specific attenuation and backscatter differential phase using polarimetric radar data. The method optimized parameters to handle noisy behavior and short path limitations, validated with storm event data."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_010_fa5fda430",
+        "relevance_score": 0.45,
+        "relevance_types": [
+          "same_method",
+          "novelty_competitor"
+        ],
+        "rationale": "Introduces a novel statistical test for rare variants, aligning with the target's innovation in methods for performance improvement.",
+        "evidence_summary": "In 2011, Neale et al. published 'Testing for an Unusual Distribution of Rare Variants', which introduced the C-alpha test statistic for assessing mixtures of effects in rare variant data. The method maintained power in the presence of both risk and protective variants, demonstrated through simulations and case/control analysis."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_008_37382e4f6",
+        "relevance_score": 0.4,
+        "relevance_types": [
+          "same_method",
+          "benchmark_baseline"
+        ],
+        "rationale": "Presents a method for improved read mapping accuracy and scalability, relevant to performance enhancement themes.",
+        "evidence_summary": "In 2013, Liao et al. published 'The Subread aligner: fast, accurate and scalable read mapping by seed-and-vote', which used a multi-seed strategy with subreads to vote on optimal genomic locations. The approach allowed detailed alignment post-location selection and scaled for longer reads, enhancing accuracy and speed."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_001_13ec3b71d",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Focuses on performance improvement in solar cells through material incorporation, tangentially related to enhancement themes.",
+        "evidence_summary": "In 2016, Saliba et al. published 'Incorporation of rubidium cations into perovskite solar cells improves photovoltaic performance', which showed that rubidium cations form a stable lattice with cesium and organic cations, leading to efficiencies exceeding 20% for over 500 hours. The work was published in Science."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_002_bd16acd07",
+        "relevance_score": 0.3,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Discusses improved stability and efficiency in solar cells, offering a parallel example of performance enhancement.",
+        "evidence_summary": "In 2016, Saliba et al. published 'Cesium-containing triple cation perovskite solar cells: improved stability, reproducibility and high efficiency', which used triple cation compositions to achieve thermal stability and reproducible device performances up to 21.1%. The study highlighted benefits for industrialization, published in Energy & Environmental Science."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_007_c25f3ff3e",
+        "relevance_score": 0.25,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Reviews advancements in battery technologies, broadly related to performance improvement over time.",
+        "evidence_summary": "In 2018, Li et al. published '30 Years of Lithium‐Ion Batteries', which chronicled the development of Li-based batteries, emphasizing material science roles and morphological aspects. The paper discussed shifts in research focus and future directions, published in Advanced Materials."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_009_b0a31bb3d",
+        "relevance_score": 0.2,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Addresses strategies to improve dielectric material performances, weakly related to general enhancement themes.",
+        "evidence_summary": "In 2010, Kong et al. published 'Electrically tunable dielectric materials and strategies to improve their performances', which discussed methods for enhancing dielectric material performance, though specific details are not provided in the abstract. The paper was published in Progress in Materials Science."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "In 2020, You et al. published 'Towards 6G wireless communication networks: vision, enabling technologies, and new paradigm shifts', outlining four shifts including integrated networks and full spectrum use to improve coverage and efficiency. In 2007, Zott and Amit published 'Business Model Design and the Performance of Entrepreneurial Firms', finding that novelty-centered design boosts performance but combining with efficiency elements may be detrimental, based on data from 190 firms. In 2012, Baele et al. published 'Improving the Accuracy of Demographic and Molecular Clock Model Comparison While Accommodating Phylogenetic Uncertainty', demonstrating that path sampling and stepping-stone sampling outperform the harmonic mean estimator in accuracy for model comparison. In 2018, Reinoso-Rondinel et al. published 'Improved Estimation of the Specific Attenuation and Backscatter Differential Phase over Short Rain Paths', proposing optimized parameter techniques for accurate estimation in short paths using polarimetric radar data. In 2011, Neale et al. published 'Testing for an Unusual Distribution of Rare Variants', introducing the C-alpha test for assessing variant effects with consistent power in mixed scenarios. In 2013, Liao et al. published 'The Subread aligner: fast, accurate and scalable read mapping by seed-and-vote', using a multi-seed voting strategy to enhance mapping accuracy and scalability for genomic data.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 10,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 10,
+      "num_cutoff_valid": 10,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 10,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 10,
+    "num_cutoff_valid": 10,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

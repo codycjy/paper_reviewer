@@ -1,0 +1,364 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 5,
+        "evaluation": 5,
+        "clarity": 4
+      },
+      "strengths": [
+        "Introduces a novel algorithm (HiRef) that achieves a scalable, sparse, full-rank bijective OT alignment (Monge map) with linear space and log-linear time complexity, surpassing key limitations of Sinkhorn (quadratic) and low-rank OT (non-bijective).",
+        "Provides a principled theoretical foundation (Proposition 3.1) linking low-rank OT factors to the true Monge map under specific conditions, enabling a hierarchical refinement strategy with provable guarantees.",
+        "Presents extensive and compelling empirical validation, scaling to datasets with over 1 million points, demonstrating superior or competitive performance compared to state-of-the-art methods (Sinkhorn, ProgOT, mini-batch, low-rank) on synthetic and real-world tasks (transcriptomics, ImageNet)."
+      ],
+      "weaknesses": [
+        "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+        "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold."
+      ],
+      "weakness_details": [
+        {
+          "weakness": "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+          "severity": "minor",
+          "evidence": "Definition B.2 and the statement of Proposition 3.1 explicitly condition the co-clustering property on 'strict r-Monge separability.' The paper acknowledges the existence of a trivial schedule (r1=n) to satisfy this (Proposition B.6) but does not analyze this condition for the specific rank schedules used in experiments. The rebuttal points to this safety net but does not provide new analysis of practical schedules from the submission.",
+          "affected_claim": "The theoretical guarantee that the algorithm, given an optimal low-rank solver and practical rank schedules, is guaranteed to recover the Monge map. The empirical success suggests robustness, but the theoretical condition for practical schedules remains unverified.",
+          "fixable_without_substantial_new_work": true
+        },
+        {
+          "weakness": "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold.",
+          "severity": "minor",
+          "evidence": "The text consistently frames the problem as the assignment problem (e.g., Section 1: 'When the optimal transport problem is an assignment problem between datasets...'; Section 3.1: 'Let a, b ∈ ∆n be uniform so that a Monge map T⋆: X → Y exists'). This scope is clear in the submitted paper.",
+          "affected_claim": "The claim of solving optimal transport generally; the paper is specifically about the assignment problem variant. The rebuttal correctly notes this framing is present in the submission.",
+          "fixable_without_substantial_new_work": true
+        }
+      ],
+      "acceptance_gates": {
+        "soundness": {
+          "result": "pass",
+          "justification": "The central claims are empirically well-supported. The theoretical assumption (Monge separability) is clearly stated, and Proposition B.6 provides a limiting-case guarantee. The rebuttal correctly identifies evidence (Proposition B.6) in the submission showing a theoretical safety net exists. The empirical results across diverse datasets remain the strongest evidence of the method's practical soundness."
+        },
+        "novelty": {
+          "result": "pass",
+          "justification": "Unchanged. The algorithmic approach is novel."
+        },
+        "significance": {
+          "result": "pass",
+          "justification": "Unchanged. The scalability advance is significant."
+        },
+        "evaluation": {
+          "result": "pass",
+          "justification": "Unchanged. The evaluation is comprehensive and convincing."
+        },
+        "presentation": {
+          "result": "pass",
+          "justification": "Unchanged. The paper is clear. The rebuttal highlights that the scope (assignment problem) is consistently framed in the submission."
+        }
+      },
+      "summary_comment": "After considering the rebuttal, my assessment is unchanged. The authors correctly point to Proposition B.6 in the submitted paper, which shows a trivial rank-schedule (r1=n) always satisfies the strict Monge separability condition, providing a theoretical safety net. This clarifies that the theoretical framework has a well-defined limiting case. More importantly, the exceptional empirical performance across large-scale, diverse datasets remains the strongest argument for the method's practical value and robustness. The restriction to the assignment problem (equal size, uniform marginals) is clearly framed in the submitted work. These are minor limitations that do not detract from the paper's substantial contributions: a novel, highly scalable algorithm for bijective OT with strong empirical validation. The work meets the top-tier conference standard. Decision: Accept."
+    }
+  ],
+  "review_style_analyses": [],
+  "conference": {
+    "ICML": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "The paper introduces a novel algorithm for scalable optimal transport (OT), a core topic in machine learning that fits squarely under ICML's 'optimization' and 'machine learning systems' themes. HiRef improves the scalability of a fundamental computational primitive with linear space and log-linear time complexity.",
+        "The work provides a solid theoretical contribution (Proposition 3.1) linking low-rank OT to the Monge map, aligning with ICML's appreciation for papers that combine novel algorithms with theoretical analysis, as seen in its 'theory of machine learning' and 'optimization' topics.",
+        "The empirical evaluation is extensive and rigorous, benchmarking against state-of-the-art methods (Sinkhorn, ProgOT, mini-batch OT) on large-scale datasets (over 1M points), including applications in computational biology (transcriptomics), which fits ICML's 'application-driven machine learning' focus. The significant performance improvement directly addresses a widely recognized scalability bottleneck."
+      ],
+      "why_it_does_not_fit": [
+        "While the theoretical foundation is present, the core guarantee relies on the 'strict r-Monge separability' assumption, which the reviewers note is strong and not empirically verified. This might be seen as a theoretical gap that could be more deeply explored for a perfect fit at a theory-heavy venue, though the practical success mitigates this concern.",
+        "The primary application showcased is computational biology/transcriptomics. While ICML welcomes applications, a broader set of ML-centric applications (e.g., in deep learning or computer vision) might have strengthened the case for being a perfect fit, though the ImageNet experiment partially addresses this."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "NeurIPS has a strong track record of publishing impactful work on scalable algorithms and optimization, which are central to this paper. The development of HiRef as a log-linear, sparse solver for OT directly contributes to the 'SysML Infrastructure' and 'Optimization' themes.",
+        "The application to large-scale datasets, including ImageNet embeddings (1.28M points), aligns perfectly with NeurIPS's focus on scaling ML methods and its interest in 'AI/ML for health and biotechnology'. The demonstrated scalability breakthrough is of significant interest to the broad NeurIPS community.",
+        "The paper connects to fundamental concepts (Monge maps, low-rank approximations) and provides a clear algorithmic advance, which matches the kind of foundational yet applicable work often featured at NeurIPS."
+      ],
+      "why_it_does_not_fit": [
+        "The reviewer highlighted that the theoretical guarantee depends on a relatively strong and unverified assumption (strict r-Monge separability). NeurIPS reviewers often place high value on both empirical success and theoretical rigor; this assumption might be seen as a soft spot in an otherwise strong theoretical contribution, slightly reducing the novelty/rigor fit.",
+        "The method's current restriction to the assignment problem (equal-sized datasets, uniform marginals) is noted as a limitation. While clearly framed, this scope might be seen as somewhat narrower than the most groundbreaking NeurIPS contributions that often introduce more generally applicable paradigms."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "Optimal transport is increasingly important in deep learning, particularly for generative modeling (flow matching, diffusion models) and representation learning. The paper's discussion of applications in training generative models and point cloud registration aligns with ICLR's focus on deep learning applications.",
+        "The algorithm's ability to compute a sparse, bijective map (Monge map) could be highly relevant for tasks like aligning latent spaces or constructing training pairs for regression tasks in neural networks, as hinted in the Discussion (Section 5)."
+      ],
+      "why_it_does_not_fit": [
+        "ICLR's core focus is on deep learning. While OT is used in deep learning, this paper is primarily an algorithmic advance in computational OT itself. It does not introduce a new neural architecture, training method, or deep learning theory. The connection to deep learning is discussed as a potential future application rather than being the paper's central contribution.",
+        "The empirical validation, while impressive, is mostly on classical OT tasks and biological data, not on core deep learning benchmarks or architectures. The ImageNet experiment uses pre-computed ResNet embeddings, not an end-to-end deep learning pipeline. This makes the direct relevance to the ICLR audience less immediate compared to ICML or NeurIPS.",
+        "The theoretical analysis, while solid, is not specifically about the behavior of neural networks or deep learning models, which is a key interest at ICLR."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel algorithm (HiRef) that achieves a scalable, sparse, full-rank bijective OT alignment (Monge map) with linear space and log-linear time complexity, surpassing key limitations of Sinkhorn (quadratic) and low-rank OT (non-bijective).",
+              "Provides a principled theoretical foundation (Proposition 3.1) linking low-rank OT factors to the true Monge map under specific conditions, enabling a hierarchical refinement strategy with provable guarantees.",
+              "Presents extensive and compelling empirical validation, scaling to datasets with over 1 million points, demonstrating superior or competitive performance compared to state-of-the-art methods (Sinkhorn, ProgOT, mini-batch, low-rank) on synthetic and real-world tasks (transcriptomics, ImageNet)."
+            ],
+            "weaknesses": [
+              "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+              "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+                "severity": "minor",
+                "evidence": "Definition B.2 and the statement of Proposition 3.1 explicitly condition the co-clustering property on 'strict r-Monge separability.' The paper acknowledges the existence of a trivial schedule (r1=n) to satisfy this but does not analyze this condition for the specific rank schedules used in experiments or for real-world cost matrices.",
+                "affected_claim": "The claim that the algorithm, given an optimal low-rank solver, is guaranteed to recover the Monge map. The empirical success despite this strong theoretical condition is noted but not fully reconciled.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold.",
+                "severity": "minor",
+                "evidence": "The text states: 'First, we currently assume that the datasets X and Y have the same number of samples... and a, b are uniform' (Section 5, Discussion). All experiments (synthetic, transcriptomics, ImageNet) split datasets equally to satisfy this condition.",
+                "affected_claim": "The claim that HiRef solves 'optimal transport' generally; it specifically solves the assignment problem variant between equally sized uniform measures to produce a bijective Monge map.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim—that hierarchical low-rank refinement can compute a bijective Monge map—is supported by theoretical analysis (Proposition 3.1, 3.2, 3.4) and extensive empirical validation showing the recovery of high-quality alignments with competitive primal cost. Potential theoretical gaps (Monge separability) are clearly stated and do not invalidate the demonstrated empirical soundness."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "The work introduces a new algorithm (HiRef) that uniquely combines the idea of low-rank OT factor co-clustering with hierarchical refinement to produce a full-rank, sparse bijection. This addresses a clear gap between low-rank (scalable, non-bijective) and full-rank (bijective, non-scalable) OT methods. It is distinct from prior hierarchical/multiscale OT works (e.g., Gerber & Maggioni, 2017) as it constructs partitions intrinsically via low-rank OT rather than requiring pre-specified geometric partitions."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "The ability to compute exact bijective OT alignments (Monge maps) for datasets with millions of points in linear space is a major advancement for the field. It directly addresses a widely recognized scalability bottleneck (as noted in the intro) and opens the door to applying OT in large-scale generative modeling, biology, and vision tasks previously considered impractical. The empirical demonstration on million-point ImageNet and large transcriptomics datasets is compelling evidence of significance."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Evaluation is thorough and convincing. Benchmarks against relevant baselines (Sinkhorn, ProgOT, mini-batch, low-rank methods, MOP) across synthetic datasets (primal cost, sparsity), large-scale transcriptomics (cost, gene expression transfer), and massive ImageNet tasks (cost) are comprehensive. The scaling experiments to >1M points are particularly strong. The paper transparently reports both strengths (low cost, scalability) and limitations (e.g., comparisons to MOP)."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "The paper is generally well-written, with a clear problem statement, algorithm description, theoretical results, and experimental sections. The logical flow from motivation to theory to algorithm to experiments is sound. The figures and tables effectively support the narrative. Minor room for improvement exists in the accessibility of the theoretical definitions (e.g., 'strict r-Monge separability'), but the core ideas are conveyed clearly."
+              }
+            },
+            "summary_comment": "This paper introduces Hierarchical Refinement (HiRef), a novel algorithm that computes a bijective Monge map for optimal transport with linear space and log-linear time complexity. It leverages a key theoretical insight—that low-rank OT factors co-cluster points with their Monge map images—to hierarchically refine partitions, culminating in a full-rank alignment. This work is highly significant as it overcomes a major scalability barrier preventing OT's application to million-point datasets. The strength of the paper lies in its combination of a principled idea, clear theoretical analysis (with explicit assumptions), and extensive, compelling empirical validation across multiple domains, including scaling to over 1 million points. While the theoretical guarantee relies on a strong condition (Monge separability) and the method is currently limited to equal-sized uniform datasets, these are minor limitations given the paper's substantial contributions to scalable OT. The work meets the high standard of a top-tier conference and is recommended for acceptance."
+          },
+          "author_response": null,
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel algorithm (HiRef) that achieves a scalable, sparse, full-rank bijective OT alignment (Monge map) with linear space and log-linear time complexity, surpassing key limitations of Sinkhorn (quadratic) and low-rank OT (non-bijective).",
+              "Provides a principled theoretical foundation (Proposition 3.1) linking low-rank OT factors to the true Monge map under specific conditions, enabling a hierarchical refinement strategy with provable guarantees.",
+              "Presents extensive and compelling empirical validation, scaling to datasets with over 1 million points, demonstrating superior or competitive performance compared to state-of-the-art methods (Sinkhorn, ProgOT, mini-batch, low-rank) on synthetic and real-world tasks (transcriptomics, ImageNet)."
+            ],
+            "weaknesses": [
+              "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+              "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+                "severity": "minor",
+                "evidence": "Definition B.2 and the statement of Proposition 3.1 explicitly condition the co-clustering property on 'strict r-Monge separability.' The paper acknowledges the existence of a trivial schedule (r1=n) to satisfy this but does not analyze this condition for the specific rank schedules used in experiments or for real-world cost matrices. The rebuttal acknowledges this but does not provide new evidence from the submission; it only promises future discussion.",
+                "affected_claim": "The theoretical guarantee that the algorithm, given an optimal low-rank solver, is guaranteed to recover the Monge map for practical schedules. The empirical success supports practical utility but the theoretical condition remains strong.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold.",
+                "severity": "minor",
+                "evidence": "The text states: 'First, we currently assume that the datasets X and Y have the same number of samples... and a, b are uniform' (Section 5, Discussion). All experiments (synthetic, transcriptomics, ImageNet) split datasets equally to satisfy this condition. The rebuttal acknowledges this limitation and does not claim it is resolved.",
+                "affected_claim": "The claim that HiRef solves 'optimal transport' generally; it specifically solves the assignment problem variant between equally sized uniform measures to produce a bijective Monge map.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claim is supported by theory (with clear assumptions) and extensive empirical validation showing the algorithm works well in practice across diverse, large-scale datasets. The rebuttal correctly points to Proposition B.6 providing a theoretical safety net (trivial schedule r1=n), but this does not change the empirical soundness of the submitted results. The theoretical assumption remains, but the empirical evidence for the algorithm's effectiveness is robust."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Unchanged. The combination of low-rank OT co-clustering with hierarchical refinement to produce a full-rank bijective map is novel and distinct from prior work."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Unchanged. The ability to compute exact bijective OT alignments for million-point datasets is a major scalability advance with clear impact."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Unchanged. The evaluation is comprehensive, rigorous, and demonstrates the method's advantages convincingly."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Unchanged. The paper is clear and well-structured. The rebuttal acknowledges minor clarifications could be added but does not change the assessment of the submitted work."
+              }
+            },
+            "summary_comment": "After considering the rebuttal, my assessment of the submitted paper remains positive. The authors acknowledge the theoretical reliance on the 'strict r-Monge separability' assumption and correctly note the existence of a trivial schedule that satisfies it, though this does not fully address the concern about practical schedules. More importantly, the exceptional empirical performance across diverse, large-scale datasets strongly supports the algorithm's practical utility and robustness, even if the theoretical condition is not explicitly verified. The limitation to equal-sized uniform datasets is also acknowledged. These are minor weaknesses that do not undermine the paper's central contributions: a novel, theoretically grounded, and empirically validated algorithm that achieves scalable, sparse, bijective OT alignments. The work clearly meets the top-tier conference standard. The decision is Accept."
+          },
+          "author_response": "```json\n{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Reliance on strong theoretical assumption (strict r-Monge separability) that may not hold in practice\",\n        \"Limitation to equal-sized datasets with uniform marginals\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Reliance on strong theoretical assumption (strict r-Monge separability)\",\n          \"location\": \"Proposition 3.1 and Definition B.2\",\n          \"explanation\": \"The paper clearly states the theoretical assumption of strict r-Monge separability as a condition for the co-clustering property. Proposition B.6 further shows that a trivial rank-schedule (r₁ = n) always satisfies this condition, providing a theoretical safety net for the algorithm's convergence.\"\n        },\n        {\n          \"concern\": \"Limitation to equal-sized datasets with uniform marginals\",\n          \"location\": \"Section 5 (Discussion)\",\n          \"explanation\": \"The paper transparently acknowledges this limitation in the Discussion section, stating: 'First, we currently assume that the datasets X and Y have the same number of samples... and a, b are uniform.' This honesty about scope limitations demonstrates scholarly rigor.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Reliance on strong theoretical assumption (strict r-Monge separability)\",\n          \"proposed_change\": \"Add discussion about empirical verification of the assumption and conditions under which it approximately holds in practice\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limitation to equal-sized datasets with uniform marginals\",\n          \"proposed_change\": \"Explicitly mention potential extensions to unbalanced and unequal-sized datasets as future work in the Discussion section\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their positive assessment and insightful comments. We agree that the theoretical guarantee relies on the strong assumption of strict r-Monge separability. While Proposition B.6 shows that a trivial rank-schedule (r₁ = n) always satisfies this condition, providing a theoretical safety net, we acknowledge that for practical rank schedules used in our experiments, this condition may not hold exactly. However, the strong empirical performance across diverse datasets (including synthetic benchmarks, transcriptomics data, and ImageNet) suggests that the co-clustering property holds approximately or that the algorithm is robust to violations of this assumption. We will add a discussion about this robustness and the conditions under which the assumption approximately holds in practice.\\n\\nRegarding the limitation to equal-sized datasets with uniform marginals, we agree this restricts applicability to the assignment problem variant of OT. We will explicitly mention this scope limitation more prominently and discuss potential extensions to unbalanced and unequal-sized datasets as important future directions. The current focus on bijective alignments between equally-sized datasets addresses many important applications in machine learning (e.g., generative modeling, domain adaptation) where one seeks to pair an equal number of source and target points, as noted in our Discussion section.\"\n    }\n  ]\n}\n```",
+          "ai_detector_response": null
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "reviewers": [
+        {
+          "reviewer": "Reviewer 1 (Neutral)",
+          "review": {
+            "reviewer": "Reviewer - No Persona",
+            "decision": "Accept",
+            "scores": {
+              "novelty": 4,
+              "soundness": 4,
+              "significance": 5,
+              "evaluation": 5,
+              "clarity": 4
+            },
+            "strengths": [
+              "Introduces a novel algorithm (HiRef) that achieves a scalable, sparse, full-rank bijective OT alignment (Monge map) with linear space and log-linear time complexity, surpassing key limitations of Sinkhorn (quadratic) and low-rank OT (non-bijective).",
+              "Provides a principled theoretical foundation (Proposition 3.1) linking low-rank OT factors to the true Monge map under specific conditions, enabling a hierarchical refinement strategy with provable guarantees.",
+              "Presents extensive and compelling empirical validation, scaling to datasets with over 1 million points, demonstrating superior or competitive performance compared to state-of-the-art methods (Sinkhorn, ProgOT, mini-batch, low-rank) on synthetic and real-world tasks (transcriptomics, ImageNet)."
+            ],
+            "weaknesses": [
+              "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+              "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold."
+            ],
+            "weakness_details": [
+              {
+                "weakness": "The core theoretical guarantee (Prop. 3.1) relies on the strong assumption of 'strict r-Monge separability' of the cost matrix, which may not hold in practical settings; the paper does not empirically verify this condition or characterize when it is satisfied.",
+                "severity": "minor",
+                "evidence": "Definition B.2 and the statement of Proposition 3.1 explicitly condition the co-clustering property on 'strict r-Monge separability.' The paper acknowledges the existence of a trivial schedule (r1=n) to satisfy this (Proposition B.6) but does not analyze this condition for the specific rank schedules used in experiments. The rebuttal points to this safety net but does not provide new analysis of practical schedules from the submission.",
+                "affected_claim": "The theoretical guarantee that the algorithm, given an optimal low-rank solver and practical rank schedules, is guaranteed to recover the Monge map. The empirical success suggests robustness, but the theoretical condition for practical schedules remains unverified.",
+                "fixable_without_substantial_new_work": true
+              },
+              {
+                "weakness": "The proposed method is currently restricted to aligning datasets of equal size with uniform marginals, limiting its applicability to more general OT problems where these constraints do not hold.",
+                "severity": "minor",
+                "evidence": "The text consistently frames the problem as the assignment problem (e.g., Section 1: 'When the optimal transport problem is an assignment problem between datasets...'; Section 3.1: 'Let a, b ∈ ∆n be uniform so that a Monge map T⋆: X → Y exists'). This scope is clear in the submitted paper.",
+                "affected_claim": "The claim of solving optimal transport generally; the paper is specifically about the assignment problem variant. The rebuttal correctly notes this framing is present in the submission.",
+                "fixable_without_substantial_new_work": true
+              }
+            ],
+            "acceptance_gates": {
+              "soundness": {
+                "result": "pass",
+                "justification": "The central claims are empirically well-supported. The theoretical assumption (Monge separability) is clearly stated, and Proposition B.6 provides a limiting-case guarantee. The rebuttal correctly identifies evidence (Proposition B.6) in the submission showing a theoretical safety net exists. The empirical results across diverse datasets remain the strongest evidence of the method's practical soundness."
+              },
+              "novelty": {
+                "result": "pass",
+                "justification": "Unchanged. The algorithmic approach is novel."
+              },
+              "significance": {
+                "result": "pass",
+                "justification": "Unchanged. The scalability advance is significant."
+              },
+              "evaluation": {
+                "result": "pass",
+                "justification": "Unchanged. The evaluation is comprehensive and convincing."
+              },
+              "presentation": {
+                "result": "pass",
+                "justification": "Unchanged. The paper is clear. The rebuttal highlights that the scope (assignment problem) is consistently framed in the submission."
+              }
+            },
+            "summary_comment": "After considering the rebuttal, my assessment is unchanged. The authors correctly point to Proposition B.6 in the submitted paper, which shows a trivial rank-schedule (r1=n) always satisfies the strict Monge separability condition, providing a theoretical safety net. This clarifies that the theoretical framework has a well-defined limiting case. More importantly, the exceptional empirical performance across large-scale, diverse datasets remains the strongest argument for the method's practical value and robustness. The restriction to the assignment problem (equal size, uniform marginals) is clearly framed in the submitted work. These are minor limitations that do not detract from the paper's substantial contributions: a novel, highly scalable algorithm for bijective OT with strong empirical validation. The work meets the top-tier conference standard. Decision: Accept."
+          },
+          "author_response": "{\n  \"responses\": [\n    {\n      \"reviewer\": \"Reviewer 1 (Neutral)\",\n      \"main_issues_identified\": [\n        \"Reliance on strong theoretical assumption (strict r-Monge separability) that may not hold in practice\",\n        \"Limitation to equal-sized datasets with uniform marginals\"\n      ],\n      \"supporting_evidence_in_submission\": [\n        {\n          \"concern\": \"Reliance on strong theoretical assumption (strict r-Monge separability)\",\n          \"location\": \"Proposition B.6\",\n          \"explanation\": \"The paper provides a theoretical safety net by showing that a trivial rank-schedule (r₁ = n) always satisfies strict Monge separability, guaranteeing convergence to the optimal Monge map in this limiting case.\"\n        },\n        {\n          \"concern\": \"Limitation to equal-sized datasets with uniform marginals\",\n          \"location\": \"Section 1, Section 3.1, and Section 5\",\n          \"explanation\": \"The paper consistently frames the problem as solving the assignment problem between equally-sized datasets, which is a well-defined and important variant of optimal transport. This focus is justified by numerous applications mentioned in the introduction where bijective alignments are sought between equally-sized datasets.\"\n        }\n      ],\n      \"proposed_future_revisions\": [\n        {\n          \"concern\": \"Reliance on strong theoretical assumption (strict r-Monge separability)\",\n          \"proposed_change\": \"Add discussion in Section 5 about the empirical robustness observed despite the theoretical assumption, and mention characterization of practical conditions where the assumption holds as future work\",\n          \"requires_new_experiment_or_analysis\": false\n        },\n        {\n          \"concern\": \"Limitation to equal-sized datasets with uniform marginals\",\n          \"proposed_change\": \"Clarify in the introduction and conclusion that the method specifically addresses the assignment problem between equally-sized datasets, which represents an important class of OT problems\",\n          \"requires_new_experiment_or_analysis\": false\n        }\n      ],\n      \"response\": \"We thank the reviewer for their thorough assessment and for recognizing the empirical strength of our method despite theoretical assumptions. We agree that the strict r-Monge separability condition is strong, but note that Proposition B.6 provides a theoretical safety net: the trivial rank-schedule (r₁ = n) always satisfies this condition, guaranteeing convergence to the optimal Monge map. More importantly, our extensive empirical results across diverse datasets demonstrate that the algorithm works exceptionally well in practice, suggesting either that the condition holds approximately in many practical settings or that the algorithm is robust to its violation. We will add discussion about this observed robustness in Section 5.\\n\\nRegarding the limitation to equal-sized datasets with uniform marginals, we emphasize that this precisely defines the assignment problem variant of optimal transport, which has numerous important applications in machine learning (as noted in our introduction). The bijective Monge map solution is particularly valuable in these contexts. We will clarify this scope more explicitly in the introduction and conclusion, while acknowledging that extension to general OT problems represents valuable future work.\"\n    }\n  ]\n}",
+          "ai_detector_response": null
+        }
+      ]
+    }
+  ],
+  "rag_package": {
+    "paper_id": "paper_452b18e9bb91",
+    "conference": "ICML",
+    "year": 2025,
+    "decision": "accept",
+    "paper_dir": "data/md/icml_accept_2025_012_hierarchical_refinement_optimal_transport_to_infinity_and_beyond.md",
+    "target_paper_summary": {
+      "paper_id": "paper_452b18e9bb91",
+      "title": "Peter Halmos 1 Julian Gold 1 2 Xinhao Liu 1 Benjamin J. Raphael 1",
+      "abstract": "Optimal transport (OT) has enjoyed great success in machine learning as a principled way to align datasets via a least-cost correspondence, driven in large part by the runtime efficiency of the Sinkhorn algorithm (Cuturi, 2013). However, Sinkhorn has quadratic space and time complexity in the number of points, limiting scalability to larger datasets. Low-rank OT achieves linear complexity, but by definition, cannot compute a oneto-one correspondence between points. When the optimal transport problem is an assignment problem between datasets then an optimal mapping, known as the *Monge map*, is guaranteed to be a bijection. In this setting, we show that the factors of an optimal low-rank coupling co-cluster each point with its image under the Monge map. We leverage this invariant to derive an algorithm, Hierarchical Refinement (HiRef), that dynamically constructs a multiscale partition of each dataset using low-rank OT subproblems, culminating in the bijective Monge map. Hierarchical Refinement runs in log-linear time and linear space, retaining the advantages of low-rank OT while overcoming its limited resolution. We demonstrate the advantages of Hierarchical Refinement on several datasets, including ones containing over a million points, scaling full-rank OT to problems previously beyond Sinkhorn's reach.",
+      "topic": "",
+      "claims": [
+        "we show that the factors of an optimal low-rank coupling co-cluster each point with its image under the Monge map.",
+        "We demonstrate the advantages of Hierarchical Refinement on several datasets, including ones containing over a million points, scaling full-rank OT to problems previously beyond Sinkhorn's reach."
+      ]
+    },
+    "paper_metadata": [],
+    "reranking_results": [],
+    "reranking": {
+      "source": "none"
+    },
+    "related_work_summary": "No cutoff-valid related-work metadata was available for reranking.",
+    "warnings": [],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 5,
+      "num_removed_post_cutoff": 5,
+      "num_removed_undated": 0,
+      "num_used": 0,
+      "num_cutoff_valid": 0,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    }
+  },
+  "rag_warnings": [],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 5,
+    "num_removed_post_cutoff": 5,
+    "num_removed_undated": 0,
+    "num_used": 0,
+    "num_cutoff_valid": 0,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}

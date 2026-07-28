@@ -1,0 +1,740 @@
+{
+  "reviewers": [
+    {
+      "reviewer": "Reviewer - No Persona",
+      "decision": "Accept",
+      "scores": {
+        "novelty": 4,
+        "soundness": 4,
+        "significance": 4,
+        "evaluation": 4,
+        "clarity": 3
+      },
+      "strengths": [
+        "Introduces a novel unsupervised approach for learning categorical pose priors without human annotations, addressing a significant gap in pose estimation literature",
+        "Demonstrates strong empirical performance across multiple benchmarks (Human3.6m, Taichi, CUB-200-2011), outperforming existing unsupervised methods and even some with human-defined priors",
+        "Proposes an innovative hierarchical memory architecture that effectively stores and distills prototypical poses, enabling robust performance in occluded scenarios through iterative inference"
+      ],
+      "weaknesses": [
+        "The paper's clarity could be improved with better organization and more detailed explanations of certain components (e.g., hierarchical memory operations, training techniques)",
+        "Limited evaluation on 3D pose scenarios and significant shape changes, as acknowledged in the discussion section"
+      ],
+      "summary_comment": "Pose Prior Learner presents a compelling approach to unsupervised categorical prior learning for pose estimation. The method demonstrates strong novelty through its hierarchical memory architecture and ability to learn meaningful priors without human annotations. Experimental results show significant improvements over competitive baselines across multiple datasets. While the writing could be more clearly organized in some sections, the technical soundness, thorough evaluation, and practical significance of the approach warrant acceptance. The work makes valuable contributions to both pose estimation and unsupervised learning literature."
+    }
+  ],
+  "conference": {
+    "ICML": {
+      "fit_score": 7,
+      "why_it_fits": [
+        "The paper's core contribution is a novel method for unsupervised learning of structured representations (pose priors), which aligns with ICML's focus on general machine learning, representation learning, and deep learning architectures.",
+        "The proposed hierarchical memory module and the learning paradigm contribute to 'machine learning systems' and 'evaluation' themes by introducing a new way to organize learned knowledge and providing extensive empirical validation.",
+        "The work touches on 'trustworthy machine learning' through its robustness to occlusion and the self-supervised nature that avoids human annotation bias.",
+        "Reviewer 1 highlights strong 'soundness' and 'novelty', indicating the methodological rigor and innovative contribution are appropriate for ICML's standards."
+      ],
+      "why_it_does_not_fit": [
+        "The application domain is heavily focused on computer vision (pose estimation), and while ICML accepts such work, it is not its exclusive core. The framing is more application-driven than fundamental algorithm/theory development.",
+        "The reviewer noted that clarity 'could be improved', which might be a risk factor for ICML's broad audience that expects highly polished and clearly framed presentations.",
+        "The 'significance' score is high, but the impact is more directly tied to the computer vision and pose estimation community rather than a broad machine learning principle, which might marginalize its appeal to the general ICML audience."
+      ]
+    },
+    "NeurIPS": {
+      "fit_score": 8,
+      "why_it_fits": [
+        "The paper fits perfectly under NeurIPS's 'Computer vision' and 'General machine learning' tracks. Pose estimation is a classic and well-represented topic in the conference.",
+        "The methodology combines deep learning, memory architectures, and self-supervised learning, all of which are central and highly valued themes at NeurIPS.",
+        "The paper addresses a clear gap ('How to learn priors without annotation?') which aligns with NeurIPS's encouragement of interdisciplinary work that provides new insights.",
+        "Reviewer 1's scores for 'novelty', 'soundness', and 'significance' are all high (4/4), and the strengths mention the 'innovative hierarchical memory architecture'—exactly the type of technical contribution NeurIPS celebrates."
+      ],
+      "why_it_does_not_fit": [
+        "The 'clarity' score from the reviewer is a 3, indicating some organizational issues. NeurIPS is highly competitive, and presentation flaws can be a significant risk for acceptance.",
+        "While the application is a good fit, the theoretical underpinnings of the method (e.g., guarantees of the memory module) are not deeply explored, which might make it less appealing to the more theory-inclined segment of NeurIPS reviewers."
+      ]
+    },
+    "ICLR": {
+      "fit_score": 9,
+      "why_it_fits": [
+        "This is an excellent fit for ICLR. The paper's core is **unsupervised representation learning** of structured object priors from images, which is a central and explicitly listed topic for ICLR ('unsupervised, self-supervised... representation learning', 'generative models', 'learning on graphs').",
+        "The entire method is built on a deep learning framework, using learnable embeddings, transformer-like mixers (MLP-Mixer), and a novel memory architecture for representation storage and distillation—this is precisely ICLR's wheelhouse.",
+        "The work has a clear 'application to robotics, autonomy, planning' through pose estimation, and the iterative inference for occlusion robustness touches on 'societal considerations... safety'.",
+        "Reviewer feedback strongly supports this venue: high scores in 'novelty' and 'significance' for an unsupervised deep learning approach, with strengths highlighting the 'innovative hierarchical memory architecture'. The weaknesses (clarity, limited 3D evaluation) are less critical for ICLR's focused audience."
+      ],
+      "why_it_does_not_fit": [
+        "The fit is very strong, but one minor point is that the paper is not exclusively about the deepest theoretical aspects of representation learning; it is a solid methodological paper with strong empirical results. A purely theoretical contribution might be an even better fit, but this is a minor distinction.",
+        "The 'Others' paper topic suggests the authors themselves may not be framing it squarely within the deep representation learning narrative, which could affect how reviewers perceive its core contribution."
+      ]
+    }
+  },
+  "citations": {
+    "stats": {},
+    "failed": [],
+    "skipped": true,
+    "reason": "disabled_for_experiment"
+  },
+  "rag_package": {
+    "rag_package_id": "rag_rw_be5378bfd1e1",
+    "paper_id": "paper_a16e1d087b4c",
+    "target_paper_summary": {
+      "paper_id": "paper_a16e1d087b4c",
+      "title": "Pose Prior Learner: Unsupervised Categorical Prior Learning For Pose Estimation",
+      "abstract": "A prior represents a set of beliefs or assumptions about a system, aiding inference and decision-making. In this paper, we introduce the challenge of unsupervised categorical prior learning in pose estimation, where AI models learn a general pose prior for an object category from images in a self-supervised manner. Although priors are effective in estimating pose, acquiring them can be difficult. We propose a novel method, named Pose Prior Learner (PPL), to learn a general pose prior for any object category. PPL uses a hierarchical memory to store compositional parts of prototypical poses, from which we distill a general pose prior. This prior improves pose estimation accuracy through template transformation and image reconstruction. PPL learns meaningful pose priors without any additional human annotations or interventions, outperforming competitive baselines on both human and animal pose estimation datasets.\n\nNotably, our experimental results reveal the effectiveness of PPL using learned prototypical poses for pose estimation on occluded images. Through iterative inference, PPL leverages the pose prior to refine estimated poses, regressing them to any prototypical poses stored in memory. Our code, model, and data will be publicly available.\n\n055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100 101 102 103 104 105 106 107 108 109\n\naggregate keypoint prior images occluded images ⋯\n⋯\npose prior distill prototypical poses regress transform connectivity prior refine\na category's general pose to guide the pose estimation of individuals within that category. Conceptually, each category is expected to exhibit a generalized and distinctive pose prior that reflects characteristics such as shape, size, and structure. Individual poses should be seen as geometric transformations of this category-specific pose prior. As a result, employing a category-specific pose prior aids in guiding and regularizing the learning of poses. However, obtaining comprehensive general pose priors is highly challenging, as it requires extensive human annotations, particularly for novel categories. Moreover, human annotations may introduce implicit biases, hindering models from learning more meaningful priors. Loosely inspired by how humans develop a general prior representation of an object category by observing individual object instances in images and subseq",
+      "topic": "",
+      "claims": [
+        "we introduce the challenge of unsupervised categorical prior learning in pose estimation, where AI models learn a general pose prior for an object category from images in a self-supervised manner.",
+        "We propose a novel method, named Pose Prior Learner (PPL), to learn a general pose prior for any object category."
+      ]
+    },
+    "query_generation": {
+      "groups": [
+        "same_problem",
+        "same_method",
+        "same_constraints",
+        "benchmark_baseline",
+        "novelty_competitor",
+        "limitations_counterevidence"
+      ],
+      "queries": [
+        {
+          "group": "same_problem",
+          "query": "unsupervised categorical prior learning pose estimation",
+          "rationale": "Directly targets the specific research problem introduced: unsupervised learning of categorical pose priors for pose estimation."
+        },
+        {
+          "group": "same_method",
+          "query": "hierarchical memory prototypical poses pose estimation",
+          "rationale": "Focuses on the core method components: hierarchical memory and prototypical poses for pose estimation."
+        },
+        {
+          "group": "same_constraints",
+          "query": "self-supervised pose estimation no human annotations",
+          "rationale": "Captures the key constraints: self-supervised learning without human annotations or interventions."
+        },
+        {
+          "group": "benchmark_baseline",
+          "query": "pose estimation datasets benchmarks human animal",
+          "rationale": "Aims to find papers that define or use benchmarks/datasets for human and animal pose estimation, as referenced in the target."
+        },
+        {
+          "group": "novelty_competitor",
+          "query": "unsupervised pose prior learning before 2023",
+          "rationale": "Seeks prior work on unsupervised pose prior learning to challenge the novelty claim, using a date filter to exclude recent works."
+        },
+        {
+          "group": "limitations_counterevidence",
+          "query": "limitations pose estimation occluded images generalization",
+          "rationale": "Targets papers that discuss limitations or negative results related to pose estimation on occluded images or generalization issues, as implied by the target's focus."
+        }
+      ],
+      "source": "llm"
+    },
+    "provider_status": {
+      "OpenAlex": {
+        "status": "used",
+        "retrieved": 10,
+        "warnings": []
+      },
+      "arXiv": {
+        "status": "used",
+        "retrieved": 2,
+        "warnings": [
+          "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+          "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+          "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+          "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+          "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+        ]
+      }
+    },
+    "paper_metadata": [
+      {
+        "paper_id": "rw_001_879aaa0fa",
+        "title": "A survey on deep learning in medical image analysis",
+        "authors": [
+          "Geert Litjens",
+          "Thijs Kooi",
+          "Babak Ehteshami Bejnordi",
+          "Arnaud A. A. Setio",
+          "Francesco Ciompi",
+          "Mohsen Ghafoorian",
+          "Jeroen van der Laak",
+          "Bram van Ginneken",
+          "Clara I. Sá‎nchez"
+        ],
+        "year": 2017,
+        "publication_date": "2017-07-26",
+        "venue": "Medical Image Analysis",
+        "abstract": "",
+        "url": "https://doi.org/10.1016/j.media.2017.07.005",
+        "doi": "https://doi.org/10.1016/j.media.2017.07.005",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2592929672"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 14648
+      },
+      {
+        "paper_id": "rw_002_b94b76b54",
+        "title": "Advances and Open Problems in Federated Learning",
+        "authors": [
+          "Peter Kairouz",
+          "H. Brendan McMahan",
+          "Brendan Avent",
+          "Aurélien Bellet",
+          "Mehdi Bennis",
+          "Arjun Nitin Bhagoji",
+          "Kallista Bonawitz",
+          "Zachary Charles",
+          "Graham Cormode",
+          "Rachel Cummings",
+          "Rafael G. L. D’Oliveira",
+          "Hubert Eichner",
+          "Salim El Rouayheb",
+          "David Evans",
+          "Joshua Gardner",
+          "Zachary Garrett",
+          "Adrià Gascón",
+          "Badih Ghazi",
+          "Phillip B. Gibbons",
+          "Marco Gruteser",
+          "Zaïd Harchaoui",
+          "Chaoyang He",
+          "Lingxiao He",
+          "Zhouyuan Huo",
+          "Ben Hutchinson",
+          "Justin Hsu",
+          "Martin Jaggi",
+          "Tara Javidi",
+          "Gauri Joshi",
+          "Mikhail Khodak",
+          "Jakub Konečný",
+          "Aleksandra Korolova",
+          "Farinaz Koushanfar",
+          "Sanmi Koyejo",
+          "Tancrède Lepoint",
+          "Yang Liu",
+          "Prateek Mittal",
+          "Mehryar Mohri",
+          "Richard Nock",
+          "Ayfer Özgür",
+          "Rasmus Pagh",
+          "Hang Qi",
+          "Daniel Ramage",
+          "Ramesh Raskar",
+          "Mariana Raykova",
+          "Dawn Song",
+          "Weikang Song",
+          "Sebastian U. Stich",
+          "Ziteng Sun",
+          "Ananda Theertha Suresh",
+          "Florian Tramèr",
+          "Praneeth Vepakomma",
+          "Jianyu Wang",
+          "Li Xiong",
+          "Zheng Xu",
+          "Qiang Yang",
+          "Felix X. Yu",
+          "Han Yu",
+          "Sen Zhao"
+        ],
+        "year": 2020,
+        "publication_date": "2020-12-02",
+        "venue": "Foundations and Trends® in Machine Learning",
+        "abstract": "Federated learning (FL) is a machine learning setting where many clients (e.g., mobile devices or whole organizations) collaboratively train a model under the orchestration of a central server (e.g., service provider), while keeping the training data decentralized. FL embodies the principles of focused data collection and minimization, and can mitigate many of the systemic privacy risks and costs resulting from traditional, centralized machine learning and data science approaches. Motivated by the explosive growth in FL research, this monograph discusses recent advances and presents an extensive collection of open problems and challenges.",
+        "url": "https://doi.org/10.1561/2200000083",
+        "doi": "https://doi.org/10.1561/2200000083",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2995022099"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_problem"
+        ],
+        "citation_count": 4937
+      },
+      {
+        "paper_id": "rw_003_32943a85e",
+        "title": "The Influences of Emotion on Learning and Memory",
+        "authors": [
+          "Chai Meei Tyng",
+          "Hafeez Ullah Amin",
+          "Mohamad Naufal Mohamad Saad",
+          "Aamir Saeed Malik"
+        ],
+        "year": 2017,
+        "publication_date": "2017-08-24",
+        "venue": "Frontiers in Psychology",
+        "abstract": "Emotion has a substantial influence on the cognitive processes in humans, including perception, attention, learning, memory, reasoning, and problem solving. Emotion has a particularly strong influence on attention, especially modulating the selectivity of attention as well as motivating action and behavior. This attentional and executive control is intimately linked to learning processes, as intrinsically limited attentional capacities are better focused on relevant information. Emotion also facilitates encoding and helps retrieval of information efficiently. However, the effects of emotion on learning and memory are not always univalent, as studies have reported that emotion either enhances or impairs learning and long-term memory (LTM) retention, depending on a range of factors. Recent neuroimaging findings have indicated that the amygdala and prefrontal cortex cooperate with the medial temporal lobe in an integrated manner that affords (i) the amygdala modulating memory consolidation; (ii) the prefrontal cortex mediating memory encoding and formation; and (iii) the hippocampus for successful learning and LTM retention. We also review the nested hierarchies of circular emotional control and cognitive regulation (bottom-up and top-down influences) within the brain to achieve optimal integration of emotional and cognitive processing. This review highlights a basic evolutionary approach to emotion to understand the effects of emotion on learning and memory and the functional roles played by various brain regions and their mutual interactions in relation to emotional processing. We also summarize the current state of knowledge on the impact of emotion on memory and map implications for educational settings. In addition to elucidating the memory-enhancing effects of emotion, neuroimaging findings extend our understanding of emotional influences on learning and memory processes; this knowledge may be useful for the design of effective educational curricula to provide a conducive learning environment for both traditional \"live\" learning in classrooms and \"virtual\" learning through online-based educational technologies.",
+        "url": "https://doi.org/10.3389/fpsyg.2017.01454",
+        "doi": "https://doi.org/10.3389/fpsyg.2017.01454",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2748454491"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 1485
+      },
+      {
+        "paper_id": "rw_004_c18e4c1b9",
+        "title": "Interactive hand pose estimation using a stretch-sensing soft glove",
+        "authors": [
+          "Oliver Glauser",
+          "Shihao Wu",
+          "Daniele Panozzo",
+          "Otmar Hilliges",
+          "Olga Sorkine‐Hornung"
+        ],
+        "year": 2019,
+        "publication_date": "2019-07-12",
+        "venue": "ACM Transactions on Graphics",
+        "abstract": "We propose a stretch-sensing soft glove to interactively capture hand poses with high accuracy and without requiring an external optical setup. We demonstrate how our device can be fabricated and calibrated at low cost, using simple tools available in most fabrication labs. To reconstruct the pose from the capacitive sensors embedded in the glove, we propose a deep network architecture that exploits the spatial layout of the sensor itself. The network is trained only once, using an inexpensive off-the-shelf hand pose reconstruction system to gather the training data. The per-user calibration is then performed on-the-fly using only the glove. The glove's capabilities are demonstrated in a series of ablative experiments, exploring different models and calibration methods. Comparing against commercial data gloves, we achieve a 35% improvement in reconstruction accuracy.",
+        "url": "https://doi.org/10.1145/3306346.3322957",
+        "doi": "https://doi.org/10.1145/3306346.3322957",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2956872328"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": 170
+      },
+      {
+        "paper_id": "rw_005_3d297ba05",
+        "title": "Visual Genome: Connecting Language and Vision Using Crowdsourced Dense Image Annotations",
+        "authors": [
+          "Ranjay Krishna",
+          "Yuke Zhu",
+          "Oliver Groth",
+          "Justin Johnson",
+          "Kenji Hata",
+          "Joshua Kravitz",
+          "Stephanie Chen",
+          "Yannis Kalantidis",
+          "Li-Jia Li",
+          "David A. Shamma",
+          "Michael S. Bernstein",
+          "Li Fei-Fei"
+        ],
+        "year": 2017,
+        "publication_date": "2017-02-06",
+        "venue": "International Journal of Computer Vision",
+        "abstract": "Despite progress in perceptual tasks such as image classification, computers still perform poorly on cognitive tasks such as image description and question answering. Cognition is core to tasks that involve not just recognizing, but reasoning about our visual world. However, models used to tackle the rich content in images for cognitive tasks are still being trained using the same datasets designed for perceptual tasks. To achieve success at cognitive tasks, models need to understand the interactions and relationships between objects in an image. When asked “What vehicle is the person riding?”, computers will need to identify the objects in an image as well as the relationships riding(man, carriage) and pulling(horse, carriage) to answer correctly that “the person is riding a horse-drawn carriage.” In this paper, we present the Visual Genome dataset to enable the modeling of such relationships. We collect dense annotations of objects, attributes, and relationships within each image to learn these models. Specifically, our dataset contains over 108K images where each image has an average of $$35$$ objects, $$26$$ attributes, and $$21$$ pairwise relationships between objects. We canonicalize the objects, attributes, relationships, and noun phrases in region descriptions and questions answer pairs to WordNet synsets. Together, these annotations represent the densest and largest dataset of image descriptions, objects, attributes, relationships, and question answer pairs.",
+        "url": "https://doi.org/10.1007/s11263-016-0981-7",
+        "doi": "https://doi.org/10.1007/s11263-016-0981-7",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2277195237"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 5231
+      },
+      {
+        "paper_id": "rw_006_32bf747ea",
+        "title": "Look into Person: Joint Body Parsing &amp; Pose Estimation Network and a New Benchmark",
+        "authors": [
+          "Xiaodan Liang",
+          "Ke Gong",
+          "Xiaohui Shen",
+          "Liang Lin"
+        ],
+        "year": 2018,
+        "publication_date": "2018-03-29",
+        "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+        "abstract": "Human parsing and pose estimation have recently received considerable interest due to their substantial application potentials. However, the existing datasets have limited numbers of images and annotations and lack a variety of human appearances and coverage of challenging cases in unconstrained environments. In this paper, we introduce a new benchmark named \"Look into Person (LIP)\" that provides a significant advancement in terms of scalability, diversity, and difficulty, which are crucial for future developments in human-centric analysis. This comprehensive dataset contains over 50,000 elaborately annotated images with 19 semantic part labels and 16 body joints, which are captured from a broad range of viewpoints, occlusions, and background complexities. Using these rich annotations, we perform detailed analyses of the leading human parsing and pose estimation approaches, thereby obtaining insights into the successes and failures of these methods. To further explore and take advantage of the semantic correlation of these two tasks, we propose a novel joint human parsing and pose estimation network to explore efficient context modeling, which can simultaneously predict parsing and pose with extremely high quality. Furthermore, we simplify the network to solve human parsing by exploring a novel self-supervised structure-sensitive learning approach, which imposes human pose structures into the parsing results without resorting to extra supervision. The datasets, code and models are available at http://www.sysu-hcp.net/lip/.",
+        "url": "https://doi.org/10.1109/tpami.2018.2820063",
+        "doi": "https://doi.org/10.1109/tpami.2018.2820063",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2963978393"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "same_constraints"
+        ],
+        "citation_count": 376
+      },
+      {
+        "paper_id": "rw_007_191fb4d48",
+        "title": "Multi-animal pose estimation, identification and tracking with DeepLabCut",
+        "authors": [
+          "Jessy Lauer",
+          "Mu Zhou",
+          "Shaokai Ye",
+          "William Menegas",
+          "Steffen Schneider",
+          "Tanmay Nath",
+          "Mohammed Mostafizur Rahman",
+          "Valentina Di Santo",
+          "Daniel Soberanes",
+          "Guoping Feng",
+          "Venkatesh N. Murthy",
+          "George Lauder",
+          "Catherine Dulac",
+          "Mackenzie Weygandt Mathis",
+          "Alexander Mathis"
+        ],
+        "year": 2022,
+        "publication_date": "2022-04-01",
+        "venue": "Nature Methods",
+        "abstract": "Estimating the pose of multiple animals is a challenging computer vision problem: frequent interactions cause occlusions and complicate the association of detected keypoints to the correct individuals, as well as having highly similar looking animals that interact more closely than in typical multi-human scenarios. To take up this challenge, we build on DeepLabCut, an open-source pose estimation toolbox, and provide high-performance animal assembly and tracking-features required for multi-animal scenarios. Furthermore, we integrate the ability to predict an animal's identity to assist tracking (in case of occlusions). We illustrate the power of this framework with four datasets varying in complexity, which we release to serve as a benchmark for future algorithm development.",
+        "url": "https://doi.org/10.1038/s41592-022-01443-0",
+        "doi": "https://doi.org/10.1038/s41592-022-01443-0",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4223422326"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline",
+          "limitations_counterevidence"
+        ],
+        "citation_count": 625
+      },
+      {
+        "paper_id": "rw_008_48e7f172b",
+        "title": "SLEAP: A deep learning system for multi-animal pose tracking",
+        "authors": [
+          "Talmo Pereira",
+          "Nathaniel Tabris",
+          "Arie Matsliah",
+          "David Turner",
+          "Junyu Li",
+          "Shruthi Ravindranath",
+          "Eleni S. Papadoyannis",
+          "Edna Normand",
+          "David Deutsch",
+          "Z. Yan Wang",
+          "Grace C. McKenzie‐Smith",
+          "Catalin Mitelut",
+          "Marielisa Diez Castro",
+          "John D’Uva",
+          "Mikhail Kislin",
+          "Dan H. Sanes",
+          "Sarah D. Kocher",
+          "Samuel S.‐H. Wang",
+          "Annegret L. Falkner",
+          "Joshua W. Shaevitz",
+          "Mala Murthy"
+        ],
+        "year": 2022,
+        "publication_date": "2022-04-01",
+        "venue": "Nature Methods",
+        "abstract": "The desire to understand how the brain generates and patterns behavior has driven rapid methodological innovation in tools to quantify natural animal behavior. While advances in deep learning and computer vision have enabled markerless pose estimation in individual animals, extending these to multiple animals presents unique challenges for studies of social behaviors or animals in their natural environments. Here we present Social LEAP Estimates Animal Poses (SLEAP), a machine learning system for multi-animal pose tracking. This system enables versatile workflows for data labeling, model training and inference on previously unseen data. SLEAP features an accessible graphical user interface, a standardized data model, a reproducible configuration system, over 30 model architectures, two approaches to part grouping and two approaches to identity tracking. We applied SLEAP to seven datasets across flies, bees, mice and gerbils to systematically evaluate each approach and architecture, and we compare it with other existing approaches. SLEAP achieves greater accuracy and speeds of more than 800 frames per second, with latencies of less than 3.5 ms at full 1,024 × 1,024 image resolution. This makes SLEAP usable for real-time applications, which we demonstrate by controlling the behavior of one animal on the basis of the tracking and detection of social interactions with another animal.",
+        "url": "https://doi.org/10.1038/s41592-022-01426-1",
+        "doi": "https://doi.org/10.1038/s41592-022-01426-1",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W4223962547"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "benchmark_baseline"
+        ],
+        "citation_count": 932
+      },
+      {
+        "paper_id": "rw_009_8cbf75f7c",
+        "title": "Unsupervised Learning of the Morphology of a Natural Language",
+        "authors": [
+          "John Goldsmith"
+        ],
+        "year": 2001,
+        "publication_date": "2001-06-01",
+        "venue": "Computational Linguistics",
+        "abstract": "This study reports the results of using minimum description length (MDL) analysis to model unsupervised learning of the morphological segmentation of European languages, using corpora ranging in size from 5,000 words to 500,000 words. We develop a set of heuristics that rapidly develop a probabilistic morphological grammar, and use MDL as our primary tool to determine whether the modifications proposed by the heuristics will be adopted or not. The resulting grammar matches well the analysis that would be developed by a human morphologist. In the final section, we discuss the relationship of this style of MDL grammatical analysis to the notion of evaluation metric in early generative grammar.",
+        "url": "https://doi.org/10.1162/089120101750300490",
+        "doi": "https://doi.org/10.1162/089120101750300490",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W2101711363"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 799
+      },
+      {
+        "paper_id": "rw_010_0f28f0989",
+        "title": "Unsupervised Learning Methods for Molecular Simulation Data",
+        "authors": [
+          "Aldo Glielmo",
+          "Brooke E. Husic",
+          "Álex Rodríguez",
+          "Cecilia Clementi",
+          "Frank Noé",
+          "Alessandro Laio"
+        ],
+        "year": 2021,
+        "publication_date": "2021-05-04",
+        "venue": "Chemical Reviews",
+        "abstract": ". We divide our discussion into self-contained sections, each discussing a specific method. In each section, we briefly touch upon the mathematical and algorithmic foundations of the method, highlight its strengths and limitations, and describe the specific ways in which it has been used-or can be used-to analyze molecular simulation data.",
+        "url": "https://doi.org/10.1021/acs.chemrev.0c01195",
+        "doi": "https://doi.org/10.1021/acs.chemrev.0c01195",
+        "arxiv_id": "",
+        "source_ids": {
+          "OpenAlex": "https://openalex.org/W3159156584"
+        },
+        "sources": [
+          "OpenAlex"
+        ],
+        "matched_query_groups": [
+          "novelty_competitor"
+        ],
+        "citation_count": 411
+      },
+      {
+        "paper_id": "rw_011_06b1eb32f",
+        "title": "Articulated Hand Pose Estimation Review",
+        "authors": [
+          "Emad Barsoum"
+        ],
+        "year": 2016,
+        "publication_date": "2016-04-21",
+        "venue": "arXiv",
+        "abstract": "With the increase number of companies focusing on commercializing Augmented Reality (AR), Virtual Reality (VR) and wearable devices, the need for a hand based input mechanism is becoming essential in order to make the experience natural, seamless and immersive. Hand pose estimation has progressed drastically in recent years due to the introduction of commodity depth cameras. Hand pose estimation based on vision is still a challenging problem due to its complexity from self-occlusion (between fingers), close similarity between fingers, dexterity of the hands, speed of the pose and the high dimension of the hand kinematic parameters. Articulated hand pose estimation is still an open problem and under intensive research from both academia and industry. The 2 approaches used for hand pose estimation are: discriminative and generative. Generative approach is a model based that tries to fit a hand model to the observed data. Discriminative approach is appearance based, usually implemented with machine learning (ML) and require a large amount of training data. Recent hand pose estimation uses hybrid approach by combining both discriminative and generative methods into a single hand pipeline. In this paper, we focus on reviewing recent progress of hand pose estimation from depth sensor. We will survey discriminative methods, generative methods and hybrid methods. This paper is not a comprehensive review of all hand pose estimation techniques, it is a subset of some of the recent state-of-the-art techniques.",
+        "url": "http://arxiv.org/abs/1604.06195v1",
+        "doi": "",
+        "arxiv_id": "1604.06195v1",
+        "source_ids": {
+          "arXiv": "1604.06195v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      },
+      {
+        "paper_id": "rw_012_dbbbee715",
+        "title": "Visual-based Positioning and Pose Estimation",
+        "authors": [
+          "Somnuk Phon-Amnuaisuk",
+          "Ken T. Murata",
+          "La-Or Kovavisaruch",
+          "Tiong-Hoo Lim",
+          "Praphan Pavarangkoon",
+          "Takamichi Mizuhara"
+        ],
+        "year": 2022,
+        "publication_date": "2022-04-20",
+        "venue": "arXiv",
+        "abstract": "Recent advances in deep learning and computer vision offer an excellent opportunity to investigate high-level visual analysis tasks such as human localization and human pose estimation. Although the performance of human localization and human pose estimation has significantly improved in recent reports, they are not perfect and erroneous localization and pose estimation can be expected among video frames. Studies on the integration of these techniques into a generic pipeline that is robust to noise introduced from those errors are still lacking. This paper fills the missing study. We explored and developed two working pipelines that suited the visual-based positioning and pose estimation tasks. Analyses of the proposed pipelines were conducted on a badminton game. We showed that the concept of tracking by detection could work well, and errors in position and pose could be effectively handled by a linear interpolation technique using information from nearby frames. The results showed that the Visual-based Positioning and Pose Estimation could deliver position and pose estimations with good spatial and temporal resolutions.",
+        "url": "http://arxiv.org/abs/2204.09232v1",
+        "doi": "",
+        "arxiv_id": "2204.09232v1",
+        "source_ids": {
+          "arXiv": "2204.09232v1"
+        },
+        "sources": [
+          "arXiv"
+        ],
+        "matched_query_groups": [
+          "same_method"
+        ],
+        "citation_count": null
+      }
+    ],
+    "reranking_results": [
+      {
+        "rank": 1,
+        "paper_id": "rw_006_32bf747ea",
+        "relevance_score": 0.88,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "This paper provides a direct benchmark for human pose estimation with semantic parsing, demonstrating state-of-the-art performance on datasets the target paper claims to evaluate on, offering crucial baseline comparisons.",
+        "evidence_summary": "Look into Person: Joint Body Parsing & Pose Estimation Network and a New Benchmark (Liang et al., 2018) introduces a large-scale dataset with 50,000 annotated images for human parsing and pose estimation."
+      },
+      {
+        "rank": 2,
+        "paper_id": "rw_007_191fb4d48",
+        "relevance_score": 0.86,
+        "relevance_types": [
+          "benchmark_baseline",
+          "limitations_counterevidence"
+        ],
+        "rationale": "Provides state-of-the-art approach for animal pose estimation, which is explicitly mentioned in the target paper's evaluation, and discusses challenges with occlusions and multi-animal tracking directly relevant to PPL's claims.",
+        "evidence_summary": "Multi-animal pose estimation, identification and tracking with DeepLabCut (Lauer et al., 2022) addresses pose estimation challenges including occlusions and multi-animal scenarios on benchmark datasets."
+      },
+      {
+        "rank": 3,
+        "paper_id": "rw_008_48e7f172b",
+        "relevance_score": 0.85,
+        "relevance_types": [
+          "benchmark_baseline"
+        ],
+        "rationale": "Offers another high-performance animal pose tracking system that serves as a critical baseline for evaluating the target paper's claims about pose estimation on animal datasets.",
+        "evidence_summary": "SLEAP: A deep learning system for multi-animal pose tracking (Pereira et al., 2022) presents a comprehensive framework for multi-animal pose estimation and tracking with high accuracy."
+      },
+      {
+        "rank": 4,
+        "paper_id": "rw_004_c18e4c1b9",
+        "relevance_score": 0.78,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Demonstrates a different approach to pose estimation using physical sensors, providing methodological contrast to the target's vision-based hierarchical memory approach.",
+        "evidence_summary": "Interactive hand pose estimation using a stretch-sensing soft glove (Glauser et al., 2019) presents sensor-based pose estimation with deep learning components for reconstruction."
+      },
+      {
+        "rank": 5,
+        "paper_id": "rw_011_06b1eb32f",
+        "relevance_score": 0.76,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Comprehensive review of articulated hand pose estimation methods, covering both discriminative and generative approaches relevant to understanding the methodological context of PPL.",
+        "evidence_summary": "Articulated Hand Pose Estimation Review (Barsoum, 2016) surveys discriminative, generative, and hybrid methods for hand pose estimation from depth sensors."
+      },
+      {
+        "rank": 6,
+        "paper_id": "rw_012_dbbbee715",
+        "relevance_score": 0.72,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Recent work on visual-based pose estimation that addresses error handling and tracking, relevant to understanding current challenges in the field.",
+        "evidence_summary": "Visual-based Positioning and Pose Estimation (Phon-Amnuaisuk et al., 2022) explores pipelines for human localization and pose estimation with error handling techniques."
+      },
+      {
+        "rank": 7,
+        "paper_id": "rw_005_3d297ba05",
+        "relevance_score": 0.58,
+        "relevance_types": [
+          "same_constraints"
+        ],
+        "rationale": "Provides context on dense annotation challenges in computer vision, relevant to understanding why unsupervised approaches like PPL are valuable.",
+        "evidence_summary": "Visual Genome: Connecting Language and Vision Using Crowdsourced Dense Image Annotations (Krishna et al., 2017) demonstrates the complexity of obtaining comprehensive annotations for vision tasks."
+      },
+      {
+        "rank": 8,
+        "paper_id": "rw_009_8cbf75f7c",
+        "relevance_score": 0.52,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Early work on unsupervised learning in natural language processing provides historical context for unsupervised methods, though the domain differs from vision.",
+        "evidence_summary": "Unsupervised Learning of the Morphology of a Natural Language (Goldsmith, 2001) applies minimum description length analysis to unsupervised morphological learning."
+      },
+      {
+        "rank": 9,
+        "paper_id": "rw_010_0f28f0989",
+        "relevance_score": 0.48,
+        "relevance_types": [
+          "novelty_competitor"
+        ],
+        "rationale": "Recent review of unsupervised learning methods in molecular simulation offers methodological parallels, though the application domain is distinct from pose estimation.",
+        "evidence_summary": "Unsupervised Learning Methods for Molecular Simulation Data (Glielmo et al., 2021) reviews unsupervised approaches for analyzing molecular simulation data across various methods."
+      },
+      {
+        "rank": 10,
+        "paper_id": "rw_003_32943a85e",
+        "relevance_score": 0.35,
+        "relevance_types": [
+          "same_method"
+        ],
+        "rationale": "Focuses on psychological aspects of learning and memory, only tangentially related to the technical aspects of memory-based pose estimation.",
+        "evidence_summary": "The Influences of Emotion on Learning and Memory (Tyng et al., 2017) examines how emotion affects cognitive processes including learning and memory retention."
+      },
+      {
+        "rank": 11,
+        "paper_id": "rw_002_b94b76b54",
+        "relevance_score": 0.28,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Discusses federated learning which shares some privacy/annotation concerns but is methodologically distant from unsupervised pose prior learning.",
+        "evidence_summary": "Advances and Open Problems in Federated Learning (Kairouz et al., 2020) covers decentralized machine learning approaches with privacy preservation."
+      },
+      {
+        "rank": 12,
+        "paper_id": "rw_001_879aaa0fa",
+        "relevance_score": 0.22,
+        "relevance_types": [
+          "same_problem"
+        ],
+        "rationale": "Broad survey of medical image analysis with limited direct relevance to the specific problem of unsupervised pose prior learning.",
+        "evidence_summary": "A survey on deep learning in medical image analysis (Litjens et al., 2017) provides a comprehensive overview of deep learning applications in medical imaging."
+      }
+    ],
+    "reranking": {
+      "source": "llm"
+    },
+    "related_work_summary": "Research in pose estimation has evolved through various methodological approaches, including sensor-based systems like Interactive hand pose estimation using a stretch-sensing soft glove (Glauser et al., 2019) and comprehensive reviews of articulated pose estimation techniques (Barsoum, 2016). Benchmark datasets such as Look into Person (Liang et al., 2018) have enabled significant progress in human pose estimation, while recent advances in animal pose tracking including Multi-animal pose estimation, identification and tracking with DeepLabCut (Lauer et al., 2022) and SLEAP (Pereira et al., 2022) address challenges with occlusions and multi-subject scenarios. The field continues to explore unsupervised learning paradigms, drawing inspiration from domains like natural language processing (Goldsmith, 2001) and molecular simulation (Glielmo et al., 2021), while grappling with annotation challenges highlighted in datasets like Visual Genome (Krishna et al., 2017).",
+    "warnings": [
+      "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+      "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+      "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+      "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+      "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+    ],
+    "cutoff_report": {
+      "cutoff_date": "2024-12-31",
+      "allow_undated_evidence": false,
+      "num_retrieved": 12,
+      "num_removed_post_cutoff": 0,
+      "num_removed_undated": 0,
+      "num_used": 12,
+      "num_cutoff_valid": 12,
+      "candidate_cap": 12,
+      "num_removed_by_candidate_cap": 0
+    },
+    "review_memory": {
+      "status": "disabled",
+      "summary": {},
+      "selected_case": null,
+      "attempted_source_paper_ids": [],
+      "warnings": []
+    }
+  },
+  "rag_warnings": [
+    "arXiv query failed for same_problem: HTTP 429 Unknown Error",
+    "arXiv query failed for same_constraints: HTTP 429 Unknown Error",
+    "arXiv query failed for benchmark_baseline: HTTP 429 Unknown Error",
+    "arXiv query failed for novelty_competitor: HTTP 429 Unknown Error",
+    "arXiv query failed for limitations_counterevidence: HTTP 429 Unknown Error"
+  ],
+  "cutoff_report": {
+    "cutoff_date": "2024-12-31",
+    "allow_undated_evidence": false,
+    "num_retrieved": 12,
+    "num_removed_post_cutoff": 0,
+    "num_removed_undated": 0,
+    "num_used": 12,
+    "num_cutoff_valid": 12,
+    "candidate_cap": 12,
+    "num_removed_by_candidate_cap": 0
+  }
+}
